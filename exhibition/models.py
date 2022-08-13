@@ -13,6 +13,6 @@ class Exhibition(models.Model):
 
 
 class NFtEx(models.Model):
-    nft = models.ForeignKey(NFT)
-    ex=models.ForeignKey(Exhibition)
+    nft = models.ForeignKey(NFT, on_delete=models.CASCADE)
+    ex=models.ForeignKey(Exhibition, on_delete=models.CASCADE)
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
