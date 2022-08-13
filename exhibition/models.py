@@ -18,9 +18,6 @@ class NFtEx():
     nft = models.ForeignKey(NFT)
     ex=models.ForeignKey(Exhibition)
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
-
-class Auction(models.Model):
-    nft_ex = models.ForeignKey(NFtEx)
     floor_price = models.CharField(max_length=15,null=False, blank=False)
     startdate = models.DateField(verbose_name='تاریخ')
     enddate = models.DateField(verbose_name='تاریخ')
@@ -40,7 +37,7 @@ class Auction(models.Model):
 
 class Offer(models.Model):
     user = models.ForeignKey(User)
-    auction = models.ForeignKey(Auction, on_delete=models.CASCADE)
+    nft_ex = models.ForeignKey(NFtEx, on_delete=models.CASCADE)
     price = models.CharField(max_length=15, null=False, blank=False)
     status = models.CharField(max_length=5, choices=[('O','open'),('C','close')])
 
