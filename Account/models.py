@@ -24,4 +24,4 @@ class Profile (models.Model):
     national_code_picture = models.ImageField(verbose_name="عکس کارت ملی", upload_to="pictures of users", null=True,
                                               blank=True)
     image = models.ImageField(upload_to="عکس پروفایل", verbose_name="عکس پروفایل", null=True, blank=True)
-    role = models.ForeignKey(Role)
+    role = models.ForeignKey(Role, on_delete=models.CASCADE)
