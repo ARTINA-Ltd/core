@@ -28,6 +28,13 @@ def sell():
     return transaction_detail
 
 
+# a, b, c, d
+def buy():
+    transaction = Transaction.objects.create(nft=NFT.objects.get(name='Bape'), seller='mohammad', buyer='ali', date='3D')
+
+    transaction.save()
+
+
 
 sell()
 
