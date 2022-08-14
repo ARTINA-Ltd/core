@@ -35,6 +35,6 @@ def buy():
     transaction.save()
 
 
-
-sell()
-
+# first add your NFT models
+# sell()
+# buy()
