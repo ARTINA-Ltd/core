@@ -13,6 +13,9 @@ class Role (models.Model):
     name = models.CharField(max_length=10, verbose_name="نقش", null=False, blank=False)
     permissions = models.ManyToManyField(Permission)
 
+    def __str__(self):
+        return self.name
+
     def get_permission(self, permission):
         return self.permissions.filter(name=permission).exists()
 
