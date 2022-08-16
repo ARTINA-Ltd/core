@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class Permission(models.Model):
-    name = models.CharField(max_length=10, verbose_name="نقش", null=False, blank=False)
+    name = models.CharField(max_length=10, verbose_name="نوع دسترسی", null=False, blank=False)
 
     def __str__(self):
         return self.name
