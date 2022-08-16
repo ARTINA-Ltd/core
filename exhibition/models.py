@@ -7,9 +7,9 @@ from core.models import NFT
 class Exhibition(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     marketName = models.CharField(max_length=15, null=False, blank=False)
-    image = models.ImageField(upload_to="Exhibition", verbose_name="Exhibition", null=True, blank=True)
-    start_date = models.DateTimeField(verbose_name="تاریخ")
-    end_date = models.DateTimeField(verbose_name="تاریخ")
+    image = models.ImageField(upload_to="./pictures of Exhibitions", verbose_name="Exhibition", null=True, blank=True)
+    start_date = models.DateTimeField(verbose_name="تاریخ شروع")
+    end_date = models.DateTimeField(verbose_name="تاریخ پایان")
 
 
 class NFtEx(models.Model):
