@@ -22,6 +22,7 @@ class Role (models.Model):
 
 class Profile (models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    # TODO : adding FirstName and LastName as fields
     national_code = models.CharField(max_length=10, verbose_name="کدملی", null=True, blank=True)
     birthdate = models.CharField(max_length=10, verbose_name="تاریخ تولد", null=True, blank=True)
     phone_number = models.CharField(max_length=11, verbose_name="شماره تلفن", null=True, blank=True)
@@ -31,3 +32,6 @@ class Profile (models.Model):
                                               blank=True)
     image = models.ImageField(upload_to="عکس پروفایل", verbose_name="عکس پروفایل", null=True, blank=True)
     role = models.ForeignKey(Role, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username
