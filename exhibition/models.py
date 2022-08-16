@@ -11,6 +11,9 @@ class Exhibition(models.Model):
     start_date = models.DateTimeField(verbose_name="تاریخ شروع")
     end_date = models.DateTimeField(verbose_name="تاریخ پایان")
 
+    def __str__(self):
+        return self.marketName
+
 
 class NFtEx(models.Model):
     nft = models.ForeignKey(NFT, on_delete=models.CASCADE)
