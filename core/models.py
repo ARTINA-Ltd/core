@@ -11,6 +11,9 @@ class NFT(models.Model):
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
     lastPrice = models.CharField(max_length=15, null=False, blank=False)
 
+    def __str__(self):
+        return self.name
+
 
 class Transaction(models.Model):
     nft = models.ForeignKey(NFT, on_delete=models.CASCADE)
