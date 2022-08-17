@@ -3,3 +3,4 @@ from exhibition import models
 
 
 admin.site.register(models.Exhibition)
+admin.site.register(models.NFtEx)

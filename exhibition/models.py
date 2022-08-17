@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from core.models import NFT
 
 from datetime import datetime
 # Create your models here.
@@ -8,9 +8,14 @@ from datetime import datetime
 class Exhibition(models.Model):
     user=models.ForeignKey(User,on_delete = models.CASCADE)
     marketName=models.CharField(max_length=15,null=False,blank=False)
-    image=models.ImageField( upload_to = "Exhibition" , verbose_name="Exhibition",null=True,blank=True)
+    image=models.ImageField( upload_to = "Exhibition-images" , verbose_name="Exhibition",null=True,blank=True)
     startdate = models.DateTimeField(verbose_name="تاریخ")
     enddate = models.DateTimeField(verbose_name="تاریخ")
 
     def __str__(self):
         return f'{self.marketName} by {self.user.username}' 
+
+class NFtEx(models.Model):
+    nft = models.ForeignKey(NFT,on_delete=models.CASCADE)
+    ex=models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='nfts')
+    date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)

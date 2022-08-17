@@ -1,4 +1,3 @@
-from django.forms import SlugField
 from rest_framework import serializers
 from exhibition import models
 
@@ -8,3 +7,8 @@ class ExhibitionSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Exhibition
         fields = ['user','marketName','image','startdate','enddate','nfts']
+
+class NFtExSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.NFtEx
+        fields = ['nft','ex']

@@ -4,6 +4,7 @@ from exhibition import views
 
 router = routers.DefaultRouter()
 router.register(r'exhibitions',views.ExhibitionViewSet)
+router.register(r'nftexs',views.NFtExView)
 
 urlpatterns= [
     path('',include(router.urls))

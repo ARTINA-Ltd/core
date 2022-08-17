@@ -5,4 +5,8 @@ from exhibition import serializers
 class ExhibitionViewSet(viewsets.ModelViewSet):
     queryset = models.Exhibition.objects.all()
     serializer_class = serializers.ExhibitionSerializer
+
+class NFtExView(viewsets.ModelViewSet):
+    queryset = models.NFtEx.objects.all()
+    serializer_class = serializers.NFtExSerializer
     
