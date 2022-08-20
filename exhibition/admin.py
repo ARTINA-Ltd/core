@@ -1,10 +1,6 @@
 from django.contrib import admin
-from .models import Exhibition, NFtEx
+from exhibition import models
 
 
-class ExhibitionSettings(admin.ModelAdmin):
-    list_display = ('marketName', 'user', 'start_date', 'end_date')
-
-
-admin.site.register(Exhibition, ExhibitionSettings)
-admin.site.register(NFtEx)
+admin.site.register(models.Exhibition)
+admin.site.register(models.NFtEx)

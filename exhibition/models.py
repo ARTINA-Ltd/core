@@ -1,8 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from core.models import NFT
-# Create your models here.
 
+from datetime import datetime
+# Create your models here.
 
 class Exhibition(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -14,10 +15,12 @@ class Exhibition(models.Model):
     def __str__(self):
         return self.marketName
 
+    def __str__(self):
+        return f'{self.marketName} by {self.user.username}' 
 
 class NFtEx(models.Model):
-    nft = models.ForeignKey(NFT, on_delete=models.CASCADE)
-    ex = models.ForeignKey(Exhibition, on_delete=models.CASCADE)
+    nft = models.ForeignKey(NFT,on_delete=models.CASCADE)
+    ex=models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='nfts')
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
     is_nft_viewed_by_exhibitor = models.BooleanField(default=False)
     is_nft_accepted_by_exhibitor = models.BooleanField(default=False)

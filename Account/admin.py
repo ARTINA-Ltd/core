@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import Permission, Role, Profile
+from Account import models
 
 
-admin.site.register(Permission)
-admin.site.register(Role)
-admin.site.register(Profile)
+admin.site.register(models.Permission)
+admin.site.register(models.Role)
+admin.site.register(models.Profile)
+
