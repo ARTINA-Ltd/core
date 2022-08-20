@@ -19,3 +19,4 @@ class NFtEx(models.Model):
     nft = models.ForeignKey(NFT,on_delete=models.CASCADE)
     ex=models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='nfts')
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
+

@@ -23,5 +23,5 @@ class Profile (models.Model):
     address = models.TextField(max_length=200, verbose_name="آدرس", null=True, blank=True)
     national_code_picture = models.ImageField(verbose_name="عکس کارت ملی", upload_to="pictures of users", null=True,
                                               blank=True)
-    image = models.ImageField(upload_to="عکس پروفایل", verbose_name="عکس پروفایل", null=True, blank=True)
+    image = models.ImageField(upload_to="pictures of profile", verbose_name="عکس پروفایل", null=True, blank=True)
     role = models.ForeignKey(Role, on_delete=models.CASCADE)

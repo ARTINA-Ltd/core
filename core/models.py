@@ -4,6 +4,8 @@ from django.utils import timezone
 from datetime import datetime
 import pytz
 # Create your models here.
+
+
 class NFT(models.Model):
     name=models.CharField(max_length=15,null=False,blank=False)
     owner=models.ForeignKey(User,null=False,blank=False, on_delete=models.CASCADE)
@@ -31,13 +33,14 @@ class NFT(models.Model):
     def __str__(self):
         return f'{self.name} by {self.creator} owened by {self.owner.username}'
 
-    
-
 
 class Transaction(models.Model):
     nft = models.ForeignKey(NFT,on_delete=models.CASCADE)
-    seller=models.CharField(max_length=15,null=False,blank=False)
-    buyer=models.CharField(max_length=15,null=False,blank=False)
+    lastPrice=models.CharField(max_length=15,null=False,blank=False)
+    startdate = models.DateTimeField(verbose_name="تاریخ")
+    enddate = models.DateTimeField(verbose_name="تاریخ")
+    seller = models.CharField(max_length=15, null=False, blank=False)
+    buyer = models.CharField(max_length=15, null=False, blank=False)
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
 
 
@@ -46,10 +49,9 @@ class Wallet(models.Model):
     address = models.CharField(verbose_name="wallet address", max_length=100)
 
 
-
 class Order(models.Model):
-    nft=models.ForeignKey(NFT,on_delete=models.CASCADE)
-    bidder=models.ForeignKey(User,null=False,blank=False,on_delete=models.CASCADE)
+    nft=models.ManyToManyField(NFT)
+    bidder=models.ForeignKey(User,null=False,blank=False, on_delete=models.CASCADE)
     fee=models.IntegerField(verbose_name="قیمت ",null=False,blank=False)
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
     status = models.CharField(max_length=5, choices=[('O','open'),('C','close')])

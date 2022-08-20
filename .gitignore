@@ -80,10 +80,14 @@ target/
 
 ### Django ###
 *.log
-*.pot
 *.pyc
-__pycache__/
 local_settings.py
 
 .env
+.venv
 db.sqlite3
+
+### Related to our project ###
+./pictures of Exhibitions
+./pictures of users
+./عکس پروفایل
