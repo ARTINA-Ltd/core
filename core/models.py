@@ -33,6 +33,9 @@ class NFT(models.Model):
     def __str__(self):
         return f'{self.name} by {self.creator} owened by {self.owner.username}'
 
+    def __str__(self):
+        return self.name
+
 
 class Transaction(models.Model):
     nft = models.ForeignKey(NFT,on_delete=models.CASCADE)
