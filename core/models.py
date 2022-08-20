@@ -40,9 +40,10 @@ class Transaction(models.Model):
     buyer=models.CharField(max_length=15,null=False,blank=False)
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
 
+
 class Wallet(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE)
-    address=models.CharField(verbose_name="wallet address",max_length=100)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    address = models.CharField(verbose_name="wallet address", max_length=100)
 
 
 
