@@ -12,3 +12,9 @@
 
 ## Installation
 
+
+
+## Main TODOs
+- [ ] Account application should be lowercase and fix where it used
+- [ ] Writing comments in each file to declare the style of coding and calling other files
+- [ ] ...
