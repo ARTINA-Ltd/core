@@ -13,8 +13,8 @@ class NFT(models.Model):
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
     lastPrice = models.IntegerField(verbose_name='آخرین قیمت', null=False, blank=False)
     image = models.ImageField(upload_to="NFTS", null=True, blank=True)
-    start_date = models.DateTimeField(verbose_name='تاریخ شروع مزایده', null=False, default=timezone.now())
-    end_date = models.DateTimeField(verbose_name='تاریخ پایان مزایده', null=False, default=timezone.now())
+    start_date = models.DateTimeField(verbose_name='تاریخ شروع مزایده', null=False, default=timezone.now)
+    end_date = models.DateTimeField(verbose_name='تاریخ پایان مزایده', null=False, default=timezone.now)
 
     def has_expired(self):
         return datetime.now(tz=pytz.timezone('Asia/Tehran')) > self.end_date
@@ -35,10 +35,11 @@ class NFT(models.Model):
 
 
 class Transaction(models.Model):
+    # TODO:: Does transaction model need start_date, end_date?
     nft = models.ForeignKey(NFT, on_delete=models.CASCADE)
-    lastPrice = models.CharField(max_length=15, null=False, blank=False)
-    start_date = models.DateTimeField(verbose_name="تاریخ")
-    end_date = models.DateTimeField(verbose_name="تاریخ")
+    lastPrice = models.IntegerField(verbose_name='آخرین قیمت', null=False, blank=False, default=0)
+    start_date = models.DateTimeField(verbose_name="تاریخ", default=timezone.now)
+    end_date = models.DateTimeField(verbose_name="تاریخ", default=timezone.now)
     seller = models.CharField(max_length=15, null=False, blank=False)
     buyer = models.CharField(max_length=15, null=False, blank=False)
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)

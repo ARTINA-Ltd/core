@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from exhibition import models
 from exhibition import serializers
 import datetime
+from django.contrib.auth import User
 
 
 class ExhibitionViewSet(viewsets.ModelViewSet):
@@ -17,7 +18,7 @@ class NFtExView(viewsets.ModelViewSet):
 
 # a,b,c,d  inputs
 def createEx():
-    new = Exhibition.objects.create(user = User.objects.get(id=1),marketName='Ape',image = '' ,startdate = datetime.datetime(2022,10,10) , enddate = datetime.datetime(2022,5,5))
+    new = models.Exhibition.objects.create(user = User.objects.get(id=1),marketName='Ape',image = '' ,startdate = datetime.datetime(2022,10,10) , enddate = datetime.datetime(2022,5,5))
     new.save()
 
 # run function below to create new exhibitions
