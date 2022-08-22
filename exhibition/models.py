@@ -13,6 +13,8 @@ class Exhibition(models.Model):
     image = models.ImageField(upload_to="./pictures of Exhibitions", verbose_name="Exhibition", null=True, blank=True)
     start_date = models.DateTimeField(verbose_name="تاریخ شروع", default=timezone.now)
     end_date = models.DateTimeField(verbose_name="تاریخ پایان", default=timezone.now)
+    contract = models.TextField()
+    # add word or pdf file to this model in contract field later TODO
 
     def __str__(self):
         return f'{self.marketName} by {self.user.username}' 
@@ -20,7 +22,7 @@ class Exhibition(models.Model):
 
 class NFtEx(models.Model):
     nft = models.ForeignKey(NFT,on_delete=models.CASCADE)
-    ex=models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='nfts')
+    ex = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='nfts')
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
     is_nft_viewed_by_exhibitor = models.BooleanField(default=False)
     is_nft_accepted_by_exhibitor = models.BooleanField(default=False)
