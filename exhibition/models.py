@@ -19,7 +19,7 @@ class Exhibition(models.Model):
 
 
 class NFtEx(models.Model):
-    nft = models.ForeignKey(NFT,on_delete=models.CASCADE)
+    nft = models.ForeignKey(NFT,on_delete=models.CASCADE , related_name='exhibitions')
     ex=models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='nfts')
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
     is_nft_viewed_by_exhibitor = models.BooleanField(default=False)
