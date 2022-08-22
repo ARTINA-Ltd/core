@@ -3,8 +3,8 @@ from django.urls import path, include
 from exhibition import views
 
 router = routers.DefaultRouter()
-router.register(r'exhibitions',views.ExhibitionViewSet)
-router.register(r'nftexs',views.NFtExView)
+router.register(r'', views.ExhibitionViewSet, basename='exhibition')
+router.register(r'', views.NFtExView, basename='nftex')
 
 urlpatterns= [
     path('',include(router.urls))
