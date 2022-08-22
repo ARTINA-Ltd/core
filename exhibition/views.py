@@ -31,5 +31,5 @@ def create_exhibition():
 def register_artwork_for_exhibition():
     new = models.NFtEx.objects.create(nft = models.NFT.objects.get(id=1), ex = models.Exhibition.objects.get(id=1), date = datetime.datetime.now, is_nft_viewed_by_exhibitor = False, is_nft_accepted_by_exhibitor = False)
     new.save()
-
-register_artwork_for_exhibition()    
+#run func below to add a nft to an exhibition
+# register_artwork_for_exhibition()    
