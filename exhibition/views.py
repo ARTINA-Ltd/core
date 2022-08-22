@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from exhibition import models
 from exhibition import serializers
 import datetime
-from django.contrib.auth import User
+from django.contrib.auth.models import User
 
 
 class ExhibitionViewSet(viewsets.ModelViewSet):
