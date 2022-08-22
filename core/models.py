@@ -28,14 +28,14 @@ class NFT(models.Model):
             winner = max(orders, key=(lambda x: x.fee))
             return winner.bidder
         else:
-            return {'error': 'The auction is in progress yet.'}
+            return {'error': 'The auction is still in progress.'}
 
     def __str__(self):
         return f'{self.name} by {self.creator} owned by {self.owner.username}'
 
 
 class Transaction(models.Model):
-    # TODO:: Does transaction model need start_date, end_date?
+    # TODO: Does transaction model need start_date, end_date?
     nft = models.ForeignKey(NFT, on_delete=models.CASCADE)
     lastPrice = models.IntegerField(verbose_name='آخرین قیمت', null=False, blank=False, default=0)
     start_date = models.DateTimeField(verbose_name="تاریخ", default=timezone.now)
