@@ -13,7 +13,7 @@ class Exhibition(models.Model):
     image = models.ImageField(upload_to="./pictures of Exhibitions", verbose_name="Exhibition", null=True, blank=True)
     start_date = models.DateTimeField(verbose_name="تاریخ شروع", default=timezone.now)
     end_date = models.DateTimeField(verbose_name="تاریخ پایان", default=timezone.now)
-    contract = models.TextField()
+    contract = models.TextField(null=False)
     # add word or pdf file to this model in contract field later TODO
     description = models.TextField()
 
