@@ -14,4 +14,4 @@ class ExhibitionSerializer(serializers.ModelSerializer):
 class NFtExSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.NFtEx
-        fields = ['nft', 'ex','is_nft_accepted_by_exhibitor']
+        fields = ['nft', 'ex', 'is_nft_accepted_by_exhibitor']
