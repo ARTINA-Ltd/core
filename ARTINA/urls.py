@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from core import urls as core_urls
 from exhibition import urls as ex_urls
+from Account import urls as acc_urls
 
 
 urlpatterns = [
@@ -24,4 +25,5 @@ urlpatterns = [
     path('core/', include(core_urls)),
     path('exhibition/', include(ex_urls)),
     path('transactions/', include('core.urls')),
+    path('account/',include(acc_urls))
 ]
