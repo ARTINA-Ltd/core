@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from core.models import NFT
 from django.utils import timezone
 from datetime import datetime
+from django.core import validators
 # Create your models here.
 
 
@@ -19,8 +20,9 @@ class Exhibition(models.Model):
 
 
 class NFtEx(models.Model):
-    nft = models.ForeignKey(NFT,on_delete=models.CASCADE , related_name='exhibitions')
+    nft = models.ForeignKey(NFT,on_delete=models.CASCADE , related_name='exhibition')
     ex=models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='nfts')
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
+    commission = models.IntegerField(default=1, null=False, validators=[validators.MaxValueValidator(100),validators.MinValueValidator(1)])
     is_nft_viewed_by_exhibitor = models.BooleanField(default=False)
     is_nft_accepted_by_exhibitor = models.BooleanField(default=False)
