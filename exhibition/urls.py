@@ -3,9 +3,9 @@ from django.urls import path, include
 from exhibition import views
 
 router = routers.DefaultRouter()
-router.register(r'exhibition', views.ExhibitionViewSet)
-router.register(r'nftex', views.NFtExView)
+router.register(r'exhibitions', views.ExhibitionViewSet, basename='exhibitions')
+router.register(r'nftexs', views.NFtExView, basename='nftexs')
 
-urlpatterns= [
-    path('',include(router.urls))
+urlpatterns = [
+    path('', include(router.urls))
 ]
