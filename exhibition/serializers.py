@@ -15,6 +15,7 @@ class ExhibitionSerializer(serializers.ModelSerializer):
 class NFtExSerializer(serializers.ModelSerializer):
     nft = serializers.SlugRelatedField(read_only=True, slug_field='name')
     ex = serializers.SlugRelatedField(read_only=True, slug_field='marketName')
+
     class Meta:
         model = models.NFtEx
-        fields = ['nft','ex','date', 'commission','is_nft_viewed_by_exhibitor']
+        fields = ['nft', 'ex', 'date', 'commission', 'is_nft_viewed_by_exhibitor', 'is_nft_accepted_by_exhibitor']
