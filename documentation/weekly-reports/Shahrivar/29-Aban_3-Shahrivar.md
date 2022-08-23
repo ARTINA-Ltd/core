@@ -11,6 +11,9 @@
 | 8              | Start exhibition by exhibitor                | Ali Khazaei        | 22 August 2022 |
 | 9              | some minor fixes on models to be migratable. | Shervin Dadashzade | 22 August 2022 |
 | 10             | Exhibition limitation                        | Ali Khazaei        | 22 August 2022 |
+| 11             | Artist exhibitions view                      | Shervin Dadashzade | 23 August 2022 |
+| 12             | change is_accepted field                     | Ali Khazaei        | 23 August 2022 |
+
 
 
 ### Changes in this week:
