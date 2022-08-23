@@ -13,3 +13,8 @@ class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Transaction
         fields = ['nft', 'seller', 'buyer', 'date']
+
+class NFTSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.NFT
+        fields = '__all__'

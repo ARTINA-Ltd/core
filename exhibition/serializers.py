@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from exhibition import models
+from core.serializers import NFTSerializer
 
 
 class ExhibitionSerializer(serializers.ModelSerializer):
@@ -12,6 +13,8 @@ class ExhibitionSerializer(serializers.ModelSerializer):
 
 
 class NFtExSerializer(serializers.ModelSerializer):
+    nft = serializers.SlugRelatedField(read_only=True, slug_field='name')
+    ex = serializers.SlugRelatedField(read_only=True, slug_field='marketName')
     class Meta:
         model = models.NFtEx
-        fields = ['nft', 'ex', 'is_nft_accepted_by_exhibitor']
+        fields = ['nft','ex','date', 'commission','is_nft_viewed_by_exhibitor']

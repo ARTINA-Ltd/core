@@ -21,11 +21,11 @@ class NFT(models.Model):
     def has_started(self):
         return datetime.now(tz=pytz.timezone('Asia/Tehran')) > self.start_date
     
-    def get_winner(self):
+    def get_winner_offer(self):
         if self.has_expired():
             orders = self.order_set.all()
             winner = max(orders, key=(lambda x: x.fee))
-            return winner.bidder
+            return winner
         else:
             return {'error': 'The auction is still in progress.'}
 
