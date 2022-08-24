@@ -57,4 +57,4 @@ def check_request_seen_by_exhibitior():
     new.save()
 
 #run func below when exhibitor SEEN the NFT request
-check_request_seen_by_exhibitior()
+# check_request_seen_by_exhibitior()
