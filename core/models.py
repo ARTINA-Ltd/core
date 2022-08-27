@@ -29,6 +29,12 @@ class NFT(models.Model):
         else:
             return {'error': 'The auction is still in progress.'}
 
+    def get_nft_exhibition_status(self):
+        try :
+            return  self.exhibition.filter(is_nft_accepted_by_exhibitor = True).first()
+        except : 
+            return None
+
     def __str__(self):
         return f'{self.name} by {self.creator} owned by {self.owner.username}'
 
