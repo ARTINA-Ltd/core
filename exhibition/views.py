@@ -4,6 +4,7 @@ from cgi import print_form
 from operator import ne
 import pstats
 from rest_framework import viewsets
+from core.models import NFT
 from exhibition import models
 from exhibition import serializers
 import datetime
@@ -32,8 +33,16 @@ def create_exhibition():
 
 # pass the nft and exhibition id to this function
 def register_artwork_for_exhibition():
-    new = models.NFtEx.objects.create(nft = models.NFT.objects.get(id=1), ex = models.Exhibition.objects.get(id=1), commission = 2, date = datetime.datetime.now, is_nft_viewed_by_exhibitor = False, is_nft_accepted_by_exhibitor = False)
-    new.save()
+
+    mydata = NFT.objects.get(id=2)
+
+    print(mydata.get_nft_exhibition_status())
+
+    if(mydata.get_nft_exhibition_status() == None):
+        new = models.NFtEx.objects.create(nft = models.NFT.objects.get(id=2), ex = models.Exhibition.objects.get(id=1), commission = 4, date = datetime.datetime.now, is_nft_viewed_by_exhibitor = False, is_nft_accepted_by_exhibitor = False)
+        new.save()
+    else: 
+        print("error")
 #run func below to add a nft to an exhibition
 
 # register_artwork_for_exhibition()    
@@ -41,13 +50,13 @@ def register_artwork_for_exhibition():
 
 #pass the artwork id to change is_accepted IF EXHIBITOR CONFIRM THE REQUEST
 def check_register_artwork_by_exhibitor():
-    new = models.NFtEx.objects.get(id=2)
+    new = models.NFtEx.objects.get(id=15)
     new.is_nft_accepted_by_exhibitor = True
     new.save()
  
 #run func below when exhibitor ACCEPT the NFT request
 
-# check_register_artwork_by_exhibitor()
+check_register_artwork_by_exhibitor()
 
 
 #pass the artwork id to check IF EXHIBITOR HAS SEEN THE REQUEST OR NOT
