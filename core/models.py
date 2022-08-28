@@ -20,7 +20,7 @@ class NFT(models.Model):
 
     def has_started(self):
         return datetime.now(tz=pytz.timezone('Asia/Tehran')) > self.start_date
-    
+
     def get_winner_offer(self):
         if self.has_expired():
             orders = self.order_set.all()
@@ -30,9 +30,9 @@ class NFT(models.Model):
             return {'error': 'The auction is still in progress.'}
 
     def get_nft_exhibition_status(self):
-        try :
-            return  self.exhibition.filter(is_nft_accepted_by_exhibitor = True).first()
-        except : 
+        try:
+            return self.exhibition.filter(is_nft_accepted_by_exhibitor=True).first()
+        except:
             return None
 
     def __str__(self):
