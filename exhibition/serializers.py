@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from exhibition import models
-from core.serializers import NFTSerializer
 
 
 class ExhibitionSerializer(serializers.ModelSerializer):
