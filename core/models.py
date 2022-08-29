@@ -39,15 +39,6 @@ class NFT(models.Model):
         return f'{self.name} by {self.creator} owned by {self.owner.username}'
 
 
-class Transaction(models.Model):
-    # TODO: Does transaction model need start_date, end_date?
-    nft = models.ForeignKey(NFT, on_delete=models.CASCADE)
-    lastPrice = models.IntegerField(verbose_name='آخرین قیمت', null=False, blank=False, default=0)
-    start_date = models.DateTimeField(verbose_name="تاریخ", default=timezone.now)
-    end_date = models.DateTimeField(verbose_name="تاریخ", default=timezone.now)
-    seller = models.CharField(max_length=15, null=False, blank=False)
-    buyer = models.CharField(max_length=15, null=False, blank=False)
-    date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
 
 
 class Wallet(models.Model):

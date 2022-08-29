@@ -20,10 +20,17 @@ class Exhibition(models.Model):
 
 
 class NFtEx(models.Model):
-    nft = models.ForeignKey(NFT, on_delete=models.CASCADE, related_name='exhibition')
-    ex = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='nfts')
+    nfts = models.ManyToManyField(NFT, related_name='nftexs')
+    ex = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='nftex')
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
     commission = models.IntegerField(default=1, null=False, validators=[validators.MaxValueValidator(100),
                                                                         validators.MinValueValidator(1)])
     is_nft_viewed_by_exhibitor = models.BooleanField(default=False)
     is_nft_accepted_by_exhibitor = models.BooleanField(default=False)
+
+class Transaction(models.Model):
+    nftex = models.ForeignKey(NFtEx, on_delete=models.CASCADE)
+    lastPrice = models.IntegerField(verbose_name='آخرین قیمت', null=False, blank=False, default=0)
+    seller = models.CharField(max_length=15, null=False, blank=False)
+    buyer = models.CharField(max_length=15, null=False, blank=False)
+    date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)

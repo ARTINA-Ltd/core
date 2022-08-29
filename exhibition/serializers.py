@@ -18,3 +18,7 @@ class NFtExSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.NFtEx
         fields = ['nft', 'ex', 'date', 'commission', 'is_nft_viewed_by_exhibitor', 'is_nft_accepted_by_exhibitor']
+class TransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Transaction
+        fields = ['nft', 'seller', 'buyer', 'date']
