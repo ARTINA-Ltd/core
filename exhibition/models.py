@@ -31,6 +31,6 @@ class NFtEx(models.Model):
 class Transaction(models.Model):
     nftex = models.ForeignKey(NFtEx, on_delete=models.CASCADE)
     lastPrice = models.IntegerField(verbose_name='آخرین قیمت', null=False, blank=False, default=0)
-    seller = models.CharField(max_length=15, null=False, blank=False)
-    buyer = models.CharField(max_length=15, null=False, blank=False)
+    seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='as_seller_transcations')
+    buyer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='as_buyer_transactions')
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
