@@ -1,4 +1,4 @@
-#!/Users/aria/PycharmProjects/artina/venv/bin/python3
+#!/Users/aria/PycharmProjects/artina/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
