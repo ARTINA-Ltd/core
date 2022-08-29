@@ -12,7 +12,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     queryset = models.Order.objects.all()
     serializer_class = serializers.OrderSerializer
     
-    def create(self, request):
+    def create(self, request, *args, **kwargs):
         data = request.data
         nft = models.NFT.objects.get(pk=data['nft'])
         if nft.has_expired():

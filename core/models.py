@@ -29,11 +29,21 @@ class NFT(models.Model):
         else:
             return {'error': 'The auction is still in progress.'}
 
-    def get_nft_exhibition_status(self):
+    def get_exhibitions(self):
         try:
-            return self.exhibition.filter(is_nft_accepted_by_exhibitor=True).first()
+            return list(map(lambda x:x.ex,self.nftexs.filter(is_nft_accepted_by_exhibitor=True).all()))
         except:
             return None
+    
+    def is_in_exhibition(self):
+        exhibitions = self.get_exhibitions()
+        if exhibitions:
+            for exhibition in exhibitions:
+                if not exhibition.has_expired():
+                    return True
+            return False
+        else:
+            return False
 
     def __str__(self):
         return f'{self.name} by {self.creator} owned by {self.owner.username}'
