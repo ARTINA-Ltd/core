@@ -3,6 +3,9 @@ from django.contrib.auth.models import User
 from core.models import NFT
 from django.utils import timezone
 from django.core import validators
+from datetime import datetime
+from datetime import timedelta
+import pytz
 
 
 class Exhibition(models.Model):
@@ -15,15 +18,39 @@ class Exhibition(models.Model):
     # TODO: add word or pdf file to this model in contract field later
     # description = models.TextField()
 
+
+    def has_expired(self):
+        return datetime.now(tz=pytz.timezone('Asia/Tehran')) > self.end_date
+
+    def has_started(self):
+        return datetime.now(tz=pytz.timezone('Asia/Tehran')) > self.start_date
+    
     def __str__(self):
-        return f'{self.marketName} by {self.user.username}' 
+        return f'{self.marketName} by {self.user.username}'
+
+    ## Artist can not apply for the exhibition 2 days before start date or later.
+    def can_apply(self):
+        if self.has_expired():
+            return False
+        elif datetime.now(tz=pytz.timezone('Asia/Tehran')) > self.start_date - timedelta(days=2):
+            return False
+        else:
+            return True
+
+    ## TODO:: we need the has_requested function to check if a user has requested for a exhibition or not before, change the is_accepted to the state base in NFtEx object
+
+    def get_artists(self):
+        artists = set(map(lambda x:x.nfts.first().owner,self.nftexs.filter(is_nft_accepted_by_exhibitor=True).all()))
+        return artists
+
+         
 
 
 class NFtEx(models.Model):
     nfts = models.ManyToManyField(NFT, related_name='nftexs')
-    ex = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='nftex')
+    ex = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='nftexs')
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
-    commission = models.IntegerField(default=1, null=False, validators=[validators.MaxValueValidator(100),
+    commission = models.IntegerField(default=1, null=False, blank=False, validators=[validators.MaxValueValidator(100),
                                                                         validators.MinValueValidator(1)])
     is_nft_viewed_by_exhibitor = models.BooleanField(default=False)
     is_nft_accepted_by_exhibitor = models.BooleanField(default=False)
