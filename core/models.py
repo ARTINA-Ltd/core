@@ -31,7 +31,7 @@ class NFT(models.Model):
 
     def get_exhibitions(self):
         try:
-            return list(map(lambda x:x.ex,self.nftexs.filter(is_nft_accepted_by_exhibitor=True).all()))
+            return list(map(lambda x:x.ex,self.nftexs.filter(state='accepted').all()))
         except:
             return None
     

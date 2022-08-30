@@ -67,7 +67,6 @@ class ArtistViewSet(viewsets.ModelViewSet):
         artist = User.objects.get(id=pk)
         serializer = self.get_serializer_class()
         serializer = serializer(data=request.data)
-
         if serializer.is_valid():
             data = serializer.validated_data
             nfts = data['nfts']
@@ -82,8 +81,10 @@ class ArtistViewSet(viewsets.ModelViewSet):
             # Check for artists limitation
             if len(exhibition.get_artists()) >= 15:
                 return Response({'error':'This exhibition has arrived to its 15 artist limitation'})
+            if exhibition.has_artist_pending_request(artist):
+                return Response({'error':'you already have submited an application for this exhibition which is pending yet.'}, status.HTTP_400_BAD_REQUEST)
             application = serializer.save()
-            return Response(self.get_serializer_class()(application).data, status.HTTP_200_OK)
+            return Response(self.get_serializer_class()(application).data, status.HTTP_201_CREATED)
 
         else:
             return Response(serializer.errors,status.HTTP_400_BAD_REQUEST)
