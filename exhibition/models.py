@@ -40,8 +40,16 @@ class Exhibition(models.Model):
     ## TODO:: we need the has_requested function to check if a user has requested for a exhibition or not before, change the is_accepted to the state base in NFtEx object
 
     def get_artists(self):
-        artists = set(map(lambda x:x.nfts.first().owner,self.nftexs.filter(is_nft_accepted_by_exhibitor=True).all()))
+        artists = set(map(lambda x:x.nfts.first().owner,self.nftexs.filter(state='accepted').all()))
         return artists
+    
+    def has_artist_pending_request(self, artist):
+        requests = list(map(lambda x:x.nfts.first().owner==artist, self.nftexs.filter(state='pending')))
+        if len(requests):
+            return True
+        else:
+            return False
+
 
          
 
@@ -52,8 +60,7 @@ class NFtEx(models.Model):
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
     commission = models.IntegerField(default=1, null=False, blank=False, validators=[validators.MaxValueValidator(100),
                                                                         validators.MinValueValidator(1)])
-    is_nft_viewed_by_exhibitor = models.BooleanField(default=False)
-    is_nft_accepted_by_exhibitor = models.BooleanField(default=False)
+    state = models.CharField(max_length=12,null=False, blank=False, choices=[('pending','pending'),('accepted','accepted'),('rejected','rejected')], default='pending')
 
 class Transaction(models.Model):
     nftex = models.ForeignKey(NFtEx, on_delete=models.CASCADE)

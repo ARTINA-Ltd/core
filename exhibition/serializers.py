@@ -12,11 +12,10 @@ class ExhibitionSerializer(serializers.ModelSerializer):
 
 
 class NFtExSerializer(serializers.ModelSerializer):
-    is_nft_accepted_by_exhibitor = serializers.BooleanField(read_only=True)
-    is_nft_viewed_by_exhibitor = serializers.BooleanField(read_only=True)
+    state = serializers.CharField(read_only=True)
     class Meta:
         model = models.NFtEx
-        fields = ['nfts', 'ex', 'date', 'commission', 'is_nft_viewed_by_exhibitor', 'is_nft_accepted_by_exhibitor']
+        fields = ['nfts', 'ex', 'date', 'commission', 'state']
 
 
 class TransactionSerializer(serializers.ModelSerializer):
