@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 class Permission(models.Model):
     name = models.CharField(max_length=10, verbose_name="نوع دسترسی", null=False, blank=False)
 
@@ -38,10 +37,24 @@ class Profile (models.Model):
 
 
 
+### Functions needed for default Django User model
 
-def get_applications(self):
+def get_artist_applications(self):
     nfts = self.nft_set.all()
     applications = []
     for nft in nfts:
         applications += nft.nftexs.filter(state='pending').all()
     return set(applications)
+
+
+## TODO::still in progress should be completed......
+def get_artist_exhibitions(self):
+    nfts = self.nft_set.all()
+    current_exhibitions = []
+    for nft in nfts:
+        current_exhibitions += list(filter(lambda x: not x.ex.has_expired()  ,nft.nftexs.filter(state='accepted').all()))
+    
+
+
+
+User.add_to_class('get_artist_applications',get_artist_applications)
