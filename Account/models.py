@@ -35,3 +35,13 @@ class Profile (models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+
+
+def get_applications(self):
+    nfts = self.nft_set.all()
+    applications = []
+    for nft in nfts:
+        applications += nft.nftexs.filter(state='pending').all()
+    return set(applications)
