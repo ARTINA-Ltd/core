@@ -22,7 +22,7 @@ class ArtistViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['get'], name='Get Applications')
     def get_applications(self, request, pk=None):
         artist = User.objects.get(id=pk)
-
+    
 
     @action(detail=True, methods=['post'],name='Requst to exhibition')
     def request_exhibition(self, request, pk=None):
