@@ -19,7 +19,21 @@ class NFtExView(viewsets.ModelViewSet):
     queryset = models.NFtEx.objects.all()
     serializer_class = serializers.NFtExSerializer
 
+    @action(detail=True, name='Changing State to accepted')        
+    def changing_state_accepted(self, request, pk=None):
+        nftex = models.NFtEx.objects.get(id=pk)
+        nftex.state = "accepted"
+        nftex.save()
+        return Response(serializers.NFtExSerializer(nftex).data)
+        
+    @action(detail=True, name='Changing State to rejected')        
+    def changing_state_rejected(self, request, pk=None):
+        nftex = models.NFtEx.objects.get(id=pk)
+        nftex.state = "rejected"
+        nftex.save()
+        return Response(serializers.NFtExSerializer(nftex).data)  
 
+    
 
 class ExhibitorViewSet(viewsets.ModelViewSet):
     queryset = models.User.objects.all()
@@ -50,7 +64,7 @@ class ExhibitorViewSet(viewsets.ModelViewSet):
         return Response(nftexs)
 
 
-      
+    
 
         
 
