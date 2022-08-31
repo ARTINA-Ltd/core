@@ -63,6 +63,7 @@ class NFtEx(models.Model):
     state = models.CharField(max_length=12,null=False, blank=False, choices=[('pending','pending'),('accepted','accepted'),('rejected','rejected')], default='pending')
 
 class Transaction(models.Model):
+    nft = models.ForeignKey(NFT, on_delete=models.CASCADE, default=1)
     nftex = models.ForeignKey(NFtEx, on_delete=models.CASCADE)
     lastPrice = models.IntegerField(verbose_name='آخرین قیمت', null=False, blank=False, default=0)
     seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='as_seller_transcations')
