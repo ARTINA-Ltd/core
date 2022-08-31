@@ -50,9 +50,7 @@ class ExhibitorViewSet(viewsets.ModelViewSet):
         return Response(nftexs)
 
 
-    @action(detail=True, methods=['put'], name='Changing State')        
-    def changing_state(self, request, pk=None):
-        pass   
+      
 
         
 
