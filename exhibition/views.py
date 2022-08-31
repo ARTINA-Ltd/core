@@ -1,3 +1,4 @@
+from array import array
 from rest_framework import viewsets
 from core.models import NFT
 from exhibition import models
@@ -38,61 +39,27 @@ class ExhibitorViewSet(viewsets.ModelViewSet):
         return Response(exhibitions.data)
 
 
-
-# Pass the artwork id to change is_accepted IF EXHIBITOR CONFIRM THE REQUEST
-# def check_register_artwork_by_exhibitor(pk):
-#     new = models.NFtEx.objects.get(id=pk)
-#     new.is_nft_accepted_by_exhibitor = True
-#     new.save()
-
-
-
-# Pass the artwork id to check IF EXHIBITOR HAS SEEN THE REQUEST OR NOT
-# def check_request_seen_by_exhibitor(pk):
-#     new = models.NFtEx.objects.get(id=pk)
-#     new.is_nft_viewed_by_exhibitor = True
-#     new.save()
+    @action(detail=True, methods=['get'], name='Get Pending State')
+    def get_pending_state(self, request, pk=None):
+        nftexs = []
+        exhibitor = User.objects.get(id=pk)
+        exhibitions = exhibitor.exhibition_set.all()
+        for exhibition in exhibitions:
+            nftex = exhibition.nftexs.filter(state = 'pending').all()
+            nftexs += serializers.NFtExSerializer(nftex,many = True).data
+        return Response(nftexs)
 
 
-# Run func below when exhibitor SEEN the NFT request
-# check_request_seen_by_exhibitor()
+    @action(detail=True, methods=['put'], name='Changing State')        
+    def changing_state(self, request, pk=None):
+        pass   
 
-
-
-
-
-
-
+        
 
 class TransactionList(viewsets.ModelViewSet):
     queryset = models.Transaction.objects.all()
     serializer_class = serializers.TransactionSerializer
 
 
-# a, b, c, d
-def sell():
-    transaction = models.Transaction.objects.create(nft=NFT.objects.get(name='Ape'), seller='ali', buyer='reza', date='12M')
-
-    floor_price = NFT.lastPrice
-    startdate = NFT.startdate
-    enddate = NFT.enddate
-
-    transaction_detail = [floor_price, startdate, enddate]
-
-    transaction.save()
-
-    # transaction Method with error Handling TODO
-
-    return transaction_detail
 
 
-# a, b, c, d
-def buy():
-    transaction = models.Transaction.objects.create(nft=NFT.objects.get(name='Bape'), seller='mohammad', buyer='ali', date='3D')
-
-    transaction.save()
-
-
-# first add your NFT models
-# sell()
-# buy()
