@@ -62,6 +62,7 @@ class NFtEx(models.Model):
                                                                         validators.MinValueValidator(1)])
     state = models.CharField(max_length=12,null=False, blank=False, choices=[('pending','pending'),('accepted','accepted'),('rejected','rejected')], default='pending')
 
+    
 class Transaction(models.Model):
     nftex = models.ForeignKey(NFtEx, on_delete=models.CASCADE)
     lastPrice = models.IntegerField(verbose_name='آخرین قیمت', null=False, blank=False, default=0)
