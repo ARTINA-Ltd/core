@@ -21,8 +21,16 @@ class ArtistViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'], name='Get Applications')
     def get_applications(self, request, pk=None):
-        artist = User.objects.get(id=pk)
+        try:
+            artist = User.objects.get(id=pk)
+        except User.DoesNotExist:
+            return Response({'error':'User deos not exist.'},status.HTTP_404_NOT_FOUND)
+        serializer = NFtExSerializer(artist.get_artist_applications(), many=True)
+        return Response(serializer.data, status.HTTP_200_OK)
+
     
+        
+
 
     @action(detail=True, methods=['post'],name='Requst to exhibition')
     def request_exhibition(self, request, pk=None):

@@ -14,7 +14,7 @@ class NFT(models.Model):
     image = models.ImageField(upload_to="NFTS", null=True, blank=True)
     start_date = models.DateTimeField(verbose_name='تاریخ شروع مزایده', null=False, default=timezone.now)
     end_date = models.DateTimeField(verbose_name='تاریخ پایان مزایده', null=False, default=timezone.now)
-
+    
     def has_expired(self):
         return datetime.now(tz=pytz.timezone('Asia/Tehran')) > self.end_date
 
