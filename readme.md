@@ -1,18 +1,11 @@
 # Artina NFT Marketplace
 
-[![Documentation](https://badgen.net/badge/Documentation/See%20Here/cyan)](
-https://gitlab.com/zehish/artina/-/tree/main/documentation)
-[![WeeklyReports](https://badgen.net/badge/Weekly%20Reports/See%20Here/orange)](
-https://gitlab.com/zehish/artina/-/tree/main/documentation/weekly-reports)
-[![Endpoints](https://badgen.net/badge/Endpoints/See%20Here/purple)](
-https://gitlab.com/zehish/artina/-/tree/main/documentation/endpoints.md)
-[![Table](https://badgen.net/badge/Table%20Structure/See%20Here/green)](
-https://gitlab.com/zehish/artina/-/tree/main/documentation/tables.md)
-[![Requirements](https://badgen.net/badge/Requirements/See%20Here/pink)](
-https://gitlab.com/zehish/artina/-/tree/main/documentation/requirements.txt)
-
-
-## Description
+Visit these links to see the project in action:  
+[Requirements](https://gitlab.com/zehish/artina/-/tree/main/documentation/requirements.txt)  
+[Documentation](https://gitlab.com/zehish/artina/-/tree/main/documentation)  
+[Weekly Reports](https://gitlab.com/zehish/artina/-/tree/main/documentation/weekly-reports)  
+[Endpoints](https://gitlab.com/zehish/artina/-/tree/main/documentation/endpoints.md)  
+[Table Structure](https://gitlab.com/zehish/artina/-/tree/main/documentation/tables.md)  
 
 
 
