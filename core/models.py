@@ -31,7 +31,7 @@ class NFT(models.Model):
 
     def get_exhibitions(self):
         try:
-            return list(map(lambda x:x.ex,self.nftexs.filter(state='accepted').all()))
+            return list(map(lambda x: x.ex, self.nftexs.filter(state='accepted').all()))
         except:
             return None
     
@@ -47,8 +47,6 @@ class NFT(models.Model):
 
     def __str__(self):
         return f'{self.name} by {self.creator} owned by {self.owner.username}'
-
-
 
 
 class Wallet(models.Model):
