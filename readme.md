@@ -1,11 +1,11 @@
 # Artina NFT Marketplace
 
 Visit these links to see the project in action:  
-[Requirements](https://gitlab.com/zehish/artina/-/tree/main/documentation/requirements.txt)  
-[Documentation](https://gitlab.com/zehish/artina/-/tree/main/documentation)  
-[Weekly Reports](https://gitlab.com/zehish/artina/-/tree/main/documentation/weekly-reports)  
-[Endpoints](https://gitlab.com/zehish/artina/-/tree/main/documentation/endpoints.md)  
-[Table Structure](https://gitlab.com/zehish/artina/-/tree/main/documentation/tables.md)  
+- [Requirements](https://gitlab.com/zehish/artina/-/tree/main/documentation/requirements.txt)  
+- [Documentation](https://gitlab.com/zehish/artina/-/tree/main/documentation)  
+- [Weekly Reports](https://gitlab.com/zehish/artina/-/tree/main/documentation/weekly-reports)  
+- [Endpoints](https://gitlab.com/zehish/artina/-/tree/main/documentation/endpoints.md)  
+- [Table Structure](https://gitlab.com/zehish/artina/-/tree/main/documentation/tables.md)  
 
 
 
