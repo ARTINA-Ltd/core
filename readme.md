@@ -6,7 +6,7 @@ Visit these links to see the project in action:
 - [Weekly Reports](https://gitlab.com/zehish/artina/-/tree/main/documentation/weekly-reports)  
 - [Endpoints](https://gitlab.com/zehish/artina/-/tree/main/documentation/endpoints.md)  
 - [Table Structure](https://gitlab.com/zehish/artina/-/tree/main/documentation/tables.md)
-- [Database Schema](https://gitlab.com/zehish/artina/-/tree/main/documentation/db_schema.png)
+- [Database Schema](https://gitlab.com/zehish/artina/-/tree/main/documentation/db_schema.jpg)
 
 
 
