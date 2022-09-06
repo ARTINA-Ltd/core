@@ -5,8 +5,9 @@ Visit these links to see the project in action:
 - [Documentation](https://gitlab.com/zehish/artina/-/tree/main/documentation)  
 - [Weekly Reports](https://gitlab.com/zehish/artina/-/tree/main/documentation/weekly-reports)  
 - [Endpoints](https://gitlab.com/zehish/artina/-/tree/main/documentation/endpoints.md)  
-- [Table Structure](https://gitlab.com/zehish/artina/-/tree/main/documentation/tables.md)
-- [Database Schema](https://gitlab.com/zehish/artina/-/tree/main/documentation/db_schema.jpg)
+- [Table Structure](https://gitlab.com/zehish/artina/-/tree/main/documentation/database/tables.md)
+- [Database Schema](https://gitlab.com/zehish/artina/-/tree/main/documentation/database/db_schema.jpg)
+- [Database Test](https://gitlab.com/zehish/artina/-/tree/main/documentation/database/db_test.md)
 
 
 
@@ -19,7 +20,10 @@ Visit these links to see the project in action:
 
 
 ## Main TODOs
-- [ ] Make dummy data for testing and development.
+- [ ] Change directory of db_test.sqlite3, db_schema.jpg, and tables.md to documentation/database.
+- [ ] Make dump data for testing and development.
+- [ ] Add virtual environment installation guide to readme.md.
+- [ ] National code validation while sign up.
 - [ ] Account application should be lowercase and fix where it used.
 - [ ] Writing comments in each file to declare the style of coding and calling other files.
 - [ ] ...
