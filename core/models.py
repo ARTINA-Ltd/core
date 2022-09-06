@@ -11,7 +11,7 @@ class NFT(models.Model):
     creator = models.CharField(max_length=15, null=False, blank=False)
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
     lastPrice = models.IntegerField(verbose_name='آخرین قیمت', null=False, blank=False)
-    image = models.ImageField(upload_to="NFTS", null=True, blank=True)
+    image = models.ImageField(upload_to="./static/NFTS", null=True, blank=True)
     start_date = models.DateTimeField(verbose_name='تاریخ شروع مزایده', null=False, default=timezone.now)
     end_date = models.DateTimeField(verbose_name='تاریخ پایان مزایده', null=False, default=timezone.now)
     
@@ -53,6 +53,9 @@ class Wallet(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     address = models.CharField(verbose_name="wallet address", max_length=100)
 
+    def __str__(self):
+        return f'{self.user.username}\'s wallet'
+
 
 class Order(models.Model):
     nft = models.ManyToManyField(NFT)
@@ -60,3 +63,6 @@ class Order(models.Model):
     fee = models.IntegerField(verbose_name="قیمت ", null=False, blank=False)
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
     status = models.CharField(max_length=5, choices=[('O', 'open'), ('C', 'close')])
+
+    def __str__(self):
+        return f'{self.bidder.username} bid {self.fee} on {self.nft.name}'
