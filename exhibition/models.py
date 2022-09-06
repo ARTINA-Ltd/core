@@ -11,7 +11,8 @@ import pytz
 class Exhibition(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     marketName = models.CharField(max_length=15, null=False, blank=False)
-    image = models.ImageField(upload_to="./pictures of Exhibitions", verbose_name="Exhibition", null=True, blank=True)
+    image = models.ImageField(upload_to="./static/pictures of Exhibitions", verbose_name="Exhibition",
+                              null=True, blank=True)
     start_date = models.DateTimeField(verbose_name="تاریخ شروع", default=timezone.now)
     end_date = models.DateTimeField(verbose_name="تاریخ پایان", default=timezone.now)
     # contract = models.TextField(null=False)
@@ -62,6 +63,9 @@ class NFtEx(models.Model):
                                                                               ('rejected', 'rejected')],
                              default='pending')
 
+    def __str__(self):
+        return f'{self.nfts.name} in {self.ex.marketName}'
+
     
 class Transaction(models.Model):
     nftex = models.ForeignKey(NFtEx, on_delete=models.CASCADE)
@@ -69,3 +73,6 @@ class Transaction(models.Model):
     seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='as_seller_transactions')
     buyer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='as_buyer_transactions')
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
+
+    def __str__(self):
+        return f'{self.nftex} sold by {self.seller} to {self.buyer}'
