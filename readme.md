@@ -20,11 +20,23 @@ Visit these links to see the project in action:
 
 
 ## Main TODOs
-- [ ] Change directory of db_test.sqlite3, db_schema.jpg, and tables.md to documentation/database.
-- [ ] Make dump data for testing and development.
-- [ ] Add virtual environment installation guide to readme.md.
-- [ ] National code validation while sign up.
-- [ ] Check that no one can bid on his/her own NFT.
-- [ ] Account application should be lowercase and fix where it used.
-- [ ] Writing comments in each file to declare the style of coding and calling other files.
+- [ ] Critical
+  - [ ] Check that no one can bid on his/her own NFT.
+  - [ ] Check that only users with role of exhibitors can start an exhibition.
+  - [ ] Commission should not be more than 100 or less than 0.
+  - [ ] Transactions must show date while creating.
+
+
+- [ ] Important
+  - [x] Make dump data for testing and development.
+  - [ ] National code validation while sign up.
+
+
+- [ ] Nice to have
+  - [x] Change directory of db_test.sqlite3, db_schema.jpg, and tables.md to documentation/database.
+  - [ ] Add tests for all endpoints
+  - [ ] Add virtual environment installation guide to readme.md.
+  - [ ] Account application should be lowercase and fix where it used.
+  - [ ] Writing comments in each file to declare the style of coding and calling other files.
+
 - [ ] ...
