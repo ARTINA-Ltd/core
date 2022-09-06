@@ -78,10 +78,12 @@ WSGI_APPLICATION = 'ARTINA.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# NOTE : If you want to work with dump data, just comment NAME with db.sqlite3 and uncomment NAME with db_test.sqlite3
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'documentation/db_test.sqlite3',
     }
 }
 
