@@ -72,7 +72,7 @@ class Transaction(models.Model):
     lastPrice = models.IntegerField(verbose_name='آخرین قیمت', null=False, blank=False, default=0)
     seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='as_seller_transactions')
     buyer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='as_buyer_transactions')
-    date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
+    date = models.DateTimeField(verbose_name="تاریخ")
 
     def __str__(self):
         return f'{self.nftex} sold by {self.seller} to {self.buyer}'
