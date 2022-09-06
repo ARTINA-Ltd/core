@@ -12,7 +12,8 @@ Visit these links to see the project in action:
 
 
 ## Installation
-1. Run `source venv/bin/activate` to activate virtual environment.
+First of all, install virtualenv by running `pip install virtualenv` in your terminal.
+1. Run `source venv/bin/activate` for **MacOS** and `.\venv\Scripts\activate` for **Windows** to activate virtual environment.
 2. Run `pip install -r ./documentation/requirements.txt` to install dependencies.
 3. Run `python manage.py makemigrations` to create migrations.
 4. Run `python manage.py migrate` to apply migrations.
