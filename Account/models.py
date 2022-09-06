@@ -28,9 +28,11 @@ class Profile (models.Model):
     phone_number = models.CharField(max_length=11, verbose_name="شماره تلفن", null=True, blank=True)
     cell_number = models.CharField(max_length=11, verbose_name="ثابت شماره تلفن", null=True, blank=True)
     address = models.TextField(max_length=200, verbose_name="آدرس", null=True, blank=True)
-    national_code_picture = models.ImageField(verbose_name="عکس کارت ملی", upload_to="pictures of users", null=True,
+    national_code_picture = models.ImageField(verbose_name="عکس کارت ملی", upload_to="./static/pictures of users",
+                                              null=True,
                                               blank=True)
-    image = models.ImageField(upload_to="pictures of profile", verbose_name="عکس پروفایل", null=True, blank=True)
+    image = models.ImageField(upload_to="./static/pictures of profile", verbose_name="عکس پروفایل",
+                              null=True, blank=True)
     role = models.ForeignKey(Role, on_delete=models.CASCADE)
 
     def __str__(self):
