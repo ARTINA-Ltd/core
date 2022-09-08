@@ -26,16 +26,21 @@
 ## Exhibition Work Flows:
 - API Root : `/exhibition`
 
-| Url                                 | Allowed Methods          | Functionality                                   | TODO |
-|-------------------------------------|--------------------------|-------------------------------------------------|------|
-| */exhibition/exhibitions/*          | GET, POST, HEAD, OPTIONS | Getting list of all exhibitions                 |      |
-| */exhibition/exhibitions/`<id>`/*   | GET, POST, HEAD, OPTIONS | Getting a specific exhibition                   |      |
-| */exhibition/nftexs/*               | GET, POST, HEAD, OPTIONS | Getting list of all NFTs related to exhibitions |      |
-| */exhibition/nftexs/`<id>`/*        | GET, POST, HEAD, OPTIONS | Getting a specific NFT related to exhibitions   |      |
-| */exhibition/transactions/*         | GET, POST, HEAD, OPTIONS | Getting list of all transactions                |      |
-| */exhibition/transactions/`<id>`/*  | GET, POST, HEAD, OPTIONS | Getting a specific transaction                  |      |
-| *exhibition/exhibitors/*            | GET, POST, HEAD, OPTIONS | Getting list of all exhibitors                  |      |
-| *exhibition/exhibitors/`<id>`/*     | GET, POST, HEAD, OPTIONS | Getting a specific exhibitor                    |      |
+| Url                                                 | Allowed Methods          | Functionality                                             | TODO |
+|-----------------------------------------------------|--------------------------|-----------------------------------------------------------|------|
+| */exhibition/exhibitions/*                          | GET, POST, HEAD, OPTIONS | Getting list of all exhibitions                           |      |
+| */exhibition/exhibitions/`<id>`/*                   | GET, POST, HEAD, OPTIONS | Getting a specific exhibition                             |      |
+| */exhibition/nftexs/*                               | GET, POST, HEAD, OPTIONS | Getting list of all NFTs related to exhibitions           |      |
+| */exhibition/nftexs/`<id>`/*                        | GET, POST, HEAD, OPTIONS | Getting a specific NFT related to exhibitions             |      |
+| */exhibition/nftexs/`<id>`/changing_state_accepted* | POST                     | Change state of an NFT related to Exhibition to: accepted |      |
+| */exhibition/nftexs/`<id>`/changing_state_rejected* | POST                     | Change state of an NFT related to Exhibition to: rejected |      |
+| */exhibition/transactions/*                         | GET, POST, HEAD, OPTIONS | Getting list of all transactions                          |      |
+| */exhibition/transactions/`<id>`/*                  | GET, POST, HEAD, OPTIONS | Getting a specific transaction                            |      |
+| *exhibition/exhibitors/*                            | GET, POST, HEAD, OPTIONS | Getting list of all exhibitors                            |      |
+| *exhibition/exhibitors/`<id>`/*                     | GET, POST, HEAD, OPTIONS | Getting a specific exhibitor                              |      |
+| *exhibition/exhibitors/`<id>`/get_exhibitions*      | GET, HEAD, OPTIONS       | Getting all exhibitions of a specific exhibitor           |      |
+| *exhibition/exhibitors/`<id>`/get_pending_state*    | GET, POST, HEAD, OPTIONS | Getting all pending NFTs of a specific exhibitor          |      |
+
 
 ## Transaction Work Flows:
 - API Root : `/transaction`
