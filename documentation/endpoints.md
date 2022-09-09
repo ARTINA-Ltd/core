@@ -1,26 +1,14 @@
 # API Endpoints
 
 
-## Artist Work Flows:
-
-> **Note**: After the implementation of authentication system the `<id>` will be removed from url and will handle by API_TOKEN of each user. 
-
-| Url                                              | Allowed Methods          | Functionality                                                                                                           | TODO                                                                                                                                    |
-|--------------------------------------------------|--------------------------|-------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
-| */account/artists/*                              | GET, POST, HEAD, OPTIONS | Getting list of all artists                                                                                             |                                                                                                                                         |
-| */account/artists/`<id>`/*                       | GET, POST, HEAD, OPTIONS | Getting a specific artist                                                                                               |                                                                                                                                         |
-| */account/artists/`<id>`/get_exhibitions*        | GET                      | Getting an artist participated exhibitions, and the income of that exhibition if the end_date of exhibition is arrived. | Login is required, winner function should be moved to the exhibition class, I see no reasons for start_date, end_date on the NFT model. |
-| */account/artists/`<id>`/get_applications*       | GET                      | Getting an artist applications for different exhibitions                                                                | :heavy_check_mark: Done                                                                                                                 |
-| */account/artists/`<id>`/request_for_exhibition* | POST                     | Getting a exhibition ID, an NFT ID, a commission which creates a NFtEx object with is_nft_accepted_by_exhibitor=`False` | needs some minor changes, routing                                                                                                       |
-
-
 ## Core Work Flows:
 - API Root : `/core`
 
-| Url                                              | Allowed Methods          | Functionality             | TODO |
-|--------------------------------------------------|--------------------------|---------------------------|------|
-| */transaction/orders/*                           | GET, HEAD, OPTIONS       | Getting all orders        |      |
-| */transaction/orders/`<id>`/*                    | GET, POST, HEAD, OPTIONS | Getting a specific order  |      |
+| Url                    | Allowed Methods                        | Functionality             | TODO |
+|------------------------|----------------------------------------|---------------------------|------|
+| */core/orders/*        | GET, POST, HEAD, OPTIONS               | Getting all orders        |      |
+| */core/orders/`<id>`/* | GET, PUT, PATCH, DELETE, HEAD, OPTIONS | Getting a specific order  |      |
+
 
 
 ## Exhibition Work Flows:
@@ -42,6 +30,7 @@
 | *exhibition/exhibitors/`<id>`/get_pending_state*    | GET, HEAD, OPTIONS                     | Getting all pending NFTs of a specific exhibitor          |      |
 
 
+
 ## Transaction Work Flows:
 - API Root : `/transaction`
 
@@ -50,11 +39,16 @@
 | */transaction/orders/*              | GET, POST, HEAD, OPTIONS | Getting list of all orders                      |      |
 | */transaction/orders/`<id>`/*       | GET, POST, HEAD, OPTIONS | Getting a specific order                        |      |
 
+
+
 ## Account Work Flows:
 - API Root : `/account`
+> **Note**: After the implementation of authentication system the `<id>` will be removed from url and will handle by API_TOKEN of each user.
 
-| Url                                 | Allowed Methods          | Functionality                                   | TODO |
-|-------------------------------------|--------------------------|-------------------------------------------------|------|
-| */account/artists/*                 | GET, POST, HEAD, OPTIONS | Getting list of all artists                     |      |
-| */account/artists/`<id>`/*          | GET, POST, HEAD, OPTIONS | Getting a specific artist                       |      |
+| Url                                          | Allowed Methods          | Functionality                                            | TODO                              |
+|----------------------------------------------|--------------------------|----------------------------------------------------------|-----------------------------------|
+| */account/artists/*                          | GET, POST, HEAD, OPTIONS | Getting list of all artists                              |                                   |
+| */account/artists/`<id>`/*                   | GET, POST, HEAD, OPTIONS | Getting a specific artist                                |                                   |
+| */account/artists/`<id>`/get_applications*   | GET, HEAD, OPTIONS       | Getting an artist applications for different exhibitions |                                   |
+| */account/artists/`<id>`/request_exhibition* | POST, OPTIONS            | Requesting an exhibition                                 | needs some minor changes, routing |
 
