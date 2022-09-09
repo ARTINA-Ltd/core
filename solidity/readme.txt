@@ -5,7 +5,7 @@ ok!
 first :
 npx create-next-app --typescript 
 
-harhat env :
+hardhat env :
 yarn add --dev hardhat
 
 run hardhat project :
