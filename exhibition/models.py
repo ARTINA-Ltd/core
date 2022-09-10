@@ -51,6 +51,14 @@ class Exhibition(models.Model):
         else:
             return False
 
+class ExReviewRating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    exhibition = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='exhibition')
+    rating = models.IntegerField(default=5, validators=[validators.MaxValueValidator(5), validators.MinValueValidator(0)])
+    review = models.TextField(blank=True)
+
+    def __str__(self):
+        return f'{self.exhibition} Get Rank : ( {self.rating} ) from {self.user.username}'
 
 class NFtEx(models.Model):
     nfts = models.ManyToManyField(NFT, related_name='nftexs')
