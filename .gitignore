@@ -89,4 +89,4 @@ local_settings.py
 db.sqlite3
 ### Related to our project ###
 
-.node_modules
+node_modules/
