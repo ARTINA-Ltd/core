@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core import validators
 
 
 class Permission(models.Model):
@@ -38,7 +39,14 @@ class Profile (models.Model):
     def __str__(self):
         return self.user.username
 
+class ArtistReviewRating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    artist = models.ForeignKey(User, on_delete=models.CASCADE, related_name='artist')
+    rating = models.IntegerField(default=5, validators=[validators.MaxValueValidator(5), validators.MinValueValidator(0)])
+    review = models.TextField(blank=True)
 
+    def __str__(self):
+        return f'{self.artist.username} Get Rank : ( {self.rating} )  from {self.user.username}'
 # TODO : Functions needed for default Django User model
 
 
