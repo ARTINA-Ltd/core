@@ -88,3 +88,5 @@ local_settings.py
 .venv
 db.sqlite3
 ### Related to our project ###
+
+.node_modules
