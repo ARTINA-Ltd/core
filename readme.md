@@ -18,6 +18,8 @@ First of all, install virtualenv by running `pip install virtualenv` in your ter
 3. Run `python manage.py makemigrations` to create migrations.
 4. Run `python manage.py migrate` to apply migrations.
 5. Run `python manage.py runserver` to start the server.
+6. cd into `./frontend/loginreact` and run `npm install` to install dependencies.
+7. Run `npm start` to start the frontend.
 
 
 ## Main TODOs
