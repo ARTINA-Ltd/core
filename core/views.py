@@ -19,4 +19,13 @@ class OrderViewSet(viewsets.ModelViewSet):
                 return super().create(request)
             else:
                 return Response({'error': 'Auction has not started yet.'}, status.HTTP_400_BAD_REQUEST)
-        
+
+
+class NFTRateViewSet(viewsets.ModelViewSet):
+    queryset = models.NFTReviewRating.objects.all()
+    serializer_class = serializers.NFTRateSerializer
+
+
+class NFTViewSet(viewsets.ModelViewSet):
+    queryset = models.NFT.objects.all()
+    serializer_class = serializers.NFTSerializer
