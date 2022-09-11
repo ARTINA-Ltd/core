@@ -5,6 +5,7 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r'orders',views.OrderViewSet)
+router.register(r'rate',views.NFTRateViewSet)
 
 urlpatterns = [
     path('', include(router.urls))
