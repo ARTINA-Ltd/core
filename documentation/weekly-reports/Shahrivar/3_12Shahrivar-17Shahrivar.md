@@ -3,7 +3,7 @@
 ### Commit branches:
 | request number | branch name   | by              | merge date       |
 |----------------|---------------|-----------------|------------------|
-| 18             | Solidity nft  | Mohammad Jafari | 7 September 2022 |
+| 23             | Solidity nft  | Mohammad Jafari | 7 September 2022 |
 
 
 
