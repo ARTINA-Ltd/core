@@ -12,3 +12,9 @@ class NFTSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.NFT
         fields = '__all__'
+
+
+class NFTSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.NFT
+        fields = '__all__'
