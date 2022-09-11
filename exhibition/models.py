@@ -8,6 +8,11 @@ from datetime import timedelta
 import pytz
 
 
+class Ticket(models.Model):
+    users = models.ManyToManyField(User, related_name='tickets')
+    price = models.IntegerField(null=False, blank=False, default=20000, validators=[validators.MinValueValidator(5000)])
+
+
 class Exhibition(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     marketName = models.CharField(max_length=15, null=False, blank=False)
@@ -15,10 +20,18 @@ class Exhibition(models.Model):
                               null=True, blank=True)
     start_date = models.DateTimeField(verbose_name="تاریخ شروع", default=timezone.now)
     end_date = models.DateTimeField(verbose_name="تاریخ پایان", default=timezone.now)
+
+    ticket = models.ForeignKey(Ticket, null=True, default=None, related_name='exhibition', on_delete=models.CASCADE)
     # contract = models.TextField(null=False)
     # TODO: add word or pdf file to this model in contract field later
     # description = models.TextField()
-
+    
+    def has_ticket(self):
+        if self.ticket == None:
+            return False
+        else:
+            return True
+    
     def has_expired(self):
         return datetime.now(tz=pytz.timezone('Asia/Tehran')) > self.end_date
 
@@ -70,6 +83,7 @@ class NFtEx(models.Model):
                                                                               ('accepted', 'accepted'),
                                                                               ('rejected', 'rejected')],
                              default='pending')
+    feedback = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f'{self.nfts.name} in {self.ex.marketName}'
@@ -85,3 +99,5 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f'{self.nftex} sold by {self.seller} to {self.buyer}'
+
+
