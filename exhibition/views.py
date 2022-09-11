@@ -63,3 +63,7 @@ class ExhibitorViewSet(viewsets.ModelViewSet):
 class TransactionList(viewsets.ModelViewSet):
     queryset = models.Transaction.objects.all()
     serializer_class = serializers.TransactionSerializer
+
+class ExRateViewSet(viewsets.ModelViewSet):
+    queryset = models.ExReviewRating.objects.all()
+    serializer_class = serializers.ExRateSerializer
