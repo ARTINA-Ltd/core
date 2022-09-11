@@ -6,6 +6,7 @@ router = routers.DefaultRouter()
 router.register(r'exhibitions', views.ExhibitionViewSet, basename='exhibitions')
 router.register(r'nftexs', views.NFtExView, basename='nftexs')
 router.register(r'transactions', views.TransactionList, basename='transactions')
+router.register(r'exhibitors', views.ExhibitorViewSet, basename='exhibitors')
 
 urlpatterns = [
     path('', include(router.urls))

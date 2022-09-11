@@ -88,7 +88,5 @@ local_settings.py
 .venv
 db.sqlite3
 ### Related to our project ###
-./pictures of Exhibitions
-./pictures of users
-./pictures of profile
-NFTS
+
+node_modules/

@@ -30,17 +30,26 @@ class Profile (models.Model):
     phone_number = models.CharField(max_length=11, verbose_name="شماره تلفن", null=True, blank=True)
     cell_number = models.CharField(max_length=11, verbose_name="ثابت شماره تلفن", null=True, blank=True)
     address = models.TextField(max_length=200, verbose_name="آدرس", null=True, blank=True)
-    national_code_picture = models.ImageField(verbose_name="عکس کارت ملی", upload_to="pictures of users", null=True,
+    national_code_picture = models.ImageField(verbose_name="عکس کارت ملی", upload_to="./static/pictures of users",
+                                              null=True,
                                               blank=True)
-    image = models.ImageField(upload_to="pictures of profile", verbose_name="عکس پروفایل", null=True, blank=True)
+    image = models.ImageField(upload_to="./static/pictures of profile", verbose_name="عکس پروفایل",
+                              null=True, blank=True)
     role = models.ForeignKey(Role, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
 
+class ArtistReviewRating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    artist = models.ForeignKey(User, on_delete=models.CASCADE, related_name='artist')
+    rating = models.IntegerField(default=5, validators=[validators.MaxValueValidator(5), validators.MinValueValidator(0)])
+    review = models.TextField(blank=True)
 
+    def __str__(self):
+        return f'{self.artist.username} Get Rank : ( {self.rating} )  from {self.user.username}'
+# TODO : Functions needed for default Django User model
 
-### Functions needed for default Django User model
 
 def get_artist_applications(self):
     nfts = self.nft_set.all()
@@ -50,7 +59,8 @@ def get_artist_applications(self):
     return set(applications)
 
 
-## TODO::still in progress should be completed......
+# TODO: still in progress should be completed
+
 def get_artist_exhibitions(self):
     nfts = self.nft_set.all()
     data = []
