@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from exhibition.serializers import ExhibitionSerializer
 from core.serializers import NFTSerializer
+from django.core import validators
 
 
 class Permission(models.Model):
