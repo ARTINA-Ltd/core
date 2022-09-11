@@ -6,6 +6,7 @@ from rest_framework.decorators import action
 from Account import serializers
 from exhibition.serializers import ExhibitionSerializer
 from exhibition.serializers import NFtExSerializer
+from .models import ArtistReviewRating
 
 
 class ArtistViewSet(viewsets.ModelViewSet):
@@ -68,5 +69,8 @@ class ArtistViewSet(viewsets.ModelViewSet):
         else:
             return Response(serializer.errors,status.HTTP_400_BAD_REQUEST)
 
+class ArtistRateViewSet(viewsets.ModelViewSet):
+    queryset = ArtistReviewRating.objects.all()
+    serializer_class = serializers.ArtistRatingSerializer
     
     
