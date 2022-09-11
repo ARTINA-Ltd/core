@@ -29,7 +29,13 @@ class ArtistViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status.HTTP_200_OK)
 
     
-        
+    @action(detail=True, methods=['get'], name='Get Exhibitions')
+    def get_exhibitions(self, request, pk=None):
+        try:
+            artist = User.objects.get(id=pk)
+        except User.DoesNotExist:
+            return Response({'error':'User does not exist'}, status.HTTP_404_NOT_FOUND)
+        return Response(artist.get_artist_exhibitions(),status.HTTP_200_OK)
 
 
     @action(detail=True, methods=['post'],name='Requst to exhibition')

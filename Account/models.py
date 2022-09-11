@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.core import validators
+from exhibition.serializers import ExhibitionSerializer
+from core.serializers import NFTSerializer
 
 
 class Permission(models.Model):
@@ -62,9 +63,39 @@ def get_artist_applications(self):
 
 def get_artist_exhibitions(self):
     nfts = self.nft_set.all()
-    current_exhibitions = []
+    data = []
+    current_nftexs = []
     for nft in nfts:
-        current_exhibitions += list(filter(lambda x: not x.ex.has_expired(), nft.nftexs.filter(state='accepted').all()))
+        current_nftexs += filter(lambda x: not x.ex.has_expired()  ,nft.nftexs.filter(state='accepted').all())
+    current_nftexs = set(current_nftexs)
+    for nftex in current_nftexs:
+        info = {}
+        info['exhibition'] = ExhibitionSerializer(nftex.ex).data
+        my_nfts = list(filter(lambda x: x.owner == self, nftex.nfts.all()))
+        info['your_nfts'] = NFTSerializer(my_nfts, many=True).data
+        info['sells'] = 'Exhibition is in progress yet.'
+        data.append(info)
+    prevs_exhibitions = set(map(lambda x:x.nftex.ex, self.as_seller_transcations.all()))
+    for exhibition in prevs_exhibitions:
+        info = {}
+        info['exhibition'] = ExhibitionSerializer(exhibition).data
+        prevs_nftexs = exhibition.nftexs.filter(state='accepted').all()
+        transactions = []
+        for nftex in prevs_nftexs:
+            transactions += nftex.transaction_set.all()
+        print(transactions)
+        transactions = list(filter(lambda x:x.seller == self, transactions))
+        profit = []
+        for transaction in transactions:
+            profit.append({'nft':NFTSerializer(transaction.nft).data, 'profit':transaction.lastPrice * (transaction.nftex.commission/100)})
+        info['sells'] = profit
+        data.append(info)
+    return data
+        
+
+    
 
 
-User.add_to_class('get_artist_applications', get_artist_applications)
+
+User.add_to_class('get_artist_applications',get_artist_applications)
+User.add_to_class('get_artist_exhibitions',get_artist_exhibitions)
