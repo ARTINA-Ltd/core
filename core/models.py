@@ -1,8 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.core import validators
 from datetime import datetime
 import pytz
+from django.db.models import Avg
 
 
 class NFT(models.Model):
@@ -48,6 +50,18 @@ class NFT(models.Model):
     def __str__(self):
         return f'{self.name} by {self.creator} owned by {self.owner.username}'
 
+class NFTReviewRating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    nft = models.ForeignKey(NFT, on_delete=models.CASCADE, related_name='nft')
+    rating = models.IntegerField(default=5, validators=[validators.MaxValueValidator(5), validators.MinValueValidator(0)])
+    review = models.TextField(blank=True)
+
+    def TotalCal():
+        avg = models.NFTReviewRating.objects.aggregate(Avg('rating'))
+        return avg 
+
+    def __str__(self):
+        return f'{self.nft.name} Get Rank : ( {self.rating} )  from {self.user.username}'
 
 class Wallet(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

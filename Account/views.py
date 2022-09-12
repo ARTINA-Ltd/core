@@ -6,6 +6,7 @@ from rest_framework.decorators import action
 from Account import serializers
 from exhibition.serializers import ExhibitionSerializer
 from exhibition.serializers import NFtExSerializer
+from .models import ArtistReviewRating
 
 
 class ArtistViewSet(viewsets.ModelViewSet):
@@ -29,7 +30,13 @@ class ArtistViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status.HTTP_200_OK)
 
     
-        
+    @action(detail=True, methods=['get'], name='Get Exhibitions')
+    def get_exhibitions(self, request, pk=None):
+        try:
+            artist = User.objects.get(id=pk)
+        except User.DoesNotExist:
+            return Response({'error':'User does not exist'}, status.HTTP_404_NOT_FOUND)
+        return Response(artist.get_artist_exhibitions(),status.HTTP_200_OK)
 
 
     @action(detail=True, methods=['post'],name='Requst to exhibition')
@@ -62,5 +69,8 @@ class ArtistViewSet(viewsets.ModelViewSet):
         else:
             return Response(serializer.errors,status.HTTP_400_BAD_REQUEST)
 
+class ArtistRateViewSet(viewsets.ModelViewSet):
+    queryset = ArtistReviewRating.objects.all()
+    serializer_class = serializers.ArtistRatingSerializer
     
     
