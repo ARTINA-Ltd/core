@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from exhibition.serializers import ExhibitionSerializer
 from core.serializers import NFTSerializer
 from django.core import validators
+from django.db.models import Avg
 
 
 class Permission(models.Model):
@@ -46,6 +47,10 @@ class ArtistReviewRating(models.Model):
     artist = models.ForeignKey(User, on_delete=models.CASCADE, related_name='artist')
     rating = models.IntegerField(default=5, validators=[validators.MaxValueValidator(5), validators.MinValueValidator(0)])
     review = models.TextField(blank=True)
+
+    def TotalCal(self):
+        avg = ArtistReviewRating.objects.aggregate(Avg('rating'))
+        return avg
 
     def __str__(self):
         return f'{self.artist.username} Get Rank : ( {self.rating} )  from {self.user.username}'
