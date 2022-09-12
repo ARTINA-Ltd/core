@@ -6,6 +6,7 @@ from django.core import validators
 from datetime import datetime
 from datetime import timedelta
 import pytz
+from django.db.models import Avg
 
 
 class Ticket(models.Model):
@@ -69,6 +70,10 @@ class ExReviewRating(models.Model):
     exhibition = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='exhibition')
     rating = models.IntegerField(default=5, validators=[validators.MaxValueValidator(5), validators.MinValueValidator(0)])
     review = models.TextField(blank=True)
+
+    def TotalCal():
+        avg = models.ExReviewRating.objects.aggregate(Avg('rating'))
+        return avg 
 
     def __str__(self):
         return f'{self.exhibition} Get Rank : ( {self.rating} ) from {self.user.username}'
