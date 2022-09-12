@@ -6,7 +6,7 @@ from exhibition import serializers
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.db.models import Avg
+
 
 class ExhibitionViewSet(viewsets.ModelViewSet):
     queryset = models.Exhibition.objects.all()
@@ -67,7 +67,4 @@ class TransactionList(viewsets.ModelViewSet):
 class ExRateViewSet(viewsets.ModelViewSet):
     queryset = models.ExReviewRating.objects.all()
     serializer_class = serializers.ExRateSerializer
-
-    def TotalCal():
-            avg = models.ExReviewRating.objects.aggregate(Avg('rating'))
-            return avg    
+    

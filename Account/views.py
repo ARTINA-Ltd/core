@@ -7,7 +7,7 @@ from Account import serializers
 from exhibition.serializers import ExhibitionSerializer
 from exhibition.serializers import NFtExSerializer
 from .models import ArtistReviewRating
-from django.db.models import Avg
+
 
 class ArtistViewSet(viewsets.ModelViewSet):
     # TODO: filter the artists only when roles added.
@@ -73,7 +73,4 @@ class ArtistRateViewSet(viewsets.ModelViewSet):
     queryset = ArtistReviewRating.objects.all()
     serializer_class = serializers.ArtistRatingSerializer
     
-    def TotalCal():
-            avg = ArtistReviewRating.objects.aggregate(Avg('rating'))
-            return avg
     
