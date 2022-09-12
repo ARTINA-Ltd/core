@@ -4,7 +4,7 @@ from rest_framework import status
 from core import models
 from core import serializers
 
-
+from django.db.models import Avg
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = models.Order.objects.all()
     serializer_class = serializers.OrderSerializer
@@ -23,4 +23,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 class NFTRateViewSet(viewsets.ModelViewSet):
     queryset = models.NFTReviewRating.objects.all()
     serializer_class = serializers.NFTRateSerializer                
-        
+
+    def TotalCal():
+            avg = models.NFTReviewRating.objects.aggregate(Avg('rating'))
+            return avg    
