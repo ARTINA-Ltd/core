@@ -80,7 +80,7 @@ class ExhibitorViewSet(viewsets.ModelViewSet):
         return Response(all_data)
 
     @action(detail=True, methods=['get'], name='Get Rejected State')
-    def get_accepted_state(self, request, pk=None):
+    def get_rejected_state(self, request, pk=None):
         data = []
         exhibitor = User.objects.get(id=pk)
         exhibitions = exhibitor.exhibition_set.all()
