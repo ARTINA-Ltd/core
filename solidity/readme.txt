@@ -1,17 +1,28 @@
-hi :)
-solidity...
-ok!
+to run and deploy the system 
 
-first :
-npx create-next-app --typescript 
+1 - go to solidity/nft-marketplace and run the local blockchain :
+npx hardhat node 
 
-hardhat env :
-yarn add --dev hardhat
+2- you can copy server and add it manualy to the metamask test server it,s easy search 
 
-run hardhat project :
-npx hardhat
+3- to test the program you have to deploy it first , after you deploy anything tou cant change it so if you change contract 
+then you have to deploy it again
 
-yarn add --dev @nomiclabs/hardhat-waffle ethereum-waffle chai @nomiclabs/hardhat-ethers ethers ts-node @types/mocha
+4- to deploy the contract and get the address and abi :
+npx hardhat run src/backend/scripts/deploy.js --network {networknam in here is localhost}
 
-to check : 
-npx hardhat test
+5- deploy.js is trying to  deploy the contract and get the information then send that information to the 
+front , contractsData folder
+
+6- to test each contract manualy :
+npx hardhat console --network {network name in here is localhost}
+
+7- to test contract automaticly you can use test :
+npx hardhat test 
+
+8- test folder contain NFTMarketplace.test.js and we write it from scrach to test the diffrent
+variable and names and functions 
+
+9- if everything pass then you have access to the abi and contract address 
+
+10- we use them in front and wallet 

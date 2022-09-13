@@ -1,0 +1,191 @@
+[33mcommit 14a902132bdd17878785b4aabd4cd2f736b0b052[m[33m ([m[1;36mHEAD -> [m[1;32msolidity-nft[m[33m)[m
+Author: mohammad <enjoy4everyday@gmail.com>
+Date:   Sat Sep 10 17:50:40 2022 +0430
+
+    starter kit
+
+[33mcommit b443e3ae62df240edef199a6a5dad427e0473413[m
+Author: mohammad <enjoy4everyday@gmail.com>
+Date:   Sat Sep 10 17:45:49 2022 +0430
+
+    hardhat first test success
+
+[33mcommit 9b422c9b4033a6e7562d6786aa554c83708ddf82[m[33m ([m[1;31morigin/solidity-nft[m[33m)[m
+Author: mohammad <enjoy4everyday@gmail.com>
+Date:   Sat Sep 10 17:39:19 2022 +0430
+
+    erorr !
+
+[33mcommit 1a96ebe6777487ae6fd814aea837e89e7728300a[m
+Author: mohammad <enjoy4everyday@gmail.com>
+Date:   Sat Sep 10 17:32:35 2022 +0430
+
+    find error source
+
+[33mcommit c1e8c7f6f6bfe5bf12c03d55ee676a504896956e[m
+Author: mohammad <enjoy4everyday@gmail.com>
+Date:   Sat Sep 10 17:07:56 2022 +0430
+
+    find error
+
+[33mcommit 2b019972cb0a48827a8028d56045b1b428c753ed[m
+Author: mohammad <enjoy4everyday@gmail.com>
+Date:   Sat Sep 10 16:37:31 2022 +0430
+
+    fix hardhat
+
+[33mcommit 4ad162eb1109a171d8391be923cf2dd1267adcc7[m
+Author: mohammad <enjoy4everyday@gmail.com>
+Date:   Wed Sep 7 19:58:56 2022 +0430
+
+    first project test is successfull
+
+[33mcommit f35018f379e94d569fe338cf6a20e708bcee56bd[m
+Author: mohammad <enjoy4everyday@gmail.com>
+Date:   Wed Sep 7 19:45:47 2022 +0430
+
+    create new project and add hardhat
+
+[33mcommit f6b22cb676c4cc41aaf3b45f5293216e1b477983[m[33m ([m[1;32mmain[m[33m)[m
+Author: mohammad <enjoy4everyday@gmail.com>
+Date:   Wed Sep 7 19:36:49 2022 +0430
+
+    build folder
+
+[33mcommit 57d5065f4e35ef5352efcaf87221d30164b24729[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 17:37:44 2022 +0430
+
+    readme.md updated with installation guide
+
+[33mcommit 14cc1596b4b254062a0d0f4d96dfad65f805608f[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 15:05:59 2022 +0430
+
+    migrations added to project
+
+[33mcommit f390fce82fa9b98593505446d76c42cde1c18686[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 15:05:32 2022 +0430
+
+    db
+
+[33mcommit dd4adcfea1cb0c07fc315f61efa2bd9c65f79d26[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 15:05:15 2022 +0430
+
+    date field fixed in Transaction model
+
+[33mcommit 5e19a64ea661812db06194f3d3f21d1809343020[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 15:04:23 2022 +0430
+
+    optimizing codes
+
+[33mcommit b4951c1c2ef8bb31d85aefd3e36270b8a5bfe071[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 09:17:14 2022 +0430
+
+    readme.md updated with new style of TODO
+
+[33mcommit 2cab362132d87c8744fb0fbc2d62e4614e240e0f[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 09:02:26 2022 +0430
+
+    readme.md updated with a TODO
+
+[33mcommit 9662289e4a368fd60f47d40b626943020fe599a9[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 09:02:03 2022 +0430
+
+    from now on, static directory keeps pictures of Exhibitions, profiles, users and NFTs
+
+[33mcommit 8e17b561cc8d6496afee11bb1eb9caef86603cd1[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 09:00:11 2022 +0430
+
+    __str__ method added for models
+
+[33mcommit 53dd85659c1c1f1613471930d36cf152030da234[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 08:59:27 2022 +0430
+
+    db_test.md updated with structures of dump data
+
+[33mcommit ed8053bcad43ef3d7c7bb4a81a323e185bdb5ff7[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 08:58:23 2022 +0430
+
+    db_test updated
+
+[33mcommit 0b612f0d4ecc49a6dbf69aacf7645a8618840433[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 08:57:00 2022 +0430
+
+    __str__ method added for models also image path now fixed
+
+[33mcommit 5cee1b3971c7a494248ff2fb300f5ff9391ec4be[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 08:55:41 2022 +0430
+
+    .gitignore updated
+
+[33mcommit 6485037caefd6856bee852423bb3512707a85a22[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 05:07:09 2022 +0430
+
+    migrations due to changes added
+
+[33mcommit 3d5a1abc89c82694ca567d5070046a675993b8b3[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 05:05:52 2022 +0430
+
+    settings.py updated with db_test path
+
+[33mcommit 6e83898029b5683a25a182bd7c65988b0555d68f[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 05:05:18 2022 +0430
+
+    db_test updated
+
+[33mcommit 02b75d89e278e11d1d41aac8fabf2c3a26ddd9fd[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 04:50:32 2022 +0430
+
+    readme.md updated with links
+
+[33mcommit 55bb63bde48b7daca28171cb008f76d15b0724d9[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 04:48:07 2022 +0430
+
+    `pictures of users` and `pictures of profiles` now will be upload to `static` directory due to better organizing
+
+[33mcommit 531c5d21f12f2e778bc66a558af62e134b8d91ba[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 04:47:45 2022 +0430
+
+    from now on, test database will store and retreive dump data
+
+[33mcommit fddefb19dc5a77c73be74f8a3070254688432567[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 04:46:07 2022 +0430
+
+    db_test.md added for showing structure of dump data
+
+[33mcommit b8db6afe7f675723e75f23541cbdcd1775911151[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 04:45:04 2022 +0430
+
+    database test added to the repository
+
+[33mcommit df835e0b87522a7596688c762521e532eb19fec0[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 04:39:01 2022 +0430
+
+    .gitignore updated
+
+[33mcommit 17f4b97acc7df6264f5b3cfe532c50462af1868c[m
+Author: jestemAria <radmehr.krash@gmail.com>
+Date:   Tue Sep 6 02:46:29 2022 +0430
+
+    readme.md updated with a typo in link
