@@ -56,13 +56,18 @@ class ExhibitorViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'], name='Get Pending State')
     def get_pending_state(self, request, pk=None):
-        nftexs = []
+        all_data = []
+        
         exhibitor = User.objects.get(id=pk)
         exhibitions = exhibitor.exhibition_set.all()
         for exhibition in exhibitions:
-            nftex = exhibition.nftexs.filter(state='pending').all()
-            nftexs += serializers.NFtExSerializer(nftex, many=True).data
-        return Response(nftexs)
+            nftexs = exhibition.nftexs.filter(state='pending').all()
+            for nftex in nftexs:
+                data = serializers.NFtExSerializer(nftex).data
+                data['owner'] =serializers.UserSerializer(nftex.get_owner()).data
+                all_data.append(data) 
+            # nftexs += serializers.NFtExSerializer(nftex, many=True).data
+        return Response(all_data)
 
 
 class TransactionList(viewsets.ModelViewSet):
