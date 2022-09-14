@@ -1,3 +1,4 @@
+from matplotlib.pyplot import get
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
@@ -7,10 +8,14 @@ from Account import serializers
 from exhibition.serializers import ExhibitionSerializer
 from exhibition.serializers import NFtExSerializer
 from .models import ArtistReviewRating
+from rest_framework.permissions import IsAuthenticated
+
 
 
 class ArtistViewSet(viewsets.ModelViewSet):
     # TODO: filter the artists only when roles added.
+    
+
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
 
@@ -20,31 +25,28 @@ class ArtistViewSet(viewsets.ModelViewSet):
         else:
             return super().get_serializer_class()
 
-    @action(detail=True, methods=['get'], name='Get Applications')
-    def get_applications(self, request, pk=None):
-        try:
-            artist = User.objects.get(id=pk)
-        except User.DoesNotExist:
-            return Response({'error':'User deos not exist.'},status.HTTP_404_NOT_FOUND)
+    @action(detail=False, methods=['get'], name='Get Applications', permission_classes=[IsAuthenticated])
+    def get_applications(self, request):
+        artist = request.user
+        if not artist.is_artist():
+            return Response({'error':'you are not an artist.'}, status.HTTP_403_FORBIDDEN)
         serializer = NFtExSerializer(artist.get_artist_applications(), many=True)
         return Response(serializer.data, status.HTTP_200_OK)
 
     
-    @action(detail=True, methods=['get'], name='Get Exhibitions')
-    def get_exhibitions(self, request, pk=None):
-        try:
-            artist = User.objects.get(id=pk)
-        except User.DoesNotExist:
-            return Response({'error':'User does not exist'}, status.HTTP_404_NOT_FOUND)
+    @action(detail=False, methods=['get'], name='Get Exhibitions', permission_classes=[IsAuthenticated])
+    def get_exhibitions(self, request):
+        artist = request.user
+        if not artist.is_artist():
+            return Response({'error':'you are not an artist.'}, status.HTTP_403_FORBIDDEN)
         return Response(artist.get_artist_exhibitions(),status.HTTP_200_OK)
 
 
-    @action(detail=True, methods=['post'],name='Requst to exhibition')
-    def request_exhibition(self, request, pk=None):
-        try:
-            artist = User.objects.get(id=pk)
-        except User.DoesNotExist:
-            return Response({'error':'User does not exist.'})
+    @action(detail=False, methods=['post'],name='Requst to exhibition')
+    def request_exhibition(self, request):
+        artist = request.user
+        if not artist.is_artist():
+            return Response({'error':'you are not an artist.'}, status.HTTP_403_FORBIDDEN)
         serializer = self.get_serializer_class()
         serializer = serializer(data=request.data)
         if serializer.is_valid():
@@ -65,7 +67,6 @@ class ArtistViewSet(viewsets.ModelViewSet):
                 return Response({'error':'you already have submited an application for this exhibition which is pending yet.'}, status.HTTP_400_BAD_REQUEST)
             application = serializer.save()
             return Response(self.get_serializer_class()(application).data, status.HTTP_201_CREATED)
-
         else:
             return Response(serializer.errors,status.HTTP_400_BAD_REQUEST)
 
