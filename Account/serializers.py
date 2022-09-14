@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import ArtistReviewRating
+from .models import ArtistReviewRating,Profile
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -10,3 +10,8 @@ class ArtistRatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = ArtistReviewRating
         fields = '__all__'        
+
+class profileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = '__all__' 
