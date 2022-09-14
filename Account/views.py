@@ -1,4 +1,4 @@
-from matplotlib.pyplot import get
+# from matplotlib.pyplot import get
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
@@ -9,7 +9,8 @@ from exhibition.serializers import ExhibitionSerializer
 from exhibition.serializers import NFtExSerializer
 from .models import ArtistReviewRating
 from rest_framework.permissions import IsAuthenticated
-
+from core.serializers import NFTSerializer
+from core.models import *
 
 
 class ArtistViewSet(viewsets.ModelViewSet):
@@ -70,6 +71,15 @@ class ArtistViewSet(viewsets.ModelViewSet):
         else:
             return Response(serializer.errors,status.HTTP_400_BAD_REQUEST)
 
+
+    @action(detail=True, methods=['get'], name='Get Nfts')
+    def get_nfts(self, request, pk=None):
+        try:
+            artist = User.objects.get(id=pk)
+            nfts = NFT.objects.filter(owner = artist).all()
+        except  User.DoesNotExist:
+            return Response({'error':'Artist does not exist'}, status.HTTP_404_NOT_FOUND)  
+        return Response(NFTSerializer(nfts, many = True).data)
 class ArtistRateViewSet(viewsets.ModelViewSet):
     queryset = ArtistReviewRating.objects.all()
     serializer_class = serializers.ArtistRatingSerializer
