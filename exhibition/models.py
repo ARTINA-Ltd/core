@@ -21,11 +21,11 @@ class Exhibition(models.Model):
                               null=True, blank=True)
     start_date = models.DateTimeField(verbose_name="تاریخ شروع", default=timezone.now)
     end_date = models.DateTimeField(verbose_name="تاریخ پایان", default=timezone.now)
-
+    description = models.TextField(null= True, blank=True)
     ticket = models.ForeignKey(Ticket, null=True, default=None, related_name='exhibition', on_delete=models.CASCADE)
     # contract = models.TextField(null=False)
     # TODO: add word or pdf file to this model in contract field later
-    # description = models.TextField()
+    contract = models.FileField(upload_to="./static/contract files", null=True, blank=False)
     
     def has_ticket(self):
         if self.ticket == None:
