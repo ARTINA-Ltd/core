@@ -81,7 +81,7 @@ def get_artist_exhibitions(self):
         info['your_nfts'] = NFTSerializer(my_nfts, many=True).data
         info['sells'] = 'Exhibition is in progress yet.'
         data.append(info)
-    prevs_exhibitions = set(map(lambda x:x.nftex.ex, self.as_seller_transcations.all()))
+    prevs_exhibitions = set(map(lambda x:x.nftex.ex, self.as_seller_transactions.all()))
     for exhibition in prevs_exhibitions:
         info = {}
         info['exhibition'] = ExhibitionSerializer(exhibition).data
@@ -99,9 +99,14 @@ def get_artist_exhibitions(self):
     return data
         
 
-    
+def is_artist(self):
+    try:
+        profile = self.profile
+        if profile.role.name == 'artist':
+            return True
+    except:
+        return False
 
-
-
+User.add_to_class('is_artist',is_artist)
 User.add_to_class('get_artist_applications',get_artist_applications)
 User.add_to_class('get_artist_exhibitions',get_artist_exhibitions)
