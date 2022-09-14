@@ -25,7 +25,7 @@ class Exhibition(models.Model):
     ticket = models.ForeignKey(Ticket, null=True, default=None, related_name='exhibition', on_delete=models.CASCADE)
     # contract = models.TextField(null=False)
     # TODO: add word or pdf file to this model in contract field later
-    contract = models.FileField(upload_to="./static/contract files")
+    contract = models.FileField(upload_to="./static/contract files", null=True, blank=False)
     
     def has_ticket(self):
         if self.ticket == None:
