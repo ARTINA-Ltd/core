@@ -7,7 +7,7 @@ from rest_framework.decorators import action
 from Account import serializers
 from exhibition.serializers import ExhibitionSerializer
 from exhibition.serializers import NFtExSerializer
-from .models import ArtistReviewRating
+from .models import ArtistReviewRating, Profile
 from rest_framework.permissions import IsAuthenticated
 from core.serializers import NFTSerializer
 from core.models import *
@@ -80,8 +80,14 @@ class ArtistViewSet(viewsets.ModelViewSet):
         except  User.DoesNotExist:
             return Response({'error':'Artist does not exist'}, status.HTTP_404_NOT_FOUND)  
         return Response(NFTSerializer(nfts, many = True).data)
+
 class ArtistRateViewSet(viewsets.ModelViewSet):
     queryset = ArtistReviewRating.objects.all()
     serializer_class = serializers.ArtistRatingSerializer
+
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    queryset = Profile.objects.all()
+    serializer_class = serializers.profileSerializer
     
     
