@@ -56,13 +56,17 @@ class ExhibitorViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'], name='Get Acceepted State')
     def get_accepted_state(self, request, pk=None):
-        data = []
+        all_data = []
         exhibitor = User.objects.get(id=pk)
         exhibitions = exhibitor.exhibition_set.all()
         for exhibition in exhibitions:
             nftexs = exhibition.nftexs.filter(state='accepted').all()
-            data += serializers.NFtExSerializer(nftexs, many=True).data
-        return Response(data) 
+            for nftex in nftexs:
+                data = serializers.NFtExSerializer(nftex).data
+                data['owner'] =serializers.UserSerializer(nftex.get_owner()).data
+                all_data.append(data)
+            # data += serializers.NFtExSerializer(nftexs, many=True).data
+        return Response(all_data) 
 
     @action(detail=True, methods=['get'], name='Get Pending State')
     def get_pending_state(self, request, pk=None):
@@ -81,13 +85,17 @@ class ExhibitorViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'], name='Get Rejected State')
     def get_rejected_state(self, request, pk=None):
-        data = []
+        all_data = []
         exhibitor = User.objects.get(id=pk)
         exhibitions = exhibitor.exhibition_set.all()
         for exhibition in exhibitions:
             nftexs = exhibition.nftexs.filter(state='rejected').all()
-            data += serializers.NFtExSerializer(nftexs, many=True).data
-        return Response(data)
+            for nftex in nftexs:
+                data = serializers.NFtExSerializer(nftex).data
+                data['owner'] =serializers.UserSerializer(nftex.get_owner()).data
+                all_data.append(data)
+            # data += serializers.NFtExSerializer(nftexs, many=True).data
+        return Response(all_data)
 
 class TransactionList(viewsets.ModelViewSet):
     queryset = models.Transaction.objects.all()
