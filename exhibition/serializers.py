@@ -18,11 +18,11 @@ class NFtExSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.NFtEx
-        fields = ['nfts', 'ex', 'date', 'commission', 'state','feedback']
+        fields = ['nfts', 'ex', 'date', 'commission', 'state', 'feedback']
 
 
 class NFtExStateChangerSerializer(serializers.ModelSerializer):
-    nfts = serializers.PrimaryKeyRelatedField(many=True,read_only=True)
+    nfts = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     ex = serializers.PrimaryKeyRelatedField(read_only=True)
     date = serializers.DateTimeField(read_only=True)
     commission = serializers.IntegerField(read_only=True)
@@ -30,7 +30,7 @@ class NFtExStateChangerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.NFtEx
-        fields = ['nfts','ex','date','commission','state','feedback']
+        fields = ['nfts', 'ex', 'date', 'commission', 'state', 'feedback']
 
 
 class TransactionSerializer(serializers.ModelSerializer):
