@@ -26,8 +26,10 @@ First of all, install virtualenv by running `pip install virtualenv` in your ter
 - [ ] Critical
   - [ ] Check that no one can bid on his/her own NFT.
   - [ ] Check that only users with role of exhibitors can start an exhibition.
-  - [ ] Commission should not be more than 100 or less than 0.
-  - [ ] Transactions must show date while creating.
+  - [ ] Recreating after tokenization to clearance without `<id>` in url.
+  - [x] Commission should not be more than 100 or less than 0.
+  - [x] Transactions must show date while creating.
+  - [ ] moving npm install from ./frontend/loginreact to ./frontend 
 
 
 - [ ] Important
