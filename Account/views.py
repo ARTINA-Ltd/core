@@ -94,6 +94,4 @@ class ArtistRateViewSet(viewsets.ModelViewSet):
 
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
-    serializer_class = serializers.profileSerializer
-    
-    
+    serializer_class = serializers.ProfileSerializer
