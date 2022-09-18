@@ -91,6 +91,24 @@ class ArtistRateViewSet(viewsets.ModelViewSet):
     queryset = ArtistReviewRating.objects.all()
     serializer_class = serializers.ArtistRatingSerializer
 
+    # permission_classes = [IsAuthenticated]
+    def create(self, request, *args, **kwargs):
+        serializer = serializers.ArtistRatingSerializer
+        serializer = serializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors)
+        data = serializer.validated_data
+        print("test " + str(data))
+        rate_obj = ArtistReviewRating.objects.filter(user = data["user"] , artist = data["artist"]).first()
+        if rate_obj is None:
+            return super().create(request, *args, **kwargs)
+        else:
+            rate_obj.review = data["review"]
+            rate_obj.rating = data["rating"]
+            rate_obj.save()
+            return Response(serializers.ArtistRatingSerializer(rate_obj).data)    
+
+        
 
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
