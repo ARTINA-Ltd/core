@@ -25,6 +25,21 @@ class NFTRateViewSet(viewsets.ModelViewSet):
     queryset = models.NFTReviewRating.objects.all()
     serializer_class = serializers.NFTRateSerializer
 
+    def create(self, request, *args, **kwargs):
+        serializer = serializers.NFTRateSerializer
+        serializer = serializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors)
+        data = serializer.validated_data
+        print("test " + str(data))
+        rate_obj = models.NFTReviewRating.objects.filter(user = data["user"] , nft = data["nft"]).first()
+        if rate_obj is None:
+            return super().create(request, *args, **kwargs)
+        else:
+            rate_obj.review = data["review"]
+            rate_obj.rating = data["rating"]
+            rate_obj.save()
+            return Response(serializers.NFTRateSerializer(rate_obj).data) 
 
 class NFTViewSet(viewsets.ModelViewSet):
     queryset = models.NFT.objects.all()

@@ -107,3 +107,18 @@ class ExRateViewSet(viewsets.ModelViewSet):
     queryset = models.ExReviewRating.objects.all()
     serializer_class = serializers.ExRateSerializer
     
+    def create(self, request, *args, **kwargs):
+        serializer = serializers.ExRateSerializer
+        serializer = serializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors)
+        data = serializer.validated_data
+        print("test " + str(data))
+        rate_obj = models.ExReviewRating.objects.filter(user = data["user"] , exhibition = data["exhibition"]).first()
+        if rate_obj is None:
+            return super().create(request, *args, **kwargs)
+        else:
+            rate_obj.review = data["review"]
+            rate_obj.rating = data["rating"]
+            rate_obj.save()
+            return Response(serializers.ExRateSerializer(rate_obj).data) 
