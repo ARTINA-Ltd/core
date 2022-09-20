@@ -23,7 +23,7 @@ class NFtExSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.NFtEx
-        fields = ['nfts', 'ex', 'date', 'commission', 'state', 'feedback']
+        fields = ['id','nfts', 'ex', 'date', 'commission', 'state', 'feedback']
 
 
 class NFtExStateChangerSerializer(serializers.ModelSerializer):
