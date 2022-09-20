@@ -1,4 +1,4 @@
-from flask import request
+
 from Account import serializers
 from Account import models
 from core.serializers import NFTSerializer

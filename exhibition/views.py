@@ -1,3 +1,4 @@
+from distutils.log import error
 from django.contrib.auth.models import User
 
 from exhibition import models
@@ -8,7 +9,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
 
-
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
 class ExhibitionViewSet(viewsets.ModelViewSet):
     queryset = models.Exhibition.objects.all()
     serializer_class = serializers.ExhibitionSerializer
@@ -24,13 +26,16 @@ class NFtExView(viewsets.ModelViewSet):
         else:
             return super().get_serializer_class()
         
-    @action(detail=True, name='Change State', methods=['post'])        
+    @action(detail=True, name='Change State', methods=['post'], permission_classes = [IsAuthenticated])        
     def changing_state(self, request, pk=None):
         serializer = self.get_serializer_class()
         serializer = serializer(data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
         nftex = models.NFtEx.objects.get(id=pk)
+        exhibitor = nftex.ex.user
+        if request.user != exhibitor :
+            return Response({'error' : 'you are not exhibitor to allowed to do this function'} , status.HTTP_403_FORBIDDEN)
         nftex.state = serializer.validated_data['state']
         nftex.feedback = serializer.validated_data['feedback']
         nftex.save()

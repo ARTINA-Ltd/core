@@ -4,17 +4,21 @@ from django.contrib.auth.models import User
 from .models import ExReviewRating
 
 
-class TicketSerializer(serializers.ModelSerializer):
+class UsernameSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Ticket
-        fields = ['price']
+        model = User
+        fields = ['id','username']
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'      
 class ExhibitionSerializer(serializers.ModelSerializer):
     nftexs = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    ticket = TicketSerializer(required=False)
+    user = UsernameSerializer()
     class Meta:
         model = models.Exhibition
-        fields = ['user', 'marketName', 'image', 'start_date', 'end_date', 'nftexs','ticket']
+        fields = ['user', 'marketName', 'image', 'ticket', 'contract', 'start_date', 'end_date', 'nftexs']
 
 
 class NFtExSerializer(serializers.ModelSerializer):
@@ -44,10 +48,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         fields = ['nftex', 'seller', 'buyer', 'date']
 
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = '__all__'
+
 
 
 class ExRateSerializer(serializers.ModelSerializer):
