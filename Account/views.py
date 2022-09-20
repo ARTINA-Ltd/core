@@ -1,6 +1,7 @@
+from flask import request
 from Account import serializers
+from Account import models
 from core.serializers import NFTSerializer
-from core.models import *
 from .models import ArtistReviewRating, Profile
 from exhibition.serializers import NFtExSerializer
 from rest_framework import viewsets
@@ -8,13 +9,28 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.models import User
+from core.models import NFT
 
 
 class ArtistViewSet(viewsets.ModelViewSet):
     # TODO: filter the artists only when roles added.
 
-    queryset = User.objects.all()
+    role = models.Role.objects.get(name='artist')
+    queryset = User.objects.prefetch_related('profile').filter(profile__role=role)
     serializer_class = serializers.UserSerializer
+    http_method_names =  ['get','delete']   
+    
+    def get_permissions(self):
+        if self.request.method == 'DELETE':
+            self.permission_classes = [IsAuthenticated, ]
+        else:
+            self.permission_classes = []
+        return super().get_permissions()
+    def destroy(self, request, *args, **kwargs):
+        if (request.user != self.get_object()):
+            return Response({'error':'you have not permission to delete this user'},status.HTTP_403_FORBIDDEN)
+        return super().destroy(request, *args, **kwargs)
 
     def get_serializer_class(self):
         if self.action == 'request_exhibition':
