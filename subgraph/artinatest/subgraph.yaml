@@ -1,0 +1,24 @@
+specVersion: 0.0.4
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: ArtinaNFT
+    network: goerli
+    source:
+      address: "0xc9B40370D9a5fA4DF1f6BA500aa73422C104FD3a"
+      abi: ArtinaNFT
+      startBlock: 7652399
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - NFTTransfer
+      abis:
+        - name: ArtinaNFT
+          file: ./abis/ArtinaNFT.json
+      eventHandlers:
+        - event: NFTTransfer(uint256,address,address,string,uint256)
+          handler: handleNFTTransfer
+      file: ./src/artina-nft.ts
