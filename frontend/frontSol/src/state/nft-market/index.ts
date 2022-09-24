@@ -16,10 +16,12 @@ const useNFTMarket = () => {
           data.append("name", values.name);
           data.append("description", values.description);
           data.append("image", values.image!);
+          //build ipfs uri
           const response = await fetch("/api/nft-storage", {
             method: "POST",
             body: data,
           });
+          //201 is accept code
           if (response.status == 201) {
             const json = await response.json();
             const transaction: TransactionResponse = await nftMarket.createNFT(

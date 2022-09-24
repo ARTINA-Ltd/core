@@ -38,7 +38,7 @@ const handler: NextApiHandler = async (req, res) => {
     });
     // Delete tmp image
     unlinkSync(filepath);
-    // return tokenURI
+    // return tokenURI it is important
     res.status(201).json({ uri: metadata.url });
   } catch (e) {
     console.log(e);

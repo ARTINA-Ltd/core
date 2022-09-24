@@ -18,3 +18,7 @@ then we call create function in deploy contract and pass the ipfs uri to it
 if artifact folder is not there so we need abi so we run :
 npx hardhat compile  
 
+to index smartcontract we use thegraph.com 
+build account and choise your network
+
+
