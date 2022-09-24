@@ -27,14 +27,14 @@ const handler: NextApiHandler = async (req, res) => {
     } = data.image;
     const buffer = readFileSync(data.image.filepath);
     const arraybuffer = Uint8Array.from(buffer).buffer;
-    const blob = new File([arraybuffer], originalFilename, {
+    const file = new File([arraybuffer], originalFilename, {
       type: mimetype,
     });
     // Upload data to nft.storage
     const metadata = await client.store({
       name: data.name,
       description: data.description,
-      image: blob,
+      image: file,
     });
     // Delete tmp image
     unlinkSync(filepath);
