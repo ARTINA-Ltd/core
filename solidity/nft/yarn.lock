@@ -3549,6 +3549,11 @@
   "resolved" "https://registry.npmjs.org/dom-walk/-/dom-walk-0.1.2.tgz"
   "version" "0.1.2"
 
+"dotenv@^16.0.2":
+  "integrity" "sha512-JvpYKUmzQhYoIFgK2MOnF3bciIZoItIIoryihy0rIA+H4Jy0FmgyKYAHCTN98P5ybGSJcIFbh6QKeJdtZd1qhA=="
+  "resolved" "https://registry.npmjs.org/dotenv/-/dotenv-16.0.2.tgz"
+  "version" "16.0.2"
+
 "dotignore@~0.1.2":
   "integrity" "sha512-UGGGWfSauusaVJC+8fgV+NVvBXkCTmVv7sk6nojDZZvuOUNGUy0Zk4UpHQD6EDjS0jpBwcACvH4eofvyzBcRDw=="
   "resolved" "https://registry.npmjs.org/dotignore/-/dotignore-0.1.2.tgz"
@@ -5362,7 +5367,7 @@
     "ajv" "^6.12.3"
     "har-schema" "^2.0.0"
 
-"hardhat-gas-reporter@^1.0.8":
+"hardhat-gas-reporter@^1.0.8", "hardhat-gas-reporter@^1.0.9":
   "integrity" "sha512-INN26G3EW43adGKBNzYWOlI3+rlLnasXTwW79YNnUhXPDa+yHESgt639dJEs37gCjhkbNKcRRJnomXEuMFBXJg=="
   "resolved" "https://registry.npmjs.org/hardhat-gas-reporter/-/hardhat-gas-reporter-1.0.9.tgz"
   "version" "1.0.9"
