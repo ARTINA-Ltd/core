@@ -144,3 +144,5 @@ npx apollo client:codegen --localSchemaFile schema.graphql --target=typescript
 
 in system be pars va estefade az site qabl komak mikonad
 -----------------------------------------------------------------------------------------------
+
+system be dorosti kar mikonad file video kar system zammime shod 
