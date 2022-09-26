@@ -145,4 +145,28 @@ npx apollo client:codegen --localSchemaFile schema.graphql --target=typescript
 in system be pars va estefade az site qabl komak mikonad
 -----------------------------------------------------------------------------------------------
 
+file nasb avalie lazem nist baraye takmil doc gozashte mishavad 
+first :
+npx create-next-app --typescript 
+
+harhat env :
+yarn add --dev hardhat
+
+run hardhat project :
+npx hardhat
+
+yarn add --dev @nomiclabs/hardhat-waffle ethereum-waffle chai @nomiclabs/hardhat-ethers ethers ts-node @types/mocha
+
+to check : 
+npx hardhat test
+
+
+run whole things:
+yarn && yarn dev
+
+yarn add @openzeppelin/contracts
+
+*------------------------------------------------------------------------------*
+
+
 system be dorosti kar mikonad file video kar system zammime shod 
