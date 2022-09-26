@@ -78,6 +78,13 @@ ba graph api fetch mishavad
  src/state/nft-market  config.ts
  src/state/nft-market  helpers.ts
 
+buy and home nft:
+
+ src/state/  useListedNFTs.ts
+ src/modules/HomePage index.tsx
+ src/components  NFTCard.tsx
+ src/state/nft-market  index.ts
+
 
 ** marhale miani vasl kardan site ha **
 -----------------------------------------------------------------------------------

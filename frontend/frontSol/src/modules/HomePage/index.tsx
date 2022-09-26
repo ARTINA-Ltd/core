@@ -1,9 +1,21 @@
+import NFTCard from "components/NFTCard";
+import useNFTMarket from "state/nft-market";
+import useSigner from "state/signer";
+
 const HomePage = () => {
+  const { signer } = useSigner();
+  const { listedNFTs } = useNFTMarket();
+  
   return (
     <div className="flex w-full flex-col">
-      {/* TODO: display listed NFTs */}
-      Home
-    </div>
+    
+      <div className="flex flex-wrap">
+        {listedNFTs?.map((nft) => (
+          <NFTCard nft={nft} className="mr-2 mb-2" key={nft.id} />
+        ))}
+      </div>
+   
+  </div>
   );
 };
 
