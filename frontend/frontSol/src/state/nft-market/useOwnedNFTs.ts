@@ -1,6 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 import { ethers } from "ethers";
 import useSigner from "state/signer";
+import { parseRawNFT } from "./helpers";
 
 import { NFT } from "./interfaces";
 import {
@@ -21,14 +22,14 @@ const useOwnedNFTs = () => {
   return { ownedNFTs };
 };
 
-const parseRawNFT = (row: GetOwnedNFTs_nfts): NFT => {
-    return{
-        id: row.id,
-        owner: row.price == "0" ? row.to : row.from,
-        price: row.price == "0" ? "0" : ethers.utils.formatEther(row.price),
-        tokenURI: row.tokenURI,
-    };
-};
+// const parseRawNFT = (row: GetOwnedNFTs_nfts): NFT => {
+//     return{
+//         id: row.id,
+//         owner: row.price == "0" ? row.to : row.from,
+//         price: row.price == "0" ? "0" : ethers.utils.formatEther(row.price),
+//         tokenURI: row.tokenURI,
+//     };
+// };
 
 const GET_OWNED_NFTS = gql`
   query GetOwnedNFTs($owner: String!) {

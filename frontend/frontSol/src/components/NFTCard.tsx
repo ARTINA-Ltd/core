@@ -1,7 +1,9 @@
 import classNames from "classnames";
 import { BigNumber } from "ethers";
 import { useEffect, useState } from "react";
+import useNFTMarket from "state/nft-market";
 import { NFT } from "state/nft-market/interfaces";
+import useSigner from "state/signer";
 import { ipfsToHTTPS } from "../helpers";
 import AddressAvatar from "./AddressAvatar";
 import SellPopup from "./SellPopup";
@@ -19,11 +21,12 @@ type NFTCardProps = {
 
 const NFTCard = (props: NFTCardProps) => {
   const { nft, className } = props;
-  const address = "";
+  const { address } = useSigner();
+  const { listNFT ,cancelListing} = useNFTMarket();
   const [meta, setMeta] = useState<NFTMetadata>();
   const [loading, setLoading] = useState(false);
   const [sellPopupOpen, setSellPopupOpen] = useState(false);
-
+  //fetch token meta data ipfs => data
   useEffect(() => {
     const fetchMetadata = async () => {
       const metadataResponse = await fetch(ipfsToHTTPS(nft.tokenURI));
@@ -37,7 +40,7 @@ const NFTCard = (props: NFTCardProps) => {
     };
     void fetchMetadata();
   }, [nft.tokenURI]);
-
+  //dokme sell va sharayet
   const onButtonClick = async () => {
     if (owned) {
       if (forSale) onCancelClicked();
@@ -58,10 +61,26 @@ const NFTCard = (props: NFTCardProps) => {
 
   const onCancelClicked = async () => {
     // TODO: cancel listing
+    setLoading(true);
+    try{
+    await cancelListing(nft.id);
+    }catch(e){
+      console.log(e);
+    }
+    setLoading(false);
   };
 
+  //change ethprice   to weiprice in sellpopup 
   const onSellConfirmed = async (price: BigNumber) => {
     // TODO: list NFT
+    setSellPopupOpen(false);
+    setLoading(true);
+    try{
+    await listNFT(nft.id,price);
+    }catch(e){
+      console.log(e);
+    }
+    setLoading(false);
   };
 
   const forSale = nft.price != "0";

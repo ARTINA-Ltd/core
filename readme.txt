@@ -69,6 +69,15 @@ owned NFT:
  src/pages  owned.tsx
  src/components  NFTCard.tsx
 
+list nft : pop up miad baraye price va bad entekhab function list nft seda zade shode va 
+ba graph api fetch mishavad
+ src/state/  useOwnedListedNFTs.ts
+ src/pages _app.tsx
+ src/modules/Ownedpage index.tsx
+ src/components  NFTCard.tsx
+ src/state/nft-market  config.ts
+ src/state/nft-market  helpers.ts
+
 
 ** marhale miani vasl kardan site ha **
 -----------------------------------------------------------------------------------
@@ -112,7 +121,10 @@ dar soraat anjam dorost marahel contract dar site deploy shode va nft haye sakht
 bayad dar inja etelaatesh namayesh dade shavad
 publish nashavad.!
 
+
 tavajo etelaat graph url ra az site gerefte va dar ,env ezafe mikonim
+//bad az taqir queri hamishe codgen dobare farakhani mishe
+
 ---------------------------------------------------------------------------------------------
 2--: niaz be anjam kari nist marahel nasb ast ke anjam shod
 quering graph api to display owned nft
@@ -120,6 +132,8 @@ apollographql.com
 berid frontsol 
 npx apollo client:download-schema --endpoint https://api.studio.thegraph.com/query/35327/artinatest/v0.0.1
 npx apollo client:codegen --localSchemaFile schema.graphql --target=typescript
+
+//bad az taqir queri hamishe codgen dobare farakhani mishe
 
 in system be pars va estefade az site qabl komak mikonad
 -----------------------------------------------------------------------------------------------
