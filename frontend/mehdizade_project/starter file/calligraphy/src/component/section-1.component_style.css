@@ -1,0 +1,118 @@
+@import "react-slideshow-image/dist/styles.css";
+.next-arrow-edition-1 {
+  font-size: 30px;
+  background: none;
+  margin: 0px 10px;
+  border: 50px;
+  color: #958feda2;
+}
+
+.image-section-1 {
+  /* opacity: 0.1; */
+  /* position: relative; */
+  background-size: cover;
+  background-position: center;
+  height: 90vh;
+  /* filter: brightness(40%); */
+  background-attachment: fixed;
+}
+.section-1-text-header {
+  text-align: right;
+  font-family: B-Nazanin;
+  font-size: 90px;
+}
+.text-section-1-container {
+  padding: 100px 100px;
+  color: white;
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  align-items: flex-end;
+  font-size: 25px;
+}
+.section-1-text-details {
+  list-style: none;
+  text-align: right;
+  font-family: B-Nazanin;
+  font-size: 45px;
+}
+.section-1-button {
+  padding: 15px 60px;
+  background-color: #958feda2;
+  color: white;
+  font-size: 30px;
+}
+.section-1-button:hover {
+  transition: 100ms;
+  background-color: #958fede4;
+}
+
+/* =============responsive================ */
+@media (max-width: 1080px) {
+  .section-1-text-header {
+    font-size: 75px;
+  }
+}
+
+@media (max-width: 870px) {
+  .section-1-text-header {
+    text-align: center;
+    font-size: 65px;
+  }
+  .section-1-text-details {
+    text-align: center;
+    font-size: 30px;
+  }
+  .text-section-1-container {
+    align-items: center;
+
+    gap: 50px;
+  }
+  .section-1-button {
+    padding: 15px 60px;
+    font-size: 25px;
+  }
+}
+@media (max-width: 730px) {
+  .section-1-text-header {
+    font-size: 65px;
+  }
+  .text-section-1-container {
+    padding-top: 100px;
+  }
+  .section-1-button {
+    padding: 15px 60px;
+    font-size: 25px;
+  }
+}
+@media (max-width: 640px) {
+  .section-1-text-header {
+    font-size: 55px;
+  }
+  .section-1-text-details {
+    font-size: 27px;
+  }
+  .section-1-button {
+    padding: 15px 50px;
+    font-size: 20px;
+  }
+}
+@media (max-width: 578px) {
+  .section-1-text-header {
+    font-size: 50px;
+  }
+  .section-1-text-details {
+    font-size: 25px;
+  }
+}
+@media (max-width: 433px) {
+  .section-1-text-header {
+    font-size: 45px;
+  }
+  .section-1-text-details {
+    font-size: 25px;
+  }
+}
+
+/* =================responsive================= */

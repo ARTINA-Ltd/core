@@ -1,0 +1,61 @@
+.section-1-background-image-main-header {
+  background-image: url(../image/header-1.jpg);
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  background-attachment: fixed;
+}
+.section-1-header-main-container {
+  /* position: absolute; */
+  padding: 10rem 10rem;
+  max-width: 95rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10rem;
+  align-items: flex-end;
+}
+.section-1-header-main-title {
+  text-align: right;
+  font-size: 4.5rem;
+  font-family: B-Nazanin;
+  color: rgba(104, 29, 89, 1);
+}
+.section-1-header-detail-title {
+  text-align: right;
+
+  font-family: B-Nazanin;
+  font-size: 3rem;
+  color: rgba(104, 29, 89, 1);
+}
+.section-1-header-button {
+  /* background: linear-gradient(to bottom right, #1233d88e, #1233d8a7) */
+  background: linear-gradient(to bottom right, #6b2674cc, #6b2674c7),
+    url(../image/button-1.jpg);
+  background-size: cover;
+  background-position: center;
+  font-family: B-Nazanin;
+
+  color: white;
+  font-size: 2.4rem;
+  padding: 1.5rem 4.5rem;
+  border-radius: 0.3rem;
+  border: none;
+}
+.section-1-header-button-2 {
+  font-family: B-Nazanin;
+  background-color: rgba(77, 3, 69, 1);
+  color: rgba(227, 209, 189, 1);
+  font-size: 2.5rem;
+  padding: 1.5rem 2.5rem;
+  border-radius: 0.3rem;
+  border: none;
+}
+.section-1-header-button-2:hover {
+  color: rgba(77, 3, 69, 1);
+  border: 0.3rem solid rgb(185, 143, 95);
+  background-color: rgb(185, 143, 95);
+}
+.section-1-header-button:hover {
+  cursor: pointer;
+  /* background: linear-gradient(to bottom right, #6b2674, #6b2674); */
+}

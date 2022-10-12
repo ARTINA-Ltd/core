@@ -1,0 +1,287 @@
+.footer-section {
+  background: #e9eafc;
+  background-image: url("./../images/footer/f-pattern.png");
+  background-repeat: no-repeat;
+  background-size: auto 110%;
+}
+
+.footer-conent {
+  padding: 4%;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.footer-about {
+  grid-area: c1;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+}
+
+.about-us {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+  margin-left: 3%;
+}
+
+.logo:hover {
+  transform: translate(2%, 2%);
+}
+
+.footer-title {
+  font-size: 42px;
+  color: #4d4848;
+}
+.desc {
+  font-size: 24px;
+  width: 84%;
+  align-self: flex-end;
+  line-height: 40px;
+  color: #4d4848;
+}
+.footer-links {
+  grid-area: c2;
+  display: flex;
+  width: 80%;
+}
+.links-box,
+.desc {
+  margin-left: 25px;
+}
+
+.links-box {
+  width: 100%;
+}
+.link-title,
+.subscribe {
+  font-weight: 700;
+  font-size: 27px;
+  text-align: center;
+  color: #4e45d0;
+}
+
+.link-title:hover,
+.subscribe:hover {
+  text-shadow: 4px 6px 10px rgba(0, 0, 0, 0.25);
+}
+
+.links {
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 62px;
+  text-align: center;
+  color: #4d4848;
+}
+.links:hover,
+.desc:hover,
+.footer-title:hover {
+  color: black;
+}
+.footer-contact {
+  grid-area: c3;
+  display: flex;
+  flex-direction: column;
+  align-items: self-end;
+  margin-right: 50px;
+}
+
+.footer-contact input[type="text"] {
+  border: none;
+  width: 264px;
+  height: 59px;
+  background: rgba(254, 234, 227, 0.54);
+  border-radius: 11px 0px 0px 11px;
+  margin: 11% 0;
+}
+
+.submit-btn {
+  width: 59px;
+  height: 59px;
+  background: #4d4848;
+  border-radius: 0px 11px 11px 0px;
+}
+
+.submit-btn:hover {
+  background: #4e45d0;
+}
+
+.submit_icon {
+  width: 27px;
+  height: 36px;
+  border-radius: 11px 0px 0px 11px;
+}
+
+.email {
+  display: flex;
+  align-items: center;
+}
+
+.social-media {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.sm-icon {
+  width: 50px;
+  height: 50px;
+}
+/* 
+    .sm-icon:hover {
+    } */
+.copyright {
+  height: 64px;
+  background: #4e45d0;
+}
+
+@media (max-width: 1200px) {
+  .footer-conent {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "c3 c1 "
+      "c2 c2 ";
+  }
+  .footer-about {
+    width: 80%;
+  }
+  .footer-links {
+    margin: 30px auto;
+    width: 100%;
+  }
+  .social-media {
+    width: 74%;
+  }
+}
+
+@media (max-width: 800px) {
+  .footer-conent {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "c1"
+      "c2"
+      "c3";
+  }
+
+  .footer-about {
+    width: 100%;
+  }
+
+  .footer-contact {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .footer-contact input[type="text"] {
+    width: 15rem;
+    height: 4rem;
+  }
+  .submit-btn {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .social-media {
+    width: 31%;
+  }
+
+  .sm-icon {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .footer-links {
+    justify-content: space-around;
+  }
+}
+
+@media (max-width: 600px) {
+  .logo {
+    width: 6.5rem;
+    height: 6.5rem;
+  }
+  .links,
+  .link-title,
+  .desc,
+  .subscribe {
+    font-size: 22px;
+  }
+
+  .footer-contact {
+    display: grid;
+    grid-template-areas:
+      "f2 f1"
+      "f3 f3";
+
+    margin: 0 auto;
+    max-width: 90%;
+  }
+  .footer-contact input[type="text"] {
+    width: 25rem;
+    height: 5rem;
+  }
+  .submit-btn {
+    width: 5rem;
+    height: 5rem;
+  }
+  .social-media {
+    width: 30rem;
+  }
+
+  .sm-icon {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .subscribe {
+    grid-area: f1;
+    justify-self: end;
+  }
+  .email {
+    grid-area: f2;
+  }
+  .social-media {
+    grid-area: f3;
+    align-self: center;
+  }
+}
+
+@media (max-width: 500px) {
+  .footer-contact {
+    justify-content: end;
+    grid-template-areas:
+      "f1"
+      "f2"
+      "f3 ";
+  }
+
+  .links-box {
+    margin: 0;
+  }
+}
+
+@media (max-width: 410px) {
+  .links,
+  .link-title,
+  .desc,
+  .subscribe {
+    font-size: 18px;
+  }
+
+  .sm-icon {
+    width: 4rem;
+    height: 4rem;
+  }
+}
