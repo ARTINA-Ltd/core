@@ -1,0 +1,51 @@
+.section-3-main-container-header {
+  text-align: right;
+  margin: 100px 50px;
+  font-size: 50px;
+}
+.section-3-main-container {
+  display: flex;
+  justify-content: space-between;
+  margin: auto 10rem;
+  margin-top: 10rem;
+  margin-bottom: 10rem;
+}
+.section-3-cart-1-image {
+  /* linear-gradient(to bottom right, #6b2674cc, #6b2674c7) */
+  background-image: linear-gradient(to bottom right, #0000009b, #0000008c),
+    url(../image/section-3-1.jpg);
+  background-size: cover;
+  background-position: center;
+  /* background: no-repeat; */
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5rem;
+
+  border-radius: 1.5rem;
+  color: white;
+  padding: 5.5rem 3.5rem;
+}
+.inner-image-container {
+  width: 19rem;
+  height: 19rem;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 0.2rem solid white;
+}
+.section-3-cart-1-main-title {
+  font-size: 4rem;
+  text-align: center;
+  font-family: B-Nazanin;
+}
+.section-3-cart-1-time-calendar {
+  font-size: 2.3rem;
+  text-align: center;
+  font-family: B-Nazanin;
+}
+.section-3-cart-1-calendar {
+  font-size: 2.3rem;
+  text-align: center;
+  font-family: B-Nazanin;
+}
