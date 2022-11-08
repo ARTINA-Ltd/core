@@ -3,6 +3,7 @@ import section_3_4 from "../images/section-2-1.png";
 import "./section-1.component_style.css";
 import "react-slideshow-image/dist/styles.css";
 import { Zoom } from "react-slideshow-image";
+import {Link,Outlet} from "react-router-dom"
 const Section_1 = ({ cart_info }) => {
   const zoomOutProperties = {
     duration: 1000,
@@ -32,9 +33,9 @@ const Section_1 = ({ cart_info }) => {
               <li>ساعت برگزاری 10 الی 11</li>
               <li>5/2/1379 مورخ </li>
             </ul>
-            <a className="button-footer section-1-button" href="#">
+            <Link to="/artistPage" className="button-footer section-1-button">
               ثبت آثار
-            </a>
+            </Link>
           </div>
         </div>
         <div
@@ -53,12 +54,13 @@ const Section_1 = ({ cart_info }) => {
               <li>ساعت برگزاری 5 الی 21</li>
               <li>8/7/1399 مورخ </li>
             </ul>
-            <a className="button-footer section-1-button" href="#">
+            <Link to="/artistPage" className="button-footer section-1-button" >
               ثبت آثار
-            </a>
+            </Link>
           </div>
         </div>
       </Zoom>
+      <Outlet/>
     </div>
   );
 };

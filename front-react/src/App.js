@@ -1,6 +1,6 @@
-import logo from './logo.svg';
 import './App.css';
-import {Route, Link} from 'react-router-dom';
+import {BrowserRouter, Route , Routes} from "react-router-dom"
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import HomePage from "./Pages/HomePage";
 import ProductPage from "./Pages/ProductPage";
@@ -10,15 +10,26 @@ import ExhibitionSignForm from "./Pages/ExhibitionSignForm";
 import LoginPage from "./Pages/LoginPage";
 import StarterFile from "./Pages/StarterFile";
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
     return <>
-        {/*<ProductPage />*/}
-        {/*<HomePage />*/}
-        {/*<ArtistPage/>*/}
-        {/*<ExhibitionLists/>*/}
-        {/*<ExhibitionSignForm/>*/}
-        {/*<LoginPage/>*/}
-        {/*<StarterFile/>*/}
+        <BrowserRouter>
+            <Routes>
+                <Route exact path="/" element={<StarterFile />} >
+                    <Route path="/artistPage" element={<ArtistPage />} />
+                </Route>
+            </Routes>
+        </BrowserRouter>
+                    {/*<LoginPage/>*/}
+
+
+                    {/*<ProductPage />*/}
+                    {/*<HomePage />*/}
+
+                    {/*<ExhibitionLists/>*/}
+                    {/*<ExhibitionSignForm/>*/}
+
+
     </>
 
 }
