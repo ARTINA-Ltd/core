@@ -1,6 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import {BrowserRouter as Router,Route} from 'react-router-dom'
 import '../ProductPageComponent/index.css';
 import MainImage from "../ProductPageComponent/MainImage";
 import UnNav from "../ProductPageComponent/Un-nav";
@@ -13,7 +11,7 @@ import Activity from "../ProductPageComponent/Activity";
 function ProductPage(){
 
 return<>
-        <Router>
+        <div>
             <Navbar/>
             <UnNav />
             <div className={"grid grid-cols-2 divide-x"} >
@@ -26,7 +24,7 @@ return<>
             <Properties/>
             <Activity/>
             <Footer/>
-        </Router>
+        </div>
 </>
 } export default ProductPage;
 

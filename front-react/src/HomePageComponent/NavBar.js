@@ -1,4 +1,5 @@
 import * as bs from 'bootstrap/dist/css/bootstrap.css';
+import {Link} from "@mui/material";
 function NavBar() {
     return <>
         <div className="flex   items-center h-[70px] bg-gradient-to-r from-[#FFDED2] to-[#7C73E8] sticky-top">
@@ -7,8 +8,9 @@ function NavBar() {
 
                 <div className={"flex justify-start  container"}>
                     <ul>
-                        <a href="#" className={"text-blue-800 hover:text-white text-decoration-none flex items-center"}>ورود</a>
-                <a href="#" className={"text-blue-800 hover:text-white text-decoration-none flex items-center"}>ثبت نام</a>
+                        <Link to={"/LoginPage"} className={"text-blue-800 hover:text-white text-decoration-none flex items-center"}> ورود </Link>
+
+                <Link to={"/SignUp"} className={"text-blue-800 hover:text-white text-decoration-none flex items-center"}>ثبت نام</Link>
 
                     </ul>
                 </div>

@@ -40,7 +40,7 @@ const Section_2 = () => {
                             <li>مدت زمان برگزاری : 10 الی 11 صبح </li>
                             <li>تاریخ برگزاری : 5/02/1379</li>
                         </ul>
-                        <Link to={"artistPage"} className="button-footer section-2-button" >
+                        <Link to={"/HomePage"} className="button-footer section-2-button" >
                             مشاهده محصولات
                         </Link>
                     </div>
@@ -61,7 +61,7 @@ const Section_2 = () => {
                             <li>مدت زمان برگزاری : 10 الی 11 صبح </li>
                             <li>تاریخ برگزاری : 5/02/1379</li>
                         </ul>
-                        <Link to={"artistPage"} className="button-footer section-2-button" >
+                        <Link to={"/HomePage"} className="button-footer section-2-button" >
                             مشاهده محصولات
                         </Link>
                     </div>

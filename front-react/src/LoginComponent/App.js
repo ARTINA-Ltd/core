@@ -58,7 +58,7 @@ class App extends React.Component {
                         </div>
                         <div className="flex justify-center">
 
-                            <Link to="/Test">
+                            <Link to="/">
                                 <button type={"button"}
                                         className={" rounded-[0.6rem] text-black bg-[#feeae3] h-[35px] w-[150px] md:w-[250px] sm:w-[200px] lg:w-[300px]   transition ease-in-out delay-75  hover:-translate-y-1 hover:scale-110 hover:bg-[#c4c1e0] hover:animate-bounce duration-300 mt-8   p-2"}> ورود
                                 </button>

@@ -5,6 +5,7 @@ import Section_5_image_3 from "../images/section-5-3.jpg";
 import Section_5_image_4 from "../images/section-5-4.jpg";
 import Section_5_image_5 from "../images/section-5-5.jpg";
 import Section_5_image_6 from "../images/section-5-6.jpg";
+import {Link} from "react-router-dom";
 
 const Section_5 = () => {
   return (
@@ -13,29 +14,30 @@ const Section_5 = () => {
       <div className="section5-container">
         <div className="image-main-container">
           <img
-            src={Section_5_image}
-            className="image-container5 image-container5-1"
-          ></img>
+    src={Section_5_image}
+    className="image-container5 image-container5-1"
+    />
+          {/* eslint-disable-next-line jsx-a11y/alt-text */}
           <img
-            src={Section_5_image_2}
-            className="image-container5 image-container5-2"
-          ></img>
+    src={Section_5_image_2}
+    className="image-container5 image-container5-2"
+    />
           <img
-            src={Section_5_image_3}
-            className="image-container5 image-container5-3"
-          ></img>
+    src={Section_5_image_3}
+    className="image-container5 image-container5-3"
+    />
           <img
-            src={Section_5_image_4}
-            className="image-container5 image-container5-4"
-          ></img>
+    src={Section_5_image_4}
+    className="image-container5 image-container5-4"
+    />
           <img
-            src={Section_5_image_5}
-            className="image-container5 image-container5-5"
-          ></img>
+    src={Section_5_image_5}
+    className="image-container5 image-container5-5"
+    />
           <img
-            src={Section_5_image_6}
-            className="image-container5 image-container5-6"
-          ></img>
+    src={Section_5_image_6}
+    className="image-container5 image-container5-6"
+    />
         </div>
 
         <div className="section5-text" dir="rtl" lang="fa">
@@ -46,9 +48,9 @@ const Section_5 = () => {
             نوع خود بدیع است. به همین سان شریک کردن دبیران هنر انگیزه‌ای است که
             آنان نیز احساس صاف و صمیمانه خود را از این تجربه‌ها بیان و ثبت کنند.
           </p>
-          <a className="button-footer  section-5-button" href="#">
+          <Link to={"/ExhibitionSignForm"} className="button-footer  section-5-button">
             تجربه کن
-          </a>
+          </Link>
         </div>
       </div>
     </div>

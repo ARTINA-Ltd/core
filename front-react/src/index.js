@@ -5,15 +5,27 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import App from "./App";
-import {BrowserRouter, Route, Routes} from "react-router-dom"
-import StarterFile from "./Pages/StarterFile";
-import LoginPage from "./Pages/LoginPage";
+import {BrowserRouter as Router} from "react-router-dom"
+import './App.css';
+
 import HomePage from "./Pages/HomePage";
+import ProductPage from "./Pages/ProductPage";
+import ArtistPage from "./Pages/ArtistPage";
+import ExhibitionLists from "./Pages/ExhibitionLists";
+import ExhibitionSignForm from "./Pages/ExhibitionSignForm";
+import LoginPage from "./Pages/LoginPage";
+import StarterFile from "./Pages/StarterFile";
+
+// eslint-disable-next-line import/no-anonymous-default-export
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-            <App />
+        <Router>
+        <App />
+        </Router>
     </React.StrictMode>
 );
 

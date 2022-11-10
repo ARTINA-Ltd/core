@@ -11,15 +11,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function HomePage() {
 
-return<>
-    <NavBar />
+    return <>
+        <NavBar />
 
-    <div className={" "}>
-        <App />
-    </div>
-    <WhyUs />
-    <ArtNft />
-    <Expensive />
-    <Footer />
-</>
-} export default HomePage;
+        <div className={" "}>
+            <App />
+        </div>
+        <WhyUs />
+        <ArtNft />
+        <Expensive />
+        <Footer />
+    </>
+}
+
+export default HomePage;

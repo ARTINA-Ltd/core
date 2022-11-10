@@ -10,13 +10,13 @@ class Navbar extends Component {
                     <a className="navbar-brand" href="#">Logo</a>
                     <ul className=" navbar-nav mr-4 flex items-center">
                         <li className="nav-item mr-4">
-                            <a className="text-decoration-none text-white font-bold mr-9" href="#">خانه</a>
+                            <Link to={"/"} className="text-decoration-none text-white font-bold mr-9" >خانه</Link>
                         </li>
                         <li className=" ">
-                            <a className="text-decoration-none text-white font-bold mr-9" href="#">ثبت نام </a>
+                            <Link to={"/SignUp"} className="text-decoration-none text-white font-bold mr-9">ثبت نام </Link>
                         </li>
                         <li className="">
-                            <a className="text-decoration-none text-white font-bold mr-9" href="#">ورود</a>
+                            <Link className="text-decoration-none text-white font-bold mr-9" href="#">ورود</Link>
                         </li>
 
                     </ul>

@@ -16,6 +16,7 @@ const Section_1 = ({ cart_info }) => {
   };
   return (
     <div>
+
       <Zoom {...zoomOutProperties}>
         <div
           className="image-section-1"
@@ -33,7 +34,7 @@ const Section_1 = ({ cart_info }) => {
               <li>ساعت برگزاری 10 الی 11</li>
               <li>5/2/1379 مورخ </li>
             </ul>
-            <Link to="/artistPage" className="button-footer section-1-button">
+            <Link to="/ArtistPage" className="button-footer section-1-button">
               ثبت آثار
             </Link>
           </div>
@@ -54,7 +55,7 @@ const Section_1 = ({ cart_info }) => {
               <li>ساعت برگزاری 5 الی 21</li>
               <li>8/7/1399 مورخ </li>
             </ul>
-            <Link to="/artistPage" className="button-footer section-1-button" >
+            <Link to="/ArtistPage" className="button-footer section-1-button" >
               ثبت آثار
             </Link>
           </div>

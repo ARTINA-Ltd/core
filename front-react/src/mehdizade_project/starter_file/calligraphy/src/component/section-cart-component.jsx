@@ -5,6 +5,7 @@ import section_3_2 from "../images/section-3-2.png";
 import section_3_3 from "../images/section-3-3.png";
 import section_3_4 from "../images/section-3-4.png";
 import section_3_5 from "../images/section-3-5.png";
+import {Link} from "react-router-dom";
 
 const Section_5_cart = () => {
   return (
@@ -12,24 +13,24 @@ const Section_5_cart = () => {
       <h1 className="section-cart-main-header">دسته بندی‌ها</h1>
       <div className="section-cart-main-container">
         <div className="section-cart-container    special-image-section-cart-1">
-          <img className="section-cart-pic" src={section_3_1}></img>
-          <button className="section-cart-button">نستعلیق</button>
+          <img className="section-cart-pic" src={section_3_1}/>
+          <Link to="/ProductPage" className="section-cart-button">نستعلیق</Link>
         </div>
         <div className="section-cart-container    special-image-section-cart-2">
-          <img className="section-cart-pic" src={section_3_2}></img>
-          <button className="section-cart-button">صوفی</button>
+          <img className="section-cart-pic" src={section_3_2}/>
+          <Link to={"/ProductPage"} className="section-cart-button">صوفی</Link>
         </div>
         <div className="section-cart-container   special-image-section-cart-3">
-          <img className="section-cart-pic" src={section_3_3}></img>
-          <button className="section-cart-button">ثلث</button>
+          <img className="section-cart-pic" src={section_3_3}/>
+          <Link to={"/ProductPage"} className="section-cart-button">ثلث</Link>
         </div>
         <div className="section-cart-container   special-image-section-cart-4">
-          <img className="section-cart-pic" src={section_3_4}></img>
+          <img className="section-cart-pic" src={section_3_4}/>
           <button className="section-cart-button">رنگی</button>
         </div>
         <div className="section-cart-container   special-image-section-cart-5">
-          <img className="section-cart-pic   " src={section_3_5}></img>
-          <button className="section-cart-button">انتزاعی</button>
+          <img className="section-cart-pic   " src={section_3_5}/>
+          <Link to={"/ProductPage"} className="section-cart-button">انتزاعی</Link>
         </div>
       </div>
     </div>
