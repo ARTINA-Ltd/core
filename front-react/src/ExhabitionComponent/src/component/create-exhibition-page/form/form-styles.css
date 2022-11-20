@@ -1,0 +1,226 @@
+* {
+  font-family: "B Nazanin";
+}
+
+.close-icon {
+  z-index: 1;
+  cursor: pointer;
+  position: fixed;
+  right: calc(23%);
+  top: calc(100vh - 85vh - 33px);
+  background: white;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.form-section {
+  z-index: 1;
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row-reverse;
+  position: fixed;
+  background: #00000050;
+  backdrop-filter: blur(5px);
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+.from-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #e9eafc;
+  position: relative;
+  width: 50%;
+  margin: 0 auto;
+  max-height: 70vh;
+  margin-top: calc(100vh - 85vh - 20px);
+  border-radius: 4px;
+  padding: 20px;
+  overflow: auto;
+  background-image: url("./../../../assets/form-patt.png");
+  background-repeat: no-repeat;
+}
+.upload-container {
+  text-align: center;
+  padding: 3%;
+  border: thin solid black;
+}
+
+#inputTag {
+  /* display: none; */
+}
+#upload-label {
+  cursor: pointer;
+}
+#imageName {
+  color: green;
+}
+.upload-icon {
+  margin: 25px 2px 2px 2px;
+}
+
+.date-container {
+  display: flex;
+}
+.date,
+.ticket {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+}
+.date-input,
+.text-area {
+  border: none;
+  border-radius: 12px;
+  width: 99%;
+  height: 50%;
+  font-size: 30px;
+}
+
+.JDatePicker {
+  width: 246px;
+}
+
+.title-input {
+  width: 68rem;
+}
+
+.calander-icon {
+  position: absolute;
+  height: 3.3rem;
+  width: 3.5rem;
+}
+.date-input {
+  width: 27rem;
+  height: 4rem;
+}
+
+.ex-title {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.title-input {
+  margin: 0 auto;
+  width: 60%;
+}
+
+.checkmark {
+  height: 35px;
+  width: 30px;
+}
+.ticket-title {
+  font-size: 22px;
+  color: black;
+  margin-right: 11px;
+}
+
+.ticket div {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.form-title {
+  font-weight: 700;
+  font-size: 31px;
+  text-align: right;
+  color: black;
+  margin: 5% 0;
+}
+
+.contract {
+  margin: 5% 0;
+  align-self: flex-end;
+}
+
+.form-btn {
+  width: 13rem;
+  border: none;
+  font-size: 20px;
+  background: #4e45d0;
+  color: #fff;
+  padding: 2%;
+}
+
+.form-btn:hover {
+  background-color: #4c4848;
+}
+
+.contract-button {
+  width: 13.7rem;
+  height: 4.4rem;
+  margin-left: 12px;
+}
+
+@media (max-width: 1080px) {
+  .form-title {
+    font-size: 25px;
+  }
+
+  .form-btn {
+    font-size: 18px;
+  }
+
+  .date,
+  .ticket {
+    flex-direction: column;
+    align-items: flex-end;
+    width: 100%;
+  }
+  .date,
+  .ticket * {
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 800px) {
+  .date-input {
+    width: 19rem;
+    height: 3rem;
+  }
+  .checkmark {
+    height: 25px;
+    width: 20px;
+  }
+  .ticket-title {
+    font-size: 19px;
+  }
+}
+
+@media (max-width: 600px) {
+  .form-btn {
+    font-size: 15px;
+    width: 10.7rem;
+    height: 3.4rem;
+  }
+
+  .ex-title {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .date-input {
+    width: 21rem;
+    height: 3rem;
+  }
+  .form-btn {
+    width: 6.7rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .form-title {
+    font-size: 20px;
+  }
+  .date-input {
+    width: 17rem;
+  }
+}

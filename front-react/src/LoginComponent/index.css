@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;   
+@font-face {
+    font-family: yekan;
+    src: url(BYekan+.ttf);
+}
+*{
+    font-family: yekan, serif;
+}
