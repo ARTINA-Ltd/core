@@ -1,12 +1,19 @@
-import {Link} from "react-router-dom";
+import { useContext } from "react";
+import AuthContext from "./AuthContext";
+import { Link } from "react-router-dom";
+const SignUp = () => {
+    const { loginUser } = useContext(AuthContext);
+    const handleSubmit = e => {
+        e.preventDefault();
+        const username = e.target.username.value;
+        const password = e.target.password.value;
+        username.length > 0 && loginUser(username, password);
+    };
 
-function SignUp() {
-    function handlelogin(){
-
-    }
-    return<>
-
-        <div className={""}>
+    return (
+        <section>
+            <form onSubmit={handleSubmit}>
+            <div className={""}>
 
             <div className="flex   items-center h-[70px]  bg-gradient-to-r from-[#FFDED2] to-[#7C73E8] sticky-top">
 
@@ -100,6 +107,9 @@ function SignUp() {
         </div>
 
 
-    </>
+            </form>
+        </section>
+    );
+};
 
-}export default SignUp;
+export default SignUp;

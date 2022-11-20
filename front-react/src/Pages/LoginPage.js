@@ -11,9 +11,9 @@ return<>
 
         <BrowserRouter>
             <Routes>
-                <Route path="/App" element={<App />} />
+                <Route exact path="/" element={<App />} />
                 <Route path="/" element={<App />} />
-                <Route path="/SignUp" element={<SignUp/>} />
+                <Route exact path="/signup" element={<SignUp/>} />
             </Routes>
         </BrowserRouter>
 </>

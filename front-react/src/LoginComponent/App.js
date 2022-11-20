@@ -1,89 +1,23 @@
-import React from 'react';
-import './style.css'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import {BrowserRouter as Router, Route, Link, BrowserRouter} from "react-router-dom";
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import PrivateRoute from "./PrivateRoute";
+import { AuthProvider } from "./AuthContext";
+import Home from "./HomePage";
+import Login from "./SignUp";
+import ProtectedPage from "./ProtectedPage";
 
-class App extends React.Component {
-    render() {
-        return (
-
-            <div className={""}>
-                <div className=" h-[70px]  bg-gradient-to-r from-[#FFDED2] to-[#7C73E8] sticky-top">
-
-                    <div className="  text-decoration-none ">
-
-                        <div className={"flex justify-start items-center  container"}>
-                            <ul>
-                                <Link to={"/"}
-                                      className={"text-white hover:text-blue-800  text-decoration-none flex items-center mb-2 mr-2 mt-2 font-bold"}> خانه </Link>
-                                <Link to={"/SignUp"}
-                                      className={"text-white hover:text-blue-800 text-decoration-none flex items-center mr-2 mt-2 font-bold"}>ثبت نام</Link>
-                            </ul>
-                        </div>
-                        <div className={"flex justify-end items-center container"}>
-
-                            <a href="#" className={"text-purple-900 hover:text-white text-decoration-none  mb-2 ml-2  flex justify-end font-bold "}>درباره ما</a>
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div className="bg-background bg-no-repeat bg-cover hover:backdrop-blur-lg flex  justify-center">
-                    <ul className={"transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-110  duration-300"}>
-                    <div
-                        className="rec rounded-[0.5rem] h-[440px]  bg-[#7c73e8] m-10 hover:drop-shadow-2xl w-[220px] md:w-[330px] sm:w-[300px] lg:w-[400px] ">
-                        <span className={"flex justify-center mt-2 mr-2 text-2xl font-extrabold text-white "}>ورود</span>
-                        <span
-                            className={"text-white flex justify-center mt-2 text-center  md:text-left sm:text-left  text-xs"}> به وبسایت ما خوش امدید با عضویت و ثبت نام در وب سایت ما <br />به دنیای دیگری وارد شوید!!!</span>
-                        <div className={"flex justify-center items-center mr-9"}>
-                            <ul>
-                                <li>
-                                    <span className={"mr-8 mt-3 font-bold"}> نام </span>
-                                </li>
-                                <li>
-                                    <input
-                                        className={"p-2 ml-8 mr-8 mt-2 flex rounded-[.3rem]   w-[200px] md:w-[270px] sm:w-[230px] lg:w-[350px] "}
-                                        type="text" />
-                                </li>
-                                <li>
-                                    <span className={"mr-8 mt-4 font-bold"}> رمز عبور</span>
-                                </li>
-                                <li>
-                                    <input
-                                        className={"p-2 ml-8 mr-8 mt-2  rounded-[.3rem]  w-[200px] md:w-[270px] sm:w-[230px] lg:w-[350px] "}
-                                        type="password" />
-                                </li>
-                            </ul>
-                        </div>
-                        <div className="flex justify-center">
-
-                            <Link to="/">
-                                <button type={"button"}
-                                        className={" rounded-[0.6rem] text-black bg-[#feeae3] h-[35px] w-[150px] md:w-[250px] sm:w-[200px] lg:w-[300px]   transition ease-in-out delay-75  hover:-translate-y-1 hover:scale-110 hover:bg-[#c4c1e0] hover:animate-bounce duration-300 mt-8   p-2"}> ورود
-                                </button>
-                            </Link>
-                        </div>
-                        <Link to="/SignUp"
-                              className={"flex justify-center mt-2 text-white  hover:text-black  text-decoration-none"}> ثبت
-                                                                                                                         نام
-                                                                                                                         نکرده
-                                                                                                                         اید؟</Link>
-                        <Link to="/"
-                              className={"flex justify-center mt-2 text-white hover:text-black  text-decoration-none"}>فراموشی
-                                                                                                                        رمز
-                                                                                                                        عبور</Link>
-
-                    </div>
-
-
-                    <span className={"text-black flex justify-center items-end font-semibold text-center text-lg "}>کلیه حقوق مادی و معنوی این اثر متعلق به شرکت آرتینا می باشد</span>
-                    </ul>
-                </div>
-            </div>
-
-        )
-    }
+function App() {
+    return (
+        <BrowserRouter>
+            <AuthProvider>
+                <Routes>
+                    <Route element={<PrivateRoute><ProtectedPage /></PrivateRoute>} path="/protected" />
+                    <Route element={<Home />} path="/"/>
+                    <Route element={<Login />} path="/signup"/>
+                </Routes>
+            </AuthProvider>
+        </BrowserRouter>
+    );
 }
 
 export default App;

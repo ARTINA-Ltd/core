@@ -13,7 +13,7 @@ const Request_pages = () => {
   useEffect(() => {
     const fetchRequest = async () => {
       setLoading(true);
-      const res = await fetch("http://localhost:8000/exhibition/exhibitions/");
+      const res = await fetch("");
       const requests = await res.json();
       // setRequests(requests);
       setRequests(req);

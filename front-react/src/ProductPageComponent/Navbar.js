@@ -13,10 +13,10 @@ class Navbar extends Component {
                             <Link to={"/"} className="text-decoration-none text-white font-bold mr-9" >خانه</Link>
                         </li>
                         <li className=" ">
-                            <Link to={"/SignUp"} className="text-decoration-none text-white font-bold mr-9">ثبت نام </Link>
+                            <Link to={"/signup"} className="text-decoration-none text-white font-bold mr-9">ثبت نام </Link>
                         </li>
                         <li className="">
-                            <Link className="text-decoration-none text-white font-bold mr-9" href="#">ورود</Link>
+                            <Link to={"/"} className="text-decoration-none text-white font-bold mr-9" href="#">ورود</Link>
                         </li>
 
                     </ul>

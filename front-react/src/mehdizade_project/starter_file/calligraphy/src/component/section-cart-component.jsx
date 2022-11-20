@@ -14,15 +14,15 @@ const Section_5_cart = () => {
       <div className="section-cart-main-container">
         <div className="section-cart-container    special-image-section-cart-1">
           <img className="section-cart-pic" src={section_3_1}/>
-          <Link to="/ProductPage" className="section-cart-button">نستعلیق</Link>
+          <Link to="/productpage" className="section-cart-button">نستعلیق</Link>
         </div>
         <div className="section-cart-container    special-image-section-cart-2">
           <img className="section-cart-pic" src={section_3_2}/>
-          <Link to={"/ProductPage"} className="section-cart-button">صوفی</Link>
+          <Link to={"/productpage"} className="section-cart-button">صوفی</Link>
         </div>
         <div className="section-cart-container   special-image-section-cart-3">
           <img className="section-cart-pic" src={section_3_3}/>
-          <Link to={"/ProductPage"} className="section-cart-button">ثلث</Link>
+          <Link to={"/productpage"} className="section-cart-button">ثلث</Link>
         </div>
         <div className="section-cart-container   special-image-section-cart-4">
           <img className="section-cart-pic" src={section_3_4}/>
@@ -30,7 +30,7 @@ const Section_5_cart = () => {
         </div>
         <div className="section-cart-container   special-image-section-cart-5">
           <img className="section-cart-pic   " src={section_3_5}/>
-          <Link to={"/ProductPage"} className="section-cart-button">انتزاعی</Link>
+          <Link to={"/productpage"} className="section-cart-button">انتزاعی</Link>
         </div>
       </div>
     </div>

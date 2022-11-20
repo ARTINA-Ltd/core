@@ -14,7 +14,7 @@ function HomePage() {
     return <>
         <NavBar />
 
-        <div className={" "}>
+        <div>
             <App />
         </div>
         <WhyUs />

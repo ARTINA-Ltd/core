@@ -13,7 +13,6 @@ function App() {
     //   const fetchRequest = async () => {
     //     // setLoading(true);
     //     const res = await fetch(
-    //       "http://localhost:8000/exhibition/exhibitions/"
     //     );
     //     const requests = await res.json();
     //     setRequests(requests);

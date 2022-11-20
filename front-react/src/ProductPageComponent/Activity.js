@@ -12,11 +12,11 @@ function createData(name, calories, fat, carbs, protein) {
 }
 
 const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
+    createData('رویداد',"خرید" , "فروش", "خرید", "فروش"),
+    createData('قیمت', 237, 240, 242, 250),
+    createData('از', "dsfgfgsd2541265", "025423czvcxvx025", "353cxcv3c5v3c", "fdgfgdf555551dgdfg"),
+    createData('به', "fgdfgfgf35gf1gf", "xvxvxb5x15xf4g", "bcfbb5c1c2bc", "xcbcbcb3551xv"),
+    createData('تاریخ', "2022/05/11", "2022/06/20", "2022/07/15", "2022/11/7"),
 ];
 
 export default function BasicTable() {

@@ -8,9 +8,9 @@ function NavBar() {
 
                 <div className={"flex justify-start  container"}>
                     <ul>
-                        <Link to={"/LoginPage"} className={"text-blue-800 hover:text-white text-decoration-none flex items-center"}> ورود </Link>
+                        <Link to="/loginpage" className={"text-blue-800 hover:text-white text-decoration-none flex items-center"}> ورود </Link>
 
-                <Link to={"/SignUp"} className={"text-blue-800 hover:text-white text-decoration-none flex items-center"}>ثبت نام</Link>
+                <button> <Link to="/signup" className={"text-blue-800 hover:text-white text-decoration-none flex items-center"}>ثبت نام</Link></button>
 
                     </ul>
                 </div>
