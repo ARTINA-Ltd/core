@@ -1,0 +1,26 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.page-item {
+  font-size: 40px;
+  width: 46px;
+  padding-top: 7px;
+  text-align: center;
+  margin: 20px 8px;
+  background-color: #4e45d0;
+
+  border-radius: 50%;
+}
+.page-item:hover {
+  background-color: #7b7878;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+.active {
+  background-color: #4d4848;
+}
