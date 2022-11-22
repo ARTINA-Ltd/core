@@ -8,15 +8,7 @@ import ProtectedPage from "./ProtectedPage";
 
 function App() {
     return (
-        <BrowserRouter>
-            <AuthProvider>
-                <Routes>
-                    <Route element={<PrivateRoute><ProtectedPage /></PrivateRoute>} path="/protected" />
-                    <Route element={<Home />} path="/"/>
-                    <Route element={<Login />} path="/signup"/>
-                </Routes>
-            </AuthProvider>
-        </BrowserRouter>
+        <p>gdggggdgd</p>
     );
 }
 
