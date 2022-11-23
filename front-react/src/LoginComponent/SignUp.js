@@ -2,7 +2,7 @@ import { useContext } from "react";
 import AuthContext from "./AuthContext";
 import { Link } from "react-router-dom";
 const SignUp = () => {
-    const { loginUser } = useContext(AuthContext);
+    const  loginUser  = useContext(AuthContext);
     const handleSubmit = e => {
         e.preventDefault();
         const username = e.target.username.value;
@@ -23,7 +23,7 @@ const SignUp = () => {
                         <ul>
                             <Link to={"/"}
                                   className={"text-white hover:text-blue-800  text-decoration-none flex items-center mb-2 mr-2 mt-2 font-bold"}> ورود </Link>
-                            <Link to={"/SignUp"}
+                            <Link to={"/signup"}
                                   className={"text-white hover:text-blue-800 text-decoration-none flex items-center mr-2 mt-2 font-bold"}>خانه</Link>
                         </ul>
                     </div>
@@ -88,13 +88,13 @@ const SignUp = () => {
                         </div>
                         <div className="flex justify-center">
 
-                            <Link to="/App">
+                            <Link to="/signup">
                                 <button type={"button"}
                                         className={" rounded-[0.6rem] text-black bg-[#feeae3] h-[35px] w-[150px] md:w-[250px] sm:w-[200px] lg:w-[300px]   transition ease-in-out delay-75  hover:-translate-y-1 hover:scale-110 hover:bg-[#c4c1e0] hover:animate-bounce duration-300 mt-8   p-2"}> ثبت نام
                                 </button>
                             </Link>
                         </div>
-                        <Link to="/App"
+                        <Link to="/"
                               className={"flex justify-center mt-2 mb-4 text-white  hover:text-black  text-decoration-none"}>ورود</Link>
 
 

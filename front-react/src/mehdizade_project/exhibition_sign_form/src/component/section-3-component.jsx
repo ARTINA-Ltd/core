@@ -18,7 +18,7 @@ export const images = importAll(
 
 const Section_3 = () => {
   // ------for getting data from back----------
-  const [requests, setRequests] = useState([]);
+  const [requests, setRequests] = useState(['']);
 
   useEffect(() => {
     const fetchRequest = async () => {
