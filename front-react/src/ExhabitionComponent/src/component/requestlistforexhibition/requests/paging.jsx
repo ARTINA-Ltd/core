@@ -3,7 +3,8 @@ import Requests from "./request";
 import Pagination from "./Pagination";
 import axios from "axios";
 import req from "../../request.json";
-
+import NavBar from "../../nav-bar/nav-bar";
+import Footer from "../../footer/footer";
 const Request_pages = () => {
   const [requests, setRequests] = useState([]);
   const [error, setError] = useState(null);
@@ -58,7 +59,9 @@ const Request_pages = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
+    
     <div>
+      <NavBar />
       <Requests
         requests={currentRequest}
         loading={loading}
@@ -73,6 +76,7 @@ const Request_pages = () => {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
+      <Footer />
     </div>
   );
 };

@@ -13,6 +13,7 @@ function App() {
   return (
     <div className="App" /*dir="rtl" */>
       {/* <Nav_bar></Nav_bar> */}
+      
       <Section_1 cart_information={cart_info}></Section_1>
       <Section_2></Section_2>
       <Section_5_cart></Section_5_cart>

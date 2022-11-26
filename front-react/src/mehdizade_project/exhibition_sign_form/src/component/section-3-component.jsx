@@ -15,10 +15,9 @@ function importAll(r) {
 export const images = importAll(
   require.context("./../images", false, /\.(png|jpe?g|svg)$/)
 );
-
 const Section_3 = () => {
   // ------for getting data from back----------
-  const [requests, setRequests] = useState(['']);
+  const [requests, setRequests] = useState([""]);
 
   useEffect(() => {
     const fetchRequest = async () => {
@@ -31,7 +30,8 @@ const Section_3 = () => {
     fetchRequest();
   }, []);
   console.log(requests);
-
+let array=[];
+array.push(requests);
   // for getting the data from form and send it to the back
 
   const [fname, setfName] = useState([]);
@@ -173,7 +173,9 @@ const Section_3 = () => {
       {/*==================== nft choosing part======================= */}
       <h1>ان‌اف‌‌تی های خود را انتخاب کنید</h1>
       <div className="nft-choose-main-container">
-        {requests.map((items) => {
+      {
+      // request[""]=requests
+        array.map((items) => {
           return (
             <div
               id={items.id}
