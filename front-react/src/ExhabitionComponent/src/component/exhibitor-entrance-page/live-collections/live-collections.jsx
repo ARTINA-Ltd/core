@@ -65,11 +65,11 @@ const Livecollections = ({ exhibitions }) => {
   return (
     <div className="head-section">
       <div className=" section live-collections">
-        <h2> نمایشگاه های در حال برگزاری شما </h2>
+        <p className="title"> نمایشگاه های در حال برگزاری شما </p>
         <div className="collections-container">
           {exhibitions.map((exhibition) => (
             <div key="" className="collection">
-              <img className="collection-image" src="" alt="" />
+              <img className="collection-image" src={exhibition.image} alt="" />
 
               <p className="collection-title name-title">
                 {exhibition.marketName}

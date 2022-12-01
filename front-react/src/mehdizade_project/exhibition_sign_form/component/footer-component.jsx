@@ -55,14 +55,13 @@ const Footer = () => {
                   <div classname="sublinks ">
                     <div className="row">
                     <div className="col">
-                    
+                    <p className="link-title">دسته بندی ها </p>
                   <Link to={"/artistpage"} className="links"><p className="desc">نویسنده</p></Link>
                   <Link to={"/artistpage"} className="links"><p className="desc">کالکشن ها</p></Link>
                   <Link to={"/artistpage"} className="links"><p className="desc">ایجاد یک آیتم</p></Link>
 
                   </div>
                   <div className="col links1">
-                  <p className="link-title">دسته بندی ها </p>
                   <Link to={"/artistpage"} className="links"><p className="desc">ارتباط با ما</p></Link>
                   <Link to={"/artistpage"} className="links"><p className="desc">سوالات</p></Link>
                   <Link to={"/artistpage"} className="links"><p className="desc">درباره آرتینا</p></Link>
@@ -87,7 +86,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="copyright">Copyright @ 2022 by Artina-All rights reserved</div>
+      <div className="copyright">Copyright @ 2020 by Artina-All rights reserved</div>
     </div>
   );
 };

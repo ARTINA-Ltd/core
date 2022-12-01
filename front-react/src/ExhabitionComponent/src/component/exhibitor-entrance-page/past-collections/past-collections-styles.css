@@ -1,9 +1,12 @@
 p {
-  text-align: right;
+  text-align: center;
 }
-
+.title{
+  font-size: 50px;
+  
+}
 .past-collections {
-  margin: 15% 0 0 0;
+  margin: 4% 0 0 0;
   background: #e9eafc;
   padding: 40px 0 200px 0;
 }
@@ -13,7 +16,7 @@ p {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 3%;
-  overflow: scroll;
+  overflow-x: scroll;
 }
 .past-collection {
   margin: 10% 7%;

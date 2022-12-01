@@ -3,7 +3,7 @@ import axios from "axios";
 import Livecollections from "./live-collections";
 import Pastcollections from "../past-collections/past-collections";
 import Header from "../header/header";
-
+import Footer from "../../footer/footer-component";
 const Exhibitions = () => {
   const [exhibitions, setExhibitions] = useState([]);
   const [error, setError] = useState(null);
@@ -33,6 +33,7 @@ const Exhibitions = () => {
       <Header />
       <Livecollections exhibitions={exhibitions.slice(0, 9)} />
       <Pastcollections />
+      <Footer/>
     </div>
   );
 };

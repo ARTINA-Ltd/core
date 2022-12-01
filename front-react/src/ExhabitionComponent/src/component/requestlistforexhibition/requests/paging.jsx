@@ -4,7 +4,7 @@ import Pagination from "./Pagination";
 import axios from "axios";
 import req from "../../request.json";
 import NavBar from "../../nav-bar/nav-bar";
-import Footer from "../../footer/footer";
+import Footer from "../../footer/footer-component";
 const Request_pages = () => {
   const [requests, setRequests] = useState([]);
   const [error, setError] = useState(null);

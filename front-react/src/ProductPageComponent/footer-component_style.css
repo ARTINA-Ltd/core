@@ -1,6 +1,6 @@
 div.footer-section {
   background: #e9eafc;
-  background-image: url("./../images/footer/f-pattern.png");
+  background-image: url("../mehdizade_project/starter_file/calligraphy/src/images/footer/f-pattern.png");
   background-repeat: no-repeat;
   background-size: auto 1000%;
 }
@@ -18,6 +18,7 @@ div.footer-about {
   display: flex;
   flex-direction: column;
 }
+
 div.about-us {
   display: flex;
   flex-direction: row-reverse;
@@ -45,6 +46,7 @@ margin: auto;
 .desc1{
   font-size: 25px;
   width: 84%;
+  
   align-self: center;
   line-height: 40px;
   color: #4d4848;
@@ -74,6 +76,8 @@ p.desc {
 .links-box {
   width: 50%;
 }
+
+
 .link-title:hover,
 .subscribe:hover {
   text-shadow: 4px 6px 10px rgba(0, 0, 0, 0.25);
@@ -92,31 +96,33 @@ p.desc {
   color: black;
 }
 .footer-contact {
-  grid-area: c3;
+  grid-area: c2;
   display: flex;
   flex-direction: column;
   align-items: self-end;
 }
 .social-media {
-  grid-area: f2;
+  grid-area: c2;
   display: flex;
   /* justify-content: space-around; */
 justify-content: center;  
 align-items: center;
-  width: 50%;
+  width: 70%;
   color: #000000;
   margin: 50px  50px;
   width: 50px;
   height: 50px;
 }
-  
+  .social-media {
+    /* width: 30rem; */
+  }
   .sm-icon {
     width: 5rem;
     height: 5rem;
   }
 
   .subscribe {
-    
+    grid-area: f1;
     justify-self: end;
   }
   /* .email {
@@ -127,117 +133,13 @@ align-items: center;
     align-self: center;
   }
 .copyright{
-  font-size: 25px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 500;
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
-}
-
-/* /////////////////////////responsive/////////////////////// */
-
-@media (max-width: 1200px) {
-  .footer-conent {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      "c3 c1 "
-      "c2 c2 ";
-  }
-  .footer-about {
-    width: 80%;
-  }
-  .footer-links {
-    margin: 30px auto;
-    width: 100%;
-  }
-  .social-media {
-    width: 74%;
-  }
-}
-
-@media (max-width: 800px) {
-  .footer-conent {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "c1"
-      "c2"
-      "c3";
-  }
-  .footer-about {
-    width: 100%;
-  }
-  .footer-contact {
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
-  .social-media {
-    width: 31%;
-  }
-
-  .sm-icon {
-    width: 4rem;
-    height: 4rem;
-  }
-
-  .footer-links {
-    justify-content: space-around;
-  }
-}
-
-@media (max-width: 600px) {
-  .logo {
-    width: 6.5rem;
-    height: 6.5rem;
-  }
-  .links,
-  .link-title,
-  .desc,
-  .subscribe {
-    font-size: 22px;
-  }
-
-  .footer-contact {
-    display: grid;
-    grid-template-areas:
-      "f2 f1"
-      "f3 f3";
-
-    margin: 0 auto;
-    max-width: 90%;
-  }
-  .footer-contact input[type="text"] {
-    width: 25rem;
-    height: 5rem;
-  }
-  .submit-btn {
-    width: 5rem;
-    height: 5rem;
-  }
-  .social-media {
-    width: 30rem;
-  }
-
-  .sm-icon {
-    width: 5rem;
-    height: 5rem;
-  }
-
-  .subscribe {
-    grid-area: f1;
-    justify-self: end;
-  }
-  .email {
-    grid-area: f2;
-  }
-  .social-media {
-    grid-area: f3;
-    align-self: center;
-  }
+  height: 40px;
 }
 
 @media (max-width: 500px) {

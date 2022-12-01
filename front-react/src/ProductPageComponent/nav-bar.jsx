@@ -1,9 +1,9 @@
 import "./nav-bar-styles.css";
 import { Fragment } from "react";
 import { Outlet, Link } from "react-router-dom";
-import { images } from "../images";
+import { images } from "./../ExhabitionComponent/src/component/images";
 import React, { useState } from "react";
-import Footer from "../footer/footer-component";
+
 const menu = ["خانه ", "در باره ما", "پروفایل من"];
 
 const Navbar = () => {
@@ -26,15 +26,15 @@ const Navbar = () => {
             onClick={showSidebar}
           />
           <div className="menu">
-            <Link to="/exhibitions" className="menu-item">
+            <Link to="/" className="menu-item">
               خانه
             </Link>
 
-            <Link to="/" className="menu-item">
-              درباره ما
-            </Link>
             <Link to="/requests" className="menu-item">
-              درخواست ها
+             درخواست ها
+            </Link>
+            <Link to="/loginpage" className="menu-item">
+              ورود
             </Link>
           </div>
           <div className="inner-addon">
@@ -42,7 +42,6 @@ const Navbar = () => {
             <i class="icon-bar"></i>
           </div>
         </div>
-        
       </div>
       <Outlet />
     </Fragment>

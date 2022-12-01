@@ -10,11 +10,11 @@ const Section_1 = () => {
   return (
     <div className="section-1-background-image-main-header">
       <div className="section-1-header-main-container">
-        <h1 className="section-1-header-main-title">
+        <p className="section-1-header-main-title">
           نمایشگاه خود را ایجاد کنید
-        </h1>
+        </p>
         <p className="section-1-header-detail-title">
-          نمایشگاه خود را در زمان دلخواه ایجاد و آثار هنرمندان مختلف را در آن
+          نمایشگاه خود را در زمان دلخواه ایجاد <br /> و آثار هنرمندان مختلف را در آن
           گردآوری کنید
         </p>
         <div className="header-btn-container">

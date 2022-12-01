@@ -37,7 +37,7 @@ const collections = [
 const Pastcollections = () => {
   return (
     <div className="section past-collections">
-      <h2> نمایشگاه های برگذار شده شما</h2>
+      <p className="title"> نمایشگاه های برگزار شده شما</p>
       <div className="past-collections-container">
         {collections.map((collection) => (
           <div className="past-collection">
@@ -55,6 +55,7 @@ const Pastcollections = () => {
         ))}
       </div>
     </div>
+    
   );
 };
 

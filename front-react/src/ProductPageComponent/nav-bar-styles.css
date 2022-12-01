@@ -56,7 +56,7 @@
   margin: 4px;
   width: 36.88px;
   height: 38.76px;
-  background: url("./../images/search-icon.png") left no-repeat;
+  background: url("./../ExhabitionComponent/src/assets/close-icon.png") left no-repeat;
   background-size: cover;
 }
 .icon-bar:hover {

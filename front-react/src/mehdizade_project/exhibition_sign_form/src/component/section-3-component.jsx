@@ -97,7 +97,7 @@ array.push(requests);
 
   return (
     <form className="the-main-continer" onSubmit={onSubmit}>
-      <h1>فرم زیر را پر کنید</h1>
+      <p className="formtitle">فرم زیر را پر کنید</p>
       <div className="main-container-form">
         <div className="image-container">
           <img className="image-paisley-edit" src={image} alt="paisley" />
@@ -171,7 +171,7 @@ array.push(requests);
         </div>
       </div>
       {/*==================== nft choosing part======================= */}
-      <h1>ان‌اف‌‌تی های خود را انتخاب کنید</h1>
+      <p className="nftchooise">ان‌اف‌‌تی های خود را انتخاب کنید</p>
       <div className="nft-choose-main-container">
       {
       // request[""]=requests
@@ -189,33 +189,31 @@ array.push(requests);
               />
               <div className="detais-cart-nft-choosed">
                 <p className="category-special-editing">{items.category}</p>
-                <h1 className="title-special-editing">{items.name}</h1>
+                <p className="title-special-editing">{items.name}</p>
                 <p className="creator-special-editing">
                   {items.creator}
                   {items.first_name}
                 </p>
                 <div className="price-special-editing-container">
-                  <h1 className="price-special-editing">
+                  <p className="price-special-editing">
                     {items.lastPrice}
                     <span className="price-special-editini-details">:قیمت</span>
-                  </h1>
-                  <button
+                  </p>               
+                </div>
+                <button
                     // onClick={choosing_nft}
                     className="price-special-editing-button"
                   >
                     انتخاب
                   </button>
-                </div>
               </div>
             </div>
           );
         })}
       </div>
-      <input
-        type="submit"
-        value="تکمیل و ارسال درخواست"
-        className="button-submit-form last-submit-button"
-      ></input>
+      <button type="submit" className=" last-submit-button">
+  تکمیل و ارسال درخواست
+      </button>
     </form>
   );
 };

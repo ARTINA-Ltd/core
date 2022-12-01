@@ -45,9 +45,9 @@ const Section_2 = () => {
                         نوع خود بدیع است. به همین سان شریک کردن دبیران هنر انگیزه‌ای است که
                         آنان نیز احساس صاف و صمیمانه خود را از این تجربه‌ها بیان و ثبت کنند.
                     </p>
-                    <a className="button-footer  section-5-button" href="#">
+                    {/* <a className="button-footer  section-5-button" href="#">
                         تجربه کن
-                    </a>
+                    </a> */}
                 </div>
             </div>
         </div>

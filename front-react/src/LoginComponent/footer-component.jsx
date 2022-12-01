@@ -1,9 +1,9 @@
 import "./footer-component_style.css";
-import SocialMedia5 from "../images/footer/social-media5.png";
-import SocialMedia1 from "../images/footer/social-media1.png";
-import SocialMedia2 from "../images/footer/social-media2.png";
-import SocialMedia3 from "../images/footer/social-media4.png";
-import Logo from "../images/footer/logo.png"
+import SocialMedia5 from "../mehdizade_project/starter_file/calligraphy/src/images/footer/social-media5.png";
+import SocialMedia1 from "../mehdizade_project/starter_file/calligraphy/src/images/footer/social-media1.png";
+import SocialMedia2 from "../mehdizade_project/starter_file/calligraphy/src/images/footer/social-media2.png";
+import SocialMedia3 from "../mehdizade_project/starter_file/calligraphy/src/images/footer/social-media4.png";
+import Logo from "../mehdizade_project/starter_file/calligraphy/src/images/footer/logo.png"
 // import { images } from "../images/footer";
 import {Link} from "react-router-dom";
 // function importAll(r) {
@@ -39,7 +39,7 @@ const link_content = [
 const Footer = () => {
   return (
     <div className="footer">
-      <div className="footer-section">
+      {/* <div className="footer-section">
         <div className="footer-conent">
           <div className="footer-about">
             <div className="about-us">
@@ -55,14 +55,13 @@ const Footer = () => {
                   <div classname="sublinks ">
                     <div className="row">
                     <div className="col">
-                    
+                    <p className="link-title">دسته بندی ها </p>
                   <Link to={"/artistpage"} className="links"><p className="desc">نویسنده</p></Link>
                   <Link to={"/artistpage"} className="links"><p className="desc">کالکشن ها</p></Link>
                   <Link to={"/artistpage"} className="links"><p className="desc">ایجاد یک آیتم</p></Link>
 
                   </div>
                   <div className="col links1">
-                  <p className="link-title">دسته بندی ها </p>
                   <Link to={"/artistpage"} className="links"><p className="desc">ارتباط با ما</p></Link>
                   <Link to={"/artistpage"} className="links"><p className="desc">سوالات</p></Link>
                   <Link to={"/artistpage"} className="links"><p className="desc">درباره آرتینا</p></Link>
@@ -86,8 +85,8 @@ const Footer = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="copyright">Copyright @ 2022 by Artina-All rights reserved</div>
+      </div> */}
+      <div className="copyright">Copyright @ 2020 by Artina-All rights reserved</div>
     </div>
   );
 };

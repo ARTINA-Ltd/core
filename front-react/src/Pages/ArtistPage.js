@@ -11,10 +11,11 @@ function App() {
             <Nav_bar/>
             {/* eslint-disable-next-line react/jsx-pascal-case */}
             <Section_1/>
+            <Section_3/>
             {/* eslint-disable-next-line react/jsx-pascal-case */}
             <Section_2/>
             {/* eslint-disable-next-line react/jsx-pascal-case */}
-            <Section_3/>
+            
             <Footer/>
         </div>
     );
