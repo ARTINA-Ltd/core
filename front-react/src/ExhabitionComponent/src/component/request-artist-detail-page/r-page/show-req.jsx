@@ -4,7 +4,7 @@ import axios from "axios";
 import req from "./../../request.json";
 import { useLocation, Link } from "react-router-dom";
 import Navbar from "../../nav-bar/nav-bar";
-import Footer from "../../footer/footer";
+import Footer from "../../footer/footer-component";
 const Showreq = (props) => {
   const location = useLocation();
   const state = location.state;

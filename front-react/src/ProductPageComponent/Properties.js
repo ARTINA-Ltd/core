@@ -2,17 +2,17 @@ import 'tw-elements';
 
 function Properties() {
     return <>
-        <div className="accordion mt-6 max-w-xl mr-4   " id="accordionExample">
+        <div className="accordion mt-6 max-w-xl mr-48 sm:w-[200px] md:w-[400px] lg:w-[600px]  " id="accordionExample">
             <div className="accordion-item ">
                 <h2 className="accordion-header bg-purple-900" id="headingOne">
-                    <button className="accordion-button   " type="button" data-bs-toggle="collapse"
+                    <button className="accordion-button  text-2xl " type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseOnee" aria-expanded="true" aria-controls="collapseOne">
                         توضیحات
                     </button>
                 </h2>
-                <div id="collapseOnee" className="accordion-collapse collapse show" aria-labelledby="headingOne"
+                <div id="collapseOnee" className="accordion-collapse collapse show text-3xl" aria-labelledby="headingOne"
                      data-bs-parent="#accordionExample">
-                    <div className="accordion-body">
+                    <div className="accordion-body text-3xl">
                         <strong>This is the first item's accordion body.</strong> It is shown by default, until the
                                                                                   collapse plugin adds the appropriate
                                                                                   classes that we use to style each

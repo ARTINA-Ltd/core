@@ -83,7 +83,7 @@ const Section_2 = () => {
 
   return (
     <div className=" section live-collections">
-      <h2> نمایشگاه های در حال برگزاری شما </h2>
+      <p className="namayeshgah"> درچه نمایشگاه هایی میتوانید آثار خود را به نمایش بگذارید</p>
       <div className="collections-container">
         {collections.map((collection) => (
           <div key={collection.id} className="collection">
@@ -95,6 +95,8 @@ const Section_2 = () => {
             </p>
           </div>
         ))}
+                <button className="section-1-header-button">تماشا </button>
+
       </div>
     </div>
   );

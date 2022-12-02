@@ -8,8 +8,8 @@ function Price() {
     return <>
         <div>
         <div className={"container"}>
-            <h2 className={"flex justify-start"}>{Name}</h2>
-            <div className={"flex justify-between mt-6 font-bold opacity-75"}>
+            <h2 className={"flex justify-start text-5xl font-bold mb-8"}>{Name}</h2>
+            <div className={"flex justify-between mt-6 font-bold opacity-75 text-3xl"}>
                 <p>ساخته شده توسط {Creator}</p>
 
 
@@ -19,10 +19,10 @@ function Price() {
             </div>
         </div>
 
-        <div className="accordion ml-2 mr-2" id="accordionExample">
+        <div className="accordion ml-2 mr-2 text-2xl mt-14" id="accordionExample">
             <div className="accordion-item">
-                <h2 className="accordion-header" id="headingOne">
-                    <button className="accordion-button " type="button" data-bs-toggle="collapse"
+                <h2 className="accordion-header " id="headingOne">
+                    <button className="accordion-button text-3xl " type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                         تاریخچه قیمت
                     </button>
@@ -49,7 +49,7 @@ function Price() {
             </div>
             <div className="accordion-item">
                 <h2 className="accordion-header" id="headingTwo">
-                    <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    <button className="accordion-button collapsed  text-3xl" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                         خاصیت ها
                     </button>
@@ -76,7 +76,7 @@ function Price() {
             </div>
             <div className="accordion-item">
                 <h2 className="accordion-header" id="headingThree">
-                    <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    <button className="accordion-button collapsed  text-3xl" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                        پیشنهاد ها
                     </button>

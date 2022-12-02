@@ -1,9 +1,9 @@
 import "./nav-bar-styles.css";
 import { Fragment } from "react";
 import { Outlet, Link } from "react-router-dom";
-import { images } from "../images";
+import { images } from "./../../src/ExhabitionComponent/src/component/images";
 import React, { useState } from "react";
-import Footer from "../footer/footer-component";
+
 const menu = ["خانه ", "در باره ما", "پروفایل من"];
 
 const Navbar = () => {
@@ -42,7 +42,6 @@ const Navbar = () => {
             <i class="icon-bar"></i>
           </div>
         </div>
-        
       </div>
       <Outlet />
     </Fragment>

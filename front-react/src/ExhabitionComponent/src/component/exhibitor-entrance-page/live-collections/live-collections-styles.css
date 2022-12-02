@@ -1,6 +1,10 @@
 .live-collections {
 }
-
+.title{
+  font: size 30px;
+  margin-top: 2%;
+  margin-bottom: 1%;
+}
 .collections-container {
   max-width: 95%;
   display: grid;
@@ -81,7 +85,7 @@
   opacity: 0.7;
 }
 
-.name-title:hover {
+.name-title {
   height: 8rem;
 }
 

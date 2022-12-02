@@ -22,17 +22,17 @@ const rows = [
 export default function BasicTable() {
     return (
 
-    <TableContainer component={Paper}>
-        <h4 className={"flex justify-center font-extrabold mt-6"}>تاریخچه فعالیت</h4>
+    <TableContainer component={Paper} className="text-8xl">
+        <h4 className={"flex justify-center text-5xl font-extrabold mt-6"}>تاریخچه فعالیت</h4>
 
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table sx={{ minWidth: 350 }} aria-label="simple table" className="text-6xl" >
                 <TableHead>
-                    <TableRow>
-                        <TableCell>Dessert (100g serving)</TableCell>
-                        <TableCell align="right">Calories</TableCell>
-                        <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                        <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                        <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                    <TableRow >
+                        <TableCell align="center"> <p className='text-3xl'>رویداد</p> </TableCell>
+                        <TableCell className='text-5xl' align="center"> <p className='text-3xl'> قیمت</p> </TableCell>
+                        <TableCell align="center"> <p className='text-3xl'> از</p> </TableCell>
+                        <TableCell align="center"> <p className='text-3xl'> به</p> </TableCell>
+                        <TableCell align="center"> <p className='text-3xl'> تاریخ</p> </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -42,12 +42,12 @@ export default function BasicTable() {
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell component="th" scope="row">
-                                {row.name}
+                            <p className='text-3xl'>   {row.name} </p>
                             </TableCell>
-                            <TableCell align="right">{row.calories}</TableCell>
-                            <TableCell align="right">{row.fat}</TableCell>
-                            <TableCell align="right">{row.carbs}</TableCell>
-                            <TableCell align="right">{row.protein}</TableCell>
+                            <TableCell align="center"><p className='text-3xl'> {row.calories} </p></TableCell>
+                            <TableCell align="center"><p className='text-3xl'> {row.fat}</p></TableCell>
+                            <TableCell align="center"><p className='text-3xl'> {row.carbs}</p></TableCell>
+                            <TableCell align="center"><p className='text-3xl'>{row.protein}</p></TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

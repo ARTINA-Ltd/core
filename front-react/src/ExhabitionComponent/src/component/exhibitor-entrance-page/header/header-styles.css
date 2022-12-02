@@ -15,12 +15,13 @@
   flex-direction: column;
   gap: 7rem;
   align-items: flex-end;
-  margin-left: 3%;
+  margin-left: 10%;
 }
 .section-1-header-main-title {
-  text-align: right;
-  font-size: 9.5rem;
-  color: #4e45d0;
+  text-align: center;
+  font-size: 10rem;
+  color: #ffffff;
+  font-weight: 900;
 }
 .section-1-header-main-title:hover {
   color: #4d4848;
@@ -45,7 +46,7 @@
   background-color: transparent;
   border: 3px solid #4e45d0;
   margin-right: 4rem;
-  color: #4c4848;
+  color: #ffffff;
 }
 
 .header-btn-container > button:nth-child(1):hover {
@@ -79,6 +80,7 @@
 
   .section-1-header-main-container {
     max-width: 90%;
+    margin-left: 3%;
   }
 }
 

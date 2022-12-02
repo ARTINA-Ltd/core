@@ -8,7 +8,7 @@ div.section-1-background-image-main-header {
 div.section-1-header-main-container {
   position: absolute;
   padding: 0rem 0rem;
-  max-width: 95rem;
+  /* max-width: 150rem; */
   display: flex;
   flex-direction: column;
   gap: 10rem;
@@ -23,7 +23,7 @@ p.section-1-header-main-title {
   align-items: center;
 }
 p.section-1-header-detail-title {
-  text-align: center;
+  text-align: right;
   font-family: B-Nazanin;
   font-size: 30px;
   color: rgba(104, 29, 89, 1);
@@ -55,7 +55,7 @@ button.section-1-header-button {
   border-radius: 0.3rem;
   border: 90px;
 }
-button.section-1-header-button-1:hover {
+.section-1-header-button-1:hover {
   color: rgba(77, 3, 69, 1);
   border: 0.3rem solid rgb(185, 143, 95);
   background-color: rgb(185, 143, 95);
