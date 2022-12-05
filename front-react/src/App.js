@@ -2,14 +2,14 @@ import {Route, Routes} from "react-router";
 import StarterFile from "./Pages/StarterFile";
 import ArtistPage from "./Pages/ArtistPage";
 import HomePage from "./Pages/HomePage";
-import ExhibitionSignForm from "./Pages/ExhibitionSignForm";
-import ProductPage from "./Pages/ProductPage";
-import LoginPage from "./Pages/LoginPage";
-import SignUp from "./LoginComponent/SignUp";
-import Exhabition from "./Pages/Exhabition"; 
-import Exhibition_lists from './Pages/Exhibition_lists'
-import RequestsDetails from "./ExhabitionComponent/src/component/request-artist-detail-page/r-page/request-detail";
-import Showreq from "./ExhabitionComponent/src/component/request-artist-detail-page/r-page/show-req";
+import ArtistApplicationForm from "./Pages/ExhibitionSignForm";
+import NFTDetails from "./Pages/ProductPage";
+import Login from "./Pages/LoginPage";
+import Register from "./LoginComponent/SignUp";
+import ExhibitorPage from "./Pages/Exhabition";
+import ExhibitionLists from './Pages/Exhibition_lists'
+import RequestDetails from "./ExhabitionComponent/src/component/request-artist-detail-page/r-page/request-detail";
+import ShowRequests from "./ExhabitionComponent/src/component/request-artist-detail-page/r-page/show-req";
 import RequestLists from "./ExhabitionComponent/src/component/requestlistforexhibition/requests/paging";
 // eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
@@ -18,17 +18,17 @@ export default () => {
         <div className="App">
             <Routes>
                 <Route  path="/" element={<StarterFile />}/>
-                    <Route exact path="artistpage" element={<ArtistPage />} />
+                    <Route exact path="artist-page" element={<ArtistPage />} />
                     <Route exact path="homepage" element={<HomePage />} />
-                    <Route exact path="exhibitionsignform" element={<ExhibitionSignForm />} />
-                    <Route exact path="productpage" element={<ProductPage />} />
-                    <Route exact path="loginpage" element={<LoginPage />} />
-                    <Route exact path="signup" element={<SignUp />} />
-                    <Route exact path="exhibition" element={<Exhabition />} />
-                    <Route exact path="exhibitionlists" element={<Exhibition_lists />} />
+                    <Route exact path="artist-application-form" element={<ArtistApplicationForm />} />
+                    <Route exact path="nft-details" element={<NFTDetails />} />
+                    <Route exact path="login" element={<Login />} />
+                    <Route exact path="register" element={<Register />} />
+                    <Route exact path="exhibitor-page" element={<ExhibitorPage />} />
+                    <Route exact path="exhibition-lists" element={<ExhibitionLists />} />
                     <Route exact path="request-lists" element={<RequestLists/>} />
-                    <Route exact path="show-request/" element={<Showreq/>} />
-                    <Route exact path="requestsdetails" element={<RequestsDetails/>} />
+                    <Route exact path="show-request/" element={<ShowRequests/>} />
+                    <Route exact path="request-details" element={<RequestDetails/>} />
             </Routes>
         </div>
        
