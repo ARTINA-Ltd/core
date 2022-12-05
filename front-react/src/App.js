@@ -14,26 +14,21 @@ import RequestLists from "./ExhabitionComponent/src/component/requestlistforexhi
 // eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
     return <>
-
         <div className="App">
             <Routes>
                 <Route  path="/" element={<StarterFile />}/>
-                    <Route exact path="artist-page" element={<ArtistPage />} />
-                    <Route exact path="homepage" element={<HomePage />} />
-                    <Route exact path="artist-application-form" element={<ArtistApplicationForm />} />
-                    <Route exact path="nft-details" element={<NFTDetails />} />
-                    <Route exact path="login" element={<Login />} />
-                    <Route exact path="register" element={<Register />} />
-                    <Route exact path="exhibitor-page" element={<ExhibitorPage />} />
-                    <Route exact path="exhibition-lists" element={<ExhibitionLists />} />
-                    <Route exact path="request-lists" element={<RequestLists/>} />
-                    <Route exact path="show-request/" element={<ShowRequests/>} />
-                    <Route exact path="request-details" element={<RequestDetails/>} />
+                <Route exact path="artist-page" element={<ArtistPage />} />
+                <Route exact path="homepage" element={<HomePage />} />
+                <Route exact path="artist-application-form" element={<ArtistApplicationForm />} />
+                <Route exact path="nft-details" element={<NFTDetails />} />
+                <Route exact path="login" element={<Login />} />
+                <Route exact path="register" element={<Register />} />
+                <Route exact path="exhibitor-page" element={<ExhibitorPage />} />
+                <Route exact path="exhibition-lists" element={<ExhibitionLists />} />
+                <Route exact path="request-lists" element={<RequestLists/>} />
+                <Route exact path="show-request/" element={<ShowRequests/>} />
+                <Route exact path="request-details" element={<RequestDetails/>} />
             </Routes>
         </div>
-       
-
-        {/* <Exhabition /> */}
     </>
-
 };
