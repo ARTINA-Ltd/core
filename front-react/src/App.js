@@ -10,7 +10,7 @@ import Exhabition from "./Pages/Exhabition";
 import Exhibition_lists from './Pages/Exhibition_lists'
 import RequestsDetails from "./ExhabitionComponent/src/component/request-artist-detail-page/r-page/request-detail";
 import Showreq from "./ExhabitionComponent/src/component/request-artist-detail-page/r-page/show-req";
-import RequestPages from "./ExhabitionComponent/src/component/requestlistforexhibition/requests/paging";
+import RequestLists from "./ExhabitionComponent/src/component/requestlistforexhibition/requests/paging";
 // eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
     return <>
@@ -26,7 +26,7 @@ export default () => {
                     <Route exact path="signup" element={<SignUp />} />
                     <Route exact path="exhibition" element={<Exhabition />} />
                     <Route exact path="exhibitionlists" element={<Exhibition_lists />} />
-                    <Route exact path="requests" element={<RequestPages/>} />
+                    <Route exact path="request-lists" element={<RequestLists/>} />
                     <Route exact path="show-request/" element={<Showreq/>} />
                     <Route exact path="requestsdetails" element={<RequestsDetails/>} />
             </Routes>

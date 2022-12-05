@@ -1,6 +1,10 @@
 .requests {
 }
 
+.section-request {
+
+}
+
 .request-header {
   max-width: 95%;
   height: 25.6rem;
@@ -31,8 +35,7 @@
 .state-box {
   margin: 0 auto;
   width: 80%;
-
-  /* position: relative; */
+  /*position: fixed;*/
 }
 
 .state-box select {
@@ -40,7 +43,7 @@
   background-color: #e9eafc;
   color: #4e45d0;
   padding: 20px;
-  font-size: 22px;
+  font-size: 2.5em;
   border: none;
   cursor: pointer;
   width: 100%;
@@ -48,7 +51,7 @@
 
 .state-box select option {
   background-color: #4e45d0;
-  font-size: 90px;
+  /*font-size: 90px;*/
 }
 
 /* .state-box {
@@ -86,33 +89,35 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  width: 50%;
 }
-.atrist-pro-pic {
+.artist-pro-pic {
   aspect-ratio: 1/1;
-  width: 27%;
-  margin: 23px 0;
+  width: 100%;
+  margin-top: 10%;
+  margin-bottom: 10%;
   border-radius: 50%;
   object-fit: cover;
 }
 
 .artist-secondary-info {
-  margin-bottom: 20px;
+  margin-bottom: 10%;
 }
 
 .header-desc {
   font-size: 18px;
 }
 .request-artist-name {
-  font-size: 30px;
+  font-size: 3.2em;
   text-align: center;
 }
 .request-rate,
 .request-commission,
 .request-nft-num,
 .filds {
-  font-size: 15px;
+  font-size: 2.3em;
   text-align: center;
-  line-height: 25px;
+  line-height: 1.5em;
   color: #4f4a4a;
 }
 
@@ -139,7 +144,7 @@
   color: #4e45d0;
   background-color: #e9eafc;
   padding: 4% 0%;
-  margin-bottom: 3%;
+  margin-bottom: 5%;
 }
 
 .view-artist-profile-btn:hover {
@@ -198,34 +203,39 @@
 
 @media (max-width: 500px) {
   .request-box {
-    height: 80%;
+    margin-bottom: 5%;
   }
   .requests-container {
     grid-template-columns: 1fr;
     gap: 0;
-    max-width: 38.4rem;
+    max-width: 90%;
+    margin-bottom: 10%;
   }
   .request-content {
-    padding: 15px;
-    display: grid;
-    grid-template-areas:
-      "a4 a1 "
-      "a3 a2";
-    justify-content: center;
-  }
-
-  .artist-info {
-    grid-area: a1;
+    display: flex;
     flex-direction: row-reverse;
-    justify-content: flex-start;
-    margin-bottom: -8%;
+    /*grid-template-areas:*/
+    /*  "a4 a1 a3 a2";*/
+    justify-content: space-evenly;
+    height: 100%;
   }
-  .atrist-pro-pic {
-    align-self: flex-start;
+  .artist-info {
+    /*grid-area: a1;*/
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+  }
+  .artist-pro-pic {
+    width: 100%;
+    margin-top: 10%;
+    margin-bottom: 10%;
   }
   .artist-secondary-info {
-    margin-right: 10px;
-    margin-bottom: 40px;
+    margin-bottom: 0;
+  }
+  .artist-third-info {
+    margin-top: 0;
+    margin-bottom: 0;
   }
   .atrist-filds {
     grid-area: a2;
@@ -233,11 +243,10 @@
     margin-top: -19%;
   }
   .view-artist-profile-btn {
-    width: 13.1rem;
-    height: 3.7rem;
-    grid-area: a4;
-    align-self: flex-end;
-    margin-bottom: 19%;
+    margin-top: 10%;
+    margin-bottom: 5%;
+    width: 100%;
+    font-size: 2.2em;
   }
 
   .filds {
@@ -246,11 +255,11 @@
   }
 }
 
-@media (max-width: 420px) {
-  .requests-container {
-    max-width: 34.4rem;
-  }
-  .view-artist-profile-btn {
-    width: 11.1rem;
-  }
-}
+/*@media (max-width: 420px) {*/
+/*  .requests-container {*/
+/*    max-width: 34.4rem;*/
+/*  }*/
+/*  .view-artist-profile-btn {*/
+/*    width: 11.1rem;*/
+/*  }*/
+/*}*/
