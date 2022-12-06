@@ -13,7 +13,7 @@ class Permission(models.Model):
         return self.name
 
 
-class Role (models.Model):
+class Role(models.Model):
     name = models.CharField(max_length=10, verbose_name="نقش", null=False, blank=False)
     permissions = models.ManyToManyField(Permission)
 
@@ -24,31 +24,41 @@ class Role (models.Model):
         return self.permissions.filter(name=permission).exists()
 
 
-class Profile (models.Model):
+class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    # TODO : adding FirstName and LastName as fields
-    national_code = models.CharField(max_length=10, verbose_name="کدملی", null=True, blank=True)
+    first_name = models.CharField(max_length=15, null=False, blank=False)
+    last_name = models.CharField(max_length=25, null=False, blank=False)
+    national_code = models.CharField(max_length=10, verbose_name="کدملی", null=True, blank=True,
+                                     validators=[validators.RegexValidator(regex='^[0-9]{10}$',
+                                                                           message='کد ملی باید 10 رقمی باشد',
+                                                                           code='invalid_national_code')])
     birthdate = models.CharField(max_length=10, verbose_name="تاریخ تولد", null=True, blank=True)
-    phone_number = models.CharField(max_length=11, verbose_name="شماره تلفن", null=True, blank=True)
-    cell_number = models.CharField(max_length=11, verbose_name="ثابت شماره تلفن", null=True, blank=True)
+    phone_number = models.CharField(max_length=11, verbose_name="شماره تلفن", null=True, blank=True,
+                                    validators=[validators.RegexValidator(regex='^[0-9]{11}$',
+                                                                          message='شماره تلفن باید 11 رقمی باشد',
+                                                                          code='invalid_phone_number')])
+    cell_number = models.CharField(max_length=11, verbose_name="شماره تلفن ثابت", null=True, blank=True)
     address = models.TextField(max_length=200, verbose_name="آدرس", null=True, blank=True)
     national_code_picture = models.ImageField(verbose_name="عکس کارت ملی", upload_to="./static/pictures of users",
                                               null=True,
                                               blank=True)
     image = models.ImageField(upload_to="./static/pictures of profile", verbose_name="عکس پروفایل",
                               null=True, blank=True)
+    email = models.EmailField(max_length=50, verbose_name="ایمیل", null=True, blank=True)
     role = models.ForeignKey(Role, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user.username
+        return self.user.username + " " + self.first_name + " " + self.last_name + " " + self.national_code + " "\
+               + self.email + " "
+
 
 class ArtistReviewRating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     artist = models.ForeignKey(User, on_delete=models.CASCADE, related_name='artist')
-    rating = models.IntegerField(default=5, validators=[validators.MaxValueValidator(5), validators.MinValueValidator(0)])
-    review = models.TextField(blank=True)
+    rating = models.IntegerField(default=5, validators=[validators.MaxValueValidator(5),
+                                                        validators.MinValueValidator(0)])
 
-    def TotalCal(self):
+    def total_cal(self):
         avg = ArtistReviewRating.objects.aggregate(Avg('rating'))
         return avg
 
@@ -63,41 +73,8 @@ def get_artist_applications(self):
     for nft in nfts:
         applications += nft.nftexs.filter(state='pending').all()
     return set(applications)
+# TODO: check for future delete, handled in front-end
 
-
-# TODO: still in progress should be completed
-
-def get_artist_exhibitions(self):
-    nfts = self.nft_set.all()
-    data = []
-    current_nftexs = []
-    for nft in nfts:
-        current_nftexs += filter(lambda x: not x.ex.has_expired()  ,nft.nftexs.filter(state='accepted').all())
-    current_nftexs = set(current_nftexs)
-    for nftex in current_nftexs:
-        info = {}
-        info['exhibition'] = ExhibitionSerializer(nftex.ex).data
-        my_nfts = list(filter(lambda x: x.owner == self, nftex.nfts.all()))
-        info['your_nfts'] = NFTSerializer(my_nfts, many=True).data
-        info['sells'] = 'Exhibition is in progress yet.'
-        data.append(info)
-    prevs_exhibitions = set(map(lambda x:x.nftex.ex, self.as_seller_transactions.all()))
-    for exhibition in prevs_exhibitions:
-        info = {}
-        info['exhibition'] = ExhibitionSerializer(exhibition).data
-        prevs_nftexs = exhibition.nftexs.filter(state='accepted').all()
-        transactions = []
-        for nftex in prevs_nftexs:
-            transactions += nftex.transaction_set.all()
-        print(transactions)
-        transactions = list(filter(lambda x:x.seller == self, transactions))
-        profit = []
-        for transaction in transactions:
-            profit.append({'nft':NFTSerializer(transaction.nft).data, 'profit':transaction.lastPrice * (transaction.nftex.commission/100)})
-        info['sells'] = profit
-        data.append(info)
-    return data
-        
 
 def is_artist(self):
     try:
@@ -107,6 +84,42 @@ def is_artist(self):
     except:
         return False
 
-User.add_to_class('is_artist',is_artist)
-User.add_to_class('get_artist_applications',get_artist_applications)
-User.add_to_class('get_artist_exhibitions',get_artist_exhibitions)
+
+User.add_to_class('is_artist', is_artist)
+User.add_to_class('get_artist_applications', get_artist_applications)
+
+# def get_artist_exhibitions(self):
+#     nfts = self.nft_set.all()
+#     data = []
+#     current_nftexs = []
+#     for nft in nfts:
+#         current_nftexs += filter(lambda x: not x.ex.has_expired(), nft.nftexs.filter(state='accepted').all())
+#     current_nftexs = set(current_nftexs)
+#     for nftex in current_nftexs:
+#         info = {}
+#         info['exhibition'] = ExhibitionSerializer(nftex.ex).data
+#         my_nfts = list(filter(lambda x: x.owner == self, nftex.nfts.all()))
+#         info['your_nfts'] = NFTSerializer(my_nfts, many=True).data
+#         info['sells'] = 'Exhibition is in progress yet.'
+#         data.append(info)
+#     prevs_exhibitions = set(map(lambda x: x.nftex.ex, self.as_seller_transactions.all()))
+#     for exhibition in prevs_exhibitions:
+#         info = {}
+#         info['exhibition'] = ExhibitionSerializer(exhibition).data
+#         prevs_nftexs = exhibition.nftexs.filter(state='accepted').all()
+#         transactions = []
+#         for nftex in prevs_nftexs:
+#             transactions += nftex.transaction_set.all()
+#         print(transactions)
+#         transactions = list(filter(lambda x: x.seller == self, transactions))
+#         profit = []
+#         for transaction in transactions:
+#             profit.append({'nft': NFTSerializer(transaction.nft).data,
+#                            'profit': transaction.lastPrice * (transaction.nftex.commission/100)})
+#         info['sells'] = profit
+#         data.append(info)
+#     return data
+#
+# TODO : need improvement
+
+# User.add_to_class('get_artist_exhibitions', get_artist_exhibitions)

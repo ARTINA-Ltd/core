@@ -13,11 +13,12 @@ class NFT(models.Model):
     owner = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)
     creator = models.CharField(max_length=15, null=False, blank=False)
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
-    lastPrice = models.IntegerField(verbose_name='آخرین قیمت', null=False, blank=False)
+    last_price = models.IntegerField(verbose_name='آخرین قیمت', null=False, blank=False)
     image = models.ImageField(upload_to="./static/NFTS", null=True, blank=True)
     start_date = models.DateTimeField(verbose_name='تاریخ شروع مزایده', null=False, default=timezone.now)
     end_date = models.DateTimeField(verbose_name='تاریخ پایان مزایده', null=False, default=timezone.now)
-    description = models.TextField(null= True, blank=True)
+    description = models.TextField(max_length=200, null=True, blank=True)
+
     def has_expired(self):
         return datetime.now(tz=pytz.timezone('Asia/Tehran')) > self.end_date
 
@@ -51,18 +52,20 @@ class NFT(models.Model):
     def __str__(self):
         return f'{self.name} by {self.creator} owned by {self.owner.username}'
 
+
 class NFTReviewRating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     nft = models.ForeignKey(NFT, on_delete=models.CASCADE, related_name='nft')
     rating = models.IntegerField(default=5, validators=[validators.MaxValueValidator(5), validators.MinValueValidator(0)])
     review = models.TextField(blank=True)
 
-    def TotalCal():
+    def total_cal(self):
         avg = models.NFTReviewRating.objects.aggregate(Avg('rating'))
         return avg 
 
     def __str__(self):
         return f'{self.nft.name} Get Rank : ( {self.rating} )  from {self.user.username}'
+
 
 class Wallet(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -75,9 +78,9 @@ class Wallet(models.Model):
 class Order(models.Model):
     nft = models.ManyToManyField(NFT)
     bidder = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)
-    fee = models.IntegerField(verbose_name="قیمت ", null=False, blank=False)
+    fee = models.IntegerField(verbose_name="قیمت", null=False, blank=False)
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
-    status = models.CharField(max_length=5, choices=[('O', 'open'), ('C', 'close')])
+    status = models.CharField(max_length=5, choices=[(0, 'open'), (1, 'close')])
 
     def __str__(self):
         return f'{self.bidder.username} bid {self.fee} on {self.nft.name}'

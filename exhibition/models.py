@@ -9,26 +9,30 @@ import pytz
 from django.db.models import Avg
 from django.core.validators import FileExtensionValidator
 
-class Ticket(models.Model):
-    users = models.ManyToManyField(User, related_name='tickets')
-    price = models.IntegerField(null=False, blank=False, default=20000, validators=[validators.MinValueValidator(5000)])
+
+class Category (models.Model):
+    name = models.CharField(max_length=25, verbose_name="دسته بندی", null=False, blank=False, default="سایر")
+
+    def __str__(self):
+        return self.name
 
 
 class Exhibition(models.Model):
+    exhibition_id = models.IntegerField('self', default=1000, null=False, blank=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    marketName = models.CharField(max_length=15, null=False, blank=False)
+    marketName = models.CharField(max_length=35, null=False, blank=False)
     image = models.ImageField(upload_to="./static/pictures of Exhibitions", verbose_name="Exhibition",
                               null=True, blank=True)
     start_date = models.DateTimeField(verbose_name="تاریخ شروع", default=timezone.now)
     end_date = models.DateTimeField(verbose_name="تاریخ پایان", default=timezone.now)
-    description = models.TextField(null= True, blank=True)
-    ticket = models.ForeignKey(Ticket, null=True, default=None, related_name='exhibition', on_delete=models.CASCADE)
-    # contract = models.TextField(null=False)
-    # TODO: add word or pdf file to this model in contract field later
-    contract = models.FileField(upload_to="./static/contract files", null=True, blank=False, validators=[FileExtensionValidator(allowed_extensions=["pdf"])])
+    description = models.TextField(null=True, blank=True)
+    ticket = models.BooleanField(null=True, default=False)
+    contract = models.FileField(upload_to="./static/contract files", null=True, blank=False,
+                                validators=[FileExtensionValidator(allowed_extensions=["pdf"])])
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     
     def has_ticket(self):
-        if self.ticket == None:
+        if self.ticket is None:
             return False
         else:
             return True
@@ -65,22 +69,18 @@ class Exhibition(models.Model):
         else:
             return False
 
-class ExReviewRating(models.Model):
+
+class Ticket(models.Model):
+    ticket_id = models.IntegerField(verbose_name="ticket_id", default=1000)
+    exhibition_id = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='tickets')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    exhibition = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='exhibition')
-    rating = models.IntegerField(default=5, validators=[validators.MaxValueValidator(5), validators.MinValueValidator(0)])
-    review = models.TextField(blank=True)
+    price = models.IntegerField(null=False, blank=False, default=20000, validators=[validators.MinValueValidator(5000)])
+    ticket_count = models.IntegerField(null=True, blank=True, default=100)
 
-    def TotalCal():
-        avg = models.ExReviewRating.objects.aggregate(Avg('rating'))
-        return avg 
-
-    def __str__(self):
-        return f'{self.exhibition} Get Rank : ( {self.rating} ) from {self.user.username}'
 
 class NFtEx(models.Model):
     nfts = models.ManyToManyField(NFT, related_name='nftexs')
-    ex = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='nftexs')
+    exhibition = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='nftexs')
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
     commission = models.IntegerField(default=1, null=False, blank=False, validators=[validators.MaxValueValidator(100),
                                                                                      validators.MinValueValidator(1)])
@@ -88,13 +88,13 @@ class NFtEx(models.Model):
                                                                               ('accepted', 'accepted'),
                                                                               ('rejected', 'rejected')],
                              default='pending')
-    feedback = models.TextField(null=True, blank=True)
+    feedback = models.TextField(max_length=200, null=True, blank=True)
     
     def get_owner(self):
         return self.nfts.first().owner
 
     def __str__(self):
-        return f'{self.nfts.name} in {self.ex.marketName}'
+        return f'{self.nfts.name} in {self.exhibition.marketName}'
 
     
 class Transaction(models.Model):
@@ -107,5 +107,3 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f'{self.nftex} sold by {self.seller} to {self.buyer}'
-
-

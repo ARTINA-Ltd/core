@@ -26,7 +26,7 @@ SECRET_KEY = 'jwb9-)x##t=b#g9(cu)qz9#$-v9!r)olg0pl2p9-t4s!6syp#*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -98,10 +98,12 @@ WSGI_APPLICATION = 'ARTINA.wsgi.application'
 # NOTE : If you want to work with dump data, just comment NAME with db.sqlite3 and uncomment NAME with db_test.sqlite3
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
-        'NAME': BASE_DIR / 'documentation/database/db_test.sqlite3',
-    }
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'artina',
+        'USER': 'admin',
+        'PASSWORD': '123',
+        'HOST': 'localhost',
+        'PORT': '', }
 }
 
 

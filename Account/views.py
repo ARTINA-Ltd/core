@@ -1,4 +1,3 @@
-
 from Account import serializers
 from Account import models
 from core.serializers import NFTSerializer
@@ -19,17 +18,18 @@ class ArtistViewSet(viewsets.ModelViewSet):
     role = models.Role.objects.get(name='artist')
     queryset = User.objects.prefetch_related('profile').filter(profile__role=role)
     serializer_class = serializers.UserSerializer
-    http_method_names =  ['get','delete']   
-    
+    http_method_names = ['get', 'delete']
+
     def get_permissions(self):
         if self.request.method == 'DELETE':
             self.permission_classes = [IsAuthenticated, ]
         else:
             self.permission_classes = []
         return super().get_permissions()
+
     def destroy(self, request, *args, **kwargs):
-        if (request.user != self.get_object()):
-            return Response({'error':'you have not permission to delete this user'},status.HTTP_403_FORBIDDEN)
+        if request.user != self.get_object():
+            return Response({'error': 'you have not permission to delete this user'}, status.HTTP_403_FORBIDDEN)
         return super().destroy(request, *args, **kwargs)
 
     def get_serializer_class(self):
@@ -115,16 +115,15 @@ class ArtistRateViewSet(viewsets.ModelViewSet):
             return Response(serializer.errors)
         data = serializer.validated_data
         print("test " + str(data))
-        rate_obj = ArtistReviewRating.objects.filter(user = data["user"] , artist = data["artist"]).first()
+        rate_obj = ArtistReviewRating.objects.filter(user=data["user"], artist=data["artist"]).first()
         if rate_obj is None:
             return super().create(request, *args, **kwargs)
         else:
             rate_obj.review = data["review"]
             rate_obj.rating = data["rating"]
             rate_obj.save()
-            return Response(serializers.ArtistRatingSerializer(rate_obj).data)    
+            return Response(serializers.ArtistRatingSerializer(rate_obj).data)
 
-        
 
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
