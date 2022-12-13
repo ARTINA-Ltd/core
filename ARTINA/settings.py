@@ -96,22 +96,22 @@ WSGI_APPLICATION = 'ARTINA.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 # Postgres Database with setting the location of the database
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'artina',
-#         'USER': 'admin',
-#         'PASSWORD': '123',
-#         'HOST': 'localhost',
-#         'PORT': '', }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'documentation/database/db_test.sqlite3'),
-    }
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'artina',
+        'USER': 'admin',
+        'PASSWORD': '123',
+        'HOST': 'localhost',
+        'PORT': '', }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'documentation/database/db_test.sqlite3'),
+#     }
+# }
 
 
 # Password validation
