@@ -100,8 +100,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'artina',
-        'USER': 'admin',
-        'PASSWORD': '123',
+        'USER': 'administrator',
+        'PASSWORD': 'N0thing!Yet',
         'HOST': 'localhost',
         'PORT': '', }
 }
