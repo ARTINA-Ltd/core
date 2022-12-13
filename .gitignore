@@ -90,3 +90,4 @@ db.sqlite3
 ### Related to our project ###
 
 node_modules/
+/venv/
