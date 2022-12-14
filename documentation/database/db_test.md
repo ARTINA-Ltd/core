@@ -106,12 +106,14 @@
 - ### Exhibitions Table
 > Note: `image` field is not mentioned here.
 
-| UserName    | Market Name | Start Date | End Date   |
-|-------------|-------------|------------|------------|
-| exhibitor_1 | Exhibition1 | 2023-01-01 | 2023-03-01 |
-| exhibitor_1 | Exhibition2 | 2022-08-01 | 2022-11-01 |
-| exhibitor_2 | Exhibition3 | 2022-10-01 | 2022-10-20 |
-| exhibitor_3 | Exhibition4 | 2022-12-21 | 2023-01-13 |
+| UserName    | Market Name | Start Date | End Date   | Category | has_ticket |
+|-------------|-------------|------------|------------|----------|------------|
+| exhibitor_1 | Exhibition1 | 2023-01-01 | 2023-03-01 | نستعلیق  | False      |
+| exhibitor_1 | Exhibition2 | 2022-08-01 | 2022-11-01 | صوفی     | True       |
+| exhibitor_2 | Exhibition3 | 2022-10-01 | 2022-10-20 | شکسته    | False      |
+| exhibitor_2 | Exhibition4 | 2022-10-21 | 2022-11-10 | ثلث      | True       |
+| exhibitor_3 | Exhibition5 | 2022-12-21 | 2023-01-13 | سایر     | False      |
+| exhibitor_3 | Exhibition6 | 2023-01-14 | 2023-02-05 | سایر     | False      |
 
 
 - ### NFtEx Table
