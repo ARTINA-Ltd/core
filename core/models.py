@@ -81,6 +81,7 @@ class Order(models.Model):
     fee = models.IntegerField(verbose_name="قیمت", null=False, blank=False)
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
     status = models.CharField(max_length=5, choices=[(0, 'open'), (1, 'close')])
+    # TODO : change status to IntegerField and delete the max_length attribute
 
     def __str__(self):
         return f'{self.bidder.username} bid {self.fee} on {self.nft.name}'
