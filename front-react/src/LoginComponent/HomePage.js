@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext ,useEffect,useState} from "react";
 import UserInfo from "./UserInfo";
 import AuthContext from "./AuthContext";
 import {Link} from "react-router-dom";
@@ -7,46 +7,99 @@ import './index.css'
 import Navbar from "./nav-bar";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Footer from "./footer-component";
+import axios from "axios"
+import './HomePage.css'
+import { Alert } from "bootstrap";
 const Home = () => {
     const { user, logoutUser } = useContext(AuthContext);
+const userName=document.getElementById('username')
+const password=document.getElementById('password')
+console.log(userName)
+const [UserName, setUserName] = useState([""]);
+const [PassWord, setPassWord] = useState([""]);
 
+const [error, setError] = useState(null);
+const [loading, setLoading] = useState(false);
+
+const Baseurl=``
+useEffect(() => {
+  const fetchExhibitions = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        `http://127.0.0.1:8000/api/token/`
+      );
+      setUserName(res.data);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+      setUserName(null);
+    }}
+  fetchExhibitions();
+}, []);
+
+useEffect(() => {
+    const fetchExhibitions = async () => {
+      setLoading(true);
+      try {
+        const res = await axios.get(
+          `http://127.0.0.1:8000/api/token/`
+        );
+        setPassWord(res.data);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+        setPassWord(null);
+      }}
+    fetchExhibitions();
+  }, []);
+console.log(PassWord);
+
+function Handlelogin(){
+    if (UserName!==userName && PassWord!==password) {
+        {<Link to={"/"}></Link>}
+    }
+    else{
+        alert("invalid")
+    }
+}
     return (
-        <div className={" "}>
+        <div className={" "} >
             <Navbar/>
-        <div className="flex justify-center bg-background bg-no-repeat bg-cover      ">
-            <ul className={"flex justify-center "}>
-            <div
-                className="rec rounded-[0.5rem] h-[400px]  bg-[#7c73e8] m-16 hover:drop-shadow-4xl  md:w-[400px] sm:w-[350px] lg:w-[500px] text-center">
-                <span  className={"flex justify-center mt-12 mr-2 text-5xl font-extrabold text-white "}>ورود</span>
+            {/* <div className="container">         */}
+        <div className=" flex justify-center   bg-no-repeat      " dir='rtl'>
+            <ul className={"properties col-6 flex justify-start "}>
+            <div className="rec rounded-[0.5rem]  bg-[#7c73e8]    text-center">
+                <span  className={"flex justify-center mt-4  text-6xl font-extrabold text-white "}>ورود</span>
                 <span
-                    className={"text-white flex justify-center mt-2 text-center  md:text-left sm:text-left  text-xl font-bold"}> به وبسایت ما خوش امدید با عضویت و ثبت نام در وب سایت ما <br />به دنیای دیگری وارد شوید!!!</span>
+                    className={"disceiption text-white flex justify-center mt-2 lg:text-center  md:text-center sm:text-center   "}>  با عضویت و ثبت نام در وب سایت ما <br/> به دنیای دیگری وارد شوید!!!</span>
                 <div className={"flex justify-center items-center mr-9"}>
                     <ul>
+                        
                         <li>
-                            <span className={"mr-8 mt-3 font-bold text-2xl text-center flex justify-center"}>نام کاربری</span>
-                        </li>
-                        <li>
-                            <input dir="rtl" placeholder="نام کاربری"
-                                className={"flex justify-center p-2 ml-8 mr-10 mt-2 flex rounded-[.3rem]  md:w-[300px] sm:w-[250px] lg:w-[350px] "}
+                        <label className={"ml-8 mt-4 font-bold text-2xl text-right flex "}>نام کاربری </label>
+                            <input 
+                               id="username" className={"userinput flex justify-center"}
                                 type="text" />
                         </li>
                         <li>
-                            <span className={"mr-8 mt-4 font-bold text-2xl text-center"}> رمز عبور</span>
-                        </li>
-                        <li>
-                            <input dir="rtl" placeholder="رمز عبور"
-                                className={"flex justify-center p-2 ml-8 mr-10 mt-2  rounded-[.3rem]  md:w-[300px] sm:w-[250px] lg:w-[350px] "}
+                        <span className={"ml-8 mt-4 font-bold text-2xl text-right flex"}> رمز عبور</span>
+
+                            <input dir="rtl" 
+                               id="password" className={"passinput flex justify-center"}
                                 type="password" />
                         </li>
                     </ul>
                 </div>
                 <div className="flex justify-center">
 
-                    <Link to="/">
+                    {/* <Link to="/"> */}
                         <button type={"button"}
-                                className={" rounded-[0.6rem] text-2xl font-bold text-black bg-[#feeae3] h-[35px] w-[150px] md:w-[250px] sm:w-[200px] lg:w-[300px]    mt-8   p-2"}> ورود
+                                onClick={Handlelogin}
+                                className={"loginbutton text-2xl font-bold text-black     "}> ورود
                         </button>
-                    </Link>
+                    {/* </Link> */}
+
                 </div>
                 <Link to="/signup"
                       className={"flex justify-center mt-8 text-white text-2xl  hover:text-black  text-decoration-none"}> ثبت
@@ -61,7 +114,11 @@ const Home = () => {
             </div>
 
             </ul>
-        </div>
+            <div className="col-3 flex justify-center">
+            <img className="image" src={(require("./images/section-3-1.png"))} alt="Girl in a jacket" ></img> 
+            </div>
+            </div>
+        {/* </div> */}
         <Footer/>
 
     </div>

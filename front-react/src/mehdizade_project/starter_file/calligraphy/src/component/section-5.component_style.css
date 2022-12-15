@@ -64,9 +64,9 @@
   justify-self: center;
 }
 .section5-header {
-  text-align: right;
+  text-align: center;
   font-family: Iran-Nastaliq;
-  font-size: 90px;
+  font-size: 80px;
   margin: 20px 50px;
 }
 .section5-text-inside-border {
@@ -109,6 +109,11 @@
     align-self: flex-start;
     padding: 10px 40px;
   }
+  .section5-header{
+    font-size: 50px;
+    font-family: Iran-Nastaliq;
+
+  }
 }
 @media (max-width: 762px) {
   .section5-container {
@@ -122,6 +127,12 @@
     font-size: 20px;
     border: solid 3px #c5c1f3;
     border-top: white;
+  }
+  .section5-header {
+    text-align: center;
+    font-family: Iran-Nastaliq;
+    font-size: 40px;
+    margin: 20px 50px;
   }
 
   .image-container5-1 {
@@ -167,6 +178,12 @@
     padding: 10px 45px;
     /* align-self: center; */
   }
+  .section5-header {
+    text-align: center;
+    font-family: Iran-Nastaliq;
+    font-size: 30px;
+    margin: 20px 50px;
+  }
 }
 @media (max-width: 578px) {
   .section5-text {
@@ -198,5 +215,11 @@
     align-self: flex-start;
     padding: 5px 40px;
     align-self: center;
+  }
+  .section5-header {
+    /* text-align: center; */
+    font-family: Iran-Nastaliq;
+    font-size: 25px;
+    margin: 20px 50px;
   }
 }

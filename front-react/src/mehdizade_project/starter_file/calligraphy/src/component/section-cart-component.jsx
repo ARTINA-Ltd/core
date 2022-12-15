@@ -26,7 +26,9 @@ const Section_5_cart = () => {
         </div>
         <div className="section-cart-container   special-image-section-cart-4">
           <img className="section-cart-pic" src={section_3_4}/>
-          <button className="section-cart-button">رنگی</button>
+          {/* <button className="section-cart-button">رنگی</button> */}
+          <Link to={"/productpage"} className="section-cart-button">رنگی</Link>
+
         </div>
         <div className="section-cart-container   special-image-section-cart-5">
           <img className="section-cart-pic   " src={section_3_5}/>

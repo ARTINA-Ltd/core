@@ -113,9 +113,7 @@ align-items: center;
   width: 50px;
   height: 50px;
 }
-  .social-media {
-    /* width: 30rem; */
-  }
+ 
   .sm-icon {
     width: 5rem;
     height: 5rem;
@@ -161,7 +159,7 @@ align-items: center;
   .link-title,
   .desc,
   .subscribe {
-    font-size: 18px;
+    font-size: 14px;
   }
 
   .sm-icon {

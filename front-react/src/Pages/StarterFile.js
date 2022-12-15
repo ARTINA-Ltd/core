@@ -12,15 +12,10 @@ function App() {
     return (
         <div className="App" /*dir="rtl" */>
             <Nav_bar></Nav_bar>
-            {/* eslint-disable-next-line react/jsx-pascal-case */}
             <Section_1 cart_information={cart_info}/>
-            {/* eslint-disable-next-line react/jsx-pascal-case */}
             <Section_2/>
-            {/* eslint-disable-next-line react/jsx-pascal-case */}
             <Section_5_cart/>
-            {/* eslint-disable-next-line react/jsx-pascal-case */}
             <Section_4/>
-            {/* eslint-disable-next-line react/jsx-pascal-case */}
             <Section_5/>
             <Footer/>
         </div>

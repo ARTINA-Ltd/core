@@ -11,7 +11,7 @@
   background-position: center;
   margin: 0px 0px;
   padding: 0px;
-  height: 40vh;
+  height: 300px;
   width: 100%;
   max-width: 1600px; /*badan dar responsive kardan deghat shavad */
   /* margin: 0 auto;   */
@@ -19,7 +19,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 10px;
   /* filter: brightness(90%); */
   object-fit: contain;
 }
@@ -40,6 +40,7 @@
 @media (max-width: 1080px) {
   .image-section-4 {
     font-size: 20px;
+    margin-top: 90px;
   }
   .header-section-4 {
     font-family: B-Nazanin;
@@ -47,6 +48,11 @@
   }
 }
 @media (max-width: 836px) {
+  .image-section-4 {
+    height: 200px;
+    margin-bottom: -20px;
+
+  }
   .button-section4 {
     font-size: 20px;
     color: #fafafa;
@@ -63,14 +69,21 @@
     font-size: 20px;
     color: #fafafa;
     background-color: #968fed;
-    padding: 5px 30px;
+    padding: 5px 5px;
   }
   .header-section-4 {
     font-family: B-Nazanin;
     font-size: 40px;
+    text-align: center;
+  }
+  .image-section-4 {
+    height: 150px;
+    margin: 0px;
+
   }
 }
 @media (max-width: 520px) {
+ 
   .button-section4 {
     font-size: 15px;
     color: #fafafa;
@@ -80,5 +93,10 @@
   .header-section-4 {
     font-family: B-Nazanin;
     font-size: 30px;
+    font-weight: 500;
+    text-align: center;
+    
+
   }
+ 
 }

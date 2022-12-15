@@ -2,56 +2,105 @@
   text-align: center;
   margin: 5px 0px;
   font-size: 50px;
+  margin-top: 10px;
 }
 .section-3-main-container {
   display: flex;
   justify-content: space-between;
   margin: auto 10px;
-  margin-top: 5rem;
-  margin-bottom: 10rem;
+  margin-top: 3rem;
+  margin-bottom: 5rem;
+  height: 500px;
 }
-
 .section-3-cart-1-image {
-  /* linear-gradient(to bottom right, #6b2674cc, #6b2674c7) */
-  background-image: linear-gradient(to bottom right, #0000009b, #0000008c),
+  width:400px;
+  margin-left: 10px;
+  margin-right: 10px;
+  background-image: linear-gradient(to bottom right, #000000a8, #0000008c),
     url(../image/section-3-1.jpg);
   background-size: cover;
   background-position: center;
-  /* background: no-repeat; */
-
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5rem;
-
   border-radius: 1.5rem;
   color: white;
-  padding: 5.5rem 3.5rem;
-}
-.section-3-cart-1-image:hover {
-  padding: 3rem 3rem;
-  
-
+  padding: 2rem 3rem;
 }
 .inner-image-container {
-  width: 19rem;
-  height: 19rem;
+  margin-top: 30px;
+  width: 18rem;
+  height: 18rem;
   object-fit: cover;
   border-radius: 50%;
   border: 0.2rem solid white;
 }
 .section-3-cart-1-main-title {
+  margin-top: 25px;
   font-size: 4rem;
   text-align: center;
   font-family: B-Nazanin;
+  color: white;
 }
 .section-3-cart-1-time-calendar {
+  margin-top: 30px;
   font-size: 2.3rem;
   text-align: center;
   font-family: B-Nazanin;
 }
 .section-3-cart-1-calendar {
+  margin-top: 20px;
   font-size: 2.3rem;
   text-align: center;
   font-family: B-Nazanin;
+}
+/* /////////////responsive///////////// */
+@media(max-width:850px){
+  .inner-image-container {
+    margin-top: 30px;
+    width: 15rem;
+    height: 15rem;
+  }
+  .section-3-cart-1-image {
+    padding: 2rem 0rem;
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+}
+@media(max-width:650px){
+  .section-3-main-container {
+    height: 400px;
+  }
+  .inner-image-container {
+    margin-top: 30px;
+    width: 15rem !important;
+    height: 15rem !important;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 0.2rem solid white;
+  }
+  .section-3-cart-1-image {
+    padding: 2rem 0rem;
+    margin-left: 2px;
+    margin-right: 2px;
+  }
+  .section-3-cart-1-main-title {
+    margin-top: 25px;
+    font-size: 3rem;
+    text-align: center;
+    font-family: B-Nazanin;
+    color: white;
+  }
+  .section-3-cart-1-time-calendar {
+    margin-top: 30px;
+    font-size: 1.9rem;
+    text-align: center;
+    font-family: B-Nazanin;
+  }
+  .section-3-cart-1-calendar {
+    margin-top: 20px;
+    font-size: 1.9rem;
+    text-align: center;
+    font-family: B-Nazanin;
+  }
 }

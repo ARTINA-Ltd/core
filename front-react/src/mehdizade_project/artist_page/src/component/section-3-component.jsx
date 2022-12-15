@@ -47,7 +47,7 @@ const Section_3 = () => {
   return (
     <div>
       <h1 className="section-3-main-container-header">
-        نمایشگاه های برگزارشده
+نمایشگاه های برگزار شده شما
       </h1>
 
       <div className="section-3-main-container">
