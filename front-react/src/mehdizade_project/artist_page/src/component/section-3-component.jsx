@@ -37,7 +37,7 @@ const collection = [
     image: images["section-3-1.jpg"],
     creator: "کریم خزایی",
     title: "نمایشگاه خزایی",
-    start_date: "21/12/1378",
+    start_date: "2020-01-06T04:10:00.039727Z",
     end_date: "2020-09-06T04:10:00.039727Z",
     time: " ساعت 17 الی 15 عصر",
   },
@@ -49,7 +49,7 @@ const Section_3 = () => {
       <h1 className="section-3-main-container-header">
 نمایشگاه های برگزار شده شما
       </h1>
-
+<div className="container">
       <div className="section-3-main-container">
         {collection.map((items) => {
           var end_date_moment = moment(items.end_date)._d;
@@ -57,7 +57,7 @@ const Section_3 = () => {
           if (moment().isAfter(end_date_moment)) {
             return (
               <div className="section-3-cart-1-image">
-                <img src={items.image} className="inner-image-container"></img>
+                <img src={items.image} className="inner-image-container flex justify-content-center"></img>
                 <h1 className="section-3-cart-1-main-title">{items.creator}</h1>
                 <p1 className="section-3-cart-1-time-calendar">{items.time}</p1>
                 <p1 className="section-3-cart-1-calendar">
@@ -70,6 +70,7 @@ const Section_3 = () => {
           }
         })}
       </div>
+    </div>
     </div>
   );
 };

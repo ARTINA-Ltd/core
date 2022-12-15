@@ -334,9 +334,9 @@ justify-content: center;
   align-items: center;
 }
 .footer-right {
-  display: flex ;
-  justify-content: center ;
-  margin-right: -250px;
+  /* display: flex ;
+  justify-content: center ; */
+  /* margin-right: -250px; */
 }
 .footer .icons a {
   display: inline-block;
@@ -376,7 +376,7 @@ justify-content: center;
   display: inline-block;
   /* color: #ffffff; */
   vertical-align: middle;
-  margin-right: 150px;
+  margin-right: 300px;
 }
 .footer .footer-center p span {
   display: block;
@@ -394,7 +394,7 @@ justify-content: center;
 }
 /* footer right*/
 .footer .footer-right {
-  width: 35%;
+  width: 16%;
 }
 .logo{
   /* display: flex;
@@ -450,8 +450,7 @@ justify-content: center;
     margin-right: 0px;
   }
   .footer-right {
-    
-    margin-right: 200px;
+    margin-left: 150px;
   }
   
 }

@@ -1,7 +1,7 @@
 import "./section-2-component_style.css";
 // import { images } from "../../images";
 import React, { useState } from "react";
-
+import {Link} from "react-router-dom"
 function importAll(r) {
   let images = {};
   r.keys().forEach((item, index) => {
@@ -26,12 +26,12 @@ const collections = [
     title: "نمایشگاه نستعلیق",
     date: "۸ مهر",
   },
-  // {
-  //   id: 3,
-  //   image: images["g-3.png"],
-  //   title: "نمایشگاه s",
-  //   date: "۸ مهر",
-  // },
+  {
+    id: 3,
+    image: images["g-3.png"],
+    title: "نمایشگاه s",
+    date: "۸ مهر",
+  },
   // {
   //   id: 4,
   //   image: images["g-4.png"],
@@ -50,18 +50,18 @@ const collections = [
   //   title: "نمایشگاه نستعلیق",
   //   date: "۸ مهر",
   // },
-  {
-    id: 7,
-    image: images["g-7.png"],
-    title: "نمایشگاه نستعلیق",
-    date: "۸ مهر",
-  },
-  {
-    id: 8,
-    image: images["g-8.png"],
-    title: "f نستعلیق",
-    date: "۸ مهر",
-  },
+  // {
+  //   id: 7,
+  //   image: images["g-7.png"],
+  //   title: "نمایشگاه نستعلیق",
+  //   date: "۸ مهر",
+  // },
+  // {
+  //   id: 8,
+  //   image: images["g-8.png"],
+  //   title: "f نستعلیق",
+  //   date: "۸ مهر",
+  // },
   // {
   //   id: 9,
   //   image: images["g-9.png"],
@@ -90,9 +90,10 @@ const Section_2 = () => {
           <div key={collection.id} className="collection">
             <img className="collection-image" src={collection.image} alt="" />
 
-            <p className="collection-title name-title">{collection.title}</p>
+           <button className="collection-title name-title">{collection.title} </button>
             <p className="collection-title col-date">
               زمان برگزاری :{collection.date}
+              {/* <Link to={"/"}></Link> */}
             </p>
           </div>
         ))}
