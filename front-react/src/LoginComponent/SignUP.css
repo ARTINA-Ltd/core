@@ -1,0 +1,142 @@
+
+  .image{
+    width:300px;
+    height: 450px;
+    rotate: 210deg;
+    display: flex;
+    justify-content: end;
+    align-items: flex-end;
+  }
+ .rec1{
+  
+  height: 500px;
+  width: 500px;
+  margin-top: 30px;
+  margin-bottom: 55px;
+  padding-bottom: 55px;
+  margin-left: 100px;
+ }
+
+  .userinput{
+  width: 300px;
+  padding: 6px;
+  margin-left: 22px;
+  margin-top: 10px;
+  border-radius: 5px;
+  margin-top: 5px;
+
+  }
+  .passinput{
+    width: 300px;
+    padding: 6px;
+    margin-left: 20px;
+    border-radius: 5px;
+    margin-top: 5px;
+
+  }
+  .disceiption{
+    margin-top: 50px;
+    font-weight: 500;
+    font-size: 18px;
+  }
+  .loginbutton{
+    height: 35px;
+    width: 130px;
+    border-radius: 5px;
+    background-color: #ff00406b;
+    margin-top: 15px;
+  }
+  /* ////////////responsive///// */
+  @media(max-width:1000px){
+    .image{
+      width: 280px;
+      height: 400px;
+    }
+  }
+
+  @media (max-width:850px){
+    .userinput{
+      width: 230px;
+    }
+    .passinput{
+      width: 230px;
+    }
+    .rec1{
+      width: 350px;
+}
+.loginbutton{
+  width: 100px;
+}
+.image{
+  width:200px;
+  height: 300px;
+  rotate: 210deg;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin-top: 60px;
+}
+  }
+  @media(max-width:650px){
+    .image{
+      width: 200px;
+      height: 250px;
+    }
+  }
+  @media(max-width:600px){
+    .image{
+      width: 150px;
+      height: 200px;
+      margin-right: 50px;
+      
+    }
+    .rec1{
+      width: 330px;
+    }
+  }
+  @media (max-width:550px){
+    .userinput{
+      width: 180px;
+    }
+    .passinput{
+      width: 180px;
+    }
+    .rec1{
+      width: 300px;
+    }   
+    .loginbutton{
+      width: 80px;
+    }
+    .image{
+      width: 150px;
+      height: 200px;
+    }
+ 
+  }
+  @media(max-width:420px){
+    .rec1{
+      margin-right: 80px;
+      width: 250px;
+    }
+    .image{
+      width: 150px;
+      height: 200px;
+    }
+  }
+  @media (max-width:350px){
+    .userinput{
+      width: 130px;
+    }
+    .passinput{
+      width: 130px;
+    }
+    .rec1{
+      width: 225px;
+      margin-right: 20px;
+
+    }
+    .image{
+      width: 150px;
+      height: 200px;
+    }   
+  }

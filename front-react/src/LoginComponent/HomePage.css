@@ -1,0 +1,142 @@
+/* .image-container {
+   
+  } */
+  .image{
+    width:300px;
+    height: 450px;
+    rotate: 210deg;
+    display: flex;
+    justify-content: end;
+    align-items: flex-end;
+  }
+ .rec{
+  width: 500px;
+  margin-top: 30px;
+  margin-bottom: 55px;
+  padding-bottom: 55px;
+  margin-left: 100px;
+ }
+ .properties{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
+  .userinput{
+    width: 300px;
+    padding: 6px;
+   margin-left: 22px;
+   margin-top: 10px;
+   border-radius: 5px;
+   margin-top: 5px;
+
+  }
+  .passinput{
+    width: 300px;
+    padding: 6px;
+    margin-left: 20px;
+    border-radius: 5px;
+    margin-top: 5px;
+
+  }
+  .disceiption{
+    margin-top: 50px;
+    font-weight: 500;
+font-size: 18px;
+  }
+  .loginbutton{
+    height: 35px;
+    width: 130px;
+    border-radius: 5px;
+    background-color: #ff00406b;
+    margin-top: 15px;
+  }
+  .container{
+    /* background-image: url("./images/section-3-1.png"); */
+
+    /* max-height: 485px;
+    max-width: 296px;
+    /* filter: opacity(0.8) drop-shadow(0, 0, 0, rgba(0, 64, 255, 0.668)); */
+    /* height: 100%;
+    width: 100%;
+    transform: rotate(210deg);  */
+  }
+  @media(max-width:1000px){
+    .image{
+      width: 280px;
+      height: 400px;
+    }
+  }
+
+  @media (max-width:850px){
+    .userinput{
+      width: 230px;
+    }
+    .passinput{
+      width: 230px;
+      
+    }
+.rec{
+  width: 350px;
+}
+.loginbutton{
+  width: 100px;
+}
+.image{
+  width:200px;
+  height: 300px;
+  rotate: 210deg;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin-top: 60px;
+}
+  }
+  @media(max-width:650px){
+    .image{
+      width: 200px;
+      height: 250px;
+    }
+  }
+  @media(max-width:600px){
+    .image{
+      width: 150px;
+      height: 200px;
+    }
+  }
+  @media (max-width:550px){
+    .userinput{
+      width: 180px;
+    }
+    .passinput{
+      width: 180px;
+    }
+    .rec{
+      width: 600px;
+      margin-right: 60px;
+    }   
+    .loginbutton{
+      width: 80px;
+    }
+  .image{
+    width: 0;
+    height: 0;
+  }
+  }
+  @media(max-width:420px){
+    .rec{
+      margin-right: 40px;
+    }
+  }
+  @media (max-width:350px){
+    .userinput{
+      width: 130px;
+    }
+    .passinput{
+      width: 130px;
+    }
+    .rec{
+      width: 225px;
+      margin-right: 20px;
+
+    }   
+  }

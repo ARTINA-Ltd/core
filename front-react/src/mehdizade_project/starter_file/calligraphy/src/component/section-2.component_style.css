@@ -9,6 +9,7 @@
   font-size: 50px;
   margin: 10px;
   margin-top: 10px;
+  padding-top: 10px;
 }
 
 /* ------------main------------- */
@@ -119,5 +120,94 @@
     position: absolute;
     right: 17.5%;
     top: 10%;
+  }
+  @media (max-width:700px){
+    .section-2-main-main-container{
+      padding-bottom: 10px;
+
+    }
+    .section-2-main-detail-time-date-container {
+      position: absolute;
+      right: 5%;
+      bottom: 7%;
+      border-radius: 12px;
+  
+      /* text-align: right; */
+    }
+    .section-2-detail {
+      font-family: B-Nazanin;
+      color: white;
+      font-size: 20px;
+      /* right: 50%; */
+      text-align: center;
+    }
+    .section-2-button {
+      font-size: 25px;
+      padding: 4px 25px;
+    }
+    .section-2-name-of-festival {
+      background-color: #958fedc0;
+      border: solid 2px #7c73e8;
+      border-radius: 12px;
+      padding: 5px 30px;
+      color: white;
+      font-family: B-Nazanin;
+      font-size: 30px;
+      text-align: center;
+      position: absolute;
+      right: 10%;
+      top: 1%;
+    }
+  }
+  @media(max-width: 500px){
+    .section-2-main-main-container{
+      padding-bottom: 35px;
+
+    }
+    .section-2-main-detail-time-date-container {
+      position: absolute;
+      right: 0%;
+      bottom: -15px;
+      border-radius: 12px;
+      
+  
+      /* text-align: right; */
+    }
+    .section-2-detail {
+      font-family: B-Nazanin;
+      color: white;
+      font-size: 18px;
+      /* right: 50%; */
+      text-align: center;
+      margin-top: -20px;
+    }
+    .section-2-button {
+      font-size: 20px;
+      padding: 3px 20px;
+
+    }
+    .section-2-name-of-festival {
+      background-color: #958fedc0;
+      border: solid 2px #7c73e8;
+      border-radius: 12px;
+      padding: 3px 15px;
+      color: white;
+      font-family: B-Nazanin;
+      font-size: 23px;
+      text-align: center;
+      position: absolute;
+      right: 1%;
+      top: 0%;
+    }
+    .section-2-image {
+      position: relative;
+      right: 0%;
+      left: 15%;
+      border-radius: 12px;
+      /* max-width: 30%; */
+      height: 70%;
+      width: 70%;
+      object-fit: cover;
+    }
   }
 }

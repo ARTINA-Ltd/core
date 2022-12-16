@@ -18,7 +18,7 @@ code {
 }
 @font-face {
   font-family: "B-Nazanin";
-  src: local("B-Nazanin"), url(./font/B-Nazanin.ttf) format("truetype");
+  src: local("B-Nazanin"), url(./font/IRANSansX-Medium.ttf) format("truetype");
 }
 @font-face {
   font-family: "Iran-Nastaliq";

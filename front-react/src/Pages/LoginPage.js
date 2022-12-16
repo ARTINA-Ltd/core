@@ -1,6 +1,5 @@
 import React from 'react';
 
-import App from '../LoginComponent/App';
 import ProtectedPage from '../LoginComponent/ProtectedPage'
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import SignUp from "../LoginComponent/SignUp";

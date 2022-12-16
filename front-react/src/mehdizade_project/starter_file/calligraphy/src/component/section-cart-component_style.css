@@ -1,6 +1,7 @@
 .section-main-container-main {
   margin: 0px 0px;
   padding: 0px 0px;
+  margin-bottom: -70px;
 }
 
 .section-cart-main-header {
@@ -56,23 +57,25 @@
 .special-image-section-cart-3 {
   grid-column: 5 / span 2;
   grid-row: 1 / span 1;
-  max-height: 85%;
+  max-height: 900px;
 }
 .special-image-section-cart-2 {
   grid-column: 3 / span 2;
   grid-row: 1 / span 1;
-  max-height: 85%;
+  max-height: 900px;
 }
 .special-image-section-cart-1 {
   grid-column: 1 / span 2;
   grid-row: 1 / span 1;
-  max-height: 85%;
+  max-height: 900px;
 }
 
 /*-------------------- button style ------------------ */
 .section-cart-button {
+  width: 200px;
+  height: 1500px;
   position: relative;
-  top: -55%;
+  top: -60%;
   border: none;
   cursor: pointer;
   border-radius: 5px;
@@ -81,7 +84,7 @@
   color: white;
   font-size: 35px;
   font-family: B-Nazanin;
-  padding: 24px 48px;
+  padding: 30px ;
 }
 
 .section-cart-button:hover {
@@ -94,15 +97,15 @@
   .section-cart-button {
     font-size: 25px;
     font-family: B-Nazanin;
-    padding: 14px 38px;
+    padding: 14px 30px;
   }
   .section-cart-main-container {
-    gap: 10px;
+    gap: 5px;
   }
 }
 @media (max-width: 850px) {
   .section-main-container-main {
-    padding: 0px 50px;
+    padding: 0px 0px;
   }
   .section-cart-button {
     font-size: 25px;
@@ -118,31 +121,30 @@
   .special-image-section-cart-1 {
     grid-column: 1 / span 1;
     grid-row: 1 / span 1;
-    max-height: 100%;
+    max-height: 350px;
   }
   .special-image-section-cart-2 {
     grid-column: 2 / span 1;
     grid-row: 1 / span 1;
-    max-height: 450px;
+    max-height: 350px;
   }
   .special-image-section-cart-3 {
     grid-column: 1 / span 1;
     grid-row: 2 / span 1;
-    max-height: 100%;
+    max-height: 350px;
   }
   .special-image-section-cart-4 {
     grid-column: 2 / span 1;
     grid-row: 2 / span 1;
-    max-height: 100%;
+    max-height: 350px;
   }
   .special-image-section-cart-5 {
     grid-column: 1 / span 2;
     grid-row: 3 / span 1;
     object-fit: contain;
-    max-height: 350px;
+    max-height: 300px;
   }
 }
-
 @media (max-width: 678px) {
   .section-cart-button {
     font-size: 20px;
@@ -150,7 +152,7 @@
     padding: 14px 25px;
   }
   .special-image-section-cart-5 {
-    grid-column: 1 / span 2;
+    grid-column: 3 / span 3;
     grid-row: 3 / span 1;
     object-fit: contain;
     max-height: 250px;
@@ -159,55 +161,67 @@
 
 @media (max-width: 678px) {
   .section-main-container-main {
-    padding: 0px 50px;
+    padding: 0px 0px;
   }
   .section-cart-button {
-    font-size: 40px;
+    font-size: 25px;
     font-family: B-Nazanin;
-    padding: 10px 40px;
+    padding: 10px 30px;
+    margin-bottom: 80px;
+    
   }
   .section-cart-main-container {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(2, 2fr);
   }
   .special-image-section-cart-1 {
     grid-column: 1 / span 1;
     grid-row: 1 / span 1;
-    max-height: 450px;
+    max-height: 200px;
   }
   .special-image-section-cart-2 {
-    grid-column: 1 / span 1;
-    grid-row: 2 / span 1;
-    max-height: 450px;
+    grid-column: 2 / span 2;
+    grid-row: 1/ span 2;
+    max-height: 200px;
     /* max-height: 630px; */
   }
   .special-image-section-cart-3 {
-    grid-column: 1 / span 1;
-    grid-row: 3 / span 1;
-    max-height: 450px;
+    grid-column: 2 / span 2;
+    grid-row: 2/ span 2;
+    max-height: 200px;
     /* max-height: 100%; */
   }
   .special-image-section-cart-4 {
     grid-column: 1 / span 1;
-    grid-row: 4 / span 1;
-    max-height: 450px;
+    grid-row: 2/ span 3;
+    max-height: 200px;
     /* max-height: 100%; */
   }
   .special-image-section-cart-5 {
+margin-left: 50%;
     grid-column: 1 / span 1;
     grid-row: 5 / span 1;
     object-fit: contain;
-    max-height: 450px;
+    max-height: 200px;
     /* max-height: 100%; */
-  }
+    width: 200%;
 }
 
+}
 @media (max-width: 456px) {
   .section-cart-button {
-    font-size: 30px;
+    font-size: 22px;
     font-family: B-Nazanin;
-    padding: 10px 40px;
+    padding: 3px 25px;
+    margin-bottom: 80px;
+
+  }
+  .section-cart-button:hover {
+    font-size: 25px;
+    font-family: B-Nazanin;
+    padding: 2px 35px;
+    
   }
   .section-main-container-main {
-    padding: 0px 30px;
+    padding: 0px 0px;
   }
 }
