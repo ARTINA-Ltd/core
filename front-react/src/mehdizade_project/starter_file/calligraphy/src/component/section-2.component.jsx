@@ -15,7 +15,7 @@ const Section_2 = () => {
     const [loading, setLoading] = useState(false);
    const Number= Math.floor(Math.random() * 3);
 
-    const Baseurl=`http://localhost:8000/exhibition/exhibitions/${Number}/`
+    const Baseurl=`http://78.38.35.249:8000/exhibition/exhibitions/${Number}/`
    const Length=Baseurl.length;
     useEffect(() => {
       const fetchExhibitions = async () => {
@@ -40,7 +40,7 @@ const Section_2 = () => {
           setLoading(true);
           try {
             const res = await axios.get(
-                `http://localhost:8000/exhibition/exhibitions/${Number2}/`            );
+                `http://78.38.35.249:8000/exhibition/exhibitions/${Number2}/`            );
             setExhibitions2(res.data);
             setError(null);
           } catch (err) {
