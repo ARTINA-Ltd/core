@@ -21,7 +21,7 @@ class ExhibitionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Exhibition
-        fields = ['user', 'marketName', 'image', 'ticket', 'contract', 'start_date', 'end_date', 'nftexs']
+        fields = ['exhibition_id', 'user', 'marketName', 'image', 'start_date', 'end_date', 'description', 'ticket', 'contract', 'category', 'nftexs']
 
 
 class NFtExSerializer(serializers.ModelSerializer):
