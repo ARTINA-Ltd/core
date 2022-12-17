@@ -34,7 +34,7 @@ const Request_pages = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:8000/exhibition/exhibitors/8/get_${state}_state/`
+        `http://78.38.35.249:8000/exhibition/exhibitors/8/get_${state}_state/`
       );
       setRequests(res.data);
       setError(null);

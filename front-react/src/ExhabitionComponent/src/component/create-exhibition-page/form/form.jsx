@@ -47,7 +47,7 @@ const Form = (props) => {
 
     await axios({
       method: "post",
-      url: "http://localhost:8000/exhibition/exhibitions/",
+      url: "http://78.38.35.249:8000/exhibition/exhibitions/",
       data: formField,
       mode: "cors",
     }).then((response) => {

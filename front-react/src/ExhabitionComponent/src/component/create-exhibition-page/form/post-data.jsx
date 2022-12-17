@@ -10,7 +10,7 @@ const Postdata = () => {
       setLoading(true);
       try {
         const res = await axios.get(
-          `http://localhost:8000/exhibition/exhibitions/`
+          `http://78.38.35.249:8000/exhibition/exhibitions/`
         );
         setExhibitions(res.data);
         setError(null);
