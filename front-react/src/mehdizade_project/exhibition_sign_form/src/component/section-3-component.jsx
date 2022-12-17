@@ -111,7 +111,7 @@ array.push(requests);
                 dir="rtl"
                 className="input-fields-main"
                 type="text"
-                placeholder="نام خود را وارد کنید"
+                placeholder="نام "
               />
               <input
                 onChange={handlelName}
@@ -119,7 +119,7 @@ array.push(requests);
                 dir="rtl"
                 className="input-fields-main"
                 type="text"
-                placeholder="نام خونوادگی خود را وارد کنید"
+                placeholder="د"
               />
             </div>
             <input

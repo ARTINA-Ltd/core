@@ -201,6 +201,55 @@
     /* grid-gap: 10px; */
     
   }
+  .section-3-main-container-header {
+    text-align: center;
+    margin: 5px 0px;
+    font-size: 40px;
+    margin-top: 10px;
+  }
+  .inner-image-container {
+    margin-left: 40%;
+     margin-top: -5px;
+     width: 10em !important;
+     height: 10rem !important;
+     object-fit: cover;
+     border-radius: 50%;
+     border: 0.2rem solid white;
+   }
+   .section-3-cart-1-main-title {
+     margin-top: 0px;
+     font-size: 3.5rem;
+     text-align: center;
+     font-family: B-Nazanin;
+     color: white;
+   }
+   .section-3-cart-1-time-calendar {
+     margin-top: 10px;
+     font-size: 2rem;
+     text-align: center;
+     font-family: B-Nazanin;
+   }
+   .section-3-cart-1-calendar {
+     margin-top: 10px;
+     font-size: 2rem;
+     text-align: center;
+     font-family: B-Nazanin;
+   }
+ 
+ }
+ @media(max-width:530px){
+   .section-3-cart-1-image {
+     width: 160%;
+     height: 250px;
+     /* margin-left:40px; */
+     display: grid;
+     grid-template-areas: 
+     'image'  
+     'title' 'time'
+     'date'   ;
+     /* grid-gap: 10px; */
+     
+   }
 }
 @media(max-width:450px){
   .section-3-cart-1-image {
@@ -229,5 +278,32 @@
     'date'   ;
     /* grid-gap: 10px; */
     
+  }
+  .section-3-main-container-header {
+    text-align: center;
+    margin: 5px 0px;
+    font-size: 35px;
+    margin-top: 10px;
+  }
+  .inner-image-container {
+    margin-left: 34%;
+     margin-top: -5px;
+     width: 10em !important;
+     height: 10rem !important;
+     object-fit: cover;
+     border-radius: 50%;
+     border: 0.2rem solid white;
+   }
+   .section-3-cart-1-time-calendar {
+    margin-top: 10px;
+    font-size: 2rem;
+    text-align: center;
+    font-family: B-Nazanin;
+  }
+  .section-3-cart-1-calendar {
+    margin-top: 10px;
+    font-size: 1.6rem;
+    text-align: center;
+    font-family: B-Nazanin;
   }
 }

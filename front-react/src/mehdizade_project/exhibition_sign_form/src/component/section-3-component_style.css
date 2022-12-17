@@ -24,7 +24,7 @@
   /* gap: 1000px; */
   /* flex-direction: column; */
 
-  margin: auto 200px;
+  margin: auto 100px;
 }
 .input-fields-container-main {
   display: flex;
@@ -53,6 +53,14 @@
 .nftchooise{
   font-size: 30px;
   font-weight: 600;
+}
+input,
+input::placeholder {
+    font-size: 15px;
+  }
+  input[type="text"]
+{
+    font-size:15px;
 }
 .button-submit-form {
   text-decoration: none;
