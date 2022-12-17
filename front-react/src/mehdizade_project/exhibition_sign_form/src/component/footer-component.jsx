@@ -1,6 +1,9 @@
 import "./footer-component_style.css";
 // import { images } from "../images/footer";
+import { IconName } from "react-icons/fa";
 
+import { Link } from "react-router-dom";
+import Logo from "../../../starter_file/calligraphy/src/images/footer/logo.png"
 function importAll(r) {
   let images = {};
   r.keys().forEach((item, index) => {
@@ -9,7 +12,7 @@ function importAll(r) {
   return images;
 }
 export const images = importAll(
-  require.context("./../images/footer", false, /\.(png|jpe?g|svg)$/)
+  require.context("", false, /\.(png|jpe?g|svg)$/)
 );
 
 const link_content = [
@@ -36,68 +39,89 @@ const link_content = [
   },
 ];
 
-const social_media = [
-  images["social-media5.png"],
-  images["social-media2.png"],
-  images["social-media1.png"],
-  images["social-media4.png"],
-];
+
 
 const Footer = () => {
   return (
-    <div>
-      <div className="footer-section">
-        <div className="footer-conent">
-          <div className="footer-about">
-            <div className="about-us">
-              <img className="logo" src={images["logo.png"]} alt="" />
-              <h3 className="footer-title">وبسایت</h3>
-            </div>
-            <p className="desc">
-              این یک متن درباره توضیحانی راجع به سایت می باشد. این یک متن درباره
-              توضیحانی راجع به سایت می باشد.
-            </p>
-          </div>
-
-          <div className="footer-links">
-            {link_content.map((links) => (
-              <div className="links-box">
-                <p className="link-title">{links.title}</p>
-                {Object.keys(links).map((link, i) => (
-                  <div classname="sublinks">
-                    {(() => {
-                      if (links[link] != links.title) {
-                        return (
-                          <p className="links" key={i}>
-                            {links[link]}
-                          </p>
-                        );
-                      }
-                    })()}
-                  </div>
-                ))}
+    <>
+      <div className="content" dir="ltr" >
+        {/* <footer dir="rtl">
+          <div className="footer-content-wrapper">
+            <div className="footer-col large-25 small-50 tiny-100  flt">
+              <div className="row socialmedia flex justify-content-center align-items-center mt-20 " dir="ltr">
+                <img className="sm-icon" src={SocialMedia1} />
+                <img className="sm-icon" src={SocialMedia2} />
+                <img className="sm-icon" src={SocialMedia3} />
+                <img className="sm-icon" src={SocialMedia5} />
               </div>
-            ))}
-          </div>
+            </div>
 
-          <div className=" footer-contact">
-            <h3 className="footer-titles subscribe">سابسکرایب کنید</h3>
-            <div className="email">
-              <input classname="email-box" type="text" />
-              <button className="submit-btn">
-                <img className="submit_icon" src={images["submit.png"]} />
-              </button>
+            <div className="section footer-col large-25 small-50 tiny-100  flt">
+              <p className="link-title">دسته بندی ها</p>
+              <Link to={"/artistpage"} className="links"><p className="desc">ارتباط با ما</p></Link>
+              <Link to={"/artistpage"} className="links"><p className="desc">سوالات</p></Link>
+              <Link to={"/artistpage"} className="links"><p className="desc">درباره آرتینا</p></Link>
             </div>
-            <div className="social-media">
-              {social_media.map((icon) => (
-                <img className="sm-icon" src={icon} />
-              ))}
+            <div className="footer-col large-25 small-50 tiny-100  flt">
+              <div className="footer-section">
+                {/* <div className="footer-conent">
+               <div className="footer-about"> */}
+        {/* <div className="about-us">
+           
+                </div>
+                <p className="desc1">راهی تازه به دنیای هنر </p>
+              </div>
             </div>
           </div>
-        </div>
+          <div className="clearfix"></div>
+          
+
+        </footer> */}
+        
+        <footer className="footer">
+          <div className="footer-left col-md-4 col-sm-6">
+            <div className="icons">
+              <Link to={"/"}><i className="fa fa-twitter"></i></Link>
+              <Link to={"/"}><i className="fa fa-linkedin"></i></Link>
+              <Link to={"/"}><i className="fa fa-google-plus"></i></Link>
+              <Link to={"/"}><i className="fa fa-instagram"></i></Link>
+            </div>
+          </div>
+          <div className="footer-center col-md-4 col-sm-6">
+            <div className="title">
+              <p className="link-title">دسته بندی ها</p>
+            </div>
+            <div className="title1">
+              <ul className="">
+                <li>
+            <Link to={"/artistpage"} className="links"><p className="desc">ارتباط با ما</p></Link>
+            </li>
+            <li>
+              <Link to={"/artistpage"} className="links"><p className="desc">سوالات</p></Link>
+              </li>
+              <li>
+              <Link to={"/artistpage"} className="links"><p className="desc">درباره آرتینا</p></Link>
+              </li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="footer-right  col-md-4 col-sm-6  ">
+            <div className="about-us ">
+            <img className="logo" src={Logo} alt="" />
+              <p className="footer-title">آرتینا</p>
+            </div>
+            <p className="desc1">راهی تازه به دنیای هنر </p>
+
+          </div>
+        </footer>
+        <div className="copyright">
+          <p className="copyright1"> Copyright @ 2022 by Artina-All rights reserved</p>
+
+          </div>
       </div>
-      <div className="copyright"></div>
-    </div>
+    </>
+
   );
 };
 export default Footer;
