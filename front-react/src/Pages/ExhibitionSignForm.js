@@ -3,11 +3,13 @@ import Section_1 from "../mehdizade_project/exhibition_sign_form/src/component/s
 import Section_2 from "../mehdizade_project/exhibition_sign_form/src/component/section-2-component";
 import Section_3 from "../mehdizade_project/exhibition_sign_form/src/component/section-3-component";
 import Footer from "../mehdizade_project/exhibition_sign_form/src/component/footer-component";
-import Navbar from "../mehdizade_project/exhibition_sign_form/src/component/nav-bar"
+// import Navbar from "../mehdizade_project/exhibition_sign_form/src/component/"
+import Nav_bar from "../mehdizade_project/starter_file/calligraphy/src/component/nav-bar"
+
 function App() {
     return (
         <div className="App">
-            <Navbar/>
+            <Nav_bar/>
             {/* eslint-disable-next-line react/jsx-pascal-case */}
             <Section_1/>
             {/* eslint-disable-next-line react/jsx-pascal-case */}
