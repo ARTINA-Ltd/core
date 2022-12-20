@@ -5,7 +5,9 @@
   margin-bottom: 50px;
   gap: 20px;
 }
-
+.main{
+  margin-top: 340px;
+}
 /*----------------- album container details --------------------*/
 .image-main-container {
   display: grid;
@@ -112,6 +114,9 @@
     align-self: flex-start;
     padding: 10px 40px;
   }
+  .main{
+    margin-top: 400px;
+  }
 }
 @media (max-width: 762px) {
   .section5-container {
@@ -170,6 +175,12 @@
     padding: 10px 45px;
     /* align-self: center; */
   }
+}
+@media(max-width:595px){
+  .main{
+    margin-top: 320px;
+  }
+ 
 }
 @media (max-width: 578px) {
   .section5-text {

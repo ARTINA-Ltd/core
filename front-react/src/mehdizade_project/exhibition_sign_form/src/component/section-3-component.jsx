@@ -102,16 +102,16 @@ array.push(requests);
         <div className="image-container">
           <img className="image-paisley-edit" src={image} alt="paisley" />
         </div>
-        <div className="input-fields-container-main">
-          <div className="input-fields-container-main">
-            <div className="name-and-familyname-form">
+        <div className="input-fields-container-main ">
+          <div className="input-fields-container-main ">
+            <div className="name-and-familyname-form ">
               <input
                 onChange={handleName}
                 value={fname.json_post_fname}
                 dir="rtl"
                 className="input-fields-main"
                 type="text"
-                placeholder="نام "
+                placeholder="نام خانوادگی "
               />
               <input
                 onChange={handlelName}
@@ -119,7 +119,7 @@ array.push(requests);
                 dir="rtl"
                 className="input-fields-main"
                 type="text"
-                placeholder="د"
+                placeholder="نام"
               />
             </div>
             <input
@@ -153,7 +153,7 @@ array.push(requests);
           <div className="name-and-familyname-form">
             <a
               href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
-              className="button-submit-form"
+              className="button-submit-form1 flex justify-center align-items-center"
             >
               مشاهده قرارداد
             </a>

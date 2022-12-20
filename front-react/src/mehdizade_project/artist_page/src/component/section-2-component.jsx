@@ -89,6 +89,7 @@ const Section_2 = () => {
         {collections.map((collection) => (
           <div key={collection.id} className="collection ">
             <img className="collection-image " src={collection.image} alt="" />
+            
            <button className="collection-title name-title  ">{collection.title} </button>
             <p className="collection-title col-date">
               زمان برگزاری :{collection.date}</p>

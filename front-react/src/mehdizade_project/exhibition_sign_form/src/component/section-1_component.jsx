@@ -25,18 +25,20 @@ const Section_1 = () => {
     <div>
       {collection.map((items) => {
         return (
-          <div className="main-container">
+          <div className="main-container1" dir="rtl">
             <img
-              className="section-1-main-image"
+              className="section-1-main-image flex justify-center  h-[300px] "
               src={items.image}
               alt="photo"
             />
-            <div className="detail-container">
-              <p1 className="secion-1-header-main">{items.title}</p1>
-              <p1>برگزار کننده:{items.creator}</p1>
-              <p1>{items.time}: زمان برگزاری</p1>
-              <p1>{items.start_date}:تاریخ شروع نمایشگاه</p1>
-              <p1>{items.end_date}:تاریخ اتمام نمایشگاه</p1>
+            <div className="detail-container ">
+              <div className="datail-container1 ">
+                <p className="secion-1-header-main1">{items.title}</p>
+                <p>برگزار کننده:{items.creator}</p>
+                <p> زمان برگزاری:{items.time}</p>
+                <p>تاریخ شروع نمایشگاه:{items.start_date}</p>
+                <p>تاریخ اتمام نمایشگاه:{items.end_date}</p>
+              </div>
             </div>
           </div>
         );

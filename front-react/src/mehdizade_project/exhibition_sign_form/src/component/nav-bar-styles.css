@@ -3,9 +3,10 @@
   display: flex;
   flex-direction: row-reverse;
 }
+
 .menu {
   width: 35%;
-  padding: 2%;
+  padding: 1%;
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;
@@ -16,7 +17,7 @@
   width: 0;
 }
 .menu-item {
-  font-size: 22px;
+  font-size: 31px;
   color: #4e45d0;
   padding: 2% 5%;
   cursor: pointer;
@@ -36,24 +37,54 @@
   background-color: #4e45d0;
 }
 .inner-addon {
-  margin: 0 40px;
-  align-self: center;
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: center;
-  align-items: center;
+  margin-left: 20px;
+   /* margin: 0 -40px;  */
+   /* align-self: center;
+   display: flex;
+  flex-direction: row-reverse;  */
+  width: 250px;
+  height: 50px;
 }
-.walletconnect1{
-  background-color: #4e45d0;
-  color: #ffffff;
+.walletconnect{
+  font-weight: 900;
+  display: flex;
+  justify-content: center;
+  border: #4e45d0;
+  border-color: #4e45d0;
   width: 150px;
   height: 50px;
-  margin-left: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   font-size: 20px;
-  border-radius: 10px;
+  color: #4e45d0;
+  display: flex;
+  align-items: center;
+  background-color: #ea8af7;
+margin-top: 5px;
+  border-radius: 9px;
+  margin-left: 20px;
+  }
+/* .navbar-section input[type="text"] {
+  width: 350px;
+  height: 45px;
+  font-size: 30px;
+  border: none;
+  background: rgba(141, 138, 138, 0.24);
+  border-radius: 9px;
+} */
+.logo{
+  width: 5rem;
+  height: 5rem;
+
+}
+/* .icon-bar {
+  position: absolute;
+  margin: 4px;
+  width: 36.88px;
+  height: 38.76px;
+  background: url("./../../assets/search-icon.png") left no-repeat;
+  background-size: cover;
+} */
+.icon-bar:hover {
+  filter: brightness(10);
 }
 
 @media (max-width: 1050px) {
@@ -80,6 +111,7 @@
     width: 0;
     height: 0;
     padding: 0;
+    overflow: hidden;
   }
   .menu,
   .navbar-section {
@@ -88,14 +120,13 @@
     padding: 30px 10px;
   }
   .ac {
-    background-color: #e9eafc;
-    height: 40vh;
+    height: 4vh;
     position: relative;
-    z-index: 2 !important;
-    width: 50%;
+    z-index: 2 !important; 
+    width: 10% !important;
     top: 0;
     right: 0;
-    overflow-x: hidden;
+    overflow: hidden;
     transition: 0.5s;
   }
   .menu::before {
@@ -118,4 +149,6 @@
     margin: 0 20px 25% 20px;
     width: 100%;
   }
+
+ 
 }

@@ -7,8 +7,8 @@ import Section_5_image_5 from "../images/section-5-5.jpg";
 import Section_5_image_6 from "../images/section-5-6.jpg";
 const Section_2 = () => {
     return (
-        <div>
-            <h1 className="section5-header">توضیحات نمایشگاه</h1>
+        <div className="main">
+            <h1 className="section5-header flex justify-center">توضیحات نمایشگاه</h1>
             <div className="section5-container">
                 <div className="image-main-container">
                     <img
