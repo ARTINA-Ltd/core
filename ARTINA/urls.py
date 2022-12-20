@@ -25,10 +25,10 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('core/', include(core_urls)),
-    path('exhibition/', include(ex_urls)),
-    path('transaction/', include('core.urls')),
-    path('account/', include(acc_urls)),
+    path('api/core/', include(core_urls)),
+    path('api/exhibition/', include(ex_urls)),
+    path('api/transaction/', include('core.urls')),
+    path('api/account/', include(acc_urls)),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
