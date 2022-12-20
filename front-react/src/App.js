@@ -12,6 +12,7 @@ import ExhibitionLists from './Pages/Exhibition_lists'
 import RequestDetails from "./ExhabitionComponent/src/component/request-artist-detail-page/r-page/request-detail";
 import ShowRequests from "./ExhabitionComponent/src/component/request-artist-detail-page/r-page/show-req";
 import RequestLists from "./ExhabitionComponent/src/component/requestlistforexhibition/requests/paging";
+import NFTUploadPage from "./Pages/NftUploadPage";
 // eslint-disable-next-line import/no-anonymous-default-export
 
 import {ChainId, ThirdwebProvider} from "@thirdweb-dev/react";
@@ -36,6 +37,7 @@ export default () => {
                     <Route exact path="request-lists" element={<RequestLists/>}/>
                     <Route exact path="show-request/" element={<ShowRequests/>}/>
                     <Route exact path="request-details" element={<RequestDetails/>}/>
+                    <Route exact path="upload-page" element={<NFTUploadPage/>}/>
                 </Routes>
             </div>
         </ThirdwebProvider>
