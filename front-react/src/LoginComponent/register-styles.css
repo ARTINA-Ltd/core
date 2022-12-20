@@ -3,22 +3,19 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background: linear-gradient(
-        rgba(255, 255, 255, 0.7),
-        rgba(255, 255, 255, 0.9)
-    ),
-    url("./images/register-background.jpg");
+    background: url("./images/background-register-image.jpg");
     background-size: cover;
 }
 
 form {
-    background-color: #999fee;
-    padding: 2% 5%;
+    background-color: rgba(193, 193, 243, 0.96);
+    padding: 3% 4%;
     border-radius: 2%;
 }
 
 h1 {
-    font-size: 2.5em;
+    font-family: Vazir-Bold, sans-serif;
+    font-size: 2.8em;
 }
 
 button {
@@ -26,8 +23,13 @@ button {
     height: 50px;
     padding: 10px;
     border: none;
-    border-radius: 5%;
-    background-color: #4e45d0;
+    border-radius: 7px;
+    /*background-color: #7c73e8;*/
+    background: linear-gradient(to bottom right, rgba(100, 100, 255, 0.8), rgba(100, 100, 255, 0.84)),
+    url("../mehdizade_project/artist_page/src/image/button-1.jpg");
+    font-family: Vazir-Bold, sans-serif;
     font-size: 2.3em;
     color: white;
+    cursor: pointer;
+    margin-top: 5%;
 }
