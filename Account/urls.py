@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 
-router.register('register', views.RegisterViewSet)
+router.register(r'register', views.RegisterViewSet)
 # router.register(r'artists', views.ArtistViewSet)
 router.register(r'rate', views.ArtistRateViewSet)
 router.register(r'profile', views.ProfileViewSet)

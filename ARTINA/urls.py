@@ -29,7 +29,7 @@ urlpatterns = [
     path('api/exhibition/', include(ex_urls)),
     path('api/transaction/', include('core.urls')),
     path('api/account/', include(acc_urls)),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/login/', TokenObtainPairView.as_view()),
+    path('api/login/refresh/', TokenRefreshView.as_view()),
 
 ]
