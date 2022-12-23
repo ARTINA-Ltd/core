@@ -1,4 +1,7 @@
-import React, {useState} from "react";
+import React, {useState, useCallback } from "react";
+import cuid from "cuid";
+import Dropzone from "./Dropzone";
+import ImageGrid from "./ImageGrid";
 import "./UploadItem.css";
 
 const UploadItem = () => {
@@ -16,10 +19,30 @@ const UploadItem = () => {
             setOploadObj({...upladObj, price: e.target.value});
         }
     };
+
+    const [images, setImages] = useState([]);
+    const onDrop = useCallback((acceptedFiles) => {
+        acceptedFiles.map((file) => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                setImages((prevState) => [
+                    ...prevState,
+                    {id: cuid(), src: e.target.result},
+                ]);
+            };
+            reader.readAsDataURL(file);
+            return file;
+        });
+    }, []);
+
+
     return (
         <div className="main__div">
             <div className="upload__nft__container">
-                <div className="upload__nft">1</div>
+                <div className="upload__nft">
+                    <Dropzone onDrop={onDrop} accept={"image/*"} />
+                    <ImageGrid images={images} />
+                </div>
                 <div className="name__input__container">
                     <div className="nft__name">نام اثر</div>
                     <input
@@ -32,7 +55,7 @@ const UploadItem = () => {
                 </div>
             </div>
             <div className="a1">
-                <div className="a2">توضیخات</div>
+                <div className="a2">توضیحات</div>
                 <textarea
                     className="a3"
                     value={upladObj.desc}
@@ -42,7 +65,7 @@ const UploadItem = () => {
             <div className="a1">
                 <div className="a2">لینک خارجی</div>
                 <input
-                    className="a3"
+                    className="a3_2"
                     value={upladObj.link}
                     onChange={(e) => setOploadObj({...upladObj, link: e.target.value})}
                 />
@@ -66,6 +89,7 @@ const UploadItem = () => {
                         onChange={(e) =>
                             setOploadObj({...upladObj, date_created: e.target.value})
                         }
+                        type={"date"}
                     />
                 </div>
             </div>
@@ -73,7 +97,7 @@ const UploadItem = () => {
                 <div style={{width: "40%"}}>
                     <div className="a2">قیمت پایه</div>
                     <input
-                        className="a3"
+                        className="a3_2"
                         value={upladObj.price}
                         onChange={(e) => hanndleNumberChange(e)}
                     />
@@ -84,7 +108,13 @@ const UploadItem = () => {
                     </div>
                     <div
                         className="a3"
-                        style={{fontSize: "10px"}}
+                        style={{
+                            fontSize: "2.5em",
+                            background: "linear-gradient(to bottom right, rgba(100, 100, 255, 0.8), rgba(100, 100, 255, 0.84))",
+                            color: "white",
+                            cursor: "pointer",
+                            textAlign: "center"
+                        }}
                         onClick={() => console.log(upladObj)}
                     >
                         آپلود
