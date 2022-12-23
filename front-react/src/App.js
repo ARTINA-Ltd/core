@@ -4,9 +4,10 @@ import ArtistPage from "./Pages/ArtistPage";
 import HomePage from "./Pages/HomePage";
 import ArtistApplicationForm from "./Pages/ExhibitionSignForm";
 import NFTDetails from "./Pages/ProductPage";
-import Login from "./Pages/LoginPage";
+// import Login from "./Pages/LoginPage";
 // import Register from "./LoginComponent/SignUp";
 import Register from "./LoginComponent/register";
+import Login from "./LoginComponent/login";
 import ExhibitorPage from "./Pages/Exhabition";
 import ExhibitionLists from './Pages/Exhibition_lists'
 import RequestDetails from "./ExhabitionComponent/src/component/request-artist-detail-page/r-page/request-detail";
