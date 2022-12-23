@@ -1,0 +1,19 @@
+.btn {
+    border: none;
+    text-align: center;
+    background-color: rgb(218, 216, 216);
+    height: 50px;
+    border-radius: 12px;
+    color: black;
+    font-size: 18px;
+    transition-duration: 0.3s;
+}
+
+.btn:hover {
+    background-color: rgba(100, 100, 255, 0.8);
+    color: aliceblue;
+}
+
+.dropzone-content {
+    font-size: 18px;
+}
