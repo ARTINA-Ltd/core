@@ -20,7 +20,7 @@ const Register = () => {
             placeholder: "Username",
             errorMessage: "نام کاربری باید منحصر به فرد بوده و بین ۶ تا ۲۰ کاراکتر باشد",
             label: "نام کاربری",
-            pattern: "^[a-zA-Z0-9]{6,20}$",
+            pattern: "^[a-zA-Z0-9_]{6,20}$",
             required: true,
         },
         {
