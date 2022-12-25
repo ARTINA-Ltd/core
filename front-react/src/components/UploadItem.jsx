@@ -1,22 +1,14 @@
-import React, {useState, useCallback } from "react";
+import React, {useState, useCallback} from "react";
 import cuid from "cuid";
 import Dropzone from "./Dropzone";
 import ImageGrid from "./ImageGrid";
 import "./UploadItem.css";
 
 const UploadItem = () => {
-    const [upladObj, setOploadObj] = useState({
-        item_name: "",
-        desc: "",
-        link: "",
-        artist_name: "",
-        date_created: "",
-        price: "",
-    });
     const hanndleNumberChange = (e) => {
         const re = /^[0-9\b]+$/;
         if (e.target.value === "" || re.test(e.target.value)) {
-            setOploadObj({...upladObj, price: e.target.value});
+            setOploadObj({...upladObj, last_price: e.target.value});
         }
     };
 
@@ -35,9 +27,22 @@ const UploadItem = () => {
         });
     }, []);
 
+    const [upladObj, setOploadObj] = useState({
+        image: setImages,
+        item_name: "",
+        description: "",
+        external_link: "",
+        creator: "",
+        date_created: "",
+        last_price: 0,
+        owner: null,
+    });
 
     return (
         <div className="main__div">
+            <div className="header__div">
+                <h1 className="header__name">بخش آپلود فایل</h1>
+            </div>
             <div className="upload__nft__container">
                 <div className="upload__nft">
                     <Dropzone onDrop={onDrop} accept={"image/*"} />
@@ -58,30 +63,30 @@ const UploadItem = () => {
                 <div className="a2">توضیحات</div>
                 <textarea
                     className="a3"
-                    value={upladObj.desc}
-                    onChange={(e) => setOploadObj({...upladObj, desc: e.target.value})}
+                    value={upladObj.description}
+                    onChange={(e) => setOploadObj({...upladObj, description: e.target.value})}
                 ></textarea>
             </div>
             <div className="a1">
                 <div className="a2">لینک خارجی</div>
                 <input
                     className="a3_2"
-                    value={upladObj.link}
-                    onChange={(e) => setOploadObj({...upladObj, link: e.target.value})}
+                    value={upladObj.external_link}
+                    onChange={(e) => setOploadObj({...upladObj, external_link: e.target.value})}
                 />
             </div>
             <div className="a4">
-                <div style={{width: "40%"}}>
+                <div className="a4_2">
                     <div className="a2">نام هنرمند</div>
                     <input
                         className="a3"
-                        value={upladObj.artist_name}
+                        value={upladObj.creator}
                         onChange={(e) =>
-                            setOploadObj({...upladObj, artist_name: e.target.value})
+                            setOploadObj({...upladObj, creator: e.target.value})
                         }
                     />
                 </div>
-                <div style={{width: "40%"}}>
+                <div className="a4_2">
                     <div className="a2">تاریخ ایجاد اثر</div>
                     <input
                         className="a3"
@@ -94,15 +99,15 @@ const UploadItem = () => {
                 </div>
             </div>
             <div className="a4">
-                <div style={{width: "40%"}}>
+                <div className="a4_2">
                     <div className="a2">قیمت پایه</div>
                     <input
                         className="a3_2"
-                        value={upladObj.price}
+                        value={upladObj.last_price}
                         onChange={(e) => hanndleNumberChange(e)}
                     />
                 </div>
-                <div style={{width: "40%"}}>
+                <div className="a4_2">
                     <div className="a2" style={{color: "transparent"}}>
                         a
                     </div>

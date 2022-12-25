@@ -1,5 +1,30 @@
+@font-face {
+    font-family: 'Vazir-Medium';
+    src: url('../assets/fonts/Vazir-Medium.ttf');
+}
+
+* {
+    -webkit-appearance: none;
+}
+
+.header__div {
+    /* make the content at the right */
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.header__name {
+    font-size: 3.2rem;
+    margin: 20px 0 30px 0 ;
+    font-family: "Vazir-Medium", sans-serif;
+}
+
 .main__div {
     padding: 5% 10%;
+}
+
+.main__div input {
+    font-family: Vazir-Medium, sans-serif;
 }
 
 .upload__nft__container {
@@ -14,7 +39,7 @@
     box-shadow: 0px 5px 10px rgba(196, 193, 224, 0.72);
     border-radius: 12px;
     padding: 10px;
-    width: 30vw;
+    width: 35vw;
     height: 30vh;
     display: flex;
     justify-content: center;
@@ -28,7 +53,7 @@
 }
 
 .name__input__container {
-    width: 50%;
+    width: 45%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -39,8 +64,9 @@
 .nft__name {
     text-align: right;
     padding: 10px 0;
-    width: 100%;
+    width: 90%;
     font-size: 2.5em;
+    font-family: "Vazir-Medium", sans-serif;
 }
 
 .nft__name__input {
@@ -64,6 +90,7 @@
 
 .a2 {
     font-size: 2.5em;
+    font-family: "Vazir-Medium", sans-serif;
     width: 100%;
     text-align: right;
     padding: 10px 0;
@@ -78,6 +105,7 @@
     border-radius: 12px;
     border: none;
     font-size: 2.5em;
+    font-family: "Vazir-Medium", sans-serif;
     direction: rtl;
 }
 
@@ -90,6 +118,7 @@
     border-radius: 12px;
     border: none;
     font-size: 2.5em;
+    font-family: "Vazir-Medium", sans-serif;
     direction: ltr;
 }
 
@@ -99,6 +128,10 @@
     align-items: center;
     width: 100%;
     margin-top: 30px;
+}
+
+.a4_2 {
+    width: 40%;
 }
 
 .a5 {
@@ -113,4 +146,47 @@
     box-shadow: 0px 5px 10px rgba(196, 193, 224, 0.72);
     border-radius: 12px;
     border: none;
+}
+
+@media screen and (max-width: 768px) {
+    .main__div {
+        padding: 5% 5%;
+    }
+    .upload__nft {
+        width: 50vw;
+        height: 20vh;
+    }
+    .name__input__container {
+        width: 80%;
+    }
+    .nft__name {
+        font-size: 2em;
+        width: 90%;
+        margin-right: 5%;
+    }
+    .nft__name__input {
+        width: 90%;
+        margin-right: 5%;
+    }
+    .a1 {
+        margin-top: 3%;
+    }
+    .a2 {
+        font-size: 2em;
+    }
+    .a3 {
+        font-size: 2em;
+    }
+    .a3_2 {
+        font-size: 2em;
+    }
+    .a4 {
+        margin-top: 3%;
+    }
+    .a4_2 {
+        width: 48%;
+    }
+    .a5 {
+        font-size: 2em;
+    }
 }
