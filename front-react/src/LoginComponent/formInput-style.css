@@ -1,4 +1,10 @@
+@font-face {
+    font-family: 'Vazir-Medium';
+    src: url('../assets/fonts/Vazir-Medium.ttf');
+}
+
 .input {
+    font-family: Vazir-Medium, sans-serif;
     width: 280px;
     padding: 1%;
     margin: 5% 0;
@@ -14,7 +20,7 @@
 }
 
 .input label {
-    font-family: Vazir-Bold, sans-serif;
+    font-family: Vazir-Medium, sans-serif;
     float: right;
     text-align: right;
     width: 100%;
@@ -24,7 +30,7 @@
 
 .span-error {
     font-size: 1.5em;
-    font-family: Vazir-Bold, sans-serif;
+    font-family: Vazir-Medium, sans-serif;
     color: red;
     display: none;
 }
