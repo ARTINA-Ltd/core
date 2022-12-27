@@ -1,6 +1,7 @@
 import React, {useState, useCallback, useEffect} from "react";
 import Dropzone from "./Dropzone";
 import "./UploadItem.css";
+import axios from "axios";
 
 const UploadItem = () => {
     const hanndleNumberChange = (e) => {
@@ -33,7 +34,7 @@ const UploadItem = () => {
         creator: "",
         date_created: "",
         last_price: 0,
-        owner: null,
+        owner: 1, // TODO: Change this pk to the current user
     });
 
     useEffect(() => {
@@ -41,6 +42,25 @@ const UploadItem = () => {
         setOploadObj({...upladObj, date_created: today.toISOString().slice(0, 10)})
     }, [])
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.post("http://localhost:8000/api/transaction/Nfts/", {
+            base64_image: upladObj.image,
+            name: upladObj.item_name,
+            description: upladObj.description,
+            external_link: upladObj.external_link,
+            creator: upladObj.creator,
+            date: upladObj.date_created,
+            last_price: upladObj.last_price,
+            owner: upladObj.owner
+        })
+            .then(res => {
+                console.log(res);
+                console.log(upladObj.image.split(",")[1]);
+                // TODO: Redirection
+            }
+        )
+    }
 
     return (
         <div className="main__div">
@@ -134,7 +154,7 @@ const UploadItem = () => {
                             cursor: "pointer",
                             textAlign: "center"
                         }}
-                        onClick={() => console.log(upladObj)}
+                        onClick={(e) => handleSubmit(e)}
                     >
                         آپلود
                     </div>
