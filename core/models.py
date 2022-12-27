@@ -12,12 +12,14 @@ class NFT(models.Model):
     name = models.CharField(max_length=15, null=False, blank=False)
     owner = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)
     creator = models.CharField(max_length=15, null=False, blank=False)
-    date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
+    date = models.DateTimeField(verbose_name="تاریخ", auto_now=False)
     last_price = models.IntegerField(verbose_name='آخرین قیمت', null=False, blank=False)
-    image = models.ImageField(upload_to="./static/NFTS", null=True, blank=True)
-    start_date = models.DateTimeField(verbose_name='تاریخ شروع مزایده', null=False, default=timezone.now)
-    end_date = models.DateTimeField(verbose_name='تاریخ پایان مزایده', null=False, default=timezone.now)
+    base64_image = models.TextField(default='data:image', null=False, blank=False)
+    start_date = models.DateTimeField(verbose_name='تاریخ شروع مزایده', null=True, blank=True)
+    end_date = models.DateTimeField(verbose_name='تاریخ پایان مزایده', null=True, blank=True)
     description = models.TextField(max_length=200, null=True, blank=True)
+    external_link = models.URLField(null=True, blank=True)
+    # image = models.ImageField(upload_to="./static/NFTS", null=True, blank=True)
 
     def has_expired(self):
         return datetime.now(tz=pytz.timezone('Asia/Tehran')) > self.end_date
