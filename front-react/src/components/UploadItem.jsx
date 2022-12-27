@@ -1,7 +1,5 @@
-import React, {useState, useCallback} from "react";
-import cuid from "cuid";
+import React, {useState, useCallback, useEffect} from "react";
 import Dropzone from "./Dropzone";
-import ImageGrid from "./ImageGrid";
 import "./UploadItem.css";
 
 const UploadItem = () => {
@@ -12,15 +10,15 @@ const UploadItem = () => {
         }
     };
 
-    const [images, setImages] = useState([]);
+    const UploadImage = (files) => {
+        setOploadObj({...upladObj, image: files})
+    }
+
     const onDrop = useCallback((acceptedFiles) => {
         acceptedFiles.map((file) => {
             const reader = new FileReader();
             reader.onload = function (e) {
-                setImages((prevState) => [
-                    ...prevState,
-                    {id: cuid(), src: e.target.result},
-                ]);
+                UploadImage(e.target.result);
             };
             reader.readAsDataURL(file);
             return file;
@@ -28,7 +26,7 @@ const UploadItem = () => {
     }, []);
 
     const [upladObj, setOploadObj] = useState({
-        image: setImages,
+        image: "",
         item_name: "",
         description: "",
         external_link: "",
@@ -38,6 +36,12 @@ const UploadItem = () => {
         owner: null,
     });
 
+    useEffect(() => {
+        const today = new Date();
+        setOploadObj({...upladObj, date_created: today.toISOString().slice(0, 10)})
+    }, [])
+
+
     return (
         <div className="main__div">
             <div className="header__div">
@@ -45,8 +49,18 @@ const UploadItem = () => {
             </div>
             <div className="upload__nft__container">
                 <div className="upload__nft">
-                    <Dropzone onDrop={onDrop} accept={"image/*"} />
-                    <ImageGrid images={images} />
+                    {!upladObj.image &&
+                        <Dropzone onDrop={onDrop} />
+                    }
+                    {upladObj.image &&
+                        <div className="image__container">
+                            <div className="image__close__btn"
+                                 onClick={() => setOploadObj({...upladObj, image: ""})}>
+                                 <img src={require("../assets/icons/cancel_button.png")} alt="close" />
+                            </div>
+                            <img src={upladObj.image} alt=""/>
+                        </div>
+                    }
                 </div>
                 <div className="name__input__container">
                     <div className="nft__name">نام اثر</div>
