@@ -1,32 +1,17 @@
 import React, {useState, useCallback} from "react";
 import {useDropzone} from "react-dropzone";
 import "./Dropzone.css";
-import cuid from "cuid";
 
-function Dropzone({onDrop, accept, open}) {
-    const [myFiles, setMyFiles] = useState([]);
-
-    // const onDrop = useCallback(acceptedFiles => {
-    //     setMyFiles([...myFiles, ...acceptedFiles])
-    // }, [myFiles])
-
+function Dropzone({onDrop, open}) {
     const {getRootProps, getInputProps, isDragActive, acceptedFiles} =
         useDropzone({
-            accept,
+            accept:{'image/*': ['jpg', 'jpeg', 'png']},
             onDrop,
         });
-
-    const removeFile = file => () => {
-        console.log("removeFile", file);
-        const newFiles = [...myFiles]
-        newFiles.splice(newFiles.indexOf(file), 1)
-        setMyFiles(newFiles)
-    }
 
     const files = acceptedFiles.map((file) => (
         <li key={file.path}>
             {file.path} - {file.size} bytes{" "}
-            <button className="remove-btn" onClick={removeFile(file)}>x</button>
         </li>
     ));
 
@@ -53,7 +38,6 @@ function Dropzone({onDrop, accept, open}) {
             <aside>
                 <ul>{files}</ul>
             </aside>
-            {/*{files.length > 0 && <button className="remove-btn" onClick={removeAll}>x</button>}*/}
         </div>
     );
 }
