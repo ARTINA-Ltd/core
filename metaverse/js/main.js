@@ -30,8 +30,8 @@ scene.add(sunLight);
 
 const geometry = new THREE.BoxGeometry(1, 1, 1); // BoxGeometry is the shape of the object
 const material = new THREE.MeshBasicMaterial({color: 'blue'}); // MeshBasicMaterial is the look of the object (color or texture)
-const cube = new THREE.Mesh(geometry, material); // create cube with geometry and material
-scene.add(cube); // add cube to scene
+// const cube = new THREE.Mesh(geometry, material); // create cube with geometry and material
+// scene.add(cube); // add cube to scene
 
 // Controls
 // Event Listenet for when we press the keys
@@ -68,17 +68,40 @@ scene.add(wallGroup); // add the group to the scene, then any child added to the
 const frontWall = new THREE.Mesh( // Mesh class that has geometry and material inside
     new THREE.BoxGeometry(50, 20, 0.001), // geometry
     new THREE.MeshLambertMaterial({ // Lambert material is for non-shiny surfaces
-        color: 'gray',
+        color: '#ffffff',
     })
 );
 
-frontWall.position.z = -20; // push the wall forward in the Z axis
+frontWall.position.z = -22; // push the wall forward in the Z axis
+
+const artwork = new THREE.Group();
+const source = "img/4ktest.webp";
+artwork.src = source;
+const img = new THREE.MeshBasicMaterial({
+    map: new THREE.ImageUtils.loadTexture(artwork.src),
+})
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(8, 6), img);
+plane.position.set(-15, 1, frontWall.position.z + 0.1);
+scene.add(plane);
+
+// const myMap = new Map();
+// const res = myMap.get("/Users/aria/Downloads/32822.jpg");
+// console.log("res", res);
+const artwork2 = new THREE.Group();
+const source2 = 'img/32822.jpg';
+artwork2.src = source2;
+const img2 = new THREE.MeshBasicMaterial({
+    map: new THREE.ImageUtils.loadTexture(artwork2.src),
+})
+const plane2 = new THREE.Mesh(new THREE.PlaneGeometry(8, 6), img2);
+plane2.position.set(-4, 1, frontWall.position.z + 0.1);
+scene.add(plane2);
 
 // Left Wall
 const leftWall = new THREE.Mesh( // Mesh class that has geometry and material inside
     new THREE.BoxGeometry(50, 20, 0.001), // geometry
     new THREE.MeshLambertMaterial({ //  Lambert material is for non-shiny surfaces
-        color: 'white',
+        color: '#c7c7c7',
     })
 );
 
@@ -89,7 +112,7 @@ leftWall.position.x = -20; // -20 is for 20 units left
 const rightWall = new THREE.Mesh( // Mesh class that has geometry and material inside
     new THREE.BoxGeometry(50, 20, 0.001), // geometry
     new THREE.MeshLambertMaterial({ // Lambert material is for non-shiny surfaces
-        color: 'white',
+        color: '#c7c7c7',
     })
 );
 
@@ -105,9 +128,9 @@ for (let i = 0; i < wallGroup.children.length; i++) {
 }
 
 // Create the ceiling
-const ceilingGeometry = new THREE.PlaneBufferGeometry(50, 50); // BoxGeometry is the shape the object
+const ceilingGeometry = new THREE.PlaneBufferGeometry(50, 55); // BoxGeometry is the shape the object
 const ceilingMaterial = new THREE.MeshLambertMaterial({ // Lambert material is for non-shiny surfaces
-    color: "#7fc7ff",
+    color: "#797573",
 });
 const ceilingPlane = new THREE.Mesh(ceilingGeometry, ceilingMaterial); // create ceiling with geometry and material
 
@@ -116,39 +139,26 @@ ceilingPlane.position.y = 12;
 
 scene.add(ceilingPlane);
 
-// function when a key is pressed, execute this function
+// movements of the camera with W S A D keys
 function onKeyDown(event) {
     let keycode = event.which;
 
     // right arrow key
-    if (keycode === 39) {
-        camera.translateX(-0.1);
+    if (keycode === 39 || keycode === 68) {
+        camera.translateX(0.2);
     }
     // left arrow key
-    else if (keycode === 37) {
-        camera.translateX(0.1);
+    else if (keycode === 37 || keycode === 65) {
+        camera.translateX(-0.2);
     }
     // up arrow key
-    else if (keycode === 38) {
-        camera.translateY(-0.1);
+    else if (keycode === 38 || keycode === 87) {
+        camera.translateZ(-0.2);
     }
     // down arrow key
-    else if (keycode === 40) {
-        camera.translateY(0.1);
+    else if (keycode === 40 || keycode === 83) {
+        camera.translateZ(0.2);
     }
-    else if (keycode === 32) {
-        console.log('spacebar');
-        camera.translateZ(0.1);
-    }
-    // to move forward with W
-    else if (keycode === 87) {
-        camera.translateZ(-0.1);
-    }
-    // to jump up and get down with
-    else if (keycode === 74) {
-    camera.translateZ(0.1);
-    }
-
 }
 
 const cursor = { x:0, y:0 }; // create a cursor object to hold the x and y coordinates of the mouse
@@ -167,8 +177,8 @@ let render = function () {
     const cameraX = cursor.x - 1
     const cameraY = - cursor.y
 
-    camera.position.x += (cameraX - camera.position.x) * 0.1;
-    camera.position.y += (cameraY - camera.position.y) * 0.1;
+    // camera.rotation.x += (cameraX - camera.rotation.x) * 0.1;
+    camera.rotation.y += (cameraY - camera.rotation.y) * 0.1;
 
     renderer.render(scene, camera); //renders the scene
 
