@@ -38,3 +38,30 @@ button {
     cursor: pointer;
     margin-top: 5%;
 }
+
+.google-button-container {
+    width: 100%;
+    border: none;
+    background-color: #7c73e8;
+    border-radius: 7px;
+    font-family: Vazir-Medium, sans-serif;
+    color: white;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.google-button {
+    /*float: right;*/
+}
+
+/*.google-button {*/
+/*    width: 120%;*/
+/*    height: 100%;*/
+/*    border: none;*/
+/*    border-radius: 7px;*/
+/*    background-color: rgb(246, 0, 0);*/
+/*    font-size: 2.3em;*/
+/*    color: white;*/
+/*    cursor: pointer;*/
+/*    margin-top: 5%;*/
+/*}*/

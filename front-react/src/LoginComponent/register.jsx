@@ -1,7 +1,9 @@
-import {useState} from "react";
+import {useState, useCallback} from "react";
 import axios from "axios";
 import "./register-styles.css";
 import FormInput from "./formInput";
+import GoogleButton from 'react-google-button'
+import "../assets/fonts/Vazir-Medium.ttf";
 
 
 const Register = () => {
@@ -57,15 +59,15 @@ const Register = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post("http://localhost:8000/account/register/", {
+        axios.post("http://localhost:8000/api/account/register/", {
             username: values.username,
             email: values.email,
             password: values.password,
         })
             .then(res => {
-                console.log(res);
-            }
-        )
+                    console.log(res);
+                }
+            )
     }
 
     const onChange = (e) => {
@@ -74,6 +76,29 @@ const Register = () => {
             [e.target.name]: e.target.value,
         });
     }
+
+    const openGoogleLoginPage = useCallback(() => {
+        const googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
+        const redirectUri = 'api/v1/auth/login/google/';
+
+        const scope = [
+            'https://www.googleapis.com/auth/userinfo.email',
+            'https://www.googleapis.com/auth/userinfo.profile'
+        ].join(' ');
+
+        const params = {
+            response_type: 'code',
+            client_id: '512823683871-adr9e9dcfqiqii5o2480u5fhbtu4uj1g.apps.googleusercontent.com',
+            redirect_uri: `http://localhost:8000/api/v1/auth/login/google/`,
+            prompt: 'select_account',
+            access_type: 'offline',
+            scope
+        };
+
+        const urlParams = new URLSearchParams(params).toString();
+
+        window.location = `${googleAuthUrl}?${urlParams}`;
+    }, []);
 
     console.log(values);
     return (
@@ -84,6 +109,22 @@ const Register = () => {
                     <FormInput key={input.id} {...input} value={values[input.name]} onChange={onChange}/>
                 ))}
                 <button>ثبت نام</button>
+                <div className="google-button-container">
+                    <GoogleButton
+                        className="google-button"
+                        style={{
+                            backgroundColor: ("rgb(100,100,255,0.95)"),
+                            color: "white",
+                            width: "100%",
+                            fontFamily: "Vazir-Medium",
+                            fontSize: "2.3em",
+                            fontWeight: "bold",
+                            borderRadius: "7px",
+                        }}
+                        label="ثبت نام با گوگل"
+                        onClick={openGoogleLoginPage}
+                    />
+                </div>
             </form>
         </div>
     );
