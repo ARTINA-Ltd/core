@@ -29,6 +29,7 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
+    "react-google-button": "^0.7.2",
     "react-icons": "^4.6.0",
     "react-jalaali-datepicker": "^1.1.2",
     "react-router": "^6.4.3",
