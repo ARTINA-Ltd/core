@@ -1,0 +1,55 @@
+@font-face {
+    font-family: 'Vazir-Medium';
+    src: url('../assets/fonts/Vazir-Medium.ttf');
+}
+
+.main-div {
+    font-family: Vazir-Medium, sans-serif;
+}
+
+.btn {
+    border: none;
+    text-align: center;
+    background-color: rgb(218, 216, 216);
+    height: 50px;
+    border-radius: 12px;
+    color: black;
+    font-size: 18px;
+    transition-duration: 0.3s;
+}
+
+.btn:hover {
+    background-color: rgba(100, 100, 255, 0.8);
+    color: aliceblue;
+}
+
+.remove-btn {
+    border: none;
+    text-align: center;
+    background-color: rgb(218, 216, 216);
+    width: 20px;
+    height: 20px;
+    border-radius: 12px;
+    color: black;
+    font-size: 18px;
+    transition-duration: 0.3s;
+}
+
+.dropzone-content {
+    font-size: 18px;
+    font-family: Vazir-Medium, sans-serif;
+}
+
+.text-center {
+    font-family: Vazir-Medium, sans-serif;
+}
+
+@media screen and (max-width: 768px) {
+    .btn {
+        font-size: 0.8em;
+    }
+    .dropzone-content {
+        font-size: 0.8em;
+        display: none;
+    }
+}

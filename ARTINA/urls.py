@@ -22,14 +22,19 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('core/', include(core_urls)),
-    path('exhibition/', include(ex_urls)),
-    path('transaction/', include('core.urls')),
-    path('account/', include(acc_urls)),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/core/', include(core_urls)),
+    path('api/exhibition/', include(ex_urls)),
+    path('api/transaction/', include('core.urls')),
+    path('api/account/', include(acc_urls)),
+    path('api/login/', TokenObtainPairView.as_view()),
+    path('api/login/refresh/', TokenRefreshView.as_view()),
 
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
