@@ -14,3 +14,8 @@ code {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Sans";
+  src: url("./assets/fonts/IRANSansX-Medium.ttf");
+}
