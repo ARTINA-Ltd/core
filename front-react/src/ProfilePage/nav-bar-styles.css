@@ -1,0 +1,131 @@
+.navbar-section {
+  background: linear-gradient(90deg, #feece8 30.88%, #e9eafc 79.43%);
+  display: flex;
+  flex-direction: row-reverse;
+}
+.menu {
+  width: 35%;
+  padding: 2%;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  margin: 0 0 auto auto;
+}
+.menu-icon,
+.close-navbar {
+  width: 0;
+}
+.menu-item {
+  font-size: 22px;
+  color: #4e45d0;
+  padding: 2% 5%;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  color: #ffffff;
+  text-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
+}
+.menu > p:nth-child(1) {
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 9px;
+}
+
+.menu > p:nth-child(1):hover {
+  background-color: #4e45d0;
+}
+.inner-addon {
+  margin: 0 40px;
+  align-self: center;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.navbar-section input[type="text"] {
+  width: 350px;
+  height: 45px;
+  font-size: 30px;
+  border: none;
+  background: rgba(141, 138, 138, 0.24);
+  border-radius: 9px;
+}
+
+.icon-bar {
+  position: absolute;
+  margin: 4px;
+  width: 36.88px;
+  height: 38.76px;
+  background: url("../mehdizade_project/starter_file/calligraphy/src/images/search-icon.png") left no-repeat;
+  background-size: cover;
+}
+.icon-bar:hover {
+  filter: brightness(10);
+}
+
+@media (max-width: 1050px) {
+  .menu {
+    width: 46%;
+  }
+
+  .menu-item {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 850px) {
+  .menu-icon,
+  .close-navbar {
+    width: 50px;
+    position: absolute;
+    right: 20px;
+    top: 2px;
+  }
+
+  .dl {
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    padding: 0;
+  }
+  .menu,
+  .navbar-section {
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 30px 10px;
+  }
+  .ac {
+    height: 100vh;
+    position: fixed;
+    z-index: 1;
+    width: 50%;
+    top: 0;
+    right: 0;
+    overflow-x: hidden;
+    transition: 0.5s;
+  }
+  .menu::before {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+  .menu * {
+    line-height: 60px;
+    padding: 0;
+    margin: 0;
+  }
+  .menu > p:nth-child(1) {
+    padding: 0 20px;
+  }
+  .inner-addon {
+    align-self: auto;
+    margin: 0 20px 25% 20px;
+    width: 100%;
+  }
+
+  .navbar-section input[type="text"] {
+    width: 90%;
+  }
+}

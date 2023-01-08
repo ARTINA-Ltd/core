@@ -9,6 +9,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.10.12",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -19,7 +20,11 @@
     "bootstrap": "^5.2.3",
     "cuid": "^2.1.8",
     "dayjs": "^1.11.6",
+<<<<<<< HEAD
     "ethers": "^5.7.2",
+=======
+    "icons": "^1.0.0",
+>>>>>>> 32a2c224 (begin profile page)
     "jwt-decode": "^3.1.2",
     "mui": "^0.0.1",
     "react": "^18.2.0",
