@@ -1,10 +1,17 @@
 import "./nav-bar-styles.css";
 import { Fragment } from "react";
 import { Outlet, Link } from "react-router-dom";
+<<<<<<< HEAD
 import { images } from "./../../../../ExhabitionComponent/src/component/images";
 import React, { useState } from "react";
 // import Footer from "../footer/footer-component";
 import Logo from "../images/footer/logo.png"
+=======
+import { images } from "../../../../ExhabitionComponent/src/component/images";
+import React, { useState } from "react";
+// import Footer from "../footer/footer-component";
+import Logo from "../../../starter_file/calligraphy/src/images/footer/logo.png"
+>>>>>>> main
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import NavBar from 'react-bootstrap/Navbar';
@@ -17,6 +24,7 @@ const Navbar = () => {
   const showSidebar = () => setSidebar(!sidebar);
 
   return (
+<<<<<<< HEAD
 //     <Fragment>
 //       <div>
 //         <img
@@ -60,6 +68,10 @@ const Navbar = () => {
 
 <Fragment>
 <div>
+=======
+<Fragment>
+<div className="sticky-top">
+>>>>>>> main
   <img
     className="menu-icon"
     src={images["menue-icon.png"]}
@@ -85,7 +97,11 @@ const Navbar = () => {
     </div>
     <div className="inner-addon">
     <Link to={"/"} > <button className="walletconnect">اتصال به کیف پول</button></Link>
+<<<<<<< HEAD
 //                           <img className="logo" src={Logo} alt="" />
+=======
+                          <img className="logo" src={Logo} alt="" />
+>>>>>>> main
     </div>
   </div>
 </div>

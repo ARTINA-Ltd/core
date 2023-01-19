@@ -14,7 +14,7 @@ const Navbar = () => {
 
   return (
     <Fragment>
-    <div className="container1">
+    <div className="container1 sticky-top">
       <img
         className="menu-icon"
         src={images["menue-icon.png"]}
@@ -39,8 +39,8 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="inner-addon">
-        <Link to={"/"} > <button className="walletconnect">اتصال به کیف پول</button></Link>
-    //                           <img className="logo" src={Logo} alt="" />
+        <Link to={"/"} className="walletconnect1"> <button>اتصال به کیف پول</button></Link>
+                              <img className="logo" src={Logo} alt="" />
         </div>
       </div>
     </div>

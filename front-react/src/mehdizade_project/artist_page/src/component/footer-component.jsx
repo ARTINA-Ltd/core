@@ -78,8 +78,9 @@ const Footer = () => {
               </ul>
             </div>
           </div>
-          <div className="footer-right col-md-4 col-sm-6">
-            <div className="about-us">
+          
+          <div className="footer-right  col-md-4 col-sm-6  ">
+            <div className="about-us ">
             <img className="logo" src={Logo} alt="" />
               <p className="footer-title">آرتینا</p>
             </div>
@@ -87,7 +88,10 @@ const Footer = () => {
 
           </div>
         </footer>
-        <div className="copyright">Copyright @ 2022 by Artina-All rights reserved</div>
+        <div className="copyright">
+          <p className="copyright1"> Copyright @ 2022 by Artina-All rights reserved</p>
+
+          </div>
       </div>
     </>
 
