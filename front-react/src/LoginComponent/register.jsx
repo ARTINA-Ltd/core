@@ -4,6 +4,7 @@ import "./register-styles.css";
 import FormInput from "./formInput";
 import GoogleButton from 'react-google-button'
 import "../assets/fonts/Vazir-Medium.ttf";
+import {useNavigate} from "react-router-dom";
 
 
 const Register = () => {
@@ -57,6 +58,8 @@ const Register = () => {
         }
     ]
 
+    const navigate = useNavigate();
+
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post("http://localhost:8000/api/account/register/", {
@@ -64,8 +67,13 @@ const Register = () => {
             email: values.email,
             password: values.password,
         })
-            .then(res => {
-                    console.log(res);
+            .then((response) => {
+                    if (response.status === 201) {
+                        alert("ثبت نام با موفقیت انجام شد");
+                        navigate("/login");
+                    } else {
+                        alert("Something went wrong!");
+                    }
                 }
             )
     }
