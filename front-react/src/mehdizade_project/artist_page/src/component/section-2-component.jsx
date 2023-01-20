@@ -85,16 +85,17 @@ const Section_2 = () => {
     <div>
     <p className="namayeshgah"> نمایشگاه های شما در حال حاضر</p>
     <div className=" section live-collections">
-      <div className="collections-container">
+      <div className="collections-container md:flex md:justify-center">
         {collections.map((collection) => (
-          <div key={collection.id} className="collection">
-            <img className="collection-image" src={collection.image} alt="" />
-
-           <button className="collection-title name-title">{collection.title} </button>
+          <div key={collection.id} className="collection ">
+            <img className="collection-image " src={collection.image} alt="" />
+            
+           <button className="collection-title name-title  ">{collection.title} </button>
             <p className="collection-title col-date">
-              زمان برگزاری :{collection.date}
+              زمان برگزاری :{collection.date}</p>
+
               {/* <Link to={"/"}></Link> */}
-            </p>
+
           </div>
         ))}
 

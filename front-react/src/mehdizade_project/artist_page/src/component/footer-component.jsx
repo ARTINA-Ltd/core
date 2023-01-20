@@ -49,38 +49,7 @@ const Footer = () => {
   return (
     <>
       <div className="content" dir="ltr" >
-        {/* <footer dir="rtl">
-          <div className="footer-content-wrapper">
-            <div className="footer-col large-25 small-50 tiny-100  flt">
-              <div className="row socialmedia flex justify-content-center align-items-center mt-20 " dir="ltr">
-                <img className="sm-icon" src={SocialMedia1} />
-                <img className="sm-icon" src={SocialMedia2} />
-                <img className="sm-icon" src={SocialMedia3} />
-                <img className="sm-icon" src={SocialMedia5} />
-              </div>
-            </div>
-
-            <div className="section footer-col large-25 small-50 tiny-100  flt">
-              <p className="link-title">دسته بندی ها</p>
-              <Link to={"/artistpage"} className="links"><p className="desc">ارتباط با ما</p></Link>
-              <Link to={"/artistpage"} className="links"><p className="desc">سوالات</p></Link>
-              <Link to={"/artistpage"} className="links"><p className="desc">درباره آرتینا</p></Link>
-            </div>
-            <div className="footer-col large-25 small-50 tiny-100  flt">
-              <div className="footer-section">
-                {/* <div className="footer-conent">
-               <div className="footer-about"> */}
-        {/* <div className="about-us">
-           
-                </div>
-                <p className="desc1">راهی تازه به دنیای هنر </p>
-              </div>
-            </div>
-          </div>
-          <div className="clearfix"></div>
-          
-
-        </footer> */}
+      
         
         <footer className="footer">
           <div className="footer-left col-md-4 col-sm-6">
@@ -109,8 +78,9 @@ const Footer = () => {
               </ul>
             </div>
           </div>
-          <div className="footer-right col-md-4 col-sm-6">
-            <div className="about-us">
+          
+          <div className="footer-right  col-md-4 col-sm-6  ">
+            <div className="about-us ">
             <img className="logo" src={Logo} alt="" />
               <p className="footer-title">آرتینا</p>
             </div>
@@ -118,7 +88,10 @@ const Footer = () => {
 
           </div>
         </footer>
-        <div className="copyright">Copyright @ 2022 by Artina-All rights reserved</div>
+        <div className="copyright">
+          <p className="copyright1"> Copyright @ 2022 by Artina-All rights reserved</p>
+
+          </div>
       </div>
     </>
 

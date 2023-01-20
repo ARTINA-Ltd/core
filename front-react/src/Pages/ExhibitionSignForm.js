@@ -4,7 +4,7 @@ import Section_2 from "../mehdizade_project/exhibition_sign_form/src/component/s
 import Section_3 from "../mehdizade_project/exhibition_sign_form/src/component/section-3-component";
 import Footer from "../mehdizade_project/exhibition_sign_form/src/component/footer-component";
 // import Navbar from "../mehdizade_project/exhibition_sign_form/src/component/"
-import Nav_bar from "../mehdizade_project/starter_file/calligraphy/src/component/nav-bar"
+import Nav_bar from "../mehdizade_project/exhibition_sign_form/src/component/nav-bar"
 
 function App() {
     return (
