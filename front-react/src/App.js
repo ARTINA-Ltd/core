@@ -17,9 +17,9 @@ import NFTUploadPage from "./Pages/NftUploadPage";
 // eslint-disable-next-line import/no-anonymous-default-export
 
 import {ChainId, ThirdwebProvider} from "@thirdweb-dev/react";
+import ProfilePage from "./Pages/ProfilePage";
 
 const activeChainId = ChainId.Goerli;
-
 
 export default () => {
     return <>
@@ -39,6 +39,8 @@ export default () => {
                     <Route exact path="show-request/" element={<ShowRequests/>}/>
                     <Route exact path="request-details" element={<RequestDetails/>}/>
                     <Route exact path="upload-page" element={<NFTUploadPage/>}/>
+                    <Route exact path="profile" element={<ProfilePage/>}/>
+
                 </Routes>
             </div>
         </ThirdwebProvider>
