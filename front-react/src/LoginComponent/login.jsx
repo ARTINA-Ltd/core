@@ -3,6 +3,8 @@ import "./register-styles.css";
 import FormInput from "./formInput";
 import AuthContext from "./AuthContext";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 
 const Login = () => {
@@ -34,16 +36,51 @@ const Login = () => {
         }
     ];
 
-    const handleSubmit = (e) => {
+    // const loginUser = useContext(AuthContext);
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     const username = e.target.username.value;
+    //     const password = e.target.password.value;
+    //     console.log(username, password)
+    //     username.length > 0 && loginUser(username, password);
+    // }
+
+    const [authTokens, setAuthTokens] = useState(() =>
+        localStorage.getItem("authTokens")
+            ? JSON.parse(localStorage.getItem("authTokens"))
+            : null
+    );
+    const [user, setUser] = useState(() =>
+        localStorage.getItem("authTokens")
+            ? jwt_decode(localStorage.getItem("authTokens"))
+            : null
+    );
+
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post("http://localhost:8000/api/login/", {
-            username: values.username,
-            password: values.password,
-        })
-            .then(res => {
-                console.log(res);
-            }
-        )
+        const response = await fetch("http://localhost:8000/api/login/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username: values.username,
+                password: values.password,
+            })
+        });
+        const data = await response.json();
+
+        if (response.status === 200) {
+            setAuthTokens(data);
+            setUser(jwt_decode(data.access));
+            localStorage.setItem("authTokens", JSON.stringify(data));
+            alert("با موفقیت وارد شدید");
+            navigate("/upload-page");
+        } else {
+            alert("Something went wrong!");
+        }
     }
 
     const onChange = (e) => {
