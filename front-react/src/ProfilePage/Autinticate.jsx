@@ -10,7 +10,7 @@ export default function Autinticate() {
             <div className="">
             <p className="text-4xl mt-12">52154651486514651613    :شماره شبا</p>
 
-            <button className="text-3xl bg-gray-200 p-4 mt-4 radius-lg">ویرایش</button>
+            <button className="text-3xl  p-4 mt-4 radius-lg">ویرایش</button>
 
             </div>
         </div>
