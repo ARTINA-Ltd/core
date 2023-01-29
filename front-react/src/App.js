@@ -14,6 +14,7 @@ import RequestDetails from "./ExhabitionComponent/src/component/request-artist-d
 import ShowRequests from "./ExhabitionComponent/src/component/request-artist-detail-page/r-page/show-req";
 import RequestLists from "./ExhabitionComponent/src/component/requestlistforexhibition/requests/paging";
 import NFTUploadPage from "./Pages/NftUploadPage";
+import ShowCollection from "./components/ShowCollection";
 // eslint-disable-next-line import/no-anonymous-default-export
 
 import {ChainId, ThirdwebProvider} from "@thirdweb-dev/react";
@@ -28,7 +29,6 @@ export default () => {
                 <Routes>
                     <Route path="/" element={<StarterFile/>}/>
                     <Route exact path="artist-page" element={<ArtistPage/>}/>
-                    <Route exact path="homepage" element={<HomePage/>}/>
                     <Route exact path="artist-application-form" element={<ArtistApplicationForm/>}/>
                     <Route exact path="nft-details" element={<NFTDetails/>}/>
                     <Route exact path="login" element={<Login/>}/>
@@ -36,11 +36,11 @@ export default () => {
                     <Route exact path="exhibitor-page" element={<ExhibitorPage/>}/>
                     <Route exact path="exhibition-lists" element={<ExhibitionLists/>}/>
                     <Route exact path="request-lists" element={<RequestLists/>}/>
-                    <Route exact path="show-request/" element={<ShowRequests/>}/>
+                    <Route exact path="show-request" element={<ShowRequests/>}/>
                     <Route exact path="request-details" element={<RequestDetails/>}/>
                     <Route exact path="upload-page" element={<NFTUploadPage/>}/>
                     <Route exact path="profile" element={<ProfilePage/>}/>
-
+                    <Route exact path="collections" element={<ShowCollection/>}/>
                 </Routes>
             </div>
         </ThirdwebProvider>
