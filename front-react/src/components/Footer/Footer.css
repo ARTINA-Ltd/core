@@ -1,0 +1,139 @@
+.footer-content {
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgb(152, 158, 255) 30%, rgb(152, 158, 255) 70%, rgba(255, 255, 255, 1) 100%);
+}
+
+.footer-about h1, .footer-links h3, .footer-subscription h3, .footer-social h3 {
+    color: #08347e
+}
+
+.footer-links ul {
+    padding: 5px 10px 5px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.footer-links a {
+    padding: 2px;
+    text-decoration: none;
+    list-style: none;
+    color: black;
+}
+
+.footer-subscription {
+    margin-top: 10px;
+}
+
+.footer-subscription input, button {
+    font-size: 20px;
+}
+
+.footer-subscription input {
+    border: none;
+    border-radius: 5px;
+    margin-top: 5px;
+    padding: 5px 10px 5px 10px;
+}
+
+.footer-subscription button {
+    border: none;
+    border-radius: 5px;
+    margin-top: 5px;
+    padding: 5px 10px 5px 10px;
+    background-color: #08347e;
+    color: white;
+}
+
+.footer-social {
+    margin-top: 10px;
+}
+
+.footer-social-icons {
+    font-size: 30px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.fa-twitter, .fa-instagram, .fa-telegram, .fa-whatsapp {
+    color: #0a2a70;
+}
+
+
+.footer-copyright {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    border-top: black solid 1px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgb(152, 158, 255) 30%, rgb(152, 158, 255) 70%, rgba(255, 255, 255, 1) 100%);
+    color: white;
+}
+
+@media screen and (max-width: 1200px) {
+     .footer-content {
+         background: linear-gradient(to left, rgba(100, 100, 255, 0.84), #c1c1f3);
+         border-radius: 10px 10px 0 0;
+         padding: 10px;
+     }
+
+     .footer-about, .footer-links, .footer-subscription, .footer-social {
+          margin-top: 10px;
+     }
+
+     .footer-copyright {
+        background: linear-gradient(to left, rgba(100, 100, 255, 0.84), #c1c1f3);
+        font-size: 20px;
+        height: 50px;
+    }
+
+}
+
+@media screen and (max-width: 720px) {
+    .footer-content {
+       
+        padding: 10px 0 10px 0;
+        flex-direction: column;
+        background: linear-gradient(to left, rgba(100, 100, 255, 0.84), #c1c1f3);
+    }
+
+    .footer-links ul {
+        align-items: center;
+    }
+
+    .footer-about p {
+        display: flex;
+            justify-content: center;
+    }
+
+    .footer-about, .footer-links, .footer-subscription, .footer-social {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .footer-subscription h3, p {
+        margin-top: 5px;
+    }
+
+    .fa-twitter, .fa-instagram, .fa-telegram, .fa-whatsapp {
+        margin: 0 10px 0 10px;
+    }
+
+    .footer-copyright {
+        background: linear-gradient(to left, rgba(100, 100, 255, 0.84), #c1c1f3);
+        font-size: 14px;
+        height: 40px;
+    }
+}

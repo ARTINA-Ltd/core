@@ -7,10 +7,12 @@ import Section_2 from "../mehdizade_project/starter_file/calligraphy/src/compone
 import Nav_bar from "../mehdizade_project/starter_file/calligraphy/src/component/nav-bar"
 import cart_info from "../mehdizade_project/starter_file/calligraphy/src/information/cart-information";
 import Section_5_cart from "../mehdizade_project/starter_file/calligraphy/src/component/section-cart-component";
+import { ScrollTop } from "primereact/scrolltop";
 
 function App() {
     return (
         <div className="App" /*dir="rtl" */>
+ 
             <Nav_bar></Nav_bar>
             <Section_1 cart_information={cart_info}/>
             <Section_2/>
