@@ -16,6 +16,7 @@ code {
 @tailwind utilities;
 
 @font-face {
-  font-family: "Sans";
+  font-family: "Sans" ;
   src: url("./assets/fonts/IRANSansX-Medium.ttf");
 }
+ 

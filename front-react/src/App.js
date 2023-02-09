@@ -16,9 +16,11 @@ import RequestLists from "./ExhabitionComponent/src/component/requestlistforexhi
 import NFTUploadPage from "./Pages/NftUploadPage";
 import ShowCollection from "./components/ShowCollection";
 // eslint-disable-next-line import/no-anonymous-default-export
-
+import { ScrollPanel } from 'primereact/scrollpanel';
 import {ChainId, ThirdwebProvider} from "@thirdweb-dev/react";
 import ProfilePage from "./Pages/ProfilePage";
+import UserDashboard from "./Pages/UserDashboard";
+import { ScrollTop } from "primereact/scrolltop";
 
 const activeChainId = ChainId.Goerli;
 
@@ -26,6 +28,8 @@ export default () => {
     return <>
         <ThirdwebProvider desiredChainId={activeChainId}>
             <div className="App">
+            <ScrollTop    className="custom-scrolltop w-4rem h-4rem    border-round-md   bg-primary" icon="pi pi-arrow-up" />
+
                 <Routes>
                     <Route path="/" element={<StarterFile/>}/>
                     <Route exact path="artist-page" element={<ArtistPage/>}/>
@@ -39,6 +43,7 @@ export default () => {
                     <Route exact path="show-request" element={<ShowRequests/>}/>
                     <Route exact path="request-details" element={<RequestDetails/>}/>
                     <Route exact path="upload-page" element={<NFTUploadPage/>}/>
+                    <Route exact path="UserDashboard" element={<UserDashboard/>}/>
                     <Route exact path="profile" element={<ProfilePage/>}/>
                     <Route exact path="collections" element={<ShowCollection/>}/>
                 </Routes>
