@@ -4,8 +4,9 @@ import FormInput from "./formInput";
 import AuthContext from "./AuthContext";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { useNavigate } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import Header from "../components/LandingPageNavBar/Header";
+import Footer from '../components/Footer/Footer'
 
 const Login = () => {
     const [values, setValues] = useState({
@@ -55,12 +56,22 @@ const Login = () => {
             ? jwt_decode(localStorage.getItem("authTokens"))
             : null
     );
-
+//     "id": 1,
+//     "name": "غروب و دریا",
+//     "creator": "بهروز فاتحی",
+//     "date": "2022-12-30T00:00:00Z",
+//     "last_price": 12,
+// "base64_image":
+// "start_date": null,
+//     "end_date": null,
+//     "description": "این توضیحاتی برای اثر غروب و دریا است.",
+//     "external_link": "http://www.google.com",
+ 
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch("http://localhost:8000/api/login/", {
+        const response = await fetch("http://78.38.35.249:8000/api/login/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -92,15 +103,26 @@ const Login = () => {
 
     console.log(values);
     return (
-        <div className="form-input">
+        <>
+      
+        <div style={{direction:'rtl'} } className='overflow-hidden'> 
+<Header/>
+      
+        <div   className="form-input">
             <form onSubmit={handleSubmit}>
                 <h1>ورود به سایت</h1>
                 {inputs.map((input) => (
                     <FormInput key={input.id} {...input} value={values[input.name]} onChange={onChange}/>
                 ))}
                 <button>ورود</button>
+                <p  className="text-5xl mt-5" >حساب کاربری ندارید ؟    <Link to='/register'>ثبت نام</Link></p>
+
             </form>
+
         </div>
+        <Footer/>
+        </div>
+        </>
     );
 }
 

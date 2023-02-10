@@ -1,3 +1,6 @@
+.font{
+    font-family:   Vazir-Medium, sans-serifnt;
+}
 .footer-content {
     
     display: flex;
@@ -14,7 +17,9 @@
 .footer-about h1, .footer-links h3, .footer-subscription h3, .footer-social h3 {
     color: #08347e
 }
-
+.footer-left{
+    margin-right: 0px !important;
+}
 .footer-links ul {
     padding: 5px 10px 5px 10px;
     display: flex;
@@ -83,7 +88,7 @@
 @media screen and (max-width: 1200px) {
      .footer-content {
          background: linear-gradient(to left, rgba(100, 100, 255, 0.84), #c1c1f3);
-         border-radius: 10px 10px 0 0;
+         border-radius: 0px !important;
          padding: 10px;
      }
 

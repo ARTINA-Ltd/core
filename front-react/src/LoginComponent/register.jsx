@@ -4,7 +4,9 @@ import "./register-styles.css";
 import FormInput from "./formInput";
 import GoogleButton from 'react-google-button'
 import "../assets/fonts/Vazir-Medium.ttf";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import Header from "../components/LandingPageNavBar/Header";
+import Footer from "../components/Footer/Footer";
 
 
 const Register = () => {
@@ -62,7 +64,7 @@ const Register = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post("http://localhost:8000/api/account/register/", {
+        axios.post("http://78.38.35.249:8000/api/account/register/", {
             username: values.username,
             email: values.email,
             password: values.password,
@@ -110,7 +112,11 @@ const Register = () => {
 
     console.log(values);
     return (
-        <div className="form-input">
+        <>
+       
+        <div  style={{direction:'rtl'} } className='overflow-hidden'> 
+        <Header/>
+        <div className="form-input p-3 mt-5">
             <form onSubmit={handleSubmit}>
                 <h1>فرم ثبت نام</h1>
                 {inputs.map((input) => (
@@ -124,6 +130,7 @@ const Register = () => {
                             backgroundColor: ("rgb(100,100,255,0.95)"),
                             color: "white",
                             width: "100%",
+                           
                             fontFamily: "Vazir-Medium",
                             fontSize: "2.3em",
                             fontWeight: "bold",
@@ -132,9 +139,16 @@ const Register = () => {
                         label="ثبت نام با گوگل"
                         onClick={openGoogleLoginPage}
                     />
+
                 </div>
+                <p  className="text-5xl mt-5" >     از قبل حساب کاربری دارید ؟   <Link to='/Login'> ورود</Link></p>
+
             </form>
         </div>
+        <Footer/>
+
+        </div>
+        </>
     );
 }
 

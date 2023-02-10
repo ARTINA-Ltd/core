@@ -10,7 +10,12 @@ import "primeicons/primeicons.css"; //icons
   
 
 function Reportcard() {
-  
+  const ReportLegend = (
+    <div className=" justify-content-center text-primary">
+      <span className="pi pi-user mr-2 text-5xl"></span>
+      <span className="font-bold text-5xl font">   دریافت گزارش با فرمت .csv  </span>
+    </div>
+  );
 
   // -------------------------------- card Title Section--------------------------------
  // #7c73E6
@@ -25,7 +30,7 @@ function Reportcard() {
           
           
          
-            <Card title="  دریافت گزارش با فرمت .csv" className=" m-4 h-full p-1"  style={{backgroundColor:'#FEEAE3'}}>
+            <Card title={ReportLegend} className=" m-4 h-full p-1"  style={{backgroundColor:'#FEEAE3'}}>
               <p className="  text-5xl  ">
                 <Button
                   label="گزارش نمایشگاه های یک ماه اخیر"

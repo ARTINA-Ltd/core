@@ -1,12 +1,15 @@
 .p-datatable-thead	{
     background-color: #c4c1E0 !important;
-
- }
+ 
+  }
+  .font{
+}
  .p-column-header{
     background-color: #c4c1E0 !important;
 }
   .p-column-title{
     font-size: 1.5rem !important;
+    font-family:   Vazir-Medium, sans-serifnt;
 
   }
  .p-sortable-column{
