@@ -7,7 +7,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 110vh;
     background: url("./images/background-register-image.jpg");
     background-size: cover;
 }

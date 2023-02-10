@@ -6,7 +6,12 @@ import "primeicons/primeicons.css"; //icons
  import "primeflex/primeflex.scss";
  
 function IncomeCard() {
-  
+  const ReportLegend = (
+    <div className="   justify-content-center text-primary">
+      <span className="pi pi-user mr-2 text-5xl"></span>
+      <span className="font-bold text-5xl font">  درآمد حاصل  </span>
+    </div>
+  );
 
   // -------------------------------- card Title Section--------------------------------
 
@@ -21,12 +26,12 @@ function IncomeCard() {
   return (
     
          
-            <Card title=" درآمد حاصله " className=" m-4 h-full p-1 "  style={{backgroundColor:'#FEEAE3'}}>
+            <Card title={ReportLegend } className=" m-4 h-full p-1 font "  style={{backgroundColor:'#FEEAE3'}}>
               <p className="  text-5xl   ">
-                <p className="m-3 text-5xl  p-button-outlined">در ماه اخیر</p>
+                <p className="m-3 text-5xl  p-button-outlined font">در ماه اخیر</p>
 
                 <br></br>
-                <p className=" m-3  text-5xl  p-button-outlined">در سال اخیر</p>
+                <p className=" m-3  text-5xl  p-button-outlined font">در سال اخیر</p>
               </p>
             </Card>
        

@@ -6,6 +6,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
 
 
 
@@ -17,19 +19,22 @@ export default function BasicTable() {
     console.log(Price)
     const Price2 = Price * 48000000;
     return (
-        <div className=' box-border h-[250px] lg:w-[80%] sm:w-[95%] lg:mr-[10%] sm:mr-[2.5%] mt-[60px] p-4 border-2 radius-[20px] rounded-3xl shadow-xl '>
-            <h2 className='lg:text-[45px] md:text-[35px] sm:text-[30px] font-black '>فرم پیشنهاد</h2>
-            <div className='flex justify-between mt-[30px] lg:mr-[60px] sm:mr-[2px]'>
-                <h2 className='lg:text-4xl sm:text-2xl'>قیمت پیشنهادی به اتریوم </h2>
-                <input type="text" className='Eth border-2 lg:px-14 sm:px-8' />
+      
+
+       
+        <div className='flex card   p-4  grid m-4 w-full align-items-center justify-content-center   '>
+            <h2 className='  font-black font text-6xl mt-4 mb-4'> قیمت پیشنهادی </h2>
+            <div className='flex grid justify-between lg:w-7   font'>
+                <h2 className='font flex text-3xl    lg:col-6 sm:col-12 align-items-center md:col-12 col-12 justify-content-center'>قیمت پیشنهادی شما       </h2>
+                <InputText type="text" placeholder="قیمت به اتریوم"  className='Eth flex lg:col-6 md:col-12 sm:col-12 col-12' />
               
             </div>
-            <p className='lg:text-4xl sm:text-3xl '  >{Price2} قیمت پیشنهادی به تومان :</p>
+            <p className='lg:text-4xl sm:text-3xl mt-5'  > قیمت پیشنهاد شده به تومان : {Price2} </p>
 
             <div dir='ltr' className='flex items-center'>
-                <button className='box-border border-2 text-4xl bg-purple-600 text-white w-32 h-14 mt-10 rounded-lg hover:text-black'>ثبت</button>
+                <Button className='box-border border-2 text-4xl  font text-white w-full h-auto  mt-10 rounded-lg hover:text-black'>ثبت</Button>
             </div>
         </div>
-
+        
     );
 }

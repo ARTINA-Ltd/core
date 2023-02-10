@@ -12,7 +12,7 @@ const SendTicket = () => {
    // #FAFAFA
   return (
     <>
-      <label  style={{backgroundColor:'#FAFAFA'}} htmlFor="ssn" className="font-bold block mb-2 text-4xl m-4 p-2 align-items-start justify-content-start ">
+      <label  style={{backgroundColor:'#FAFAFA'}} htmlFor="ssn" className="font-bold font block mb-2 text-4xl m-4 p-2 align-items-start justify-content-start ">
         درخواست ها
       </label>
 
@@ -24,11 +24,11 @@ const SendTicket = () => {
               value={deposit}
               onChange={(e) => setdeposit(e.target.value)}
               placeholder="1.000.000.000 تومان"
-              className="m-4 w-full"
+              className="m-4 w-full font"
             />
             </div>
             <div className="  lg:col-3 ">
-            <Button className="m-3  lg:h-auto  align-items-center justify-content-center ">
+            <Button className="m-3 font lg:h-auto  align-items-center justify-content-center ">
               {" "}
               واریز{" "}
             </Button>
@@ -41,14 +41,14 @@ const SendTicket = () => {
             <div className="lg:col-8">
             
             <InputText
-              className="m-4 w-full"
+              className="m-4 w-full font"
               value={withraw}
               onChange={(e) => setwithraw(e.target.value)}
               placeholder="1.000.000.000 تومان"
             />
             </div>
             <div className="lg:col-3">
-            <Button className="m-3   lg:h-auto align-items-center justify-content-center">
+            <Button className="m-3 font  lg:h-auto align-items-center justify-content-center">
               {" "}
               برداشت{" "}
             </Button>
@@ -61,7 +61,7 @@ const SendTicket = () => {
         </div>
 
         <div className="col-12 lg:flex lg:m-9 md:col-12 lg:col-2   w-auto ">
-          <Button className="  lg:m-9      align-items-center justify-content-center">
+          <Button className="  lg:m-9  font    align-items-center justify-content-center">
             ارسال تیکت
           </Button>
         </div>

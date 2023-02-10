@@ -18,8 +18,8 @@ function ReportField() {
    // #FAFAFA
   const ReportLegend = (
     <div className="flex align-items-center text-primary">
-      <span className="pi pi-user mr-2"></span>
-      <span className="font-bold text-5xl"> گزارش مالی</span>
+      <span className="pi pi-user mr-2 text-5xl"></span>
+      <span className="font-bold text-5xl font"> گزارش مالی</span>
     </div>
   );
  
@@ -34,19 +34,19 @@ function ReportField() {
               legend={ReportLegend}
               style={{ backgroundColor: "#FAFAFA" }}
             >
-              <div className=" flex justify-content-start text-5xl p-2 m-2  ">
+              <div className=" flex justify-content-start text-5xl p-2 m-2   ">
                 {" "}
-                <p className="  ">مانده قابل برداشت : 1111111111111111</p>
+                <p className="font  ">مانده قابل برداشت : 1111111.111</p>
               </div>
-              <div className=" flex justify-content-start text-5xl p-2  m-2 ">
+              <div className=" flex justify-content-start text-5xl p-2  m-2     ">
                 {" "}
-                <p className="  ">مانده قابل معامله : 999999292292</p>
+                <p className="  font  ">مانده قابل معامله : 999999.2292</p>
               </div>
-              <div className="flex justify-content-start text-5xl p-2  m-2">
+              <div className="flex justify-content-start text-5xl p-2  m-2 font">
                 {" "}
                 <p
                   className=" 
-
+                  font
 "
                 >
                   مسدود شده : 0

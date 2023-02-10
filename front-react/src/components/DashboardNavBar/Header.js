@@ -12,12 +12,12 @@ const Header = () => {
   };
 
   return (
-    <header className="home-header">
+    <header className="home-header ">
       {/*<h2>Inc. This Morning</h2>*/}
       <div className="navbar-menu">
         <div className="navbar-link-logo " onClick={handleClick}>
           <i
-            className={clicked ? "pi  pi-times" : " pi pi-bars "}
+            className={clicked ? "pi text-white pi-times" : " pi text-white pi-bars "}
             style={{ fontSize: "2rem" }}
           ></i>
         </div>
@@ -29,29 +29,30 @@ const Header = () => {
             {" "}
             <Avatar label="P" size="xlarge" shape="circle" />
           </a>
-          <a href="" className="navbar-link">
+          <a href="" className="navbar-link font">
             {" "}
             لینک اول{" "}
           </a>
-          <a href="" className="navbar-link-exp">
+          <a href="" className="navbar-link-exp font">
             {" "}
             لینک دوم{" "}
           </a>
           {/*</ul>*/}
           {/*<ul className="navbar-item-1">*/}
-          <a href="" className="navbar-link-1">
+          <a href="" className="navbar-link-1 font">
             {" "}
             خروج{" "}
           </a>
         </ul>
         <img src={Logo} alt="logo" className="navbar-logo m-2 p-2" />
       </div>
-      <h1>
-        <span></span>وبلاگ آرتینا<span></span>
+      <h1 >
+        <span className="font"></span>داشبورد آرتینا<span></span>
       </h1>
-      <p>
-        راهی تازه به دنیای هنر <br /> از تاره ترین اخبار و آموزش های دنیای NFT
-        ها باخبر شوید.
+      <p className="font">
+        در اسن قسمت میتوانید گزرش های مالی و موجودی خود را مشاهده نمایید
+         <br />
+        در صورت هر مشکل یا ابهام ، با تیم پشتیبانی ما در ارتباط باشید 
       </p>
     </header>
   );

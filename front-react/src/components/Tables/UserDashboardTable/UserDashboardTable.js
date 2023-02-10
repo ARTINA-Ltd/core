@@ -99,14 +99,14 @@ function UserDashboardTable() {
   const ProductSum = (TableData) => {
     return (
       <React.Fragment>
-        <span className="image-text text-4xl">{TableData.ProductSum} </span>
+        <span className="image-text text-4xl text-5xl">{TableData.ProductSum} </span>
       </React.Fragment>
     );
   };
   const saleVolume = (TableData) => {
     return (
       <React.Fragment>
-        <span className="image-text text-4xl">{TableData.saleVolume} </span>
+        <span className="image-text text-4xl ">{TableData.saleVolume} </span>
       </React.Fragment>
     );
   };
@@ -209,6 +209,7 @@ function UserDashboardTable() {
                   filterField="country.name"
                   body={CommissionPercentage}
                   sortable
+                  className=""
                   //  filter
                   //  filterPlaceholder="Search by country"
                 />
