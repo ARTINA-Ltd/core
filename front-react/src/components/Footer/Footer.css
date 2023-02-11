@@ -11,7 +11,9 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgb(152, 158, 255) 30%, rgb(152, 158, 255) 70%, rgba(255, 255, 255, 1) 100%);
+    background: linear-gradient(to left, rgba(100, 100, 255, 0.84), rgb(179, 113, 255));
+
+    /* background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgb(152, 158, 255) 30%, rgb(152, 158, 255) 70%, rgba(255, 255, 255, 1) 100%); */
 }
 
 .footer-about h1, .footer-links h3, .footer-subscription h3, .footer-social h3 {

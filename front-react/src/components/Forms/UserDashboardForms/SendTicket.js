@@ -37,7 +37,7 @@ const SendTicket = () => {
             
  
           </div>
-          <div className=" grid col-8 sm:w-full md:flex align-items-center justify-content-center md:col-6 lg:col-6  lg:flex  m-2 p-2">
+          <div className=" grid col-8 sm:w-full md:flex align-items-center justify-content-center md:col-6 lg:col-6  lg:flex  ">
             <div className="lg:col-8">
             
             <InputText

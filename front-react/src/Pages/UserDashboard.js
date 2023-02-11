@@ -26,11 +26,11 @@ function UserDashboard() {
 
   return (
     <div>
-      <div className=" overflow-hidden" style={{ direction: "rtl" }}>
+      <div className=" overflow-hidden" style={{ direction: "rtl" ,backgroundColor:"#F4EEFF" }}>
         <Header />
 
         <div className=" flex align-items-center justify-content-center grid   ">
-          <div className=" grid  col-12   md:col-6 lg:col-6 ">
+          <div className=" grid  col-12   md:col-6 lg:col-6 " >
           <ReportField/>
 
           </div>
@@ -61,10 +61,10 @@ function UserDashboard() {
           </div>
         </div>
 
-        <div    style={{backgroundColor:'#FAFAFA'}}   className=" chart card align-items-center justify-content-center  ">
+        <div         style={{borderColor:'#424874' ,borderWidth:'2px'  }}   className=" shadow-7 chart card align-items-center justify-content-center  ">
           <UserDashboardCharts />
         </div>
-        <div  className="card m-9 align-items-center justify-content-center  ">
+        <div  className="card m-9 align-items-center justify-content-center shadow-7  "       style={{borderColor:'#424874' ,borderWidth:'2px'  }}>
           <SendTicket />
         </div>
         <Footer />
