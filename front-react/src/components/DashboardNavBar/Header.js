@@ -46,14 +46,7 @@ const Header = () => {
         </ul>
         <img src={Logo} alt="logo" className="navbar-logo m-2 p-2" />
       </div>
-      <h1 >
-        <span className="font"></span>داشبورد آرتینا<span></span>
-      </h1>
-      <p className="font">
-        در اسن قسمت میتوانید گزرش های مالی و موجودی خود را مشاهده نمایید
-         <br />
-        در صورت هر مشکل یا ابهام ، با تیم پشتیبانی ما در ارتباط باشید 
-      </p>
+      
     </header>
   );
 };

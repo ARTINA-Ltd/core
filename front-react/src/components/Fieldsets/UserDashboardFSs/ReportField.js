@@ -17,7 +17,7 @@ function ReportField() {
     // #FEEAE3
    // #FAFAFA
   const ReportLegend = (
-    <div className="flex align-items-center text-primary">
+    <div className="flex align-items-center " style={{color:'#424874'}}>
       <span className="pi pi-user mr-2 text-5xl"></span>
       <span className="font-bold text-5xl font"> گزارش مالی</span>
     </div>
@@ -30,9 +30,10 @@ function ReportField() {
      <>
         
             <Fieldset
-              className="   m-4   "
+              className="   m-4  shadow-7 bg-white"
               legend={ReportLegend}
-              style={{ backgroundColor: "#FAFAFA" }}
+              style={{  borderColor:'#424874' ,borderWidth:'2px' }}
+
             >
               <div className=" flex justify-content-start text-5xl p-2 m-2   ">
                 {" "}

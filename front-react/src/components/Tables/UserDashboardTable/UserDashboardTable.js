@@ -185,6 +185,7 @@ function UserDashboardTable() {
                 onFilter={onFilter}
                 filters={lazyParams.filters}
                 loading={loading}
+                style={{color:'#424874'}}
               >
                 <Column
                   field=" نام نمایشگاه"
