@@ -43,7 +43,7 @@ function UserDashboard() {
           {/* section 2 : Tabels about exhibitions */}
 
           <div className=" grid   col-12  m-9  p-9">
-            <div className="card  h-30rem">
+            <div className="card  h-30rem shadow-7" style={{borderColor:'#424874' ,borderWidth:'2px'  }}>
               <UserDashboardTable />
             </div>
           </div>
