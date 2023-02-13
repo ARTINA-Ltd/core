@@ -18,7 +18,7 @@ function TurnOverField() {
    // #FAFAFA
    
   const TurnoverLegend = (
-    <div className="flex align-items-center text-primary">
+    <div className="flex align-items-center  " style={{color:'#424874'}}>
       <span className="pi pi-user mr-2  text-5xl"></span>
       <span className="font-bold text-5xl font"> گردش حساب </span>
     </div>
@@ -30,26 +30,26 @@ function TurnOverField() {
      <>
  
             <Fieldset
-              className="  m-4   "
+              className="  m-4  shadow-7 bg-white"
               legend={TurnoverLegend}
-              style={{ backgroundColor: "#FAFAFA" }}
+              style={{  borderColor:'#424874' ,borderWidth:'2px' }}
             >
               <div className="  p-2  m-2  flex justify-content-start">
                 {" "}
-                <p className="text-5xl font ">
+                <p className="text-4xl font ">
                   واریز : +900.000.000 <span> +</span>
                 </p>
               </div>
               <div className=" p-2  m-2  flex justify-content-start ">
                 {" "}
-                <p className="text-5xl font ">
+                <p className="text-4xl font ">
                   {" "}
                   برداشت : 912.123.12313 <span> -</span>
                 </p>
               </div>
               <div className="flex justify-content-start  p-2  m-2">
                 {" "}
-                <p className="text-5xl font ">
+                <p className="text-4xl font ">
                   {" "}
                   واریز : +123.123.12. <span> +</span>{" "}
                 </p>

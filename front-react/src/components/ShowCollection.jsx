@@ -22,7 +22,7 @@ const ShowCollection = () => {
                 <div className="cart__container">
                     <div className="cart">
                         <div className="cart__image"></div>
-                        <div className="cart__text">
+                        <div className=" ">
                             <span> نام </span>
                             <span> قیمت پایه</span>
                         </div>

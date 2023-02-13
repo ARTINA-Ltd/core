@@ -1,0 +1,25 @@
+.s1{
+    height: 180vh !important;
+ }
+ .otherinfo{
+margin-top: 10px!important;
+justify-content: center !important;
+ }
+@media only screen and (max-width: 2180px) {
+    .s1 {
+        height: 75vh !important;
+        margin-bottom: 10px;
+  
+     }
+  }
+@media only screen and (max-width: 770px) {
+    .s1 {
+        margin-bottom: 10px;
+
+        height: 70vh !important;  
+    align-items: center  !important;
+justify-content: center !important;  }
+.otherinfo{
+    margin-top: 280px !important;
+     }
+  }
