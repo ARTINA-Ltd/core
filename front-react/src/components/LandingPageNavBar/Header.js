@@ -43,7 +43,7 @@ const Header = () => {
                   کالکشن
                 </a>
                 <a href="" className="navbar-link-exp font">
- تنظیمات
+                  تنظیمات
                 </a>
                 <a href="" className="navbar-link-exp font">
                   حساب
@@ -100,15 +100,16 @@ const Header = () => {
                   {" "}
                 </a>
                 <a href="" className="navbar-link-exp font">
-             خانه     
+                  خانه
                 </a>
                 <a href="" className="navbar-link-exp font p-2">
-  درباره                </a>
+                  درباره{" "}
+                </a>
                 <a href="" className="navbar-link-exp  font">
-                      پشتیبانی    
+                  پشتیبانی
                 </a>
                 <a href="" className="navbar-link-exp font">
-                   پشتیبانی
+                  پشتیبانی
                 </a>
                 {/*</ul>*/}
                 {/*<ul className="navbar-item-1">*/}
@@ -137,12 +138,7 @@ const Header = () => {
     );
   };
 
-  return (
-    <>
-    {activeuser==false ?  <NoActiveUser/> :  <ActiveUser /> }
-    
-    </>
-  );
+  return <>{activeuser == false ? <NoActiveUser /> : <ActiveUser />}</>;
 };
 
 export default Header;
