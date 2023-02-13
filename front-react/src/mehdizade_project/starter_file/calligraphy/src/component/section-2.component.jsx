@@ -69,7 +69,7 @@ const Section_2 = () => {
       });
   };
   useEffect(() => {
-    fetchExhibitions1();
+    //fetchExhibitions1();
     // fetchExhibitions2();
   }, []);
 
