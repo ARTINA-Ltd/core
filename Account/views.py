@@ -3,11 +3,13 @@ from Account import models
 from core.serializers import NFTSerializer
 from .models import ArtistReviewRating, Profile
 from exhibition.serializers import NFtExSerializer
-from rest_framework import viewsets
+from rest_framework import viewsets,permissions, generics
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+
 from django.contrib.auth.models import User
 from core.models import NFT
 
@@ -22,6 +24,26 @@ class RegisterViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+
+# API view that returns the user associated with a given JWT token
+class UserAPIView(generics.RetrieveAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JSONWebTokenAuthentication]
+    serializer_class = serializers.UserSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        return Response({
+            'username': request.user.username        })
+
+
+
+
+
+
+
+
 
 
 # class ArtistViewSet(viewsets.ModelViewSet):
