@@ -6,6 +6,8 @@ import { Fade, Slide, Zoom } from "react-slideshow-image";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { ProgressSpinner } from "primereact/progressspinner";
+
 
 const Section_2 = () => {
   const [exhibitions, setExhibitions] = useState([""]);
@@ -48,39 +50,11 @@ const Section_2 = () => {
         setError(error.message);
         console.log(error);
         setExhibitions(null);
-        if (error.code == "ERR_NETWORK") {
-          console.log("asdasd");
-        }
-        console.log(error);
-      });
-  };
-  const fetchExhibitions2 = async () => {
-    setLoading(true);
-
-    const res = await axios
-      .get(`http://78.38.35.249:8000/api/exhibition/exhibitions/${Number2}/`)
-      .then((res) => {
-        setExhibitions2(res.data);
-        setError(null);
-      })
-      .catch((error) => {
-        setError(error.message);
-        setExhibitions(null);
-      });
-  };
-  useEffect(() => {
-    //fetchExhibitions1();
-    // fetchExhibitions2();
-  }, []);
-
+        setLoading(false);
   let array = [];
   array.push(exhibitions);
   console.log(array);
-  if (array[0] == null) {
-    setErr(false);
 
-    setErr("gg");
-  }
   let array2 = [];
   array2.push(exhibitions2);
 
@@ -97,21 +71,107 @@ const Section_2 = () => {
       </button>
     ),
   };
-  return (
-    <div className="section-2-main-main-container ">
-      <p className="section-2-header-text">بهترین نمایشگاه</p>
-      <Fade {...properties}>
-        <div className="section-2-important-container">
-          {Err === false ? (
-            <span className="sr-only">Loading... Registered Devices</span>
-          ) : (
-            <>
+  const fetchExhibitions2 = async () => {
+    setLoading(true);
+
+    const res = await axios
+      .get(`http://78.38.35.249:8000/api/exhibition/exhibitions/${Number2}/`)
+      .then((res) => {
+        setExhibitions2(res.data);
+        setError(null);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setExhibitions(null);
+        setLoading(false);
+      });
+  };
+  useEffect(() => {
+    fetchExhibitions1();
+    fetchExhibitions2();
+  }, []);
+
+  if (error) {
+    return (
+      <div>
+       {/* <div className="section-2-main-main-container ">
+          <p className="section-2-header-text">بهترین نمایشگاه</p>
+          <Fade {...properties}>
+            <div className="section-2-important-container">
+      
+              <div className="section-2-main-detail-time-date-container">
+                <ul className="section-2-detail" dir="rtl" lang="fa">
+                  <li>
+                    این نمایشگاه به منظور فروش محصولات هنری به اجرا درامده است
+                  
+                  </li>
+                  <li>مدت زمان برگزاری : 10 الی 11 صبح</li>
+                  <li>تاریخ برگزاری : 1379/02/05</li>
+                </ul>
+                <Link
+                  to={"/homepage"}
+                  className="button-footer section-2-button"
+                >
+                  مشاهده محصولات
+                </Link>
+              </div>
+            </div>
+            <div className="section-2-important-container">
+           
+              <div className="section-2-main-detail-time-date-container">
+                <ul className="section-2-detail" dir="rtl" lang="fa">
+                  <li>
+                    این نمایشگاه به منظور فروش محصولات هنری به اجرا درامده است
+                  </li>
+                  <li>مدت زمان برگزاری : 10 الی 11 صبح</li>
+                  <li>تاریخ برگزاری : 1379/05/02</li>
+                </ul>
+                <Link
+                  to={"/homepage"}
+                  className="button-footer section-2-button"
+                >
+                  مشاهده محصولات
+                </Link>
+              </div>
+            </div>
+          </Fade>
+        </div> */}
+        <ProgressSpinner
+          style={{ width: "50px", height: "50px" }}
+          strokeWidth="8"
+          fill="var(--surface-ground)"
+          animationDuration=".5s"
+        />
+      </div>
+    );
+  }
+  if (loading) {
+    return (
+      <div>
+        {" "}
+        <ProgressSpinner
+          style={{ width: "50px", height: "50px" }}
+          strokeWidth="8"
+          fill="var(--surface-ground)"
+          animationDuration=".5s"
+        />
+      </div>
+    );
+  } else {
+    if (!array || !array2) {
+      return <div>Loading...</div>;
+    }
+    return (
+      <div>
+        <div className="section-2-main-main-container ">
+          <p className="section-2-header-text">بهترین نمایشگاه</p>
+          <Fade {...properties}>
+            <div className="section-2-important-container">
               {array.map((exhibition) => (
                 <img className="section-2-image" src={exhibition.image} />
               ))}
-            </>
-          )}
-          {/* {array2[0] == null ? (
+
+              {/* {array2[0] == null ? (
             <span className="sr-only">Loading... Registered Devices</span>
           ) : (
             <>
@@ -123,23 +183,25 @@ const Section_2 = () => {
              
             </>
           )} */}
-
-          <div className="section-2-main-detail-time-date-container">
-            <ul className="section-2-detail" dir="rtl" lang="fa">
-              <li>
-                این نمایشگاه به منظور فروش محصولات هنری به اجرا درامده است
-                {/* <p>{exhibitions.description}</p> */}
-              </li>
-              <li>مدت زمان برگزاری : 10 الی 11 صبح</li>
-              <li>تاریخ برگزاری : 1379/02/05</li>
-            </ul>
-            <Link to={"/homepage"} className="button-footer section-2-button">
-              مشاهده محصولات
-            </Link>
-          </div>
-        </div>
-        <div className="section-2-important-container">
-          {/* {array[0] == null ? (
+              <div className="section-2-main-detail-time-date-container">
+                <ul className="section-2-detail" dir="rtl" lang="fa">
+                  <li>
+                    این نمایشگاه به منظور فروش محصولات هنری به اجرا درامده است
+                    {/* <p>{exhibitions.description}</p> */}
+                  </li>
+                  <li>مدت زمان برگزاری : 10 الی 11 صبح</li>
+                  <li>تاریخ برگزاری : 1379/02/05</li>
+                </ul>
+                <Link
+                  to={"/homepage"}
+                  className="button-footer section-2-button"
+                >
+                  مشاهده محصولات
+                </Link>
+              </div>
+            </div>
+            <div className="section-2-important-container">
+              {/* {array[0] == null ? (
             <span className="sr-only">Loading... Registered Devices</span>
           ) : (
             <>
@@ -149,8 +211,7 @@ const Section_2 = () => {
               
             </>
           )} */}
-
-          {/* {array2[0] == null ? (
+              {/* {array2[0] == null ? (
             <span className="sr-only">Loading... Registered Devices</span>
           ) : (
             <>
@@ -161,22 +222,26 @@ const Section_2 = () => {
           ))}
             </>
           )} */}
-
-          <div className="section-2-main-detail-time-date-container">
-            <ul className="section-2-detail" dir="rtl" lang="fa">
-              <li>
-                این نمایشگاه به منظور فروش محصولات هنری به اجرا درامده است
-              </li>
-              <li>مدت زمان برگزاری : 10 الی 11 صبح</li>
-              <li>تاریخ برگزاری : 1379/05/02</li>
-            </ul>
-            <Link to={"/homepage"} className="button-footer section-2-button">
-              مشاهده محصولات
-            </Link>
-          </div>
+              <div className="section-2-main-detail-time-date-container">
+                <ul className="section-2-detail" dir="rtl" lang="fa">
+                  <li>
+                    این نمایشگاه به منظور فروش محصولات هنری به اجرا درامده است
+                  </li>
+                  <li>مدت زمان برگزاری : 10 الی 11 صبح</li>
+                  <li>تاریخ برگزاری : 1379/05/02</li>
+                </ul>
+                <Link
+                  to={"/homepage"}
+                  className="button-footer section-2-button"
+                >
+                  مشاهده محصولات
+                </Link>
+              </div>
+            </div>
+          </Fade>
         </div>
-      </Fade>
-    </div>
-  );
+      </div>
+    );
+  }
 };
 export default Section_2;
