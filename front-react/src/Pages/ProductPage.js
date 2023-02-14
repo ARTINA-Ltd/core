@@ -4,7 +4,7 @@ import MainImage from "../ProductPageComponent/MainImage";
 import UnNav from "../ProductPageComponent/Un-nav";
 import Footer from "../components/Footer/Footer";
 import Price from "../ProductPageComponent/Price";
-import Navbar from "../components/DashboardNavBar/Header";
+import Navbar from "../components/LandingPageNavBar/Header";
 import Properties from "../ProductPageComponent/Properties";
 import Activity from "../ProductPageComponent/Activity";
 import Recomendition from "../ProductPageComponent/Recomendition";
