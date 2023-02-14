@@ -8,6 +8,7 @@ import axios from "axios";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { ProgressSpinner } from "primereact/progressspinner";
 
+
 const Section_2 = () => {
   const [exhibitions, setExhibitions] = useState([""]);
   const [exhibitions2, setExhibitions2] = useState([""]);
@@ -50,13 +51,6 @@ const Section_2 = () => {
         console.log(error);
         setExhibitions(null);
         setLoading(false);
-
-        if (error.code == "ERR_NETWORK") {
-          console.log("asdasd");
-        }
-        console.log(error);
-      });
-  };
   let array = [];
   array.push(exhibitions);
   console.log(array);
@@ -189,7 +183,6 @@ const Section_2 = () => {
              
             </>
           )} */}
-
               <div className="section-2-main-detail-time-date-container">
                 <ul className="section-2-detail" dir="rtl" lang="fa">
                   <li>
@@ -218,7 +211,6 @@ const Section_2 = () => {
               
             </>
           )} */}
-
               {/* {array2[0] == null ? (
             <span className="sr-only">Loading... Registered Devices</span>
           ) : (
@@ -230,7 +222,6 @@ const Section_2 = () => {
           ))}
             </>
           )} */}
-
               <div className="section-2-main-detail-time-date-container">
                 <ul className="section-2-detail" dir="rtl" lang="fa">
                   <li>
