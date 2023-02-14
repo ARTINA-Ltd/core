@@ -51,6 +51,8 @@ const Section_2 = () => {
         console.log(error);
         setExhibitions(null);
         setLoading(false);
+        } )
+      }
   let array = [];
   array.push(exhibitions);
   console.log(array);
@@ -94,48 +96,7 @@ const Section_2 = () => {
   if (error) {
     return (
       <div>
-       {/* <div className="section-2-main-main-container ">
-          <p className="section-2-header-text">بهترین نمایشگاه</p>
-          <Fade {...properties}>
-            <div className="section-2-important-container">
-      
-              <div className="section-2-main-detail-time-date-container">
-                <ul className="section-2-detail" dir="rtl" lang="fa">
-                  <li>
-                    این نمایشگاه به منظور فروش محصولات هنری به اجرا درامده است
-                  
-                  </li>
-                  <li>مدت زمان برگزاری : 10 الی 11 صبح</li>
-                  <li>تاریخ برگزاری : 1379/02/05</li>
-                </ul>
-                <Link
-                  to={"/homepage"}
-                  className="button-footer section-2-button"
-                >
-                  مشاهده محصولات
-                </Link>
-              </div>
-            </div>
-            <div className="section-2-important-container">
-           
-              <div className="section-2-main-detail-time-date-container">
-                <ul className="section-2-detail" dir="rtl" lang="fa">
-                  <li>
-                    این نمایشگاه به منظور فروش محصولات هنری به اجرا درامده است
-                  </li>
-                  <li>مدت زمان برگزاری : 10 الی 11 صبح</li>
-                  <li>تاریخ برگزاری : 1379/05/02</li>
-                </ul>
-                <Link
-                  to={"/homepage"}
-                  className="button-footer section-2-button"
-                >
-                  مشاهده محصولات
-                </Link>
-              </div>
-            </div>
-          </Fade>
-        </div> */}
+       
         <ProgressSpinner
           style={{ width: "50px", height: "50px" }}
           strokeWidth="8"
@@ -171,18 +132,7 @@ const Section_2 = () => {
                 <img className="section-2-image" src={exhibition.image} />
               ))}
 
-              {/* {array2[0] == null ? (
-            <span className="sr-only">Loading... Registered Devices</span>
-          ) : (
-            <>
-              {array2.map((exhibition) => (
-                <p className="section-2-name-of-festival">
-                  {exhibition.marketName}
-                </p>
-              ))}
-             
-            </>
-          )} */}
+         
               <div className="section-2-main-detail-time-date-container">
                 <ul className="section-2-detail" dir="rtl" lang="fa">
                   <li>
@@ -201,27 +151,7 @@ const Section_2 = () => {
               </div>
             </div>
             <div className="section-2-important-container">
-              {/* {array[0] == null ? (
-            <span className="sr-only">Loading... Registered Devices</span>
-          ) : (
-            <>
-             {array2.map((exhibition) => (
-            <img className="section-2-image" src={exhibition.image} />
-          ))}
-              
-            </>
-          )} */}
-              {/* {array2[0] == null ? (
-            <span className="sr-only">Loading... Registered Devices</span>
-          ) : (
-            <>
-             {array2.map((exhibition) => (
-            <p className="section-2-name-of-festival">
-              {exhibition.marketName}
-            </p>
-          ))}
-            </>
-          )} */}
+     
               <div className="section-2-main-detail-time-date-container">
                 <ul className="section-2-detail" dir="rtl" lang="fa">
                   <li>
