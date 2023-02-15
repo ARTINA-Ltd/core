@@ -10,112 +10,145 @@
 // "image": null,
 // "email": "",
 // "role": null
+import React, { useState } from "react";
+import { Divider } from "primereact/divider";
+import { InputText } from "primereact/inputtext";
+import image1 from "../ProductPageComponent/images/image_2022-08-15_19-57-46.png";
+
+import { Calendar } from "primereact/calendar";
+
 function PersonalInfo() {
+  const [date, setDate] = useState("hu Feb 09 2023");
+  // console.log(date)
   return (
     <>
-      <div className="container">
-        <p
-          className={
-            "flex lg:justify-start sm:justify-center lg:text-5xl font-bold mb-8 lg:mt-[150px] md:mt-[30px] md:text-4xl sm:mt-[15px] sm:text-3xl"
-          }
-        >
-          نام
-        </p>
-        <p className=" font-bold lg:mt-[-60px] md:text-4xl sm:text-3xl">علی</p>
-        <p
-          className={
-            "flex lg:justify-start sm:justify-center lg:text-5xl font-bold mb-8 lg:mt-[50px] md:mt-[30px] md:text-4xl sm:mt-[15px] sm:text-3xl"
-          }
-        >
-          نام خانوادگی
-        </p>
-        <p className=" font-bold lg:mt-[-60px] md:text-4xl sm:text-6xl">
-          سامان
-        </p>
-        <p
-          className={
-            "flex lg:justify-start sm:justify-center lg:text-5xl font-bold mb-8 lg:mt-[50px] md:mt-[30px] md:text-4xl sm:mt-[15px] sm:text-3xl"
-          }
-        >
-          شماره ملی
-        </p>
-        <p className=" font-bold lg:mt-[-60px] md:text-4xl sm:text-6xl">
-          1520251625
-        </p>
-        <p
-          className={
-            "flex lg:justify-start sm:justify-center lg:text-5xl font-bold mb-8 lg:mt-[50px] md:mt-[30px] md:text-4xl sm:mt-[15px] sm:text-3xl"
-          }
-        >
-          عکس ملی
-        </p>
-        <p className=" font-bold lg:mt-[-60px] md:text-4xl sm:text-6xl">
-          drop zone
-        </p>
+      <div className="grid text-6xl mt-5 mr-5 ">
+        <div className=" col-12 grid flex  align-items-center mt-2 ">
+          <div
+            className="col-11 sm:col-6 md:col-6 lg:col-6   justify-content-start"
+            style={{ display: "flex" }}
+          >
+            <p>
+              نام :
+              <InputText className="h-4rem" placeholder="پارسا" />
+            </p>
+          </div>
+          <div
+            className="col-11 sm:col-6 md:col-6 lg:col-6  justify-content-start"
+            style={{ display: "flex" }}
+          >
+            <p>
+              {" "}
+              نام خانوادگی :{" "}
+              <InputText className="h-4rem" placeholder="کاظمی" />
+            </p>
+          </div>
+        </div>
 
-        <p
-          className={
-            "flex lg:justify-start sm:justify-center lg:text-5xl font-bold mb-8 lg:mt-[50px] md:mt-[30px] md:text-4xl sm:mt-[15px] sm:text-3xl"
-          }
+        <div className=" col-12 grid flex   mt-2  ">
+          <div
+            className="col-11 sm:col-6 md:col-6 lg:col-6  justify-content-start"
+            style={{ display: "flex" }}
+          >
+            <p>
+              {" "}
+              کدملی :
+              <InputText className="h-4rem" placeholder="4311333232" />
+            </p>
+          </div>
+          <div
+            className="col-11 sm:col-6 md:col-6 lg:col-6  justify-content-start"
+            style={{ display: "flex" }}
+          >
+            <p>
+              تاریخ تولد :
+              <Calendar
+                value={date}
+                className="h-4rem"
+                onChange={(e) => setDate(e.value)}
+                showButtonBar
+                placeholder="1398/09/09"
+              />
+            </p>
+            {/* <Calendar value={date} onChange={(e) => setDate(e.value)} />         */}
+          </div>
+        </div>
+
+        <div className=" col-12 grid flex mt-2  ">
+          <div
+            className="col-11 sm:col-6 md:col-6 lg:col-6  justify-content-start"
+            style={{ display: "flex" }}
+          >
+            <p>
+              شماره ثابت :{" "}
+              <InputText className="h-4rem" placeholder="09121822776" />
+            </p>
+          </div>
+          <div
+            className="col-11 sm:col-6 md:col-6 lg:col-6  justify-content-start"
+            style={{ display: "flex" }}
+          >
+            <p>
+              {" "}
+              شماره همراه :{" "}
+              <InputText className="h-4rem" placeholder="0987123323" />
+            </p>
+            {/* <Calendar value={date} onChange={(e) => setDate(e.value)} />         */}
+          </div>
+        </div>
+        <div className=" col-7 sm:col-12  justify-content-start mt-2 w-full  "
+          style={{ display: "flex" }}
         >
-تاریخ تولد        </p>
-        <p className=" font-bold lg:mt-[-60px] md:text-4xl sm:text-6xl">
-Date        </p>
+          ایمیل :{" "}
+          <InputText
+            className="h-4rem"
+            style={{ width: "40%" }}
+            placeholder="parsa@gmail,.com"
+          />
+        </div>
 
-
-<p
-          className={
-            "flex lg:justify-start sm:justify-center lg:text-5xl font-bold mb-8 lg:mt-[50px] md:mt-[30px] md:text-4xl sm:mt-[15px] sm:text-3xl"
-          }
+        <div
+          className=" col-8 sm:col-12  justify-content-start mt-2  "
+          style={{ display: "flex", width: "100%" }}
         >
-شماره ثابت        </p>
-        <p className=" font-bold lg:mt-[-60px] md:text-4xl sm:text-6xl">
-           +98365889
-        </p>
-        <p
-          className={
-            "flex lg:justify-start sm:justify-center lg:text-5xl font-bold mb-8 lg:mt-[50px] md:mt-[30px] md:text-4xl sm:mt-[15px] sm:text-3xl"
-          }
-        >
-          </p>
-        <p className=" font-bold lg:mt-[-60px] md:text-4xl sm:text-6xl">
-           +98365889
-        </p>
-        <p
-          className={
-            "flex lg:justify-start sm:justify-center lg:text-5xl font-bold mb-8 lg:mt-[50px] md:mt-[30px] md:text-4xl sm:mt-[15px] sm:text-3xl"
-          }
-        >
-          عکس ملی
-        </p>
-        <p className=" font-bold lg:mt-[-60px] md:text-4xl sm:text-6xl">
-          drop zone
-        </p>
+          آدرس :{" "}
+          <InputText
+            className="h-4rem"
+            style={{ width: "40%" }}
+            placeholder="شهر ایکس وخیابان وای.کوچه 98 پلاک 2"
+          />
+        </div>
+        <Divider type="solid" />
+        <div className=" col-12 grid flex mt-2  ">
+          <div
+            className="col-11 sm:col-6 md:col-6 lg:col-6  justify-content-start"
+            style={{ display: "flex" }}
+          >
+            <p>امتیاز در سایت : 99999 </p>
+          </div>
+          <div
+            className="col-11 sm:col-6 md:col-6 lg:col-6  justify-content-start"
+            style={{ display: "flex" }}
+          >
+            <p> نوع کارب :طلایی</p>
+          </div>
+        </div>
+        <Divider type="solid" />
 
+        {/* --------------------------- authntication  ---------------------- */}
+        <div className="col-12 grid flex justify-content-center">
+          <h1 className="text-5xl col-12 justify-content-center  ">
+            -----احرازهویت------
+          </h1>
+          <div className="flex  col-12 w-5    ">
+            <img src={image1} alt="" className="  " />
+          </div>
+          <div className="col-12">
+            <p className="text-4xl mt-12">52154651486514651613 :شماره شبا</p>
 
-
-
-        <p
-          className={
-            "flex lg:justify-start sm:justify-center lg:text-5xl font-bold mb-8 lg:mt-[50px] md:mt-[30px] md:text-4xl sm:mt-[15px] sm:text-3xl"
-          }
-        >
-          شماره موبایل
-        </p>
-        <p className=" font-bold lg:mt-[-60px] md:text-6xl sm:text-6xl">
-          091425245
-        </p>
-
-        <p
-          className={
-            "flex lg:justify-start sm:justify-center lg:text-5xl font-bold mb-8 lg:mt-[50px] md:mt-[30px] md:text-4xl sm:mt-[15px] sm:text-3xl"
-          }
-        >
-          Email
-        </p>
-        <p className=" font-bold lg:mt-[-60px] md:text-4xl sm:text-4xl">
-          sfsfdsfds@gmail.com
-        </p>
+            <button className="text-3xl  p-4 mt-4  ">ویرایش</button>
+          </div>
+        </div>
       </div>
     </>
   );
