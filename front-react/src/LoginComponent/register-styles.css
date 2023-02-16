@@ -11,8 +11,7 @@
     background: url("./images/background-register-image.jpg");
     background-size: cover;
 }
-
-form {
+.registerform {
     background-color: rgba(193, 193, 243, 0.96);
     padding: 3% 4%;
     border-radius: 2%;
