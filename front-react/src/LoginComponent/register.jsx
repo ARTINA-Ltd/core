@@ -116,8 +116,8 @@ const Register = () => {
        
         <div  style={{direction:'rtl'} } className='overflow-hidden'> 
         <Header/>
-        <div className="form-input p-3 mt-5">
-            <form onSubmit={handleSubmit}>
+        <div className="form-input  p-3 mt-5">
+            <form className="registerform" onSubmit={handleSubmit}>
                 <h1>فرم ثبت نام</h1>
                 {inputs.map((input) => (
                     <FormInput key={input.id} {...input} value={values[input.name]} onChange={onChange}/>
