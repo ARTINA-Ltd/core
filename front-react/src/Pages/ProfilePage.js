@@ -7,7 +7,8 @@ import Autinticate from "../ProfilePage/Autinticate";
 import Footer from "../components/Footer/Footer";
 import Profileuploader from "../components/Uploaders/Profileuploader";
 import IDUpdate from "../components/Uploaders/IDUpdate";
- 
+import { Button } from 'primereact/button';
+
 function ProfilePage() {
   return (
     <div className="  overflow-hidden grid " style={{ direction: "rtl" }}>
@@ -23,8 +24,12 @@ function ProfilePage() {
           <PersonalInfo />
         </div>
       </div>
-       
-     
+
+       <div className="">
+       <Button label="Submit"  className=" mt-6 lg:text-4xl sm:text-2xl lg:text-2xl text-2xl justify-content-center text-center w-7"/>
+
+       </div>
+
 
       <Footer />
     </div>
