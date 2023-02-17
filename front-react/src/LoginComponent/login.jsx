@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import "./register-styles.css";
+import "./login-styles.css";
 import FormInput from "./formInput";
 import AuthContext from "./AuthContext";
 import axios from "axios";
@@ -108,8 +108,8 @@ const Login = () => {
         <div style={{direction:'rtl'} } className='overflow-hidden'> 
 <Header/>
       
-        <div   className="form-input">
-            <form onSubmit={handleSubmit}>
+        <div   className="form-input ">
+            <form className="loginform" onSubmit={handleSubmit}>
                 <h1>ورود به سایت</h1>
                 {inputs.map((input) => (
                     <FormInput key={input.id} {...input} value={values[input.name]} onChange={onChange}/>
