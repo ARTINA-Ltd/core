@@ -39,38 +39,38 @@ function Properties() {
           </thead>
           <tbody>
             <tr className="border-b">
-              <td className="px-6 py-4 whitespace-nowrap text-2xl font-medium text-gray-900">1</td>
-              <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4 whitespace-nowrap text-2xl font-medium text-gray-900 font">1</td>
+              <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
                 زهرا علیمی
               </td>
-              <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
                 302
               </td>
-              <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
                 5/000/000
               </td>
             </tr>
             <tr className="bg-white border-b">
-              <td className="px-6 py-4 whitespace-nowrap text-2xl font-medium text-gray-900">2</td>
-              <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4 whitespace-nowrap text-2xl font-medium text-gray-900 font">2</td>
+              <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
                 سمانه رشیدی
               </td>
-              <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
                 301
               </td>
-              <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
                 4/900/000
               </td>
             </tr>
             <tr className="bg-white border-b">
-              <td className="px-6 py-4 whitespace-nowrap text-2xl font-medium text-gray-900">3</td>
-              <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4 whitespace-nowrap text-2xl font-medium text-gray-900 font">3</td>
+              <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
                 مهدی غلامی
               </td>
-              <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
                 209
               </td>
-              <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
                 3/800/000
               </td>
             </tr>

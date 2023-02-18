@@ -10,6 +10,7 @@
 // "image": null,
 // "email": "",
 // "role": null
+import "./Personalinfo.css";
 import React, { useState } from "react";
 import { Divider } from "primereact/divider";
 import { InputText } from "primereact/inputtext";
@@ -30,12 +31,17 @@ function PersonalInfo() {
       >
         <Accordion multiple activeIndex={[0, 1, 2]}>
           <AccordionTab
+            style={{
+              borderColor: "#424874",
+              borderWidth: "2px",
+              borderRadius: "4px",
+            }}
             header={
-              <div className="flex mr-3 align-items-center">
+              <div className="flex mr-3 align-items-center Accheader">
                 <span className="vertical-align-middle"> اطلاعات شخصی</span>
               </div>
             }
-            className="text-4xl mb-4"
+            className="text-4xl mb-4  "
           >
             <div className=" col-12 grid flex  align-items-center   ">
               <div
@@ -44,7 +50,10 @@ function PersonalInfo() {
               >
                 <p>
                   نام :
-                  <InputText className="h-4rem mr-5" placeholder="پارسا" />
+                  <InputText
+                    className="h-4rem nameinput "
+                    placeholder="پارسا"
+                  />
                 </p>
               </div>
               <div
@@ -66,7 +75,10 @@ function PersonalInfo() {
                 <p>
                   {" "}
                   کدملی :
-                  <InputText className="h-4rem" placeholder="4311333232" />
+                  <InputText
+                    className="h-4rem IDinfo"
+                    placeholder="4311333232"
+                  />
                 </p>
               </div>
               <div
@@ -77,7 +89,7 @@ function PersonalInfo() {
                   تاریخ تولد :
                   <Calendar
                     value={date}
-                    className="h-4rem"
+                    className="h-4rem dateinfo"
                     onChange={(e) => setDate(e.value)}
                     showButtonBar
                     placeholder="1398/09/09"
@@ -88,9 +100,14 @@ function PersonalInfo() {
             </div>
           </AccordionTab>
           <AccordionTab
+            style={{
+              borderColor: "#424874",
+              borderWidth: "2px",
+              borderRadius: "4px",
+            }}
             header={
               <div className="flex mr-3 align-items-center">
-                <span className="vertical-align-middle">  راه های ارتباطی  </span>
+                <span className="vertical-align-middle"> راه های ارتباطی </span>
               </div>
             }
             className="text-4xl mb-4"
@@ -102,7 +119,7 @@ function PersonalInfo() {
               >
                 <p>
                   شماره ثابت :{" "}
-                  <InputText className="h-4rem" placeholder="09121822776" />
+                  <InputText className="h-4rem homenum" placeholder="09121822776" />
                 </p>
               </div>
               <div
@@ -112,7 +129,7 @@ function PersonalInfo() {
                 <p>
                   {" "}
                   شماره همراه :{" "}
-                  <InputText className="h-4rem" placeholder="0987123323" />
+                  <InputText className="h-4rem phonenum" placeholder="0987123323" />
                 </p>
                 {/* <Calendar value={date} onChange={(e) => setDate(e.value)} />         */}
               </div>
@@ -123,16 +140,24 @@ function PersonalInfo() {
             >
               ایمیل :{" "}
               <InputText
-                className="h-4rem"
+                className="h-4rem Pemail  "
                 style={{ width: "40%" }}
                 placeholder="parsa@gmail,.com"
               />
             </div>
           </AccordionTab>
           <AccordionTab
+            style={{
+              borderColor: "#424874",
+              borderWidth: "2px",
+              borderRadius: "4px",
+            }}
             header={
               <div className="flex mr-3 align-items-center">
-                <span className="vertical-align-middle"> اطلاعات  حساب کاربری</span>
+                <span className="vertical-align-middle">
+                  {" "}
+                  اطلاعات حساب کاربری
+                </span>
               </div>
             }
             className="text-4xl mb-4"
@@ -156,19 +181,22 @@ function PersonalInfo() {
                 -----احرازهویت------
               </h1>
               <div className="flex  col-12 w-5      ">
-                <img src={image1} alt="" className="" style={{height:'90px'}} />
+                <img
+                  src={image1}
+                  alt=""
+                  className=""
+                  style={{ height: "90px" }}
+                />
               </div>
               <div className="col-12">
                 <p className="text-4xl mt-12">
                   52154651486514651613 :شماره شبا
                 </p>
-
-               </div>
+              </div>
             </div>
           </AccordionTab>
         </Accordion>
       </div>
-     
     </>
   );
 }

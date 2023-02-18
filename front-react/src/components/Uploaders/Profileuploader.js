@@ -50,14 +50,18 @@ export default function Profileuploader() {
         const formatedValue = fileUploadRef && fileUploadRef.current ? fileUploadRef.current.formatSize(totalSize) : '0 B';
 
         return (
-            <div className={className} style={{direction:'ltr', backgroundColor: 'transparent', display: 'flex', alignItems: 'center' }}>
+            <div className=''style={{}}>
+
+           
+            <div className={className} style={{direction:'ltr', backgroundColor: '#DCD6F7', display: 'flex', alignItems: 'center'  }}>
                 {chooseButton}
                 {uploadButton}
                 {cancelButton}
-                <div className="flex align-items-center gap-3 ml-auto mr-8">
+                <div className="flex align-items-center  gap-3 ml-auto mr-8  " style={{color:'#424874'}}>
                     <span>{formatedValue} / 1 MB</span>
-                    <ProgressBar value={value} showValue={false} style={{ width: '10rem', height: '12px' }}></ProgressBar>
+                    <ProgressBar value={value} showValue={false} style={{ width: '10rem', height: '12px', backgroundColor:"#A6B1E1" }}   ></ProgressBar>
                 </div>
+            </div>
             </div>
         );
     };
@@ -95,7 +99,7 @@ export default function Profileuploader() {
     const cancelOptions = { icon: 'pi pi-fw pi-times', iconOnly: true, className: 'custom-cancel-btn p-button-danger p-button-rounded p-button-outlined' };
 
     return (
-        <div>
+        <div className='' style={{borderColor:'#424874' ,borderWidth:'2px',borderRadius:'9px', }}>
             <Toast ref={toast}></Toast>
 
             <Tooltip target=".custom-choose-btn" content="Choose" position="bottom" />

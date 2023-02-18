@@ -11,7 +11,7 @@ import { Button } from "primereact/button";
 
 function ProfilePage() {
   return (
-    <div className="     "  >
+    <div className="     " style={{backgroundColor:"#F4EEFF"}} >
        
       <div className="  overflow-hidden     " style={{ direction: "rtl" }}>
         
@@ -21,19 +21,19 @@ function ProfilePage() {
             مشخصات شخصی
           </h2>
         </div> 
-        <div dir="rtl" className="flex grid col-12  m-2">
-          <div className="lg:col-6     md:col-6 sm:col-12 mt-6">
+        <div dir="rtl" className="flex grid col-12  m-3">
+          <div className="lg:col-6   p-4    md:col-6 sm:col-12 mt-6">
             <Profileuploader />
             <IDUpdate />
           </div>
-          <div className="lg:col-6 md:col-6  sm:col-12 mt-2">
+          <div className="lg:col-6 md:col-6 p-4 sm:col-12 mt-2">
             <PersonalInfo />
           </div>
         </div>
 
         <div className="">
-          <Button
-            label="Submit"
+          <Button style={{backgroundColor:'#424874'}}
+            label="ویرایش"
             className=" mt-6 lg:text-4xl sm:text-2xl lg:text-2xl text-2xl justify-content-center text-center w-7"
           />
         </div>

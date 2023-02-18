@@ -10,29 +10,29 @@ import {Link} from "react-router-dom";
 const Section_5_cart = () => {
   return (
     <div className="section-main-container-main">
-      <h1 className="section-cart-main-header">دسته بندی‌ها</h1>
+      <h1 className="section-cart-main-header font">دسته بندی‌ها</h1>
       <div className="section-cart-main-container">
         <div className="section-cart-container    special-image-section-cart-1">
           <img className="section-cart-pic" src={section_3_1}/>
-          <Link to="/productpage" className="section-cart-button">نستعلیق</Link>
+          <Link to="/productpage" className="section-cart-button font">نستعلیق</Link>
         </div>
         <div className="section-cart-container    special-image-section-cart-2">
           <img className="section-cart-pic" src={section_3_2}/>
-          <Link to={"/productpage"} className="section-cart-button">صوفی</Link>
+          <Link to={"/productpage"} className="section-cart-button font">صوفی</Link>
         </div>
         <div className="section-cart-container   special-image-section-cart-3">
           <img className="section-cart-pic" src={section_3_3}/>
-          <Link to={"/productpage"} className="section-cart-button">ثلث</Link>
+          <Link to={"/productpage"} className="section-cart-button font">ثلث</Link>
         </div>
         <div className="section-cart-container   special-image-section-cart-4">
           <img className="section-cart-pic" src={section_3_4}/>
           {/* <button className="section-cart-button">رنگی</button> */}
-          <Link to={"/productpage"} className="section-cart-button">رنگی</Link>
+          <Link to={"/productpage"} className="section-cart-button font">رنگی</Link>
 
         </div>
         <div className="section-cart-container   special-image-section-cart-5">
           <img className="section-cart-pic   " src={section_3_5}/>
-          <Link to={"/productpage"} className="section-cart-button">انتزاعی</Link>
+          <Link to={"/productpage"} className="section-cart-button font">انتزاعی</Link>
         </div>
       </div>
     </div>
