@@ -8,7 +8,7 @@ import "primeicons/primeicons.css"; //icons
 
  import { Button } from "primereact/button";
 
- import Header from "../components/DashboardNavBar/Header";
+ import Header from "../components/LandingPageNavBar/Header";
 import Footer from "../components/Footer/Footer";
 import UserDashboardTable from "../components/Tables/UserDashboardTable/UserDashboardTable";
 import UserDashboardCharts from "../components/ChartsJs/UChart";
@@ -29,20 +29,20 @@ function UserDashboard() {
       <div className=" overflow-hidden" style={{ direction: "rtl" ,backgroundColor:"#F4EEFF" }}>
         <Header />
 
-        <div className=" flex align-items-center justify-content-center grid   ">
-          <div className=" grid  col-12   md:col-6 lg:col-6 " >
+        <div className=" grid flex align-items-center justify-content-center     ">
+          <div className="    col-12   md:col-6 lg:col-6 " >
           <ReportField/>
 
           </div>
 
-          <div className=" grid  col-12   md:col-6 lg:col-6 ">
+          <div className="    col-12   md:col-6 lg:col-6 ">
           <TurnOverField/>
              
           </div>
 
           {/* section 2 : Tabels about exhibitions */}
 
-          <div className=" grid   col-12  m-9  p-9">
+          <div className="  col-12  mr-0 ml-0 w-screen p-5 ">
             <div className="card  h-30rem shadow-7" style={{borderColor:'#424874' ,borderWidth:'2px'  }}>
               <UserDashboardTable />
             </div>
@@ -52,11 +52,11 @@ function UserDashboard() {
         {/* section 3 : devided into two cards ; one with detaild and one with requesting some files \two button */}
 
         <div className=" flex align-items-center justify-content-center grid   ">
-          <div className=" grid  col-12   md:col-6 lg:col-6 ">
+          <div className="   col-12   md:col-6 lg:col-6 ">
           <IncomeCard/>
           </div>
 
-          <div  className=" grid  col-12   md:col-6 lg:col-6 ">
+          <div  className="    col-12   md:col-6 lg:col-6 ">
            <Reportcard/>
           </div>
         </div>
