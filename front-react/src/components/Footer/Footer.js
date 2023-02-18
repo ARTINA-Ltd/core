@@ -3,7 +3,7 @@ import { Button } from "primereact/button";
 
 const Footer = () => {
   return (
-    <div className="footer grid  col-12 w-full m-0 mt-8 mb-0 md:col-12 lg:col-12">
+    <div className="footer grid  col-12 w-full m-0 mt-8 mb-0 md:col-12 lg:col-12 ">
       <div className="footer-content  h-auto ">
         
         <div className="footer-right  grid col-12 mb-7   md:col-4 lg:col-4">
