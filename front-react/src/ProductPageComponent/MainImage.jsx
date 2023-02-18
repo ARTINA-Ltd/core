@@ -12,9 +12,7 @@ function MainImage() {
           <img
             src={require("./images/image_2022-08-15_19-57-46.png")}
             alt="tablovo"
-            className={
-              " w-full  "
-            }
+            className={" w-full  "}
           />
         </div>
 
@@ -23,24 +21,21 @@ function MainImage() {
             className="pi pi-heart  mt-4    col-12 lg:w-full sm:w-full md:w-full  w-full   md:col-4 lg:col-4    align-items-center justify-content-center 
 "
             onClick={() => setLike(Like + 1)}
-            style={{ fontSize: "2.5rem" }}
+            style={{ fontSize: "1.5rem" }}
           >
-            <span   className="font">
-              {" "}
-              {Like}
-            </span>
+            <span className="font"> {Like}</span>
           </Button>
 
           <Button
             className="pi    pi-eye  m-4    lg:w-full sm:w-full md:w-full  w-4  sm:col-12 col-12   md:col-4 lg:col-4 "
-            style={{ fontSize: "2.5rem" }}
+            style={{ fontSize: "1.5rem" }}
           >
-            <span  className="font"> 12.605</span>
+            <span className="font"> 12.605</span>
           </Button>
 
           <Button
             className="pi m-4    pi-share-alt lg:w-full sm:w-full md:w-full  w-4 col-12   md:col-4 lg:col-4   "
-            style={{ fontSize: "2.5rem" }}
+            style={{ fontSize: "1.5rem" }}
           >
             <span className="font"> 8255</span>
           </Button>

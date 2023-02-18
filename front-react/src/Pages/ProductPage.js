@@ -23,7 +23,7 @@ function ProductPage() {
                 <MainImage />
               </div>
             </div>
-            <div className="col-6 md:col-6  sm:col-12 ">
+            <div className="col-12 lg:col-16 md:col-6  sm:col-12 ">
               <div className=" sm:mr-9  ml-9   align-items-center justify-content-center    ">
                 <Price />
               </div>
