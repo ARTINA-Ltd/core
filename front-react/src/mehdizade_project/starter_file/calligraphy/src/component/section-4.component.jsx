@@ -4,10 +4,10 @@ const Section_4 = () => {
   return (
     <div>
       <div className="image-section-4">
-        <p className="header-section-4">
+        <p className="header-section-4 font">
           در تولید اثار ان اف تی حرفه‌ایی شوید
         </p>
-        <Link to={"/artistpage"} className="button-footer  button-section4" >
+        <Link to={"/artistpage"} className="button-footer  button-section4 font" >
           بیشتر بدانید
         </Link>
       </div>

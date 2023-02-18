@@ -125,7 +125,7 @@ const Section_2 = () => {
     return (
       <div>
         <div className="section-2-main-main-container ">
-          <p className="section-2-header-text">بهترین نمایشگاه</p>
+          <p className="section-2-header-text font">بهترین نمایشگاه</p>
           <Fade {...properties}>
             <div className="section-2-important-container">
               {array.map((exhibition) => (
@@ -135,16 +135,16 @@ const Section_2 = () => {
          
               <div className="section-2-main-detail-time-date-container">
                 <ul className="section-2-detail" dir="rtl" lang="fa">
-                  <li>
+                  <li className="font">
                     این نمایشگاه به منظور فروش محصولات هنری به اجرا درامده است
                     {/* <p>{exhibitions.description}</p> */}
                   </li>
-                  <li>مدت زمان برگزاری : 10 الی 11 صبح</li>
-                  <li>تاریخ برگزاری : 1379/02/05</li>
+                  <li className="font">مدت زمان برگزاری : 10 الی 11 صبح</li>
+                  <li className="font">تاریخ برگزاری : 1379/02/05</li>
                 </ul>
                 <Link
                   to={"/homepage"}
-                  className="button-footer section-2-button"
+                  className="button-footer section-2-button font"
                 >
                   مشاهده محصولات
                 </Link>
@@ -154,15 +154,15 @@ const Section_2 = () => {
      
               <div className="section-2-main-detail-time-date-container">
                 <ul className="section-2-detail" dir="rtl" lang="fa">
-                  <li>
+                  <li className="font">
                     این نمایشگاه به منظور فروش محصولات هنری به اجرا درامده است
-                  </li>
-                  <li>مدت زمان برگزاری : 10 الی 11 صبح</li>
+                  </li >
+                  <li className="font">مدت زمان برگزاری : 10 الی 11 صبح</li>
                   <li>تاریخ برگزاری : 1379/05/02</li>
                 </ul>
                 <Link
                   to={"/homepage"}
-                  className="button-footer section-2-button"
+                  className="button-footer section-2-button font"
                 >
                   مشاهده محصولات
                 </Link>

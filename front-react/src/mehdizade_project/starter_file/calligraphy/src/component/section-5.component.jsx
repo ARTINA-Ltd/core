@@ -10,7 +10,7 @@ import {Link} from "react-router-dom";
 const Section_5 = () => {
   return (
     <div>
-      <h1 className="section5-header">لذت خوشنویسی از زبان بزرگان</h1>
+      <h1 className="section5-header font">لذت خوشنویسی از زبان بزرگان</h1>
       <div className="section5-container">
         <div className="image-main-container">
           <img
@@ -41,14 +41,14 @@ const Section_5 = () => {
         </div>
 
         <div className="section5-text" dir="rtl" lang="fa">
-          <p className="section5-text-inside-border">
+          <p className="section5-text-inside-border font  ">
             در این نوشتار، نگارنده تلاش کرده حالات و احوال معنوی و خوشایندی را
             که از لحظات نگارش بر او گذشته است، به رشته کلام درآورد. صرف‌نظر از
             درون‌مایه و میزان غنا و قوت موضوع، تثبیت کردن چنین حالاتی مفید و در
             نوع خود بدیع است. به همین سان شریک کردن دبیران هنر انگیزه‌ای است که
             آنان نیز احساس صاف و صمیمانه خود را از این تجربه‌ها بیان و ثبت کنند.
           </p>
-          <Link to={"/exhibition"} className="button-footer  section-5-button">
+          <Link to={"/exhibition"} className="button-footer  section-5-button font">
             تجربه کن
           </Link>
         </div>
