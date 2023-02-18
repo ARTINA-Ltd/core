@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import Dropzone from "./Dropzone";
 import "./UploadItem.css";
 import axios from "axios";
+import NFTupload from "./Uploaders/NFTupload";
 
 const UploadItem = () => {
   const hanndleNumberChange = (e) => {
@@ -84,13 +85,13 @@ const UploadItem = () => {
   };
 
   return (
-    <div className="main__div">
+    <div className="main__div ">
       <div className="header__div">
         <h1 className="header__name">بخش آپلود فایل</h1>
       </div>
-      <div className="upload__nft__container">
-        <div className="upload__nft">
-          {!upladObj.image && <Dropzone onDrop={onDrop} />}
+      <div className="upload__nft__container flex grid">
+        <div className="upload__nft lg:col-6  col-12 mb-8 mt-8 ">
+          {!upladObj.image && <NFTupload onDrop={onDrop} />}
           {upladObj.image && (
             <div className="image__container">
               <div
