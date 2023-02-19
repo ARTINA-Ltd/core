@@ -2,11 +2,33 @@
     margin-right: 25px !important;
 
 }
+.p-inputtext	{
+    font-family: 'Vazir-Medium' ;
+    src: url('../assets/fonts/Vazir-Medium.ttf');
+}
+*{
+    font-family: 'Vazir-Medium' ;
+    src: url('../assets/fonts/Vazir-Medium.ttf');
+}
 .homenum{
 
 }
+.p-dropdown-label{
+    font-family: 'Vazir-Medium';
+    src: url('../assets/fonts/Vazir-Medium.ttf');
+}
+.p-inputtext{
+    
+    font-family: 'Vazir-Medium' !important;
+    src: url('../assets/fonts/Vazir-Medium.ttf');
+}
+.p-dropdown-item{
+    font-family: 'Vazir-Medium';
+    src: url('../assets/fonts/Vazir-Medium.ttf');
+}
 .phonenum{
-
+    font-family: 'Vazir-Medium';
+    src: url('../assets/fonts/Vazir-Medium.ttf');
 }
 .Pemail{
 margin-right: 37px !important;
@@ -19,9 +41,12 @@ margin-right: 37px !important;
     color:#424874 !important;
 }
 .dateinfo{
-    margin-right: 21px !important;
+   
 }
-
+@font-face {
+    font-family: 'Vazir-Medium';
+    src: url('../assets/fonts/Vazir-Medium.ttf');
+}
 @media   (max-width: 576px) {
     .phonenum{
         margin-right:  7px !important;
@@ -32,16 +57,39 @@ margin-right: 37px !important;
 
     }
     .nameinput{
-        margin-right: 65px !important;
+        margin-right: 78px !important;
     
     }
     .IDinfo{
-        margin-right: 40px !important;
+        margin-right: 50px !important;
     }
     .dateinfo{
         margin-right: 18px !important;
     }
     .Pemail{
         margin-right: 50px !important;
+        }
+}
+@media   (max-width: 380px) {
+    .phonenum{
+        margin-right:  7px !important;
+
+    }
+    .homenum{
+        margin-right: 15px !important;
+
+    }
+    .nameinput{
+        margin-right:  8px !important;
+    
+    }
+    .IDinfo{
+        margin-right: 8px !important;
+    }
+    .dateinfo{
+        margin-right: 0px !important;
+    }
+    .Pemail{
+        margin-right: 60px !important;
         }
 }

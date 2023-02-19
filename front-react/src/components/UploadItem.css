@@ -48,8 +48,7 @@
   /* border: 3px rgba(100, 100, 255, 0.84)  ; */
   font-size: 15px;
   /*width: 60%;*/
-  margin: auto;
-}
+ }
 
 .name__input__container {
   width: 45%;
@@ -183,9 +182,9 @@
   .upload__nft {
     width: 50vw;
     height: 20vh;
-  }
+   }
   .name__input__container {
-    width: 80%;
+    width: 100%;
   }
   .nft__name {
     font-size: 2em;
@@ -217,4 +216,9 @@
   .a5 {
     font-size: 2em;
   }
+}
+@media (width: 770px){
+.upload{
+  margin-bottom: 96px !important;
+}
 }
