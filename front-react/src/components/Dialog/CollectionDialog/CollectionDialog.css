@@ -1,0 +1,19 @@
+/* 
+p-button p-component 
+p-datepicker-trigger
+ p-button-icon-only */
+
+ .p-datepicker-trigger{
+    background-color: #DCD6F7 !important;
+    color: #424874 !important;
+direction: ltr !important ; 
+border-radius:3px !important;
+margin-left: 1px !important;
+}
+.p-inputgroup-addon{
+    background-color: #DCD6F7 !important;
+    color: #424874 !important;
+    
+    border-radius:3px !important;
+    margin-left: 4px !important;
+}
