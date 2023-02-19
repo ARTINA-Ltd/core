@@ -11,7 +11,7 @@ import { Button } from "primereact/button";
 
 function ProfilePage() {
   return (
-    <div className="     " style={{backgroundColor:"#F4EEFF"}} >
+    <div className="    " style={{backgroundColor:"#F4EEFF"}} >
        
       <div className="  overflow-hidden     " style={{ direction: "rtl" }}>
         
@@ -31,7 +31,7 @@ function ProfilePage() {
           </div>
         </div>
 
-        <div className="">
+        <div className="mb-8">
           <Button style={{backgroundColor:'#424874'}}
             label="ویرایش"
             className=" mt-6 lg:text-4xl sm:text-2xl lg:text-2xl text-2xl justify-content-center text-center w-7"

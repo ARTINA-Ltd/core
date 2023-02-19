@@ -90,7 +90,7 @@ const UploadItem = () => {
         <h1 className="header__name">بخش آپلود فایل</h1>
       </div>
       <div className="upload__nft__container flex grid">
-        <div className="upload__nft lg:col-6  col-12 mb-8 mt-8 ">
+        <div className="upload__nft lg:col-6    col-12     " style={{marginTop:'11rem',marginBottom:'8rem'}}>
           {!upladObj.image && <NFTupload onDrop={onDrop} />}
           {upladObj.image && (
             <div className="image__container">

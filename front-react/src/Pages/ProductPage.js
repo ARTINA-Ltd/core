@@ -19,7 +19,7 @@ function ProductPage() {
         <div style={{ direction: "rtl" }} className="grid">
           <div className="col-12 flex grid">
             <div className="lg:col-6 lg:w-6 md:col-6    sm:col-12 ">
-              <div className=" lg:mr-8 align-items-center justify-content-center">
+              <div className=" lg:mr-8 align-items-center justify-content-center mt-8">
                 <MainImage />
               </div>
             </div>

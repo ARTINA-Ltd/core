@@ -10,6 +10,8 @@
 // "image": null,
 // "email": "",
 // "role": null
+import { Dropdown } from 'primereact/dropdown';
+
 import "./Personalinfo.css";
 import React, { useState } from "react";
 import { Divider } from "primereact/divider";
@@ -21,6 +23,15 @@ import { Accordion, AccordionTab } from "primereact/accordion";
 
 function PersonalInfo() {
   const [date, setDate] = useState("hu Feb 09 2023");
+  const [selectedCity, setSelectedCity] = useState(null);
+  const cities = [
+      { name: 'New York', code: 'NY' },
+      { name: 'Rome', code: 'RM' },
+      { name: 'London', code: 'LDN' },
+      { name: 'Istanbul', code: 'IST' },
+      { name: 'Paris', code: 'PRS' }
+  ];
+
   // console.log(date)
   return (
     <>
@@ -38,7 +49,7 @@ function PersonalInfo() {
             }}
             header={
               <div className="flex mr-3 align-items-center Accheader">
-                <span className="vertical-align-middle"> اطلاعات شخصی</span>
+                <span className="vertical-align-middle font text-3xl"> اطلاعات شخصی</span>
               </div>
             }
             className="text-4xl mb-4  "
@@ -85,7 +96,7 @@ function PersonalInfo() {
                 className="col-12 sm:col-6 md:col-6 lg:col-6  justify-content-start"
                 style={{ display: "flex" }}
               >
-                <p>
+                <p className=''>
                   تاریخ تولد :
                   <Calendar
                     value={date}
@@ -107,7 +118,7 @@ function PersonalInfo() {
             }}
             header={
               <div className="flex mr-3 align-items-center">
-                <span className="vertical-align-middle"> راه های ارتباطی </span>
+                <span className="vertical-align-middle font text-3xl"> راه های ارتباطی </span>
               </div>
             }
             className="text-4xl mb-4"
@@ -135,14 +146,14 @@ function PersonalInfo() {
               </div>
             </div>
             <div
-              className=" col-7 sm:col-12  justify-content-start mt-2 w-full  "
+              className=" col-7 sm:col-12 font justify-content-start mt-2 w-full  "
               style={{ display: "flex" }}
             >
               ایمیل :{" "}
               <InputText
-                className="h-4rem Pemail  "
+                className="h-4rem Pemail font "
                 style={{ width: "40%" }}
-                placeholder="parsa@gmail,.com"
+                placeholder="parsa@gmail.com"
               />
             </div>
           </AccordionTab>
@@ -154,7 +165,7 @@ function PersonalInfo() {
             }}
             header={
               <div className="flex mr-3 align-items-center">
-                <span className="vertical-align-middle">
+                <span className="vertical-align-middle font text-3xl">
                   {" "}
                   اطلاعات حساب کاربری
                 </span>
@@ -167,20 +178,26 @@ function PersonalInfo() {
                 className="col-11 sm:col-6 md:col-6 lg:col-6  justify-content-start"
                 style={{ display: "flex" }}
               >
-                <p>امتیاز در سایت : 99999 </p>
+                <p className='font'>امتیاز در سایت : 99999 </p>
               </div>
               <div
-                className="col-11 sm:col-6 md:col-6 lg:col-6  justify-content-start"
+                className="col-11 sm:col-6 md:col-6 lg:col-6   justify-content-start"
                 style={{ display: "flex" }}
               >
-                <p> نوع کارب :طلایی</p>
+                <p className='font'> نوع کاربر :طلایی</p>
               </div>
             </div>
+            {/* <div className="col-12  m-4  flex justify-content-center" >
+            <span className="p-float-label font w-auto " style={{direction:'rtl'}}>
+                <Dropdown inputId="dd-city" showClear  value={selectedCity} onChange={(e) => setSelectedCity(e.value)} options={cities} optionLabel="name" className="w-full   font" />
+                <label className='text-1xl ml-5 mb-8 font justify-content-center'  htmlFor="dd-city ">   انتخاب نقش</label>
+            </span>
+        </div> */}
             <div className="col-12 grid flex justify-content-center">
               <h1 className="text-5xl col-12 justify-content-center  ">
                 -----احرازهویت------
               </h1>
-              <div className="flex  col-12 w-5      ">
+              <div className="flex  col-12 w-5   justify-content-center   ">
                 <img
                   src={image1}
                   alt=""
