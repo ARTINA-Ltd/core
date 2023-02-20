@@ -8,10 +8,15 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-
+#from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.contrib.auth.models import User
 from core.models import NFT
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import authenticate
+from rest_framework_jwt.settings import api_settings
 
 
 class RegisterViewSet(viewsets.ModelViewSet):
@@ -26,16 +31,66 @@ class RegisterViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
+class LoginViewSet(viewsets.ViewSet):
 
-# API view that returns the user associated with a given JWT token
-class UserAPIView(generics.RetrieveAPIView):
-    permission_classes = [permissions.IsAuthenticated]
-    authentication_classes = [JSONWebTokenAuthentication]
-    serializer_class = serializers.UserSerializer
+    serializer_class = serializers.LoginSerializer
+    def create(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(username=username, password=password)
 
-    def retrieve(self, request, *args, **kwargs):
-        return Response({
-            'username': request.user.username        })
+        if user is None:
+            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        refresh = RefreshToken.for_user(user)
+        response_data = {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+
+
+
+
+
+class UserInfoViewSet(viewsets.ViewSet):
+    authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]
+
+    def list(self, request):
+        user = request.user
+        data = {
+            'username': user.username,
+            # 'email': user.email,
+            # Add any other user information you want to pass to the response
+        }
+        return Response(data)
+
+# @api_view(['GET'])
+# @authentication_classes([JWTAuthentication])
+# @permission_classes([IsAuthenticated])
+# def user_info(request):
+#     user = request.user
+#     data = {
+#         'username': user.username,
+#         'email': user.email,
+#         # Add any other user information you want to pass to the response
+#     }
+#     return Response(data)
+
+
+
+
+
+# # API view that returns the user associated with a given JWT token
+# class UserAPIView(generics.RetrieveAPIView):
+#     permission_classes = [permissions.IsAuthenticated]
+#   #  authentication_classes = [JSONWebTokenAuthentication]
+#     serializer_class = serializers.UserSerializer
+
+#     def retrieve(self, request, *args, **kwargs):
+#         return Response({
+#             'username': request.user.username        })
 
 
 

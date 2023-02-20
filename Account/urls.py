@@ -8,8 +8,10 @@ router.register(r'register', views.RegisterViewSet)
 # router.register(r'artists', views.ArtistViewSet)
 router.register(r'rate', views.ArtistRateViewSet)
 router.register(r'profile', views.ProfileViewSet)
-router.register(r'login', views.UserAPIView)
+router.register(r'user-info', views.UserInfoViewSet, basename='user_info')
+router.register(r'login', views.LoginViewSet, basename='login')
+
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('', include(router.urls)),
 ]
