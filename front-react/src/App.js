@@ -21,6 +21,7 @@ import {ChainId, ThirdwebProvider} from "@thirdweb-dev/react";
 import ProfilePage from "./Pages/ProfilePage";
 import UserDashboard from "./Pages/UserDashboard";
 import { ScrollTop } from "primereact/scrolltop";
+import Commission from "./Pages/Commission/Commission";
 
 const activeChainId = ChainId.Goerli;
 
@@ -35,6 +36,8 @@ export default () => {
                     <Route exact path="artist-page" element={<ArtistPage/>}/>
                     <Route exact path="artist-application-form" element={<ArtistApplicationForm/>}/>
                     <Route exact path="nft-details" element={<NFTDetails/>}/>
+                    <Route exact path="Commission" element={<Commission/>}/>
+
                     <Route exact path="login" element={<Login/>}/>
                     <Route exact path="register" element={<Register/>}/>
                     <Route exact path="exhibitor-page" element={<ExhibitorPage/>}/>
