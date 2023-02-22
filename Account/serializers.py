@@ -6,14 +6,16 @@ from django.contrib.auth import authenticate
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
+
     class Meta:
         model = User
         fields = ['username', 'password', 'email']
 
     def create(self, validated_data):
         user = User.objects.create_user(validated_data['username'], validated_data['email'], validated_data['password'])
+        profile = Profile(user=user)
+        profile.save()
         return user
-
 
 
 class LoginSerializer(serializers.Serializer):
@@ -35,7 +37,7 @@ class LoginSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id','username','first_name','last_name','email','date_joined']
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'date_joined']
 
 
 class ArtistRatingSerializer(serializers.ModelSerializer):
