@@ -37,7 +37,6 @@ export default () => {
                     <Route exact path="artist-application-form" element={<ArtistApplicationForm/>}/>
                     <Route exact path="nft-details" element={<NFTDetails/>}/>
                     <Route exact path="Commission" element={<Commission/>}/>
-
                     <Route exact path="login" element={<Login/>}/>
                     <Route exact path="register" element={<Register/>}/>
                     <Route exact path="exhibitor-page" element={<ExhibitorPage/>}/>
