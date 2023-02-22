@@ -46,7 +46,7 @@ class Profile(models.Model):
                                               )
     profile_picture = models.ImageField(upload_to="./static/PicturesOfProfile", verbose_name="عکس پروفایل",
                                         null=True, blank=False, default="static/PicturesOfProfile/default.png",)
-    email = models.EmailField(max_length=50, verbose_name="ایمیل", null=True, blank=False)
+    # email = models.EmailField(max_length=50, verbose_name="ایمیل", null=True, blank=False)
     role = models.ForeignKey(Role, on_delete=models.CASCADE, default=1)
 
     # def __str__(self):
