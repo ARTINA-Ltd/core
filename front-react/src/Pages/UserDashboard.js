@@ -17,10 +17,55 @@ import TurnOverField from "../components/Fieldsets/UserDashboardFSs/TurnOverFiel
 import IncomeCard from "../components/Cards/UserDashboardCards/IncomeCard";
 import Reportcard from "../components/Cards/UserDashboardCards/Reportcard";
 import SendTicket from "../components/Forms/UserDashboardForms/SendTicket";
+import axios from "axios";
 
 function UserDashboard() {
-  useEffect(() => {}, []);
+  
+  var Token = localStorage.getItem("authTokens");
 
+   const config = {
+    headers: {
+      Authorization: `Bearer ${Token}`,
+    },
+  };
+  const getInfo = () => {
+  //  Response is : 
+  // {
+  //     "username": ""
+  // }
+    axios
+      .get(
+        "http://78.38.35.249/api/account/user-info/",
+        config
+      )
+      .then((response) => {
+        if (response.status == 200) {
+          console.log(response.data.username)
+         const userDatas = localStorage.setItem("UserDatas", JSON.stringify ( response.data));
+       
+         //check another api to see profile full datas.if it was null,start the data
+         // if it is not valid send a toast to login
+        } 
+      })
+      .catch((exception) => {
+        console.log(exception)
+        if (exception.response.status === 401) {
+          console.log("401");}
+        // } else if (exception.response.status === 404) {
+        //   Show404Errors(toastBC);
+        // } else if (exception.response.status === 500) {
+        //   Show500Errors(toastBC);
+        // } else if (exception.response.status === 401) {
+        //   ShowTokenErrors(toastBC);
+        // } else if (exception.code === "ERR_NETWORK") {
+        //   ShowNetorkErrors(toastBC);
+        // }
+      });
+  };
+
+  useEffect(() => {
+    getInfo();
+  }, []);
   
   // --------------------------------    --------------------------------
 
