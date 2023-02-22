@@ -45,17 +45,7 @@ const Login = () => {
     //     console.log(username, password)
     //     username.length > 0 && loginUser(username, password);
     // }
-
-    const [authTokens, setAuthTokens] = useState(() =>
-        localStorage.getItem("authTokens")
-            ? JSON.parse(localStorage.getItem("authTokens"))
-            : null
-    );
-    const [user, setUser] = useState(() =>
-        localStorage.getItem("authTokens")
-            ? jwt_decode(localStorage.getItem("authTokens"))
-            : null
-    );
+ 
 //     "id": 1,
 //     "name": "غروب و دریا",
 //     "creator": "بهروز فاتحی",
@@ -71,7 +61,7 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch("http://78.38.35.249:8000/api/login/", {
+        const response = await fetch("http://78.38.35.249/api/account/login/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -84,11 +74,10 @@ const Login = () => {
         const data = await response.json();
 
         if (response.status === 200) {
-            setAuthTokens(data);
-            setUser(jwt_decode(data.access));
-            localStorage.setItem("authTokens", JSON.stringify(data));
+            
+            localStorage.setItem("authTokens",  data.access);
             alert("با موفقیت وارد شدید");
-            navigate("/upload-page");
+            navigate("/UserDashboard");
         } else {
             alert("Something went wrong!");
         }

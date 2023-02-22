@@ -8,8 +8,55 @@ import Footer from "../components/Footer/Footer";
 import Profileuploader from "../components/Uploaders/Profileuploader";
 import IDUpdate from "../components/Uploaders/IDUpdate";
 import { Button } from "primereact/button";
+import { useEffect } from "react";
+import Cookies from 'js-cookie';
+import axios from "axios";
 
 function ProfilePage() {
+   var Token = localStorage.getItem("authTokens");
+
+   const config = {
+    headers: {
+      Authorization: `Bearer ${Token}`,
+    },
+  };
+  const getInfo = () => {
+  //  Response is : 
+  // {
+  //     "username": ""
+  // }
+    axios
+      .get(
+        "http://78.38.35.249/api/account/user-info/",
+        config
+      )
+      .then((response) => {
+        if (response.status == 200) {
+          console.log(response.data.username)
+          localStorage.setItem("UserDatas", JSON.stringify ( response.data));
+         //check another api to see profile full datas.if it was null,start the data
+         // if it is not valid send a toast to login
+        } 
+      })
+      .catch((exception) => {
+        console.log(exception)
+        if (exception.response.status === 401) {
+          console.log("401");}
+        // } else if (exception.response.status === 404) {
+        //   Show404Errors(toastBC);
+        // } else if (exception.response.status === 500) {
+        //   Show500Errors(toastBC);
+        // } else if (exception.response.status === 401) {
+        //   ShowTokenErrors(toastBC);
+        // } else if (exception.code === "ERR_NETWORK") {
+        //   ShowNetorkErrors(toastBC);
+        // }
+      });
+  };
+
+  useEffect(() => {
+    getInfo();
+  }, []);
   return (
     <div className="    " style={{backgroundColor:"#F4EEFF"}} >
        
