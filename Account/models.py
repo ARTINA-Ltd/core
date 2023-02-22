@@ -7,14 +7,14 @@ from django.db.models import Avg
 
 
 class Permission(models.Model):
-    name = models.CharField(max_length=10, verbose_name="نوع دسترسی", null=False, blank=False)
+    name = models.CharField(max_length=10, verbose_name="نوع دسترسی", null=True, blank=False, default="basic")
 
     def __str__(self):
         return self.name
 
 
 class Role(models.Model):
-    name = models.CharField(max_length=10, verbose_name="نقش", null=False, blank=False)
+    name = models.CharField(max_length=10, verbose_name="نقش", null=True, blank=False, default="user_zero")
     permissions = models.ManyToManyField(Permission)
 
     def __str__(self):
@@ -26,30 +26,32 @@ class Role(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    first_name = models.CharField(max_length=15, null=False, blank=False)
-    last_name = models.CharField(max_length=25, null=False, blank=False)
-    national_code = models.CharField(max_length=10, verbose_name="کدملی", null=True, blank=True,
+    first_name = models.CharField(max_length=15, null=True, blank=False)
+    last_name = models.CharField(max_length=25, null=True, blank=False)
+    national_code = models.CharField(max_length=10, verbose_name="کدملی", null=True, blank=False,
                                      validators=[validators.RegexValidator(regex='^[0-9]{10}$',
                                                                            message='کد ملی باید 10 رقمی باشد',
                                                                            code='invalid_national_code')])
-    birthdate = models.CharField(max_length=10, verbose_name="تاریخ تولد", null=True, blank=True)
-    phone_number = models.CharField(max_length=11, verbose_name="شماره تلفن", null=True, blank=True,
+    birthdate = models.CharField(max_length=10, verbose_name="تاریخ تولد", null=True, blank=False)
+    phone_number = models.CharField(max_length=11, verbose_name="شماره تلفن", null=True, blank=False,
                                     validators=[validators.RegexValidator(regex='^[0-9]{11}$',
                                                                           message='شماره تلفن باید 11 رقمی باشد',
                                                                           code='invalid_phone_number')])
-    cell_number = models.CharField(max_length=11, verbose_name="شماره تلفن ثابت", null=True, blank=True)
-    address = models.TextField(max_length=200, verbose_name="آدرس", null=True, blank=True)
-    national_code_picture = models.ImageField(verbose_name="عکس کارت ملی", upload_to="./static/pictures of users",
+    cell_number = models.CharField(max_length=11, verbose_name="شماره تلفن ثابت", null=True, blank=False)
+    address = models.TextField(max_length=200, verbose_name="آدرس", null=True, blank=False)
+    national_card_picture = models.ImageField(verbose_name="عکس کارت ملی", upload_to="./static/PicturesOfNationalCard",
                                               null=True,
-                                              blank=True)
-    image = models.ImageField(upload_to="./static/pictures of profile", verbose_name="عکس پروفایل",
-                              null=True, blank=True)
-    email = models.EmailField(max_length=50, verbose_name="ایمیل", null=True, blank=True)
-    role = models.ForeignKey(Role, on_delete=models.CASCADE)
+                                              blank=False,
+                                              default="static/PicturesOfNationalCard/default.png",
+                                              )
+    profile_picture = models.ImageField(upload_to="./static/PicturesOfProfile", verbose_name="عکس پروفایل",
+                                        null=True, blank=False, default="static/PicturesOfProfile/default.png",)
+    email = models.EmailField(max_length=50, verbose_name="ایمیل", null=True, blank=False)
+    role = models.ForeignKey(Role, on_delete=models.CASCADE, default=1)
 
-    def __str__(self):
-        return self.user.username + " " + self.first_name + " " + self.last_name + " " + self.national_code + " "\
-               + self.email + " "
+    # def __str__(self):
+    #     return self.user.username + " " + self.first_name + " " + self.last_name + " " + self.national_code + " "\
+    #            + self.email + " "
 
 
 class ArtistReviewRating(models.Model):
