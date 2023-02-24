@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 const Header = () => {
   // const state = {clicked: false}
   const [clicked, setClicked] = useState(false);
-  const Token = localStorage.getItem("authTokens")
+  const Token = localStorage.getItem("authTokens");
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -20,7 +20,7 @@ const Header = () => {
         <header className="home-header flex ">
           {/*<h2>Inc. This Morning</h2>*/}
           <div className="navbar-menu p-2 w-full justify-content-start ">
-            <div className="navbar-link-logo "  >
+            <div className="navbar-link-logo " onClick={handleClick}>
               <i
                 className={clicked ? "pi  pi-times" : " pi pi-bars "}
                 style={{ fontSize: "2rem" }}
@@ -39,20 +39,26 @@ const Header = () => {
                   {" "}
                 </a>
                 <a href="" className="navbar-link-exp font">
-                  داشبورد
+                  خانه
+                </a>
+                <a href="" className="navbar-link-exp font p-2">
+                  درباره{" "}
+                </a>
+                <a href="" className="navbar-link-exp  font">
+                  پشتیبانی
                 </a>
                 <a href="" className="navbar-link-exp font">
-                  کالکشن
+                  پشتیبانی
                 </a>
-                <a href="" className="navbar-link-exp font">
-                  تنظیمات
-                </a>
-                <a href="" className="navbar-link-exp font">
-                  حساب
-                </a>
-                {/*</ul>*/}
-                {/*<ul className="navbar-item-1">*/}
-                <a href="" className="navbar-link-1 font">
+
+                <a
+                  href=""
+                  className="navbar-link-1 font"
+                  onClick={() => {
+                    navigate("/login");
+                    localStorage.setItem("authTokens", null);
+                  }}
+                >
                   {" "}
                   خروج{" "}
                 </a>
@@ -63,10 +69,9 @@ const Header = () => {
                 href=""
                 className="navbar-link-2  font"
                 style={{ color: "#424874" }}
-                onClick={()=>{
-                  localStorage.setItem("authTokens",null);
+                onClick={() => {
                   navigate("/login");
-
+                  localStorage.setItem("authTokens", null);
                 }}
               >
                 {" "}
@@ -120,10 +125,16 @@ const Header = () => {
                 </a>
                 {/*</ul>*/}
                 {/*<ul className="navbar-item-1">*/}
-                {/* <a href="" className="navbar-link-1 font">
+                <a
+                  href=""
+                  className="navbar-link-1 font"
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                >
                   {" "}
-                  خروج{" "}
-                </a> */}
+                  ورود{" "}
+                </a>
               </ul>
             </div>
             <div className="navbar-menue  w-full   justify-content-end  ">
@@ -131,9 +142,8 @@ const Header = () => {
                 href=""
                 className="navbar-link-2  font"
                 style={{ color: "#424874" }}
-                onClick={()=>{
-                   navigate("/login");
-
+                onClick={() => {
+                  navigate("/login");
                 }}
               >
                 {" "}
