@@ -1,16 +1,5 @@
-// "user": null, TOKEN
-// "first_name": "",
-// "last_name": "",
-// "national_code": "",
-// "birthdate": "",
-// "phone_number": "",
-// "cell_number": "",
-// "address": "",
-// "national_code_picture": null,
-// "image": null,
-// "email": "",
-// "role": null
-import { Dropdown } from 'primereact/dropdown';
+ 
+import { Dropdown } from "primereact/dropdown";
 
 import "./Personalinfo.css";
 import React, { useState } from "react";
@@ -23,16 +12,25 @@ import { Accordion, AccordionTab } from "primereact/accordion";
 
 function PersonalInfo() {
   const [date, setDate] = useState("hu Feb 09 2023");
-  const [selectedCity, setSelectedCity] = useState(null);
-  const cities = [
-      { name: 'New York', code: 'NY' },
-      { name: 'Rome', code: 'RM' },
-      { name: 'London', code: 'LDN' },
-      { name: 'Istanbul', code: 'IST' },
-      { name: 'Paris', code: 'PRS' }
-  ];
+  //Datas in the local storage to show them : 
+  // address: null
+  // birthdate: null
+  // cell_number: null
+  // email: "parsalubo.k@gmail.com"
+  // first_name: null
+  // last_name: null
+  // national_card_picture: "/static/PicturesOfNationalCard/default.png"
+  // national_code: null
+  // phone_number: null
+  // profile_picture: "/static/PicturesOfProfile/default.png"
+  // role: "user_zero"
+  // username: "wixloop"
+  const [UserData, setUserDatas] = useState(
+    JSON.parse(localStorage.getItem("UserDatas"))
+  );
 
-  // console.log(date)
+  //update profile :
+  //?
   return (
     <>
       {/* ------------------------------------------------------------------------- */}
@@ -49,7 +47,10 @@ function PersonalInfo() {
             }}
             header={
               <div className="flex mr-3 align-items-center Accheader">
-                <span className="vertical-align-middle font text-3xl"> اطلاعات شخصی</span>
+                <span className="vertical-align-middle font text-3xl">
+                  {" "}
+                  اطلاعات شخصی
+                </span>
               </div>
             }
             className="text-4xl mb-4  "
@@ -63,7 +64,8 @@ function PersonalInfo() {
                   نام :
                   <InputText
                     className="h-4rem nameinput "
-                    placeholder="پارسا"
+                    placeholder=""
+                    value={UserData.first_name}
                   />
                 </p>
               </div>
@@ -74,7 +76,11 @@ function PersonalInfo() {
                 <p>
                   {" "}
                   نام خانوادگی :{" "}
-                  <InputText className="h-4rem " placeholder="کاظمی" />
+                  <InputText
+                    className="h-4rem "
+                    value={UserData.last_name}
+                    placeholder="کاظمی"
+                  />
                 </p>
               </div>
             </div>
@@ -88,6 +94,7 @@ function PersonalInfo() {
                   کدملی :
                   <InputText
                     className="h-4rem IDinfo"
+                    value={UserData.national_code}
                     placeholder="4311333232"
                   />
                 </p>
@@ -96,10 +103,10 @@ function PersonalInfo() {
                 className="col-12 sm:col-6 md:col-6 lg:col-6  justify-content-start"
                 style={{ display: "flex" }}
               >
-                <p className=''>
+                <p className="">
                   تاریخ تولد :
                   <Calendar
-                    value={date}
+                    value={UserData.birthdate}
                     className="h-4rem dateinfo"
                     onChange={(e) => setDate(e.value)}
                     showButtonBar
@@ -118,7 +125,10 @@ function PersonalInfo() {
             }}
             header={
               <div className="flex mr-3 align-items-center">
-                <span className="vertical-align-middle font text-3xl"> راه های ارتباطی </span>
+                <span className="vertical-align-middle font text-3xl">
+                  {" "}
+                  راه های ارتباطی{" "}
+                </span>
               </div>
             }
             className="text-4xl mb-4"
@@ -130,7 +140,11 @@ function PersonalInfo() {
               >
                 <p>
                   شماره ثابت :{" "}
-                  <InputText className="h-4rem homenum" placeholder="09121822776" />
+                  <InputText
+                    value={UserData.cell_number}
+                    className="h-4rem homenum"
+                    placeholder="09121822776"
+                  />
                 </p>
               </div>
               <div
@@ -140,7 +154,11 @@ function PersonalInfo() {
                 <p>
                   {" "}
                   شماره همراه :{" "}
-                  <InputText className="h-4rem phonenum" placeholder="0987123323" />
+                  <InputText
+                    value={UserData.phone_number}
+                    className="h-4rem phonenum"
+                    placeholder="0987123323"
+                  />
                 </p>
                 {/* <Calendar value={date} onChange={(e) => setDate(e.value)} />         */}
               </div>
@@ -151,6 +169,7 @@ function PersonalInfo() {
             >
               ایمیل :{" "}
               <InputText
+                value={UserData.email}
                 className="h-4rem Pemail font "
                 style={{ width: "40%" }}
                 placeholder="parsa@gmail.com"
@@ -178,13 +197,13 @@ function PersonalInfo() {
                 className="col-11 sm:col-6 md:col-6 lg:col-6  justify-content-start"
                 style={{ display: "flex" }}
               >
-                <p className='font'>امتیاز در سایت : 99999 </p>
+                <p className="font">امتیاز در سایت : 99999 </p>
               </div>
               <div
                 className="col-11 sm:col-6 md:col-6 lg:col-6   justify-content-start"
                 style={{ display: "flex" }}
               >
-                <p className='font'> نوع کاربر :طلایی</p>
+                <p className="font"> نوع کاربر :طلایی</p>
               </div>
             </div>
             {/* <div className="col-12  m-4  flex justify-content-center" >

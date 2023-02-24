@@ -4,53 +4,89 @@ import { Card } from "primereact/card";
 import "primereact/resources/themes/lara-light-indigo/theme.css"; //theme
 import "primereact/resources/primereact.min.css"; //core css
 import "primeicons/primeicons.css"; //icons
- import "primeflex/primeflex.scss";
+import "primeflex/primeflex.scss";
 
- import { Button } from "primereact/button";
+import { Button } from "primereact/button";
+import { Dialog } from "primereact/dialog";
 
- import Header from "../components/LandingPageNavBar/Header";
+import Header from "../components/LandingPageNavBar/Header";
 import Footer from "../components/Footer/Footer";
 import UserDashboardTable from "../components/Tables/UserDashboardTable/UserDashboardTable";
 import UserDashboardCharts from "../components/ChartsJs/UChart";
- import ReportField from "../components/Fieldsets/UserDashboardFSs/ReportField";
+import ReportField from "../components/Fieldsets/UserDashboardFSs/ReportField";
 import TurnOverField from "../components/Fieldsets/UserDashboardFSs/TurnOverField";
 import IncomeCard from "../components/Cards/UserDashboardCards/IncomeCard";
 import Reportcard from "../components/Cards/UserDashboardCards/Reportcard";
 import SendTicket from "../components/Forms/UserDashboardForms/SendTicket";
 import axios from "axios";
 
-function UserDashboard() {
-  
-  var Token = localStorage.getItem("authTokens");
+import { useNavigate } from "react-router-dom";
 
-   const config = {
+function UserDashboard() {
+  const [visible, setVisible] = useState(false);
+  const navigate = useNavigate();
+  const [UserDatas, setUserDatas] = useState(false);
+   var Token = localStorage.getItem("authTokens");
+
+  const config = {
     headers: {
       Authorization: `Bearer ${Token}`,
     },
   };
+  const footerContent = (
+    <div>
+      <Button
+        label="ورود دوباره"
+        icon="pi pi-times"
+        onClick={() => navigate("/login")}
+        className="p-button-text"
+      />
+    </div>
+  );
   const getInfo = () => {
-  //  Response is : 
-  // {
-  //     "username": ""
-  // }
+    // address: null
+    // birthdate: null
+    // cell_number: null
+    // email: "parsalubo.k@gmail.com"
+    // first_name: null
+    // last_name: null
+    // national_card_picture: "/static/PicturesOfNationalCard/default.png"
+    // national_code: null
+    // phone_number: null
+    // profile_picture: "/static/PicturesOfProfile/default.png"
+    // role: "user_zero"
+    // username: "wixloop"
     axios
-      .get(
-        "http://78.38.35.249/api/account/user-info/",
-        config
-      )
+      .get("http://78.38.35.249/api/account/user-info/", config)
       .then((response) => {
         if (response.status == 200) {
-          console.log(response.data.username)
-         const userDatas = localStorage.setItem("UserDatas", JSON.stringify ( response.data));
-       
-         //check another api to see profile full datas.if it was null,start the data
-         // if it is not valid send a toast to login
-        } 
+          // localStorage.setItem(
+          //   "UserDatas",
+          //   JSON.stringify(response.data)
+          // );
+          if (
+            response.data.national_code == null ||
+            response.data.first_name == null ||
+            response.data.address == null ||
+            response.data.email == null ||
+            response.data.username == null ||
+            response.data.birthdate == null ||
+            response.data.phone_number == null ||
+            response.data.last_name == null
+          ) {
+            navigate("/profile");
+          }
+          else{
+            setUserDatas(response.data)
+          }
+        }
       })
       .catch((exception) => {
-        console.log(exception)
+        console.log(exception);
         if (exception.response.status === 401) {
-          console.log("401");}
+          setVisible(true);
+          localStorage.setItem("authTokens",null)
+        }
         // } else if (exception.response.status === 404) {
         //   Show404Errors(toastBC);
         // } else if (exception.response.status === 500) {
@@ -66,29 +102,53 @@ function UserDashboard() {
   useEffect(() => {
     getInfo();
   }, []);
-  
+  const [position, setPosition] = useState("center");
+
   // --------------------------------    --------------------------------
 
   return (
     <div>
-      <div className=" overflow-hidden" style={{ direction: "rtl" ,backgroundColor:"#F4EEFF" }}>
+      <Dialog
+        header="Header"
+        visible={visible}
+        footer={footerContent}
+        position={position}
+        onHide={() => setVisible(false)}
+        style={{ width: "50vw" }}
+        breakpoints={{ "960px": "75vw", "641px": "100vw" }}
+      >
+        <p className="m-0">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </Dialog>
+      <div
+        className=" overflow-hidden"
+        style={{ direction: "rtl", backgroundColor: "#F4EEFF" }}
+      >
         <Header />
 
         <div className=" grid flex align-items-center justify-content-center     ">
-          <div className="    col-12   md:col-6 lg:col-6 " >
-          <ReportField/>
-
+          <div className="    col-12   md:col-6 lg:col-6 ">
+            <ReportField />
           </div>
 
           <div className="    col-12   md:col-6 lg:col-6 ">
-          <TurnOverField/>
-             
+            <TurnOverField />
           </div>
 
           {/* section 2 : Tabels about exhibitions */}
 
           <div className="  col-12  mr-0 ml-0 w-screen p-5 ">
-            <div className="card  h-30rem shadow-7" style={{borderColor:'#424874' ,borderWidth:'2px'  }}>
+            <div
+              className="card  h-30rem shadow-7"
+              style={{ borderColor: "#424874", borderWidth: "2px" }}
+            >
               <UserDashboardTable />
             </div>
           </div>
@@ -98,18 +158,24 @@ function UserDashboard() {
 
         <div className=" flex align-items-center justify-content-center grid   ">
           <div className="   col-12   md:col-6 lg:col-6 ">
-          <IncomeCard/>
+            <IncomeCard />
           </div>
 
-          <div  className="    col-12   md:col-6 lg:col-6 ">
-           <Reportcard/>
+          <div className="    col-12   md:col-6 lg:col-6 ">
+            <Reportcard />
           </div>
         </div>
 
-        <div         style={{borderColor:'#424874' ,borderWidth:'2px'  }}   className=" shadow-7 chart card align-items-center justify-content-center  ">
+        <div
+          style={{ borderColor: "#424874", borderWidth: "2px" }}
+          className=" shadow-7 chart card align-items-center justify-content-center  "
+        >
           <UserDashboardCharts />
         </div>
-        <div  className="card m-9 align-items-center justify-content-center shadow-7  "       style={{borderColor:'#424874' ,borderWidth:'2px'  }}>
+        <div
+          className="card m-9 align-items-center justify-content-center shadow-7  "
+          style={{ borderColor: "#424874", borderWidth: "2px" }}
+        >
           <SendTicket />
         </div>
         <Footer />

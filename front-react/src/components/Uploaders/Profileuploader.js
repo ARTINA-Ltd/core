@@ -5,12 +5,15 @@ import { ProgressBar } from "primereact/progressbar";
 import { Button } from "primereact/button";
 import { Tooltip } from "primereact/tooltip";
 import { Tag } from "primereact/tag";
-import Image from "../../ProfilePage/ProfileImg";
+ import { Image } from 'primereact/image';
 
 export default function Profileuploader() {
   const toast = useRef(null);
   const [totalSize, setTotalSize] = useState(0);
   const fileUploadRef = useRef(null);
+  const [UserData, setUserDatas] = useState(
+    JSON.parse(localStorage.getItem("UserDatas"))
+  );
 
   const onTemplateSelect = (e) => {
     let _totalSize = totalSize;
@@ -46,6 +49,8 @@ export default function Profileuploader() {
   const onTemplateClear = () => {
     setTotalSize(0);
   };
+  const imageUrl = "/static/PicturesOfProfile/default.png"; // replace with your image URL
+
 
   const headerTemplate = (options) => {
     const { className, chooseButton, uploadButton, cancelButton } = options;
@@ -90,6 +95,7 @@ export default function Profileuploader() {
   };
 
   const itemTemplate = (file, props) => {
+
     return (
       <div
         className="flex align-items-center flex-wrap"
@@ -124,16 +130,48 @@ export default function Profileuploader() {
 
   const emptyTemplate = () => {
     return (
-      <div className="flex align-items-center flex-column">
-        {/* <i className="pi pi-image mt-3 p-5" style={{ fontSize: '5em', borderRadius: '50%', backgroundColor: 'var(--surface-b)', color: 'var(--surface-d)' }}></i>
+      <>
+        {UserData === null ? (
+          <div className="flex align-items-center flex-column">
+             
+            <p className="font text-3xl">
+              لطفا عکس پروفایل خود را اینجا بارگذاری بکنید
+            </p>
+
+            <i
+              class="pi pi-camera mt-3 p-5"
+              style={{
+                fontSize: "18em",
+                borderRadius: "80%",
+                backgroundColor: "var(--surface-b)",
+                color: "var(--surface-d)",
+              }}
+            ></i>
+          </div>
+        ) : (
+          <div className="flex align-items-center flex-column">
+            {/* <i className="pi pi-image mt-3 p-5" style={{ fontSize: '5em', borderRadius: '50%', backgroundColor: 'var(--surface-b)', color: 'var(--surface-d)' }}></i>
                 <span style={{ fontSize: '1.2em', color: 'var(--text-color-secondary)' }} className="my-5">
                     Drag and Drop Image Here
                 </span> */}
-                        <p className='font text-3xl'>لطفا عکس    پروفایل خود را اینجا بارگذاری بکنید</p>
+            <p className="font text-3xl">
+              لطفا عکس پروفایل خود را اینجا بارگذاری بکنید
+            </p>
+            <Image src={imageUrl} alt="Image" width="250" />
 
-        <i class="pi pi-camera mt-3 p-5" style={{ fontSize: '18em', borderRadius: '80%', backgroundColor: 'var(--surface-b)', color: 'var(--surface-d)' }}></i>
-         
-      </div>
+{UserData.profile_picture}
+            {/* <i
+              class="pi pi-camera mt-3 p-5"
+              style={{
+                fontSize: "18em",
+                borderRadius: "80%",
+                backgroundColor: "var(--surface-b)",
+                color: "var(--surface-d)",
+              }}
+            ></i> */}
+          </div>
+        )}
+      </>
     );
   };
 

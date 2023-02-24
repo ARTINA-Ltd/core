@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import "./Header.css";
 import Logo from "../../Pages/artina-logo.jpg";
 import { Avatar } from "primereact/avatar";
+import { useNavigate } from "react-router";
 
 const Header = () => {
   // const state = {clicked: false}
   const [clicked, setClicked] = useState(false);
-  const [activeuser, setactiveuser] = useState(true);
+  const Token = localStorage.getItem("authTokens")
+  const navigate = useNavigate();
 
   const handleClick = () => {
     setClicked(!clicked);
@@ -18,7 +20,7 @@ const Header = () => {
         <header className="home-header flex ">
           {/*<h2>Inc. This Morning</h2>*/}
           <div className="navbar-menu p-2 w-full justify-content-start ">
-            <div className="navbar-link-logo " onClick={handleClick}>
+            <div className="navbar-link-logo "  >
               <i
                 className={clicked ? "pi  pi-times" : " pi pi-bars "}
                 style={{ fontSize: "2rem" }}
@@ -61,6 +63,11 @@ const Header = () => {
                 href=""
                 className="navbar-link-2  font"
                 style={{ color: "#424874" }}
+                onClick={()=>{
+                  localStorage.setItem("authTokens",null);
+                  navigate("/login");
+
+                }}
               >
                 {" "}
                 خروج{" "}
@@ -120,14 +127,18 @@ const Header = () => {
               </ul>
             </div>
             <div className="navbar-menue  w-full   justify-content-end  ">
-              {/* <a
+              <a
                 href=""
                 className="navbar-link-2  font"
                 style={{ color: "#424874" }}
+                onClick={()=>{
+                   navigate("/login");
+
+                }}
               >
                 {" "}
-                خروج{" "}
-              </a> */}
+                ورود{" "}
+              </a>
               <div className="navbar-logo        ">
                 <img src={Logo} alt="logo" />
               </div>
@@ -137,7 +148,7 @@ const Header = () => {
       </>
     );
   };
-  return <>{activeuser == false ? <NoActiveUser /> : <ActiveUser />}</>;
+  return <>{Token == "null" ? <NoActiveUser /> : <ActiveUser />}</>;
 };
 
 export default Header;
