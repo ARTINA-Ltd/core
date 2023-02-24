@@ -26,12 +26,15 @@ import Commission from "./Pages/Commission/Commission";
 const activeChainId = ChainId.Goerli;
 
 export default () => {
+    var Token = localStorage.getItem("authTokens");
+
     return <>
         <ThirdwebProvider desiredChainId={activeChainId}>
             <div className="App">
             <ScrollTop    className="custom-scrolltop w-4rem h-4rem    border-round-md   bg-primary" icon="pi pi-arrow-up" />
 
                 <Routes>
+                    {/* {Token=='null' ? <></> ::} */}
                     <Route path="/" element={<StarterFile/>}/>
                     <Route exact path="artist-page" element={<ArtistPage/>}/>
                     <Route exact path="artist-application-form" element={<ArtistApplicationForm/>}/>

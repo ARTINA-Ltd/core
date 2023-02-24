@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./UserDashboard.css";
-import { Card } from "primereact/card";
-import "primereact/resources/themes/lara-light-indigo/theme.css"; //theme
+ import "primereact/resources/themes/lara-light-indigo/theme.css"; //theme
 import "primereact/resources/primereact.min.css"; //core css
 import "primeicons/primeicons.css"; //icons
 import "primeflex/primeflex.scss";
 
 import { Button } from "primereact/button";
-import { Dialog } from "primereact/dialog";
-
+ 
 import Header from "../components/LandingPageNavBar/Header";
 import Footer from "../components/Footer/Footer";
 import UserDashboardTable from "../components/Tables/UserDashboardTable/UserDashboardTable";
@@ -21,28 +19,32 @@ import SendTicket from "../components/Forms/UserDashboardForms/SendTicket";
 import axios from "axios";
 
 import { useNavigate } from "react-router-dom";
+import  { Show400Errors, Show500Errors, ShowNetorkErrors, ShowTokenErrors } from "../components/ErrorDialogs/ShowErrors";
+import { Toast } from "primereact/toast";
+import { useRef } from "react";
 
 function UserDashboard() {
-  const [visible, setVisible] = useState(false);
+  // const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
   const [UserDatas, setUserDatas] = useState(false);
    var Token = localStorage.getItem("authTokens");
+   const toastBC = useRef(null);
 
   const config = {
     headers: {
       Authorization: `Bearer ${Token}`,
     },
   };
-  const footerContent = (
-    <div>
-      <Button
-        label="ورود دوباره"
-        icon="pi pi-times"
-        onClick={() => navigate("/login")}
-        className="p-button-text"
-      />
-    </div>
-  );
+  // const footerContent = (
+  //   <div>
+  //     <Button
+  //       label="ورود دوباره"
+  //       icon="pi pi-times"
+  //       onClick={() => navigate("/login")}
+  //       className="p-button-text"
+  //     />
+  //   </div>
+  // );
   const getInfo = () => {
     // address: null
     // birthdate: null
@@ -83,50 +85,34 @@ function UserDashboard() {
       })
       .catch((exception) => {
         console.log(exception);
-        if (exception.response.status === 401) {
-          setVisible(true);
-          localStorage.setItem("authTokens",null)
+        
+        if (exception.response.status === 400) {
+          Show400Errors(toastBC);
+        } else if (exception.response.status === 500) {
+          Show500Errors(toastBC);
         }
-        // } else if (exception.response.status === 404) {
-        //   Show404Errors(toastBC);
-        // } else if (exception.response.status === 500) {
-        //   Show500Errors(toastBC);
-        // } else if (exception.response.status === 401) {
-        //   ShowTokenErrors(toastBC);
-        // } else if (exception.code === "ERR_NETWORK") {
-        //   ShowNetorkErrors(toastBC);
-        // }
+        else if (exception.response.status === 401) {
+          // localStorage.setItem("authTokens",null)
+          ShowTokenErrors(toastBC);
+        }
+        else if (exception.code==="ERR_NETWORK") {
+          ShowNetorkErrors(toastBC)
+        }
       });
   };
 
   useEffect(() => {
     getInfo();
   }, []);
-  const [position, setPosition] = useState("center");
-
+ 
   // --------------------------------    --------------------------------
 
   return (
     <div>
-      <Dialog
-        header="Header"
-        visible={visible}
-        footer={footerContent}
-        position={position}
-        onHide={() => setVisible(false)}
-        style={{ width: "50vw" }}
-        breakpoints={{ "960px": "75vw", "641px": "100vw" }}
-      >
-        <p className="m-0">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-      </Dialog>
+       
+      <Toast ref={toastBC} position="bottom-center" className="text-3xl w-full" />
+      
+     
       <div
         className=" overflow-hidden"
         style={{ direction: "rtl", backgroundColor: "#F4EEFF" }}
