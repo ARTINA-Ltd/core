@@ -61,7 +61,7 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch("http://api.artina.orgapi/account/login/", {
+        const response = await fetch("http://api.artina.org/api/account/login/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
