@@ -59,7 +59,7 @@ function UserDashboard() {
     // role: "user_zero"
     // username: "wixloop"
     axios
-      .get("http://78.38.35.249/api/account/user-info/", config)
+      .get("http://api.artina.orgapi/account/user-info/", config)
       .then((response) => {
         if (response.status == 200) {
           // localStorage.setItem(

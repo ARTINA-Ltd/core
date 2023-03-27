@@ -34,7 +34,7 @@ const Section_2 = () => {
   //         1
   //     ]
   // }
-  const Baseurl = `http://78.38.35.249:8000/api/exhibition/exhibitions/${Number}/`;
+  const Baseurl = `http://api.artina.org/api/exhibition/exhibitions/${Number}/`;
   const Length = Baseurl.length;
   const Number2 = Math.floor(Math.random() * 3);
   const [Err, setErr] = useState();
@@ -77,7 +77,7 @@ const Section_2 = () => {
     setLoading(true);
 
     const res = await axios
-      .get(`http://78.38.35.249:8000/api/exhibition/exhibitions/${Number2}/`)
+      .get(`http://api.artina.org/api/exhibition/exhibitions/${Number2}/`)
       .then((res) => {
         setExhibitions2(res.data);
         setError(null);

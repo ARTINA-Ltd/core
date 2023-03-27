@@ -43,7 +43,7 @@ function ProfilePage() {
   };
   const getInfo = () => {
     axios
-      .get("http://78.38.35.249/api/account/user-info/", config)
+      .get("http://api.artina.orgapi/account/user-info/", config)
       .then((response) => {
         if (response.status == 200) {
           localStorage.setItem("UserDatas", JSON.stringify(response.data));
@@ -126,7 +126,7 @@ function ProfilePage() {
 
     axios
       .post(
-        "http://78.38.35.249/api/account/profile/",
+        "http://api.artina.orgapi/account/profile/",
         {
           address: user["nationalCode"],
           birthdate: user["shabaNumber"],

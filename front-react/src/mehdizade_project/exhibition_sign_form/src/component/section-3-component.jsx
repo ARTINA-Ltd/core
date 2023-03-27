@@ -90,7 +90,7 @@ array.push(requests);
       },
       body: JSON.stringify(collections),
     };
-    fetch("http://78.38.35.249:8000/api/exhibition/nftexs/", requestOptions).then(
+    fetch("http://api.artina.org/api/exhibition/nftexs/", requestOptions).then(
       (response) => console.log(response.json())
     );
   };
