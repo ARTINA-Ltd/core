@@ -1,44 +1,55 @@
 @font-face {
-    font-family: 'Vazir-Medium';
-    src: url('../assets/fonts/Vazir-Medium.ttf');
+  font-family: 'Vazir-Medium';
+  src: url('../assets/fonts/Vazir-Medium.ttf');
 }
 
 .input {
-    font-family: Vazir-Medium, sans-serif;
-    width: 280px;
-    padding: 1%;
-    margin: 5% 0;
+  font-family: Vazir-Medium, sans-serif;
+  width: 280px;
+  padding: 1%;
+  margin: 5% 0;
 }
 
 .input input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid gray;
-    border-radius: 5px;
-    outline: none;
-    font-size: 1.5em;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  outline: none;
+  font-size: 1.5em;
+}
+
+.input textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  outline: none;
+  font-size: 1.5em;
+  max-height: 400px;
+  min-height: 100px;
 }
 
 .input label {
-    font-family: Vazir-Medium, sans-serif;
-    float: right;
-    text-align: right;
-    width: 100%;
-    margin-bottom: 5px;
-    font-size: 2em;
+  font-family: Vazir-Medium, sans-serif;
+  float: right;
+  text-align: right;
+  width: 100%;
+  margin-bottom: 5px;
+  font-size: 2em;
 }
 
 .span-error {
-    font-size: 1.5em;
-    font-family: Vazir-Medium, sans-serif;
-    color: red;
-    display: none;
+  font-size: 1.5em;
+  font-family: Vazir-Medium, sans-serif;
+  color: red;
+  display: none;
 }
 
 input:invalid[focused="true"] {
-    border: 1px solid red;
+  border: 1px solid red;
 }
 
-input:invalid[focused="true"] ~span {
-    display: block;
+input:invalid[focused="true"] ~ span {
+  display: block;
 }
