@@ -1,4 +1,4 @@
-import {Route, Routes} from "react-router";
+import { Route, Routes } from "react-router";
 import StarterFile from "./Pages/StarterFile";
 import ArtistPage from "./Pages/ArtistPage";
 import HomePage from "./Pages/HomePage";
@@ -17,11 +17,12 @@ import NFTUploadPage from "./Pages/NftUploadPage";
 import ShowCollection from "./components/ShowCollection";
 // eslint-disable-next-line import/no-anonymous-default-export
 import { ScrollPanel } from 'primereact/scrollpanel';
-import {ChainId, ThirdwebProvider} from "@thirdweb-dev/react";
+import { ChainId, ThirdwebProvider } from "@thirdweb-dev/react";
 import ProfilePage from "./Pages/ProfilePage";
 import UserDashboard from "./Pages/UserDashboard";
 import { ScrollTop } from "primereact/scrolltop";
 import Commission from "./Pages/Commission/Commission";
+import Support from "./Pages/Support";
 
 const activeChainId = ChainId.Goerli;
 
@@ -31,26 +32,27 @@ export default () => {
     return <>
         <ThirdwebProvider desiredChainId={activeChainId}>
             <div className="App">
-            <ScrollTop    className="custom-scrolltop w-4rem h-4rem    border-round-md   bg-primary" icon="pi pi-arrow-up" />
+                <ScrollTop className="custom-scrolltop w-4rem h-4rem    border-round-md   bg-primary" icon="pi pi-arrow-up" />
 
                 <Routes>
                     {/* {Token=='null' ? <></> ::} */}
-                    <Route path="/" element={<StarterFile/>}/>
-                    <Route exact path="artist-page" element={<ArtistPage/>}/>
-                    <Route exact path="artist-application-form" element={<ArtistApplicationForm/>}/>
-                    <Route exact path="nft-details" element={<NFTDetails/>}/>
-                    <Route exact path="Commission" element={<Commission/>}/>
-                    <Route exact path="login" element={<Login/>}/>
-                    <Route exact path="register" element={<Register/>}/>
-                    <Route exact path="exhibitor-page" element={<ExhibitorPage/>}/>
-                    <Route exact path="exhibition-lists" element={<ExhibitionLists/>}/>
-                    <Route exact path="request-lists" element={<RequestLists/>}/>
-                    <Route exact path="show-request" element={<ShowRequests/>}/>
-                    <Route exact path="request-details" element={<RequestDetails/>}/>
-                    <Route exact path="upload-page" element={<NFTUploadPage/>}/>
-                    <Route exact path="UserDashboard" element={<UserDashboard/>}/>
-                    <Route exact path="profile" element={<ProfilePage/>}/>
-                    <Route exact path="collections" element={<ShowCollection/>}/>
+                    <Route path="/" element={<StarterFile />} />
+                    <Route exact path="artist-page" element={<ArtistPage />} />
+                    <Route exact path="artist-application-form" element={<ArtistApplicationForm />} />
+                    <Route exact path="nft-details" element={<NFTDetails />} />
+                    <Route exact path="Commission" element={<Commission />} />
+                    <Route exact path="login" element={<Login />} />
+                    <Route exact path="support" element={<Support />} />
+                    <Route exact path="register" element={<Register />} />
+                    <Route exact path="exhibitor-page" element={<ExhibitorPage />} />
+                    <Route exact path="exhibition-lists" element={<ExhibitionLists />} />
+                    <Route exact path="request-lists" element={<RequestLists />} />
+                    <Route exact path="show-request" element={<ShowRequests />} />
+                    <Route exact path="request-details" element={<RequestDetails />} />
+                    <Route exact path="upload-page" element={<NFTUploadPage />} />
+                    <Route exact path="UserDashboard" element={<UserDashboard />} />
+                    <Route exact path="profile" element={<ProfilePage />} />
+                    <Route exact path="collections" element={<ShowCollection />} />
                 </Routes>
             </div>
         </ThirdwebProvider>
