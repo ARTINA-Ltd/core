@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./Header.css";
 import Logo from "../../Pages/artina-logo.jpg";
 import { Avatar } from "primereact/avatar";
 import { useNavigate } from "react-router";
+import { UserContext } from "../../App";
 
 const Header = () => {
+  const user = useContext(UserContext);
+
   const [clicked, setClicked] = useState(false);
   const Token = localStorage.getItem("authTokens");
   const navigate = useNavigate();
@@ -15,50 +18,49 @@ const Header = () => {
 
   const NotActiveItems = [
     {
-      title: 'درباره‌ما',
-      link: '/'
+      title: "درباره‌ما",
+      link: "/",
     },
     {
-      title: 'پشتیبانی',
-      link: '/'
+      title: "پشتیبانی",
+      link: "/support",
     },
     {
-      title: 'بلاگ',
-      link: '/'
-    }
-  ]
+      title: "بلاگ",
+      link: "/",
+    },
+  ];
 
   const ActiveItems = [
     {
-      title: 'داشبورد',
-      link: '/'
+      title: "داشبورد",
+      link: "/",
     },
     {
-      title: 'درخواست‌ها',
-      link: '/'
+      title: "درخواست‌ها",
+      link: "/",
     },
     {
-      title: 'درباره‌ما',
-      link: '/'
+      title: "درباره‌ما",
+      link: "/",
     },
     {
-      title: 'پشتیبانی',
-      link: '/'
+      title: "پشتیبانی",
+      link: "/support",
     },
     {
-      title: 'بلاگ',
-      link: '/'
+      title: "بلاگ",
+      link: "/",
     },
     {
-      title: 'کارمزد',
-      link: '/'
+      title: "کارمزد",
+      link: "/",
     },
     {
-      title: 'کانکت والت',
-      link: '/'
-    }
-
-  ]
+      title: "کانکت والت",
+      link: "/",
+    },
+  ];
   const ActiveUser = () => {
     return (
       // <>
@@ -147,10 +149,7 @@ const Header = () => {
                     : "w-full hidden gap-8 lg:flex"
                 }
               >
-
                 {ActiveItems.map((item) => (
-
-
                   <div
                     className="cursor-pointer"
                     onClick={() => {
@@ -160,13 +159,12 @@ const Header = () => {
                     {item.title}
                   </div>
                 ))}
-
-
               </div>
 
               <div className="flex gap-5 items-center">
+                <div>{user != null ? user.data.username : null}</div>
                 <div
-                  className="cursor-pointer"
+                  className="cursor-pointer border-black border-1 px-4 py-2  rounded-md"
                   onClick={() => {
                     navigate("/login");
                     localStorage.setItem("authTokens", null);
@@ -177,13 +175,13 @@ const Header = () => {
                 <img src={Logo} alt="logo" />
               </div>
             </div>
-
           </div>
         </header>
       </>
     );
   };
 
+  console.log(user);
   const NoActiveUser = () => {
     return (
       <>
@@ -204,10 +202,7 @@ const Header = () => {
                     : "w-full hidden gap-8 lg:flex"
                 }
               >
-
                 {NotActiveItems.map((item) => (
-
-
                   <div
                     className="cursor-pointer"
                     onClick={() => {
@@ -217,13 +212,11 @@ const Header = () => {
                     {item.title}
                   </div>
                 ))}
-
-
               </div>
 
               <div className="flex gap-5 items-center">
                 <div
-                  className="cursor-pointer"
+                  className="cursor-pointer border-black border-1 px-4 py-2 rounded-md"
                   onClick={() => {
                     navigate("/login");
                   }}
@@ -233,13 +226,12 @@ const Header = () => {
                 <img src={Logo} alt="logo" />
               </div>
             </div>
-
           </div>
         </header>
       </>
     );
   };
-  return <>{Token == "null" ? <NoActiveUser /> : <ActiveUser />}</>;
+  return <>{Token === "null" ? <NoActiveUser /> : <ActiveUser />}</>;
 };
 
 export default Header;
