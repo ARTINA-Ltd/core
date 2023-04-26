@@ -5,7 +5,7 @@ import { ProgressBar } from "primereact/progressbar";
 import { Button } from "primereact/button";
 import { Tooltip } from "primereact/tooltip";
 import { Tag } from "primereact/tag";
- import { Image } from 'primereact/image';
+import { Image } from 'primereact/image';
 
 export default function Profileuploader() {
   const toast = useRef(null);
@@ -63,20 +63,18 @@ export default function Profileuploader() {
     return (
       <div className="" style={{}}>
         <div
-          className={className}
+          className={"flex justify-between px-6 py-4 bg-white"}
           style={{
             direction: "ltr",
-            backgroundColor: "#DCD6F7",
-            display: "flex",
-            alignItems: "center",
           }}
         >
-          {chooseButton}
-          {uploadButton}
-          {cancelButton}
+          <div className="flex gap-2">
+            {chooseButton}
+            {uploadButton}
+            {cancelButton}
+          </div>
           <div
-            className="flex align-items-center  gap-3 ml-auto mr-8  "
-            style={{ color: "#424874" }}
+            className="flex align-items-center  gap-3"
           >
             <span>{formatedValue} / 10 MB</span>
             <ProgressBar
@@ -133,7 +131,7 @@ export default function Profileuploader() {
       <>
         {UserData === null ? (
           <div className="flex align-items-center flex-column">
-             
+
             <p className="font text-3xl">
               لطفا عکس پروفایل خود را اینجا بارگذاری بکنید
             </p>
@@ -159,7 +157,7 @@ export default function Profileuploader() {
             </p>
             <Image src={imageUrl} alt="Image" width="250" />
 
-{UserData.profile_picture}
+            {UserData.profile_picture}
             {/* <i
               class="pi pi-camera mt-3 p-5"
               style={{

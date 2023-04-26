@@ -2,9 +2,9 @@
   background-color: #00000000;
   border-radius: 8px;
   outline: none;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
-  padding-top: 0.75rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 3.25rem;
   padding-bottom: 0.75rem;
   border: 1px;
   border-bottom: 2px;
@@ -12,11 +12,10 @@
   border-style: solid;
   transition: all;
   transition-duration: 200ms;
-
 }
-.simple-input:focus{
-    background-color: #0000aa07;
+.simple-input:focus {
+  background-color: #0000aa07;
 }
-.simple-input:hover{
-    background-color: #0000aa07;
+.simple-input:hover {
+  background-color: #0000aa07;
 }

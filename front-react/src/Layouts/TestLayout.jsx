@@ -6,7 +6,10 @@ const TestLayout = ({ children }) => {
   return (
     <div style={{ direction: "rtl" }} className="overflow-hidden">
       <Header />
-      {children}
+      <div className="bg-[#f8f9fd]">
+        {children}
+      </div>
+
       <Footer />
     </div>
   );
