@@ -16,7 +16,7 @@
  }
 
 .footer-about h1, .footer-links h3, .footer-subscription h3, .footer-social h3 {
-    color: #08347e
+    color: #4e45d0
 }
 .footer-left{
     margin-right: 0px !important;
@@ -55,7 +55,7 @@
     border-radius: 5px;
     margin-top: 5px;
     padding: 5px 10px 5px 10px;
-    background-color: #08347e;
+    background-color: #4e45d0;
     color: white;
 }
 
@@ -70,7 +70,7 @@
 }
 
 .fa-twitter, .fa-instagram, .fa-telegram, .fa-whatsapp {
-    color: #0a2a70;
+    color: #4e45d0;
 }
 
 
@@ -83,7 +83,7 @@
     height: 50px;
      
     border-top: black solid 1px;
-    background:  #424874;
+    background:  #4e45d0;
     color: white;
 }
 
@@ -98,7 +98,7 @@
      }
 
      .footer-copyright {
-        background: #424874;
+        background: #4e45d0;
         font-size: 20px;
         height: 50px;
     }
@@ -137,7 +137,7 @@
     }
 
     .footer-copyright {
-        background: #424874;
+        background: #4e45d0;
         font-size: 14px;
         height: 40px;
     }

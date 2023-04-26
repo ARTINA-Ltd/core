@@ -8,7 +8,7 @@ import Footer from "../components/Footer/Footer";
 import Profileuploader from "../components/Uploaders/Profileuploader";
 import IDUpdate from "../components/Uploaders/IDUpdate";
 import { Button } from "primereact/button";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import "../ProfilePage/Personalinfo.css";
@@ -27,56 +27,66 @@ import {
   ShowTokenErrors,
 } from "../components/ErrorDialogs/ShowErrors";
 import { Toast } from "primereact/toast";
+import SimpleInput from "../components/Inputs/SimpleInput";
+import { text } from "@fortawesome/fontawesome-svg-core";
+import { UserContext } from "../App";
+import TestLayout from "../Layouts/TestLayout";
 
 function ProfilePage() {
+  const user = useContext(UserContext);
+  const [formValues, setformValues] = useState({
+    first_name: user ? user.data.first_name : "",
+    last_name: user ? user.data.last_name : "",
+  });
+
   const [waiting, setWaiting] = useState(false);
   var Token = localStorage.getItem("authTokens");
-  const [UserDatafromlocal, setUserDatafromlocal] = useState(
-    JSON.parse(localStorage.getItem("UserDatas"))
-  );
+  const [UserDatafromlocal, setUserDatafromlocal] = useState({
+    birthdate: "26",
+  });
   const navigate = useNavigate();
   const toastBC = useRef(null);
   const config = {
     headers: {
-      Authorization: `Bearer ${Token}`,
+      Authorization: `bearer ${Token}`,
     },
   };
-  const getInfo = () => {
-    axios
-      .get("http://78.38.35.249:8000/api/account/user-info/", config)
-      .then((response) => {
-        if (response.status == 200) {
-          localStorage.setItem("UserDatas", JSON.stringify(response.data));
-          if (
-            response.data.national_code == null ||
-            response.data.first_name == null ||
-            response.data.address == null ||
-            response.data.email == null ||
-            response.data.username == null ||
-            response.data.birthdate == null ||
-            response.data.phone_number == null ||
-            response.data.last_name == null
-          ) {
-            navigate("/profile");
-          } else {
-            // setUserDatas(response.data)
-          }
-        }
-      })
-      .catch((exception) => {
-        console.log(exception);
+  // const getInfo = () => {
+  //   axios
+  //     .get("http://78.38.35.249:8000/api/account/user-info/", config)
+  //     .then((response) => {
+  //       if (response.status == 200) {
+  //         localStorage.setItem("UserDatas", JSON.stringify(response.data));
+  //         if (
+  //           response.data.national_code == null ||
+  //           response.data.first_name == null ||
+  //           response.data.address == null ||
+  //           response.data.email == null ||
+  //           response.data.username == null ||
+  //           response.data.birthdate == null ||
+  //           response.data.phone_number == null ||
+  //           response.data.last_name == null
+  //         ) {
+  //           navigate("/profile");
+  //         } else {
+  //           // setUserDatas(response.data)
+  //         }
+  //       }
+  //     })
+  //     .catch((exception) => {
+  //       console.log(exception);
 
-        if (exception.response.status === 404) {
-          Show404Errors(toastBC);
-        } else if (exception.response.status === 500) {
-          Show500Errors(toastBC);
-        } else if (exception.response.status === 401) {
-          ShowTokenErrors(toastBC);
-        } else if (exception.code === "ERR_NETWORK") {
-          ShowNetorkErrors(toastBC);
-        }
-      });
-  };
+  //       if (exception.response.status === 404) {
+  //         Show404Errors(toastBC);
+  //       } else if (exception.response.status === 500) {
+  //         Show500Errors(toastBC);
+  //       } else if (exception.response.status === 401) {
+  //         ShowTokenErrors(toastBC);
+  //       } else if (exception.code === "ERR_NETWORK") {
+  //         ShowNetorkErrors(toastBC);
+  //       }
+  //     });
+  // };
   // address: null
   // birthdate: null
   // cell_number: null
@@ -89,102 +99,102 @@ function ProfilePage() {
   // profile_picture: "/static/PicturesOfProfile/default.png"
   // role: "user_zero"
   // username: "wixloop"
-// console.log(UserDatafromlocal)
+  // console.log(UserDatafromlocal)
   const handlechange = (e) => {
     setUserDatafromlocal((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
   };
-  const UpdateInfo = () => {
-    // address: null
-    // birthdate: null
-    // cell_number: null
-    // email: "parsalubo.k@gmail.com"
-    // first_name: null
-    // last_name: null
-    // national_card_picture: "/static/PicturesOfNationalCard/default.png"
-    // national_code: null
-    // phone_number: null
-    // profile_picture: "/static/PicturesOfProfile/default.png"
-    // role: "user_zero"
-    // username: "wixloop"
-    const user = {
-      address: UserDatafromlocal.nationalCode,
-      birthdate: UserDatafromlocal.phoneNumber,
-      cell_number: UserDatafromlocal.password,
-      email: UserDatafromlocal.confirmPassword,
-      first_name: UserDatafromlocal.firstname,
-      last_name: UserDatafromlocal.lastname,
-      national_code: UserDatafromlocal.stateId,
-      national_card_picture: UserDatafromlocal.stateId,
-      phone_number: UserDatafromlocal.stateId,
-      profile_picture: UserDatafromlocal.stateId,
-      // role: userData.stateId,
-      // username: userData.stateId,
-    };
+  // const UpdateInfo = () => {
+  // address: null
+  // birthdate: null
+  // cell_number: null
+  // email: "parsalubo.k@gmail.com"
+  // first_name: null
+  // last_name: null
+  // national_card_picture: "/static/PicturesOfNationalCard/default.png"
+  // national_code: null
+  // phone_number: null
+  // profile_picture: "/static/PicturesOfProfile/default.png"
+  // role: "user_zero"
+  // username: "wixloop"
+  // const user = {
+  //   address: user.data.national_code,
+  //   birthdate: UserDatafromlocal.phoneNumber,
+  //   cell_number: UserDatafromlocal.password,
+  //   email: UserDatafromlocal.confirmPassword,
+  //   first_name: UserDatafromlocal.firstname,
+  //   last_name: UserDatafromlocal.lastname,
+  //   national_code: UserDatafromlocal.stateId,
+  //   national_card_picture: UserDatafromlocal.stateId,
+  //   phone_number: UserDatafromlocal.stateId,
+  //   profile_picture: UserDatafromlocal.stateId,
+  //   // role: userData.stateId,
+  //   // username: userData.stateId,
+  // };
 
-    axios
-      .post(
-        "http://78.38.35.249:8000/api/account/profile/",
-        {
-          address: user["nationalCode"],
-          birthdate: user["shabaNumber"],
-          phoneNumber: user["phoneNumber"],
-          cell_number: user["password"],
-          email: user["cityname"],
-          first_name: user["statename"],
-          last_name: user["confirmPassword"],
-          national_code: user["stateID"],
-          national_card_picture: user["firstname"],
-          phone_number: user["lastname"],
-          profile_picture: user["cityID"],
-        },
-        config
-      )
-      .then((response) => {
-        if (response.status == 200) {
-          alert("as");
-        }
-      })
-      .catch((exception) => {
-        console.log(exception);
+  //   axios
+  //     .post(
+  //       "http://78.38.35.249:8000/api/account/profile/",
+  //       {
+  //         address: user["nationalCode"],
+  //         birthdate: user["shabaNumber"],
+  //         phoneNumber: user["phoneNumber"],
+  //         cell_number: user["password"],
+  //         email: user["cityname"],
+  //         first_name: user["statename"],
+  //         last_name: user["confirmPassword"],
+  //         national_code: user["stateID"],
+  //         national_card_picture: user["firstname"],
+  //         phone_number: user["lastname"],
+  //         profile_picture: user["cityID"],
+  //       },
+  //       config
+  //     )
+  //     .then((response) => {
+  //       if (response.status == 200) {
+  //         alert("as");
+  //       }
+  //     })
+  //     .catch((exception) => {
+  //       console.log(exception);
 
-        if (exception.response.status === 404) {
-          Show404Errors(toastBC);
-        } else if (exception.response.status === 500) {
-          Show500Errors(toastBC);
-        } else if (exception.response.status === 401) {
-          ShowTokenErrors(toastBC);
-        } else if (exception.code === "ERR_NETWORK") {
-          ShowNetorkErrors(toastBC);
-        }
-      });
-  };
+  //       if (exception.response.status === 404) {
+  //         Show404Errors(toastBC);
+  //       } else if (exception.response.status === 500) {
+  //         Show500Errors(toastBC);
+  //       } else if (exception.response.status === 401) {
+  //         ShowTokenErrors(toastBC);
+  //       } else if (exception.code === "ERR_NETWORK") {
+  //         ShowNetorkErrors(toastBC);
+  //       }
+  //     });
+  // };
   useEffect(() => {
-    getInfo();
-  }, []);
+    setformValues((prev) => ({...prev,
+    first_name: user ? user.data.username : "",
+    last_name: user ? user.data.last_name : ""}))
+  }, [user]);
+  console.log(user != null ? user.data.username : null);
 
   return (
-    <div className="" style={{ backgroundColor: "#F4EEFF" }}>
-      <Toast
+      <TestLayout>
+
+        <Toast
         ref={toastBC}
         position="bottom-center"
         className="text-3xl w-full"
       />
 
-      <div className="  overflow-hidden     " style={{ direction: "rtl" }}>
-        <Header />
+        <div className="m-auto text-[32px]">
+        مشخصات شخصی
 
-        <div className="justify-content-center text-center  mt-6 flex">
-          <h2 className="  font lg:text-8xl sm:text-4xl lg:text-6xl text-4xl ">
-            مشخصات شخصی
-          </h2>
         </div>
-        <div dir="rtl" className="flex grid col-12  m-3">
+        <div className="grid col-12 m-3">
           <div className="lg:col-6   p-4    md:col-6 sm:col-12 mt-6">
             <Profileuploader />
-            <IDUpdate />
+            {/* <IDUpdate /> */}
           </div>
 
           <div className="lg:col-6 md:col-6 p-4 sm:col-12 mt-2">
@@ -202,7 +212,6 @@ function ProfilePage() {
                   header={
                     <div className="flex mr-3 align-items-center Accheader">
                       <span className="vertical-align-middle font text-3xl">
-                        {" "}
                         اطلاعات شخصی
                       </span>
                     </div>
@@ -214,32 +223,53 @@ function ProfilePage() {
                       className="col-12 sm:col-6 md:col-6 lg:col-6   justify-content-start"
                       style={{ display: "flex" }}
                     >
-                      <p>
+                      <SimpleInput
+                        type="text"
+                        title="نام"
+                        placeholder="مثلا: علیرضا"
+                        isValid={formValues.first_name != ""}
+                        validationError="نمیتواند خالی باشد"
+                        onChange={(e) =>
+                          setformValues((prev) => ({
+                            ...prev,
+                            first_name: e.target.value,
+                          }))
+                        }
+                        defaultValue={
+                          user != null ? user.data.first_name : null
+                        }
+                        // disabled={true}
+                      />
+                      {/* <p>
                         نام :
                         <InputText
                           className="h-4rem nameinput "
                           placeholder=""
                           onChange={handlechange}
                           name="first_name"
-                          value={UserDatafromlocal.first_name}
+                          // value={UserDatafromlocal.first_name}
                         />
-                      </p>
+                      </p> */}
                     </div>
                     <div
                       className="col-12 sm:col-6 md:col-6 lg:col-6  justify-content-start"
                       style={{ display: "flex" }}
                     >
-                      <p>
-                        {" "}
-                        نام خانوادگی :{" "}
-                        <InputText
-                          className="h-4rem "
-                          onChange={handlechange}
-                          name="last_name"
-                          value={UserDatafromlocal.last_name}
-                          placeholder="کاظمی"
-                        />
-                      </p>
+                      <SimpleInput
+                        type="text"
+                        title="نام خانوادگی"
+                        placeholder="مثلا: موسوی"
+                        isValid={formValues.last_name != ""}
+                        validationError="نمیتواند خالی باشد"
+                        onChange={(e) =>
+                          setformValues((prev) => ({
+                            ...prev,
+                            last_name: e.target.value,
+                          }))
+                        }
+                        defaultValue={user != null ? user.data.last_name : null}
+                        // disabled={true}
+                      />
                     </div>
                   </div>
                   <div className=" col-12 grid flex   mt-2  ">
@@ -247,33 +277,33 @@ function ProfilePage() {
                       className="col-12 sm:col-6 md:col-6 lg:col-6  justify-content-start"
                       style={{ display: "flex" }}
                     >
-                      <p>
-                        {" "}
-                        کدملی :
-                        <InputText
-                          className="h-4rem IDinfo"
-                          onChange={handlechange}
-                          name="national_code"
-                          value={UserDatafromlocal.national_code}
-                          placeholder="4311333232"
-                        />
-                      </p>
+                      <SimpleInput
+                        type="text"
+                        title="کد ملی"
+                        placeholder="مثلا: 1234567890"
+                        isValid={false}
+                        validationError="نمیتواند خالی باشد"
+                        onChange={handlechange}
+                        defaultValue={
+                          user != null ? user.data.national_code : null
+                        }
+                        // disabled={true}
+                      />
                     </div>
                     <div
-                      className="col-12 sm:col-6 md:col-6 lg:col-6  justify-content-start"
+                      className="col-12 sm:col-6 "
                       style={{ display: "flex" }}
                     >
-                      <p className="">
-                        تاریخ تولد :
-                        <Calendar
-                          value={UserDatafromlocal.birthdate}
-                          className="h-4rem dateinfo"
-                          showButtonBar
-                          onChange={handlechange}
-                          name="birthdate"
-                          placeholder="1398/09/09"
-                        />
-                      </p>
+                      <SimpleInput
+                        type="text"
+                        title="تاریخ تولد"
+                        placeholder="مثلا: 1375/06/11"
+                        isValid={UserDatafromlocal.birthdate != ""}
+                        validationError="نمیتواند خالی باشد"
+                        onChange={handlechange}
+                        defaultValue={user != null ? user.data.birthdate : null}
+                        // disabled={true}
+                      />
                     </div>
                   </div>
                 </AccordionTab>
@@ -286,44 +316,50 @@ function ProfilePage() {
                   header={
                     <div className="flex mr-3 align-items-center">
                       <span className="vertical-align-middle font text-3xl">
-                        {" "}
-                        راه های ارتباطی{" "}
+                        راه های ارتباطی
                       </span>
                     </div>
                   }
                   className="text-4xl mb-4"
                 >
-                  <div className=" col-12 grid flex mt-2  ">
+                  <div className=" col-12 flex mt-2  ">
                     <div
                       className="col-11 sm:col-6 md:col-6 lg:col-6  justify-content-start"
                       style={{ display: "flex" }}
                     >
-                      <p>
-                        شماره ثابت :{" "}
-                        <InputText
+                      <SimpleInput
+                        type="text"
+                        title="شماره ثابت"
+                        placeholder="02112345678"
+                        isValid={false}
+                        validationError="نمیتواند خالی باشد"
                         onChange={handlechange}
-                        name="cell_number"
-                          value={UserDatafromlocal.cell_number}
-                          className="h-4rem homenum"
-                          placeholder="09121822776"
-                        />
-                      </p>
+                        defaultValue={
+                          user != null ? user.data.cell_number : null
+                        }
+                        disabled={
+                          user != null ? user.data.cell_number != null : null
+                        }
+                      />
                     </div>
                     <div
                       className="col-11 sm:col-6 md:col-6 lg:col-6  justify-content-start"
                       style={{ display: "flex" }}
                     >
-                      <p>
-                        {" "}
-                        شماره همراه :{" "}
-                        <InputText
-                          value={UserDatafromlocal.phone_number}
-                          className="h-4rem phonenum"
-                          onChange={handlechange}
-                          name="phone_number"
-                          placeholder="0987123323"
-                        />
-                      </p>
+                      <SimpleInput
+                        type="text"
+                        title="شماره ثابت"
+                        placeholder="09123456789"
+                        isValid={false}
+                        validationError="نمیتواند خالی باشد"
+                        onChange={handlechange}
+                        defaultValue={
+                          user != null ? user.data.phone_number : null
+                        }
+                        disabled={
+                          user != null ? user.data.phone_number != null : null
+                        }
+                      />
                       {/* <Calendar value={date} onChange={(e) => setDate(e.value)} />         */}
                     </div>
                   </div>
@@ -331,14 +367,15 @@ function ProfilePage() {
                     className=" col-7 sm:col-12 font justify-content-start mt-2 w-full  "
                     style={{ display: "flex" }}
                   >
-                    ایمیل :{" "}
-                    <InputText
-                      value={UserDatafromlocal.email}
+                    <SimpleInput
+                      type="text"
+                      title="ایمیل "
+                      placeholder="09123456789"
+                      isValid={false}
+                      validationError="نمیتواند خالی باشد"
                       onChange={handlechange}
-                      name="email"
-                      className="h-4rem Pemail font "
-                      style={{ width: "40%" }}
-                      placeholder="parsa@gmail.com"
+                      defaultValue={user != null ? user.data.email : null}
+                      disabled={user != null ? user.data.email != null : null}
                     />
                   </div>
                 </AccordionTab>
@@ -401,14 +438,13 @@ function ProfilePage() {
           <Button
             style={{ backgroundColor: "#424874" }}
             label="ویرایش"
-            onClick={UpdateInfo}
+            // onClick={UpdateInfo}
             className=" mt-6 lg:text-4xl sm:text-2xl lg:text-2xl text-2xl justify-content-center text-center w-7"
           />
         </div>
 
-        <Footer />
-      </div>
-    </div>
+      </TestLayout>
+    
   );
 }
 export default ProfilePage;

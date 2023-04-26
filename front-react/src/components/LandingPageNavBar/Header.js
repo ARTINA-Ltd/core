@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext,useEffect } from "react";
 import "./Header.css";
 import Logo from "../../Pages/artina-logo.jpg";
 import { Avatar } from "primereact/avatar";
@@ -8,6 +8,7 @@ import { UserContext } from "../../App";
 const Header = () => {
   const user = useContext(UserContext);
 
+  const [username, setUsername] = useState();
   const [clicked, setClicked] = useState(false);
   const Token = localStorage.getItem("authTokens");
   const navigate = useNavigate();
@@ -61,6 +62,10 @@ const Header = () => {
       link: "/",
     },
   ];
+
+  useEffect(() => {
+    setUsername((e) => user? user.data.username : e)
+  }, [user]);
   const ActiveUser = () => {
     return (
       // <>
@@ -162,7 +167,7 @@ const Header = () => {
               </div>
 
               <div className="flex gap-5 items-center">
-                <div>{user != null ? user.data.username : null}</div>
+                <div>{username}</div>
                 <div
                   className="cursor-pointer border-black border-1 px-4 py-2  rounded-md"
                   onClick={() => {

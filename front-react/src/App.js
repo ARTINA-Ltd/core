@@ -57,10 +57,8 @@ const bodyParameters = {
       mode: "cors",
     }).then(data =>{
       setUser(data);
-      console.log("data: ")
-      console.log(data)
     }).catch(console.log)
-  }, []);
+  },[]);
 
   return (
     <>
