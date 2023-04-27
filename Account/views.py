@@ -50,6 +50,7 @@ class UserInfoViewSet(viewsets.ViewSet):
         profile = Profile.objects.get(user=user)
 
         data = {
+            'id': user.id,
             'username': user.username,
             'first_name': profile.first_name,
             'last_name': profile.last_name,
