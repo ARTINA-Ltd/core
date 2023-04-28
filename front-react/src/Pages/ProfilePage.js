@@ -128,7 +128,7 @@ function ProfilePage() {
         position="bottom-center"
         className="text-3xl w-full"
       />
-      <div className="w-[80%] m-auto flex gap-16 py-8">
+      <div className="flex gap-16">
         <SimpleCard className="bg-[#4e45d0] w-[45%] flex flex-col relative gap-12 items-center ">
           <img
             src="/mand1.png"

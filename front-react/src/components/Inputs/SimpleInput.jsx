@@ -11,6 +11,7 @@ const SimpleInput = ({
   validationError,
   defaultValue = "",
   disabled = false,
+  className
 }) => {
   const [focus, setFocus] = useState(defaultValue === null ? false : true);
   const [value, setValue] = useState();
@@ -23,7 +24,7 @@ const SimpleInput = ({
     <div
       className={`w-full flex flex-col items-start gap-1 relative ${
         disabled ? "opacity-70" : ""
-      }`}
+      } ${className}`}
     >
       {type === "number" ? (
 

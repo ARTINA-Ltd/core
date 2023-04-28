@@ -52,8 +52,8 @@ const bodyParameters = {
   useEffect(() => {
    axios({
       method: "get",
-      url: "http://78.38.35.249:8000/api/account/user-info/",
-      // url: "https://api.artina.org/api/account/user-info/",
+      // url: "http://78.38.35.249:8000/api/account/user-info/",
+      url: "https://api.artina.org/api/account/user-info/",
     headers: { Authorization: `Bearer ${Token}` },
       mode: "cors",
     }).then(data =>{
@@ -80,7 +80,7 @@ const bodyParameters = {
                 path="artist-application-form"
                 element={<ArtistApplicationForm />}
               />
-              <Route exact path="nft-details" element={<NFTDetails />} />
+              <Route exact path="nft-details/:id" element={<NFTDetails />} />
               <Route exact path="Commission" element={<Commission />} />
               <Route exact path="login" element={<Login />} />
               <Route exact path="support" element={<Support />} />

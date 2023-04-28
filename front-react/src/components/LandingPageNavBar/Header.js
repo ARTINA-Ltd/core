@@ -139,7 +139,7 @@ const Header = () => {
       <>
         <header>
           {/*<h2>Inc. This Morning</h2>*/}
-          <div className="navbar-menu flex justify-center text-[16px]">
+          <div className="navbar-menu flex justify-center text-[16px] text-white">
             <div className="navbar-link-logo " onClick={handleClick}>
               <i
                 className={clicked ? "pi  pi-times" : " pi pi-bars "}
@@ -169,7 +169,7 @@ const Header = () => {
               <div className="flex gap-5 items-center">
                 <div>{username}</div>
                 <div
-                  className="cursor-pointer border-black border-1 px-4 py-2  rounded-md"
+                  className="cursor-pointer border-white border-1 px-4 py-2  rounded-md"
                   onClick={() => {
                     navigate("/login");
                     localStorage.setItem("authTokens", null);

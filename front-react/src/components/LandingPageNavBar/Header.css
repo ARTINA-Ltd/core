@@ -2,7 +2,7 @@
   width: 100% !important;
   height: 60px;
   border-radius: 0px !important;
-  background: linear-gradient(to left, #a6b1e1, #dcd6f7);
+  background: linear-gradient(to left, #4e45d0, #4e45d0);
   margin-bottom: 0px;
 
   display: flex;
@@ -25,7 +25,7 @@
   justify-content: center !important ;
 }
 .navbar-item a {
-  color: #424874;
+  color: #fff;
 }
 
 .navbar-item :hover {

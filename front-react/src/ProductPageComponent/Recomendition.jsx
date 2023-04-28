@@ -1,12 +1,7 @@
 
 function Recomendition() {
     return <>
-        <div>
-            <h2 className="text-5xl mt-20 font-black mr-[20px]">پیشنهاد های شما</h2>
-
-        </div>
-
-        <div className="flex flex-col lg:mr-[40px] sm:mr-[2px] sm:mr-[2px] lg:ml-[40px]">
+        <div className="flex flex-col lg:mr-[40px] sm:mr-[2px] sm:mr-[2px] lg:ml-[40px] w-full">
             <div className="overflow-x-auto  lg:mx-8">
                 <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
                     <div className="overflow-hidden">
