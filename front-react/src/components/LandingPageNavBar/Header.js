@@ -186,7 +186,6 @@ const Header = () => {
     );
   };
 
-  console.log(user);
   const NoActiveUser = () => {
     return (
       <>

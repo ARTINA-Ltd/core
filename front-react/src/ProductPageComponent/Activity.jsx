@@ -16,7 +16,6 @@ import { Button } from 'primereact/button';
 export default function BasicTable() {
 
     const Price = document.getElementsByClassName("Eth");
-    console.log(Price)
     const Price2 = Price * 48000000;
     return (
       

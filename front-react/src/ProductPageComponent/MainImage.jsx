@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "primereact/button";
-function MainImage() {
+function MainImage({imageSrc}) {
   // const image=require("./images/image_2022-08-15_19-57-46.png").default
   const [Like, setLike] = useState(0);
 
@@ -10,7 +10,7 @@ function MainImage() {
       <div className="box-content lg:col-6  sborder-b-2 border-gray-400 rounded-lg lg:mr-8 ">
         <div className="like flex     ">
           <img
-            src={require("./images/image_2022-08-15_19-57-46.png")}
+            src={imageSrc}
             alt="tablovo"
             className={" w-full  "}
           />

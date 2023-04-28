@@ -6,7 +6,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-function Price() {
+function Price({ name, writer, date,description,price }) {
   return (
     <>
       <div className="  items-center">
@@ -20,7 +20,7 @@ function Price() {
             نام اثر:
           </h2>
           <h1 className="lg:text-8xl font-bold lg:mt-[-60px] md:text-6xl sm:text-6xl font">
-            بهاران
+            {name}
           </h1>
 
           <h2
@@ -28,12 +28,9 @@ function Price() {
               "flex lg:justify-start sm:justify-center lg:text-4xl font-bold mb-8 lg:mt-[40px] md:text-3xl sm:text-3xl sm:mt-[25px] font"
             }
           >
-            {" "}
-            نام هنرمند:
+            {writer}
           </h2>
-          <h1 className="lg:text-6xl font-bold lg:mt-[-50px] sm:text-4xl font">
-            فرشچیان
-          </h1>
+          <h1 className="lg:text-6xl font-bold lg:mt-[-50px] sm:text-4xl font"></h1>
 
           <h2
             className={
@@ -44,7 +41,7 @@ function Price() {
             تاریخ ساخت :
           </h2>
           <h1 className="lg:text-6xl font-bold lg:mt-[-50px] sm:text-4xl font">
-            1345.06.23
+            {date}
           </h1>
 
           <h2
@@ -55,17 +52,7 @@ function Price() {
             توضیحات:
           </h2>
           <p className="lg:text-3xl sm:text-2xl text-right flex justify-start font">
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-            استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در
-            ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و
-            کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی
-            در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را
-            می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی
-            الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این
-            صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و
-            شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای
-            اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد
-            استفاده قرار گیرد.
+            {description}
           </p>
 
           <h2
@@ -76,7 +63,7 @@ function Price() {
             قیمت پایه:
           </h2>
           <h1 className="flex justify-center lg:text-6xl font-bold lg:mt-[-50px] border-b-2 border-gray-500 sm:text-3xl font">
-            4000
+            {price}
           </h1>
         </div>
       </div>

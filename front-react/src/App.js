@@ -52,7 +52,8 @@ const bodyParameters = {
   useEffect(() => {
    axios({
       method: "get",
-      url: "https://api.artina.org/api/account/user-info/",
+      url: "http://78.38.35.249:8000/api/account/user-info/",
+      // url: "https://api.artina.org/api/account/user-info/",
     headers: { Authorization: `Bearer ${Token}` },
       mode: "cors",
     }).then(data =>{
