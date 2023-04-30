@@ -18,8 +18,12 @@ const Header = () => {
 
   const NotActiveItems = [
     {
-      title: "درباره‌ما",
+      title: "صفحه اصلی",
       link: "/",
+    },
+    {
+      title: "ارتباط با ما",
+      link: "/contact",
     },
     {
       title: "پشتیبانی",
@@ -41,8 +45,8 @@ const Header = () => {
       link: "/",
     },
     {
-      title: "درباره‌ما",
-      link: "/",
+      title: "ارتباط با ما",
+      link: "/contact",
     },
     {
       title: "پشتیبانی",
@@ -54,7 +58,7 @@ const Header = () => {
     },
     {
       title: "کارمزد",
-      link: "/",
+      link: "/Commission",
     },
     {
       title: "کانکت والت",
