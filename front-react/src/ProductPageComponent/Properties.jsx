@@ -6,7 +6,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-function Properties() {
+function Properties({ requests , nft}) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleChange = (panel) => (event, isExpanded) => {
@@ -14,12 +14,11 @@ function Properties() {
   };
   return (
     <>
-      <div className="w-full">
-        <div className="flex flex-col">
-          <div className="overflow-x-auto sm:mx-6 lg:mx-8">
-            <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+        <div className="flex flex-col w-full">
+          <div className="overflow-x-auto">
+            <div className="py-2 inline-block w-full">
               <div className="overflow-hidden">
-                <table className="min-w-full">
+                <table className="w-full">
                   <thead className="border-b ">
                     <tr>
                       <th
@@ -49,55 +48,31 @@ function Properties() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border-b">
-                      <td className="px-6 py-4 whitespace-nowrap text-2xl font-medium text-gray-900 font">
-                        1
-                      </td>
-                      <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
-                        زهرا علیمی
-                      </td>
-                      <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
-                        302
-                      </td>
-                      <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
-                        5/000/000
-                      </td>
-                    </tr>
-                    <tr className="bg-white border-b">
-                      <td className="px-6 py-4 whitespace-nowrap text-2xl font-medium text-gray-900 font">
-                        2
-                      </td>
-                      <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
-                        سمانه رشیدی
-                      </td>
-                      <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
-                        301
-                      </td>
-                      <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
-                        4/900/000
-                      </td>
-                    </tr>
-                    <tr className="bg-white border-b">
-                      <td className="px-6 py-4 whitespace-nowrap text-2xl font-medium text-gray-900 font">
-                        3
-                      </td>
-                      <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
-                        مهدی غلامی
-                      </td>
-                      <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
-                        209
-                      </td>
-                      <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
-                        3/800/000
-                      </td>
-                    </tr>
+                    {requests ? requests.data.map((req) =>
+                      req.nft == nft ? (
+                        <tr className="border-b">
+                          <td className="px-6 py-4 whitespace-nowrap text-2xl font-medium text-gray-900 font">
+                          </td>
+                          <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
+                            {req.bidder}
+                                                      </td>
+                          <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
+                            {req.fee}
+                          </td>
+                          <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
+                            {req.fee * 104759811}
+                          </td>
+                        </tr>
+                      ) : (
+                        ''
+                      )
+                    ) : ''}
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
         </div>
-      </div>
     </>
   );
 }

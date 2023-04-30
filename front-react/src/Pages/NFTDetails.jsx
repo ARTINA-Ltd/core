@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useContext } from "react";
 import React from "react";
 import "../ProductPageComponent/index.css";
 import MainImage from "../ProductPageComponent/MainImage";
@@ -13,10 +13,16 @@ import axios from "axios";
 import TestLayout from "../Layouts/TestLayout";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import { useParams } from "react-router";
+import SimpleInput from "../components/Inputs/SimpleInput";
+import { UserContext } from "../App";
 
-function ProductPage() {
+const NFTDetails = () => {
   const [data, setData] = useState();
-  const { id } = useParams(); 
+  const [reqData, setReqData] = useState();
+  const { id } = useParams();
+  const [price, setPrice] = useState(0);
+  const [ethereum, setEthereum] = useState(0);
+  const user = useContext(UserContext);
 
   const icons = {
     heart: (
@@ -95,38 +101,70 @@ function ProductPage() {
       method: "get",
       url: "http://78.38.35.249:8000/api/transaction/Nfts/",
       //  url: "https://api.artina.org/api/account/profile/",
+    }).then((d) => {
+      setData(d);
+    });
+
+    axios({
+      method: "get",
+      url: "http://78.38.35.249:8000/api/transaction/rate/",
     })
       .then((d) => {
-        setData(d);
+        console.log("_______rate_______");
+        console.log(d);
+        console.log("__________________");
       })
+      .catch(console.log);
 
-
-
-      axios({
-        method: "get",
-        url: "http://78.38.35.249:8000/api/transaction/rate/",
+    axios({
+      method: "get",
+      url: "http://78.38.35.249:8000/api/transaction/orders/",
+    })
+      .then((d) => {
+        setReqData(d);
+        console.log("______orders______");
+        console.log(d);
+        console.log("__________________");
       })
-        .then((d) => {
-          console.log("_______rate_______");
-          console.log(d);
-          console.log("__________________");
-
-        })
-        .catch(console.log);
-
-
-        axios({
-          method: "get",
-          url: "http://78.38.35.249:8000/api/transaction/orders/",
-        })
-          .then((d) => {
-            console.log("______orders______");
-            console.log(d);
-            console.log("__________________");
-
-          })
-          .catch(console.log);
+      .catch(console.log);
   }, []);
+
+  function addRequest() {
+    // axios
+    // .post(
+    //   "http://78.38.35.249:8000/api/transaction/orders/",
+    //   {
+    //     user: 6,
+    //     address: user ? user.data.address : '',
+    //     birthdate: formValues.birthdate,
+    //     cell_number: formValues.cell_number,
+    //     email: formValues.email,
+    //     first_name: formValues.first_name,
+    //     last_name: formValues.last_name,
+    //     national_code: formValues.national_code,
+    //     phone_number: formValues.phone_number,
+    //   },
+    //   config
+    // )
+    // .then((response) => {
+    //   if (response.status == 200) {
+    //     alert("as");
+    //   }
+    // })
+    // .catch((exception) => {
+    //   console.log("exception");
+    //   console.log(exception);
+    //   if (exception.response.status === 404) {
+    //     Show404Errors(toastBC);
+    //   } else if (exception.response.status === 500) {
+    //     Show500Errors(toastBC);
+    //   } else if (exception.response.status === 401) {
+    //     ShowTokenErrors(toastBC);
+    //   } else if (exception.code === "ERR_NETWORK") {
+    //     ShowNetorkErrors(toastBC);
+    //   }
+    // });
+  }
 
   return (
     <>
@@ -189,23 +227,6 @@ function ProductPage() {
                       </div>
                       <div className="text-[16px] mr-36 self-start text-right">
                         {item.description}
-                        {item.description}
-                        {item.description}
-                        {item.description}
-                        {item.description}
-                        {item.description}
-                        {item.description}
-                        {item.description}
-                        {item.description}
-                        {item.description}
-                        {item.description}
-                        {item.description}
-                        {item.description}
-                        {item.description}
-                        {item.description}
-                        {item.description}
-                        {item.description}
-                        {item.description}
                       </div>
                     </div>
                     <div className="relative flex items-center justify-self-end bg-[#f1f2f7] px-10 py-4 rounded-xl">
@@ -223,22 +244,66 @@ function ProductPage() {
                     <div className="flex items-center pt-3">
                       <div className="text-[32px] mx-auto">پیشنهادات</div>
                     </div>
-                    <Properties />
+                    <Properties
+                      requests={reqData ? reqData : undefined}
+                      nft={id}
+                    />
                   </SimpleCard>
-                  <SimpleCard className="bg-[#4e45d0] w-full flex flex-col relative gap-12 items-center mt-12">
-                    <div className="flex items-center pt-3">
-                      <div className="text-[32px] mx-auto text-white">
-                        قیمت پیشنهادی
-                      </div>
-                    </div>
-                    <Activity />
-                  </SimpleCard>
-                  <SimpleCard className="bg-white w-full flex flex-col relative gap-12 items-center mt-12">
-                    <div className="flex items-center pt-3">
-                      <div className="text-[32px] mx-auto">پیشنهاد های شما</div>
-                    </div>
-                    <Recomendition />
-                  </SimpleCard>
+                  {user ? (
+                    <>
+                      <SimpleCard
+                        id="InsertRequest"
+                        className="bg-[#4e45d0] w-full flex flex-col relative gap-12 items-center mt-12"
+                      >
+                        <div className="flex items-center pt-3">
+                          <div className="text-[32px] mx-auto text-white">
+                            قیمت پیشنهادی
+                          </div>
+                        </div>
+                        <div className="flex gap-12 w-full">
+                          <SimpleInput
+                            className={"text-white bg-[#7168f3] rounded-lg "}
+                            placeholder={"مثلا: 3"}
+                            title="قیمت پیشنهادی شما به اتریم"
+                            onChange={(e) => {
+                              setPrice(e.target.value * 104759811);
+                              setEthereum(e.target.value);
+                            }}
+                          />
+                          <div className="bg-[#7168f3] py-[20px] cursor-pointer text-white text-[16px] w-[60%] flex justify-center rounded-lg">
+                            قیمت به تومان:
+                            <div className="text-yellow-300">
+                              &nbsp;{price}&nbsp;
+                            </div>
+                            تومان
+                          </div>
+                          <div
+                            className="bg-sky-400 py-[20px] cursor-pointer text-white text-[16px] w-[25%] flex justify-center rounded-lg hover:bg-sky-500 transition-all"
+                            onClick={() => addRequest()}
+                          >
+                            ثبت
+                          </div>
+                        </div>
+                      </SimpleCard>
+                      <SimpleCard
+                        id="UserRequests"
+                        className="bg-white w-full flex flex-col relative gap-12 items-center mt-12"
+                      >
+                        <div className="flex items-center pt-3">
+                          <div className="text-[32px] mx-auto">
+                            پیشنهاد های شما
+                          </div>
+                        </div>
+                        <Recomendition
+                          requests={reqData ? reqData : undefined}
+                      nft={id}
+
+                        />
+                      </SimpleCard>
+                    </>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </TestLayout>
             ) : (
@@ -248,5 +313,6 @@ function ProductPage() {
         : ""}
     </>
   );
-}
-export default ProductPage;
+};
+
+export default NFTDetails;

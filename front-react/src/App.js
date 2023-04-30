@@ -5,7 +5,7 @@ import StarterFile from "./Pages/StarterFile";
 import ArtistPage from "./Pages/ArtistPage";
 import HomePage from "./Pages/HomePage";
 import ArtistApplicationForm from "./Pages/ExhibitionSignForm";
-import NFTDetails from "./Pages/ProductPage";
+import NFTDetails from "./Pages/NFTDetails";
 // import Login from "./Pages/LoginPage";
 // import Register from "./LoginComponent/SignUp";
 import Register from "./LoginComponent/register";
@@ -26,6 +26,7 @@ import { ScrollTop } from "primereact/scrolltop";
 import Commission from "./Pages/Commission/Commission";
 import Support from "./Pages/Support";
 import axios from "axios";
+import Contact from "./Pages/Contact";
 
 const activeChainId = ChainId.Goerli;
 
@@ -34,32 +35,34 @@ export const UserContext = createContext();
 export default () => {
   var Token = localStorage.getItem("authTokens");
 
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState();
   const config = {
-    headers: { Authorization: `Bearer ${Token}` }
-};
+    headers: { Authorization: `Bearer ${Token}` },
+  };
 
-const bodyParameters = {
-   key: "value"
-};
-// axios.post('https://api.artina.org/api/account/user-info',
-//       config)
-//       .then(data =>{
-//         setUser(data);
-//         console.log("data: ")
-//         console.log(data)
-//       }).catch(console.log)
+  const bodyParameters = {
+    key: "value",
+  };
+  // axios.post('https://api.artina.org/api/account/user-info',
+  //       config)
+  //       .then(data =>{
+  //         setUser(data);
+  //         console.log("data: ")
+  //         console.log(data)
+  //       }).catch(console.log)
   useEffect(() => {
-   axios({
+    axios({
       method: "get",
       // url: "http://78.38.35.249:8000/api/account/user-info/",
       url: "https://api.artina.org/api/account/user-info/",
-    headers: { Authorization: `Bearer ${Token}` },
+      headers: { Authorization: `Bearer ${Token}` },
       mode: "cors",
-    }).then(data =>{
-      setUser(data);
-    }).catch(console.log)
-  },[]);
+    })
+      .then((data) => {
+        setUser(data);
+      })
+      .catch(console.log);
+  }, []);
 
   return (
     <>
@@ -86,6 +89,7 @@ const bodyParameters = {
               <Route exact path="support" element={<Support />} />
               <Route exact path="register" element={<Register />} />
               <Route exact path="exhibitor-page" element={<ExhibitorPage />} />
+              <Route exact path="contact" element={<Contact />} />
               <Route
                 exact
                 path="exhibition-lists"
