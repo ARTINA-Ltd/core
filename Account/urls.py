@@ -10,6 +10,7 @@ router.register(r'rate', views.ArtistRateViewSet)
 router.register(r'profile', views.ProfileViewSet)
 router.register(r'user-info', views.UserInfoViewSet, basename='user_info')
 router.register(r'login', views.LoginViewSet, basename='login')
+router.register(r'ticket', views.TicketViewSet, basename="ticket")
 
 
 urlpatterns = [

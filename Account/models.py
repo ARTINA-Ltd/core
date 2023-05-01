@@ -37,7 +37,7 @@ class Profile(models.Model):
                                     validators=[validators.RegexValidator(regex='^[0-9]{11}$',
                                                                           message='شماره تلفن باید 11 رقمی باشد',
                                                                           code='invalid_phone_number')])
-    #phone_number_verified = models.BooleanField(default=False)
+    phone_number_verified = models.BooleanField(default=False)
     cell_number = models.CharField(max_length=11, verbose_name="شماره تلفن ثابت", null=True, blank=False)
     address = models.TextField(max_length=200, verbose_name="آدرس", null=True, blank=False)
     national_card_picture = models.ImageField(verbose_name="عکس کارت ملی", upload_to="./static/PicturesOfNationalCard",
@@ -48,7 +48,7 @@ class Profile(models.Model):
     profile_picture = models.ImageField(upload_to="./static/PicturesOfProfile", verbose_name="عکس پروفایل",
                                         null=True, blank=False, default="static/PicturesOfProfile/default.png",)
     # email = models.EmailField(max_length=50, verbose_name="ایمیل", null=True, blank=False)
-    # email_verified = models.BooleanField(default=False)
+    email_verified = models.BooleanField(default=False)
     role = models.ForeignKey(Role, on_delete=models.CASCADE, default=1)
 
     # def __str__(self):
@@ -91,6 +91,15 @@ def is_artist(self):
 
 User.add_to_class('is_artist', is_artist)
 User.add_to_class('get_artist_applications', get_artist_applications)
+
+
+class UserTicket(models.Model):
+    ticket_id = models.IntegerField(verbose_name="ticket_id", default=1000)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    subject = models.CharField(max_length=70, verbose_name="موضوع", null=True, blank=False)
+    date = models.DateTimeField(auto_now=True)
+    text = models.TextField(max_length=200, verbose_name="متن", null=True, blank=False)
+
 
 # def get_artist_exhibitions(self):
 #     nfts = self.nft_set.all()

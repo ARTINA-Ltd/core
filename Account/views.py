@@ -1,5 +1,5 @@
 from Account import serializers
-from .models import ArtistReviewRating, Profile
+from .models import ArtistReviewRating, Profile, UserTicket
 from rest_framework import viewsets,permissions, generics
 from rest_framework.response import Response
 from rest_framework import status
@@ -230,4 +230,14 @@ class ProfileViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def perform_update(self, serializer):
+        serializer.save()
+
+
+class TicketViewSet(viewsets.ModelViewSet):
+    queryset = UserTicket.objects.all()
+    serializer_class = serializers.TicketSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = serializers.TicketSerializer
+        serializer = serializer(data=request.data)
         serializer.save()
