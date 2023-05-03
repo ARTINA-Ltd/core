@@ -1,6 +1,7 @@
 from Account import serializers
-from .models import ArtistReviewRating, Profile, UserTicket
-from rest_framework import viewsets,permissions, generics
+from .models import ArtistReviewRating, Profile, UserTicket, PhoneVerification, send_verification_code
+from rest_framework import viewsets, permissions, generics
+from rest_framework.decorators import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -241,3 +242,49 @@ class TicketViewSet(viewsets.ModelViewSet):
         serializer = serializers.TicketSerializer
         serializer = serializer(data=request.data)
         serializer.save()
+
+
+class PhoneVerificationViewSet(viewsets.ModelViewSet):
+    queryset = PhoneVerification.objects.all()
+    serializer_class = serializers.PhoneVerificationSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        user = self.request.user
+        if user.is_authenticated:
+            queryset = queryset.filter(user=user)
+        return queryset
+
+    def verify_phone(self, request, pk=None):
+        verification_code = request.data.get("verification_code")
+        phone_verification = self.get_object()
+
+        if phone_verification.verification_code == verification_code:
+            phone_verification.verified = True
+            phone_verification.save()
+            return Response({"status": "success"})
+        else:
+            return Response({"status": "error", "error": "verification code is not correct"},
+                            status.HTTP_400_BAD_REQUEST)
+
+# class PhoneVerificationViewSet(viewsets.ModelViewSet):
+#     queryset = PhoneVerification.objects.all()
+#     serializer_class = serializers.PhoneVerificationSerializer
+#
+#     def get_queryset(self):
+#         queryset = super().get_queryset()
+#         user = self.request.user
+#         if user.is_authenticated:
+#             queryset = queryset.filter(user=user)
+#         return queryset
+#
+#     def verify_phone(self, request, pk=None):
+#         verification_code = request.data.get("verification_code")
+#         phone_verification = self.get_object()
+#
+#         if phone_verification.verification_code == verification_code:
+#             phone_verification.verified = True
+#             phone_verification.save()
+#             return Response({"status": "success"})
+#         else:
+#             return Response({"status": "error", "message": "Invalid verification code"})

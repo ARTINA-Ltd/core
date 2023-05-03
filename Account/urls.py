@@ -11,6 +11,7 @@ router.register(r'profile', views.ProfileViewSet)
 router.register(r'user-info', views.UserInfoViewSet, basename='user_info')
 router.register(r'login', views.LoginViewSet, basename='login')
 router.register(r'ticket', views.TicketViewSet, basename="ticket")
+router.register(r'phone-verification', views.PhoneVerificationViewSet, basename="phone_verification")
 
 
 urlpatterns = [
