@@ -128,42 +128,32 @@ const NFTDetails = () => {
       })
       .catch(console.log);
   }, []);
+  var Token = localStorage.getItem("authTokens");
+
+  const config = {
+    headers: { Authorization: `Bearer ${Token}` },
+  };
 
   function addRequest() {
-    // axios
-    // .post(
-    //   "http://78.38.35.249:8000/api/transaction/orders/",
-    //   {
-    //     user: 6,
-    //     address: user ? user.data.address : '',
-    //     birthdate: formValues.birthdate,
-    //     cell_number: formValues.cell_number,
-    //     email: formValues.email,
-    //     first_name: formValues.first_name,
-    //     last_name: formValues.last_name,
-    //     national_code: formValues.national_code,
-    //     phone_number: formValues.phone_number,
-    //   },
-    //   config
-    // )
-    // .then((response) => {
-    //   if (response.status == 200) {
-    //     alert("as");
-    //   }
-    // })
-    // .catch((exception) => {
-    //   console.log("exception");
-    //   console.log(exception);
-    //   if (exception.response.status === 404) {
-    //     Show404Errors(toastBC);
-    //   } else if (exception.response.status === 500) {
-    //     Show500Errors(toastBC);
-    //   } else if (exception.response.status === 401) {
-    //     ShowTokenErrors(toastBC);
-    //   } else if (exception.code === "ERR_NETWORK") {
-    //     ShowNetorkErrors(toastBC);
-    //   }
-    // });
+    axios
+    .post(
+      "https://api.artina.org/api/transaction/orders/",
+      {
+        nft:[3],
+        bidder: 3,
+        fee:300,
+        status:0
+      },config
+    )
+    .then((response) => {
+      if (response.status == 200) {
+        alert("as");
+      }
+    })
+    .catch((exception) => {
+      console.log("exception");
+      console.log(exception);
+    });
   }
 
   return (

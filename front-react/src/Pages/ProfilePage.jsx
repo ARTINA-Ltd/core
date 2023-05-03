@@ -7,7 +7,6 @@ import Header from "../components/LandingPageNavBar/Header";
 import Footer from "../components/Footer/Footer";
 import Profileuploader from "../components/Uploaders/Profileuploader";
 import IDUpdate from "../components/Uploaders/IDUpdate";
-import { Button } from "primereact/button";
 import React, { useEffect, useRef, useState, useContext } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -24,7 +23,7 @@ import {
   Show404Errors,
   Show500Errors,
   ShowNetorkErrors,
-  ShowTokenErrors,
+  ShowTokenErrors
 } from "../components/ErrorDialogs/ShowErrors";
 import { Toast } from "primereact/toast";
 import SimpleInput from "../components/Inputs/SimpleInput";
@@ -32,6 +31,7 @@ import { text } from "@fortawesome/fontawesome-svg-core";
 import { UserContext } from "../App";
 import TestLayout from "../Layouts/TestLayout";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
+import { Button, IconButton } from "@mui/material";
 
 function ProfilePage() {
   const user = useContext(UserContext);
@@ -43,10 +43,11 @@ function ProfilePage() {
     birthdate: user ? user.data.birthdate : "",
     cell_number: user ? user.data.cell_number : "",
     phone_number: user ? user.data.phone_number : "",
-    email: user ? user.data.email : "",
+    email: user ? user.data.email : ""
   });
 
-  const [waiting, setWaiting] = useState(false);
+  const [showPhoneValidate, setShowPhoneValidate] = useState(false);
+  const [showEmailValidate, setShowEmailValidate] = useState(false);
 
   var Token = localStorage.getItem("authTokens");
 
@@ -56,8 +57,8 @@ function ProfilePage() {
 
   const config = {
     headers: {
-      Authorization: `bearer ${Token}`,
-    },
+      Authorization: `bearer ${Token}`
+    }
   };
 
   function UpdateInfo() {
@@ -68,23 +69,23 @@ function ProfilePage() {
         "http://78.38.35.249:8000/api/account/profile/",
         {
           user: 6,
-          address: user ? user.data.address : '',
+          address: user ? user.data.address : "",
           birthdate: formValues.birthdate,
           cell_number: formValues.cell_number,
           email: formValues.email,
           first_name: formValues.first_name,
           last_name: formValues.last_name,
           national_code: formValues.national_code,
-          phone_number: formValues.phone_number,
+          phone_number: formValues.phone_number
         },
         config
       )
-      .then((response) => {
+      .then(response => {
         if (response.status == 200) {
           alert("as");
         }
       })
-      .catch((exception) => {
+      .catch(exception => {
         console.log("exception");
         console.log(exception);
 
@@ -98,7 +99,7 @@ function ProfilePage() {
           ShowNetorkErrors(toastBC);
         }
       });
-  };
+  }
 
   function ValidateEmail(mail) {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
@@ -107,19 +108,22 @@ function ProfilePage() {
     return false;
   }
 
-  useEffect(() => {
-    setformValues((prev) => ({
-      ...prev,
-      first_name: user ? user.data.username : "",
-      last_name: user ? user.data.last_name : "",
-      national_code: user ? user.data.national_code : "",
-      birthdate: user ? user.data.birthdate : "",
-      cell_number: user ? user.data.cell_number : "",
-      phone_number: user ? user.data.phone_number : "",
-      email: user ? user.data.email : "",
-    }));
-    console.log(user);
-  }, [user]);
+  useEffect(
+    () => {
+      setformValues(prev => ({
+        ...prev,
+        first_name: user ? user.data.username : "",
+        last_name: user ? user.data.last_name : "",
+        national_code: user ? user.data.national_code : "",
+        birthdate: user ? user.data.birthdate : "",
+        cell_number: user ? user.data.cell_number : "",
+        phone_number: user ? user.data.phone_number : "",
+        email: user ? user.data.email : ""
+      }));
+      console.log(user);
+    },
+    [user]
+  );
 
   return (
     <TestLayout>
@@ -139,9 +143,18 @@ function ProfilePage() {
           </div>
           <div className="text-white text-[20px] z-10">تصویر پروفایل</div>
           <div className="bg-slate-50 w-[70%] pt-[70%] rounded-full z-10 relative">
-            <img src={`https://api.artina.org${user? user.data.profile_picture : ''}`} className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 pointer-events-none w-8"/>
+            <img
+              src={`https://api.artina.org${user
+                ? user.data.profile_picture
+                : ""}`}
+              className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 pointer-events-none w-8"
+            />
           </div>
           <div className="">
+            <Button variant="contained" component="label">
+              آپلود تصویر
+              <input hidden accept="image/*" multiple type="file" />
+            </Button>
             {/* <Profileuploader /> */}
             {/* <IDUpdate /> */}
           </div>
@@ -155,27 +168,25 @@ function ProfilePage() {
               placeholder="مثلا: علیرضا"
               isValid={formValues.first_name != ""}
               validationError="نمیتواند خالی باشد"
-              onChange={(e) =>
-                setformValues((prev) => ({
+              onChange={e =>
+                setformValues(prev => ({
                   ...prev,
-                  first_name: e.target.value,
-                }))
-              }
+                  first_name: e.target.value
+                }))}
               defaultValue={user != null ? user.data.first_name : null}
-              // disabled={true}
             />
+            // disabled={true}
             <SimpleInput
               type="text"
               title="نام خانوادگی"
               placeholder="مثلا: موسوی"
               isValid={formValues.last_name != ""}
               validationError="نمیتواند خالی باشد"
-              onChange={(e) =>
-                setformValues((prev) => ({
+              onChange={e =>
+                setformValues(prev => ({
                   ...prev,
-                  last_name: e.target.value,
-                }))
-              }
+                  last_name: e.target.value
+                }))}
               defaultValue={user != null ? user.data.last_name : null}
               disabled={user != null ? user.data.last_name != null : null}
             />
@@ -187,12 +198,11 @@ function ProfilePage() {
               placeholder="مثلا: 1234567890"
               isValid={formValues.national_code.length == 10}
               validationError="نمیتواند خالی باشد"
-              onChange={(e) =>
-                setformValues((prev) => ({
+              onChange={e =>
+                setformValues(prev => ({
                   ...prev,
-                  national_code: e.target.value,
-                }))
-              }
+                  national_code: e.target.value
+                }))}
               defaultValue={user != null ? user.data.national_code : null}
               disabled={user != null ? user.data.national_code != null : null}
             />
@@ -202,14 +212,27 @@ function ProfilePage() {
               placeholder="مثلا: 1375/06/11"
               isValid={formValues.birthdate.length == 10}
               validationError="نمیتواند خالی باشد"
-              onChange={(e) =>
-                setformValues((prev) => ({
+              onChange={e =>
+                setformValues(prev => ({
                   ...prev,
-                  birthdate: e.target.value,
-                }))
-              }
+                  birthdate: e.target.value
+                }))}
               defaultValue={user != null ? user.data.birthdate : null}
               disabled={user != null ? user.data.birthdate != null : null}
+            />
+            <SimpleInput
+              type="text"
+              title="شماره ثابت"
+              placeholder="02112345678"
+              isValid={formValues.cell_number === 11}
+              validationError="نمیتواند خالی باشد"
+              onChange={e =>
+                setformValues(prev => ({
+                  ...prev,
+                  cell_number: e.target.value
+                }))}
+              defaultValue={user != null ? user.data.cell_number : null}
+              disabled={user != null ? user.data.cell_number != null : null}
             />
           </div>
           <hr className="opacity-10" />
@@ -217,34 +240,43 @@ function ProfilePage() {
           <div className="flex gap-12">
             <SimpleInput
               type="text"
-              title="شماره ثابت"
-              placeholder="02112345678"
-              isValid={formValues.cell_number === 11}
-              validationError="نمیتواند خالی باشد"
-              onChange={(e) =>
-                setformValues((prev) => ({
-                  ...prev,
-                  cell_number: e.target.value,
-                }))
-              }
-              defaultValue={user != null ? user.data.cell_number : null}
-              disabled={user != null ? user.data.cell_number != null : null}
-            />
-            <SimpleInput
-              type="text"
               title="شماره موبایل"
               placeholder="09123456789"
               isValid={formValues.phone_number === 11}
               validationError="نمیتواند خالی باشد"
-              onChange={(e) =>
-                setformValues((prev) => ({
+              onChange={e =>
+                setformValues(prev => ({
                   ...prev,
-                  phone_number: e.target.value,
-                }))
-              }
+                  phone_number: e.target.value
+                }))}
               defaultValue={user != null ? user.data.phone_number : null}
               disabled={user != null ? user.data.phone_number != null : null}
             />
+            <div className="flex gap-12 transition-all">
+              <div className={`${showPhoneValidate ? "" : "hidden"}`}>
+                <SimpleInput
+                  type="text"
+                  title="کد "
+                  placeholder="1234"
+                  isValid={ValidateEmail(formValues.email)}
+                  validationError="نمیتواند خالی باشد"
+                  onChange={e =>
+                    setformValues(prev => ({
+                      ...prev,
+                      email: e.target.value
+                    }))}
+                  defaultValue={user != null ? user.data.email : null}
+                  disabled={user != null ? user.data.email != null : null}
+                />
+              </div>
+
+              <div
+                onClick={() => setShowPhoneValidate(true)}
+                className="text-nowrap w-[-50%] px-10 bg-rose-500 rounded-lg cursor-pointer transition-all hover:bg-rose-600 text-white text-[14px] flex items-center justify-center"
+              >
+                send code
+              </div>
+            </div>
           </div>
           <div className="flex gap-12">
             <SimpleInput
@@ -253,20 +285,44 @@ function ProfilePage() {
               placeholder="09123456789"
               isValid={ValidateEmail(formValues.email)}
               validationError="نمیتواند خالی باشد"
-              onChange={(e) =>
-                setformValues((prev) => ({
+              onChange={e =>
+                setformValues(prev => ({
                   ...prev,
-                  email: e.target.value,
-                }))
-              }
+                  email: e.target.value
+                }))}
               defaultValue={user != null ? user.data.email : null}
               disabled={user != null ? user.data.email != null : null}
             />
+            <div className="flex gap-12 transition-all">
+              <div className={`${showEmailValidate ? "" : "hidden"}`}>
+                <SimpleInput
+                  type="text"
+                  title="کد "
+                  placeholder="1234"
+                  isValid={ValidateEmail(formValues.email)}
+                  validationError="نمیتواند خالی باشد"
+                  onChange={e =>
+                    setformValues(prev => ({
+                      ...prev,
+                      email: e.target.value
+                    }))}
+                  defaultValue={user != null ? user.data.email : null}
+                  disabled={user != null ? user.data.email != null : null}
+                />
+              </div>
+              <div
+                onClick={() => setShowEmailValidate(true)}
+                className="text-nowrap w-[-50%] px-10 bg-rose-500 rounded-lg cursor-pointer transition-all hover:bg-rose-600 text-white text-[14px] flex items-center justify-center"
+              >
+                send code
+              </div>
+            </div>
           </div>
+          <div className="flex gap-12" />
           <hr className="opacity-10" />
           <div className="text-[24px]">اطلاعات حساب کاربری</div>
           <div className="flex gap-12">
-            <div className="text-[16px] bg-rose-500 w-full py-5 rounded-lg text-white">
+            <div className="text-[16px] bg-rose-500 px-10 w-full py-5 rounded-lg text-white">
               امتیاز در سایت: 5700
             </div>
             <div className="text-[16px] bg-yellow-500 w-full py-5 rounded-lg text-white">
@@ -285,7 +341,7 @@ function ProfilePage() {
           <div className="flex justify-end">
             <div
               className=" text-white text-[16px] bg-[#4e45d0] py-5 px-[6rem] rounded-lg cursor-pointer transition-all hover:bg-[#372fac]"
-              onClick={e=>UpdateInfo()}
+              onClick={e => UpdateInfo()}
             >
               ویرایش
             </div>
