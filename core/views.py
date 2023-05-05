@@ -186,7 +186,7 @@ class NFTViewSet(viewsets.ModelViewSet):
 
         # Store the NFT metadata in the database
         nft_metadata['token_id'] = token_id
-        serializer = NFTSerializer(data=nft_metadata)
+        serializer = serializers.NFTSerializer(data=nft_metadata)
         if serializer.is_valid():
             serializer.save()
             return Response(
