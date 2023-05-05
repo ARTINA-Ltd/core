@@ -8,7 +8,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
-
+from rest_framework.decorators import action
 
 class RegisterViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -121,6 +121,13 @@ class TicketViewSet(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from .models import PhoneVerification
+from . import serializers
+import random
 
 
 class PhoneVerificationViewSet(viewsets.ModelViewSet):
@@ -148,49 +155,37 @@ class PhoneVerificationViewSet(viewsets.ModelViewSet):
                             status.HTTP_400_BAD_REQUEST)
 
 
-class SendVerificationCode(APIView):
+class SendVerificationCodeViewSet(viewsets.ViewSet):
     permission_classes = [AllowAny]
 
-    def post(self, request, format=None):
+    def create(self, request, format=None):
         phone_number = request.data.get('phone_number')
         if not phone_number:
             return Response({'error': 'phone_number is required.'}, status.HTTP_400_BAD_REQUEST)
 
-        # Generate a random 6-digit verification code
-        verification_code = str(random.randint(100000, 999999))
+        verification_code = random.randint(100000, 999999)
 
-        # Save the verification code to the database
-        phone_verification = PhoneVerification.objects.create(phone_number=phone_number, verification_code=verification_code)
+        # Send the SMS via Kavenegar API
+         # The URL IS like : https://api.kavenegar.com/v1/{API-KEY}/verify/lookup.json
+        response = requests.post(
+        f"https://api.kavenegar.com/v1/"
+        f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
+        f"/verify/lookup.json",
+        data={
+            "receptor": phone_number,
+            "token": verification_code,
+            "template": "SMSVerify"
+        }
+    )
 
-        # Send the verification code to the user's phone number
-        # Replace the following line with your own code to send the SMS message
-        print(f"Verification code for {phone_number}: {verification_code}")
+        if response.status_code == 200:
+        # Create a new PhoneVerification object to store the code
+            PhoneVerification.objects.create(user=user, phone_number=phone_number, verification_code=verification_code,
+                                         verified=False)
+            print(f"Verification code for {phone_number}: {verification_code}")
 
-        return Response({'status': 'success'})
+            return Response({'status': 'success'})
+        else:
+        # Handle error response
+            return Response({'status': 'failed'})
 
-
-
-
-
-        
-# class PhoneVerificationViewSet(viewsets.ModelViewSet):
-#     queryset = PhoneVerification.objects.all()
-#     serializer_class = serializers.PhoneVerificationSerializer
-#
-#     def get_queryset(self):
-#         queryset = super().get_queryset()
-#         user = self.request.user
-#         if user.is_authenticated:
-#             queryset = queryset.filter(user=user)
-#         return queryset
-#
-#     def verify_phone(self, request, pk=None):
-#         verification_code = request.data.get("verification_code")
-#         phone_verification = self.get_object()
-#
-#         if phone_verification.verification_code == verification_code:
-#             phone_verification.verified = True
-#             phone_verification.save()
-#             return Response({"status": "success"})
-#         else:
-#             return Response({"status": "error", "message": "Invalid verification code"})

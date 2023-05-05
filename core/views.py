@@ -152,9 +152,11 @@ class NFTViewSet(viewsets.ModelViewSet):
 
         try:
             author_address = request.data["author_address"]
-            nft_name = request.data["nft_name"]
-            description_nft = request.data["description_nft"]
-            image_nft = request.data["image_nft"]
+            nft_name = request.data["name"]
+            description_nft = request.data["description"]
+            # image_nft = request.data["base64_image"]
+            image_nft = request.FILES['base64_image'].file
+
             creator = request.data["creator"]
             external_link = request.data["external_link"]
             last_price = request.data["last_price"]
@@ -177,7 +179,9 @@ class NFTViewSet(viewsets.ModelViewSet):
         # Mint the NFT to the specified address
         try:
             tx = contract.mint_to(author_address, NFTMetadataInput.from_json(nft_metadata))
+            print("done")
             token_id = tx.id
+            print(token_id)
         except Exception as e:
             return Response(
                 {"error": str(e)},
@@ -186,7 +190,7 @@ class NFTViewSet(viewsets.ModelViewSet):
 
         # Store the NFT metadata in the database
         nft_metadata['token_id'] = token_id
-        serializer = NFTSerializer(data=nft_metadata)
+        serializer = serializers.NFTSerializer(data=nft_metadata)
         if serializer.is_valid():
             serializer.save()
             return Response(
