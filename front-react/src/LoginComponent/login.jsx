@@ -61,7 +61,7 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch("http://localhost:8000/api/account/login/", {
+        const response = await fetch("http://78.38.35.249/api/account/login/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
