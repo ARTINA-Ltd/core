@@ -1,5 +1,5 @@
 from Account import serializers
-from .models import ArtistReviewRating, Profile, UserTicket, PhoneVerification, send_verification_code
+from .models import ArtistReviewRating, Profile, UserTicket, PhoneVerification
 from rest_framework import viewsets, permissions, generics
 from rest_framework.decorators import APIView
 from rest_framework.response import Response
