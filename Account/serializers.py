@@ -61,5 +61,5 @@ class TicketSerializer(serializers.ModelSerializer):
 class PhoneVerificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = PhoneVerification
-        fields = "__all__"
+        fields = ['user','id','phone_number','verification_code']
 

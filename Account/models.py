@@ -54,7 +54,7 @@ class Profile(models.Model):
     # email = models.EmailField(max_length=50, verbose_name="ایمیل", null=True, blank=False)
     email_verified = models.BooleanField(default=False)
     role = models.ForeignKey(Role, on_delete=models.CASCADE, default=1)
-
+    
     # def __str__(self):
     #     return self.user.username + " " + self.first_name + " " + self.last_name + " " + self.national_code + " "\
     #            + self.email + " "
@@ -113,31 +113,31 @@ class PhoneVerification(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
-def send_verification_code(phone_number, user):
-    # Generate a random 6-digit code
-    verification_code = random.randint(100000, 999999)
+# def send_verification_code(phone_number, user):
+#     # Generate a random 6-digit code
+#     verification_code = random.randint(100000, 999999)
 
-    # Send the SMS via Kavenegar API
-    # The URL IS like : https://api.kavenegar.com/v1/{API-KEY}/verify/lookup.json
-    response = requests.post(
-        f"https://api.kavenegar.com/v1/"
-        f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
-        f"/verify/lookup.json",
-        data={
-            "receptor": phone_number,
-            "token": verification_code,
-            "template": "SMSVerify"
-        }
-    )
+#     # Send the SMS via Kavenegar API
+#     # The URL IS like : https://api.kavenegar.com/v1/{API-KEY}/verify/lookup.json
+#     response = requests.post(
+#         f"https://api.kavenegar.com/v1/"
+#         f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
+#         f"/verify/lookup.json",
+#         data={
+#             "receptor": phone_number,
+#             "token": verification_code,
+#             "template": "SMSVerify"
+#         }
+#     )
 
-    if response.status_code == 200:
-        # Create a new PhoneVerification object to store the code
-        PhoneVerification.objects.create(user=user, phone_number=phone_number, verification_code=verification_code,
-                                         verified=False)
-        return verification_code
-    else:
-        # Handle error response
-        return None
+#     if response.status_code == 200:
+#         # Create a new PhoneVerification object to store the code
+#         PhoneVerification.objects.create(user=user, phone_number=phone_number, verification_code=verification_code,
+#                                          verified=False)
+#         return verification_code
+#     else:
+#         # Handle error response
+#         return None
 
 
 # send_verification_code("09387731214", User.objects.get(username="aria"))
