@@ -1,13 +1,14 @@
-from Account import serializers
 from .models import ArtistReviewRating, Profile, UserTicket, PhoneVerification
-from rest_framework import viewsets, permissions, generics
-from rest_framework.decorators import APIView
-from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
+from rest_framework import viewsets
+from rest_framework.response import Response
+from . import serializers
+import random
+import requests
 
 
 class RegisterViewSet(viewsets.ModelViewSet):
@@ -121,3 +122,62 @@ class TicketViewSet(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class PhoneVerificationViewSet(viewsets.ViewSet):
+    queryset = PhoneVerification.objects.all()
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        user = self.request.user
+        if user.is_authenticated:
+            queryset = queryset.filter(user=user)
+        return queryset
+
+    def create(self, request, pk=None):
+        phone_number = request.data.get('phone_number')
+        verification_code = request.data.get("verification_code")
+        phone_verification = PhoneVerification.objects.get(phone_number=phone_number)
+        if phone_verification.verification_code == verification_code:
+            phone_verification.verified = True
+            phone_verification.save()
+            return Response({"status": "success"})
+        else:
+            return Response({"status": "error", "error": "verification code is not correct"},
+                            status.HTTP_400_BAD_REQUEST)
+
+
+class SendVerificationCodeViewSet(viewsets.ViewSet):
+    # permission_classes = [AllowAny]
+
+    def create(self, request, format=None):
+        phone_number = request.data.get('phone_number')
+        username = request.data.get('username')
+        user = User.objects.get(username=username)
+
+        if not phone_number:
+            return Response({'error': 'phone_number is required.'}, status.HTTP_400_BAD_REQUEST)
+
+        verification_code = random.randint(100000, 999999)
+
+        # Send the SMS via Kavenegar API
+        # The URL IS like : https://api.kavenegar.com/v1/{API-KEY}/verify/lookup.json
+        response = requests.post(
+            f"https://api.kavenegar.com/v1/"
+            f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
+            f"/verify/lookup.json",
+            data={
+                "receptor": phone_number,
+                "token": verification_code,
+                "template": "SMSVerify"
+            }
+        )
+
+        if response.status_code == 200:
+            # Create a new PhoneVerification object to store the code
+            PhoneVerification.objects.create(user=user, phone_number=phone_number, verification_code=verification_code,
+                                             verified=False)
+            print(f"Verification code for {phone_number}: {verification_code}")
+
+            return Response({'status': 'success'})
+        else:
+            # Handle error response
+            return Response({'status': 'failed'})
