@@ -19,6 +19,7 @@ class NFT(models.Model):
     end_date = models.DateTimeField(verbose_name='تاریخ پایان مزایده', null=True, blank=True)
     description = models.TextField(max_length=200, null=True, blank=True)
     external_link = models.URLField(null=True, blank=True)
+    author_address=models.CharField(null=True,max_length=45,default="0x2293221D7c357FB04De9c7D0dEeBcA427407429D")
     # image = models.ImageField(upload_to="./static/NFTS", null=True, blank=True)
 
     def has_expired(self):

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import ArtistReviewRating, Profile, UserTicket
+from .models import ArtistReviewRating, Profile, UserTicket , PhoneVerification
 from django.contrib.auth import authenticate
 
 
@@ -56,3 +56,10 @@ class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserTicket
         fields = '__all__'
+
+
+class PhoneVerificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PhoneVerification
+        fields = "__all__"
+
