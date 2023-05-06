@@ -3,6 +3,8 @@ import Dropzone from "./Dropzone";
 import "./UploadItem.css";
 import axios from "axios";
 import NFTupload from "./Uploaders/NFTupload";
+import { useAddress } from "@thirdweb-dev/react";
+import UploadCard from "./Cards/UserDashboardCards/UploadCard";
 
 const UploadItem = () => {
   const hanndleNumberChange = (e) => {
@@ -26,22 +28,22 @@ const UploadItem = () => {
       return file;
     });
   }, []);
-  const [Owner, setOwner] = useState('');
+  const [Owner, setOwner] = useState("");
   // const config = {
-//     headers: {
-//       Authorization: `Bearer ${Token}`,
-//     },
-//   };
-// const getOwner =()=>{
-//     axios
-//     .get("http://localhost:8000/api/transaction/Nfts/",{config})
-//     .then((res) => {
-        
-//         setOwner(res.owner)
-//       // TODO: Redirection
-//     });
-// }
+  //     headers: {
+  //       Authorization: `Bearer ${Token}`,
+  //     },
+  //   };
+  // const getOwner =()=>{
+  //     axios
+  //     .get("http://localhost:8000/api/transaction/Nfts/",{config})
+  //     .then((res) => {
 
+  //         setOwner(res.owner)
+  //       // TODO: Redirection
+  //     });
+  // }
+  const address = useAddress();
   const [upladObj, setOploadObj] = useState({
     image: "",
     item_name: "",
@@ -50,7 +52,7 @@ const UploadItem = () => {
     creator: "",
     date_created: "",
     last_price: 0,
-    owner: {Owner}, // TODO: Change this pk to the current user
+    owner: { Owner }, // TODO: Change this pk to the current user
   });
 
   useEffect(() => {
@@ -61,27 +63,35 @@ const UploadItem = () => {
       date_created: today.toISOString().slice(0, 10),
     });
   }, []);
+  var Token = localStorage.getItem("authTokens");
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    axios
-      .post("http://localhost:8000/api/transaction/Nfts/", {
-        base64_image: upladObj.image,
-        name: upladObj.item_name,
-        description: upladObj.description,
-        external_link: upladObj.external_link,
-        creator: upladObj.creator,
-        date: upladObj.date_created,
-        last_price: upladObj.last_price,
-        owner: upladObj.owner,
-       // owner:Owner,
+     e.preventDefault();
+console.log(address);
+console.log(upladObj.image)
 
-      })
-      .then((res) => {
-        console.log(res);
-        console.log(upladObj.image.split(",")[1]);
-        // TODO: Redirection
-      });
+    // axios
+    //   .post(
+    //     "http://localhost:8000/api/transaction/Nfts/",
+    //     {
+    //       name: upladObj.item_name,
+    //       creator: upladObj.creator,
+    //       date: upladObj.date_created,
+    //       last_price: upladObj.last_price,
+    //       base64_image: upladObj.image,
+    //       start_date: null,
+    //       end_date: null,
+    //       description: upladObj.description,
+    //       external_link: upladObj.external_link,
+    //       owner: upladObj.owner,
+    //     },
+    //     { headers: { Authorization: `Bearer ${Token}` } }
+    //   )
+    //   .then((res) => {
+    //     console.log(res);
+    //     console.log(upladObj.image.split(",")[1]);
+    //     // TODO: Redirection
+    //   });
   };
 
   return (
@@ -89,8 +99,11 @@ const UploadItem = () => {
       <div className="header__div">
         <h1 className="header__name">بخش آپلود فایل</h1>
       </div>
-      <div className="upload__nft__container flex grid">
-        <div className="upload__nft lg:col-6    col-12     " style={{marginTop:'11rem',marginBottom:'8rem'}}>
+      <div className="upload__nft__container flex gap-4">
+        {/* <div
+          className="upload__nft lg:col-6    col-12     "
+          style={{ marginTop: "11rem", marginBottom: "8rem" }}
+        >
           {!upladObj.image && <NFTupload onDrop={onDrop} />}
           {upladObj.image && (
             <div className="image__container">
@@ -110,8 +123,9 @@ const UploadItem = () => {
               />
             </div>
           )}
-        </div>
-        <div className="name__input__container">
+        </div> */}
+        <UploadCard className="w-full"/>
+        <div className="name__input__container w-full">
           <div className="nft__name">نام اثر</div>
           <input
             className="nft__name__input"

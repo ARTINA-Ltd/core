@@ -4,8 +4,9 @@ import Logo from "../../Pages/artina-logo.jpg";
 import { Avatar } from "primereact/avatar";
 import { useNavigate } from "react-router";
 import { UserContext } from "../../App";
+import { ConnectWallet } from "@thirdweb-dev/react";
 
-const Header = () => {
+const Header = ({ connectWallet = false }) => {
   const user = useContext(UserContext);
 
   const [username, setUsername] = useState(null);
@@ -81,23 +82,43 @@ const Header = () => {
             ></i>
           </div>
           <div className="flex items-center justify-end lg:justify-between w-[90%] justify-self-center lg:w-[80%]">
-            <div
-              className={
-                clicked
-                  ? "navbar-item active w-full mt-8 p-2"
-                  : "w-full hidden gap-8 lg:flex"
-              }
-            >
-              {ActiveItems.map((item) => (
-                <div
-                  className="cursor-pointer"
-                  onClick={() => {
-                    navigate(item.link);
-                  }}
-                >
-                  {item.title}
+            <div className="flex items-center gap-12">
+              {user
+                ? ActiveItems.map((item) => (
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => {
+                        navigate(item.link);
+                      }}
+                    >
+                      {item.title}
+                    </div>
+                  ))
+                : NotActiveItems.map((item) => (
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => {
+                        navigate(item.link);
+                      }}
+                    >
+                      {item.title}
+                    </div>
+                  ))}
+              <a href="https://metaverse.artina.org" className="cursor-pointer bg-rose-500 hover:text-white hover:bg-rose-600 transition-all px-5 py-2 rounded-md">
+                متاورس
+              </a>
+              {connectWallet === true ? (
+                <div>
+                  <ConnectWallet
+                    btnTitle="کانکت والت"
+                    colorMode="dark"
+                    accentColor="#ffffff40"
+                    className="m-0 p-0 scale-75 border-none text-white hover:bg-indigo-400 transition-all"
+                  />
                 </div>
-              ))}
+              ) : (
+                ""
+              )}
             </div>
 
             <div className="flex gap-5 items-center">

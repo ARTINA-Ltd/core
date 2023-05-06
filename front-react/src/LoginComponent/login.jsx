@@ -61,7 +61,7 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch("https://api.artina.org/api/account/login/", {
+        const response = await fetch("http://78.38.35.249:8000/api/account/login/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -77,7 +77,7 @@ const Login = () => {
             
             localStorage.setItem("authTokens",  data.access);
             alert("با موفقیت وارد شدید");
-            navigate("/UserDashboard");
+            navigate("/profile");
         } else {
             alert("Something went wrong!");
         }
