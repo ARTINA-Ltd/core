@@ -38,13 +38,13 @@ const Header = ({ connectWallet = false }) => {
 
   const ActiveItems = [
     {
-      title: "صفحه اصلی",
+      title: "داشبورد",
       link: "/",
     },
-    // {
-    //   title: "درخواست‌ها",
-    //   link: "/",
-    // },
+    {
+      title: "درخواست‌ها",
+      link: "/",
+    },
     {
       title: "ارتباط با ما",
       link: "/contact",
@@ -54,8 +54,8 @@ const Header = ({ connectWallet = false }) => {
       link: "/support",
     },
     {
-      title: "متاورس",
-      link: "//metaverse.artina.org",
+      title: "بلاگ",
+      link: "/",
     },
     {
       title: "کارمزد",
