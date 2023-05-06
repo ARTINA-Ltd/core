@@ -37,13 +37,13 @@ const Header = () => {
 
   const ActiveItems = [
     {
-      title: "داشبورد",
+      title: "صفحه اصلی",
       link: "/",
     },
-    {
-      title: "درخواست‌ها",
-      link: "/",
-    },
+    // {
+    //   title: "درخواست‌ها",
+    //   link: "/",
+    // },
     {
       title: "ارتباط با ما",
       link: "/contact",
@@ -53,8 +53,8 @@ const Header = () => {
       link: "/support",
     },
     {
-      title: "بلاگ",
-      link: "/",
+      title: "متاورس",
+      link: "//metaverse.artina.org",
     },
     {
       title: "کارمزد",
