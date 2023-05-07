@@ -77,7 +77,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
-from .models import NFT
+from .models import NFT, MyImage
 from io import BytesIO
 
 
@@ -352,3 +352,24 @@ class NFTViewSet(viewsets.ModelViewSet):
 
 
 
+
+
+from rest_framework.response import Response
+from rest_framework import status
+from django.conf import settings
+import os
+
+class MyImageViewSet(viewsets.ModelViewSet):
+    queryset = MyImage.objects.all()
+    serializer_class = serializers.MyImageSerializer
+    parser_classes = [MultiPartParser, FormParser]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        image_url = ''
+        if 'image' in request.data:
+            image_url = request.build_absolute_uri(settings.MEDIA_URL + serializer.data['image'])
+        return Response({'id': serializer.data['id'], 'image': image_url}, status=status.HTTP_201_CREATED, headers=headers)

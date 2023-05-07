@@ -88,3 +88,8 @@ class Order(models.Model):
 
     def __str__(self):
         return f'{self.bidder.username} bid {self.fee} on {self.nft.name}'
+
+
+
+class MyImage(models.Model):
+    image = models.ImageField(upload_to='static/images/')

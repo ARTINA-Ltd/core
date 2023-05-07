@@ -19,3 +19,10 @@ class NFTRateSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.NFTReviewRating
         fields = '__all__'
+
+
+
+class MyImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.MyImage
+        fields = ('id', 'image')
