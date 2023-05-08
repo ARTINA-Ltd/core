@@ -44,13 +44,9 @@ class Profile(models.Model):
     phone_number_verified = models.BooleanField(default=False)
     cell_number = models.CharField(max_length=11, verbose_name="شماره تلفن ثابت", null=True, blank=False)
     address = models.TextField(max_length=200, verbose_name="آدرس", null=True, blank=False)
-    national_card_picture = models.ImageField(verbose_name="عکس کارت ملی", upload_to="./static/PicturesOfNationalCard",
-                                              null=True,
-                                              blank=False,
-                                              default="static/PicturesOfNationalCard/default.png",
-                                              )
-    profile_picture = models.ImageField(upload_to="./static/PicturesOfProfile", verbose_name="عکس پروفایل",
-                                        null=True, blank=False, default="static/PicturesOfProfile/default.png",)
+    national_card_picture = models.TextField(verbose_name="عکس کارت ملی",null=True,blank=False,default="default.png")
+    profile_picture = models.TextField(verbose_name="عکس پروفایل",
+                                        null=True, blank=False, default="default.png",)
     # email = models.EmailField(max_length=50, verbose_name="ایمیل", null=True, blank=False)
     email_verified = models.BooleanField(default=False)
     role = models.ForeignKey(Role, on_delete=models.CASCADE, default=1)

@@ -77,7 +77,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
-from .models import NFT
+from .models import NFT, MyImage
 from io import BytesIO
 
 
@@ -226,7 +226,7 @@ class NFTViewSet(viewsets.ModelViewSet):
             author_address = request.data["author_address"]
             nft_name = request.data["name"]
             description_nft = request.data["description"]
-            image_nft = request.data["base64_image"]
+            image_nft = request.data["image_url"]
             # image_nft = request.FILES['base64_image'].file
 
             creator = request.data["creator"]
@@ -239,14 +239,15 @@ class NFTViewSet(viewsets.ModelViewSet):
             )
 
         # Create the NFT metadata
+        prop={}
         nft_metadata = {
             'name': nft_name,
             'description': description_nft,
             'image': image_nft,
-            'properties': creator,
-            'external_link': external_link,
-            'last_price': last_price
+            'properties': prop
+
         }
+        print(nft_metadata)
 
         # Mint the NFT to the specified address
         try:
@@ -261,8 +262,8 @@ class NFTViewSet(viewsets.ModelViewSet):
             )
 
         # Store the NFT metadata in the database
-        nft_metadata['token_id'] = token_id
-        serializer = serializers.NFTSerializer(data=nft_metadata)
+        # nft_metadata['token_id'] = token_id
+        serializer = serializers.NFTSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(
@@ -302,7 +303,7 @@ class NFTViewSet(viewsets.ModelViewSet):
 #         except KeyError as e:
 #             return Response(
 #                 {"error": f"Missing required field: {e}"},
-#                 status=status.HTTP_400_BAD_REQUEST,
+#                 status=status.HTTP_400_BAD_REQUEST,(data=request.data)
 #             )
 
 #         # Read the image data from the uploaded file
@@ -352,3 +353,24 @@ class NFTViewSet(viewsets.ModelViewSet):
 
 
 
+
+
+from rest_framework.response import Response
+from rest_framework import status
+from django.conf import settings
+import os
+
+class MyImageViewSet(viewsets.ModelViewSet):
+    queryset = MyImage.objects.all()
+    serializer_class = serializers.MyImageSerializer
+    parser_classes = [MultiPartParser, FormParser]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        image_url = ''
+        if 'image' in request.data:
+            image_url = request.build_absolute_uri(settings.MEDIA_URL + serializer.data['image'])
+        return Response({'id': serializer.data['id'], 'image': image_url}, status=status.HTTP_201_CREATED, headers=headers)
