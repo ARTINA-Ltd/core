@@ -64,7 +64,7 @@ const Register = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post("http://78.38.35.249:8000/api/account/register/", {
+        axios.post("https://api.artina.org/api/account/register/", {
             username: values.username,
             email: values.email,
             password: values.password,
