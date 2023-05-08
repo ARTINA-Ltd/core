@@ -74,7 +74,7 @@ function ProfilePage() {
     setTimeout(e => {
       setIsPhoneDisabled(false);
     }, 10000);
-    axios.post("http://78.38.35.249:8000/api/account/phone-verification/", {
+    axios.post("https://api.artina.org/api/account/phone-verification/", {
       phone_number: formValues.phone_number,
       username: user.data.username
     });
@@ -97,7 +97,7 @@ function ProfilePage() {
     axios
       .patch(
         // "https://api.artina.org/api/account/profile/",
-        "http://78.38.35.249:8000/api/account/profile/",
+        "https://api.artina.org/api/account/profile/",
         {
           user: 6,
           address: user ? user.data.address : "",

@@ -47,7 +47,7 @@ const Form = (props) => {
 
     await axios({
       method: "post",
-      url: "http://78.38.35.249:8000/api/exhibition/exhibitions/",
+      url: "https://api.artina.org/api/exhibition/exhibitions/",
       data: formField,
       mode: "cors",
     }).then((response) => {
