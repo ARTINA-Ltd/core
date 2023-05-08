@@ -1,4 +1,4 @@
-from .models import ArtistReviewRating, Profile, UserTicket, PhoneVerification
+from .models import *
 from rest_framework import status
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.contrib.auth.models import User
@@ -181,3 +181,28 @@ class SendVerificationCodeViewSet(viewsets.ViewSet):
         else:
             # Handle error response
             return Response({'status': 'failed'})
+
+
+
+
+
+class UserTurnoverViewSet(viewsets.ModelViewSet):
+    queryset = UserTurnover.objects.all()
+    serializer_class = serializers.UserTurnoverSerializer
+    # permission_classes = (IsAuthenticated,)
+
+    def create(self, request, *args, **kwargs):
+        #request.data['user'] = request.user.id
+        return super().create(request, *args, **kwargs)
+
+
+
+
+class UserBalanceViewSet(viewsets.ModelViewSet):
+    queryset = UserBalance.objects.all()
+    serializer_class = serializers.UserBalanceSerializer
+    # permission_classes = (IsAuthenticated,)
+
+    def create(self, request, *args, **kwargs):
+        # request.data['user'] = request.user.id
+        return super().create(request, *args, **kwargs)

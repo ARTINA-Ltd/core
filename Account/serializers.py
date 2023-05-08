@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import ArtistReviewRating, Profile, UserTicket , PhoneVerification
+from .models import *
 from django.contrib.auth import authenticate
 
 
@@ -63,3 +63,14 @@ class PhoneVerificationSerializer(serializers.ModelSerializer):
         model = PhoneVerification
         fields = ['user','id','phone_number','verification_code']
 
+
+
+class UserBalanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserBalance
+        fields = ('id', 'user', 'rial_available_balance', 'rial_untradable_balance', 'eth_balance')
+
+class UserTurnoverSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserTurnover
+        fields = ('id', 'user', 'transaction_type', 'transaction_currency', 'transaction_value')
