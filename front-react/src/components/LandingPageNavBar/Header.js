@@ -4,10 +4,12 @@ import Logo from "../../Pages/artina-logo.jpg";
 import { Avatar } from "primereact/avatar";
 import { useNavigate } from "react-router";
 import { UserContext } from "../../App";
+import { UserChangeContext } from "../../App";
 import { ConnectWallet } from "@thirdweb-dev/react";
 
 const Header = ({ connectWallet = false }) => {
   const user = useContext(UserContext);
+  const userChange = useContext(UserChangeContext);
 
   const [username, setUsername] = useState(null);
   const [clicked, setClicked] = useState(false);
@@ -148,7 +150,7 @@ const Header = ({ connectWallet = false }) => {
                 </div>
               )}
 
-              <img src={Logo} alt="logo" />
+              <img src={Logo} alt="logo" onClick={userChange}/>
             </div>
           </div>
         </div>

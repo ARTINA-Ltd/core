@@ -31,6 +31,7 @@ import Contact from "./Pages/Contact";
 const activeChainId = ChainId.Goerli;
 
 export const UserContext = createContext();
+export const UserChangeContext = createContext();
 
 export default () => {
   var Token = localStorage.getItem("authTokens");
@@ -61,53 +62,74 @@ export default () => {
       .then((data) => {
         setUser(data);
       })
-      .catch(console.log);
+      .catch(setUser(undefined));
   }, []);
+
+  const userChange = () => {
+    console.log("called")
+    axios({
+      method: "get",
+      // url: "http://78.38.35.249:8000/api/account/user-info/",
+      url: "https://api.artina.org/api/account/user-info/",
+      headers: { Authorization: `Bearer ${Token}` },
+      mode: "cors",
+    })
+      .then((data) => {
+        setUser(data).then(console.log);
+      })
+      .catch(setUser(undefined));
+  };
 
   return (
     <>
       <ThirdwebProvider desiredChainId={activeChainId}>
         <UserContext.Provider value={user}>
-          <div className="App">
-            <ScrollTop
-              className="custom-scrolltop w-4rem h-4rem    border-round-md   bg-primary"
-              icon="pi pi-arrow-up"
-            />
+          <UserChangeContext.Provider value={userChange}>
+            <div className="App">
+              <ScrollTop
+                className="custom-scrolltop w-4rem h-4rem    border-round-md   bg-primary"
+                icon="pi pi-arrow-up"
+              />
 
-            <Routes>
-              {/* {Token=='null' ? <></> ::} */}
-              <Route path="/" element={<StarterFile />} />
-              <Route exact path="artist-page" element={<ArtistPage />} />
-              <Route
-                exact
-                path="artist-application-form"
-                element={<ArtistApplicationForm />}
-              />
-              <Route exact path="nft-details/:id" element={<NFTDetails />} />
-              <Route exact path="Commission" element={<Commission />} />
-              <Route exact path="login" element={<Login />} />
-              <Route exact path="support" element={<Support />} />
-              <Route exact path="register" element={<Register />} />
-              <Route exact path="exhibitor-page" element={<ExhibitorPage />} />
-              <Route exact path="contact" element={<Contact />} />
-              <Route
-                exact
-                path="exhibition-lists"
-                element={<ExhibitionLists />}
-              />
-              <Route exact path="request-lists" element={<RequestLists />} />
-              <Route exact path="show-request" element={<ShowRequests />} />
-              <Route
-                exact
-                path="request-details"
-                element={<RequestDetails />}
-              />
-              <Route exact path="upload-page" element={<NFTUploadPage />} />
-              <Route exact path="UserDashboard" element={<UserDashboard />} />
-              <Route exact path="profile" element={<ProfilePage />} />
-              <Route exact path="collections" element={<ShowCollection />} />
-            </Routes>
-          </div>
+              <Routes>
+                {/* {Token=='null' ? <></> ::} */}
+                <Route path="/" element={<StarterFile />} />
+                <Route exact path="artist-page" element={<ArtistPage />} />
+                <Route
+                  exact
+                  path="artist-application-form"
+                  element={<ArtistApplicationForm />}
+                />
+                <Route exact path="nft-details/:id" element={<NFTDetails />} />
+                <Route exact path="Commission" element={<Commission />} />
+                <Route exact path="login" element={<Login />} />
+                <Route exact path="support" element={<Support />} />
+                <Route exact path="register" element={<Register />} />
+                <Route
+                  exact
+                  path="exhibitor-page"
+                  element={<ExhibitorPage />}
+                />
+                <Route exact path="contact" element={<Contact />} />
+                <Route
+                  exact
+                  path="exhibition-lists"
+                  element={<ExhibitionLists />}
+                />
+                <Route exact path="request-lists" element={<RequestLists />} />
+                <Route exact path="show-request" element={<ShowRequests />} />
+                <Route
+                  exact
+                  path="request-details"
+                  element={<RequestDetails />}
+                />
+                <Route exact path="upload-page" element={<NFTUploadPage />} />
+                <Route exact path="UserDashboard" element={<UserDashboard />} />
+                <Route exact path="profile" element={<ProfilePage />} />
+                <Route exact path="collections" element={<ShowCollection />} />
+              </Routes>
+            </div>
+          </UserChangeContext.Provider>
         </UserContext.Provider>
       </ThirdwebProvider>
     </>
