@@ -61,8 +61,8 @@ class UserInfoViewSet(viewsets.ViewSet):
             'phone_number': profile.phone_number,
             'cell_number': profile.cell_number,
             'address': profile.address,
-            'national_card_picture': str(profile.national_card_picture.url),
-            'profile_picture': str(profile.profile_picture.url),
+            'national_card_picture': profile.national_card_picture,
+            'profile_picture': profile.profile_picture,
             'email': user.email,
             'role': str(profile.role),
         }

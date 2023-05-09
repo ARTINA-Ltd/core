@@ -9,6 +9,8 @@ from io import BytesIO
 import json
 from web3 import Web3
 from thirdweb import ThirdwebSDK
+from django.contrib.auth.models import User
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = models.Order.objects.all()
@@ -374,3 +376,16 @@ class MyImageViewSet(viewsets.ModelViewSet):
         if 'image' in request.data:
             image_url = request.build_absolute_uri(settings.MEDIA_URL + serializer.data['image'])
         return Response({'id': serializer.data['id'], 'image': image_url}, status=status.HTTP_201_CREATED, headers=headers)
+
+
+from rest_framework.response import Response
+
+
+
+class UserCollectionViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = serializers.NFTSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return NFT.objects.filter(owner=user)
+    
