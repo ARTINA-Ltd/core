@@ -1,19 +1,26 @@
-from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework import status
 from core import models
+from .models import NFT , Order , MyImage
 from core import serializers
 from eth_account import Account
 from thirdweb.types.nft import NFTMetadataInput 
-from io import BytesIO
 import json
 from web3 import Web3
 from thirdweb import ThirdwebSDK
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+from django.core.exceptions import ValidationError
+from io import BytesIO
+from rest_framework.parsers import MultiPartParser, FormParser, BaseParser
+from rest_framework.exceptions import ParseError
+import base64
+from django.http import Http404
+from django.utils import timezone
 
 class OrderViewSet(viewsets.ModelViewSet):
-    queryset = models.Order.objects.all()
+    queryset = Order.objects.all()
     serializer_class = serializers.OrderSerializer
     
     def create(self, request, *args, **kwargs):
@@ -74,131 +81,6 @@ contract = sdk.get_nft_collection("0x2A18FECb3579238CdA960B5977f46E500Fb6e735")
 
 
 
-
-from rest_framework import viewsets, status
-from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
-from django.core.exceptions import ValidationError
-from .models import NFT, MyImage
-from io import BytesIO
-
-
-
-from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.parsers import BaseParser
-from rest_framework.exceptions import ParseError
-from rest_framework import viewsets, status
-from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
-from django.core.exceptions import ValidationError
-from .models import NFT
-from io import BytesIO
-import base64
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# 4
-# class Base64ImageParser(BaseParser):
-#     """
-#     Parser for base64-encoded image data in request data
-#     """
-#     media_type = 'image/*'
-
-#     def parse(self, stream, media_type=None, parser_context=None):
-#         try:
-#             # Get base64-encoded image data from request data
-#             base64_image_data = parser_context['request'].data.get('base64_image', None)
-#             if base64_image_data is None:
-#                 raise ParseError("Missing 'base64_image' field.")
-
-#             # Decode base64 data to bytes
-#             image_data = base64.b64decode(base64_image_data)
-
-#             # Return bytes data as file-like object
-#             return BytesIO(image_data)
-
-#         except Exception as e:
-#             raise ParseError(f"Error parsing base64 image data: {e}")
-
-
-# 3
-# class NFTViewSet(viewsets.ModelViewSet):
-#     serializer_class = serializers.NFTSerializer
-#     queryset = NFT.objects.all()
-#     # parser_classes = [Base64ImageParser]
-
-#     def create(self, request, *args, **kwargs):
-#         """
-#         Creates a new NFT with the given metadata and mints it to the specified address
-#         Returns:
-#         - A Response containing the created NFT and a status code.
-#         """
-
-#         try:
-#             author_address = request.data["author_address"]
-#             nft_name = request.data["name"]
-#             description_nft = request.data["description"]
-#             image_nft = request.data["base64_image"]
-#             creator = request.data["creator"]
-#             external_link = request.data["external_link"]
-#             last_price = request.data["last_price"]
-#         except KeyError as e:
-#             return Response(
-#                 {"error": f"Missing required field: {e}"},
-#                 status=status.HTTP_400_BAD_REQUEST,
-#             )
-
-#         # Decode base64-encoded image data to bytes
-#         image_data = base64.b64decode(image_nft)
-
-#         # Create the NFT metadata
-#         nft_metadata = {
-#             'name': nft_name,
-#             'description': description_nft,
-#             'image': image_data,
-#             'properties': creator,
-#             'external_link': external_link,
-#             'last_price': last_price
-#         }
-
-#         # Mint the NFT to the specified address
-#         try:
-#             tx = contract.mint_to(author_address, NFTMetadataInput.from_json(nft_metadata))
-#             print("done")
-#             token_id = tx.id
-#             print(token_id)
-#         except Exception as e:
-#             return Response(
-#                 {"error": str(e)},
-#                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-#             )
-
-#         # Store the NFT metadata in the database
-#         nft_metadata['token_id'] = token_id
-#         serializer = serializers.NFTSerializer(data=nft_metadata)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(
-#                 serializer.data,
-#                 status=status.HTTP_201_CREATED,
-#             )
-#         else:
-#             return Response(
-#                 serializer.errors,
-#                 status=status.HTTP_400_BAD_REQUEST,
-#             )
 
 
 
@@ -268,6 +150,8 @@ class NFTViewSet(viewsets.ModelViewSet):
         serializer = serializers.NFTSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            serializer.token_id = token_id
+            serializer.save()
             return Response(
                 serializer.data,
                 status=status.HTTP_201_CREATED,
@@ -279,77 +163,6 @@ class NFTViewSet(viewsets.ModelViewSet):
             )
 
 
-
-# 2
-# class NFTViewSet(viewsets.ModelViewSet):
-#     serializer_class = serializers.NFTSerializer
-#     queryset = NFT.objects.all()
-#     parser_classes = (MultiPartParser, FormParser)
-
-#     def create(self, request, *args, **kwargs):
-#         """
-#         Creates a new NFT with the given metadata and mints it to the specified address
-#         Returns:
-#         - A Response containing the created NFT and a status code.
-#         """
-
-#         try:
-#             author_address = request.data["author_address"]
-#             nft_name = request.data["name"]
-#             description_nft = request.data["description"]
-#             image_file = request.FILES['image']
-
-#             creator = request.data["creator"]
-#             external_link = request.data["external_link"]
-#             last_price = request.data["last_price"]
-#         except KeyError as e:
-#             return Response(
-#                 {"error": f"Missing required field: {e}"},
-#                 status=status.HTTP_400_BAD_REQUEST,(data=request.data)
-#             )
-
-#         # Read the image data from the uploaded file
-#         image_data = image_file.read()
-
-#         # Create a SimpleUploadedFile object to use with the NFTMetadataInput class
-#         image_file = SimpleUploadedFile(image_file.name, image_data, content_type=image_file.content_type)
-
-#         # Create the NFT metadata with the image file
-#         nft_metadata = {
-#             'name': nft_name,
-#             'description': description_nft,
-#             'image': image_file,
-#             'properties': creator,
-#             'external_link': external_link,
-#             'last_price': last_price
-#         }
-
-#         # Mint the NFT to the specified address
-#         try:
-#             tx = contract.mint_to(author_address, NFTMetadataInput.from_json(nft_metadata))
-#             print("done")
-#             token_id = tx.id
-#             print(token_id)
-#         except Exception as e:
-#             return Response(
-#                 {"error": str(e)},
-#                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-#             )
-
-#         # Store the NFT metadata in the database
-#         nft_metadata['token_id'] = token_id
-#         serializer = serializers.NFTSerializer(data=nft_metadata)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(
-#                 serializer.data,
-#                 status=status.HTTP_201_CREATED,
-#             )
-#         else:
-#             return Response(
-#                 serializer.errors,
-#                 status=status.HTTP_400_BAD_REQUEST,
-#             )
 
 
 
@@ -388,4 +201,56 @@ class UserCollectionViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         user = self.request.user
         return NFT.objects.filter(owner=user)
+
+
+
+
+
+class sellViewSet(viewsets.ViewSet):
+    queryset = NFT.objects.all()
+    # serializer_class = NFtSerializer
+
+    # @action(detail=True, methods=["put"])
+    def create(self, request, pk=None):
+        nft_id = request.data.get('token_id')
+        start_date = request.data.get('start_date')
+        end_date = request.data.get('end_date')
+        floor_price = request.data.get('floor_price')
+        try:
+            nft = NFT.objects.get(token_id=nft_id)
+        except Http404:
+            return Response({"error": "NFT not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        nft.is_for_sale = True
+        nft.start_date = start_date
+        nft.end_date = end_date
+        nft.last_price = floor_price
+        nft.save()
+
+        return Response({"message": "NFT is now for sale."}, status=status.HTTP_200_OK)
+
+
+
+
+class WinnerviewSet(viewsets.ViewSet):
+    queryset = NFT.objects.all()
+    # serializer_class = serializers.NFTSerializer
+
+    # @action(detail=True, methods=["get"])
+    def create(self, request):
+        nft_id = request.data.get('token_id')
+        nft = NFT.objects.get(token_id=nft_id)
+        if nft.end_date < timezone.now():
+            return Response({"error": "NFT has expired."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        highest_bid = None
+        orders = Order.objects.filter(nft=nft)
+        for bid in orders:
+            if (highest_bid is None or bid.current_price > highest_bid.current_price):
+                highest_bid = bid
+
+        if highest_bid is None:
+            return Response({"error": "No bids found for this NFT."}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"winner": highest_bid.user, "price": highest_bid.fee}, status=status.HTTP_200_OK)
     
