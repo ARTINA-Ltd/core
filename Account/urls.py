@@ -11,12 +11,13 @@ router.register(r'profile', views.ProfileViewSet)
 router.register(r'user-info', views.UserInfoViewSet, basename='user_info')
 router.register(r'login', views.LoginViewSet, basename='login')
 router.register(r'ticket', views.TicketViewSet, basename="ticket")
-# router.register(r'phone-verification', views.PhoneVerificationViewSet, basename="phone_verification")
+router.register(r'phone-verification', views.PhoneVerificationViewSet, basename="phone_verification")
+router.register(r'send-verification-code', views.SendVerificationCodeViewSet, basename="send-verification-code")
+router.register(r'user-balance', views.UserBalanceViewSet, basename='user-balance')
+router.register(r'user-turnover', views.UserTurnoverViewSet, basename='user-turnover')
 
 urlpatterns = [
-    # path('api/send_verification_code/', views.SendVerificationCode.as_view()),
     path('', include(router.urls)),
-    # path('api/phone_verification/<int:pk>/verify_phone/', views.PhoneVerificationViewSet.as_view({'post': 'verify_phone'})),
 ]
 
 

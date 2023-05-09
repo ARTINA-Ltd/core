@@ -99,7 +99,7 @@ const NFTDetails = () => {
   useEffect(() => {
     axios({
       method: "get",
-      url: "http://78.38.35.249:8000/api/transaction/Nfts/",
+      url: "https://api.artina.org/api/transaction/Nfts/",
       //  url: "https://api.artina.org/api/account/profile/",
     }).then((d) => {
       setData(d);
@@ -107,7 +107,7 @@ const NFTDetails = () => {
 
     axios({
       method: "get",
-      url: "http://78.38.35.249:8000/api/transaction/rate/",
+      url: "https://api.artina.org/api/transaction/rate/",
     })
       .then((d) => {
         console.log("_______rate_______");
@@ -118,7 +118,7 @@ const NFTDetails = () => {
 
     axios({
       method: "get",
-      url: "http://78.38.35.249:8000/api/transaction/orders/",
+      url: "https://api.artina.org/api/transaction/orders/",
     })
       .then((d) => {
         setReqData(d);

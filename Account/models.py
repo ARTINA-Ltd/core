@@ -44,13 +44,9 @@ class Profile(models.Model):
     phone_number_verified = models.BooleanField(default=False)
     cell_number = models.CharField(max_length=11, verbose_name="شماره تلفن ثابت", null=True, blank=False)
     address = models.TextField(max_length=200, verbose_name="آدرس", null=True, blank=False)
-    national_card_picture = models.ImageField(verbose_name="عکس کارت ملی", upload_to="./static/PicturesOfNationalCard",
-                                              null=True,
-                                              blank=False,
-                                              default="static/PicturesOfNationalCard/default.png",
-                                              )
-    profile_picture = models.ImageField(upload_to="./static/PicturesOfProfile", verbose_name="عکس پروفایل",
-                                        null=True, blank=False, default="static/PicturesOfProfile/default.png",)
+    national_card_picture = models.TextField(verbose_name="عکس کارت ملی",null=True,blank=False,default="default.png")
+    profile_picture = models.TextField(verbose_name="عکس پروفایل",
+                                        null=True, blank=False, default="default.png",)
     # email = models.EmailField(max_length=50, verbose_name="ایمیل", null=True, blank=False)
     email_verified = models.BooleanField(default=False)
     role = models.ForeignKey(Role, on_delete=models.CASCADE, default=1)
@@ -112,69 +108,22 @@ class PhoneVerification(models.Model):
     verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+class TransactionType(models.Model):
+    name = models.CharField(max_length=10, null=True, blank=False, default="deposit")
+  
+class TransactionCurrency(models.Model):
+    name = models.CharField(max_length=10, null=True, blank=False, default="eth")
+    
 
-# def send_verification_code(phone_number, user):
-#     # Generate a random 6-digit code
-#     verification_code = random.randint(100000, 999999)
+class UserBalance(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rial_available_balance = models.IntegerField(default=0,verbose_name="mojudi")
+    rial_untradable_balance = models.IntegerField(default=0,verbose_name="unavailable mojudi")
+    eth_balance = models.IntegerField(default=0,verbose_name="mojudi etherium")
+    
 
-#     # Send the SMS via Kavenegar API
-#     # The URL IS like : https://api.kavenegar.com/v1/{API-KEY}/verify/lookup.json
-#     response = requests.post(
-#         f"https://api.kavenegar.com/v1/"
-#         f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
-#         f"/verify/lookup.json",
-#         data={
-#             "receptor": phone_number,
-#             "token": verification_code,
-#             "template": "SMSVerify"
-#         }
-#     )
-
-#     if response.status_code == 200:
-#         # Create a new PhoneVerification object to store the code
-#         PhoneVerification.objects.create(user=user, phone_number=phone_number, verification_code=verification_code,
-#                                          verified=False)
-#         return verification_code
-#     else:
-#         # Handle error response
-#         return None
-
-
-# send_verification_code("09387731214", User.objects.get(username="aria"))
-
-
-# def get_artist_exhibitions(self):
-#     nfts = self.nft_set.all()
-#     data = []
-#     current_nftexs = []
-#     for nft in nfts:
-#         current_nftexs += filter(lambda x: not x.ex.has_expired(), nft.nftexs.filter(state='accepted').all())
-#     current_nftexs = set(current_nftexs)
-#     for nftex in current_nftexs:
-#         info = {}
-#         info['exhibition'] = ExhibitionSerializer(nftex.ex).data
-#         my_nfts = list(filter(lambda x: x.owner == self, nftex.nfts.all()))
-#         info['your_nfts'] = NFTSerializer(my_nfts, many=True).data
-#         info['sells'] = 'Exhibition is in progress yet.'
-#         data.append(info)
-#     prevs_exhibitions = set(map(lambda x: x.nftex.ex, self.as_seller_transactions.all()))
-#     for exhibition in prevs_exhibitions:
-#         info = {}
-#         info['exhibition'] = ExhibitionSerializer(exhibition).data
-#         prevs_nftexs = exhibition.nftexs.filter(state='accepted').all()
-#         transactions = []
-#         for nftex in prevs_nftexs:
-#             transactions += nftex.transaction_set.all()
-#         print(transactions)
-#         transactions = list(filter(lambda x: x.seller == self, transactions))
-#         profit = []
-#         for transaction in transactions:
-#             profit.append({'nft': NFTSerializer(transaction.nft).data,
-#                            'profit': transaction.lastPrice * (transaction.nftex.commission/100)})
-#         info['sells'] = profit
-#         data.append(info)
-#     return data
-#
-# TODO : need improvement
-
-# User.add_to_class('get_artist_exhibitions', get_artist_exhibitions)
+class UserTurnover(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    transaction_type = models.ForeignKey(TransactionType, default="deposit",on_delete=models.CASCADE)
+    transaction_currency=models.ForeignKey(TransactionCurrency, default="rial",on_delete=models.CASCADE)
+    transaction_value=models.IntegerField(default=0,verbose_name="volume")

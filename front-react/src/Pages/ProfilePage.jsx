@@ -23,7 +23,7 @@ import {
   Show404Errors,
   Show500Errors,
   ShowNetorkErrors,
-  ShowTokenErrors,
+  ShowTokenErrors
 } from "../components/ErrorDialogs/ShowErrors";
 import { Toast } from "primereact/toast";
 import SimpleInput from "../components/Inputs/SimpleInput";
@@ -44,9 +44,8 @@ function ProfilePage() {
     birthdate: user ? user.data.birthdate : "",
     cell_number: user ? user.data.cell_number : "",
     phone_number: user ? user.data.phone_number : "",
-    email: user ? user.data.email : "",
+    email: user ? user.data.email : ""
   });
-
 
   const [profileImage, setProfileImage] = useState();
   const [nationalCardImage, setNationalCardImage] = useState();
@@ -63,14 +62,22 @@ function ProfilePage() {
     setTimeout(() => {
       setIsEmailDisabled(false);
     }, 10000);
+    
+     
+
+
   }
 
   function hanldeClickPhone() {
     setIsPhoneDisabled(true);
     setShowPhoneValidate(true);
-    setTimeout((e) => {
-        setIsPhoneDisabled(false);
+    setTimeout(e => {
+      setIsPhoneDisabled(false);
     }, 10000);
+    axios.post("https://api.artina.org/api/account/phone-verification/", {
+      phone_number: formValues.phone_number,
+      username: user.data.username
+    });
   }
 
   var Token = localStorage.getItem("authTokens");
@@ -81,8 +88,8 @@ function ProfilePage() {
 
   const config = {
     headers: {
-      Authorization: `bearer ${Token}`,
-    },
+      Authorization: `bearer ${Token}`
+    }
   };
 
   function UpdateInfo() {
@@ -90,7 +97,7 @@ function ProfilePage() {
     axios
       .patch(
         // "https://api.artina.org/api/account/profile/",
-        "http://78.38.35.249:8000/api/account/profile/",
+        "https://api.artina.org/api/account/profile/",
         {
           user: 6,
           address: user ? user.data.address : "",
@@ -100,16 +107,16 @@ function ProfilePage() {
           first_name: formValues.first_name,
           last_name: formValues.last_name,
           national_code: formValues.national_code,
-          phone_number: formValues.phone_number,
+          phone_number: formValues.phone_number
         },
         config
       )
-      .then((response) => {
+      .then(response => {
         if (response.status == 200) {
           alert("as");
         }
       })
-      .catch((exception) => {
+      .catch(exception => {
         console.log("exception");
         console.log(exception);
 
@@ -132,54 +139,39 @@ function ProfilePage() {
     return false;
   }
 
-  useEffect(() => {
-    setformValues((prev) => ({
-      ...prev,
-      first_name: user ? user.data.username : "",
-      last_name: user ? user.data.last_name : "",
-      national_code: user ? user.data.national_code : "",
-      birthdate: user ? user.data.birthdate : "",
-      cell_number: user ? user.data.cell_number : "",
-      phone_number: user ? user.data.phone_number : "",
-      email: user ? user.data.email : "",
-    }));
-    console.log(user);
-  }, [user]);
+  useEffect(
+    () => {
+      setformValues(prev => ({
+        ...prev,
+        first_name: user ? user.data.username : "",
+        last_name: user ? user.data.last_name : "",
+        national_code: user ? user.data.national_code : "",
+        birthdate: user ? user.data.birthdate : "",
+        cell_number: user ? user.data.cell_number : "",
+        phone_number: user ? user.data.phone_number : "",
+        email: user ? user.data.email : ""
+      }));
+      console.log(user);
+    },
+    [user]
+  );
 
-  return (
-    <TestLayout connectWallet={false}>
-      <Toast
-        ref={toastBC}
-        position="bottom-center"
-        className="text-3xl w-full"
-      />
+  return <TestLayout connectWallet={false}>
+      <Toast ref={toastBC} position="bottom-center" className="text-3xl w-full" />
       <div className="flex gap-16">
         <SimpleCard className="bg-[#4e45d0] w-[45%] flex flex-col relative gap-12 items-center ">
-          <img
-            src="/mand1.png"
-            className=" opacity-40 absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 pointer-events-none"
-          />
+          <img src="/mand1.png" className=" opacity-40 absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 pointer-events-none" />
           <div className="text-white text-[32px] mb-10 z-10">
             پروفایل کاربری
           </div>
           <div className="text-white text-[20px] z-10">تصویر پروفایل</div>
           <div className="bg-slate-50 w-[70%] pt-[70%] rounded-full z-10 relative">
-            <img
-              src={`https://api.artina.org${
-                user ? user.data.profile_picture : ""
-              }`}
-              className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 pointer-events-none w-8"
-            />
+            <img src={`https://api.artina.org${user ? user.data.profile_picture : ""}`} className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 pointer-events-none w-8" />
           </div>
           <div className="">
             <Button variant="contained" component="label">
               انتخاب تصویر
-              <input
-                hidden
-                accept="image/*"
-                type="file"
-                onChange={(e) => setProfileImage(() => e.target.files[0])}
-              />
+              <input hidden accept="image/*" type="file" onChange={e => setProfileImage(() => e.target.files[0])} />
             </Button>
             {/* <Profileuploader /> */}
             {/* <IDUpdate /> */}
@@ -188,173 +180,90 @@ function ProfilePage() {
         <SimpleCard className={"flex flex-col gap-12 bg-white w-full"}>
           <div className="text-[24px]">اطلاعات شخصی</div>
           <div className="flex gap-12">
-            <SimpleInput
-              type="text"
-              title="نام"
-              placeholder="مثلا: علیرضا"
-              isValid={formValues.first_name != ""}
-              validationError="نمیتواند خالی باشد"
-              onChange={(e) =>
-                setformValues((prev) => ({
-                  ...prev,
-                  first_name: e.target.value,
-                }))
-              }
-              defaultValue={user != null ? user.data.first_name : null}
-            />
-            <SimpleInput
-              type="text"
-              title="نام خانوادگی"
-              placeholder="مثلا: موسوی"
-              isValid={formValues.last_name != ""}
-              validationError="نمیتواند خالی باشد"
-              onChange={(e) =>
-                setformValues((prev) => ({
-                  ...prev,
-                  last_name: e.target.value,
-                }))
-              }
-              defaultValue={user != null ? user.data.last_name : null}
-              disabled={user != null ? user.data.last_name != null : null}
-            />
+            <SimpleInput type="text" title="نام" placeholder="مثلا: علیرضا" isValid={formValues.first_name != ""} validationError="نمیتواند خالی باشد" onChange={e => setformValues(
+                  prev => ({
+                    ...prev,
+                    first_name: e.target.value
+                  })
+                )} defaultValue={user != null ? user.data.first_name : null} />
+            <SimpleInput type="text" title="نام خانوادگی" placeholder="مثلا: موسوی" isValid={formValues.last_name != ""} validationError="نمیتواند خالی باشد" onChange={e => setformValues(
+                  prev => ({
+                    ...prev,
+                    last_name: e.target.value
+                  })
+                )} defaultValue={user != null ? user.data.last_name : null} disabled={user != null ? user.data.last_name != null : null} />
           </div>
           <div className="flex gap-12">
-            <SimpleInput
-              type="text"
-              title="کد ملی"
-              placeholder="مثلا: 1234567890"
-              isValid={formValues.national_code.length == 10}
-              validationError="نمیتواند خالی باشد"
-              onChange={(e) =>
-                setformValues((prev) => ({
-                  ...prev,
-                  national_code: e.target.value,
-                }))
-              }
-              defaultValue={user != null ? user.data.national_code : null}
-              disabled={user != null ? user.data.national_code != null : null}
-            />
-            <SimpleInput
-              type="text"
-              title="تاریخ تولد"
-              placeholder="مثلا: 1375/06/11"
-              isValid={formValues.birthdate.length == 10}
-              validationError="نمیتواند خالی باشد"
-              onChange={(e) =>
-                setformValues((prev) => ({
-                  ...prev,
-                  birthdate: e.target.value,
-                }))
-              }
-              defaultValue={user != null ? user.data.birthdate : null}
-              disabled={user != null ? user.data.birthdate != null : null}
-            />
-            <SimpleInput
-              type="text"
-              title="شماره ثابت"
-              placeholder="02112345678"
-              isValid={formValues.cell_number === 11}
-              validationError="نمیتواند خالی باشد"
-              onChange={(e) =>
-                setformValues((prev) => ({
-                  ...prev,
-                  cell_number: e.target.value,
-                }))
-              }
-              defaultValue={user != null ? user.data.cell_number : null}
-              disabled={user != null ? user.data.cell_number != null : null}
-            />
+            <SimpleInput type="text" title="کد ملی" placeholder="مثلا: 1234567890" isValid={formValues.national_code.length == 10} validationError="نمیتواند خالی باشد" onChange={e => setformValues(
+                  prev => ({
+                    ...prev,
+                    national_code: e.target.value
+                  })
+                )} defaultValue={user != null ? user.data.national_code : null} disabled={user != null ? user.data.national_code != null : null} />
+            <SimpleInput type="text" title="تاریخ تولد" placeholder="مثلا: 1375/06/11" isValid={formValues.birthdate.length == 10} validationError="نمیتواند خالی باشد" onChange={e => setformValues(
+                  prev => ({
+                    ...prev,
+                    birthdate: e.target.value
+                  })
+                )} defaultValue={user != null ? user.data.birthdate : null} disabled={user != null ? user.data.birthdate != null : null} />
+            <SimpleInput type="text" title="شماره ثابت" placeholder="02112345678" isValid={formValues.cell_number === 11} validationError="نمیتواند خالی باشد" onChange={e => setformValues(
+                  prev => ({
+                    ...prev,
+                    cell_number: e.target.value
+                  })
+                )} defaultValue={user != null ? user.data.cell_number : null} disabled={user != null ? user.data.cell_number != null : null} />
           </div>
           <hr className="opacity-10" />
           <div className="text-[24px]">راه‌های ارتباطی</div>
           <div className="flex gap-12">
-            <SimpleInput
-              type="text"
-              title="شماره موبایل"
-              placeholder="09123456789"
-              isValid={formValues.phone_number === 11}
-              validationError="نمیتواند خالی باشد"
-              onChange={(e) =>
-                setformValues((prev) => ({
-                  ...prev,
-                  phone_number: e.target.value,
-                }))
-              }
-              defaultValue={user != null ? user.data.phone_number : null}
-              disabled={user != null ? user.data.phone_number != null : null}
-            />
+            <SimpleInput type="text" title="شماره موبایل" placeholder="09123456789" isValid={formValues.phone_number === 11} validationError="نمیتواند خالی باشد" onChange={e => setformValues(
+                  prev => ({
+                    ...prev,
+                    phone_number: e.target.value
+                  })
+                )} defaultValue={user != null ? user.data.phone_number : null} disabled={user != null ? user.data.phone_number != null : null} />
             <div className="flex gap-12 transition-all">
               <div className={`${showPhoneValidate ? "" : "hidden"}`}>
-                <SimpleInput
-                  type="text"
-                  title="کد "
-                  placeholder="1234"
-                  isValid={ValidateEmail(formValues.email)}
-                  validationError="نمیتواند خالی باشد"
-                  onChange={(e) =>
-                    setformValues((prev) => ({
-                      ...prev,
-                      email: e.target.value,
-                    }))
-                  }
-                  defaultValue={user != null ? user.data.email : null}
-                  disabled={user != null ? user.data.email != null : null}
-                />
+                <SimpleInput type="text" title="کد " placeholder="1234" isValid={ValidateEmail(formValues.email)} validationError="نمیتواند خالی باشد" onChange={e => setformValues(
+                      prev => ({
+                        ...prev,
+                        email: e.target.value
+                      })
+                    )} defaultValue={user != null ? user.data.email : null} disabled={user != null ? user.data.email != null : null} />
               </div>
-              <div
-                className={`${isPhoneDisabled ? 'bg-rose-800 cursor-not-allowed hover:bg-rose-900' : 'bg-rose-500 cursor-pointer hover:bg-rose-600'} w-full text-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center`}
-                onClick={() => hanldeClickPhone()}
-              >
-                ارسال کد
+              <div className={`w-full ${!showPhoneValidate ? "hidden" : "bg-sky-400 cursor-pointer hover:bg-sky-500 w-full text-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center"} `} onClick={() => {}}>
+                ثبت
+              </div>
+              <div className={`w-full ${isPhoneDisabled ? "bg-rose-800 cursor-not-allowed hover:bg-rose-900" : "bg-rose-500 cursor-pointer hover:bg-rose-600"} w-full text-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center`} onClick={() => hanldeClickPhone()}>
+                {showPhoneValidate ? "ارسال مجدد کد" : "ارسال کد"}
               </div>
             </div>
           </div>
+
           <div className="flex gap-12">
-            <SimpleInput
-              type="text"
-              title="ایمیل "
-              placeholder="09123456789"
-              isValid={ValidateEmail(formValues.email)}
-              validationError="نمیتواند خالی باشد"
-              onChange={(e) =>
-                setformValues((prev) => ({
-                  ...prev,
-                  email: e.target.value,
-                }))
-              }
-              defaultValue={user != null ? user.data.email : null}
-              disabled={user != null ? user.data.email != null : null}
-            />
-            <div className="flex gap-12 transition-all">
-              <div className={`${showEmailValidate ? "" : "hidden"}`}>
-                <SimpleInput
-                  type="text"
-                  title="کد "
-                  placeholder="1234"
-                  isValid={ValidateEmail(formValues.email)}
-                  validationError="نمیتواند خالی باشد"
-                  onChange={(e) =>
-                    setformValues((prev) => ({
+            <div className=" w-[50%]">
+              <SimpleInput type="text" title="ایمیل " placeholder="09123456789" isValid={ValidateEmail(formValues.email)} validationError="نمیتواند خالی باشد" onChange={e => setformValues(
+                    prev => ({
                       ...prev,
-                      email: e.target.value,
-                    }))
-                  }
-                  defaultValue={user != null ? user.data.email : null}
-                  disabled={user != null ? user.data.email != null : null}
-                />
+                      email: e.target.value
+                    })
+                  )} defaultValue={user != null ? user.data.email : null} disabled={user != null ? user.data.email != null : null} />
+            </div>
+
+            <div className="flex gap-12 transition-all w-full">
+              <div className={`w-full ${showEmailValidate ? "" : "hidden"}`}>
+                <SimpleInput type="text" title="کد " placeholder="1234" isValid={ValidateEmail(formValues.email)} validationError="نمیتواند خالی باشد" onChange={e => setformValues(
+                      prev => ({
+                        ...prev,
+                        email: e.target.value
+                      })
+                    )} defaultValue={user != null ? user.data.email : null} disabled={user != null ? user.data.email != null : null} />
               </div>
-              <div
-                className={`${!showEmailValidate ? 'hidden' : ''} bg-sky-400 cursor-pointer hover:bg-sky-500 w-full text-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center`}
-                onClick={() => hanldeClickEmail()}
-              >
+              <div className={`w-full ${!showEmailValidate ? "hidden" : "bg-sky-400 cursor-pointer hover:bg-sky-500 w-full text-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center"} `} onClick={() => {}}>
                 ثبت
               </div>
-              <div
-                className={`${isEmailDisabled ? 'bg-rose-800 cursor-not-allowed hover:bg-rose-900' : 'bg-rose-500 cursor-pointer hover:bg-rose-600'} w-full text-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center`}
-                onClick={() => hanldeClickEmail()}
-              >
-
-{showEmailValidate? 'ارسال مجدد کد' : 'ارسال کد'}
+              <div className={`w-full ${isEmailDisabled ? "bg-rose-800 cursor-not-allowed hover:bg-rose-900" : "bg-rose-500 cursor-pointer hover:bg-rose-600"} w-full text-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center`} onClick={() => hanldeClickEmail()}>
+                {showEmailValidate ? "ارسال مجدد کد" : "ارسال کد"}
               </div>
             </div>
           </div>
@@ -372,21 +281,11 @@ function ProfilePage() {
           <div className="flex justify-center">
             <Button variant="contained" component="label">
               انتخاب تصویر کارت ملی
-              <input
-                hidden
-                accept="image/*"
-                type="file"
-                onChange={(e) => setNationalCardImage(() => e.target.files[0])}
-              />
+              <input hidden accept="image/*" type="file" onChange={e => setNationalCardImage(() => e.target.files[0])} />
             </Button>
           </div>
           <div className="flex justify-center">
-            <img
-              src={`https://api.artina.org${
-                user ? user.data.national_card_picture : ""
-              }`}
-              className=""
-            />
+            <img src={`https://api.artina.org${user ? user.data.national_card_picture : ""}`} className="" />
           </div>
 
           {/* <div className="flex justify-center">
@@ -408,7 +307,6 @@ function ProfilePage() {
           </div> */}
         </SimpleCard>
       </div>
-    </TestLayout>
-  );
+    </TestLayout>;
 }
 export default ProfilePage;

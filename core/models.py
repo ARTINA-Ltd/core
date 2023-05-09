@@ -9,14 +9,16 @@ from django.db.models import Avg
 
 
 class NFT(models.Model):
+    token_id = models.IntegerField(default=0, null=False, blank=False)
     name = models.CharField(max_length=15, null=False, blank=False)
     owner = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)
     creator = models.CharField(max_length=15, null=False, blank=False)
-    date = models.DateTimeField(verbose_name="تاریخ", auto_now=False)
+    date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
     last_price = models.IntegerField(verbose_name='آخرین قیمت', null=False, blank=False)
-    base64_image = models.TextField(default='data:image', null=False, blank=False)
+    image_url = models.TextField(default='data:image', null=False, blank=False)
     start_date = models.DateTimeField(verbose_name='تاریخ شروع مزایده', null=True, blank=True)
     end_date = models.DateTimeField(verbose_name='تاریخ پایان مزایده', null=True, blank=True)
+    is_for_sale = models.BooleanField(default=False)
     description = models.TextField(max_length=200, null=True, blank=True)
     external_link = models.URLField(null=True, blank=True)
     author_address=models.CharField(null=True,max_length=45,default="0x2293221D7c357FB04De9c7D0dEeBcA427407429D")
@@ -83,8 +85,12 @@ class Order(models.Model):
     bidder = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)
     fee = models.IntegerField(verbose_name="قیمت", null=False, blank=False)
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
-    status = models.CharField(max_length=5, choices=[(0, 'open'), (1, 'close')])
-    # TODO : change status to IntegerField and delete the max_length attribute
+    status = models.IntegerField(choices=[(0, 'open'), (1, 'close')])
 
     def __str__(self):
         return f'{self.bidder.username} bid {self.fee} on {self.nft.name}'
+
+
+
+class MyImage(models.Model):
+    image = models.ImageField(upload_to='static/images/')
