@@ -8,14 +8,14 @@
   padding-bottom: 0.75rem;
   border: 1px;
   border-bottom: 2px;
-  border-color: #0000aa11;
+  border-color: #0000aa08;
   border-style: solid;
   transition: all;
   transition-duration: 200ms;
 }
 .simple-input:focus {
-  background-color: #0000aa07;
+  background-color: #0000aa04;
 }
 .simple-input:hover {
-  background-color: #0000aa07;
+  background-color: #0000aa04;
 }
