@@ -78,7 +78,7 @@ const UploadItem = () => {
 
     axios
       .post(
-        "http://localhost:8000/api/transaction/NFTViewSet/",
+        "https://api.artina.org/api/transaction/NFTViewSet/",
         {
           name: upladObj.item_name,
           owner: upladObj.owner,
@@ -88,14 +88,14 @@ const UploadItem = () => {
           description: upladObj.description,
           external_link: upladObj.external_link,
           author_address: address
-        },
-        { headers: { Authorization: `Bearer ${Token}` } }
+        }
       )
       .then(res => {
         Notify.success("درخواست شما با موفقیت ثبت شد");
       })
-      .catch(() => {
+      .catch((e) => {
         Notify.failure("خطا");
+        console.log(e, "Failed!");
       });
   };
 
