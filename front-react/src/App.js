@@ -20,7 +20,7 @@ import ShowCollection from "./components/ShowCollection";
 // eslint-disable-next-line import/no-anonymous-default-export
 import { ScrollPanel } from "primereact/scrollpanel";
 import { ChainId, ThirdwebProvider } from "@thirdweb-dev/react";
-import ProfilePage from "./Pages/ProfilePage";
+import Profile from "./Pages/Profile";
 import UserDashboard from "./Pages/UserDashboard";
 import { ScrollTop } from "primereact/scrolltop";
 import Commission from "./Pages/Commission/Commission";
@@ -125,7 +125,7 @@ export default () => {
                 />
                 <Route exact path="upload-page" element={<NFTUploadPage />} />
                 <Route exact path="UserDashboard" element={<UserDashboard />} />
-                <Route exact path="profile" element={<ProfilePage />} />
+                <Route exact path="profile" element={<Profile />} />
                 <Route exact path="collections" element={<ShowCollection />} />
               </Routes>
             </div>

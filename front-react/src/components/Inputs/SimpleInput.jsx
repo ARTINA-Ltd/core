@@ -65,8 +65,8 @@ const SimpleInput = ({
           />}
 
       <div
-        className={`text-[16px] pr-2 pointer-events-none absolute bottom-[50%] translate-y-1/2 right-4 transition-all ${focus
-          ? "bottom-[72%] text-[14px] opacity-60"
+        className={`text-[14px] pr-2 pointer-events-none absolute bottom-[50%] translate-y-1/2 right-4 transition-all ${focus
+          ? "bottom-[73%] text-[14px] opacity-60"
           : ""}`}
       >
         {title}

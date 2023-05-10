@@ -7,7 +7,7 @@ const TestLayout = ({ children , connectWallet}) => {
     <div style={{ direction: "rtl" }} className="overflow-hidden">
       <Header connectWallet={connectWallet} />
       <div className="bg-[#f1f2f7]">
-        <div className=" w-[80%] m-auto py-8 min-h-[90vh]">{children}</div>
+        <div className=" w-[90%] m-auto py-8 min-h-[90vh]">{children}</div>
       </div>
 
       <Footer />
