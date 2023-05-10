@@ -81,9 +81,9 @@ const Login = () => {
           localStorage.setItem("authTokens", res.data.access);
 
           Notify.success("با موفقیت وارد شدید");
-          setTimeout(() => {
+          // setTimeout(() => {
             navigate("/profile");
-          }, 3000);
+          // }, 0);
 
         }
       })
