@@ -187,7 +187,7 @@ class MyImageViewSet(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         image_url = ''
         if 'image' in request.data:
-            image_url = request.build_absolute_uri(settings.MEDIA_URL + serializer.data['image'])
+            image_url = request.build_absolute_uri(serializer.data['image'])
         return Response({'id': serializer.data['id'], 'image': image_url}, status=status.HTTP_201_CREATED, headers=headers)
 
 
