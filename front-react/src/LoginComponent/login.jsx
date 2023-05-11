@@ -8,12 +8,14 @@ import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/LandingPageNavBar/Header";
 import Footer from "../components/Footer/Footer";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
+import { UserChangeContext } from "../App";
 
 const Login = () => {
   const [values, setValues] = useState({
     username: "",
     password: "",
   });
+  const userChange = useContext(UserChangeContext);
 
   const inputs = [
     {
@@ -77,14 +79,10 @@ const Login = () => {
       )
       .then((res) => {
         if (res.status === 200) {
-
           localStorage.setItem("authTokens", res.data.access);
-
+          userChange(res);
           Notify.success("با موفقیت وارد شدید");
-          // setTimeout(() => {
-            navigate("/profile");
-          // }, 0);
-
+          navigate("/profile");
         }
       })
       .catch((res) => {

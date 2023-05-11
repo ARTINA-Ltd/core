@@ -129,10 +129,11 @@ const Header = ({ connectWallet = false }) => {
                   <div>{username}</div>
                   <div
                     className="cursor-pointer border-[#ffffff40] bg-[#ffffff30]  px-5 py-2  rounded-md"
-                    onClick={() => {
+                    onClick={(e) => {
                       navigate("/login");
                       setUsername();
                       localStorage.setItem("authTokens", null);
+                      userChange(e);
                     }}
                   >
                     خروج
