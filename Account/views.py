@@ -152,11 +152,20 @@ class SendVerificationCodeViewSet(viewsets.ViewSet):
         phone_number = request.data.get('phone_number')
         username = request.data.get('username')
         user = User.objects.get(username=username)
-
         if not phone_number:
             return Response({'error': 'phone_number is required.'}, status.HTTP_400_BAD_REQUEST)
 
         verification_code = random.randint(100000, 999999)
+        phone_verification = PhoneVerification.objects.filter(user=user).first()
+        if phone_verification:
+            # Update the existing PhoneVerification object with the new verification code
+            phone_verification.verification_code = verification_code
+            phone_verification.save()
+            
+        else:
+            PhoneVerification.objects.create(user=user, phone_number=phone_number, verification_code=verification_code,
+                                             verified=False)
+            print(f"Verification code for {phone_number}: {verification_code}")
 
         # Send the SMS via Kavenegar API
         # The URL IS like : https://api.kavenegar.com/v1/{API-KEY}/verify/lookup.json
@@ -173,9 +182,6 @@ class SendVerificationCodeViewSet(viewsets.ViewSet):
 
         if response.status_code == 200:
             # Create a new PhoneVerification object to store the code
-            PhoneVerification.objects.create(user=user, phone_number=phone_number, verification_code=verification_code,
-                                             verified=False)
-            print(f"Verification code for {phone_number}: {verification_code}")
 
             return Response({'status': 'success'})
         else:
