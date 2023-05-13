@@ -64,8 +64,12 @@ const Header = ({ connectWallet = false }) => {
       link: "/Commission",
     },
     {
-      title: "کانکت والت",
-      link: "/",
+      title: "ضرب اثر",
+      link: "/upload-page",
+    },
+    {
+      title: "مجموعه من",
+      link: "/collections",
     },
   ];
 

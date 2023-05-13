@@ -27,6 +27,7 @@ import Commission from "./Pages/Commission/Commission";
 import Support from "./Pages/Support";
 import axios from "axios";
 import Contact from "./Pages/Contact";
+import Collections from "./Pages/Collections";
 
 const activeChainId = ChainId.Goerli;
 
@@ -75,10 +76,6 @@ export default () => {
       .catch(setUser(undefined));
   };
 
-  useEffect(() => {
-    console.log("user")
-    console.log(user)
-  }, [user]);
   return (
     <>
       <ThirdwebProvider desiredChainId={activeChainId}>
@@ -125,7 +122,7 @@ export default () => {
                 <Route exact path="upload-page" element={<NFTUploadPage />} />
                 <Route exact path="UserDashboard" element={<UserDashboard />} />
                 <Route exact path="profile" element={<Profile />} />
-                <Route exact path="collections" element={<ShowCollection />} />
+                <Route exact path="collections" element={<Collections />} />
               </Routes>
             </div>
           </UserChangeContext.Provider>

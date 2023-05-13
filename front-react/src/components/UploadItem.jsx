@@ -39,7 +39,7 @@ const UploadItem = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    Notify.info("در حال آپلود اطلاعات. ممکن است کمی طول بکشد...");
+    Notify.info("در حال ضرب اثر. ممکن است کمی طول بکشد...");
 
     axios
       .post("https://api.artina.org/api/transaction/NFTViewSet/", {
@@ -94,7 +94,7 @@ const UploadItem = () => {
         <img className="w-full h-[400px] mt-5 rounded-xl" src={imageUrl} />
       </SimpleCard>
       <SimpleCard className={"flex flex-col gap-12 bg-white w-full"}>
-        <div className="text-[24px]">آپلود فایل</div>
+        <div className="text-[24px]">ضرب اثر</div>
         <div className="flex gap-12">
           <SimpleInput
             type="text"
@@ -157,7 +157,7 @@ const UploadItem = () => {
               className=" text-white text-[14px] bg-[#4e45d0] py-5 px-[6rem] rounded-lg cursor-pointer transition-all hover:bg-[#372fac]"
               onClick={handleSubmit}
             >
-              آپلود
+              ضرب اثر
             </div>
           ) : (
             <div className=" text-white text-[14px] bg-[#302c66] py-5 px-[6rem] rounded-lg cursor-not-allowed transition-all flex items-center gap-3">
@@ -175,7 +175,7 @@ const UploadItem = () => {
                   d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
                 />
               </svg>
-              <div className="whitespace-nowrap"> در حال آپلود...</div>
+              <div className="whitespace-nowrap"> در حال ضرب...</div>
             </div>
           )}
         </div>
