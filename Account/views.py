@@ -9,6 +9,8 @@ from rest_framework.response import Response
 from . import serializers
 import random
 import requests
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.views import PasswordResetView
 
 
 class RegisterViewSet(viewsets.ModelViewSet):
@@ -93,20 +95,43 @@ class ArtistRateViewSet(viewsets.ModelViewSet):
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = serializers.ProfileSerializer
+    # permission_classes = [IsAuthenticated]
 
-    def get_object(self):
-        return self.request.user
-
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
+    def list(self, request):
+        queryset = self.get_queryset().filter(user=request.user)
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
-    def perform_update(self, serializer):
+    def create(self, request):
+        data = request.data.copy()
+        data['user'] = request.user.id
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
         serializer.save()
+        return Response(serializer.data, status=201)
+
+    def retrieve(self, request, pk=None):
+        profile = self.get_object()
+        if profile.user != request.user:
+            return Response({'error': 'You do not have permission to access this profile.'}, status=403)
+        serializer = self.get_serializer(profile)
+        return Response(serializer.data)
+
+    def update(self, request, pk=None):
+        profile = self.get_object()
+        if profile.user != request.user:
+            return Response({'error': 'You do not have permission to update this profile.'}, status=403)
+        serializer = self.get_serializer(profile, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def destroy(self, request, pk=None):
+        profile = self.get_object()
+        if profile.user != request.user:
+            return Response({'error': 'You do not have permission to delete this profile.'}, status=403)
+        profile.delete()
+        return Response(status=204)
 
 
 class TicketViewSet(viewsets.ModelViewSet):
@@ -137,7 +162,7 @@ class PhoneVerificationViewSet(viewsets.ViewSet):
         verification_code = request.data.get("verification_code")
         phone_verification = PhoneVerification.objects.get(phone_number=phone_number)
         if phone_verification.verification_code == verification_code:
-            phone_verification.verified = True
+            Profile.objects.filter(user=user).first().phone_verified = True
             phone_verification.save()
             return Response({"status": "success"})
         else:
@@ -150,10 +175,12 @@ class SendVerificationCodeViewSet(viewsets.ViewSet):
 
     def create(self, request, format=None):
         phone_number = request.data.get('phone_number')
-        username = request.data.get('username')
-        user = User.objects.get(username=username)
+        user = User.objects.get(profile__phone_number=phone_number)
         if not phone_number:
             return Response({'error': 'phone_number is required.'}, status.HTTP_400_BAD_REQUEST)
+
+        if not user:
+            return Response({'error': 'user does not exist.'}, status.HTTP_400_BAD_REQUEST)
 
         verification_code = random.randint(100000, 999999)
         phone_verification = PhoneVerification.objects.filter(user=user).first()
@@ -163,8 +190,7 @@ class SendVerificationCodeViewSet(viewsets.ViewSet):
             phone_verification.save()
             
         else:
-            PhoneVerification.objects.create(user=user, phone_number=phone_number, verification_code=verification_code,
-                                             verified=False)
+            PhoneVerification.objects.create(user=user, phone_number=phone_number, verification_code=verification_code)
             print(f"Verification code for {phone_number}: {verification_code}")
 
         # Send the SMS via Kavenegar API
@@ -212,3 +238,29 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         # request.data['user'] = request.user.id
         return super().create(request, *args, **kwargs)
+
+
+
+class PasswordResetByPhoneViewSet(viewsets.ViewSet):
+    def create(self, request):
+        phone_number = request.data.get('phone_number')
+        token = request.data.get('token')
+        password = request.data.get('password')
+
+        try:
+            user = User.objects.get(profile__phone_number=phone_number)
+        except ObjectDoesNotExist:
+            return Response({'error': 'User with this phone number does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        phone_verification = PhoneVerification.objects.get(phone_number=phone_number)
+        if phone_verification.verification_code == token:
+            phone_verification.delete()
+        # Set the new password and log the user in
+            user.set_password(password)
+            user.save()
+            return Response({'success': 'Password reset successful.'}, status=status.HTTP_200_OK)
+
+        else:
+
+            return Response({"status": "error", "error": "verification code is not correct"},
+                    status.HTTP_400_BAD_REQUEST)

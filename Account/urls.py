@@ -15,6 +15,9 @@ router.register(r'phone-verification', views.PhoneVerificationViewSet, basename=
 router.register(r'send-verification-code', views.SendVerificationCodeViewSet, basename="send-verification-code")
 router.register(r'user-balance', views.UserBalanceViewSet, basename='user-balance')
 router.register(r'user-turnover', views.UserTurnoverViewSet, basename='user-turnover')
+router.register(r'user-PasswordReset', views.PasswordResetByPhoneViewSet, basename='PasswordRese')
+
+
 
 urlpatterns = [
     path('', include(router.urls)),

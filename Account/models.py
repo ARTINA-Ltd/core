@@ -105,7 +105,6 @@ class PhoneVerification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=20)
     verification_code = models.CharField(max_length=6)
-    verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
 class TransactionType(models.Model):
