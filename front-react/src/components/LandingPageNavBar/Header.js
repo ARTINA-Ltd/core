@@ -34,14 +34,14 @@ const Header = ({ connectWallet = false }) => {
     },
     {
       title: "بلاگ",
-      link: "/",
+      link: "//blog.artina.org",
     },
   ];
 
   const ActiveItems = [
     {
       title: "داشبورد",
-      link: "/",
+      link: "/userDashboard",
     },
     {
       title: "درخواست‌ها",
@@ -57,7 +57,7 @@ const Header = ({ connectWallet = false }) => {
     },
     {
       title: "بلاگ",
-      link: "/",
+      link: "//blog.artina.org",
     },
     {
       title: "کارمزد",
