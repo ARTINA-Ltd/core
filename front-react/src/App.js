@@ -27,6 +27,7 @@ import Commission from "./Pages/Commission/Commission";
 import Support from "./Pages/Support";
 import axios from "axios";
 import Contact from "./Pages/Contact";
+import Collections from "./Pages/Collections";
 
 const activeChainId = ChainId.Goerli;
 
@@ -34,12 +35,8 @@ export const UserContext = createContext();
 export const UserChangeContext = createContext();
 
 export default () => {
-  var Token = localStorage.getItem("authTokens");
 
   const [user, setUser] = useState();
-  const config = {
-    headers: { Authorization: `Bearer ${Token}` },
-  };
 
   const bodyParameters = {
     key: "value",
@@ -56,7 +53,7 @@ export default () => {
       method: "get",
       // url: "https://api.artina.org/api/account/user-info/",
       url: "https://api.artina.org/api/account/user-info/",
-      headers: { Authorization: `Bearer ${Token}` },
+      headers: { Authorization: `Bearer ${localStorage.getItem("authTokens")}` },
       mode: "cors",
     })
       .then((data) => {
@@ -65,17 +62,16 @@ export default () => {
       .catch(setUser(undefined));
   }, []);
 
-  const userChange = () => {
-    console.log("called")
-    axios({
-      method: "get",
-      // url: "http://78.38.35.249:8000/api/account/user-info/",
-      url: "https://api.artina.org/api/account/user-info/",
-      headers: { Authorization: `Bearer ${Token}` },
-      mode: "cors",
-    })
+  const userChange = async () => {
+    console.log("called");
+    await axios
+      .get(
+        // url: "http://78.38.35.249:8000/api/account/user-info/",
+        "https://api.artina.org/api/account/user-info/",
+        { headers: { Authorization: `Bearer ${localStorage.getItem("authTokens")}` }, mode: "cors" }
+      )
       .then((data) => {
-        setUser(data).then(console.log);
+        setUser(data);
       })
       .catch(setUser(undefined));
   };
@@ -126,7 +122,7 @@ export default () => {
                 <Route exact path="upload-page" element={<NFTUploadPage />} />
                 <Route exact path="UserDashboard" element={<UserDashboard />} />
                 <Route exact path="profile" element={<Profile />} />
-                <Route exact path="collections" element={<ShowCollection />} />
+                <Route exact path="collections" element={<Collections />} />
               </Routes>
             </div>
           </UserChangeContext.Provider>

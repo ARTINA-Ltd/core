@@ -34,14 +34,14 @@ const Header = ({ connectWallet = false }) => {
     },
     {
       title: "بلاگ",
-      link: "/",
+      link: "//blog.artina.org",
     },
   ];
 
   const ActiveItems = [
     {
       title: "داشبورد",
-      link: "/",
+      link: "/userDashboard",
     },
     {
       title: "درخواست‌ها",
@@ -57,15 +57,19 @@ const Header = ({ connectWallet = false }) => {
     },
     {
       title: "بلاگ",
-      link: "/",
+      link: "//blog.artina.org",
     },
     {
       title: "کارمزد",
       link: "/Commission",
     },
     {
-      title: "کانکت والت",
-      link: "/",
+      title: "ضرب اثر",
+      link: "/upload-page",
+    },
+    {
+      title: "مجموعه من",
+      link: "/collections",
     },
   ];
 
@@ -129,10 +133,11 @@ const Header = ({ connectWallet = false }) => {
                   <div>{username}</div>
                   <div
                     className="cursor-pointer border-[#ffffff40] bg-[#ffffff30]  px-5 py-2  rounded-md"
-                    onClick={() => {
+                    onClick={(e) => {
                       navigate("/login");
                       setUsername();
                       localStorage.setItem("authTokens", null);
+                      userChange(e);
                     }}
                   >
                     خروج
