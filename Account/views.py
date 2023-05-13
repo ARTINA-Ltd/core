@@ -61,6 +61,7 @@ class UserInfoViewSet(viewsets.ViewSet):
             'national_code': profile.national_code,
             'birthdate': profile.birthdate,
             'phone_number': profile.phone_number,
+            'phone_number_verified':profile.phone_number_verified,
             'cell_number': profile.cell_number,
             'address': profile.address,
             'national_card_picture': profile.national_card_picture,
