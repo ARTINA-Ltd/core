@@ -12,7 +12,7 @@ class OrderSerializer(serializers.ModelSerializer):
 class NFTSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.NFT
-        fields = ['name', 'owner', 'creator', 'last_price', 'image_url' ,'description','external_link','author_address']
+        fields = ['token_id','name', 'owner', 'creator', 'last_price', 'image_url' ,'description','external_link','author_address']
 
 
 class NFTRateSerializer(serializers.ModelSerializer):

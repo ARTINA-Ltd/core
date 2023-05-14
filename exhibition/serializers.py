@@ -49,3 +49,14 @@ class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Transaction
         fields = ['nftex', 'seller', 'buyer', 'date']
+
+
+
+
+
+class NumberSerializer(serializers.Serializer):
+    numbers = serializers.ListField(
+        child=serializers.IntegerField(min_value=0, max_value=9),
+        min_length=5,
+        max_length=5
+    )

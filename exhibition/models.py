@@ -96,7 +96,8 @@ class NFtEx(models.Model):
     def __str__(self):
         return f'{self.nfts.name} in {self.exhibition.marketName}'
 
-    
+# class applications (models.Model):
+      
 class Transaction(models.Model):
     nft = models.ForeignKey(NFT, on_delete=models.CASCADE, default=1)
     nftex = models.ForeignKey(NFtEx, on_delete=models.CASCADE)
