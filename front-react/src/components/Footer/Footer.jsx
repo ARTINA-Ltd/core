@@ -3,7 +3,7 @@ import "./style.css";
 
 const Footer = () => {
   return (
-    <div className="w-full bg-[#4e45d0] text-white text-[16px] py-4">
+    <div className="w-full bg-[#4e45d0] text-white text-[16px] py-4 min-h-[30vh]">
         <div className="bg-gradient-to-r from-slate-50 to-slate-200 bg-clip-text text-transparent">
 
         Copyright @2022 by Artina - All rights reserved
