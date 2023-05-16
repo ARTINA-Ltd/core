@@ -28,6 +28,7 @@ import Support from "./Pages/Support";
 import axios from "axios";
 import Contact from "./Pages/Contact";
 import Collections from "./Pages/Collections";
+import ForgetPassword from "./Pages/ForgetPassword";
 
 const activeChainId = ChainId.Goerli;
 
@@ -99,6 +100,7 @@ export default () => {
                 <Route exact path="nft-details/:id" element={<NFTDetails />} />
                 <Route exact path="Commission" element={<Commission />} />
                 <Route exact path="login" element={<Login />} />
+                <Route exact path="forget-password" element={<ForgetPassword />} />
                 <Route exact path="support" element={<Support />} />
                 <Route exact path="register" element={<Register />} />
                 <Route

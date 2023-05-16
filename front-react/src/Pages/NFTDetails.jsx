@@ -102,6 +102,9 @@ const NFTDetails = () => {
       url: "https://api.artina.org/api/transaction/Nfts/",
       //  url: "https://api.artina.org/api/account/profile/",
     }).then((d) => {
+      console.log("NFTs");
+        console.log(d);
+        console.log("__________________");
       setData(d);
     });
 
@@ -157,11 +160,12 @@ const NFTDetails = () => {
   }
 
   return (
-    <>
+              <TestLayout>
+
       {data
         ? data.data.map((item) =>
-            item.id == id ? (
-              <TestLayout key={item.id}>
+            item.token_id == id ? (
+              <div  key={item.token_id}>
                 <div className="flex gap-16">
                   <SimpleCard
                     id="RightSide"
@@ -169,7 +173,7 @@ const NFTDetails = () => {
                   >
                     <div className="flex flex-col gap-5">
                       <img
-                        src="https://maaidanoor.com/wp-content/uploads/2020/03/IMG_3933-1.jpg"
+                        src={item.image_url}
                         className="rounded-xl"
                       ></img>
                       <div className="bg-[#7168f3] w-full h-28 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]">
@@ -203,12 +207,12 @@ const NFTDetails = () => {
                       </div>
                       <div className="text-[16px] mx-auto">{item.creator}</div>
                     </div>
-                    <div className="relative flex items-center">
+                    {/* <div className="relative flex items-center">
                       <div className="absolute text-[16px] opacity-40">
                         تاریخ ساخت
                       </div>
                       <div className="text-[16px] mx-auto">{item.date}</div>
-                    </div>
+                    </div> */}
                     <hr className="opacity-10 mx-32"></hr>
 
                     <div className="relative flex items-center h-full">
@@ -295,13 +299,14 @@ const NFTDetails = () => {
                     ""
                   )}
                 </div>
-              </TestLayout>
+                </div>
             ) : (
               ""
             )
           )
         : ""}
-    </>
+              </TestLayout>
+
   );
 };
 

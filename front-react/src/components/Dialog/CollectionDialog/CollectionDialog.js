@@ -84,7 +84,7 @@ export default function CollectionDialog() {
         <SimpleInput
         className={'mt-12'}
           type="text"
-          title="تاریخ پایان فروش "
+          title="قیمت "
           placeholder="مثلا"
           validationError="نمیتواند خالی باشد"
           defaultValue={null}

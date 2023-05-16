@@ -18,8 +18,9 @@ const UploadItem = () => {
   const [imageUrl, setImageUrl] = useState();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isUploaded, setIsUploaded] = useState(false);
 
-  const hanndleNumberChange = (e) => {
+  const hanndleNumberChange = e => {
     const re = /^[0-9\b]+$/;
     if (e.target.value === "" || re.test(e.target.value)) {
       setOploadObj({ ...upladObj, last_price: e.target.value });
@@ -33,10 +34,10 @@ const UploadItem = () => {
     description: "",
     external_link: "",
     creator: "",
-    last_price: 0,
+    last_price: 0
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     setIsLoading(true);
     Notify.info("در حال ضرب اثر. ممکن است کمی طول بکشد...");
@@ -50,136 +51,185 @@ const UploadItem = () => {
         image_url: imageUrl,
         description: upladObj.description,
         external_link: upladObj.external_link,
-        author_address: address,
+        author_address: address
       })
       .then(() => {
         Notify.success("درخواست شما با موفقیت ثبت شد");
         setIsLoading(false);
+        setIsUploaded(true);
       })
-      .catch((e) => {
+      .catch(e => {
         Notify.failure("خطا");
         setIsLoading(false);
       });
   };
-
-  useEffect(() => {
-    if (image) {
-      Notify.info("در حال آپلود عکس");
-      const formData = new FormData();
-      formData.append("image", image, image.name);
-      axios
-        .post("https://api.artina.org/api/transaction/images/", formData)
-        .then((res) => {
-          Notify.success("با موفقیت آپلود شد");
-          setImageUrl(res.data.image);
-        })
-        .catch(() => Notify.failure("خطا در آپلود"));
-    }
-  }, [image]);
+  const handleCopy = () => {
+    navigator.clipboard.writeText("0x2a18fecb3579238cda960b5977f46e500fb6e735");
+    Notify.success("کپی شد!");
+  };
+  useEffect(
+    () => {
+      if (image) {
+        Notify.info("در حال آپلود عکس");
+        const formData = new FormData();
+        formData.append("image", image, image.name);
+        axios
+          .post("https://api.artina.org/api/transaction/images/", formData)
+          .then(res => {
+            Notify.success("با موفقیت آپلود شد");
+            setImageUrl(res.data.image);
+          })
+          .catch(() => Notify.failure("خطا در آپلود"));
+      }
+    },
+    [image]
+  );
 
   return (
-    <div className="flex gap-16">
-      <SimpleCard className="bg-[#4e45d0] w-[45%] flex flex-col relative gap-12 items-center overflow-hidden">
-        <Button variant="contained" component="label">
-          انتخاب تصویر
-          <input
-            hidden
-            accept="image/*"
-            type="file"
-            onChange={(e) => {
-              setImage(() => e.target.files[0]);
-            }}
-          />
-        </Button>
-        <img className="w-full h-[400px] mt-5 rounded-xl" src={imageUrl} />
-      </SimpleCard>
-      <SimpleCard className={"flex flex-col gap-12 bg-white w-full"}>
-        <div className="text-[24px]">ضرب اثر</div>
-        <div className="flex gap-12">
-          <SimpleInput
-            type="text"
-            title="نام اثر"
-            placeholder="مثلا: تابلو نقاشی"
-            // isValid={formValues.first_name != ""}
-            onChange={(e) =>
-              setOploadObj({ ...upladObj, item_name: e.target.value })
-            }
-            defaultValue={null}
-          />
-          <SimpleInput
-            type="text"
-            title="نام هنرمند"
-            placeholder="مثلا: علیرضا موسوی"
-            // isValid={formValues.first_name != ""}
-            onChange={(e) =>
-              setOploadObj({ ...upladObj, creator: e.target.value })
-            }
-            defaultValue={null}
-          />
-        </div>
-        <div className="w-full">
-          <SimpleInput
-            type="text"
-            title="توضیحات"
-            placeholder=""
-            // isValid={formValues.first_name != ""}
-            onChange={(e) =>
-              setOploadObj({ ...upladObj, description: e.target.value })
-            }
-            defaultValue={null}
-          />
-        </div>
-        <div className="w-full">
-          <SimpleInput
-            type="text"
-            title="لینک خارجی"
-            placeholder="مثلا:https://www.artina.org"
-            // isValid={formValues.first_name != ""}
-            onChange={(e) =>
-              setOploadObj({ ...upladObj, external_link: e.target.value })
-            }
-            defaultValue={null}
-          />
-        </div>
-        <div className="w-full">
-          <SimpleInput
-            type="text"
-            title="قیمت پایه"
-            placeholder="مثلا: 129"
-            // isValid={formValues.first_name != ""}
-            onChange={(e) => hanndleNumberChange(e)}
-            defaultValue={null}
-          />
-        </div>
-        <div className="flex justify-end">
-          {!isLoading ? (
-            <div
-              className=" text-white text-[14px] bg-[#4e45d0] py-5 px-[6rem] rounded-lg cursor-pointer transition-all hover:bg-[#372fac]"
-              onClick={handleSubmit}
-            >
-              ضرب اثر
-            </div>
-          ) : (
-            <div className=" text-white text-[14px] bg-[#302c66] py-5 px-[6rem] rounded-lg cursor-not-allowed transition-all flex items-center gap-3">
+    <div>
+      <div className="flex gap-16">
+        <SimpleCard className="bg-[#4e45d0] w-[45%] flex flex-col relative gap-12 items-center overflow-hidden">
+          <Button variant="contained" component="label">
+            انتخاب تصویر
+            <input
+              hidden
+              accept="image/*"
+              type="file"
+              onChange={e => {
+                setImage(() => e.target.files[0]);
+              }}
+            />
+          </Button>
+          <img className="w-full h-[400px] mt-5 rounded-xl" src={imageUrl} />
+        </SimpleCard>
+        <SimpleCard className={"flex flex-col gap-12 bg-white w-full"}>
+          <div className="text-[24px]">ضرب اثر</div>
+          <div className="flex gap-12">
+            <SimpleInput
+              type="text"
+              title="نام اثر"
+              placeholder="مثلا: تابلو نقاشی"
+              onChange={e =>
+                setOploadObj(
+                  // isValid={formValues.first_name != ""}
+                  { ...upladObj, item_name: e.target.value }
+                )}
+              defaultValue={null}
+            />
+            <SimpleInput
+              type="text"
+              title="نام هنرمند"
+              placeholder="مثلا: علیرضا موسوی"
+              onChange={e =>
+                setOploadObj(
+                  // isValid={formValues.first_name != ""}
+                  { ...upladObj, creator: e.target.value }
+                )}
+              defaultValue={null}
+            />
+          </div>
+          <div className="w-full">
+            <SimpleInput
+              type="text"
+              title="توضیحات"
+              placeholder=""
+              onChange={e =>
+                setOploadObj(
+                  // isValid={formValues.first_name != ""}
+                  { ...upladObj, description: e.target.value }
+                )}
+              defaultValue={null}
+            />
+          </div>
+          <div className="w-full">
+            <SimpleInput
+              type="text"
+              title="لینک خارجی"
+              placeholder="مثلا:https://www.artina.org"
+              onChange={e =>
+                setOploadObj(
+                  // isValid={formValues.first_name != ""}
+                  { ...upladObj, external_link: e.target.value }
+                )}
+              defaultValue={null}
+            />
+          </div>
+          <div className="w-full">
+            <SimpleInput
+              type="text"
+              title="قیمت پایه"
+              placeholder="مثلا: 129"
+              onChange={e => hanndleNumberChange(e) // isValid={formValues.first_name != ""}
+              }
+              defaultValue={null}
+            />
+          </div>
+          <div className="flex justify-end">
+            {!isLoading
+              ? <div
+                  className=" text-white text-[14px] bg-[#4e45d0] py-5 px-[6rem] rounded-lg cursor-pointer transition-all hover:bg-[#372fac]"
+                  onClick={handleSubmit}
+                >
+                  ضرب اثر
+                </div>
+              : <div className=" text-white text-[14px] bg-[#302c66] py-5 px-[6rem] rounded-lg cursor-not-allowed transition-all flex items-center gap-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    className="w-10 h-10 animate-bounce"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
+                    />
+                  </svg>
+                  <div className="whitespace-nowrap"> در حال ضرب...</div>
+                </div>}
+          </div>
+        </SimpleCard>
+      </div>
+      {isUploaded
+        ? <SimpleCard className={"bg-green-50 mt-12 flex gap-12"}>
+            <div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                stroke-width="1.1"
                 stroke="currentColor"
-                className="w-10 h-10 animate-bounce"
+                className="w-40 h-40 text-green-600"
               >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
+                  d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 019 9v.375M10.125 2.25A3.375 3.375 0 0113.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 013.375 3.375M9 15l2.25 2.25L15 12"
                 />
               </svg>
-              <div className="whitespace-nowrap"> در حال ضرب...</div>
             </div>
-          )}
-        </div>
-      </SimpleCard>
+            <div className="text-right leading-[40px]">
+              <div className="text-[20px] text-green-600">
+                اثر شما با موفقیت تبدیل به ان اف تی شد و حالا میتونید رو کیف
+                پولتون ببینیدش
+              </div>
+              <div className="text-[16px] text-green-900">
+                وارد کیف پولتون شید روی تب nft روی import بزنید در قسمت contract
+                کد زیر رو کپی کنید و در قسمت TokenId عدد 22 را وارد کنید و ثبت
+                رو بزنید.
+              </div>
+              <div
+                className="text-[16px] text-green-900 bg-green-100 rounded-full w-min whitespace-nowrap px-7 cursor-pointer flex gap-12 items-center"
+                onClick={handleCopy}
+              >
+                <div>کد:</div>
+                0x2A18FECb3579238CdA960B5977f46E500Fb6e735
+              </div>
+            </div>
+          </SimpleCard>
+        : ""}
     </div>
   );
 };

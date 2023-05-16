@@ -3,7 +3,7 @@ import { useState } from "react";
 import CollectionDialog from "../../Dialog/CollectionDialog/CollectionDialog";
 import SimpleCard from "./SimpleCard";
 
-const ImageCard = ({ className = "" , children, src, price }) => {
+const ImageCard = ({ className = "" , children, src, price, onClick }) => {
   const [isHovered, setHovered] = useState(false);
   const icons = {
     whiteStar: (
@@ -41,38 +41,30 @@ const ImageCard = ({ className = "" , children, src, price }) => {
     ),
   };
 
-  return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
+  return <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
       <SimpleCard className={className}>
-        <div className="relative transition-all">
-          <div
-            className={` pt-3   absolute w-full h-[300px] rounded-lg bg-gradient-to-b from-[#00000060] transition-all ${
-              isHovered ? "flex justify-center" : "hidden"
-            }`}
-          >
-            {icons.whiteStar}
+        <div className="relative transition-all cursor-pointer" onClick={onClick}>
+          <div className={` pt-3   absolute w-full h-[300px] rounded-lg bg-gradient-to-b from-[#00000060] transition-all ${isHovered ? "flex justify-center" : "hidden"}`}>
+            {/* {icons.whiteStar}
             {icons.yellowStar}
             {icons.yellowStar}
             {icons.yellowStar}
-            {icons.yellowStar}
+            {icons.yellowStar} */}
           </div>
 
-          <img
-            src={src}
-            className="w-full h-[300px] rounded-lg object-cover"
-          />
+          <img src={src} className="w-full h-[300px] rounded-lg object-cover" />
         </div>
-        <div className="text-[18px] my-4">{children}</div>
+        <div className="text-[18px] my-4 cursor-pointer" onClick={onClick}>
+          {children}
+        </div>
         <div className="flex justify-between items-center">
-          <div className="text-[14px]">{price}</div>
-          <CollectionDialog/>
+          <div className="text-[14px]">
+            {price}Ξ
+          </div>
+          <CollectionDialog />
         </div>
       </SimpleCard>
-    </div>
-  );
+    </div>;
 };
 
 export default ImageCard;

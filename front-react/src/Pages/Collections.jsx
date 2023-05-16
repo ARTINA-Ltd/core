@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 import ImageCard from "../components/Cards/UserDashboardCards/ImageCard";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import TestLayout from "../Layouts/TestLayout";
+import { Link, useNavigate } from "react-router-dom";
 
 const Collections = () => {
   const [getData, setData] = useState();
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -32,6 +34,7 @@ const Collections = () => {
                   className="bg-white"
                   src={item.image_url}
                   price={item.last_price}
+                  onClick={()=> navigate(`/nft-details/${item.token_id}`)}
                 >
                   {item.name}
                 </ImageCard>

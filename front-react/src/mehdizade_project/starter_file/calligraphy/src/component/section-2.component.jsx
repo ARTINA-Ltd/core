@@ -45,6 +45,7 @@ const Section_2 = () => {
       .then((res) => {
         setExhibitions(res.data);
         setError(null);
+        
       })
       .catch((error) => {
         setError(error.message);
@@ -97,19 +98,18 @@ const Section_2 = () => {
     return (
       <div>
        
-        <ProgressSpinner
+        {/* <ProgressSpinner
           style={{ width: "50px", height: "50px" }}
           strokeWidth="8"
           fill="var(--surface-ground)"
           animationDuration=".5s"
-        />
+        /> */}
       </div>
     );
   }
   if (loading) {
     return (
       <div>
-        {" "}
         <ProgressSpinner
           style={{ width: "50px", height: "50px" }}
           strokeWidth="8"

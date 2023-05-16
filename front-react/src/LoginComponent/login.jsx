@@ -1,44 +1,19 @@
 import { useState, useContext } from "react";
 import "./login-styles.css";
-import FormInput from "./formInput";
-import AuthContext from "./AuthContext";
 import axios from "axios";
-import jwt_decode from "jwt-decode";
 import { Link, useNavigate } from "react-router-dom";
-import Header from "../components/LandingPageNavBar/Header";
-import Footer from "../components/Footer/Footer";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 import { UserChangeContext } from "../App";
+import SimpleInput from "../components/Inputs/SimpleInput";
+import TestLayout from "../Layouts/TestLayout";
+import SimpleCard from "./../components/Cards/UserDashboardCards/SimpleCard";
 
 const Login = () => {
   const [values, setValues] = useState({
     username: "",
-    password: "",
+    password: ""
   });
   const userChange = useContext(UserChangeContext);
-
-  const inputs = [
-    {
-      id: 1,
-      name: "username",
-      type: "text",
-      placeholder: "Username",
-      // errorMessage: "نام کاربری نمی‌تواند خالی باشد",
-      label: "نام کاربری",
-      // pattern: "^[a-zA-Z0-9_]{6,20}$",
-      required: true,
-    },
-    {
-      id: 2,
-      name: "password",
-      type: "password",
-      placeholder: "Password",
-      errorMessage: "اطلاعات وارد شده صحیح نیست",
-      label: "رمز عبور",
-      // pattern: values.password,
-      required: true,
-    },
-  ];
 
   // const loginUser = useContext(AuthContext);
   // const handleSubmit = (e) => {
@@ -62,22 +37,22 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     await axios
       .post(
         "https://api.artina.org/api/account/login/",
         {
           username: values.username,
-          password: values.password,
+          password: values.password
         },
         {
           headers: {
-            "Content-Type": "application/json",
-          },
+            "Content-Type": "application/json"
+          }
         }
       )
-      .then((res) => {
+      .then(res => {
         if (res.status === 200) {
           localStorage.setItem("authTokens", res.data.access);
           userChange(res);
@@ -85,7 +60,7 @@ const Login = () => {
           navigate("/profile");
         }
       })
-      .catch((res) => {
+      .catch(res => {
         Notify.failure("خطا");
       });
     // const response = await fetch(
@@ -113,39 +88,62 @@ const Login = () => {
     // }
   };
 
-  const onChange = (e) => {
-    setValues({
-      ...values,
-      [e.target.name]: e.target.value,
-    });
-  };
-
   console.log(values);
   return (
-    <>
-      <div style={{ direction: "rtl" }} className="overflow-hidden">
-        <Header />
-
-        <div className="form-input ">
-          <form className="loginform" onSubmit={handleSubmit}>
-            <h1>ورود به سایت</h1>
-            {inputs.map((input) => (
-              <FormInput
-                key={input.id}
-                {...input}
-                value={values[input.name]}
-                onChange={onChange}
-              />
-            ))}
-            <button>ورود</button>
-            <p className="text-5xl mt-5">
-              حساب کاربری ندارید ؟ <Link to="/register">ثبت نام</Link>
-            </p>
-          </form>
+    <TestLayout className="flex items-center justify-center form-input w-full">
+      <SimpleCard className={"bg-[#ffffff] w-[450px]"}>
+        <div className="text-[24px]">ورود به سایت</div>
+        <SimpleInput
+          className={"mt-6"}
+          type="text"
+          title="نام کاربری"
+          placeholder="مثلا: علیرضا"
+          isValid={values.username != ""}
+          validationError="نمیتواند خالی باشد"
+          onChange={e =>
+            setValues(prev => ({
+              ...prev,
+              username: e.target.value
+            }))}
+          defaultValue={""}
+        />
+        <SimpleInput
+          className={"mt-6"}
+          type="password"
+          title="رمز عبور"
+          placeholder="مثلا: علیرضا"
+          isValid={values.password != ""}
+          validationError="نمیتواند خالی باشد"
+          onChange={e =>
+            setValues(prev => ({
+              ...prev,
+              password: e.target.value
+            }))}
+          defaultValue={""}
+        />
+        <div className="flex justify-center mt-7">
+          <div
+            className=" text-white text-[14px] bg-[#4e45d0] py-5 px-[6rem] rounded-lg cursor-pointer transition-all hover:bg-[#372fac]"
+            onClick={handleSubmit}
+          >
+            ورود
+          </div>
         </div>
-        <Footer />
-      </div>
-    </>
+        <div className="text-[16px] mt-3 opacity-40 cursor-pointer" onClick={()=>navigate('/forget-password')}>
+          فراموشی رمز عبور!
+        </div>
+
+        <div className="flex mt-5 items-center justify-center text-[16px] gap-4">
+          حساب کاربری ندارید؟
+          <div
+            className=" text-[#4e45d0] text-[14px] bg-[#4e45d020] py-3 px-[6rem] rounded-lg cursor-pointer transition-all hover:bg-[#372fac20]"
+            onClick={handleSubmit}
+          >
+            ثبت نام
+          </div>
+        </div>
+      </SimpleCard>
+    </TestLayout>
   );
 };
 
