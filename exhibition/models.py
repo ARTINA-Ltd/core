@@ -24,13 +24,13 @@ class Exhibition(models.Model):
     image = models.ImageField(upload_to="./static/pictures of Exhibitions", verbose_name="Exhibition",
                               null=True, blank=True)
     start_date = models.DateTimeField(verbose_name="تاریخ شروع", default=timezone.now)
-    end_date = models.DateTimeField(verbose_name="تاریخ پایان", default=timezone.now)
+    end_date = models.DateTimeField(verbose_name="تاریخ پایان")
     description = models.TextField(null=True, blank=True)
     ticket = models.BooleanField(null=True, default=False)
     contract = models.FileField(upload_to="./static/contract files", null=True, blank=False,
                                 validators=[FileExtensionValidator(allowed_extensions=["pdf"])])
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    
+    application_deadline = models.DateTimeField(default=timezone.now)
     def has_ticket(self):
         if self.ticket is None:
             return False
@@ -78,33 +78,20 @@ class Ticket(models.Model):
     ticket_count = models.IntegerField(null=True, blank=True, default=100)
 
 
-class NFtEx(models.Model):
-    nfts = models.ManyToManyField(NFT, related_name='nftexs')
-    exhibition = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='nftexs')
-    date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
-    commission = models.IntegerField(default=1, null=False, blank=False, validators=[validators.MaxValueValidator(100),
-                                                                                     validators.MinValueValidator(1)])
-    state = models.CharField(max_length=12, null=False, blank=False, choices=[('pending', 'pending'),
-                                                                              ('accepted', 'accepted'),
-                                                                              ('rejected', 'rejected')],
-                             default='pending')
-    feedback = models.TextField(max_length=200, null=True, blank=True)
-    
+class Application(models.Model):
+    artist = models.ForeignKey(User, on_delete=models.CASCADE)
+    exhibition = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='applications')
+    nft = models.OneToOneField(NFT, on_delete=models.CASCADE, related_name='application',default=0)
+    contract_accepted = models.BooleanField(default=False)
+    accepted = models.BooleanField(blank=True, null=True)
+    ignored = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.artist.username}'s application for {self.exhibition.title}"
+
     def get_owner(self):
         return self.nfts.first().owner
 
     def __str__(self):
         return f'{self.nfts.name} in {self.exhibition.marketName}'
 
-# class applications (models.Model):
-      
-class Transaction(models.Model):
-    nft = models.ForeignKey(NFT, on_delete=models.CASCADE, default=1)
-    nftex = models.ForeignKey(NFtEx, on_delete=models.CASCADE)
-    lastPrice = models.IntegerField(verbose_name='آخرین قیمت', null=False, blank=False, default=0)
-    seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='as_seller_transactions')
-    buyer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='as_buyer_transactions')
-    date = models.DateTimeField(verbose_name="تاریخ")
-
-    def __str__(self):
-        return f'{self.nftex} sold by {self.seller} to {self.buyer}'

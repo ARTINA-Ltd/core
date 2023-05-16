@@ -23,7 +23,7 @@ class NFT(models.Model):
     external_link = models.URLField(null=True, blank=True)
     author_address=models.CharField(null=True,max_length=45,default="0x2293221D7c357FB04De9c7D0dEeBcA427407429D")
     # image = models.ImageField(upload_to="./static/NFTS", null=True, blank=True)
-
+    in_exhibition = models.BooleanField(default=False)
     def has_expired(self):
         return datetime.now(tz=pytz.timezone('Asia/Tehran')) > self.end_date
 
@@ -81,7 +81,7 @@ class Wallet(models.Model):
 
 
 class Order(models.Model):
-    nft = models.ManyToManyField(NFT)
+    nft = models.ForeignKey(NFT, null=False, blank=False, on_delete=models.CASCADE)
     bidder = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)
     fee = models.IntegerField(verbose_name="قیمت", null=False, blank=False)
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)

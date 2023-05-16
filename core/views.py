@@ -88,7 +88,7 @@ contract = sdk.get_nft_collection("0x2A18FECb3579238CdA960B5977f46E500Fb6e735")
 class NFTViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.NFTSerializer
     queryset = NFT.objects.all()
-
+    
     def create(self, request, *args, **kwargs):
         """
         Creates a new NFT with the given metadata and mints it to the specified address.
@@ -208,10 +208,10 @@ class UserCollectionViewSet(viewsets.ReadOnlyModelViewSet):
 
 class sellViewSet(viewsets.ViewSet):
     queryset = NFT.objects.all()
-    # serializer_class = NFtSerializer
+    serializer_class = serializers.NFTSerializer
 
     # @action(detail=True, methods=["put"])
-    def create(self, request, pk=None):
+    def update(self, request, pk=None):
         nft_id = request.data.get('token_id')
         start_date = request.data.get('start_date')
         end_date = request.data.get('end_date')
@@ -253,4 +253,9 @@ class WinnerviewSet(viewsets.ViewSet):
             return Response({"error": "No bids found for this NFT."}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({"winner": highest_bid.user, "price": highest_bid.fee}, status=status.HTTP_200_OK)
+    
+
+
+
+
     
