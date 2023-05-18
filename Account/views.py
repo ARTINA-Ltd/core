@@ -134,19 +134,35 @@ class ProfileViewSet(viewsets.ModelViewSet):
         profile.delete()
         return Response(status=204)
 
+# corner of a persian caligraphy exhibition. some family are looking at arts and discussing about it use colors : #A74AC7 , #5865F2 , #9D00FF
+import random
 
-class TicketViewSet(viewsets.ModelViewSet):
+class TicketViewSet(viewsets.ViewSet):
     queryset = UserTicket.objects.all()
-    serializer_class = serializers.TicketSerializer
+    # serializer_class = serializers.TicketSerializer
 
     def create(self, request, *args, **kwargs):
-        serializer = serializers.TicketSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        user = self.request.user
+        ticket_count = UserTicket.objects.filter(user=user).count()
+        if ticket_count >= 5:
+            raise PermissionDenied("You have reached the maximum number of tickets.")
+        
+        subject = request.data.get('subject')
+        text = request.data.get("text")
 
+        if not subject:
+            return Response({'error': 'subject is required.'}, status.HTTP_400_BAD_REQUEST)
+        if not text:
+            return Response({'error': 'text is required.'}, status.HTTP_400_BAD_REQUEST)
+    
+        # Generate a unique 6-digit ticket ID
+        unique_id = random.randint(100000, 999999)
+        while UserTicket.objects.filter(ticket_id=unique_id).exists():
+            unique_id = random.randint(100000, 999999)
+
+        UserTicket.objects.create(user=user,subject=subject,text=text,ticket_id=unique_id)
+
+        return Response(status=status.HTTP_201_CREATED)
 
 class PhoneVerificationViewSet(viewsets.ViewSet):
     queryset = PhoneVerification.objects.all()

@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from .models import NFT, Exhibition, Application
 from .serializers import NFTSerializer, ExhibitionSerializer, ApplicationSerializer
-
+from django.utils import timezone
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
@@ -69,7 +69,8 @@ class OpenForArtistRegistrationExhibitionsViewSet(viewsets.ReadOnlyModelViewSet)
     def get_queryset(self):
         user = self.request.user
         now = timezone.now()
-        return Exhibition.objects.filter(start_date__lte=now, end_date__gte=now, application_deadline__gte=now).exclude(nfts__owner=user)
+        return Exhibition.objects.filter(start_date__lte=now, end_date__gte=now, application_deadline__gte=now)
+        # .exclude(nfts__owner=user)
 
 
 
@@ -164,6 +165,7 @@ class ExhibitorApplicationsViewSet(viewsets.ViewSet):
 
 class ExhibitionInfoView(viewsets.ModelViewSet):
     # permission_classes = [IsAuthenticated]
+    queryset = Exhibition.objects.all()
 
     def get(self, request, exhibition_id):
         try:

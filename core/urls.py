@@ -12,7 +12,8 @@ router.register(r'images', views.MyImageViewSet)
 router.register(r'UserCollection', views.UserCollectionViewSet,basename="UserCollection")
 router.register(r'Winner', views.WinnerviewSet,basename="Winner")
 router.register(r'sell', views.sellViewSet,basename="sell")
-
+# router.register(r'NftDetail', views.NftDetailViewSet,basename="NftDetail")
+router.register(r'nft-detail', views.NftDetailViewSet, basename='nft-detail')
 
 
 urlpatterns = [

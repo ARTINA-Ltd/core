@@ -85,9 +85,9 @@ contract = sdk.get_nft_collection("0x2A18FECb3579238CdA960B5977f46E500Fb6e735")
 
 
 # 1
-class NFTViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.NFTSerializer
-    queryset = NFT.objects.all()
+class NFTViewSet(viewsets.ViewSet):
+    # serializer_class = serializers.NFTSerializer
+    # queryset = NFT.objects.all()
     
     def create(self, request, *args, **kwargs):
         """
@@ -107,15 +107,15 @@ class NFTViewSet(viewsets.ModelViewSet):
         """
 
         try:
-            author_address = request.data["author_address"]
-            nft_name = request.data["name"]
-            description_nft = request.data["description"]
-            image_nft = request.data["image_url"]
-            # image_nft = request.FILES['base64_image'].file
+            user=self.request.user
+            author_address = request.data.get('author_address')
+            nft_name = request.data.get('nft_name')
+            description_nft = request.data.get('description_nft')
+            image_nft = request.data.get('image_nft')
+            creator = request.data.get('creator')
+            external_link = request.data.get('external_link')
+            last_price = request.data.get('last_price')
 
-            creator = request.data["creator"]
-            external_link = request.data["external_link"]
-            last_price = request.data["last_price"]
         except KeyError as e:
             return Response(
                 {"error": f"Missing required field: {e}"},
@@ -132,7 +132,7 @@ class NFTViewSet(viewsets.ModelViewSet):
 
         }
         print(nft_metadata)
-
+        tx=None
         # Mint the NFT to the specified address
         try:
             tx = contract.mint_to(author_address, NFTMetadataInput.from_json(nft_metadata))
@@ -144,26 +144,14 @@ class NFTViewSet(viewsets.ModelViewSet):
                 {"error": str(e)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
-
-        # Store the NFT metadata in the database
-        # nft_metadata['token_id'] = token_id
-        serializer = serializers.NFTSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            serializer.token_id = token_id
-            serializer.save()
-            return Response(
-                serializer.data,
+        nft=NFT.objects.create(author_address=author_address,name=nft_name,
+                description=description_nft,image_url=image_nft,creator=creator,external_link=external_link,
+                last_price=last_price,token_id=token_id,owner=user)
+        return Response(
+                nft.token_id,
                 status=status.HTTP_201_CREATED,
-            )
-        else:
-            return Response(
-                serializer.errors,
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-
-
+            )            
+      
 
 
 
@@ -198,10 +186,22 @@ from rest_framework.response import Response
 class UserCollectionViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.NFTSerializer
 
-    def get_queryset(self):
+    def get_queryset(self,request):
         user = self.request.user
         return NFT.objects.filter(owner=user)
 
+class NftDetailViewSet(viewsets.ViewSet):
+    serializer_class = serializers.NFTSerializer
+
+    def create(self, request, *args, **kwargs):
+        token_id = request.data.get('token_id')
+        nft = NFT.objects.get(token_id=token_id)
+        serializer = self.get_serializer(nft)
+        return Response(serializer.data)
+
+    def get_serializer(self, *args, **kwargs):
+        serializer_class = self.serializer_class(*args, **kwargs)
+        return serializer_class
 
 
 
