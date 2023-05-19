@@ -83,6 +83,25 @@ class NftViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
+    @action(detail=False, methods=["put"])
+    def sell(self, request, pk=None):
+        nft_id = request.data.get('token_id')
+        start_date = request.data.get('start_date')
+        end_date = request.data.get('end_date')
+        floor_price = request.data.get('floor_price')
+        try:
+            nft = NFT.objects.get(token_id=nft_id)
+        except Http404:
+            return Response({"error": "NFT not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        nft.is_for_sale = True
+        nft.start_date = start_date
+        nft.end_date = end_date
+        nft.last_price = floor_price
+        nft.save()
+
+        return Response({"message": "NFT is now for sale."}, status=status.HTTP_200_OK)
+
 
 
 
@@ -231,7 +250,7 @@ class sellViewSet(viewsets.ViewSet):
     queryset = NFT.objects.all()
     serializer_class = serializers.NFTSerializer
 
-    @action(detail=True, methods=["put"])
+    # @action(detail=True, methods=["put"])
     def update(self, request, pk=None):
         nft_id = request.data.get('token_id')
         start_date = request.data.get('start_date')
