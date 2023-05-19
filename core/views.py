@@ -22,19 +22,26 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import NFT
-
-class OrderViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
-    serializer_class = serializers.OrderSerializer
+from rest_framework.response import Response
+from rest_framework import status
+from django.conf import settings
+import os
+class OrderViewSet(viewsets.ViewSet):
+    # queryset = Order.objects.all()
+    # serializer_class = serializers.OrderSerializer
     
     def create(self, request, *args, **kwargs):
-        data = request.data
-        nft = models.NFT.objects.get(token_id=data['token_id'])
+        fee = request.data.get('fee')
+        token_id = request.data.get('token_id')
+        status = request.data.get('status')
+        bidder=self.request.user
+        nft = models.NFT.objects.get(token_id=token_id)
         if nft.has_expired():
             return Response({'error': 'The auction for this NFT has expired.'}, status.HTTP_400_BAD_REQUEST)
         else:
             if nft.has_started():
-                return super().create(request)
+                Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status)
+                return Response(201)
             else:
                 return Response({'error': 'Auction has not started yet.'}, status.HTTP_400_BAD_REQUEST)
 
@@ -107,7 +114,7 @@ class NFTViewSet(viewsets.ViewSet):
     def create(self, request, *args, **kwargs):
         """
         Creates a new NFT with the given metadata and mints it to the specified address.
-
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg0NTI4MjQ4LCJpYXQiOjE2ODQ1Mjc5NDgsImp0aSI6IjRjNWUyYTMxNzY4ODRmYjhiYjI5MTM2OTFiNTc5NTI1IiwidXNlcl9pZCI6M30.4-BlFYxmwCWU2rwa6BKZRYl7OiW3qdc9E0E261Dvo3I
         Required request data:
         - author_address: The address to mint the NFT to
         - nft_name: The name of the NFT
@@ -173,10 +180,7 @@ class NFTViewSet(viewsets.ViewSet):
 
 
 
-from rest_framework.response import Response
-from rest_framework import status
-from django.conf import settings
-import os
+
 
 class MyImageViewSet(viewsets.ModelViewSet):
     queryset = MyImage.objects.all()
