@@ -231,7 +231,7 @@ class sellViewSet(viewsets.ViewSet):
     queryset = NFT.objects.all()
     serializer_class = serializers.NFTSerializer
 
-    # @action(detail=True, methods=["put"])
+    @action(detail=True, methods=["put"])
     def update(self, request, pk=None):
         nft_id = request.data.get('token_id')
         start_date = request.data.get('start_date')
