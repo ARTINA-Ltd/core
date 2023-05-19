@@ -37,13 +37,13 @@ class OrderViewSet(viewsets.ViewSet):
         bidder=self.request.user
         nft = models.NFT.objects.get(token_id=token_id)
         if nft.has_expired():
-            return Response({'error': 'The auction for this NFT has expired.'}, status.HTTP_400_BAD_REQUEST)
+            return Response(400)
         else:
             if nft.has_started():
                 Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status)
                 return Response(201)
             else:
-                return Response({'error': 'Auction has not started yet.'}, status.HTTP_400_BAD_REQUEST)
+                return Response(400)
 
 
 class NFTRateViewSet(viewsets.ModelViewSet):
