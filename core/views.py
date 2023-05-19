@@ -29,7 +29,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     
     def create(self, request, *args, **kwargs):
         data = request.data
-        nft = models.NFT.objects.get(pk=data['nft'])
+        nft = models.NFT.objects.get(token_id=data['token_id'])
         if nft.has_expired():
             return Response({'error': 'The auction for this NFT has expired.'}, status.HTTP_400_BAD_REQUEST)
         else:
