@@ -7,11 +7,12 @@ import { UserChangeContext } from "../App";
 import SimpleInput from "../components/Inputs/SimpleInput";
 import TestLayout from "../Layouts/TestLayout";
 import SimpleCard from "./../components/Cards/UserDashboardCards/SimpleCard";
+import BorderButton from "../components/Buttons/BorderButton";
 
 const Login = () => {
   const [values, setValues] = useState({
     username: "",
-    password: ""
+    password: "",
   });
   const userChange = useContext(UserChangeContext);
 
@@ -37,22 +38,22 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     await axios
       .post(
         "https://api.artina.org/api/account/login/",
         {
           username: values.username,
-          password: values.password
+          password: values.password,
         },
         {
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         }
       )
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
           localStorage.setItem("authTokens", res.data.access);
           userChange(res);
@@ -60,7 +61,7 @@ const Login = () => {
           navigate("/profile");
         }
       })
-      .catch(res => {
+      .catch((res) => {
         Notify.failure("خطا");
       });
     // const response = await fetch(
@@ -100,11 +101,12 @@ const Login = () => {
           placeholder="مثلا: علیرضا"
           isValid={values.username != ""}
           validationError="نمیتواند خالی باشد"
-          onChange={e =>
-            setValues(prev => ({
+          onChange={(e) =>
+            setValues((prev) => ({
               ...prev,
-              username: e.target.value
-            }))}
+              username: e.target.value,
+            }))
+          }
           defaultValue={""}
         />
         <SimpleInput
@@ -114,30 +116,29 @@ const Login = () => {
           placeholder="مثلا: علیرضا"
           isValid={values.password != ""}
           validationError="نمیتواند خالی باشد"
-          onChange={e =>
-            setValues(prev => ({
+          onChange={(e) =>
+            setValues((prev) => ({
               ...prev,
-              password: e.target.value
-            }))}
+              password: e.target.value,
+            }))
+          }
           defaultValue={""}
         />
-        <div className="flex justify-center mt-7">
-          <div
-            className=" text-white text-[14px] bg-[#4e45d0] py-5 px-[6rem] rounded-lg cursor-pointer transition-all hover:bg-[#372fac]"
-            onClick={handleSubmit}
-          >
-            ورود
-          </div>
+        <div className="flex justify-center mt-5">
+          <BorderButton onClick={handleSubmit}>ورود</BorderButton>
         </div>
-        <div className="text-[16px] mt-3 opacity-40 cursor-pointer" onClick={()=>navigate('/forget-password')}>
+        <div
+          className="text-[16px] mt-3 opacity-40 cursor-pointer"
+          onClick={() => navigate("/forget-password")}
+        >
           فراموشی رمز عبور!
         </div>
 
         <div className="flex mt-5 items-center justify-center text-[16px] gap-4">
           حساب کاربری ندارید؟
           <div
-            className=" text-[#4e45d0] text-[14px] bg-[#4e45d020] py-3 px-[6rem] rounded-lg cursor-pointer transition-all hover:bg-[#372fac20]"
-            onClick={handleSubmit}
+            className=" text-[14px] bg-[#0000aa08] py-2 px-[6rem] rounded-lg cursor-pointer transition-all hover:bg-[#0000aa11]"
+            onClick={() => navigate("/register")}
           >
             ثبت نام
           </div>

@@ -20,6 +20,9 @@ const UploadItem = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
 
+  const [tokenId, setTokenId] = useState();
+
+
   const hanndleNumberChange = e => {
     const re = /^[0-9\b]+$/;
     if (e.target.value === "" || re.test(e.target.value)) {
@@ -44,21 +47,28 @@ const UploadItem = () => {
 
     axios
       .post("https://api.artina.org/api/transaction/NFTViewSet/", {
-        name: upladObj.item_name,
-        owner: user ? user.data.id : "",
+        nft_name: upladObj.item_name,
         creator: upladObj.creator,
         last_price: upladObj.last_price,
-        image_url: imageUrl,
-        description: upladObj.description,
+        image_nft: imageUrl,
+        description_nft: upladObj.description,
         external_link: upladObj.external_link,
         author_address: address
+      },{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+        mode: "cors",
       })
-      .then(() => {
+      .then((res) => {
+        console.log(res)
+        setTokenId(res.data);
         Notify.success("درخواست شما با موفقیت ثبت شد");
         setIsLoading(false);
         setIsUploaded(true);
       })
       .catch(e => {
+        console.log(e)
         Notify.failure("خطا");
         setIsLoading(false);
       });
@@ -217,7 +227,7 @@ const UploadItem = () => {
               </div>
               <div className="text-[16px] text-green-900">
                 وارد کیف پولتون شید روی تب nft روی import بزنید در قسمت contract
-                کد زیر رو کپی کنید و در قسمت TokenId عدد 22 را وارد کنید و ثبت
+                کد زیر رو کپی کنید و در قسمت TokenId عدد {tokenId} را وارد کنید و ثبت
                 رو بزنید.
               </div>
               <div

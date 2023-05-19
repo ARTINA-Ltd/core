@@ -1,21 +1,22 @@
 .simple-input {
-  background-color: #00000000;
-  border-radius: 8px;
+  background-color: #0000aa02;
+  border-radius: 6px 0px 0px 6px;
   outline: none;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  padding-top: 3.25rem;
-  padding-bottom: 0.75rem;
-  border: 1px;
-  border-bottom: 2px;
-  border-color: #0000aa08;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.25rem;
+  border: 0px;
+  border-right: 2px;
+  border-bottom: 0px;
+  border-color: #4e45d0;
   border-style: solid;
   transition: all;
   transition-duration: 200ms;
 }
 .simple-input:focus {
-  background-color: #0000aa04;
+  background-color: #0000aa06;
 }
 .simple-input:hover {
-  background-color: #0000aa04;
+  background-color: #0000aa08;
 }

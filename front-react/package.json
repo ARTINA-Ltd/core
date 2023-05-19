@@ -24,6 +24,7 @@
     "icons": "^1.0.0",
     "js-cookie": "^3.0.1",
     "jwt-decode": "^3.1.2",
+    "keen-slider": "^6.8.5",
     "mui": "^0.0.1",
     "notiflix": "^3.2.6",
     "primeflex": "^3.3.0",
@@ -47,7 +48,8 @@
     "slideshow": "^1.0.4",
     "tailwind": "^4.0.0",
     "tw-elements": "^1.0.0-alpha12",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "zaman": "^2.0.7"
   },
   "scripts": {
     "start": "react-scripts start",

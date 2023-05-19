@@ -35,6 +35,7 @@ const Collections = () => {
                   src={item.image_url}
                   price={item.last_price}
                   onClick={()=> navigate(`/nft-details/${item.token_id}`)}
+                  tokenId={item.token_id}
                 >
                   {item.name}
                 </ImageCard>

@@ -1,155 +1,154 @@
-import {useState, useCallback} from "react";
+import { useState, useCallback } from "react";
 import axios from "axios";
 import "./register-styles.css";
 import FormInput from "./formInput";
-import GoogleButton from 'react-google-button'
-import "../assets/fonts/Vazir-Medium.ttf";
-import {Link, useNavigate} from "react-router-dom";
+import GoogleButton from "react-google-button";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/LandingPageNavBar/Header";
 import Footer from "../components/Footer/Footer";
-
+import TestLayout from "../Layouts/TestLayout";
+import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
+import BorderButton from "../components/Buttons/BorderButton";
+import SimpleInput from "../components/Inputs/SimpleInput";
+import Notiflix from "notiflix";
 
 const Register = () => {
-    const [values, setValues] = useState({
-        username: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-    });
+  const [values, setValues] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-    const inputs = [
-        {
-            id: 1,
-            name: "username",
-            type: "text",
-            placeholder: "Username",
-            errorMessage: "نام کاربری باید منحصر به فرد بوده و بین ۶ تا ۲۰ کاراکتر باشد",
-            label: "نام کاربری",
-            pattern: "^[a-zA-Z0-9_]{6,20}$",
-            required: true,
-        },
-        {
-            id: 2,
-            name: "email",
-            type: "email",
-            placeholder: "Email",
-            errorMessage: "ایمیل آدرس وارد شده معتبر نیست",
-            label: "ایمیل",
-            pattern: `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$`,
-            required: true,
-        },
-        {
-            id: 3,
-            name: "password",
-            type: "password",
-            placeholder: "Password",
-            errorMessage: "رمز عبور باید بین ۸ تا ۲۰ کاراکتر باشد و شامل حداقل یک حرف، یک عدد و یک کاراکتر خاص باشد",
-            label: "رمز عبور",
-            pattern: `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`,
-            required: true,
-        },
-        {
-            id: 4,
-            name: "confirmPassword",
-            type: "password",
-            placeholder: "Confirm Password",
-            errorMessage: "رمز عبور وارد شده با رمز عبور تایید شده یکسان نیست",
-            label: "تکرار رمز عبور",
-            pattern: values.password,
-            required: true,
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post("https://api.artina.org/api/account/register/", {
+        username: values.username,
+        email: values.email,
+        password: values.password,
+      })
+      .then((response) => {
+        if (response.status === 201) {
+          Notiflix.Notify.success("ثبت نام با موفقیت انجام شد");
+          navigate("/login");
+        } else {
+            Notiflix.Notify.failure("خطایی رخ داد");
         }
-    ]
+      });
+  };
 
-    const navigate = useNavigate();
+  const onChange = (e) => {
+    setValues({
+      ...values,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        axios.post("https://api.artina.org/api/account/register/", {
-            username: values.username,
-            email: values.email,
-            password: values.password,
-        })
-            .then((response) => {
-                    if (response.status === 201) {
-                        alert("ثبت نام با موفقیت انجام شد");
-                        navigate("/login");
-                    } else {
-                        alert("Something went wrong!");
-                    }
-                }
-            )
-    }
+  const openGoogleLoginPage = useCallback(() => {
+    const googleAuthUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+    const redirectUri = "api/v1/auth/login/google/";
 
-    const onChange = (e) => {
-        setValues({
-            ...values,
-            [e.target.name]: e.target.value,
-        });
-    }
+    const scope = [
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/userinfo.profile",
+    ].join(" ");
 
-    const openGoogleLoginPage = useCallback(() => {
-        const googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
-        const redirectUri = 'api/v1/auth/login/google/';
+    const params = {
+      response_type: "code",
+      client_id:
+        "512823683871-adr9e9dcfqiqii5o2480u5fhbtu4uj1g.apps.googleusercontent.com",
+      redirect_uri: `http://localhost:8000/api/v1/auth/login/google/`,
+      prompt: "select_account",
+      access_type: "offline",
+      scope,
+    };
 
-        const scope = [
-            'https://www.googleapis.com/auth/userinfo.email',
-            'https://www.googleapis.com/auth/userinfo.profile'
-        ].join(' ');
+    const urlParams = new URLSearchParams(params).toString();
 
-        const params = {
-            response_type: 'code',
-            client_id: '512823683871-adr9e9dcfqiqii5o2480u5fhbtu4uj1g.apps.googleusercontent.com',
-            redirect_uri: `http://localhost:8000/api/v1/auth/login/google/`,
-            prompt: 'select_account',
-            access_type: 'offline',
-            scope
-        };
+    window.location = `${googleAuthUrl}?${urlParams}`;
+  }, []);
 
-        const urlParams = new URLSearchParams(params).toString();
+  console.log(values);
+  return (
+    <TestLayout className="flex items-center justify-center form-input w-full">
+      <SimpleCard className={"bg-[#ffffff] w-[450px]"}>
+        <div className="text-[24px] font-b8">فرم ثبت نام</div>
 
-        window.location = `${googleAuthUrl}?${urlParams}`;
-    }, []);
-
-    console.log(values);
-    return (
-        <>
-       
-        <div  style={{direction:'rtl'} } className='overflow-hidden'> 
-        <Header/>
-        <div className="form-input  p-3 mt-5">
-            <form className="registerform" onSubmit={handleSubmit}>
-                <h1>فرم ثبت نام</h1>
-                {inputs.map((input) => (
-                    <FormInput key={input.id} {...input} value={values[input.name]} onChange={onChange}/>
-                ))}
-                <button>ثبت نام</button>
-                <div className="google-button-container">
-                    <GoogleButton
-                        className="google-button"
-                        style={{
-                            backgroundColor: ("rgb(100,100,255,0.95)"),
-                            color: "white",
-                            width: "100%",
-                           
-                            fontFamily: "Vazir-Medium",
-                            fontSize: "2.3em",
-                            fontWeight: "bold",
-                            borderRadius: "7px",
-                        }}
-                        label="ثبت نام با گوگل"
-                        onClick={openGoogleLoginPage}
-                    />
-
-                </div>
-                <p  className="text-5xl mt-5" >     از قبل حساب کاربری دارید ؟   <Link to='/Login'> ورود</Link></p>
-
-            </form>
+        <SimpleInput
+          className={"mt-6"}
+          type="text"
+          title="نام کاربری"
+          placeholder="مثلا: alireza"
+          isValid={values.username != ""}
+          validationError="نمیتواند خالی باشد"
+          onChange={(e) =>
+            setValues((prev) => ({
+              ...prev,
+              username: e.target.value,
+            }))
+          }
+          defaultValue={""}
+        />
+        <SimpleInput
+          className={"mt-6"}
+          type="text"
+          title="ایمیل"
+          placeholder="مثلا: example@gmail.com"
+          isValid={values.email != ""}
+          validationError="نمیتواند خالی باشد"
+          onChange={(e) =>
+            setValues((prev) => ({
+              ...prev,
+              email: e.target.value,
+            }))
+          }
+          defaultValue={""}
+        />
+        <SimpleInput
+          className={"mt-6"}
+          type="text"
+          title="رمز عبور"
+          placeholder=""
+          isValid={values.password != ""}
+          validationError="نمیتواند خالی باشد"
+          onChange={(e) =>
+            setValues((prev) => ({
+              ...prev,
+              password: e.target.value,
+            }))
+          }
+          defaultValue={""}
+        />
+        <SimpleInput
+          className={"mt-6"}
+          type="text"
+          title="تکرار رمز عبور"
+          placeholder=""
+          isValid={values.confirmPassword != ""}
+          validationError="نمیتواند خالی باشد"
+          onChange={(e) =>
+            setValues((prev) => ({
+              ...prev,
+              confirmPassword: e.target.value,
+            }))
+          }
+          defaultValue={""}
+        />
+        <div className="mt-5">
+          <BorderButton onClick={handleSubmit}>ثبت نام</BorderButton>
         </div>
-        <Footer/>
 
+        <div className="bg-[#0000aa10] px-5 py-3 rounded-2xl mt-5 ">
+          <Link to="/Login" className="text-indigo-900">
+            از قبل حساب کاربری دارید ؟ وارد شوید.
+          </Link>
         </div>
-        </>
-    );
-}
+      </SimpleCard>
+    </TestLayout>
+  );
+};
 
 export default Register;

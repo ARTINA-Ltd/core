@@ -4,6 +4,19 @@ module.exports = {
   ],
   
     theme: {
+      fontFamily: {
+        'b1': ['KalamehThin', 'system-ui'],
+        'b2': ['KalamehExtraLight', 'system-ui'],
+        'b3': ['KalamehLight', 'system-ui'],
+        'b4': ['KalamehRegular', 'system-ui'],
+        'b5': ['KalamehMedium', 'system-ui'],
+        'b6': ['KalamehSemiBold', 'system-ui'],
+        'b7': ['KalamehBold', 'system-ui'],
+        'b8': ['KalamehExtraBold', 'system-ui'],
+        'b9': ['KalamehBlack', 'system-ui'],
+        
+        
+      }
       // screens: {
       //   'sm': '300px',
       //   // => @media (min-width: 640px) { ... }

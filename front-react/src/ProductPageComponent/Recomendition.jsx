@@ -6,7 +6,7 @@ function Recomendition({ requests , nft}) {
 
   return (
     <>
-      <div className="flex flex-col lg:mr-[40px] sm:mr-[2px] sm:mr-[2px] lg:ml-[40px] w-full">
+      <div className="flex flex-col lg:mr-[40px] sm:mr-[2px] lg:ml-[40px] w-full">
         <div className="overflow-x-auto  lg:mx-8">
           <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
             <div className="overflow-hidden">
@@ -15,31 +15,31 @@ function Recomendition({ requests , nft}) {
                   <tr>
                     <th
                       scope="col"
-                      className="lg:text-4xl font sm:text-2xl font-bold text-gray-900 px-6 py-4 text-center"
+                      className="lg:text-4xl  sm:text-2xl text-gray-900 px-6 py-4 text-center"
                     >
                       نام
                     </th>
                     <th
                       scope="col"
-                      className="lg:text-4xl font sm:text-2xl font-bold text-gray-900 px-6 py-4 text-center"
+                      className="lg:text-4xl  sm:text-2xl text-gray-900 px-6 py-4 text-center"
                     >
                       تاریخ پایان
                     </th>
                     <th
                       scope="col"
-                      className="lg:text-4xl font sm:text-2xl font-bold text-gray-900 px-6 py-4 text-center"
+                      className="lg:text-4xl  sm:text-2xl text-gray-900 px-6 py-4 text-center"
                     >
                       قیمت
                     </th>
                     <th
                       scope="col"
-                      className="lg:text-4xl font sm:text-2xl font-bold text-gray-900 px-6 py-4 text-center"
+                      className="lg:text-4xl  sm:text-2xl text-gray-900 px-6 py-4 text-center"
                     >
                       شماره NFT
                     </th>
                     <th
                       scope="col"
-                      className="lg:text-4xl font sm:text-2xl font-bold text-gray-900 px-6 py-4 text-center"
+                      className="lg:text-4xl  sm:text-2xl text-gray-900 px-6 py-4 text-center"
                     >
                       لغو پیشنهاد
                     </th>
