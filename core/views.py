@@ -201,7 +201,7 @@ from rest_framework.response import Response
 class UserCollectionViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.NFTSerializer
 
-    def get_queryset(self,request):
+    def get_queryset(self):
         user = self.request.user
         return NFT.objects.filter(owner=user)
 
