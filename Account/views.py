@@ -134,19 +134,35 @@ class ProfileViewSet(viewsets.ModelViewSet):
         profile.delete()
         return Response(status=204)
 
+# corner of a persian caligraphy exhibition. some family are looking at arts and discussing about it use colors : #A74AC7 , #5865F2 , #9D00FF
+import random
 
-class TicketViewSet(viewsets.ModelViewSet):
+class TicketViewSet(viewsets.ViewSet):
     queryset = UserTicket.objects.all()
-    serializer_class = serializers.TicketSerializer
+    # serializer_class = serializers.TicketSerializer
 
     def create(self, request, *args, **kwargs):
-        serializer = serializers.TicketSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        user = self.request.user
+        ticket_count = UserTicket.objects.filter(user=user).count()
+        if ticket_count >= 5:
+            raise PermissionDenied("You have reached the maximum number of tickets.")
+        
+        subject = request.data.get('subject')
+        text = request.data.get("text")
 
+        if not subject:
+            return Response({'error': 'subject is required.'}, status.HTTP_400_BAD_REQUEST)
+        if not text:
+            return Response({'error': 'text is required.'}, status.HTTP_400_BAD_REQUEST)
+    
+        # Generate a unique 6-digit ticket ID
+        unique_id = random.randint(100000, 999999)
+        while UserTicket.objects.filter(ticket_id=unique_id).exists():
+            unique_id = random.randint(100000, 999999)
+
+        UserTicket.objects.create(user=user,subject=subject,text=text,ticket_id=unique_id)
+
+        return Response(status=status.HTTP_201_CREATED)
 
 class PhoneVerificationViewSet(viewsets.ViewSet):
     queryset = PhoneVerification.objects.all()
@@ -159,12 +175,13 @@ class PhoneVerificationViewSet(viewsets.ViewSet):
         return queryset
 
     def create(self, request, pk=None):
+        user = self.request.user
         phone_number = request.data.get('phone_number')
         verification_code = request.data.get("verification_code")
         phone_verification = PhoneVerification.objects.get(phone_number=phone_number)
         if phone_verification.verification_code == verification_code:
             Profile.objects.filter(user=user).first().phone_verified = True
-            phone_verification.save()
+            phone_verification.delete()
             return Response({"status": "success"})
         else:
             return Response({"status": "error", "error": "verification code is not correct"},
@@ -217,8 +234,6 @@ class SendVerificationCodeViewSet(viewsets.ViewSet):
 
 
 
-
-
 class UserTurnoverViewSet(viewsets.ModelViewSet):
     queryset = UserTurnover.objects.all()
     serializer_class = serializers.UserTurnoverSerializer
@@ -227,18 +242,75 @@ class UserTurnoverViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         #request.data['user'] = request.user.id
         return super().create(request, *args, **kwargs)
+    
+    
+    # @action(detail=True, methods=['get'])
+    def turnover(self, request, pk=None):
+        user = self.get_object().user
+        turnovers = UserTurnover.objects.filter(user=user)
+        
+        # Calculate turnover for the last month
+        today = datetime.now().date()
+        last_month = today - timedelta(days=30)
+        last_month_turnover = turnovers.filter(
+            Q(date__gte=last_month) & Q(date__lte=today)
+        ).aggregate(Sum('transaction_value'))['transaction_value__sum'] or 0
+
+        data = {
+            'last_month_turnover': last_month_turnover,
+            'all_turnovers': UserTurnoverSerializer(turnovers, many=True).data,
+        }
+
+        return Response(data, status=status.HTTP_200_OK)
 
 
 
+
+
+
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from .models import UserBalance, TransactionType, TransactionCurrency
+from .serializers import UserBalanceSerializer
 
 class UserBalanceViewSet(viewsets.ModelViewSet):
     queryset = UserBalance.objects.all()
-    serializer_class = serializers.UserBalanceSerializer
-    # permission_classes = (IsAuthenticated,)
+    serializer_class = UserBalanceSerializer
+    permission_classes = [IsAuthenticated]
 
-    def create(self, request, *args, **kwargs):
-        # request.data['user'] = request.user.id
-        return super().create(request, *args, **kwargs)
+    def create(self, request, pk=None):
+        user = self.get_object().user
+        currency = request.data.get('currency', '').lower()
+        amount = request.data.get('amount', 0)
+
+        if not currency or not amount:
+            return Response({'error': 'Both currency and amount are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            amount = int(amount)
+        except ValueError:
+            return Response({'error': 'Invalid amount value.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        transaction_type = TransactionType.objects.get(name='deposit')
+        transaction_currency = TransactionCurrency.objects.get(name=currency)
+
+        if currency == 'rial':
+            user_balance_field = 'rial_available_balance'
+        elif currency == 'eth':
+            user_balance_field = 'eth_balance'
+        else:
+            return Response({'error': 'Invalid currency.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        user_balance = getattr(user.userbalance, user_balance_field)
+        setattr(user.userbalance, user_balance_field, user_balance + amount)
+        user.userbalance.save()
+
+        UserTurnover.objects.create(user=user, transaction_type=transaction_type, 
+                                    transaction_currency=transaction_currency, transaction_value=amount)
+
+        return Response({'success': 'Balance charged successfully.'}, status=status.HTTP_200_OK)
 
 
 
@@ -265,3 +337,8 @@ class PasswordResetByPhoneViewSet(viewsets.ViewSet):
 
             return Response({"status": "error", "error": "verification code is not correct"},
                     status.HTTP_400_BAD_REQUEST)
+
+
+
+
+                    

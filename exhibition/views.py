@@ -5,105 +5,187 @@ from exhibition import models
 from exhibition import serializers
 
 from rest_framework import viewsets
-from rest_framework.decorators import action
+# from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
-
+from rest_framework import viewsets, permissions
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+from .models import NFT, Exhibition, Application
+from .serializers import NFTSerializer, ExhibitionSerializer, ApplicationSerializer
+from django.utils import timezone
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-class ExhibitionViewSet(viewsets.ModelViewSet):
-    queryset = models.Exhibition.objects.all()
+
+
+class UserExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.ExhibitionSerializer
 
+    def get_queryset(self):
+        user = self.request.user
+        return NFT.objects.filter(owner=user)
 
-class NFtExView(viewsets.ModelViewSet):
-    queryset = models.NFtEx.objects.all()
-    serializer_class = serializers.NFtExSerializer
 
-    def get_serializer_class(self):
-        if self.action == 'changing_state':
-            return serializers.NFtExStateChangerSerializer
+class ExhibitorOpenExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = serializers.ExhibitionSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        now = timezone.now()
+        return Exhibition.objects.filter(exhibitor=user, start_date__lte=now, end_date__gte=now)
+
+class ExhibitorClosedExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = serializers.ExhibitionSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        now = timezone.now()
+        return Exhibition.objects.filter(exhibitor=user, end_date__lt=now)
+
+class ArtistOpenExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = serializers.ExhibitionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        now = timezone.now()
+        return Exhibition.objects.filter(nfts__owner=user, start_date__lte=now, end_date__gte=now)
+
+class ArtistClosedExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = serializers.ExhibitionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        now = timezone.now()
+        return Exhibition.objects.filter(nfts__owner=user, end_date__lt=now)
+
+class OpenForArtistRegistrationExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = serializers.ExhibitionSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        now = timezone.now()
+        return Exhibition.objects.filter(start_date__lte=now, end_date__gte=now, application_deadline__gte=now)
+        # .exclude(nfts__owner=user)
+
+
+
+class IsExhibitorOrReadOnly(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return obj.exhibition.exhibitor == request.user
+
+class ExhibitionViewSet(viewsets.ModelViewSet):
+    queryset = Exhibition.objects.all()
+    serializer_class = serializers.ExhibitionSerializer
+    permission_classes = [IsExhibitorOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(exhibitor=self.request.user)
+
+
+class ApplicationViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.ApplicationSerializer
+    permission_classes = [permissions.IsAuthenticated, IsExhibitorOrReadOnly]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff:
+            return Application.objects.all()
         else:
-            return super().get_serializer_class()
-        
-    @action(detail=True, name='Change State', methods=['post'], permission_classes = [IsAuthenticated])        
-    def changing_state(self, request, pk=None):
-        serializer = self.get_serializer_class()
-        serializer = serializer(data=request.data)
-        if not serializer.is_valid():
-            return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
-        nftex = models.NFtEx.objects.get(id=pk)
-        exhibitor = nftex.ex.user
-        if request.user != exhibitor :
-            return Response({'error' : 'you are not exhibitor to allowed to do this function'} , status.HTTP_403_FORBIDDEN)
-        nftex.state = serializer.validated_data['state']
-        nftex.feedback = serializer.validated_data['feedback']
-        nftex.save()
-        return Response(serializers.NFtExSerializer(nftex).data)  
+            return Application.objects.filter(exhibition__exhibitor=user)
 
-    
-class ExhibitorViewSet(viewsets.ModelViewSet):
-    queryset = models.User.objects.all()
-    serializer_class = serializers.UserSerializer
+    def create(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-    def get_serializer_class(self):
-        if self.action == 'get_exhibitions':
-            return serializers.ExhibitionSerializer
-        else:
-            return super().get_serializer_class()
+        exhibition = serializer.validated_data['exhibition']
+        contract_accepted = serializer.validated_data['contract_accepted']
 
-    @action(detail=True, methods=['get'], name='Get Exhibitions')
-    def get_exhibitions(self, request, pk=None):
-        exhibitor = User.objects.get(id=pk)
-        exhibition = exhibitor.exhibition_set.all()
-        exhibitions = serializers.ExhibitionSerializer(exhibition, many=True)
-        return Response(exhibitions.data)
+        if not contract_accepted:
+            return Response({'error': 'You must accept the exhibition contract before submitting your application.'}, status=400)
 
-    @action(detail=True, methods=['get'], name='Get Accepted State')
-    def get_accepted_state(self, request, pk=None):
-        all_data = []
-        exhibitor = User.objects.get(id=pk)
-        exhibitions = exhibitor.exhibition_set.all()
-        for exhibition in exhibitions:
-            nftexs = exhibition.nftexs.filter(state='accepted').all()
-            for nftex in nftexs:
-                data = serializers.NFtExSerializer(nftex).data
-                data['owner'] = serializers.UserSerializer(nftex.get_owner()).data
-                all_data.append(data)
-            # data += serializers.NFtExSerializer(nftexs, many=True).data
-        return Response(all_data) 
+        application = serializer.save()
 
-    @action(detail=True, methods=['get'], name='Get Pending State')
-    def get_pending_state(self, request, pk=None):
-        all_data = []
-        
-        exhibitor = User.objects.get(id=pk)
-        exhibitions = exhibitor.exhibition_set.all()
-        for exhibition in exhibitions:
-            nftexs = exhibition.nftexs.filter(state='pending').all()
-            for nftex in nftexs:
-                data = serializers.NFtExSerializer(nftex).data
-                data['owner'] = serializers.UserSerializer(nftex.get_owner()).data
-                all_data.append(data) 
-            # nftexs += serializers.NFtExSerializer(nftex, many=True).data
-        return Response(all_data)
+        return Response(serializer.data, status=201)
 
-    @action(detail=True, methods=['get'], name='Get Rejected State')
-    def get_rejected_state(self, request, pk=None):
-        all_data = []
-        exhibitor = User.objects.get(id=pk)
-        exhibitions = exhibitor.exhibition_set.all()
-        for exhibition in exhibitions:
-            nftexs = exhibition.nftexs.filter(state='rejected').all()
-            for nftex in nftexs:
-                data = serializers.NFtExSerializer(nftex).data
-                data['owner'] = serializers.UserSerializer(nftex.get_owner()).data
-                all_data.append(data)
-            # data += serializers.NFtExSerializer(nftexs, many=True).data
-        return Response(all_data)
+    def retrieve(self, request, pk=None):
+        application = get_object_or_404(Application.objects.filter(exhibition__exhibitor=request.user), pk=pk)
+        serializer = self.get_serializer(application)
+        return Response(serializer.data)
 
 
-class TransactionList(viewsets.ModelViewSet):
-    queryset = models.Transaction.objects.all()
-    serializer_class = serializers.TransactionSerializer
+    def exhibitor_applications(self, request):
+        exhibitor_id = request.query_params.get('exhibitor_id', None)
+        if exhibitor_id is None:
+            return Response({'error': 'Exhibitor ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
+        try:
+            exhibitor_id = int(exhibitor_id)
+        except ValueError:
+            return Response({'error': 'Invalid exhibitor ID.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        applications = Application.objects.filter(exhibition__exhibitor__id=exhibitor_id)
+        serialized_data = self.get_serializer(applications, many=True).data
+        return Response(serialized_data, status=status.HTTP_200_OK)
+
+    def list(self, request, *args, **kwargs):
+        if 'exhibitor_id' in request.query_params:
+            return self.exhibitor_applications(request)
+        return super().list(request, *args, **kwargs)
+
+
+class ExhibitorApplicationsViewSet(viewsets.ViewSet):
+    # permission_classes = [IsAuthenticated]
+
+    def update(self, request, pk=None):
+        try:
+            application = Application.objects.get(id=pk, exhibition__exhibitor=request.user)
+        except Application.DoesNotExist:
+            return Response({'error': 'Application not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        action = request.data.get('action', None)
+        if action not in ['accept', 'delete']:
+            return Response({'error': 'Invalid action.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if action == 'accept':
+            application.status = 'accepted'
+        elif action == 'delete':
+            application.status = 'deleted'
+
+        application.save()
+        serialized_data = ApplicationSerializer(application).data
+        return Response(serialized_data, status=status.HTTP_200_OK)
+
+
+class ExhibitionInfoView(viewsets.ModelViewSet):
+    # permission_classes = [IsAuthenticated]
+    queryset = Exhibition.objects.all()
+
+    def get(self, request, exhibition_id):
+        try:
+            exhibition = Exhibition.objects.get(id=exhibition_id)
+        except Exhibition.DoesNotExist:
+            return Response({'error': 'Exhibition not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        serialized_data = ExhibitionSerializer(exhibition).data
+        response_data = {
+            'title': serialized_data['title'],
+            'description': serialized_data['description'],
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+
+
+
+class OpenExhibitionListView(viewsets.ModelViewSet):
+    # permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        open_exhibitions = Exhibition.objects.filter(status='open')
+        serialized_data = ExhibitionSerializer(open_exhibitions, many=True).data
+        return Response(serialized_data, status=status.HTTP_200_OK)
