@@ -18,6 +18,10 @@ from rest_framework.exceptions import ParseError
 import base64
 from django.http import Http404
 from django.utils import timezone
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from .models import NFT
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
@@ -55,11 +59,22 @@ class NFTRateViewSet(viewsets.ModelViewSet):
             rate_obj.save()
             return Response(serializers.NFTRateSerializer(rate_obj).data) 
 
-class NFTViewSet(viewsets.ModelViewSet):
-    def list(self, *args):
-       queryset = models.NFT.objects.filter(id=id)
-    
+class NftViewSet(viewsets.ModelViewSet):
+    queryset = NFT.objects.all()
     serializer_class = serializers.NFTSerializer
+
+
+    def list(self, *args):
+        queryset = models.NFT.objects.filter(id=id)
+        serializer_class = serializers.NFTSerializer
+
+
+    @action(detail=False, methods=['get'])
+    def top_5_expensive(self, request):
+        top_5_expensive = self.get_queryset().order_by('-last_price')[:5]
+        serializer = self.get_serializer(top_5_expensive, many=True)
+        return Response(serializer.data)
+
 
 
 
@@ -203,6 +218,8 @@ class NftDetailViewSet(viewsets.ViewSet):
         serializer_class = self.serializer_class(*args, **kwargs)
         return serializer_class
 
+
+ 
 
 
 
