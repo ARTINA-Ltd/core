@@ -13,17 +13,40 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordResetView
 
 
+# class RegisterViewSet(viewsets.ModelViewSet):
+#     queryset = User.objects.all()
+#     serializer_class = serializers.RegisterSerializer
+
+#     def create(self, request, *args, **kwargs):
+#         serializer = self.get_serializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         self.perform_create(serializer)
+#         headers = self.get_success_headers(serializer.data)
+#         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
 class RegisterViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = serializers.RegisterSerializer
 
     def create(self, request, *args, **kwargs):
+        # Check if the username, phone_number, or email already exists in the database
+        username = request.data.get('username')
+        phone_number = request.data.get('phone_number')
+        email = request.data.get('email')
+
+        if User.objects.filter(username=username).exists():
+            return Response({'error': 'This username is already taken.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if User.objects.filter(email=email).exists():
+            return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create the user if the username, phone_number, and email are all unique
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
 
 class LoginViewSet(viewsets.ViewSet):
 
@@ -106,6 +129,12 @@ class ProfileViewSet(viewsets.ModelViewSet):
     def create(self, request):
         data = request.data.copy()
         data['user'] = request.user.id
+
+        phone_number = data.get('phone_number')
+
+        if Profile.objects.filter(phone_number=phone_number).exists():
+            return Response({'error': 'This phone number is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
+
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
