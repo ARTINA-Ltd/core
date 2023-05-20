@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "KalamehRegular";
+  src: url("assets/fonts/KalamehWeb-Regular.woff") format("woff2");
+}
+@font-face {
+  font-family: "KalamehBold";
+  src: url("assets/fonts/KalamehWeb-Bold.woff") format("woff2");
+}
+@font-face {
+  font-family: "KalamehBlack";
+  src: url("assets/fonts/KalamehWeb-Black.woff") format("woff2");
+}
+@font-face {
+  font-family: "KalamehExtraBold";
+  src: url("assets/fonts/KalamehWeb-ExtraBold.woff") format("woff2");
+}
+@font-face {
+  font-family: "KalamehExtraLight";
+  src: url("assets/fonts/KalamehWeb-ExtraLight.woff") format("woff2");
+}
+@font-face {
+  font-family: "KalamehLight";
+  src: url("assets/fonts/KalamehWeb-Light.woff") format("woff2");
+}
+@font-face {
+  font-family: "KalamehMedium";
+  src: url("assets/fonts/KalamehWeb-Medium.woff") format("woff2");
+}
+@font-face {
+  font-family: "KalamehSemiBold";
+  src: url("assets/fonts/KalamehWeb-SemiBold.woff") format("woff2");
+}
+@font-face {
+  font-family: "KalamehThin";
+  src: url("assets/fonts/KalamehWeb-Thin.woff") format("woff2");
+}
+
+@layer base {
+  html {
+    font-family: "KalamehRegular", system-ui, sans-serif;
+  }
+}
+
+.notiflix-notify {
+    font-family: "KalamehSemiBold", system-ui, sans-serif !important;
+  }
+
+  .d-grid{
+    display: grid;
+  }

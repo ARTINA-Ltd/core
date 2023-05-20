@@ -1,13 +1,6 @@
-import { createContext, useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import React from "react";
-import "../ProductPageComponent/index.css";
-import MainImage from "../ProductPageComponent/MainImage";
-import UnNav from "../ProductPageComponent/Un-nav";
-import Footer from "../components/Footer/Footer";
-import Price from "../ProductPageComponent/Price";
-import Navbar from "../components/LandingPageNavBar/Header";
 import Properties from "../ProductPageComponent/Properties";
-import Activity from "../ProductPageComponent/Activity";
 import Recomendition from "../ProductPageComponent/Recomendition";
 import axios from "axios";
 import TestLayout from "../Layouts/TestLayout";
@@ -15,6 +8,7 @@ import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import { useParams } from "react-router";
 import SimpleInput from "../components/Inputs/SimpleInput";
 import { UserContext } from "../App";
+import { Notify } from "notiflix";
 
 const NFTDetails = () => {
   const [data, setData] = useState();
@@ -97,25 +91,29 @@ const NFTDetails = () => {
   };
 
   useEffect(() => {
-    axios({
-      method: "get",
-      url: "https://api.artina.org/api/transaction/Nfts/",
-      //  url: "https://api.artina.org/api/account/profile/",
-    }).then((d) => {
-      console.log("NFTs");
+    axios
+      .post(
+        "https://api.artina.org/api/transaction/nft-detail/",
+        {
+          token_id: id,
+        }
+        //  url: "https://api.artina.org/api/account/profile/",
+      )
+      .then((d) => {
+        console.log("NFTs");
         console.log(d);
         console.log("__________________");
-      setData(d);
-    });
+        setData(d.data);
+      });
 
     axios({
       method: "get",
       url: "https://api.artina.org/api/transaction/rate/",
     })
       .then((d) => {
-        console.log("_______rate_______");
-        console.log(d);
-        console.log("__________________");
+        // console.log("_______rate_______");
+        // console.log(d);
+        // console.log("__________________");
       })
       .catch(console.log);
 
@@ -131,182 +129,147 @@ const NFTDetails = () => {
       })
       .catch(console.log);
   }, []);
-  var Token = localStorage.getItem("authTokens");
-
-  const config = {
-    headers: { Authorization: `Bearer ${Token}` },
-  };
 
   function addRequest() {
     axios
-    .post(
-      "https://api.artina.org/api/transaction/orders/",
-      {
-        nft:[3],
-        bidder: 3,
-        fee:300,
-        status:0
-      },config
-    )
-    .then((response) => {
-      if (response.status == 200) {
-        alert("as");
-      }
-    })
-    .catch((exception) => {
-      console.log("exception");
-      console.log(exception);
-    });
+      .post("https://api.artina.org/api/transaction/orders/", {
+        token_id: id,
+        fee: ethereum,
+        status: 0,
+      },{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+        mode: "cors",
+      })
+      .then((response) => {
+        Notify.success("پیشنهاد شما با موفقیت ثبت شد");
+      })
+      .catch((exception) => {
+        Notify.failure("خطا");
+        console.log(exception);
+      });
   }
 
   return (
-              <TestLayout>
-
-      {data
-        ? data.data.map((item) =>
-            item.token_id == id ? (
-              <div  key={item.token_id}>
-                <div className="flex gap-16">
-                  <SimpleCard
-                    id="RightSide"
-                    className="bg-[#4e45d0] w-[45%] flex flex-col relative gap-12 items-center "
-                  >
-                    <div className="flex flex-col gap-5">
-                      <img
-                        src={item.image_url}
-                        className="rounded-xl"
-                      ></img>
-                      <div className="bg-[#7168f3] w-full h-28 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]">
-                        {icons.heart}
-                        <div className="text-white text-[16px]">1571</div>
-                      </div>
-                      <div className="bg-[#7168f3] w-full h-28 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]">
-                        {icons.eye}
-                        <div className="text-white text-[16px]">24566</div>
-                      </div>
-                      <div className="bg-[#7168f3] w-full h-28 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]">
-                        {icons.share}
-                        <div className="text-white text-[16px]">270</div>
-                      </div>
-                    </div>
-                  </SimpleCard>
-                  <SimpleCard
-                    id="LeftSide"
-                    className={"flex flex-col gap-12 bg-white w-full"}
-                  >
-                    <div className="relative flex items-center pt-3">
-                      <div className="absolute text-[16px] opacity-40">
-                        نام اثر
-                      </div>
-                      <div className="text-[32px] mx-auto">{item.name}</div>
-                    </div>
-                    <hr className="opacity-10 mx-32"></hr>
-                    <div className="relative flex items-center">
-                      <div className="absolute text-[16px] opacity-40">
-                        هنرمند
-                      </div>
-                      <div className="text-[16px] mx-auto">{item.creator}</div>
-                    </div>
-                    {/* <div className="relative flex items-center">
+    <TestLayout>
+      <div>
+        <div className="flex gap-16">
+          <SimpleCard
+            id="RightSide"
+            className="bg-[#4e45d0] w-[45%] flex flex-col relative gap-12 items-center "
+          >
+            <div className="flex flex-col gap-5">
+              <img src={data? data.image_url: ''} className="rounded-xl"></img>
+              <div className="bg-[#7168f3] w-full h-28 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]">
+                {icons.heart}
+                <div className="text-white text-[16px]">1571</div>
+              </div>
+              <div className="bg-[#7168f3] w-full h-28 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]">
+                {icons.eye}
+                <div className="text-white text-[16px]">24566</div>
+              </div>
+              <div className="bg-[#7168f3] w-full h-28 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]">
+                {icons.share}
+                <div className="text-white text-[16px]">270</div>
+              </div>
+            </div>
+          </SimpleCard>
+          <SimpleCard
+            id="LeftSide"
+            className={"flex flex-col gap-12 bg-white w-full"}
+          >
+            <div className="relative flex items-center pt-3">
+              <div className="absolute text-[16px] opacity-40">نام اثر</div>
+              <div className="text-[32px] mx-auto">{data? data.name : ''}</div>
+            </div>
+            <hr className="opacity-10 mx-32"></hr>
+            <div className="relative flex items-center">
+              <div className="absolute text-[16px] opacity-40">هنرمند</div>
+              <div className="text-[16px] mx-auto">{data? data.creator : ''}</div>
+            </div>
+            {/* <div className="relative flex items-center">
                       <div className="absolute text-[16px] opacity-40">
                         تاریخ ساخت
                       </div>
                       <div className="text-[16px] mx-auto">{item.date}</div>
                     </div> */}
-                    <hr className="opacity-10 mx-32"></hr>
+            <hr className="opacity-10 mx-32"></hr>
 
-                    <div className="relative flex items-center h-full">
-                      <div className="absolute text-[16px] opacity-40">
-                        توضیحات
-                      </div>
-                      <div className="text-[16px] mr-36 self-start text-right">
-                        {item.description}
-                      </div>
-                    </div>
-                    <div className="relative flex items-center justify-self-end bg-[#f1f2f7] px-10 py-4 rounded-xl">
-                      <div className="absolute text-[16px] opacity-50">
-                        آخرین قیمت
-                      </div>
-                      <div className="text-[22px] mx-auto">
-                        {item.last_price} اتریوم
-                      </div>
-                    </div>
-                  </SimpleCard>
+            <div className="relative flex items-center h-full">
+              <div className="absolute text-[16px] opacity-40">توضیحات</div>
+              <div className="text-[16px] mr-36 self-start text-right">
+                {data? data.description : ''}
+              </div>
+            </div>
+            <div className="relative flex items-center justify-self-end bg-[#f1f2f7] px-10 py-4 rounded-xl">
+              <div className="absolute text-[16px] opacity-50">آخرین قیمت</div>
+              <div className="text-[22px] mx-auto">
+                {data? data.last_price:''} اتریوم
+              </div>
+            </div>
+          </SimpleCard>
+        </div>
+        <div>
+          <SimpleCard className="bg-white w-full flex flex-col relative gap-12 items-center mt-12">
+            <div className="flex items-center pt-3">
+              <div className="text-[32px] mx-auto">پیشنهادات</div>
+            </div>
+            <Properties requests={reqData ? reqData : undefined} nft={id} />
+          </SimpleCard>
+          {user && (data? data.is_for_sale : true) ? (
+            <>
+              <SimpleCard
+                id="InsertRequest"
+                className="bg-[#4e45d0] w-full flex flex-col relative gap-12 items-center mt-12"
+              >
+                <div className="flex items-center pt-3">
+                  <div className="text-[32px] mx-auto text-white">
+                    قیمت پیشنهادی
+                  </div>
                 </div>
-                <div>
-                  <SimpleCard className="bg-white w-full flex flex-col relative gap-12 items-center mt-12">
-                    <div className="flex items-center pt-3">
-                      <div className="text-[32px] mx-auto">پیشنهادات</div>
-                    </div>
-                    <Properties
-                      requests={reqData ? reqData : undefined}
-                      nft={id}
-                    />
-                  </SimpleCard>
-                  {user ? (
-                    <>
-                      <SimpleCard
-                        id="InsertRequest"
-                        className="bg-[#4e45d0] w-full flex flex-col relative gap-12 items-center mt-12"
-                      >
-                        <div className="flex items-center pt-3">
-                          <div className="text-[32px] mx-auto text-white">
-                            قیمت پیشنهادی
-                          </div>
-                        </div>
-                        <div className="flex gap-12 w-full">
-                          <SimpleInput
-                            className={"text-white bg-[#7168f3] rounded-lg "}
-                            placeholder={"مثلا: 3"}
-                            title="قیمت پیشنهادی شما به اتریم"
-                            onChange={(e) => {
-                              setPrice(e.target.value * 104759811);
-                              setEthereum(e.target.value);
-                            }}
-                          />
-                          <div className="bg-[#7168f3] py-[20px] cursor-pointer text-white text-[16px] w-[60%] flex justify-center rounded-lg">
-                            قیمت به تومان:
-                            <div className="text-yellow-300">
-                              &nbsp;{price}&nbsp;
-                            </div>
-                            تومان
-                          </div>
-                          <div
-                            className="bg-sky-400 py-[20px] cursor-pointer text-white text-[16px] w-[25%] flex justify-center rounded-lg hover:bg-sky-500 transition-all"
-                            onClick={() => addRequest()}
-                          >
-                            ثبت
-                          </div>
-                        </div>
-                      </SimpleCard>
-                      <SimpleCard
-                        id="UserRequests"
-                        className="bg-white w-full flex flex-col relative gap-12 items-center mt-12"
-                      >
-                        <div className="flex items-center pt-3">
-                          <div className="text-[32px] mx-auto">
-                            پیشنهاد های شما
-                          </div>
-                        </div>
-                        <Recomendition
-                          requests={reqData ? reqData : undefined}
-                      nft={id}
-
-                        />
-                      </SimpleCard>
-                    </>
-                  ) : (
-                    ""
-                  )}
+                <div className="flex gap-12 w-full">
+                  <SimpleInput
+                    className={"text-white bg-[#7168f3] rounded-lg "}
+                    placeholder={"مثلا: 3"}
+                    title="قیمت پیشنهادی شما به اتریم"
+                    onChange={(e) => {
+                      setPrice(e.target.value * 104759811);
+                      setEthereum(e.target.value);
+                    }}
+                  />
+                  <div className="bg-[#7168f3] py-[20px] cursor-pointer text-white text-[16px] w-[60%] flex justify-center rounded-lg">
+                    قیمت به تومان:
+                    <div className="text-yellow-300">&nbsp;{price}&nbsp;</div>
+                    تومان
+                  </div>
+                  <div
+                    className="bg-sky-400 py-[20px] cursor-pointer text-white text-[16px] w-[25%] flex justify-center rounded-lg hover:bg-sky-500 transition-all"
+                    onClick={() => addRequest()}
+                  >
+                    ثبت
+                  </div>
                 </div>
+              </SimpleCard>
+              <SimpleCard
+                id="UserRequests"
+                className="bg-white w-full flex flex-col relative gap-12 items-center mt-12"
+              >
+                <div className="flex items-center pt-3">
+                  <div className="text-[32px] mx-auto">پیشنهاد های شما</div>
                 </div>
-            ) : (
-              ""
-            )
-          )
-        : ""}
-              </TestLayout>
-
+                <Recomendition
+                  requests={reqData ? reqData : undefined}
+                  nft={id}
+                />
+              </SimpleCard>
+            </>
+          ) : (
+            ""
+          )}
+        </div>
+      </div>
+    </TestLayout>
   );
 };
 

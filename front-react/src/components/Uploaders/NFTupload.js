@@ -6,7 +6,6 @@ import { ProgressBar } from 'primereact/progressbar';
 import { Button } from 'primereact/button';
 import { Tooltip } from 'primereact/tooltip';
 import { Tag } from 'primereact/tag';
-import Image from "../../ProfilePage/ProfileImg";
 
 export default function NFTupload() {
     const toast = useRef(null);

@@ -3,7 +3,7 @@ import { useState } from "react";
 import CollectionDialog from "../../Dialog/CollectionDialog/CollectionDialog";
 import SimpleCard from "./SimpleCard";
 
-const ImageCard = ({ className = "" , children, src, price, onClick }) => {
+const ImageCard = ({ className = "" , children, src, price, onClick, tokenId }) => {
   const [isHovered, setHovered] = useState(false);
   const icons = {
     whiteStar: (
@@ -61,7 +61,7 @@ const ImageCard = ({ className = "" , children, src, price, onClick }) => {
           <div className="text-[14px]">
             {price}Ξ
           </div>
-          <CollectionDialog />
+          <CollectionDialog tokenId={tokenId} />
         </div>
       </SimpleCard>
     </div>;

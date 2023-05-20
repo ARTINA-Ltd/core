@@ -7,10 +7,39 @@ import { Calendar } from "primereact/calendar";
 import { Message } from "primereact/message";
 import "./CollectionDialog.css";
 import SimpleInput from "../../Inputs/SimpleInput";
-export default function CollectionDialog() {
+import axios from "axios";
+import { Notify } from "notiflix";
+import BorderButton from "../../Buttons/BorderButton";
+export default function CollectionDialog(tokenId) {
   const [visible, setVisible] = useState(false);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+  const [price, setPrice] = useState();
+
+  const submit = () => {
+    axios
+      .put(
+        "https://api.artina.org/api/transaction/nfts/sell/",
+        {
+          token_id: tokenId.tokenId,
+          start_date: startDate,
+          end_date: endDate,
+          floor_price: price,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+          mode: "cors",
+        }
+      )
+      .then(() => {
+        Notify.success("با موفقیت ثبت شد");
+        setVisible(false);
+      })
+      // .catch(() => Notify.failure("خطا"));
+      .catch((e) => console.log(e));
+  };
 
   const footerContent = (
     <div>
@@ -20,12 +49,7 @@ export default function CollectionDialog() {
         onClick={() => setVisible(false)}
         className="p-button-text"
       />
-      <Button
-        label="ثبت"
-        icon="pi pi-check"
-        onClick={() => setVisible(false)}
-        autoFocus
-      />
+      <Button label="ثبت" icon="pi pi-check" onClick={submit} autoFocus />
     </div>
   );
   const Header = (
@@ -35,10 +59,7 @@ export default function CollectionDialog() {
   );
   return (
     <div className="card flex justify-content-center">
-      <div
-        className=" text-white text-[14px] bg-[#4e45d0] py-3 px-5 rounded-lg cursor-pointer transition-all hover:bg-[#372fac] flex justify-between"
-        onClick={() => setVisible(true)}
-      >
+      <BorderButton className={"flex gap-1"} onClick={() => setVisible(true)}>
         <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +67,7 @@ export default function CollectionDialog() {
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            className="w-10 h-10"
+            width={"1.25em"}
           >
             <path
               stroke-linecap="round"
@@ -56,22 +77,22 @@ export default function CollectionDialog() {
           </svg>
         </div>
         فروش
-      </div>
+      </BorderButton>
       <Dialog
         header={Header}
         visible={visible}
-        style={{ width: "50vw" , direction:"rtl"}}
+        style={{ width: "50vw", direction: "rtl" }}
         onHide={() => setVisible(false)}
         footer={footerContent}
       >
-       
-        <div className="flex gap-12">
+        <div className="flex gap-12 pt-5">
           <SimpleInput
             type="text"
             title="تاریخ آغاز فروش "
             placeholder="مثلا"
             validationError="نمیتواند خالی باشد"
             defaultValue={null}
+            onChange={(e) => setStartDate(e.target.value)}
           />
           <SimpleInput
             type="text"
@@ -79,17 +100,18 @@ export default function CollectionDialog() {
             placeholder="مثلا"
             validationError="نمیتواند خالی باشد"
             defaultValue={null}
+            onChange={(e) => setEndDate(e.target.value)}
           />
         </div>
         <SimpleInput
-        className={'mt-12'}
+          className={"mt-12"}
           type="text"
           title="قیمت "
           placeholder="مثلا"
           validationError="نمیتواند خالی باشد"
           defaultValue={null}
+          onChange={(e) => setPrice(e.target.value)}
         />
-
       </Dialog>
     </div>
   );

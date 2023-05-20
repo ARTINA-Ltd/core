@@ -29,6 +29,7 @@ import axios from "axios";
 import Contact from "./Pages/Contact";
 import Collections from "./Pages/Collections";
 import ForgetPassword from "./Pages/ForgetPassword";
+import Home from "./Pages/Home";
 
 const activeChainId = ChainId.Goerli;
 
@@ -84,13 +85,13 @@ export default () => {
           <UserChangeContext.Provider value={userChange}>
             <div className="App">
               <ScrollTop
-                className="custom-scrolltop w-4rem h-4rem    border-round-md   bg-primary"
+                className="bg-primary animate-bounce scale-75"
                 icon="pi pi-arrow-up"
               />
 
               <Routes>
                 {/* {Token=='null' ? <></> ::} */}
-                <Route path="/" element={<StarterFile />} />
+                <Route path="/" element={<Home />} />
                 <Route exact path="artist-page" element={<ArtistPage />} />
                 <Route
                   exact

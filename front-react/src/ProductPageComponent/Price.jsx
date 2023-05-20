@@ -16,7 +16,6 @@ function Price({ name, writer, date,description,price }) {
               "flex lg:justify-start sm:justify-center lg:text-5xl font-bold mb-8 lg:mt-[100px] md:mt-[30px] md:text-4xl sm:mt-[15px] sm:text-3xl font"
             }
           >
-            {" "}
             نام اثر:
           </h2>
           <h1 className="lg:text-8xl font-bold lg:mt-[-60px] md:text-6xl sm:text-6xl font">
@@ -37,7 +36,6 @@ function Price({ name, writer, date,description,price }) {
               "flex lg:justify-start sm:justify-center lg:text-4xl font-bold mb-8 lg:mt-[40px] md:text-3xl sm:text-3xl sm:mt-[25px] font"
             }
           >
-            {" "}
             تاریخ ساخت :
           </h2>
           <h1 className="lg:text-6xl font-bold lg:mt-[-50px] sm:text-4xl font">
