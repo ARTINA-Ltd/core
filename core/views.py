@@ -294,8 +294,40 @@ class WinnerviewSet(viewsets.ViewSet):
 
         return Response({"winner": highest_bid.user, "price": highest_bid.fee}, status=status.HTTP_200_OK)
     
+import requests
+
+def get_nakamigos_listings():
+    url = "https://api.opensea.io/v2/listings/collection/nakamigos/all"
+
+    headers = {
+        "accept": "application/json",
+        "X-API-KEY": "c0356ec8d3a24ac587ec9b0eb5e371a5"
+    }
+
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()
+
+    return response.json()
 
 
 
 
-    
+import requests
+from rest_framework import viewsets
+from rest_framework.response import Response
+
+class NakamigosListingsViewSet(viewsets.ViewSet):
+    def list(self, request):
+        url = "https://api.opensea.io/v2/listings/collection/nakamigos/all"
+
+        headers = {
+            "accept": "application/json",
+            "X-API-KEY": "c0356ec8d3a24ac587ec9b0eb5e371a5"
+        }
+
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+
+        data = response.json()
+
+        return Response(data)
