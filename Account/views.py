@@ -180,7 +180,9 @@ class PhoneVerificationViewSet(viewsets.ViewSet):
         verification_code = request.data.get("verification_code")
         phone_verification = PhoneVerification.objects.get(phone_number=phone_number)
         if phone_verification.verification_code == verification_code:
-            Profile.objects.filter(user=user).first().phone_verified = True
+            profile=Profile.objects.filter(user=user).first()
+            profile.phone_number_verified  = True
+            profile.save()
             phone_verification.delete()
             return Response({"status": "success"})
         else:
