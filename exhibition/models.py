@@ -21,7 +21,7 @@ class Exhibition(models.Model):
     exhibition_id = models.IntegerField(verbose_name="ID", default=1000, null=False, blank=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     marketName = models.CharField(max_length=35, null=False, blank=False)
-    image = models.ImageField(upload_to="./static/pictures of Exhibitions", verbose_name="Exhibition",
+    image = models.TextField(verbose_name="Exhibition",
                               null=True, blank=True)
     start_date = models.DateTimeField(verbose_name="تاریخ شروع", default=timezone.now)
     end_date = models.DateTimeField(verbose_name="تاریخ پایان")
@@ -29,7 +29,7 @@ class Exhibition(models.Model):
     ticket = models.BooleanField(null=True, default=False)
     contract = models.FileField(upload_to="./static/contract files", null=True, blank=False,
                                 validators=[FileExtensionValidator(allowed_extensions=["pdf"])])
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, default=1, on_delete=models.CASCADE)
     application_deadline = models.DateTimeField(default=timezone.now)
     def has_ticket(self):
         if self.ticket is None:
@@ -90,8 +90,8 @@ class Application(models.Model):
         return f"{self.artist.username}'s application for {self.exhibition.title}"
 
     def get_owner(self):
-        return self.nfts.first().owner
+        return self.nft.first().owner
 
     def __str__(self):
-        return f'{self.nfts.name} in {self.exhibition.marketName}'
+        return f'{self.nft.name} in {self.exhibition.marketName}'
 

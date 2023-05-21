@@ -44,9 +44,9 @@ class Profile(models.Model):
     phone_number_verified = models.BooleanField(default=False)
     cell_number = models.CharField(max_length=11, verbose_name="شماره تلفن ثابت", null=True, blank=False)
     address = models.TextField(max_length=200, verbose_name="آدرس", null=True, blank=False)
-    national_card_picture = models.TextField(verbose_name="عکس کارت ملی",null=True,blank=False,default="default.png")
+    national_card_picture = models.TextField(verbose_name="عکس کارت ملی",null=True,blank=False,default="http://api.artina.org/static/images/NC.png")
     profile_picture = models.TextField(verbose_name="عکس پروفایل",
-                                        null=True, blank=False, default="default.png",)
+                                        null=True, blank=False, default="http://api.artina.org/static/images/default_C7876ge.webp",)
     # email = models.EmailField(max_length=50, verbose_name="ایمیل", null=True, blank=False)
     email_verified = models.BooleanField(default=False)
     role = models.ForeignKey(Role, on_delete=models.CASCADE, default=1)
@@ -111,12 +111,12 @@ class TransactionType(models.Model):
     name = models.CharField(max_length=10, null=True, blank=False, default="deposit")
   
 class TransactionCurrency(models.Model):
-    name = models.CharField(max_length=10, null=True, blank=False, default="eth")
+    name = models.CharField(max_length=10, null=True, blank=False, default="rial")
     
 
 class UserBalance(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    rial_available_balance = models.IntegerField(default=0,verbose_name="mojudi")
+    rial_available_balance = models.IntegerField(default=100000,verbose_name="mojudi")
     rial_untradable_balance = models.IntegerField(default=0,verbose_name="unavailable mojudi")
     eth_balance = models.IntegerField(default=0,verbose_name="mojudi etherium")
     

@@ -16,6 +16,7 @@ from .serializers import NFTSerializer, ExhibitionSerializer, ApplicationSeriali
 from django.utils import timezone
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+from rest_framework.decorators import action
 
 
 class UserExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
@@ -83,22 +84,22 @@ class IsExhibitorOrReadOnly(permissions.BasePermission):
 class ExhibitionViewSet(viewsets.ModelViewSet):
     queryset = Exhibition.objects.all()
     serializer_class = serializers.ExhibitionSerializer
-    permission_classes = [IsExhibitorOrReadOnly]
+    # permission_classes = [IsExhibitorOrReadOnly]
 
     def perform_create(self, serializer):
-        serializer.save(exhibitor=self.request.user)
+        serializer.save(user=self.request.user)
 
 
 class ApplicationViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ApplicationSerializer
-    permission_classes = [permissions.IsAuthenticated, IsExhibitorOrReadOnly]
+    # permission_classes = [permissions.IsAuthenticated, IsExhibitorOrReadOnly]
 
     def get_queryset(self):
         user = self.request.user
         if user.is_staff:
             return Application.objects.all()
         else:
-            return Application.objects.filter(exhibition__exhibitor=user)
+            return Application.objects.filter(exhibition__user=user)
 
     def create(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -115,10 +116,11 @@ class ApplicationViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=201)
 
     def retrieve(self, request, pk=None):
-        application = get_object_or_404(Application.objects.filter(exhibition__exhibitor=request.user), pk=pk)
+        application = get_object_or_404(Application.objects.filter(exhibition__user=request.user), pk=pk)
         serializer = self.get_serializer(application)
         return Response(serializer.data)
 
+    @action(detail=False, methods=['post'])
 
     def exhibitor_applications(self, request):
         exhibitor_id = request.query_params.get('exhibitor_id', None)
@@ -130,7 +132,7 @@ class ApplicationViewSet(viewsets.ModelViewSet):
         except ValueError:
             return Response({'error': 'Invalid exhibitor ID.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        applications = Application.objects.filter(exhibition__exhibitor__id=exhibitor_id)
+        applications = Application.objects.filter(exhibition__user__id=exhibitor_id)
         serialized_data = self.get_serializer(applications, many=True).data
         return Response(serialized_data, status=status.HTTP_200_OK)
 
