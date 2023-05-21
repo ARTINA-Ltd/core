@@ -1,5 +1,6 @@
 from core import models
-from .models import NFT , Order , MyImage
+from Account import models
+from core.models import NFT , Order , MyImage , NFTReviewRating
 from core import serializers
 from eth_account import Account
 from thirdweb.types.nft import NFTMetadataInput 
@@ -21,11 +22,12 @@ from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import NFT
 from rest_framework.response import Response
 from rest_framework import status
 from django.conf import settings
 import os
+from Account.models import UserBalance, UserTurnover,TransactionType,TransactionCurrency
+
 class OrderViewSet(viewsets.ViewSet):
     # queryset = Order.objects.all()
     # serializer_class = serializers.OrderSerializer
@@ -35,19 +37,26 @@ class OrderViewSet(viewsets.ViewSet):
         token_id = request.data.get('token_id')
         status = request.data.get('status')
         bidder=self.request.user
-        nft = models.NFT.objects.get(token_id=token_id)
-        if nft.has_expired():
-            return Response(400)
+        user_balance=None
+        user_balance = UserBalance.objects.filter(user=user).first()
+        n=user_balance.rial_available_balance
+        if n< int(fee) :
+            return Response(500)
         else:
-            if nft.has_started():
-                Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status)
-                return Response(201)
-            else:
+
+            nft = models.NFT.objects.get(token_id=token_id)
+            if nft.has_expired():
                 return Response(400)
+            else:
+                if nft.has_started():
+                    Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status)
+                    return Response(201)
+                else:
+                    return Response(400)
 
 
 class NFTRateViewSet(viewsets.ModelViewSet):
-    queryset = models.NFTReviewRating.objects.all()
+    queryset = NFTReviewRating.objects.all()
     serializer_class = serializers.NFTRateSerializer
 
     def create(self, request, *args, **kwargs):
@@ -162,33 +171,51 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
                 {"error": f"Missing required field: {e}"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-
+        user_balance=None
+        user_balance = UserBalance.objects.filter(user=user).first()
+        print(user_balance)
+        n=user_balance.rial_available_balance
+        print(n)
+        if n < 10000 :
+            return Response(
+                {"error": f"your money is not enough"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        else:
+            n=n-10000
+            user_balance.rial_available_balance=n
+            user_balance.save()
         # Create the NFT metadata
-        prop={}
-        nft_metadata = {
+            prop={}
+            nft_metadata = {
             'name': nft_name,
             'description': description_nft,
             'image': image_nft,
             'properties': prop
 
         }
-        print(nft_metadata)
-        tx=None
+            print(nft_metadata)
+            tx=None
         # Mint the NFT to the specified address
-        try:
-            tx = contract.mint_to(author_address, NFTMetadataInput.from_json(nft_metadata))
-            print("done")
-            token_id = tx.id
-            print(token_id)
-        except Exception as e:
-            return Response(
-                {"error": str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
-        nft=NFT.objects.create(author_address=author_address,name=nft_name,
+            try:
+                tx = contract.mint_to(author_address, NFTMetadataInput.from_json(nft_metadata))
+                print("done")
+                token_id = tx.id
+                print(token_id)
+            except Exception as e:
+                return Response(
+                    {"error": str(e)},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                )
+            nft=NFT.objects.create(author_address=author_address,name=nft_name,
                 description=description_nft,image_url=image_nft,creator=creator,external_link=external_link,
                 last_price=last_price,token_id=token_id,owner=user)
-        return Response(
+            transactiontype=TransactionType.objects.filter(name="withraw").first()
+            transactionCurrency=TransactionCurrency.objects.filter(name="rial").first()
+            UserTurnover.objects.create(user=user, transaction_type=transactiontype, 
+                                    transaction_currency=transactionCurrency, transaction_value=10000)
+
+            return Response(
                 nft.token_id,
                 status=status.HTTP_201_CREATED,
             )            

@@ -11,6 +11,7 @@ import random
 import requests
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordResetView
+from rest_framework.decorators import action
 
 
 # class RegisterViewSet(viewsets.ModelViewSet):
@@ -23,7 +24,12 @@ from django.contrib.auth.views import PasswordResetView
 #         self.perform_create(serializer)
 #         headers = self.get_success_headers(serializer.data)
 #         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+# from ratelimit.decorators import ratelimit
 
+# # def signup(request):
+#     ip_address = request.META.get('REMOTE_ADDR')
+#     if User.objects.filter(ip_address=ip_address).count() >= 4:
+#         return HttpResponseBadRequest('Too many sign-up requests from this IP address.')
 
 class RegisterViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -275,7 +281,7 @@ class UserTurnoverViewSet(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
     
     
-    # @action(detail=True, methods=['get'])
+    @action(detail=True, methods=['get'])
     def turnover(self, request, pk=None):
         user = self.get_object().user
         turnovers = UserTurnover.objects.filter(user=user)
@@ -300,7 +306,6 @@ class UserTurnoverViewSet(viewsets.ModelViewSet):
 
 
 from rest_framework import status, viewsets
-from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .models import UserBalance, TransactionType, TransactionCurrency
@@ -309,12 +314,27 @@ from .serializers import UserBalanceSerializer
 class UserBalanceViewSet(viewsets.ModelViewSet):
     queryset = UserBalance.objects.all()
     serializer_class = UserBalanceSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
+    @action(detail=False, methods=['get'])
+    def get_balance(self, request):
+        user = self.request.user
+        user_balance = UserBalance.objects.filter(user=user).first()
+        if not user_balance:
+            return Response({'error': 'User balance not found.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        balance = {
+            'rial_available_balance': user_balance.rial_available_balance,
+            'eth_balance': user_balance.eth_balance,
+            # Add other balance fields as needed
+        }
 
-    def create(self, request, pk=None):
-        user = self.get_object().user
-        currency = request.data.get('currency', '').lower()
-        amount = request.data.get('amount', 0)
+        return Response(balance, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['post'])
+    def updating_balance(self, request):
+        user = self.request.user
+        currency = request.data.get('currency').lower()
+        amount = request.data.get('amount')
 
         if not currency or not amount:
             return Response({'error': 'Both currency and amount are required.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -333,11 +353,15 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
             user_balance_field = 'eth_balance'
         else:
             return Response({'error': 'Invalid currency.'}, status=status.HTTP_400_BAD_REQUEST)
-
-        user_balance = getattr(user.userbalance, user_balance_field)
-        setattr(user.userbalance, user_balance_field, user_balance + amount)
-        user.userbalance.save()
-
+        user_balance=None
+        user_balance = UserBalance.objects.filter(user=user).first()
+        if user_balance :
+            n=user_balance.rial_available_balance 
+            n=n+ amount
+            user_balance.rial_available_balance =n
+            user_balance.save()
+        else :
+            user_balance = UserBalance.objects.create(rial_available_balance=amount,user=user)
         UserTurnover.objects.create(user=user, transaction_type=transaction_type, 
                                     transaction_currency=transaction_currency, transaction_value=amount)
 

@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'Account',
     'exhibition',
     'core',
-
+    # 'ratelimit',
     'rest_framework',
     'corsheaders',
     'allauth',
