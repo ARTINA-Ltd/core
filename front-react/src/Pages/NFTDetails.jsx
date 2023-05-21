@@ -132,16 +132,20 @@ const NFTDetails = () => {
 
   function addRequest() {
     axios
-      .post("https://api.artina.org/api/transaction/orders/", {
-        token_id: id,
-        fee: ethereum,
-        status: 0,
-      },{
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+      .post(
+        "https://api.artina.org/api/transaction/orders/",
+        {
+          token_id: id,
+          fee: ethereum,
+          status: 0,
         },
-        mode: "cors",
-      })
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+          mode: "cors",
+        }
+      )
       .then((response) => {
         Notify.success("پیشنهاد شما با موفقیت ثبت شد");
       })
@@ -154,24 +158,29 @@ const NFTDetails = () => {
   return (
     <TestLayout>
       <div>
-        <div className="flex gap-16">
+        <div className="flex gap-4 items-start">
           <SimpleCard
             id="RightSide"
-            className="bg-[#4e45d0] w-[45%] flex flex-col relative gap-12 items-center "
+            className="bg-[#4e45d0] w-full flex flex-col relative gap-6 items-center "
           >
-            <div className="flex flex-col gap-5">
-              <img src={data? data.image_url: ''} className="rounded-xl"></img>
-              <div className="bg-[#7168f3] w-full h-28 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]">
-                {icons.heart}
-                <div className="text-white text-[16px]">1571</div>
-              </div>
-              <div className="bg-[#7168f3] w-full h-28 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]">
-                {icons.eye}
-                <div className="text-white text-[16px]">24566</div>
-              </div>
-              <div className="bg-[#7168f3] w-full h-28 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]">
-                {icons.share}
-                <div className="text-white text-[16px]">270</div>
+            <div className="flex flex-col gap-5 w-full">
+              <img
+                src={data ? data.image_url : ""}
+                className="rounded-xl h-auto w-full object-cover"
+              />
+              <div className="flex gap-3 w-full">
+                <div className="bg-[#7168f3] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]">
+                  {icons.heart}
+                  <div className="text-white text-[16px]">1571</div>
+                </div>
+                <div className="bg-[#7168f3] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]">
+                  {icons.eye}
+                  <div className="text-white text-[16px]">24566</div>
+                </div>
+                <div className="bg-[#7168f3] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]">
+                  {icons.share}
+                  <div className="text-white text-[16px]">270</div>
+                </div>
               </div>
             </div>
           </SimpleCard>
@@ -181,12 +190,14 @@ const NFTDetails = () => {
           >
             <div className="relative flex items-center pt-3">
               <div className="absolute text-[16px] opacity-40">نام اثر</div>
-              <div className="text-[32px] mx-auto">{data? data.name : ''}</div>
+              <div className="text-[32px] mx-auto">{data ? data.name : ""}</div>
             </div>
             <hr className="opacity-10 mx-32"></hr>
             <div className="relative flex items-center">
               <div className="absolute text-[16px] opacity-40">هنرمند</div>
-              <div className="text-[16px] mx-auto">{data? data.creator : ''}</div>
+              <div className="text-[16px] mx-auto">
+                {data ? data.creator : ""}
+              </div>
             </div>
             {/* <div className="relative flex items-center">
                       <div className="absolute text-[16px] opacity-40">
@@ -199,13 +210,13 @@ const NFTDetails = () => {
             <div className="relative flex items-center h-full">
               <div className="absolute text-[16px] opacity-40">توضیحات</div>
               <div className="text-[16px] mr-36 self-start text-right">
-                {data? data.description : ''}
+                {data ? data.description : ""}
               </div>
             </div>
-            <div className="relative flex items-center justify-self-end bg-[#f1f2f7] px-10 py-4 rounded-xl">
+            <div className="relative flex items-center justify-self-end bg-[#f1f2f7] px-10 py-3 rounded-xl">
               <div className="absolute text-[16px] opacity-50">آخرین قیمت</div>
               <div className="text-[22px] mx-auto">
-                {data? data.last_price:''} اتریوم
+                {data ? data.last_price : ""} اتریوم
               </div>
             </div>
           </SimpleCard>
@@ -217,7 +228,7 @@ const NFTDetails = () => {
             </div>
             <Properties requests={reqData ? reqData : undefined} nft={id} />
           </SimpleCard>
-          {user && (data? data.is_for_sale : true) ? (
+          {user && (data ? data.is_for_sale : true) ? (
             <>
               <SimpleCard
                 id="InsertRequest"
@@ -238,13 +249,13 @@ const NFTDetails = () => {
                       setEthereum(e.target.value);
                     }}
                   />
-                  <div className="bg-[#7168f3] py-[20px] cursor-pointer text-white text-[16px] w-[60%] flex justify-center rounded-lg">
+                  <div className="bg-[#7168f3] cursor-pointer text-white text-[16px] w-[60%] flex justify-center rounded-lg">
                     قیمت به تومان:
                     <div className="text-yellow-300">&nbsp;{price}&nbsp;</div>
                     تومان
                   </div>
                   <div
-                    className="bg-sky-400 py-[20px] cursor-pointer text-white text-[16px] w-[25%] flex justify-center rounded-lg hover:bg-sky-500 transition-all"
+                    className="bg-sky-400 cursor-pointer text-white text-[16px] w-[25%] flex justify-center rounded-lg hover:bg-sky-500 transition-all"
                     onClick={() => addRequest()}
                   >
                     ثبت

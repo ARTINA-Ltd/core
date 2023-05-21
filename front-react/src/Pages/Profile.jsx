@@ -107,16 +107,14 @@ function Profile() {
           national_code: formValues.national_code,
           birthdate: formValues.birthdate,
           phone_number: formValues.phone_number,
-          phone_number_verified: false,
           cell_number: formValues.cell_number,
           address: formValues.address,
           national_card_picture: nationalCardImageUrl
             ? nationalCardImageUrl
-            : user.data.profile_picture,
+            : user.data.national_card_picture,
           profile_picture: profileImageUrl
             ? profileImageUrl
             : user.data.profile_picture,
-          email_verified: false,
           // role: user ? user.data.role : ""
         },
         {
@@ -155,16 +153,14 @@ function Profile() {
           national_code: formValues.national_code,
           birthdate: formValues.birthdate,
           phone_number: formValues.phone_number,
-          phone_number_verified: false,
           cell_number: formValues.cell_number,
           address: formValues.address,
           national_card_picture: nationalCardImageUrl
             ? nationalCardImageUrl
-            : user.data.profile_picture,
+            : user.data.national_card_picture,
           profile_picture: profileImageUrl
             ? profileImageUrl
             : user.data.profile_picture,
-          email_verified: false,
           // role: user ? user.data.role : ""
         },
         {

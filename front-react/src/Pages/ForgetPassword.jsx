@@ -16,7 +16,7 @@ const ForgetPassword = () => {
     axios
       .post("https://api.artina.org/api/account/user-PasswordReset/", {
         phone_number: values.phone_number,
-        token: parseInt(values.code),
+        token: values.code,
         password: values.password
       })
       .then((e) => {
@@ -58,7 +58,7 @@ const ForgetPassword = () => {
               }))
             }
             defaultValue={null}
-            disabled={isClicked}
+            // disabled={isClicked}
           />
 
           <div className={`justify-end mt-3 ${!isClicked ? 'flex' : 'hidden'}`}>
