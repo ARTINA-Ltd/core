@@ -324,7 +324,7 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
         
         balance = {
             'rial_available_balance': user_balance.rial_available_balance,
-            'rial_unavailable_balance': user_balance.rial_unavailable_balance,
+            'rial_unavailable_balance': user_balance.rial_untradable_balance,
             'eth_balance': user_balance.eth_balance,
             
             # Add other balance fields as needed
