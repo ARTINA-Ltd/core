@@ -30,6 +30,7 @@ import Contact from "./Pages/Contact";
 import Collections from "./Pages/Collections";
 import ForgetPassword from "./Pages/ForgetPassword";
 import Home from "./Pages/Home";
+import Exhebitions from "./Pages/Exhebitions";
 
 const activeChainId = ChainId.Goerli;
 
@@ -115,6 +116,8 @@ export default () => {
                   path="exhibition-lists"
                   element={<ExhibitionLists />}
                 />
+                <Route exact path="exhebitions" element={<Exhebitions />} />
+
                 <Route exact path="request-lists" element={<RequestLists />} />
                 <Route exact path="show-request" element={<ShowRequests />} />
                 <Route

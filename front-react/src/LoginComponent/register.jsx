@@ -31,12 +31,18 @@ const Register = () => {
         password: values.password,
       })
       .then((response) => {
-        if (response.status === 201) {
-          Notiflix.Notify.success("ثبت نام با موفقیت انجام شد");
-          navigate("/login");
-        } else {
-            Notiflix.Notify.failure("خطایی رخ داد");
+        Notiflix.Notify.success("ثبت نام با موفقیت انجام شد");
+        navigate("/login");
+      })
+      .catch((response) => {
+        console.log(response)
+        if (response.response.data.error == "This username is already taken.") {
+          Notiflix.Notify.failure("نام کاربری تکراری میباشد.");
         }
+        if (response.response.data.error == "This email is already registered.") {
+          Notiflix.Notify.failure("ایمیل وارد شده تکراری میباشد.");
+        }
+
       });
   };
 

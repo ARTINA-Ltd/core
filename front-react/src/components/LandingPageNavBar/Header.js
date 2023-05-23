@@ -7,6 +7,7 @@ import { UserContext } from "../../App";
 import { UserChangeContext } from "../../App";
 import { ConnectWallet } from "@thirdweb-dev/react";
 import BorderButton from "../Buttons/BorderButton";
+import BalanceDialog from "../Dialog/BalanceDialog/BalanceDialog";
 
 const Header = ({ connectWallet = false }) => {
   const user = useContext(UserContext);
@@ -364,20 +365,21 @@ const Header = ({ connectWallet = false }) => {
             <div className="flex gap-5 items-center">
               {user ? (
                 <>
+                  <BalanceDialog/>
                   <div className="border-b-[1px] px-2 py-1 rounded-xl hover:bg-[#f1f1f1] transition-all border-[#4e45d0]">
                     {username}
                   </div>
-                  
+
                   <BorderButton
-                  onClick={(e) => {
-                    navigate("/login");
-                    setUsername();
-                    localStorage.setItem("authTokens", null);
-                    userChange(e);
-                  }}
-                >
-                  خروج
-                </BorderButton>
+                    onClick={(e) => {
+                      navigate("/login");
+                      setUsername();
+                      localStorage.setItem("authTokens", null);
+                      userChange(e);
+                    }}
+                  >
+                    خروج
+                  </BorderButton>
                 </>
               ) : (
                 <BorderButton
