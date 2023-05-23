@@ -5,12 +5,33 @@ import BorderButton from "../../Buttons/BorderButton";
 import { Button } from "primereact/button";
 import axios from "axios";
 import SimpleInput from "../../Inputs/SimpleInput";
+import { Notify } from "notiflix";
 
 const BalanceDialog = () => {
   const [visible, setVisible] = useState(false);
   const [getData, setData] = useState();
   const [isCharge, setIsCharge] = useState(false);
+  const [amount, setAmount] = useState();
 
+  const updateBalance = () => {
+    console.log(amount);
+    axios
+      .post(
+        "https://api.artina.org/api/account/user-balance/updating_balance/",
+        {
+          currency: "rial",
+          amount: amount,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+          mode: "cors",
+        }
+      )
+      .then(() => Notify.success("با موفقیت شارژ شد"))
+      .catch(() => Notify.failure("خطا"))
+  };
   useEffect(() => {
     axios
       .get("https://api.artina.org/api/account/user-balance/get_balance/", {
@@ -20,7 +41,6 @@ const BalanceDialog = () => {
         mode: "cors",
       })
       .then((res) => {
-        console.log(res);
         setData(res.data);
       })
       .catch((e) => {
@@ -39,7 +59,13 @@ const BalanceDialog = () => {
 
       <BorderButton
         className={"w-full font-b4 text-center"}
-        onClick={() => setIsCharge(true)}
+        onClick={() => {
+          if (isCharge == true) {
+            updateBalance();
+          } else {
+            setIsCharge(true);
+          }
+        }}
         autoFocus
       >
         شارژ کیف پول
@@ -87,14 +113,13 @@ const BalanceDialog = () => {
         ) : (
           <div className="w-full flex gap-4 flex-col items-center font-b4 mt-2">
             <SimpleInput
-        
-                type="text"
-                title="مقدار"
-                placeholder="مثلا: 654"
-                validationError="نمیتواند خالی باشد"
-                
-              />
-            
+              type="number"
+              title="مقدار"
+              placeholder="مثلا: 654"
+              isValid={amount != ""}
+              validationError="نمیتواند خالی باشد"
+              onChange={(e) => setAmount(e.target.value)}
+            />
           </div>
         )}
       </Dialog>

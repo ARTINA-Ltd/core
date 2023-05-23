@@ -115,6 +115,26 @@ const Header = ({ connectWallet = false }) => {
   ];
 
   const ActiveItems = [
+    {
+      title: "صفحه اصلی",
+      link: "/",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          width="1.5em"
+        >
+          <path
+            fill="#c2bef8"
+            d="M18,22H6a3.00328,3.00328,0,0,1-3-3V10.25A3.0002,3.0002,0,0,1,4.02344,7.99316l6.001-5.251a3.0124,3.0124,0,0,1,3.95118,0l6,5.25.001.001A3.0002,3.0002,0,0,1,21,10.25V19A3.00328,3.00328,0,0,1,18,22Z"
+          ></path>
+          <path
+            fill="#867feb"
+            d="M16,22H8V15a3,3,0,0,1,3-3h2a3,3,0,0,1,3,3Z"
+          ></path>
+        </svg>
+      ),
+    },
     // {
     //   title: "داشبورد",
     //   link: "/userDashboard",
@@ -285,7 +305,7 @@ const Header = ({ connectWallet = false }) => {
     },
     {
       title: "مجموعه من",
-      link: "/collections",
+      link: user?`/collections/${user.data.username}`:'/',
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -366,9 +386,7 @@ const Header = ({ connectWallet = false }) => {
               {user ? (
                 <>
                   <BalanceDialog/>
-                  <div className="border-b-[1px] px-2 py-1 rounded-xl hover:bg-[#f1f1f1] transition-all border-[#4e45d0]">
-                    {username}
-                  </div>
+                    <img src={user.data.profile_picture} className="w-[43px] h-[43px] object-cover rounded-full flex-shrink-0"/>
 
                   <BorderButton
                     onClick={(e) => {

@@ -3,7 +3,15 @@ import { useState } from "react";
 import CollectionDialog from "../../Dialog/CollectionDialog/CollectionDialog";
 import SimpleCard from "./SimpleCard";
 
-const ImageCard = ({ className = "" , children, src, price, onClick, tokenId }) => {
+const ImageCard = ({
+  className = "",
+  children,
+  src,
+  price,
+  onClick,
+  tokenId,
+  showSell = false,
+}) => {
   const [isHovered, setHovered] = useState(false);
   const icons = {
     whiteStar: (
@@ -41,10 +49,21 @@ const ImageCard = ({ className = "" , children, src, price, onClick, tokenId }) 
     ),
   };
 
-  return <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
       <SimpleCard className={className}>
-        <div className="relative transition-all cursor-pointer" onClick={onClick}>
-          <div className={` pt-3   absolute w-full h-[300px] rounded-lg bg-gradient-to-b from-[#00000060] transition-all ${isHovered ? "flex justify-center" : "hidden"}`}>
+        <div
+          className="relative transition-all cursor-pointer"
+          onClick={onClick}
+        >
+          <div
+            className={` pt-3   absolute w-full h-[300px] rounded-lg bg-gradient-to-b from-[#00000060] transition-all ${
+              isHovered ? "flex justify-center" : "hidden"
+            }`}
+          >
             {/* {icons.whiteStar}
             {icons.yellowStar}
             {icons.yellowStar}
@@ -58,13 +77,32 @@ const ImageCard = ({ className = "" , children, src, price, onClick, tokenId }) 
           {children}
         </div>
         <div className="flex justify-between items-center">
-          <div className="text-[14px]">
-            {price}Ξ
+          <div className="text-[19px] flex items-center">
+            <div className="pt-1">
+
+            {price}
+
+            </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              aria-label="Ethereum"
+              role="img"
+              viewBox="0 0 512 512"
+              width={'2em'}
+            >
+              <rect width="512" height="512" rx="15%" fill="#ffffff" />
+              <path fill="#3C3C3B" d="m256 362v107l131-185z" />
+              <path fill="#343434" d="m256 41l131 218-131 78-132-78" />
+              <path fill="#8C8C8C" d="m256 41v158l-132 60m0 25l132 78v107" />
+              <path fill="#141414" d="m256 199v138l131-78" />
+              <path fill="#393939" d="m124 259l132-60v138" />
+            </svg>
           </div>
-          <CollectionDialog tokenId={tokenId} />
+          {showSell ? <CollectionDialog tokenId={tokenId} /> : ""}
         </div>
       </SimpleCard>
-    </div>;
+    </div>
+  );
 };
 
 export default ImageCard;

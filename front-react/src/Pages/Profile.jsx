@@ -15,7 +15,7 @@ function Profile() {
   const inputFile = useRef(null);
   const inputFileNC = useRef(null);
 
-  const [formValues, setformValues] = useState({
+  const [values, setValues] = useState({
     first_name: user ? user.data.first_name : "",
     last_name: user ? user.data.last_name : "",
     national_code: user ? user.data.national_code : "",
@@ -26,15 +26,15 @@ function Profile() {
     address: user ? user.data.address : "",
   });
 
-  const [formDisabled, setFormDisabled] = useState({
-    first_name: user ? user.data.first_name : "",
-    last_name: user ? user.data.last_name : "",
-    national_code: user ? user.data.national_code : "",
-    birthdate: user ? user.data.birthdate : "",
-    cell_number: user ? user.data.cell_number : "",
-    phone_number: user ? user.data.phone_number : "",
-    email: user ? user.data.email : "",
-    address: user ? user.data.address : "",
+  const [validate, setValidate] = useState({
+    first_name: true,
+    last_name: true,
+    national_code: true,
+    birthdate: true,
+    cell_number: true,
+    phone_number: true,
+    email: true,
+    address: true,
   });
 
   const [counter, setCounter] = useState(10);
@@ -63,13 +63,11 @@ function Profile() {
   }
 
   const handleSendPhoneVerificationCode = () => {
-    console.log(formValues.phone_number);
-    console.log(phoneVerificationCode);
     axios
       .post(
         "https://api.artina.org/api/account/phone-verification/",
         {
-          phone_number: formValues.phone_number,
+          phone_number: values.phone_number,
           verification_code: phoneVerificationCode,
         },
         {
@@ -102,13 +100,17 @@ function Profile() {
         }/`,
         {
           user: user ? user.data.id : "",
-          first_name: formValues.first_name,
-          last_name: formValues.last_name,
-          national_code: formValues.national_code,
-          birthdate: formValues.birthdate,
-          phone_number: formValues.phone_number,
-          cell_number: formValues.cell_number,
-          address: formValues.address,
+          first_name: values.first_name,
+          last_name: values.last_name,
+          national_code: values.national_code,
+          birthdate: Intl.DateTimeFormat("en-UK", {
+            year: "numeric",
+            month: "numeric",
+            day: "numeric",
+          }).format(values.birthdate),
+          phone_number: values.phone_number,
+          cell_number: values.cell_number,
+          address: values.address,
           national_card_picture: nationalCardImageUrl
             ? nationalCardImageUrl
             : user.data.national_card_picture,
@@ -127,7 +129,7 @@ function Profile() {
         Notify.success("اطلاعات با موفقیت به روز رسانی شد");
         axios
           .post("https://api.artina.org/api/account/send-verification-code/", {
-            phone_number: formValues.phone_number,
+            phone_number: values.phone_number,
             username: user.data.username,
           })
           .then((e) => {
@@ -148,13 +150,17 @@ function Profile() {
         }/`,
         {
           user: user ? user.data.id : "",
-          first_name: formValues.first_name,
-          last_name: formValues.last_name,
-          national_code: formValues.national_code,
-          birthdate: formValues.birthdate,
-          phone_number: formValues.phone_number,
-          cell_number: formValues.cell_number,
-          address: formValues.address,
+          first_name: values.first_name,
+          last_name: values.last_name,
+          national_code: values.national_code,
+          birthdate: Intl.DateTimeFormat("en-UK", {
+            year: "numeric",
+            month: "numeric",
+            day: "numeric",
+          }).format(values.birthdate),
+          phone_number: values.phone_number,
+          cell_number: values.cell_number,
+          address: values.address,
           national_card_picture: nationalCardImageUrl
             ? nationalCardImageUrl
             : user.data.national_card_picture,
@@ -171,11 +177,9 @@ function Profile() {
       )
       .then((res) => {
         Notify.success("اطلاعات با موفقیت به روز رسانی شد");
-        console.log(res);
       })
       .catch((e) => {
         Notify.failure("خطا");
-        console.log(e);
       });
   }
 
@@ -187,11 +191,9 @@ function Profile() {
   }
 
   useEffect(() => {
-    console.log("userrrrrr");
-    console.log(user);
-    setformValues((prev) => ({
+    setValues((prev) => ({
       ...prev,
-      first_name: user ? user.data.username : "",
+      first_name: user ? user.data.first_name : "",
       last_name: user ? user.data.last_name : "",
       national_code: user ? user.data.national_code : "",
       birthdate: user ? user.data.birthdate : "",
@@ -210,7 +212,6 @@ function Profile() {
       Notify.info("در حال آپلود عکس");
       const formData = new FormData();
       formData.append("image", nationalCardImage, nationalCardImage.name);
-      console.log(nationalCardImage);
       axios
         .post("https://api.artina.org/api/transaction/images/", formData)
         .then((res) => {
@@ -226,13 +227,11 @@ function Profile() {
       Notify.info("در حال آپلود عکس");
       const formData = new FormData();
       formData.append("image", profileImage, profileImage.name);
-      console.log(profileImage);
       axios
         .post("https://api.artina.org/api/transaction/images/", formData)
         .then((res) => {
           Notify.success("با موفقیت آپلود شد");
           setProfileImageUrl(res.data.image);
-          console.log(res.data.image);
         })
         .catch(() => Notify.failure("خطا در آپلود"));
     }
@@ -303,14 +302,18 @@ function Profile() {
                 type="text"
                 title="نام"
                 placeholder="مثلا: علیرضا"
-                isValid={formValues.first_name != ""}
+                isValid={validate.first_name}
                 validationError="نمیتواند خالی باشد"
-                onChange={(e) =>
-                  setformValues((prev) => ({
+                onChange={(e) => {
+                  setValues((prev) => ({
                     ...prev,
                     first_name: e.target.value,
-                  }))
-                }
+                  }));
+                  setValidate((prev) => ({
+                    ...prev,
+                    first_name: e.target.value != "",
+                  }));
+                }}
                 defaultValue={user != null ? user.data.first_name : null}
                 disabled={user != null ? user.data.first_name != null : null}
               />
@@ -318,14 +321,18 @@ function Profile() {
                 type="text"
                 title="نام خانوادگی"
                 placeholder="مثلا: موسوی"
-                isValid={formValues.last_name != ""}
+                isValid={validate.last_name}
                 validationError="نمیتواند خالی باشد"
-                onChange={(e) =>
-                  setformValues((prev) => ({
+                onChange={(e) => {
+                  setValues((prev) => ({
                     ...prev,
                     last_name: e.target.value,
-                  }))
-                }
+                  }));
+                  setValidate((prev) => ({
+                    ...prev,
+                    last_name: e.target.value != "",
+                  }));
+                }}
                 defaultValue={user != null ? user.data.last_name : null}
                 disabled={user != null ? user.data.last_name != null : null}
               />
@@ -334,31 +341,34 @@ function Profile() {
 
           <div className="flex gap-4">
             <SimpleInput
-              type="text"
+              type="number"
               title="کد ملی"
               placeholder="مثلا: 1234567890"
-              validationError="نمیتواند خالی باشد"
-              onChange={(e) =>
-                setformValues(
-                  // isValid={formValues.national_code.length == 10}
-                  (prev) => ({ ...prev, national_code: e.target.value })
-                )
-              }
+              validationError="کدملی بایستی 10 رقمی باشد"
+              isValid={validate.national_code}
+              onChange={(e) => {
+                setValues((prev) => ({
+                  ...prev,
+                  national_code: e.target.value,
+                }));
+                setValidate((prev) => ({
+                  ...prev,
+                  national_code: e.target.value.length == 10,
+                }));
+              }}
               defaultValue={user != null ? user.data.national_code : null}
-              disabled={user != null ? user.data.national_code != null : null}
+              disabled={user != null ? user.data.national_code != null : false}
             />
             <SimpleInput
               type="date"
               title="تاریخ تولد"
               placeholder="مثلا: 1375/06/11"
               validationError="نمیتواند خالی باشد"
-              onChange={(e) =>
-                setformValues(
-                  // isValid={formValues.birthdate.length == 10}
-                  (prev) => ({ ...prev, birthdate: e.value })
-                )
-              }
-              defaultValue={user != null ? user.data.birthdate : undefined}
+              isValid={validate.birthdate}
+              onChange={(e) => {
+                setValues((prev) => ({ ...prev, birthdate: e.value }));
+              }}
+              defaultValue={user != null ? user.data.birthdate : null}
               disabled={user != null ? user.data.birthdate != null : null}
             />
           </div>
@@ -367,14 +377,18 @@ function Profile() {
               type="text"
               title="آدرس"
               placeholder="مثلا: تهران ..."
-              isValid={formValues.address != "" && formValues.address != null}
+              isValid={validate.address}
               validationError="نمیتواند خالی باشد"
-              onChange={(e) =>
-                setformValues((prev) => ({
+              onChange={(e) => {
+                setValues((prev) => ({
                   ...prev,
                   address: e.target.value,
-                }))
-              }
+                }));
+                setValidate((prev) => ({
+                  ...prev,
+                  address: e.target.value != "",
+                }));
+              }}
               defaultValue={user != null ? user.data.address : null}
               disabled={user != null ? user.data.address != null : null}
             />
@@ -384,14 +398,18 @@ function Profile() {
               type="text"
               title="شماره ثابت"
               placeholder="02112345678"
-              isValid={formValues.cell_number === 11}
+              isValid={validate.cell_number}
               validationError="نمیتواند خالی باشد"
-              onChange={(e) =>
-                setformValues((prev) => ({
+              onChange={(e) => {
+                setValues((prev) => ({
                   ...prev,
                   cell_number: e.target.value,
-                }))
-              }
+                }));
+                setValidate((prev) => ({
+                  ...prev,
+                  cell_number: e.target.value.length == 11,
+                }));
+              }}
               defaultValue={user != null ? user.data.cell_number : null}
               disabled={user != null ? user.data.cell_number != null : null}
             />
@@ -401,23 +419,33 @@ function Profile() {
           <div className="text-[24px] font-b9">احراز هویت</div>
           <div className="flex gap-4">
             <SimpleInput
-              type="text"
+              type="number"
               title="شماره موبایل"
               placeholder="09123456789"
-              isValid={formValues.phone_number === 11}
+              isValid={validate.phone_number}
               validationError="نمیتواند خالی باشد"
               onChange={(e) =>
-                setformValues((prev) => ({
-                  ...prev,
-                  phone_number: e.target.value,
-                }))
+                {
+                  setValues((prev) => ({
+                    ...prev,
+                    phone_number: e.target.value,
+                  }))
+                  setValidate((prev) => ({
+                    ...prev,
+                    phone_number: e.target.value.length == 11,
+                  }))
+                }
               }
               defaultValue={user != null ? user.data.phone_number : null}
               disabled={isPhoneVerified}
             />
-            <div className={`${showPhoneValidate && !isPhoneVerified ? "" : "hidden"}`}>
+            <div
+              className={`${
+                showPhoneValidate && !isPhoneVerified ? "" : "hidden"
+              }`}
+            >
               <SimpleInput
-                type="text"
+                type="number"
                 title="کد "
                 placeholder="1234"
                 validationError="نمیتواند خالی باشد"
@@ -461,10 +489,10 @@ function Profile() {
                 type="text"
                 title="ایمیل "
                 placeholder="09123456789"
-                isValid={ValidateEmail(formValues.email)}
+                isValid={ValidateEmail(values.email)}
                 validationError="نمیتواند خالی باشد"
                 onChange={(e) =>
-                  setformValues((prev) => ({
+                  setValues((prev) => ({
                     ...prev,
                     email: e.target.value,
                   }))
@@ -475,7 +503,8 @@ function Profile() {
             </div>
           </div>
           <div className="flex justify-end">
-            <BorderButton onClick={() => UpdateInfo()}>ویرایش</BorderButton>
+            <BorderButton onClick={() => UpdateInfo()}>ثبت</BorderButton>
+            
           </div>
         </SimpleCard>
         <SimpleCard className="bg-[#4e45d0] flex flex-col relative gap-4 items-center overflow-hidden w-[100%] lg:w-[35%]">

@@ -31,6 +31,7 @@ import Collections from "./Pages/Collections";
 import ForgetPassword from "./Pages/ForgetPassword";
 import Home from "./Pages/Home";
 import Exhebitions from "./Pages/Exhebitions";
+import OpenExhibitions from "./Pages/OpenExhibitions";
 
 const activeChainId = ChainId.Goerli;
 
@@ -116,7 +117,8 @@ export default () => {
                   path="exhibition-lists"
                   element={<ExhibitionLists />}
                 />
-                <Route exact path="exhebitions" element={<Exhebitions />} />
+                <Route exact path="exhibitions" element={<Exhebitions />} />
+                <Route exact path="open-exhibitions" element={<OpenExhibitions />} />
 
                 <Route exact path="request-lists" element={<RequestLists />} />
                 <Route exact path="show-request" element={<ShowRequests />} />
@@ -128,7 +130,7 @@ export default () => {
                 <Route exact path="upload-page" element={<NFTUploadPage />} />
                 <Route exact path="UserDashboard" element={<UserDashboard />} />
                 <Route exact path="profile" element={<Profile />} />
-                <Route exact path="collections" element={<Collections />} />
+                <Route exact path="collections/:username" element={<Collections />} />
               </Routes>
             </div>
           </UserChangeContext.Provider>
