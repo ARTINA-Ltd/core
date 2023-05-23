@@ -246,12 +246,24 @@ class MyImageViewSet(viewsets.ModelViewSet):
 
 
 
-class UserCollectionViewSet(viewsets.ReadOnlyModelViewSet):
+class UserCollectionViewSet(viewsets.ViewSet):
     serializer_class = serializers.NFTSerializer
 
     def get_queryset(self):
+
         user = self.request.user
         return NFT.objects.filter(owner=user)
+        
+
+class UserNFTViewSet(viewsets.ViewSet):
+    serializer_class = serializers.NFTSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+    def list(self, request, username=None):
+        queryset = NFT.objects.filter(owner__username=username)
+        serializer = serializers.NFTSerializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 class NftDetailViewSet(viewsets.ViewSet):
     serializer_class = serializers.NFTSerializer

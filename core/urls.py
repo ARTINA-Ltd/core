@@ -15,6 +15,9 @@ router.register(r'sell', views.sellViewSet,basename="sell")
 router.register(r'nft-detail', views.NftDetailViewSet, basename='nft-detail')
 router.register(r'nfts', views.NftViewSet,basename='nfts')
 router.register(r'nakamigos-listings', views.NakamigosListingsViewSet, basename='nakamigos_listings')
+router.register(r'collection/(?P<username>[^/.]+)/nfts', views.UserNFTViewSet, basename='user_nfts')
+# path('colection/<str:username>/', views.UserNFTList, name='user_nft_list')
+
 urlpatterns = [
     path('', include(router.urls))
 ]
