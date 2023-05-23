@@ -21,7 +21,7 @@ class ExhibitionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Exhibition
-        fields = ['exhibition_id', 'user', 'marketName', 'image', 'start_date', 'end_date', 'description', 'ticket', 'contract', 'category', 'nftexs']
+        fields = ['exhibition_id', 'user.username', 'marketName', 'image', 'start_date', 'end_date', 'description', 'ticket', 'contract', 'category', 'nftexs']
 
 
 # class NFtExSerializer(serializers.ModelSerializer):
@@ -75,7 +75,7 @@ class NFTSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ExhibitionSerializer(serializers.ModelSerializer):
-    exhibitor = serializers.ReadOnlyField(source='exhibitor.username')
+    user = serializers.ReadOnlyField(source='user.username')
 
     class Meta:
         model = Exhibition

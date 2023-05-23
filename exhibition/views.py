@@ -24,7 +24,7 @@ class UserExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return NFT.objects.filter(owner=user)
+        return Exhibition.objects.filter(user=user)
 
 
 class ExhibitorOpenExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
