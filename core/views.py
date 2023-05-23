@@ -22,12 +22,11 @@ from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.response import Response
 from rest_framework import status
 from django.conf import settings
 import os
 from Account.models import UserBalance, UserTurnover,TransactionType,TransactionCurrency
-
+from http import HTTPStatus
 class OrderViewSet(viewsets.ViewSet):
     # queryset = Order.objects.all()
     # serializer_class = serializers.OrderSerializer
@@ -38,21 +37,21 @@ class OrderViewSet(viewsets.ViewSet):
         status = request.data.get('status')
         bidder=self.request.user
         user_balance=None
-        user_balance = UserBalance.objects.filter(user=user).first()
+        user_balance = UserBalance.objects.filter(user=bidder).first()
         n=user_balance.rial_available_balance
-        if n< int(fee) :
-            return Response(500)
+        if n< fee :
+            return Response(status=HTTPStatus.BAD_REQUEST)
         else:
 
-            nft = models.NFT.objects.get(token_id=token_id)
+            nft = NFT.objects.get(token_id=token_id)
             if nft.has_expired():
-                return Response(400)
+                return Response(status=HTTPStatus.BAD_REQUEST)
             else:
                 if nft.has_started():
                     Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status)
-                    return Response(201)
+                    return Response(status=HTTPStatus.OK)
                 else:
-                    return Response(400)
+                    return Response(status=HTTPStatus.BAD_REQUEST)
 
 
 class NFTRateViewSet(viewsets.ModelViewSet):
@@ -244,7 +243,6 @@ class MyImageViewSet(viewsets.ModelViewSet):
         return Response({'id': serializer.data['id'], 'image': image_url}, status=status.HTTP_201_CREATED, headers=headers)
 
 
-from rest_framework.response import Response
 
 
 
