@@ -115,7 +115,7 @@ const Register = () => {
         />
         <SimpleInput
           className={"mt-6"}
-          type="text"
+          type="password"
           title="رمز عبور"
           placeholder=""
           isValid={values.password != ""}
@@ -130,7 +130,7 @@ const Register = () => {
         />
         <SimpleInput
           className={"mt-6"}
-          type="text"
+          type="password"
           title="تکرار رمز عبور"
           placeholder=""
           isValid={values.confirmPassword != ""}

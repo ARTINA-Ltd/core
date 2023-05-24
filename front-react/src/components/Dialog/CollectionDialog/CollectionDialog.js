@@ -87,7 +87,7 @@ export default function CollectionDialog(tokenId) {
       >
         <div className="flex gap-12 pt-5">
           <SimpleInput
-            type="text"
+            type="date"
             title="تاریخ آغاز فروش "
             placeholder="مثلا"
             validationError="نمیتواند خالی باشد"
@@ -95,7 +95,7 @@ export default function CollectionDialog(tokenId) {
             onChange={(e) => setStartDate(e.target.value)}
           />
           <SimpleInput
-            type="text"
+            type="date"
             title="تاریخ پایان فروش "
             placeholder="مثلا"
             validationError="نمیتواند خالی باشد"
@@ -104,7 +104,7 @@ export default function CollectionDialog(tokenId) {
           />
         </div>
         <SimpleInput
-          className={"mt-12"}
+          className={"mt-12 z-50"}
           type="text"
           title="قیمت "
           placeholder="مثلا"

@@ -4,13 +4,13 @@ import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import { useNavigate } from "react-router";
 import axios from "axios";
 
-const Exhebitions = () => {
+const OpenExhibitions = () => {
   const [getData, setData] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get("https://api.artina.org/api/exhibition/exhibitions/", {
+      .get("http://api.artina.org/api/exhibition/open-for-artist-registration-exhibitions/", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
         },
@@ -87,4 +87,4 @@ const Exhebitions = () => {
   );
 };
 
-export default Exhebitions;
+export default OpenExhibitions;
