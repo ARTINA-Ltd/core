@@ -81,11 +81,11 @@ class Ticket(models.Model):
 class Application(models.Model):
     artist = models.ForeignKey(User, on_delete=models.CASCADE)
     exhibition = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='applications')
-    nft = models.OneToOneField(NFT, on_delete=models.CASCADE, related_name='application',default=0)
+    nft = models.ManyToManyField(NFT,related_name='applications')
     contract_accepted = models.BooleanField(default=False)
     accepted = models.BooleanField(blank=True, null=True)
     ignored = models.BooleanField(default=False)
-
+    description=models.TextField(default="my application is complete")
     def __str__(self):
         return f"{self.artist.username}'s application for {self.exhibition.title}"
 
