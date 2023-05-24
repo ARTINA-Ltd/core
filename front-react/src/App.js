@@ -4,7 +4,6 @@ import { createContext, useEffect, useState } from "react";
 import StarterFile from "./Pages/StarterFile";
 import ArtistPage from "./Pages/ArtistPage";
 import HomePage from "./Pages/HomePage";
-import ArtistApplicationForm from "./Pages/ExhibitionSignForm";
 import NFTDetails from "./Pages/NFTDetails";
 // import Login from "./Pages/LoginPage";
 // import Register from "./LoginComponent/SignUp";
@@ -32,6 +31,7 @@ import ForgetPassword from "./Pages/ForgetPassword";
 import Home from "./Pages/Home";
 import Exhebitions from "./Pages/Exhebitions";
 import OpenExhibitions from "./Pages/OpenExhibitions";
+import ArtistApplicationForm from './Pages/ArtistApplicationForm';
 
 const activeChainId = ChainId.Goerli;
 
