@@ -101,45 +101,45 @@ class ApplicationViewSet(viewsets.ModelViewSet):
         else:
             return Application.objects.filter(exhibition__user=user)
 
-def create(self, request):
-    # Validate request data using the updated serializer
-    serializer = self.get_serializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
+    def create(self, request):
+        # Validate request data using the updated serializer
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-    # Extract relevant fields from validated data
-    exhibition = serializer.validated_data['exhibition']
-    contract_accepted = serializer.validated_data['contract_accepted']
-    nft_objs = serializer.validated_data['nft']
+        # Extract relevant fields from validated data
+        exhibition = serializer.validated_data['exhibition']
+        contract_accepted = serializer.validated_data['contract_accepted']
+        nft_objs = serializer.validated_data['nft']
 
-    # Check if the user has accepted the exhibition contract
-    if not contract_accepted:
-        return Response(
-            {'error': 'You must accept the exhibition contract before submitting your application.'},
-            status=status.HTTP_400_BAD_REQUEST
-        )
+        # Check if the user has accepted the exhibition contract
+        if not contract_accepted:
+            return Response(
+                {'error': 'You must accept the exhibition contract before submitting your application.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
-    # Check if the user has selected exactly 5 NFTs for their application
-    if len(nft_objs) > 5:
-        return Response(
-            {'error': 'You must select exactly 5 NFTs for your application.'},
-            status=status.HTTP_400_BAD_REQUEST
-        )
+        # Check if the user has selected exactly 5 NFTs for their application
+        if len(nft_objs) > 5:
+            return Response(
+                {'error': 'You must select exactly 5 NFTs for your application.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
-    try:
-        # Create a new application object and associate the selected NFTs with it
-        application = serializer.save(artist=self.request.user)
-        application.nft.set(nft_objs)
+        try:
+            # Create a new application object and associate the selected NFTs with it
+            application = serializer.save(artist=self.request.user)
+            application.nft.set(nft_objs)
 
-        # Serialize the new application object and return it in the response
-        serializer = ApplicationSerializer(instance=application)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+            # Serialize the new application object and return it in the response
+            serializer = ApplicationSerializer(instance=application)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    except NFT.DoesNotExist:
-        # Return error response if any of the provided NFT IDs do not exist
-        return Response(
-            {'error': 'One or more selected NFTs do not exist.'},
-            status=status.HTTP_400_BAD_REQUEST
-        )
+        except NFT.DoesNotExist:
+            # Return error response if any of the provided NFT IDs do not exist
+            return Response(
+                {'error': 'One or more selected NFTs do not exist.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
     def retrieve(self, request, pk=None):
         application = get_object_or_404(Application.objects.filter(exhibition__user=request.user), pk=pk)
@@ -149,7 +149,7 @@ def create(self, request):
     @action(detail=False, methods=['post'])
 
     def exhibitor_applications(self, request):
-        exhibitor_id = request.query_params.get('exhibitor_id', None)
+        exhibitor_id = request.data.get('exhibitor_id', None)
         if exhibitor_id is None:
             return Response({'error': 'Exhibitor ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -158,7 +158,7 @@ def create(self, request):
         except ValueError:
             return Response({'error': 'Invalid exhibitor ID.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        applications = Application.objects.filter(exhibition__user__id=exhibitor_id)
+        applications = Application.objects.filter(exhibition__user__id=exhibitor_id, status="pending")
         serialized_data = self.get_serializer(applications, many=True).data
         return Response(serialized_data, status=status.HTTP_200_OK)
 
@@ -166,43 +166,50 @@ def create(self, request):
         if 'exhibitor_id' in request.query_params:
             return self.exhibitor_applications(request)
         return super().list(request, *args, **kwargs)
-
-
-    @action(detail=False, methods=['post'])
-    def add_nft(self, request, pk=None):
-        nft_id = request.data.get('nft_id')
-        if nft_id:
-            nft = NFT.objects.get(token_id=nft_id)
-            application = self.get_object()
-            application.nft = nft
-            application.save()
-            serializer = self.get_serializer(application)
-            return Response(serializer.data)
-        else:
-            return Response({'error': 'nft_id is required'})
-
-
-class ExhibitorApplicationsViewSet(viewsets.ViewSet):
-    # permission_classes = [IsAuthenticated]
-
+    
     def update(self, request, pk=None):
         try:
-            application = Application.objects.get(id=pk, exhibition__exhibitor=request.user)
+            application = Application.objects.get(id=pk, exhibition__user=request.user)
         except Application.DoesNotExist:
             return Response({'error': 'Application not found.'}, status=status.HTTP_404_NOT_FOUND)
 
         action = request.data.get('action', None)
-        if action not in ['accept', 'delete']:
+        if action not in ['accept', 'ignored']:
             return Response({'error': 'Invalid action.'}, status=status.HTTP_400_BAD_REQUEST)
 
         if action == 'accept':
             application.status = 'accepted'
-        elif action == 'delete':
-            application.status = 'deleted'
+        elif action == 'ignored':
+            application.status = 'ignored'
 
         application.save()
         serialized_data = ApplicationSerializer(application).data
         return Response(serialized_data, status=status.HTTP_200_OK)
+
+
+
+
+# class ExhibitorApplicationsViewSet(viewsets.ViewSet):
+#     # permission_classes = [IsAuthenticated]
+
+#     def update(self, request, pk=None):
+#         try:
+#             application = Application.objects.get(id=pk, exhibition__user=request.user)
+#         except Application.DoesNotExist:
+#             return Response({'error': 'Application not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+#         action = request.data.get('action', None)
+#         if action not in ['accept', 'ignored']:
+#             return Response({'error': 'Invalid action.'}, status=status.HTTP_400_BAD_REQUEST)
+
+#         if action == 'accept':
+#             application.status = 'accepted'
+#         elif action == 'ignored':
+#             application.status = 'ignored'
+
+#         application.save()
+#         serialized_data = ApplicationSerializer(application).data
+#         return Response(serialized_data, status=status.HTTP_200_OK)
 
 
 class ExhibitionInfoView(viewsets.ModelViewSet):
