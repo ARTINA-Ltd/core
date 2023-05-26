@@ -89,7 +89,7 @@ class Application(models.Model):
     exhibition = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='applications')
     nft = models.ManyToManyField(NFT, related_name='applications')
     contract_accepted = models.BooleanField(default=False)
-    description = models.TextField(default="my application is complete")
+    description = models.TextField(default="my application is complete",blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
 
     def __str__(self):

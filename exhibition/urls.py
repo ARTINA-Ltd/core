@@ -16,7 +16,7 @@ router.register(r'OpenExhibitionList', views.OpenExhibitionListView, basename='O
 router.register(r'ExhibitionInfoView', views.ExhibitionInfoView, basename='ExhibitionInfoView')
 # router.register(r'ExhibitorApplicationsAcceptance', views.ExhibitorApplicationsViewSet.as_view(), basename='ExhibitorApplicationsAcceptance')
 router.register(r'user-exhibitions', views.UserExhibitionsViewSet,basename="user-exhibitions")
-# router.register(r'exhibition/(?P<exhibition_id>\d+)', NFTByExhibitionViewSet, basename='exhibitionnfts')
+router.register(r'exhibition/(?P<exhibition_id>\d+)', views.NFTByExhibitionViewSet, basename='exhibitionnfts')
 urlpatterns = [
     path('', include(router.urls)),
 ]

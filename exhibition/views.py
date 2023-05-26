@@ -231,3 +231,18 @@ class OpenExhibitionListView(viewsets.ModelViewSet):
         open_exhibitions = Exhibition.objects.filter(status='open')
         serialized_data = ExhibitionSerializer(open_exhibitions, many=True).data
         return Response(serialized_data, status=status.HTTP_200_OK)
+
+
+
+class NFTByExhibitionViewSet(viewsets.ViewSet):
+    def list(self, request, exhibition_id):
+        try:
+            exhibition = Exhibition.objects.get(id=exhibition_id)
+        except Exhibition.DoesNotExist:
+            return Response({'error': 'Exhibition not found'}, status=404)
+
+        applications = Application.objects.filter(exhibition=exhibition, accepted=True)
+        nfts = NFT.objects.filter(applications__in=applications).distinct()
+
+        serializer = NFTSerializer(nfts, many=True)
+        return Response(serializer.data)
