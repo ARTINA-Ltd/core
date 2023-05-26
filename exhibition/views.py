@@ -146,7 +146,7 @@ class ApplicationViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(application)
         return Response(serializer.data)
 
-    @action(detail=False, methods=['post'])
+    @action(detail=False, methods=['get'])
 
     def exhibitor_applications(self, request):
         user=self.request.user
