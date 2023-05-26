@@ -241,7 +241,7 @@ class NFTByExhibitionViewSet(viewsets.ViewSet):
         except Exhibition.DoesNotExist:
             return Response({'error': 'Exhibition not found'}, status=404)
 
-        applications = Application.objects.filter(exhibition=exhibition, accepted=True)
+        applications = Application.objects.filter(exhibition=exhibition, status:"accepted")
         nfts = NFT.objects.filter(applications__in=applications).distinct()
 
         serializer = NFTSerializer(nfts, many=True)
