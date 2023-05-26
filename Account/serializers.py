@@ -52,6 +52,11 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class UserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['profile_picture', 'first_name', 'last_name']
+
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserTicket

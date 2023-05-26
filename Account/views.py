@@ -12,6 +12,7 @@ import requests
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordResetView
 from rest_framework.decorators import action
+from django.shortcuts import get_object_or_404
 
 
 # class RegisterViewSet(viewsets.ModelViewSet):
@@ -399,3 +400,13 @@ class PasswordResetByPhoneViewSet(viewsets.ViewSet):
 
 
                     
+from .serializers import UserInfoSerializer
+
+class UserPictureViewSet(viewsets.ViewSet):
+    serializer_class = UserInfoSerializer
+    def retrieve(self, request, pk=None):
+        queryset = Profile.objects.filter(user_id=pk)
+        profile = get_object_or_404(Profile.objects.filter(user_id=pk), pk=pk)
+        serializer = serializers.UserInfoSerializer(profile)
+        print(profile)
+        return Response(serializer.data)

@@ -16,6 +16,7 @@ router.register(r'send-verification-code', views.SendVerificationCodeViewSet, ba
 router.register(r'user-balance', views.UserBalanceViewSet, basename='user-balance')
 router.register(r'user-turnover', views.UserTurnoverViewSet, basename='user-turnover')
 router.register(r'user-PasswordReset', views.PasswordResetByPhoneViewSet, basename='PasswordRese')
+router.register(r'userpicture', views.UserPictureViewSet, basename='Userpicture')
 
 
 
