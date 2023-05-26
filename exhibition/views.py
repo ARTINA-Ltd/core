@@ -208,7 +208,7 @@ class ApplicationViewSet(viewsets.ModelViewSet):
 class ExhibitionInfoView(viewsets.ModelViewSet):
     # permission_classes = [IsAuthenticated]
     queryset = Exhibition.objects.all()
-
+    serializer_class = serializers.ExhibitionSerializer
     def get(self, request, exhibition_id):
         try:
             exhibition = Exhibition.objects.get(id=exhibition_id)
