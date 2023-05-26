@@ -46,7 +46,7 @@ const NFTList = ({ className }) => {
                   <td class="whitespace-nowrap px-6 font-medium">
                     <img
                       src={item.image_url}
-                      className="rounded-lg h-[60px] w-[60px] object-cover"
+                      className="rounded-lg h-[60px] w-[60px] object-cover my-1"
                       alt=""
                     />
                   </td>{" "}

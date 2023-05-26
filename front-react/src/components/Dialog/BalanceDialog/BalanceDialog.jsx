@@ -81,12 +81,11 @@ const BalanceDialog = () => {
 
   return (
     <div className="card flex justify-content-center">
-      <div
-        className="px-2 py-1 rounded-xl hover:bg-[#e1e1e1] bg-[#f1f1f1] transition-all cursor-pointer"
+
+      <div className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]"
         onClick={() => setVisible(true)}
-      >
-        کیف پول
-      </div>
+        >کیف پول</div>
+
       <Dialog
         header={Header}
         visible={visible}
