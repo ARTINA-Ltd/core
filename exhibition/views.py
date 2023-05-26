@@ -150,7 +150,7 @@ class ApplicationViewSet(viewsets.ModelViewSet):
 
     def exhibitor_applications(self, request):
         user=self.request.user
-        applications = Application.objects.filter(exhibition__user=user, status="pending")
+        applications = Application.objects.filter(exhibition_user=user, status="pending")
         serialized_data = self.get_serializer(applications, many=True).data
         return Response(serialized_data, status=status.HTTP_200_OK)
 
