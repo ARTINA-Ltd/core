@@ -9,8 +9,6 @@ import NFTDetails from "./Pages/NFTDetails";
 // import Register from "./LoginComponent/SignUp";
 import Register from "./LoginComponent/register";
 import Login from "./LoginComponent/login";
-import ExhibitorPage from "./Pages/Exhabition";
-import ExhibitionLists from "./Pages/Exhibition_lists";
 import RequestDetails from "./ExhabitionComponent/src/component/request-artist-detail-page/r-page/request-detail";
 import ShowRequests from "./ExhabitionComponent/src/component/request-artist-detail-page/r-page/show-req";
 import RequestLists from "./ExhabitionComponent/src/component/requestlistforexhibition/requests/paging";
@@ -29,9 +27,10 @@ import Contact from "./Pages/Contact";
 import Collections from "./Pages/Collections";
 import ForgetPassword from "./Pages/ForgetPassword";
 import Home from "./Pages/Home";
-import Exhebitions from "./Pages/Exhebitions";
+import ExhibitionList from "./Pages/ExhibitionList";
 import OpenExhibitions from "./Pages/OpenExhibitions";
 import ArtistApplicationForm from './Pages/ArtistApplicationForm';
+import ExhibitionCollections from "./Pages/ExhibitionCollections";
 
 const activeChainId = ChainId.Goerli;
 
@@ -97,7 +96,7 @@ export default () => {
                 <Route exact path="artist-page" element={<ArtistPage />} />
                 <Route
                   exact
-                  path="artist-application-form"
+                  path="artist-application-form/:id"
                   element={<ArtistApplicationForm />}
                 />
                 <Route exact path="nft-details/:id" element={<NFTDetails />} />
@@ -106,18 +105,10 @@ export default () => {
                 <Route exact path="forget-password" element={<ForgetPassword />} />
                 <Route exact path="support" element={<Support />} />
                 <Route exact path="register" element={<Register />} />
-                <Route
-                  exact
-                  path="exhibitor-page"
-                  element={<ExhibitorPage />}
-                />
+                
                 <Route exact path="contact" element={<Contact />} />
-                <Route
-                  exact
-                  path="exhibition-lists"
-                  element={<ExhibitionLists />}
-                />
-                <Route exact path="exhibitions" element={<Exhebitions />} />
+                
+                <Route exact path="exhibition-list" element={<ExhibitionList />} />
                 <Route exact path="open-exhibitions" element={<OpenExhibitions />} />
 
                 <Route exact path="request-lists" element={<RequestLists />} />
@@ -131,6 +122,7 @@ export default () => {
                 <Route exact path="UserDashboard" element={<UserDashboard />} />
                 <Route exact path="profile" element={<Profile />} />
                 <Route exact path="collections/:username" element={<Collections />} />
+                <Route exact path="exhibition-collections/:id" element={<ExhibitionCollections />} />
               </Routes>
             </div>
           </UserChangeContext.Provider>

@@ -92,6 +92,8 @@ function Profile() {
       setCounterPause(true);
     }, 60000);
 
+    var b_date= new Date(values.birthdate.split('/')[2],values.birthdate.split('/')[1]-1,values.birthdate.split('/')[0])
+
     axios
       .put(
         // "https://api.artina.org/api/account/profile/",
@@ -107,7 +109,7 @@ function Profile() {
             year: "numeric",
             month: "numeric",
             day: "numeric",
-          }).format(values.birthdate),
+          }).format(b_date),
           phone_number: values.phone_number,
           cell_number: values.cell_number,
           address: values.address,
@@ -142,6 +144,8 @@ function Profile() {
   }
 
   function UpdateInfo() {
+    var b_date= new Date(values.birthdate.split('/')[2],values.birthdate.split('/')[1]-1,values.birthdate.split('/')[0])
+
     axios
       .put(
         // "https://api.artina.org/api/account/profile/",
@@ -157,7 +161,7 @@ function Profile() {
             year: "numeric",
             month: "numeric",
             day: "numeric",
-          }).format(values.birthdate),
+          }).format(b_date),
           phone_number: values.phone_number,
           cell_number: values.cell_number,
           address: values.address,
@@ -424,18 +428,16 @@ function Profile() {
               placeholder="09123456789"
               isValid={validate.phone_number}
               validationError="نمیتواند خالی باشد"
-              onChange={(e) =>
-                {
-                  setValues((prev) => ({
-                    ...prev,
-                    phone_number: e.target.value,
-                  }))
-                  setValidate((prev) => ({
-                    ...prev,
-                    phone_number: e.target.value.length == 11,
-                  }))
-                }
-              }
+              onChange={(e) => {
+                setValues((prev) => ({
+                  ...prev,
+                  phone_number: e.target.value,
+                }));
+                setValidate((prev) => ({
+                  ...prev,
+                  phone_number: e.target.value.length == 11,
+                }));
+              }}
               defaultValue={user != null ? user.data.phone_number : null}
               disabled={isPhoneVerified}
             />
@@ -504,7 +506,6 @@ function Profile() {
           </div>
           <div className="flex justify-end">
             <BorderButton onClick={() => UpdateInfo()}>ثبت</BorderButton>
-            
           </div>
         </SimpleCard>
         <SimpleCard className="bg-[#4e45d0] flex flex-col relative gap-4 items-center overflow-hidden w-[100%] lg:w-[35%]">

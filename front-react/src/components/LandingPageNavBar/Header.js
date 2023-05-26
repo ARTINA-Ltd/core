@@ -8,10 +8,15 @@ import { UserChangeContext } from "../../App";
 import { ConnectWallet } from "@thirdweb-dev/react";
 import BorderButton from "../Buttons/BorderButton";
 import BalanceDialog from "../Dialog/BalanceDialog/BalanceDialog";
+import UserMenuCard from "../Cards/UserDashboardCards/UserMenuCard";
+import { useRef } from "react";
 
 const Header = ({ connectWallet = false }) => {
   const user = useContext(UserContext);
   const userChange = useContext(UserChangeContext);
+
+  const [isHidden, setIsHidden] = useState(true);
+  const ref = useRef(null);
 
   const [username, setUsername] = useState(null);
   const [clicked, setClicked] = useState(false);
@@ -305,7 +310,7 @@ const Header = ({ connectWallet = false }) => {
     },
     {
       title: "مجموعه من",
-      link: user?`/collections/${user.data.username}`:'/',
+      link: user ? `/collections/${user.data.username}` : "/",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -333,6 +338,19 @@ const Header = ({ connectWallet = false }) => {
     setUsername((e) => (user ? user.data.username : e));
   }, [user]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        setIsHidden(true);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [ref]);
   return (
     <>
       <header>
@@ -385,19 +403,49 @@ const Header = ({ connectWallet = false }) => {
             <div className="flex gap-5 items-center">
               {user ? (
                 <>
-                  <BalanceDialog/>
-                    <img src={user.data.profile_picture} className="w-[43px] h-[43px] object-cover rounded-full flex-shrink-0"/>
-
-                  <BorderButton
-                    onClick={(e) => {
-                      navigate("/login");
-                      setUsername();
-                      localStorage.setItem("authTokens", null);
-                      userChange(e);
-                    }}
-                  >
-                    خروج
-                  </BorderButton>
+                  <div ref={ref}>
+                    <img
+                      src={user.data.profile_picture}
+                      className="rounded-full w-[46px] h-[46px] object-cover cursor-pointer"
+                      onClick={() => setIsHidden((prev) => !prev)}
+                      alt=""
+                    />
+                    <div
+                      className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-100 border-[gray-300] bg-[#f9f9f9] min-w-[200px] ${
+                        isHidden ? "opacity-0" : ""
+                      } absolute translate-x-1/3`}
+                    >
+                      <div className="w-full py-2 px-3 hover:bg-[#0000aa07] flex gap-2 items-center justify-between cursor-pointer">
+                        <img
+                          src={user.data.profile_picture}
+                          className="rounded-full  w-[55px] h-[55px] object-cover  shrink-0"
+                          alt=""
+                        />
+                        <div>
+                          <div className="text-left text-sm font-b5 ">{user.data.first_name} {user.data.last_name}</div>
+                          <div className="text-left font-b2 text-sm">
+                          {user.data.username}
+                          </div>
+                        </div>
+                      </div>
+                      <hr />
+                      <BalanceDialog />
+                      <div className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]" onClick={()=> navigate('/profile')}>
+                        پروفایل
+                      </div>
+                      <div
+                        className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]"
+                        onClick={(e) => {
+                          navigate("/login");
+                          setUsername();
+                          localStorage.setItem("authTokens", null);
+                          userChange(e);
+                        }}
+                      >
+                        خروج
+                      </div>
+                    </div>
+                  </div>
                 </>
               ) : (
                 <BorderButton

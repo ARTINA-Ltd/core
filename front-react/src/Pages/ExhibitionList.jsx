@@ -4,7 +4,7 @@ import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import { useNavigate } from "react-router";
 import axios from "axios";
 
-const Exhebitions = () => {
+const ExhibitionList = () => {
   const [getData, setData] = useState();
   const navigate = useNavigate();
 
@@ -87,4 +87,4 @@ const Exhebitions = () => {
   );
 };
 
-export default Exhebitions;
+export default ExhibitionList;

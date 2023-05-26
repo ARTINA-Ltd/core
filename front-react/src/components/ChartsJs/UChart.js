@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import "primereact/resources/primereact.min.css"; //core css
 import "primeicons/primeicons.css"; //icons
 import { Chart } from "primereact/chart";
-import "primeflex/primeflex.scss";
  
 
 function UserDashboardCharts() {

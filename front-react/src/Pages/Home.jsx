@@ -8,7 +8,7 @@ import TestLayout from "../Layouts/TestLayout";
 
 const Home = () => {
   return (
-    <TestLayout className="w-full">
+    <TestLayout wfull={true}>
       <MainSlider />
       <NFTList className={"-mt-44 z-10 relative"} />
       <ExhebitionList className="mt-12" />
