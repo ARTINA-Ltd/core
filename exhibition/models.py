@@ -79,16 +79,22 @@ class Ticket(models.Model):
 
 
 class Application(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
+        ('ignored', 'Ignored'),
+    ]
+
     artist = models.ForeignKey(User, on_delete=models.CASCADE)
     exhibition = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='applications')
-    nft = models.ManyToManyField(NFT,related_name='applications')
+    nft = models.ManyToManyField(NFT, related_name='applications')
     contract_accepted = models.BooleanField(default=False)
-    accepted = models.BooleanField(blank=True, null=True)
-    ignored = models.BooleanField(default=False)
-    description=models.TextField(default="my application is complete")
-    def __str__(self):
-        return f"{self.artist.username}'s application for {self.exhibition.title}"
+    description = models.TextField(default="my application is complete",blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
 
+    def __str__(self):
+        return f"{self.artist.username}'s application for {self.exhibition.marketName}"
+        
     def get_owner(self):
         return self.nft.first().owner
 
