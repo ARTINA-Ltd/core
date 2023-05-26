@@ -111,7 +111,7 @@ class ApplicationViewSet(viewsets.ModelViewSet):
         contract_accepted = serializer.validated_data['contract_accepted']
         nft_objs = serializer.validated_data['nft']
 
-        # Check if the user has accepted the exhibition exhibitor_applicationscontract
+        # Check if the user has accepted the exhibition contract
         if not contract_accepted:
             return Response(
                 {'error': 'You must accept the exhibition contract before submitting your application.'},
@@ -142,15 +142,16 @@ class ApplicationViewSet(viewsets.ModelViewSet):
             )
 
     def retrieve(self, request, pk=None):
-        application = get_object_or_404(Application.objects.filter(exhibition__user=request.user), pk=pk)
+        application = get_object_or_404(Application.objects.filter(exhibition__user=request.user,status="pending"), pk=pk)
         serializer = self.get_serializer(application)
         return Response(serializer.data)
 
     @action(detail=False, methods=['get'])
 
     def exhibitor_applications(self, request):
-        user=self.request.user
-        applications = Application.objects.filter(exhibition_user=user, status="pending")
+        exhibitor_id = request.user.id
+  
+        applications = Application.objects.filter(exhibition__user__id=exhibitor_id, status="pending")
         serialized_data = self.get_serializer(applications, many=True).data
         return Response(serialized_data, status=status.HTTP_200_OK)
 
