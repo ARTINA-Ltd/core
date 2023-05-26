@@ -16,21 +16,16 @@ module.exports = {
         'b9': ['KalamehBlack', 'system-ui'],
         
         
-      }
-      // screens: {
-      //   'sm': '300px',
-      //   // => @media (min-width: 640px) { ... }
+      },
+      screens: {
+        'lg': {'max': '1023px'},
+        // => @media (max-width: 1023px) { ... }
   
-      //   'md': '768px',
-      //   // => @media (min-width: 768px) { ... }
+        'md': {'max': '767px'},
+        // => @media (max-width: 767px) { ... }
   
-      //   'lg': '1024px',
-      //   // => @media (min-width: 1024px) { ... }
-  
-      
-  
-      
-      // },
-    
+        'sm': {'max': '500px'},
+        // => @media (max-width: 639px) { ... }
+      },
   },
 }
