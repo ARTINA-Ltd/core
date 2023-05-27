@@ -78,8 +78,8 @@ const Register = () => {
 
   return (
     <TestLayout className="flex items-center justify-center form-input w-full">
-      <SimpleCard className={"bg-[#ffffff] w-[450px]"}>
-        <div className="text-[24px] font-b8">فرم ثبت نام</div>
+      <SimpleCard className={"bg-[#ffffff] w-[450px] sm:m-4"}>
+        <div className="text-[24px] text-center">فرم ثبت نام</div>
 
         <SimpleInput
           className={"mt-6"}
@@ -141,11 +141,11 @@ const Register = () => {
           }
           defaultValue={""}
         />
-        <div className="mt-5">
+        <div className="mt-5 flex justify-center">
           <BorderButton onClick={handleSubmit}>ثبت نام</BorderButton>
         </div>
 
-        <div className="bg-[#0000aa10] px-5 py-3 rounded-2xl mt-5 ">
+        <div className="bg-[#0000aa10] px-5 py-3 rounded-2xl mt-5 text-center">
           <Link to="/Login" className="text-indigo-900">
             از قبل حساب کاربری دارید ؟ وارد شوید.
           </Link>
