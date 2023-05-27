@@ -89,7 +89,6 @@ const Login = () => {
     // }
   };
 
-  console.log(values);
   return (
     <TestLayout className="flex items-center justify-center form-input w-full">
       <SimpleCard className={"bg-[#ffffff] w-[450px] sm:m-4"}>

@@ -77,7 +77,7 @@ const Header = ({ connectWallet = false }) => {
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          enable-background="new 0 0 24 24"
+          enableBackground="new 0 0 24 24"
           viewBox="0 0 24 24"
           width="1.5em"
         >
@@ -102,7 +102,7 @@ const Header = ({ connectWallet = false }) => {
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          enable-background="new 0 0 24 24"
+          enableBackground="new 0 0 24 24"
           viewBox="0 0 24 24"
           width="1.5em"
         >
@@ -355,31 +355,34 @@ const Header = ({ connectWallet = false }) => {
     <>
       <header>
         <div className="flex justify-center h-[12vh] bg-[#f9f9f9] font-b3">
-          <div className="flex items-center justify-end lg:justify-between w-[90%] justify-self-center lg:w-[85%]">
+          <div className="flex items-center justify-between w-[90%] justify-self-center">
             <div className="flex items-center gap-12">
               {user
-                ? ActiveItems.map((item) => (
-                    <div
-                      className="cursor-pointer flex items-center gap-2 hover:text-[#4e45d0] transition-all duration-200"
-                      onClick={() => {
-                        navigate(item.link);
-                      }}
-                    >
-                      {item.icon}
-                      {item.title}
-                    </div>
-                  ))
-                : NotActiveItems.map((item) => (
-                    <div
-                      className="cursor-pointer flex items-center gap-2 hover:text-[#4e45d0] transition-all duration-200"
-                      onClick={() => {
-                        navigate(item.link);
-                      }}
-                    >
-                      {item.icon}
-                      {item.title}
-                    </div>
-                  ))}
+                ? ActiveItems.map((item, index) => (
+                  <div
+                    key={index}
+                    className="cursor-pointer flex items-center gap-2 hover:text-[#4e45d0] transition-all duration-200"
+                    onClick={() => {
+                      navigate(item.link);
+                    }}
+                  >
+                    {item.icon}
+                    {item.title}
+                  </div>
+                ))
+                : NotActiveItems.map((item, index) => (
+                  <div
+                    className="cursor-pointer flex items-center gap-2 hover:text-[#4e45d0] transition-all duration-200"
+                    onClick={() => {
+                      navigate(item.link);
+                    }}
+                    key={index}
+
+                  >
+                    {item.icon}
+                    {item.title}
+                  </div>
+                ))}
               <a
                 href="https://metaverse.artina.org"
                 className="bg-[#eee] text-[#4e45d0] px-3 py-[4px] rounded-full hover:scale-105 transition-all duration-200 border-[#4e45d0] border-[1px]"
@@ -411,9 +414,8 @@ const Header = ({ connectWallet = false }) => {
                       alt=""
                     />
                     <div
-                      className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-100 border-[gray-300] bg-[#f9f9f9] min-w-[200px] ${
-                        isHidden ? "opacity-0" : ""
-                      } absolute translate-x-1/3`}
+                      className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-100 border-[gray-300] bg-[#f9f9f9] min-w-[200px] ${isHidden ? "opacity-0" : ""
+                        } absolute translate-x-1/3`}
                     >
                       <div className="w-full py-2 px-3 hover:bg-[#0000aa07] flex gap-2 items-center justify-between cursor-pointer">
                         <img
@@ -424,13 +426,13 @@ const Header = ({ connectWallet = false }) => {
                         <div>
                           <div className="text-left text-sm font-b5 ">{user.data.first_name} {user.data.last_name}</div>
                           <div className="text-left font-b2 text-sm">
-                          {user.data.username}
+                            {user.data.username}
                           </div>
                         </div>
                       </div>
                       <hr />
                       <BalanceDialog />
-                      <div className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]" onClick={()=> navigate('/profile')}>
+                      <div className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]" onClick={() => navigate('/profile')}>
                         پروفایل
                       </div>
                       <div

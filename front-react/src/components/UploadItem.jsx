@@ -61,14 +61,12 @@ const UploadItem = () => {
         mode: "cors",
       })
       .then((res) => {
-        console.log(res)
         setTokenId(res.data);
         Notify.success("درخواست شما با موفقیت ثبت شد");
         setIsLoading(false);
         setIsUploaded(true);
       })
       .catch(e => {
-        console.log(e)
         Notify.failure("خطا");
         setIsLoading(false);
       });
@@ -187,13 +185,13 @@ const UploadItem = () => {
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
                     className="w-10 h-10 animate-bounce"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
                     />
                   </svg>
@@ -209,13 +207,13 @@ const UploadItem = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.1"
+                strokeWidth="1.1"
                 stroke="currentColor"
                 className="w-40 h-40 text-green-600"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 019 9v.375M10.125 2.25A3.375 3.375 0 0113.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 013.375 3.375M9 15l2.25 2.25L15 12"
                 />
               </svg>

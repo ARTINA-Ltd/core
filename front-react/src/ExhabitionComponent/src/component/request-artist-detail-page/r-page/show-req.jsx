@@ -27,9 +27,8 @@ const Showreq = (props) => {
       url: "http://127.0.0.1:8000/exhibition/nftexs/1/changing_state/",
       data: formField,
       mode: "cors",
-    }).then((response) => {
-      console.log(response.data);
-    });
+    }).then(
+    );
   };
 
   useEffect(() => {

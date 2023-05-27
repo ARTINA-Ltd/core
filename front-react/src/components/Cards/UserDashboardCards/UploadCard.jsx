@@ -9,7 +9,6 @@ const handleChange = (e) => {
     const data = new FileReader();
     data.addEventListener('load', ()=>{setImg(data.result)});
     data.readAsDataURL(e.target.files[0]);
-    console.log(img);
 }
   return (
     <SimpleCard className={`bg-white ${className}`}>

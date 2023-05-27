@@ -20,12 +20,11 @@ const ForgetPassword = () => {
         password: values.password
       })
       .then((e) => {
-        Notify.success("ارس____________ال شد");
+        Notify.success("رمز عبور شما با موفقیت تغییر یافت");
         navigate('/login');
-        console.log(e)
       })
-      .catch((res) => {Notify.failure("کاربری__________د");
-    console.log(res)});
+      .catch((res) => {Notify.failure("خطا");
+    });
   };
 
   const handleSend = () => {

@@ -13,9 +13,6 @@ const ExhebitionList = ({ className }) => {
     axios
       .get("https://api.artina.org/api/exhibition/exhibitions/")
       .then((d) => {
-        console.log("Exhebitions");
-        console.log(d);
-        console.log("__________________");
         setData(d.data);
       });
   }, []);

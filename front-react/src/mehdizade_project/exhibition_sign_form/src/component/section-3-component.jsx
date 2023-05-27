@@ -29,7 +29,6 @@ const Section_3 = () => {
 
     fetchRequest();
   }, []);
-  console.log(requests);
 let array=[];
 array.push(requests);
   // for getting the data from form and send it to the back
@@ -54,7 +53,6 @@ array.push(requests);
 
   const handleName = (event) => {
     setfName({ json_post_fname: event.target.value });
-    console.log(event.target.value);
   };
 
   const handlelName = (event) => {
@@ -79,7 +77,6 @@ array.push(requests);
       setIsChoosed([...isChoosed, event.currentTarget.id]);
     }
   };
-  console.log(collections);
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -91,7 +88,6 @@ array.push(requests);
       body: JSON.stringify(collections),
     };
     fetch("https://api.artina.org/api/exhibition/nftexs/", requestOptions).then(
-      (response) => console.log(response.json())
     );
   };
 

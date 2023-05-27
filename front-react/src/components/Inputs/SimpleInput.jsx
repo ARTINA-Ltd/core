@@ -39,11 +39,7 @@ const SimpleInput = ({
         )
       );
       // setDefaultVal(new Date(,parseInt(defaultValue.split('/')[1]),parseInt(defaultValue.split('/')[0])));
-      console.log("first");
-      console.log(defaultValue);
 
-      console.log(defaultVal);
-      console.log("first");
     }
   }, [defaultValue]);
 

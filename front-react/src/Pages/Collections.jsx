@@ -23,7 +23,6 @@ const Collections = () => {
       .get(`https://api.artina.org/api/transaction/collection/${username}/nfts/`, {
       })
       .then((res) => {
-        console.log(res);
         setData(res.data);
       })
   }, []);

@@ -35,7 +35,6 @@ const Register = () => {
         navigate("/login");
       })
       .catch((response) => {
-        console.log(response)
         if (response.response.data.error == "This username is already taken.") {
           Notiflix.Notify.failure("نام کاربری تکراری میباشد.");
         }
@@ -77,7 +76,6 @@ const Register = () => {
     window.location = `${googleAuthUrl}?${urlParams}`;
   }, []);
 
-  console.log(values);
   return (
     <TestLayout className="flex items-center justify-center form-input w-full">
       <SimpleCard className={"bg-[#ffffff] w-[450px]"}>
