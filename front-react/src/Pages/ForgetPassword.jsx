@@ -41,7 +41,7 @@ const ForgetPassword = () => {
   return (
     <TestLayout className="flex items-center justify-center form-input w-[100%]">
       <SimpleCard className={"bg-[#ffffff] w-[450px]"}>
-        <div className="text-[24px]">بازیابی رمز عبور</div>
+        <div className="text-center text-[24px]">بازیابی رمز عبور</div>
         <div>
           <SimpleInput
             className={"mt-6"}
