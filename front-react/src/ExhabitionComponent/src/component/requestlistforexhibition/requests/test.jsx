@@ -19,8 +19,6 @@ class Test extends Component {
     };
   }
   change = (unix, formatted) => {
-    console.log(unix); // returns timestamp of the selected value, for example.
-    console.log(formatted); // returns the selected value in the format you've entered, forexample, "تاریخ: 1396/02/24 ساعت: 18:30".
     this.setState({
       valueDate: formatted,
     });

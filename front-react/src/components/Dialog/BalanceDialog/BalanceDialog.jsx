@@ -14,7 +14,6 @@ const BalanceDialog = () => {
   const [amount, setAmount] = useState();
 
   const updateBalance = () => {
-    console.log(amount);
     axios
       .post(
         "https://api.artina.org/api/account/user-balance/updating_balance/",
@@ -44,7 +43,6 @@ const BalanceDialog = () => {
         setData(res.data);
       })
       .catch((e) => {
-        console.log(localStorage.getItem("authTokens"));
       });
   }, []);
 

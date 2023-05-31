@@ -20,12 +20,11 @@ const ForgetPassword = () => {
         password: values.password
       })
       .then((e) => {
-        Notify.success("ارس____________ال شد");
+        Notify.success("رمز عبور شما با موفقیت تغییر یافت");
         navigate('/login');
-        console.log(e)
       })
-      .catch((res) => {Notify.failure("کاربری__________د");
-    console.log(res)});
+      .catch((res) => {Notify.failure("خطا");
+    });
   };
 
   const handleSend = () => {
@@ -42,7 +41,7 @@ const ForgetPassword = () => {
   return (
     <TestLayout className="flex items-center justify-center form-input w-[100%]">
       <SimpleCard className={"bg-[#ffffff] w-[450px]"}>
-        <div className="text-[24px]">بازیابی رمز عبور</div>
+        <div className="text-center text-[24px]">بازیابی رمز عبور</div>
         <div>
           <SimpleInput
             className={"mt-6"}

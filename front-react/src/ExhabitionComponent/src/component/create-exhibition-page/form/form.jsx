@@ -50,9 +50,8 @@ const Form = (props) => {
       url: "https://api.artina.org/api/exhibition/exhibitions/",
       data: formField,
       mode: "cors",
-    }).then((response) => {
-      console.log(response.data);
-    });
+    }).then(
+    );
   };
 
   return (

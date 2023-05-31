@@ -49,14 +49,12 @@ const Section_2 = () => {
       })
       .catch((error) => {
         setError(error.message);
-        console.log(error);
         setExhibitions(null);
         setLoading(false);
         } )
       }
   let array = [];
   array.push(exhibitions);
-  console.log(array);
 
   let array2 = [];
   array2.push(exhibitions2);

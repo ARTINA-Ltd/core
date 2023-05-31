@@ -14,7 +14,6 @@ const Home = () => {
     const { user, logoutUser } = useContext(AuthContext);
 const userName=document.getElementById('username')
 const password=document.getElementById('password')
-console.log(userName)
 const [UserName, setUserName] = useState([""]);
 const [PassWord, setPassWord] = useState([""]);
 
@@ -53,7 +52,6 @@ useEffect(() => {
       }}
     fetchExhibitions();
   }, []);
-console.log(PassWord);
 
 function Handlelogin(){
     if (UserName!==userName && PassWord!==password) {

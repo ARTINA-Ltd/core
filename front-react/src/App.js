@@ -31,6 +31,7 @@ import ExhibitionList from "./Pages/ExhibitionList";
 import OpenExhibitions from "./Pages/OpenExhibitions";
 import ArtistApplicationForm from './Pages/ArtistApplicationForm';
 import ExhibitionCollections from "./Pages/ExhibitionCollections";
+import RequestsList from "./Pages/RequestsList";
 
 const activeChainId = ChainId.Goerli;
 
@@ -62,11 +63,10 @@ export default () => {
       .then((data) => {
         setUser(data);
       })
-      .catch(setUser(undefined));
+      .catch(()=>setUser(undefined));
   }, []);
 
   const userChange = async () => {
-    console.log("called");
     await axios
       .get(
         // url: "http://78.38.35.249:8000/api/account/user-info/",
@@ -76,7 +76,7 @@ export default () => {
       .then((data) => {
         setUser(data);
       })
-      .catch(setUser(undefined));
+      .catch(()=>setUser(undefined));
   };
 
   return (
@@ -112,6 +112,7 @@ export default () => {
                 <Route exact path="open-exhibitions" element={<OpenExhibitions />} />
 
                 <Route exact path="request-lists" element={<RequestLists />} />
+                <Route exact path="requests-list" element={<RequestsList />} />
                 <Route exact path="show-request" element={<ShowRequests />} />
                 <Route
                   exact

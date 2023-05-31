@@ -89,11 +89,10 @@ const Login = () => {
     // }
   };
 
-  console.log(values);
   return (
     <TestLayout className="flex items-center justify-center form-input w-full">
-      <SimpleCard className={"bg-[#ffffff] w-[450px]"}>
-        <div className="text-[24px]">ورود به سایت</div>
+      <SimpleCard className={"bg-[#ffffff] w-[450px] sm:m-4"}>
+        <div className="text-[24px] text-center">ورود به سایت</div>
         <SimpleInput
           className={"mt-6"}
           type="text"
@@ -128,7 +127,7 @@ const Login = () => {
           <BorderButton onClick={handleSubmit}>ورود</BorderButton>
         </div>
         <div
-          className="text-[16px] mt-3 opacity-40 cursor-pointer"
+          className="text-[16px] mt-3 opacity-40 cursor-pointer text-center"
           onClick={() => navigate("/forget-password")}
         >
           فراموشی رمز عبور!
@@ -137,7 +136,7 @@ const Login = () => {
         <div className="flex mt-5 items-center justify-center text-[16px] gap-4">
           حساب کاربری ندارید؟
           <div
-            className=" text-[14px] bg-[#0000aa08] py-2 px-[6rem] rounded-lg cursor-pointer transition-all hover:bg-[#0000aa11]"
+            className=" text-[14px] bg-[#0000aa08] py-2 px-[4rem] sm:px-[3rem] rounded-lg cursor-pointer transition-all hover:bg-[#0000aa11]"
             onClick={() => navigate("/register")}
           >
             ثبت نام

@@ -83,7 +83,6 @@ function UserDashboard() {
         }
       })
       .catch((exception) => {
-        console.log(exception);
         
         if (exception.response.status === 400) {
           Show400Errors(toastBC);
