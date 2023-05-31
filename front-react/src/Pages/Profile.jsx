@@ -249,7 +249,7 @@ function Profile() {
 
   return (
     <TestLayout connectWallet={false}>
-      <div className="flex gap-5 items-start flex-col lg:flex-row">
+      <div className="flex gap-5 items-start ">
         <SimpleCard className={"flex flex-col gap-4 bg-white w-full"}>
           <div className="text-[24px] font-b9">اطلاعات شخصی</div>
           <div className="flex gap-4 items-center">
@@ -508,7 +508,7 @@ function Profile() {
             <BorderButton onClick={() => UpdateInfo()}>ثبت</BorderButton>
           </div>
         </SimpleCard>
-        <SimpleCard className="bg-[#4e45d0] flex flex-col relative gap-4 items-center overflow-hidden w-[100%] lg:w-[35%]">
+        <SimpleCard className="bg-[#4e45d0] flex flex-col relative gap-4 items-center overflow-hidden w-[35%]">
           <img
             src="/mand1.png"
             className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
