@@ -80,7 +80,7 @@ class ExhibitionSerializer(serializers.ModelSerializer):
 
 class ApplicationSerializer(serializers.ModelSerializer):
     exhibition = serializers.PrimaryKeyRelatedField(queryset=Exhibition.objects.all())
-    artist = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    # artist = serializers.HiddenField(default=serializers.CurrentUserDefault())
     contract_accepted = serializers.BooleanField(required=True)
     nft = serializers.PrimaryKeyRelatedField(queryset=NFT.objects.all(), many=True)
 
