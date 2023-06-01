@@ -32,6 +32,7 @@ import OpenExhibitions from "./Pages/OpenExhibitions";
 import ArtistApplicationForm from './Pages/ArtistApplicationForm';
 import ExhibitionCollections from "./Pages/ExhibitionCollections";
 import RequestsList from "./Pages/RequestsList";
+import Exhibitor from "./Pages/Exhibitor";
 
 const activeChainId = ChainId.Goerli;
 
@@ -63,10 +64,11 @@ export default () => {
       .then((data) => {
         setUser(data);
       })
-      .catch(()=>setUser(undefined));
+      .catch(setUser(undefined));
   }, []);
 
   const userChange = async () => {
+    console.log("called");
     await axios
       .get(
         // url: "http://78.38.35.249:8000/api/account/user-info/",
@@ -76,7 +78,7 @@ export default () => {
       .then((data) => {
         setUser(data);
       })
-      .catch(()=>setUser(undefined));
+      .catch(setUser(undefined));
   };
 
   return (
@@ -111,7 +113,7 @@ export default () => {
                 <Route exact path="exhibition-list" element={<ExhibitionList />} />
                 <Route exact path="open-exhibitions" element={<OpenExhibitions />} />
 
-                <Route exact path="request-lists" element={<RequestLists />} />
+                {/* <Route exact path="request-lists" element={<RequestLists />} /> */}
                 <Route exact path="requests-list" element={<RequestsList />} />
                 <Route exact path="show-request" element={<ShowRequests />} />
                 <Route
@@ -122,6 +124,7 @@ export default () => {
                 <Route exact path="upload-page" element={<NFTUploadPage />} />
                 <Route exact path="UserDashboard" element={<UserDashboard />} />
                 <Route exact path="profile" element={<Profile />} />
+                <Route exact path="exhibitor" element={<Exhibitor />} />
                 <Route exact path="collections/:username" element={<Collections />} />
                 <Route exact path="exhibition-collections/:id" element={<ExhibitionCollections />} />
               </Routes>

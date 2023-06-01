@@ -92,7 +92,17 @@ function Profile() {
       setCounterPause(true);
     }, 60000);
 
-    var b_date= new Date(values.birthdate.split('/')[2],values.birthdate.split('/')[1]-1,values.birthdate.split('/')[0])
+    console.log("values.birthdate");
+    console.log(values.birthdate);
+    console.log("values.birthdate");
+    var b_date =
+      values.birthdate != "" && values.birthdate != null
+        ? new Date(
+            values.birthdate.split("/")[2],
+            values.birthdate.split("/")[1] - 1,
+            values.birthdate.split("/")[0]
+          )
+        : "";
 
     axios
       .put(
@@ -105,11 +115,14 @@ function Profile() {
           first_name: values.first_name,
           last_name: values.last_name,
           national_code: values.national_code,
-          birthdate: Intl.DateTimeFormat("en-UK", {
-            year: "numeric",
-            month: "numeric",
-            day: "numeric",
-          }).format(b_date),
+          birthdate:
+            b_date != ""
+              ? Intl.DateTimeFormat("en-UK", {
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                }).format(b_date)
+              : null,
           phone_number: values.phone_number,
           cell_number: values.cell_number,
           address: values.address,
@@ -144,7 +157,17 @@ function Profile() {
   }
 
   function UpdateInfo() {
-    var b_date= new Date(values.birthdate.split('/')[2],values.birthdate.split('/')[1]-1,values.birthdate.split('/')[0])
+    console.log("values.birthdate");
+    console.log(values.birthdate);
+    console.log("values.birthdate");
+    var b_date =
+      values.birthdate != "" && values.birthdate != null
+        ? new Date(
+            values.birthdate.split("/")[2],
+            values.birthdate.split("/")[1] - 1,
+            values.birthdate.split("/")[0]
+          )
+        : "";
 
     axios
       .put(
@@ -157,11 +180,14 @@ function Profile() {
           first_name: values.first_name,
           last_name: values.last_name,
           national_code: values.national_code,
-          birthdate: Intl.DateTimeFormat("en-UK", {
-            year: "numeric",
-            month: "numeric",
-            day: "numeric",
-          }).format(b_date),
+          birthdate:
+            b_date != ""
+              ? Intl.DateTimeFormat("en-UK", {
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                }).format(b_date)
+              : null,
           phone_number: values.phone_number,
           cell_number: values.cell_number,
           address: values.address,
