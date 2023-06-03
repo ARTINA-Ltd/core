@@ -10,6 +10,8 @@ import NftRequestsCard from "./../../Cards/UserDashboardCards/NftRequestsCard";
 
 const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
   const [visible, setVisible] = useState(false);
+  const [ticket, setTicket] = useState(false);
+  const [contract, setContract] = useState(false);
 
   const [values, setValues] = useState({
     marketName: "",
@@ -96,22 +98,22 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
       <Dialog
         header={Header}
         visible={visible}
-        style={{ width: "25vw", direction: "rtl" }}
+        style={{ width: "35vw", direction: "rtl" }}
         onHide={() => setVisible(false)}
         footer={Footer}
       >
         <div className="font-b4">
-          <div className="flex-shrink-0 relative group">
+          <div className="flex-shrink-0 relative group items-center flex justify-center">
             <img
               src={
                 profileImageUrl
                   ? profileImageUrl
                   : `${"https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"}`
               }
-              className="pointer-events-none rounded-2xl overflow-hidden object-cover w-full h-auto flex-shrink-0"
+              className="pointer-events-none rounded-2xl overflow-hidden object-cover h-auto flex-shrink-0 w-1/2"
             />
             <div
-              className="group-hover:opacity-80 opacity-0 cursor-pointer duration-300 bg-black transition-all w-full h-full absolute inset-0  items-center justify-center flex rounded-2xl"
+              className="group-hover:opacity-80 opacity-0 cursor-pointer duration-300 bg-black transition-all w-1/2 h-full absolute inset-0 m-auto items-center justify-center flex rounded-2xl"
               onClick={() => inputFile.current.click()}
             >
               <svg
@@ -242,6 +244,28 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
               defaultValue={null}
               disabled={false}
             />
+
+            <div
+              className={`border-[1px] rounded-full px-3 py-1 cursor-pointer text-center ${
+                ticket
+                  ? "border-green-500 text-green-600 bg-green-50"
+                  : "border-red-600 text-red-700 bg-red-50"
+              }`}
+              onClick={()=>setTicket((prev) => !prev)}
+            >
+              {ticket ? "تیکت دارد" : "تیکت ندارد"}
+            </div>
+<div className="flex">
+  <div>انتخاب فایل قرارداد</div>
+  <input
+              type="file" accept="application/pdf, application/doc"
+              onChange={(e) => {
+                setContract(() => e.target.files[0]);
+                console.log(e.target.files[0])
+              }}
+            />
+</div>
+           
           </div>
         </div>
       </Dialog>

@@ -7,8 +7,15 @@ import axios from "axios";
 import SimpleInput from "../../Inputs/SimpleInput";
 import { Notify } from "notiflix";
 import NftRequestsCard from "./../../Cards/UserDashboardCards/NftRequestsCard";
+import { useNavigate } from "react-router";
 
-const ApplicationReqDialog = ({ user, nfts = [], description, exhibition }) => {
+const ApplicationReqDialog = ({
+  user,
+  nfts = [],
+  description,
+  exhibition,
+  application,
+}) => {
   const [visible, setVisible] = useState(false);
   const [getData, setData] = useState();
   const [getExhebition, setExhebition] = useState();
@@ -16,11 +23,32 @@ const ApplicationReqDialog = ({ user, nfts = [], description, exhibition }) => {
   const [isCharge, setIsCharge] = useState(false);
   const [amount, setAmount] = useState();
   const [tokens, setTokens] = useState();
-
+  var temp = 0;
   //'accept', 'ignored'
   //{
   //   action: 'accept'
   // }
+  const navigate = useNavigate();
+
+  const btnClick = (action) => {
+    axios
+      .put(
+        `https://api.artina.org/api/exhibition/applications/${application}/`,
+        {
+          action: action,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        setData(res.data);
+      })
+      .catch(() => {});
+  };
   useEffect(() => {
     axios
       .get(`https://api.artina.org/api/account/userpicture/${user}/`, {
@@ -30,19 +58,22 @@ const ApplicationReqDialog = ({ user, nfts = [], description, exhibition }) => {
         setData(res.data);
       })
       .catch(() => {});
-    for (let i = 0; i < nfts.length; i++) {
-      axios
-        .get(`https://api.artina.org/api/transaction/nfts/${nfts[i]}/`, {})
-        .then((res) => {
-          if (!nftDetails.includes(res.data)) {
-            setNftDetails((prev) => [...prev, res.data]);
-          }
-        })
-        .catch(() => {});
+    if (temp == 0) {
+      temp = 1;
+      for (let i = 0; i < nfts.length; i++) {
+        axios
+          .get(`https://api.artina.org/api/transaction/nfts/${nfts[i]}/`, {})
+          .then((res) => {
+            if (!nftDetails.includes(res.data)) {
+              setNftDetails((prev) => [...prev, res.data]);
+            }
+          })
+          .catch(() => {});
+      }
     }
   }, []);
   useEffect(() => {
-    console.log(nftDetails)
+    console.log(nftDetails);
     // axios
     //   .get("https://api.artina.org/api/account/user-balance/get_balance/", {
     //     headers: {
@@ -67,14 +98,14 @@ const ApplicationReqDialog = ({ user, nfts = [], description, exhibition }) => {
       </BorderButton>
 
       <BorderButton
-        onClick={() => setVisible(false)}
+        onClick={() => btnClick('ignored')}
         className="w-full font-b4 text-center"
       >
         رد
       </BorderButton>
 
       <BorderButton
-        onClick={() => setVisible(false)}
+        onClick={() => btnClick('accept')}
         className="w-full font-b4 text-center"
       >
         تایید
@@ -101,13 +132,14 @@ const ApplicationReqDialog = ({ user, nfts = [], description, exhibition }) => {
         image={getData ? getData.profile_picture : ""}
         firstName={getData ? getData.first_name : ""}
         lastName={getData ? getData.last_name : ""}
+        exhibition={exhibition}
         onClick={() => setVisible(true)}
       />
 
       <Dialog
         header={Header}
         visible={visible}
-        style={{ width: "25vw", direction: "rtl" }}
+        style={{ width: "35vw", direction: "rtl" }}
         onHide={() => setVisible(false)}
         footer={Footer}
         className="font-b4"
@@ -123,39 +155,39 @@ const ApplicationReqDialog = ({ user, nfts = [], description, exhibition }) => {
             <div>{getData ? getData.last_name : ""}</div>
           </div>
         </div>
-<div className="w-full rounded-2xl m-4 bg-slate-100 text-slate-400 px-4 py-2 font-b5">توضیحات:{description}</div>
-        {nftDetails.map((item,index)=>(
-            <tr
-                  className="border-t group cursor-pointer transition duration-100 w-full  hover:bg-[#0000ff08] font-b4"
-                  key={index}
-                  // onClick={() => navigate(`/nft-details/${item.token_id}`)}
-                >
-                  <td className="whitespace-nowrap px-6 font-medium sm:pl-2 sm:pr-3">
-                    <img
-                      src={item.image_url}
-                      className="rounded-lg h-[60px] w-[60px] object-cover my-1 sm:h-[90px] sm:w-[90px]"
-                      alt=""
-                    />
-                  </td>
-                  <td className="whitespace-nowrap px-6 py-4 sm:px-1 sm:w-2/5">{item.name}</td>
-                  <td className="whitespace-nowrap px-6 py-4 sm:px-1">{item.last_price}</td>
-                  <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.3"
-                      stroke="currentColor"
-                      width={"1em"}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15.75 19.5L8.25 12l7.5-7.5"
-                      />
-                    </svg>
-                  </td>
-                </tr>
+        <div className="w-full rounded-2xl my-4 bg-slate-100 text-slate-400 px-4 py-2 font-b5">
+          توضیحات:{description}
+        </div>
+        {nftDetails.map((item, index) => (
+          <div
+            key={index}
+            onClick={() => navigate(`/nft-details/${item.token_id}`)}
+            className="flex gap-4 w-full cursor-pointer group my-2 bg-slate-50 hover:bg-slate-200 transition-all items-center justify-between rounded-2xl font-b5 p-2"
+          >
+            <img
+              src={item.image_url}
+              className="rounded-full h-[60px] w-[60px] object-cover my-1 sm:h-[90px] sm:w-[90px] shrink-0"
+              alt=""
+            />
+            <div className="font-b7">{item.name}</div>
+            <div className="font-b3">{item.last_price}اتریوم</div>
+            <div className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.3"
+                stroke="currentColor"
+                width={"1em"}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 19.5L8.25 12l7.5-7.5"
+                />
+              </svg>
+            </div>
+          </div>
         ))}
       </Dialog>
     </div>

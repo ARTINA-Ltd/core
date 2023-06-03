@@ -91,18 +91,18 @@ function Profile() {
       setIsPhoneDisabled(false);
       setCounterPause(true);
     }, 60000);
+    var b_date;
 
-    console.log("values.birthdate");
-    console.log(values.birthdate);
-    console.log("values.birthdate");
-    var b_date =
-      values.birthdate != "" && values.birthdate != null
-        ? new Date(
-            values.birthdate.split("/")[2],
-            values.birthdate.split("/")[1] - 1,
-            values.birthdate.split("/")[0]
-          )
-        : "";
+    if (typeof values.birthdate === "string") {
+      b_date =
+        values.birthdate != "" && values.birthdate != null
+          ? new Date(
+              values.birthdate.split("/")[2],
+              values.birthdate.split("/")[1] - 1,
+              values.birthdate.split("/")[0]
+            )
+          : "";
+    } else b_date = values.birthdate;
 
     axios
       .put(
@@ -157,17 +157,17 @@ function Profile() {
   }
 
   function UpdateInfo() {
-    console.log("values.birthdate");
-    console.log(values.birthdate);
-    console.log("values.birthdate");
-    var b_date =
-      values.birthdate != "" && values.birthdate != null
-        ? new Date(
-            values.birthdate.split("/")[2],
-            values.birthdate.split("/")[1] - 1,
-            values.birthdate.split("/")[0]
-          )
-        : "";
+   var b_date;
+    if (typeof values.birthdate === "string") {
+      b_date =
+        values.birthdate != "" && values.birthdate != null
+          ? new Date(
+              values.birthdate.split("/")[2],
+              values.birthdate.split("/")[1] - 1,
+              values.birthdate.split("/")[0]
+            )
+          : "";
+    } else b_date = values.birthdate;
 
     axios
       .put(

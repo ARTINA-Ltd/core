@@ -12,13 +12,16 @@ const RequestsList = () => {
 
   useEffect(() => {
     axios
-      .get(`https://api.artina.org/api/exhibition/applications/exhibitor_applications/`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-        },
-      })
+      .get(
+        `https://api.artina.org/api/exhibition/applications/exhibitor_applications/`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+        }
+      )
       .then((res) => {
-        console.log(res)
+        console.log(res);
         setData(res.data);
       })
       .catch(() => {});
@@ -58,10 +61,20 @@ const RequestsList = () => {
         <SimpleCard className={"bg-white flex flex-col items-center mt-8"}>
           <div className="text-4xl font-b9 mb-6">لیست درخواست ها</div>
           <div className="grid gap-4 grid-cols-4">
-            {getData? getData.map((item , index)=>(
-            <ApplicationReqDialog key={index} user={item.artist} nfts={item.nft} description={item.description} exhibition={item.exhibition} />
-
-            )):''}
+            {getData
+              ? getData.map((item, index) => (
+                  <>
+                    <ApplicationReqDialog
+                      key={index}
+                      user={item.artist}
+                      nfts={item.nft}
+                      description={item.description}
+                      exhibition={item.exhibition}
+                      application={item.id}
+                    />
+                  </>
+                ))
+              : ""}
           </div>
         </SimpleCard>
       </TestLayout>
