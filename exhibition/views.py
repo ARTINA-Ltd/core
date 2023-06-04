@@ -11,8 +11,8 @@ from rest_framework import status
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from .models import NFT, Exhibition, Application
-from .serializers import NFTSerializer, ExhibitionSerializer, ApplicationSerializer
+from .models import NFT, Exhibition, Application , Category
+from .serializers import NFTSerializer, ExhibitionSerializer, ApplicationSerializer , CategorySerializer
 from django.utils import timezone
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
@@ -73,6 +73,11 @@ class OpenForArtistRegistrationExhibitionsViewSet(viewsets.ReadOnlyModelViewSet)
         return Exhibition.objects.filter(start_date__lte=now, end_date__gte=now, application_deadline__gte=now)
         # .exclude(nfts__owner=user)
 
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
 
 class IsExhibitorOrReadOnly(permissions.BasePermission):
