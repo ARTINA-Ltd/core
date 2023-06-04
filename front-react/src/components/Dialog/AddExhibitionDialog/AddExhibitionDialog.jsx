@@ -108,7 +108,7 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
               src={
                 profileImageUrl
                   ? profileImageUrl
-                  : `${"https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"}`
+                  : `${"https://api.artina.org/static/images/No_Image_Available.jpg"}`
               }
               className="pointer-events-none rounded-2xl overflow-hidden object-cover h-auto flex-shrink-0 w-1/2"
             />
