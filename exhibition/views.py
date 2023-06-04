@@ -52,7 +52,7 @@ class ArtistOpenExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         user = self.request.user
         now = timezone.now()
-        return Exhibition.objects.filter(nfts__owner=user, start_date__lte=now, end_date__gte=now)
+        return Exhibition.objects.filter(Applicaton_nft__owner=user, start_date__lte=now, end_date__gte=now)
 
 class ArtistClosedExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.ExhibitionSerializer
@@ -61,7 +61,7 @@ class ArtistClosedExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         user = self.request.user
         now = timezone.now()
-        return Exhibition.objects.filter(nfts__owner=user, end_date__lt=now)
+        return Exhibition.objects.filter(Applicaton_nft__owner=user, end_date__lt=now)
 
 class OpenForArtistRegistrationExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.ExhibitionSerializer

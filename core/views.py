@@ -45,14 +45,17 @@ class OrderViewSet(viewsets.ViewSet):
         else:
 
             nft = NFT.objects.get(token_id=token_id)
-            if nft.has_expired():
-                return Response(status=HTTPStatus.BAD_REQUEST)
-            else:
-                if nft.has_started():
-                    Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status)
-                    return Response(status=HTTPStatus.OK)
-                else:
-                    return Response(status=HTTPStatus.BAD_REQUEST)
+            Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status)
+            return Response(status=HTTPStatus.OK)
+
+            # if nft.has_expired():
+                # return Response(status=HTTPStatus.BAD_REQUEST)
+            # else:
+            #     if nft.has_started():
+                # Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status)
+                # return Response(status=HTTPStatus.OK)
+            #     else:
+            #         return Response(status=HTTPStatus.BAD_REQUEST)
 
 
 class NFTRateViewSet(viewsets.ModelViewSet):
