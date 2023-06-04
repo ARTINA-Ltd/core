@@ -260,7 +260,7 @@ class MyImageViewSet(viewsets.ModelViewSet):
 
 from rest_framework import viewsets
 from rest_framework.response import Response
-from rest_framework.status import HTTPStatus
+# from rest_framework.status import HTTPStatus
 from django.conf import settings
 from .models import PDF
 from .serializers import PDFSerializer
@@ -277,7 +277,7 @@ class PDFViewSet(viewsets.ModelViewSet):
         else:
             return Response(serializer.errors, status=HTTPStatus.BAD_REQUEST)
 
-            
+
 class UserCollectionViewSet(viewsets.ViewSet):
     serializer_class = serializers.NFTSerializer
 
