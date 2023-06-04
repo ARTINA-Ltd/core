@@ -258,10 +258,26 @@ class MyImageViewSet(viewsets.ModelViewSet):
             image_url = request.build_absolute_uri(serializer.data['image'])
         return Response({'id': serializer.data['id'], 'image': image_url}, status=status.HTTP_201_CREATED, headers=headers)
 
+from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework.status import HTTPStatus
+from django.conf import settings
+from .models import PDF
+from .serializers import PDFSerializer
 
+class PDFViewSet(viewsets.ModelViewSet):
+    queryset = PDF.objects.all()
+    serializer_class = PDFSerializer
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            pdf = serializer.save()
+            return Response({'url': pdf.url}, status=HTTPStatus.CREATED)
+        else:
+            return Response(serializer.errors, status=HTTPStatus.BAD_REQUEST)
 
-
+            
 class UserCollectionViewSet(viewsets.ViewSet):
     serializer_class = serializers.NFTSerializer
 

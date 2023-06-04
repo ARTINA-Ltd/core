@@ -26,3 +26,12 @@ class MyImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.MyImage
         fields = ('id', 'image')
+
+
+
+from .models import PDF
+
+class PDFSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PDF
+        fields = ('id', 'title', 'file', 'url')

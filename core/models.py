@@ -94,3 +94,20 @@ class Order(models.Model):
 
 class MyImage(models.Model):
     image = models.ImageField(upload_to='static/images/')
+
+
+from django.db import models
+from django.conf import settings
+
+class PDF(models.Model):
+    title = models.CharField(max_length=255)
+    file = models.FileField(upload_to='pdfs/')
+    url = models.CharField(max_length=255, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.url:
+            self.url = settings.MEDIA_URL + str(self.file)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title

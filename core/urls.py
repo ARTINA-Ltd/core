@@ -7,6 +7,8 @@ router.register(r'orders', views.OrderViewSet,basename='orders')
 router.register(r'rate', views.NFTRateViewSet,basename='rate')
 router.register(r'NFTViewSet', views.NFTViewSet,basename='NFTViewSet')
 router.register(r'images', views.MyImageViewSet)
+router.register(r'pdfs', views.PDFViewSet)
+
 # router.register(r'Base64ImageParser', views.Base64ImageParser,basename='Base64ImageParser')
 router.register(r'UserCollection', views.UserCollectionViewSet,basename="UserCollection")
 router.register(r'Winner', views.WinnerviewSet,basename="Winner")
