@@ -18,7 +18,6 @@ class Category (models.Model):
 
 
 class Exhibition(models.Model):
-    exhibition_id = models.IntegerField(verbose_name="ID", default=1000, null=False, blank=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     marketName = models.CharField(max_length=35, null=False, blank=False)
     image = models.TextField(verbose_name="Exhibition",
