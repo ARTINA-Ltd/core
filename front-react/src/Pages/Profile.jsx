@@ -3,6 +3,8 @@ import axios from "axios";
 
 import SimpleInput from "../components/Inputs/SimpleInput";
 import { UserContext } from "../App";
+import { UserChangeContext } from "../App";
+
 import TestLayout from "../Layouts/TestLayout";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import { Button } from "@mui/material";
@@ -11,6 +13,7 @@ import BorderButton from "../components/Buttons/BorderButton";
 
 function Profile() {
   const user = useContext(UserContext);
+  const userChange = useContext(UserChangeContext);
 
   const inputFile = useRef(null);
   const inputFileNC = useRef(null);
@@ -82,7 +85,7 @@ function Profile() {
       });
   };
   function hanldeClickPhone() {
-    UpdateInfo();
+  UpdateInfo();            
     setCounter(60);
     setCounterPause(false);
     setIsPhoneDisabled(true);
@@ -91,8 +94,18 @@ function Profile() {
       setIsPhoneDisabled(false);
       setCounterPause(true);
     }, 60000);
+    var b_date;
 
-    var b_date= new Date(values.birthdate.split('/')[2],values.birthdate.split('/')[1]-1,values.birthdate.split('/')[0])
+    if (typeof values.birthdate === "string") {
+      b_date =
+        values.birthdate != "" && values.birthdate != null
+          ? new Date(
+              values.birthdate.split("/")[2],
+              values.birthdate.split("/")[1] - 1,
+              values.birthdate.split("/")[0]
+            )
+          : "";
+    } else b_date = values.birthdate;
 
     axios
       .put(
@@ -105,11 +118,14 @@ function Profile() {
           first_name: values.first_name,
           last_name: values.last_name,
           national_code: values.national_code,
-          birthdate: Intl.DateTimeFormat("en-UK", {
-            year: "numeric",
-            month: "numeric",
-            day: "numeric",
-          }).format(b_date),
+          birthdate:
+            b_date != ""
+              ? Intl.DateTimeFormat("en-UK", {
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                }).format(b_date)
+              : null,
           phone_number: values.phone_number,
           cell_number: values.cell_number,
           address: values.address,
@@ -135,6 +151,8 @@ function Profile() {
             username: user.data.username,
           })
           .then((e) => {
+            userChange();
+
             Notify.success("ارسال شد");
           });
       })
@@ -144,7 +162,17 @@ function Profile() {
   }
 
   function UpdateInfo() {
-    var b_date= new Date(values.birthdate.split('/')[2],values.birthdate.split('/')[1]-1,values.birthdate.split('/')[0])
+   var b_date;
+    if (typeof values.birthdate === "string") {
+      b_date =
+        values.birthdate != "" && values.birthdate != null
+          ? new Date(
+              values.birthdate.split("/")[2],
+              values.birthdate.split("/")[1] - 1,
+              values.birthdate.split("/")[0]
+            )
+          : "";
+    } else b_date = values.birthdate;
 
     axios
       .put(
@@ -157,11 +185,14 @@ function Profile() {
           first_name: values.first_name,
           last_name: values.last_name,
           national_code: values.national_code,
-          birthdate: Intl.DateTimeFormat("en-UK", {
-            year: "numeric",
-            month: "numeric",
-            day: "numeric",
-          }).format(b_date),
+          birthdate:
+            b_date != ""
+              ? Intl.DateTimeFormat("en-UK", {
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                }).format(b_date)
+              : null,
           phone_number: values.phone_number,
           cell_number: values.cell_number,
           address: values.address,
@@ -181,6 +212,7 @@ function Profile() {
       )
       .then((res) => {
         Notify.success("اطلاعات با موفقیت به روز رسانی شد");
+        userChange();
       })
       .catch((e) => {
         Notify.failure("خطا");

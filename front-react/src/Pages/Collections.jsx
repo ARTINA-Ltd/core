@@ -9,8 +9,6 @@ import { useParams } from "react-router";
 import { useContext } from "react";
 import { UserContext } from "../App";
 
-
-
 const Collections = () => {
   const [getData, setData] = useState();
   const user = useContext(UserContext);
@@ -20,16 +18,27 @@ const Collections = () => {
 
   useEffect(() => {
     axios
-      .get(`https://api.artina.org/api/transaction/collection/${username}/nfts/`, {
-      })
+      .get(
+        `https://api.artina.org/api/transaction/collection/${username}/nfts/`,
+        {}
+      )
       .then((res) => {
         setData(res.data);
-      })
+      });
   }, []);
 
   return (
     <TestLayout>
-      <div className="d-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 w-full items-center ">
+      {getData && getData.length > 0 ? (
+        ""
+      ) : (
+        <div className="w-full flex items-center justify-center  text-lg font-b3">
+          <div className="hover:bg-red-100 bg-red-50 border-[1px] border-red-500 text-red-500 transition-all rounded-2xl py-1 px-5">
+            هنوز مجموعه ای ندارید!
+          </div>
+        </div>
+      )}
+      <div className="grid grid-cols-4 gap-5 w-full items-center ">
         {getData
           ? getData.map((item, index) => (
               <div className="col-span-1" key={index}>
@@ -37,7 +46,7 @@ const Collections = () => {
                   className="bg-white"
                   src={item.image_url}
                   price={item.last_price}
-                  onClick={()=> navigate(`/nft-details/${item.token_id}`)}
+                  onClick={() => navigate(`/nft-details/${item.token_id}`)}
                   tokenId={item.token_id}
                   showSell={user ? user.data.username === username : false}
                 >
@@ -45,11 +54,7 @@ const Collections = () => {
                 </ImageCard>
               </div>
             ))
-          : (
-            <div>
-              هنوز مجموعه ای ندارید.
-            </div>
-          )}
+          : ""}
       </div>
     </TestLayout>
   );

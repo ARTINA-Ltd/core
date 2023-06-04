@@ -354,7 +354,7 @@ const Header = ({ connectWallet = false }) => {
   return (
     <>
       <header>
-        <div className="flex justify-center h-[12vh] bg-[#f9f9f9] font-b3">
+        <div className="flex justify-center h-[80px] bg-[#f9f9f9] font-b3">
           <div className="flex items-center justify-between w-[90%] justify-self-center">
             <div className="flex items-center gap-12">
               {user

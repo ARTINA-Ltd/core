@@ -38,9 +38,9 @@ const ExhibitionCollections = () => {
         className="w-full h-[400px] object-cover rounded-2xl shadow-xl"
         alt=""
       />
-      <div className="text-6xl font-b9 w-full text-center">{getExhibition.marketName}</div>
+      <div className="text-6xl font-b9 text-center -mt-64 px-8 py-7 bg-[#00000050] m-auto z-20 relative text-white">{getExhibition ?getExhibition.marketName:''}</div>
 
-      <div className="d-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 w-full items-center mt-6">
+      <div className="d-grid grid-cols-4 gap-5 w-full items-center mt-52">
         {getData ? (
           getData.map((item, index) => (
             <div className="col-span-1" key={index}>
