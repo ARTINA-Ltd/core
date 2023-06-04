@@ -57,8 +57,8 @@ class OrderViewSet(viewsets.ViewSet):
             #     else:
             #         return Response(status=HTTPStatus.BAD_REQUEST)
     def list(self, request, *args, **kwargs):
-        token_id = request.META.get('HTTP_TOKEN_ID')
-        if not token_id:
+        token_id = request.data.get('token_id')
+            if not token_id:
             return Response({'error': 'Token ID not provided in header'}, status=HTTPStatus.BAD_REQUEST)
         
         nft = NFT.objects.filter(token_id=token_id).first()
