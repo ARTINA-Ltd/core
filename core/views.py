@@ -56,6 +56,18 @@ class OrderViewSet(viewsets.ViewSet):
                 # return Response(status=HTTPStatus.OK)
             #     else:
             #         return Response(status=HTTPStatus.BAD_REQUEST)
+    def list(self, request, *args, **kwargs):
+        token_id = request.META.get('HTTP_TOKEN_ID')
+        if not token_id:
+            return Response({'error': 'Token ID not provided in header'}, status=HTTPStatus.BAD_REQUEST)
+        
+        nft = NFT.objects.filter(token_id=token_id).first()
+        if not nft:
+            return Response({'error': 'NFT with given token ID does not exist'}, status=HTTPStatus.NOT_FOUND)
+        
+        orders = Order.objects.filter(nft=nft)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data, status=HTTPStatus.OK)
 
 
 class NFTRateViewSet(viewsets.ModelViewSet):
