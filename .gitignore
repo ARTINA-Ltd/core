@@ -90,6 +90,7 @@ local_settings.py
 /venv/bin/
 /venv/pyvenv.cfg
 
+.myenv/
 
 db.sqlite3
 ### Related to our project ###

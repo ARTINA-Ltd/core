@@ -39,7 +39,7 @@ class OrderViewSet(viewsets.ViewSet):
         user_balance=None
         user_balance = UserBalance.objects.filter(user=bidder).first()
         n=user_balance.rial_available_balance
-        if n< fee :
+        if n< int(fee) :
             return Response(status=HTTPStatus.BAD_REQUEST)
         else:
 

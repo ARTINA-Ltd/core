@@ -34,7 +34,7 @@ class ExhibitorOpenExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         user = self.request.user
         now = timezone.now()
-        return Exhibition.objects.filter(exhibitor=user, start_date__lte=now, end_date__gte=now)
+        return Exhibition.objects.filter(user=user, start_date__lte=now, end_date__gte=now)
 
 class ExhibitorClosedExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.ExhibitionSerializer
@@ -47,7 +47,7 @@ class ExhibitorClosedExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
 
 class ArtistOpenExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.ExhibitionSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
