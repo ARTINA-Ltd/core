@@ -3,6 +3,8 @@ import axios from "axios";
 
 import SimpleInput from "../components/Inputs/SimpleInput";
 import { UserContext } from "../App";
+import { UserChangeContext } from "../App";
+
 import TestLayout from "../Layouts/TestLayout";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import { Button } from "@mui/material";
@@ -11,6 +13,7 @@ import BorderButton from "../components/Buttons/BorderButton";
 
 function Profile() {
   const user = useContext(UserContext);
+  const userChange = useContext(UserChangeContext);
 
   const inputFile = useRef(null);
   const inputFileNC = useRef(null);
@@ -82,7 +85,7 @@ function Profile() {
       });
   };
   function hanldeClickPhone() {
-    UpdateInfo();
+  UpdateInfo();            
     setCounter(60);
     setCounterPause(false);
     setIsPhoneDisabled(true);
@@ -148,6 +151,8 @@ function Profile() {
             username: user.data.username,
           })
           .then((e) => {
+            userChange();
+
             Notify.success("ارسال شد");
           });
       })
@@ -207,6 +212,7 @@ function Profile() {
       )
       .then((res) => {
         Notify.success("اطلاعات با موفقیت به روز رسانی شد");
+        userChange();
       })
       .catch((e) => {
         Notify.failure("خطا");
