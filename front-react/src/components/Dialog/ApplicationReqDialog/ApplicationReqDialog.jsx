@@ -23,13 +23,14 @@ const ApplicationReqDialog = ({
   const [isCharge, setIsCharge] = useState(false);
   const [amount, setAmount] = useState();
   const [tokens, setTokens] = useState();
+  const [exhibitionName, setExhebitionName] = useState();
   var temp = 0;
   //'accept', 'ignored'
   //{
   //   action: 'accept'
   // }
   const navigate = useNavigate();
-
+  var q = 0;
   const btnClick = (action) => {
     axios
       .put(
@@ -46,6 +47,8 @@ const ApplicationReqDialog = ({
       .then((res) => {
         console.log(res);
         setData(res.data);
+        setVisible(false);
+        Notify.success("عملیات با موفقیت انجام شد");
       })
       .catch(() => {});
   };
@@ -71,6 +74,23 @@ const ApplicationReqDialog = ({
           .catch(() => {});
       }
     }
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("https://api.artina.org/api/exhibition/exhibitions/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+        mode: "cors",
+      })
+      .then((res) => {
+        res.data.map((item) => {
+          if (item.id === exhibition) {
+            setExhebitionName(item.marketName);
+          }
+        });
+      });
   }, []);
   useEffect(() => {
     console.log(nftDetails);
@@ -98,14 +118,18 @@ const ApplicationReqDialog = ({
       </BorderButton>
 
       <BorderButton
-        onClick={() => btnClick('ignored')}
+        onClick={() => {
+          btnClick("ignored");
+        }}
         className="w-full font-b4 text-center"
       >
         رد
       </BorderButton>
 
       <BorderButton
-        onClick={() => btnClick('accept')}
+        onClick={() => {
+          btnClick("accept");
+        }}
         className="w-full font-b4 text-center"
       >
         تایید
@@ -132,7 +156,7 @@ const ApplicationReqDialog = ({
         image={getData ? getData.profile_picture : ""}
         firstName={getData ? getData.first_name : ""}
         lastName={getData ? getData.last_name : ""}
-        exhibition={exhibition}
+        exhibition={exhibitionName}
         onClick={() => setVisible(true)}
       />
 

@@ -51,6 +51,7 @@ const ArtistApplicationForm = () => {
           .post(
             "https://api.artina.org/api/exhibition/applications/",
             {
+              artist: user.data.id,
               exhibition: id,
               contract_accepted: "True",
               nft: selectedNfts,
@@ -63,7 +64,7 @@ const ArtistApplicationForm = () => {
             }
           )
           .then(() => Notify.success("با موفقیت ثبت شد"))
-          .catch(() => Notify.failure("خطا"))
+          .catch((res) => {Notify.failure("خطا"); console.log(res)})
       : Notify.failure("برای ثبت درخواست ابتدا میبایست قراردار را بپذیرید");
   };
 

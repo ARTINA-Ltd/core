@@ -13,17 +13,23 @@ import BorderButton from "../../Buttons/BorderButton";
 export default function CollectionDialog(tokenId) {
   const [visible, setVisible] = useState(false);
   const [startDate, setStartDate] = useState();
+  const [startTime, setStartTime] = useState({ h: 0, m: 0 });
   const [endDate, setEndDate] = useState();
+  const [endTime, setEndTime] = useState({ h: 0, m: 0 });
   const [price, setPrice] = useState();
 
   const submit = () => {
+    var start = startDate;
+    var end = endDate;
+    start.setHours(startTime.h , startTime.m)
+    end.setHours(endTime.h , endTime.m)
     axios
       .put(
         "https://api.artina.org/api/transaction/nfts/sell/",
         {
           token_id: tokenId.tokenId,
-          start_date: startDate,
-          end_date: endDate,
+          start_date: start,
+          end_date: end,
           floor_price: price,
         },
         {
@@ -85,26 +91,42 @@ export default function CollectionDialog(tokenId) {
         onHide={() => setVisible(false)}
         footer={footerContent}
       >
-        <div className="flex gap-12 pt-5">
+        <div className="flex gap-12 pt-5 items-center font-b4">
           <SimpleInput
             type="date"
             title="تاریخ آغاز فروش "
             placeholder="مثلا"
             validationError="نمیتواند خالی باشد"
             defaultValue={null}
-            onChange={(e) => setStartDate(e.target.value)}
+            onChange={(e) => setStartDate(e.value)}
           />
+          <div className="flex gap-2 items-center font-b4">
+            <div className="">ساعت</div>
+            <SimpleInput
+              type="time"
+              onChange={(e) => setStartTime({ h: e.hour, m: e.minute })}
+            />
+          </div>
+        </div>
+        <div className="flex gap-12 pt-5 items-center font-b4">
           <SimpleInput
             type="date"
             title="تاریخ پایان فروش "
             placeholder="مثلا"
             validationError="نمیتواند خالی باشد"
             defaultValue={null}
-            onChange={(e) => setEndDate(e.target.value)}
+            onChange={(e) => setEndDate(e.value)}
           />
+          <div className="flex gap-2 items-center font-b4">
+            <div className="">ساعت</div>
+            <SimpleInput
+              type="time"
+              onChange={(e) => setEndTime({ h: e.hour, m: e.minute })}
+            />
+          </div>
         </div>
         <SimpleInput
-          className={"mt-12 z-50"}
+          className={"mt-12 z-50 font-b4"}
           type="text"
           title="قیمت "
           placeholder="مثلا"
