@@ -61,8 +61,15 @@ class NumberSerializer(serializers.Serializer):
 
 
 from rest_framework import serializers
-from .models import NFT, Exhibition, Application
+from .models import NFT, Exhibition, Application , Category
 # CustomUser
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('id', 'name')
+
 
 class NFTSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')

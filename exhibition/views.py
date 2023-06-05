@@ -11,8 +11,8 @@ from rest_framework import status
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from .models import NFT, Exhibition, Application
-from .serializers import NFTSerializer, ExhibitionSerializer, ApplicationSerializer
+from .models import NFT, Exhibition, Application , Category
+from .serializers import NFTSerializer, ExhibitionSerializer, ApplicationSerializer , CategorySerializer
 from django.utils import timezone
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
@@ -34,7 +34,7 @@ class ExhibitorOpenExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         user = self.request.user
         now = timezone.now()
-        return Exhibition.objects.filter(exhibitor=user, start_date__lte=now, end_date__gte=now)
+        return Exhibition.objects.filter(user=user, start_date__lte=now, end_date__gte=now)
 
 class ExhibitorClosedExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.ExhibitionSerializer
@@ -47,12 +47,12 @@ class ExhibitorClosedExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
 
 class ArtistOpenExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.ExhibitionSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
         now = timezone.now()
-        return Exhibition.objects.filter(nfts__owner=user, start_date__lte=now, end_date__gte=now)
+        return Exhibition.objects.filter(applications__nft__owner=user, start_date__lte=now, end_date__gte=now)
 
 class ArtistClosedExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.ExhibitionSerializer
@@ -61,7 +61,7 @@ class ArtistClosedExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         user = self.request.user
         now = timezone.now()
-        return Exhibition.objects.filter(nfts__owner=user, end_date__lt=now)
+        return Exhibition.objects.filter(applicatons_nft__owner=user, end_date__lt=now)
 
 class OpenForArtistRegistrationExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.ExhibitionSerializer
@@ -73,6 +73,11 @@ class OpenForArtistRegistrationExhibitionsViewSet(viewsets.ReadOnlyModelViewSet)
         return Exhibition.objects.filter(start_date__lte=now, end_date__gte=now, application_deadline__gte=now)
         # .exclude(nfts__owner=user)
 
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
 
 class IsExhibitorOrReadOnly(permissions.BasePermission):
@@ -226,7 +231,8 @@ class ExhibitionInfoView(viewsets.ModelViewSet):
 
 class OpenExhibitionListView(viewsets.ModelViewSet):
     # permission_classes = [IsAuthenticated]
-
+    queryset = Exhibition.objects.all()
+    serializer_class = serializers.ExhibitionSerializer
     def get(self, request):
         open_exhibitions = Exhibition.objects.filter(status='open')
         serialized_data = ExhibitionSerializer(open_exhibitions, many=True).data

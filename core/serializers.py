@@ -26,3 +26,23 @@ class MyImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.MyImage
         fields = ('id', 'image')
+
+
+
+from .models import PDF
+
+from rest_framework import serializers
+from .models import PDF
+
+class PDFSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PDF
+        fields = ('id', 'title', 'file', 'url')
+        read_only_fields = ('url',)
+
+    def create(self, validated_data):
+        file = validated_data.pop('file')
+        pdf = PDF.objects.create(file=file, **validated_data)
+        pdf.url = pdf.file.url
+        pdf.save()
+        return pdf

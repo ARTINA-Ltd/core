@@ -39,19 +39,35 @@ class OrderViewSet(viewsets.ViewSet):
         user_balance=None
         user_balance = UserBalance.objects.filter(user=bidder).first()
         n=user_balance.rial_available_balance
+        fee=int(fee)
         if n< fee :
             return Response(status=HTTPStatus.BAD_REQUEST)
         else:
 
             nft = NFT.objects.get(token_id=token_id)
-            if nft.has_expired():
-                return Response(status=HTTPStatus.BAD_REQUEST)
-            else:
-                if nft.has_started():
-                    Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status)
-                    return Response(status=HTTPStatus.OK)
-                else:
-                    return Response(status=HTTPStatus.BAD_REQUEST)
+            Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status)
+            return Response(status=HTTPStatus.OK)
+
+            # if nft.has_expired():
+                # return Response(status=HTTPStatus.BAD_REQUEST)
+            # else:
+            #     if nft.has_started():
+                # Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status)
+                # return Response(status=HTTPStatus.OK)
+            #     else:
+            #         return Response(status=HTTPStatus.BAD_REQUEST)
+    def list(self, request, *args, **kwargs):
+        token_id = request.data.get('token_id')
+        if not token_id:
+            return Response({'error': 'Token ID not provided in header'}, status=HTTPStatus.BAD_REQUEST)
+        
+        nft = NFT.objects.filter(token_id=token_id).first()
+        if not nft:
+            return Response({'error': 'NFT with given token ID does not exist'}, status=HTTPStatus.NOT_FOUND)
+        
+        orders = Order.objects.filter(nft=nft)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data, status=HTTPStatus.OK)
 
 
 class NFTRateViewSet(viewsets.ModelViewSet):
@@ -242,8 +258,24 @@ class MyImageViewSet(viewsets.ModelViewSet):
             image_url = request.build_absolute_uri(serializer.data['image'])
         return Response({'id': serializer.data['id'], 'image': image_url}, status=status.HTTP_201_CREATED, headers=headers)
 
+from rest_framework import viewsets
+from rest_framework.response import Response
+# from rest_framework.status import HTTPStatus
+from django.conf import settings
+from .models import PDF
+from .serializers import PDFSerializer
 
+class PDFViewSet(viewsets.ModelViewSet):
+    queryset = PDF.objects.all()
+    serializer_class = PDFSerializer
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            pdf = serializer.save()
+            return Response({'url': pdf.url}, status=HTTPStatus.CREATED)
+        else:
+            return Response(serializer.errors, status=HTTPStatus.BAD_REQUEST)
 
 
 class UserCollectionViewSet(viewsets.ViewSet):

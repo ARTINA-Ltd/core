@@ -94,3 +94,15 @@ class Order(models.Model):
 
 class MyImage(models.Model):
     image = models.ImageField(upload_to='static/images/')
+
+
+from django.db import models
+from django.conf import settings
+
+class PDF(models.Model):
+    title = models.CharField(max_length=255)
+    file = models.FileField(upload_to='static/pdfs/')
+    url = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        return self.title
