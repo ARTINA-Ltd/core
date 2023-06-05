@@ -338,7 +338,7 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
         user = self.request.user
         currency = request.data.get('currency').lower()
         amount = request.data.get('amount')
-
+        name=request.data.get('transaction_type')
         if not currency or not amount:
             return Response({'error': 'Both currency and amount are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -347,7 +347,7 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
         except ValueError:
             return Response({'error': 'Invalid amount value.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        transaction_type = TransactionType.objects.get(name='deposit')
+        transaction_type = TransactionType.objects.get(name=name)
         transaction_currency = TransactionCurrency.objects.get(name=currency)
 
         if currency == 'rial':
