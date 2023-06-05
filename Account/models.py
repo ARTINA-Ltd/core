@@ -43,6 +43,7 @@ class Profile(models.Model):
                                                                           code='invalid_phone_number')])
     phone_number_verified = models.BooleanField(default=False)
     cell_number = models.CharField(max_length=11, verbose_name="شماره تلفن ثابت", null=True, blank=False)
+    shaba_number = models.CharField(max_length=24, verbose_name="shaba_number", null=True, blank=True)
     address = models.TextField(max_length=200, verbose_name="آدرس", null=True, blank=False)
     national_card_picture = models.TextField(verbose_name="عکس کارت ملی",null=True,blank=False,default="http://api.artina.org/static/images/NC.png")
     profile_picture = models.TextField(verbose_name="عکس پروفایل",
