@@ -26,6 +26,7 @@ class Exhibition(models.Model):
     end_date = models.DateTimeField(verbose_name="تاریخ پایان")
     description = models.TextField(null=True, blank=True)
     ticket = models.BooleanField(null=True, default=False)
+    ticket_price = models.IntegerField(verbose_name="قیمت",default=10000, null=False, blank=False)
     contract = models.TextField(verbose_name="contract",
                               null=True, blank=True)
     category = models.ForeignKey(Category, default=1, on_delete=models.CASCADE)
