@@ -98,6 +98,7 @@ class UserInfoViewSet(viewsets.ViewSet):
             'profile_picture': profile.profile_picture,
             'email': user.email,
             'role': str(profile.role),
+            'shaba_number':profile.shaba_number
         }
         return Response(data)
 
