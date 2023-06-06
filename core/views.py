@@ -56,7 +56,8 @@ class OrderViewSet(viewsets.ViewSet):
                 # return Response(status=HTTPStatus.OK)
             #     else:
             #         return Response(status=HTTPStatus.BAD_REQUEST)
-    def list(self, request, *args, **kwargs):
+    @action(detail=False, methods=['post'])
+    def gettingorders(self, request):
         token_id = request.data.get('token_id')
         if not token_id:
             return Response({'error': 'Token ID not provided in header'}, status=HTTPStatus.BAD_REQUEST)
