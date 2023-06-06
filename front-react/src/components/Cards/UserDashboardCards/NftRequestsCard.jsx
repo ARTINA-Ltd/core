@@ -10,17 +10,18 @@ const NftRequestsCard = ({
   lastName,
   image,
   exhibition,
+  nftCount
 }) => {
   const [data, setData] = useState();
 
   return (
     <span onClick={onClick} className="cursor-pointer">
       <SimpleCard
-        className={` overflow-hidden group relative transition-all duration-100 bg-[#0000aa04] hover:bg-[#0000aa10] flex items-center justify-center gap-4 px-12`}
+        className={` overflow-hidden group relative transition-all duration-100 bg-[#0000aa10] hover:bg-[#0000aa15] flex items-center justify-center gap-4 px-12`}
       >
         <img
           src={image}
-          className={`h-[200px] w-[200px] object-cover rounded-full group-hover:translate-x-4 transition-all duration-300 ease-out`}
+          className={`h-[180px] w-[180px] object-cover rounded-full group-hover:translate-x-4 transition-all duration-300 ease-out`}
           alt=""
         />
 
@@ -36,6 +37,20 @@ const NftRequestsCard = ({
           ) : (
             ""
           )}
+          {nftCount ? (
+            <div className="flex gap-1 group-hover:translate-x-4 transition-all duration-300 ease-out items-center gap-1">
+              <div>
+
+              تعداد nft:
+
+              </div>
+              {nftCount}
+            </div>
+          ) : (
+            ""
+          )}
+  
+
         </div>
 
         <svg

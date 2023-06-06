@@ -69,11 +69,18 @@ const Exhibitor = () => {
   return (
     <div>
       <TestLayout wfull={true}>
-        <img src={"/2.jpg"} className="w-full h-[600px] object-cover" alt="" />
+      <SimpleCard className="bg-[#4e45d0] flex flex-col relative gap-4 items-center justify-center overflow-hidden w-[90%] h-96 mx-auto mb-5">
+          <img
+            src="/mand1.png"
+            className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
+          />
+          <div className="text-white text-6xl mb-2 z-10 font-b7">
+مدیریت فعالیت ها          </div>
+        </SimpleCard>
 
         <SimpleCard
           className={
-            "bg-white mx-auto w-[90%] -mt-48 z-10 relative text-center"
+            "bg-white mx-auto w-[90%] z-10 relative text-center"
           }
         >
           <div className="font-b6 text-2xl mb-2 mx-auto">

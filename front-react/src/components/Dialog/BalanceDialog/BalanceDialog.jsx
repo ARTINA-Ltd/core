@@ -30,7 +30,7 @@ const BalanceDialog = () => {
           mode: "cors",
         }
       )
-      .then(() => Notify.success("با موفقیت شارژ شد"))
+      .then((res) => console.log(res))
       .catch(() => Notify.failure("خطا"));
   };
   useEffect(() => {

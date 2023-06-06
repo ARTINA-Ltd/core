@@ -167,66 +167,80 @@ function Profile() {
       });
   }
 
+
+  function validation(){
+    if (shabaNumber.length === 24){
+      return true;
+    }
+    else {
+      Notify.failure("شماره شبا بایستی 24 رقمی باشد")
+      return false}
+  }
+
   function UpdateInfo() {
     //
-    var b_date;
-    if (typeof values.birthdate !== "string") {
-      b_date = values.birthdate;
-    } else {
-      b_date =
-        values.birthdate != "" && values.birthdate != null
-          ? new Date(
-              values.birthdate.split("/")[2],
-              values.birthdate.split("/")[1] - 1,
-              values.birthdate.split("/")[0]
-            )
-          : "";
-    }
-    axios
-      .put(
-        // "https://api.artina.org/api/account/profile/",
-        `https://api.artina.org/api/account/profile/${
-          user ? user.data.id : ""
-        }/`,
-        {
-          user: user ? user.data.id : "",
-          first_name: values.first_name,
-          last_name: values.last_name,
-          national_code: values.national_code,
-          birthdate:
-            b_date != ""
-              ? Intl.DateTimeFormat("en-UK", {
-                  year: "numeric",
-                  month: "numeric",
-                  day: "numeric",
-                }).format(b_date)
-              : null,
-          phone_number: values.phone_number,
-          cell_number: values.cell_number,
-          address: values.address,
-          national_card_picture: nationalCardImageUrl
-            ? nationalCardImageUrl
-            : user.data.national_card_picture,
-          profile_picture: profileImageUrl
-            ? profileImageUrl
-            : user.data.profile_picture,
-          shaba_number: shabaNumber,
-
-          // role: user ? user.data.role : ""
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+    if (validation()){
+      var b_date;
+      if (typeof values.birthdate !== "string") {
+        b_date = values.birthdate;
+      } else {
+        b_date =
+          values.birthdate != "" && values.birthdate != null
+            ? new Date(
+                values.birthdate.split("/")[2],
+                values.birthdate.split("/")[1] - 1,
+                values.birthdate.split("/")[0]
+              )
+            : "";
+      }
+      axios
+        .put(
+          // "https://api.artina.org/api/account/profile/",
+          `https://api.artina.org/api/account/profile/${
+            user ? user.data.id : ""
+          }/`,
+          {
+            user: user ? user.data.id : "",
+            first_name: values.first_name,
+            last_name: values.last_name,
+            national_code: values.national_code,
+            birthdate:
+              b_date != ""
+                ? Intl.DateTimeFormat("en-UK", {
+                    year: "numeric",
+                    month: "numeric",
+                    day: "numeric",
+                  }).format(b_date)
+                : null,
+            phone_number: values.phone_number,
+            cell_number: values.cell_number,
+            address: values.address,
+            national_card_picture: nationalCardImageUrl
+              ? nationalCardImageUrl
+              : user.data.national_card_picture,
+            profile_picture: profileImageUrl
+              ? profileImageUrl
+              : user.data.profile_picture,
+            shaba_number: shabaNumber,
+  
+            // role: user ? user.data.role : ""
           },
-        }
-      )
-      .then((res) => {
-        Notify.success("اطلاعات با موفقیت به روز رسانی شد");
-        userChange();
-      })
-      .catch((e) => {
-        Notify.failure("خطا");
-      });
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            },
+          }
+        )
+        .then((res) => {
+          Notify.success("اطلاعات با موفقیت به روز رسانی شد");
+          userChange();
+        })
+        .catch((e) => {
+          Notify.failure("خطا");
+        });
+    }
+   
+    
   }
 
   function ValidateEmail(mail) {
@@ -494,7 +508,6 @@ function Profile() {
                 type="number"
                 title="کد "
                 placeholder="1234"
-                validationError="نمیتواند خالی باشد"
                 onChange={
                   (e) => setPhoneVerificationCode(e.target.value) // isValid={}
                 }
@@ -502,12 +515,12 @@ function Profile() {
               />
             </div>
             <div
-              className={`transition-all ${
+              className={`transition-all w-1/2 shrink-0 ${
                 isPhoneVerified ? "hidden" : "flex gap-4 "
               }`}
             >
               <div
-                className={`w-full ${
+                className={`w-1/3 shrink-0 ${
                   !showPhoneValidate
                     ? "hidden"
                     : "bg-sky-400 cursor-pointer hover:bg-sky-500 w-full text-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center"
@@ -517,11 +530,11 @@ function Profile() {
                 ثبت
               </div>
               <div
-                className={`w-full ${
+                className={`w-1/3 shrink-0 ${
                   isPhoneDisabled
                     ? "bg-[#4e45d0] cursor-not-allowed hover:bg-[#372fac]"
                     : "bg-[#372fac] cursor-pointer"
-                } w-full text-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center`}
+                } w-full text-nowrap flex-nowrap whitespace-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center`}
                 onClick={() => (!isPhoneDisabled ? hanldeClickPhone() : "")}
               >
                 {isPhoneDisabled ? `ارسال مجدد کد (${counter})` : "ارسال کد"}
