@@ -15,8 +15,6 @@ function Profile() {
   const user = useContext(UserContext);
   const userChange = useContext(UserChangeContext);
 
-
-  
   const inputFile = useRef(null);
   const inputFileNC = useRef(null);
 
@@ -49,6 +47,8 @@ function Profile() {
   const [profileImageUrl, setProfileImageUrl] = useState();
   const [nationalCardImage, setNationalCardImage] = useState();
   const [nationalCardImageUrl, setNationalCardImageUrl] = useState();
+
+  const [shabaNumber, setShabaNumber] = useState();
 
   const [showPhoneValidate, setShowPhoneValidate] = useState(false);
   const [showEmailValidate, setShowEmailValidate] = useState(false);
@@ -139,6 +139,8 @@ function Profile() {
           profile_picture: profileImageUrl
             ? profileImageUrl
             : user.data.profile_picture,
+          shaba_number: shabaNumber,
+
           // role: user ? user.data.role : ""
         },
         {
@@ -166,7 +168,7 @@ function Profile() {
   }
 
   function UpdateInfo() {
-    //shaba_number
+    //
     var b_date;
     if (typeof values.birthdate !== "string") {
       b_date = values.birthdate;
@@ -208,6 +210,8 @@ function Profile() {
           profile_picture: profileImageUrl
             ? profileImageUrl
             : user.data.profile_picture,
+          shaba_number: shabaNumber,
+
           // role: user ? user.data.role : ""
         },
         {
@@ -233,7 +237,7 @@ function Profile() {
   }
 
   useEffect(() => {
-    console.log(user)
+    console.log(user);
     setValues((prev) => ({
       ...prev,
       first_name: user ? user.data.first_name : "",
@@ -246,6 +250,7 @@ function Profile() {
       email: user ? user.data.email : "",
     }));
     if (user) {
+      setShabaNumber(user.data.shaba_number);
       setIsPhoneVerified(user.data.phone_number_verified == true);
     }
   }, [user]);
@@ -548,82 +553,86 @@ function Profile() {
           </div>
         </SimpleCard>
         <div className="flex flex-col gap-4 items-center justify-center w-[35%] relative">
-        <SimpleCard className="bg-[#4e45d0] flex flex-col relative gap-4 items-center overflow-hidden w-full">
-          <img
-            src="/mand1.png"
-            className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
-          />
-          <div className="text-white text-[27px] mb-2 z-10 font-b9">
-            اطلاعات حساب کاربری
-          </div>
-          <div className="text-white font-b3">تصویر کارت ملی </div>
-          <div className="flex justify-center z-10 group relative w-full h-auto">
+          <SimpleCard className="bg-[#4e45d0] flex flex-col relative gap-4 items-center overflow-hidden w-full">
             <img
-              src={
-                nationalCardImageUrl
-                  ? nationalCardImageUrl
-                  : `${
-                      user
-                        ? user.data.national_card_picture
-                        : "https://thumbs.dreamstime.com/b/id-card-white-background-business-identification-icon-identity-template-badge-personal-contact-78370022.jpg"
-                    }`
-              }
-              className="w-auto h-auto rounded-2xl"
+              src="/mand1.png"
+              className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
             />
-            <div
-              className="bg-gradient-to-b from-black to-[#00000050] w-full h-full absolute rounded-2xl opacity-70 flex items-center justify-center group-hover:visible invisible cursor-pointer"
-              onClick={() => inputFileNC.current.click()}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="0.5"
-                stroke="currentColor"
-                className="text-white "
-                width="3em"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z"
-                />
-              </svg>
+            <div className="text-white text-[27px] mb-2 z-10 font-b9">
+              اطلاعات حساب کاربری
             </div>
-            <input
-              hidden
-              accept="image/*"
-              type="file"
-              onChange={(e) => setNationalCardImage(() => e.target.files[0])}
-              ref={inputFileNC}
+            <div className="text-white font-b3">تصویر کارت ملی </div>
+            <div className="flex justify-center z-10 group relative w-full h-auto">
+              <img
+                src={
+                  nationalCardImageUrl
+                    ? nationalCardImageUrl
+                    : `${
+                        user
+                          ? user.data.national_card_picture
+                          : "https://thumbs.dreamstime.com/b/id-card-white-background-business-identification-icon-identity-template-badge-personal-contact-78370022.jpg"
+                      }`
+                }
+                className="w-auto h-auto rounded-2xl"
+              />
+              <div
+                className="bg-gradient-to-b from-black to-[#00000050] w-full h-full absolute rounded-2xl opacity-70 flex items-center justify-center group-hover:visible invisible cursor-pointer"
+                onClick={() => inputFileNC.current.click()}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="0.5"
+                  stroke="currentColor"
+                  className="text-white "
+                  width="3em"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z"
+                  />
+                </svg>
+              </div>
+              <input
+                hidden
+                accept="image/*"
+                type="file"
+                onChange={(e) => setNationalCardImage(() => e.target.files[0])}
+                ref={inputFileNC}
+              />
+            </div>
+          </SimpleCard>
+
+          <SimpleCard className="bg-[#4e45d0] flex flex-col relative text-white gap-4 items-center overflow-hidden w-full">
+            <img
+              src="/mand1.png"
+              className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
             />
-          </div>
-        </SimpleCard>
+            <div className="text-white text-[27px] mb-2 z-10 font-b9">
+              اطلاعات کارت بانکی
+            </div>
+            <div className="font-b3">شماره شبا</div>
+            <div className="flex items-center gap-5" dir="ltr">
+              <div className="pt-2">IR </div>
 
-        <SimpleCard className="bg-[#4e45d0] flex flex-col relative text-white gap-4 items-center overflow-hidden w-full">
-          <img
-            src="/mand1.png"
-            className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
-          />
-          <div className="text-white text-[27px] mb-2 z-10 font-b9">
-            اطلاعات کارت بانکی
-          </div>
-          <div></div>
-          <div className="flex items-center gap-5">
-            <SimpleInput title={"شبا"} type="number" className="border-none text-white" />
-            <div>IR </div> 
-          </div>
-        </SimpleCard>
+              <SimpleInput
+                defaultValue={user != null ? shabaNumber : null}
 
-
-
+                title={"اینجا بنویسید"}
+                type="number"
+                onChange={(e) => setShabaNumber(e.target.value)}
+                className="border-none text-white"
+              />
+            </div>
+          </SimpleCard>
         </div>
-       
       </div>
     </TestLayout>
   );

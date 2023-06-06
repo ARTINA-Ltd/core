@@ -33,6 +33,7 @@ import ArtistApplicationForm from './Pages/ArtistApplicationForm';
 import ExhibitionCollections from "./Pages/ExhibitionCollections";
 import RequestsList from "./Pages/RequestsList";
 import Exhibitor from "./Pages/Exhibitor";
+import UserCollections from "./Pages/UserCollections";
 
 const activeChainId = ChainId.Goerli;
 
@@ -126,6 +127,7 @@ export default () => {
                 <Route exact path="profile" element={<Profile />} />
                 <Route exact path="exhibitor" element={<Exhibitor />} />
                 <Route exact path="collections/:username" element={<Collections />} />
+                <Route exact path="user-collections" element={<UserCollections />} />
                 <Route exact path="exhibition-collections/:id" element={<ExhibitionCollections />} />
               </Routes>
             </div>

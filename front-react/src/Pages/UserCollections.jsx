@@ -30,8 +30,18 @@ const UserCollections = () => {
   return (
     <div>
       <TestLayout>
+      <div className="w-full justify-center flex gap-4">
+          
+          <div className="flex w-full justify-center items-center gap-4">
+            <img
+              src={"http://api.artina.org/static/images/2345.webp"}
+              className="w-full max-h-[500px] object-cover rounded-2xl"
+              alt=""
+            />
+          </div>
+        </div>
         <SimpleCard className={"bg-white flex flex-col items-center mt-8"}>
-          <div className="text-4xl font-b9 mb-6">لیست درخواست ها</div>
+          <div className="text-4xl font-b9 mb-6">لیست هنرمندان</div>
           <div className="grid gap-4 grid-cols-4">
             {getData
               ? getData.map((item, index) => (

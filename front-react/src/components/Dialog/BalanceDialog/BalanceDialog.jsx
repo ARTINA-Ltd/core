@@ -12,13 +12,15 @@ const BalanceDialog = () => {
   const [getData, setData] = useState();
   const [isCharge, setIsCharge] = useState(false);
   const [amount, setAmount] = useState();
+  const [action, setAction] = useState();
 
-  const updateBalance = () => {
+  const updateBalance = (act) => {
     axios
       .post(
         "https://api.artina.org/api/account/user-balance/updating_balance/",
         {
           currency: "rial",
+          transaction_type: act, //withraw
           amount: amount,
         },
         {
@@ -48,20 +50,14 @@ const BalanceDialog = () => {
   const Footer = (
     <div className="flex gap-5">
       <BorderButton
-        onClick={() => setVisible(false)}
-        className="w-full font-b4 text-center"
-      >
-        لغو
-      </BorderButton>
-
-      <BorderButton
         className={"w-full font-b4 text-center"}
         onClick={() => {
           if (isCharge == true) {
-            updateBalance();
+            updateBalance("deposit");
           } else {
             setIsCharge(true);
           }
+          setAction("deposit");
         }}
         autoFocus
       >
@@ -71,8 +67,10 @@ const BalanceDialog = () => {
       <BorderButton
         className={"w-full font-b4 text-center"}
         onClick={() => {
+          setAction("withraw");
+
           if (isCharge == true) {
-            updateBalance();
+            updateBalance("withraw");
           } else {
             setIsCharge(true);
           }
@@ -85,7 +83,28 @@ const BalanceDialog = () => {
   );
 
   const Header = (
-    <div>
+    <div className="flex gap-4">
+      {isCharge ? (
+        <div className="cursor-pointer" onClick={() => setIsCharge(false)}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+            />
+          </svg>
+        </div>
+      ) : (
+        ""
+      )}
+
       <p className="font-b9">کیف پول</p>
     </div>
   );
