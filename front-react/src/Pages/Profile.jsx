@@ -15,6 +15,8 @@ function Profile() {
   const user = useContext(UserContext);
   const userChange = useContext(UserChangeContext);
 
+
+  
   const inputFile = useRef(null);
   const inputFileNC = useRef(null);
 
@@ -85,7 +87,7 @@ function Profile() {
       });
   };
   function hanldeClickPhone() {
-  UpdateInfo();            
+    UpdateInfo();
     setCounter(60);
     setCounterPause(false);
     setIsPhoneDisabled(true);
@@ -96,7 +98,9 @@ function Profile() {
     }, 60000);
     var b_date;
 
-    if (typeof values.birthdate === "string") {
+    if (typeof values.birthdate !== "string") {
+      b_date = values.birthdate;
+    } else {
       b_date =
         values.birthdate != "" && values.birthdate != null
           ? new Date(
@@ -105,7 +109,7 @@ function Profile() {
               values.birthdate.split("/")[0]
             )
           : "";
-    } else b_date = values.birthdate;
+    }
 
     axios
       .put(
@@ -162,8 +166,11 @@ function Profile() {
   }
 
   function UpdateInfo() {
-   var b_date;
-    if (typeof values.birthdate === "string") {
+    //shaba_number
+    var b_date;
+    if (typeof values.birthdate !== "string") {
+      b_date = values.birthdate;
+    } else {
       b_date =
         values.birthdate != "" && values.birthdate != null
           ? new Date(
@@ -172,8 +179,7 @@ function Profile() {
               values.birthdate.split("/")[0]
             )
           : "";
-    } else b_date = values.birthdate;
-
+    }
     axios
       .put(
         // "https://api.artina.org/api/account/profile/",
@@ -227,6 +233,7 @@ function Profile() {
   }
 
   useEffect(() => {
+    console.log(user)
     setValues((prev) => ({
       ...prev,
       first_name: user ? user.data.first_name : "",
@@ -540,7 +547,8 @@ function Profile() {
             <BorderButton onClick={() => UpdateInfo()}>ثبت</BorderButton>
           </div>
         </SimpleCard>
-        <SimpleCard className="bg-[#4e45d0] flex flex-col relative gap-4 items-center overflow-hidden w-[35%]">
+        <div className="flex flex-col gap-4 items-center justify-center w-[35%] relative">
+        <SimpleCard className="bg-[#4e45d0] flex flex-col relative gap-4 items-center overflow-hidden w-full">
           <img
             src="/mand1.png"
             className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
@@ -596,6 +604,26 @@ function Profile() {
             />
           </div>
         </SimpleCard>
+
+        <SimpleCard className="bg-[#4e45d0] flex flex-col relative text-white gap-4 items-center overflow-hidden w-full">
+          <img
+            src="/mand1.png"
+            className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
+          />
+          <div className="text-white text-[27px] mb-2 z-10 font-b9">
+            اطلاعات کارت بانکی
+          </div>
+          <div></div>
+          <div className="flex items-center gap-5">
+            <SimpleInput title={"شبا"} type="number" className="border-none text-white" />
+            <div>IR </div> 
+          </div>
+        </SimpleCard>
+
+
+
+        </div>
+       
       </div>
     </TestLayout>
   );

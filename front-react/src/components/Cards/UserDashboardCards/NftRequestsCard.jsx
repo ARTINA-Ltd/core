@@ -29,7 +29,13 @@ const NftRequestsCard = ({
             <div>{firstName}</div>
             <div>{lastName}</div>
           </div>
-          <div className="flex gap-1 group-hover:translate-x-4 transition-all duration-300 ease-out">نمایشگاه:{exhibition}</div>
+          {exhibition ? (
+            <div className="flex gap-1 group-hover:translate-x-4 transition-all duration-300 ease-out">
+              نمایشگاه:{exhibition}
+            </div>
+          ) : (
+            ""
+          )}
         </div>
 
         <svg

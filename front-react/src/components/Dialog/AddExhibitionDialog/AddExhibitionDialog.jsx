@@ -11,7 +11,12 @@ import NftRequestsCard from "./../../Cards/UserDashboardCards/NftRequestsCard";
 const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
   const [visible, setVisible] = useState(false);
   const [ticket, setTicket] = useState(false);
+  const [ticketPrice, setTicketPrice] = useState(false);
   const [contract, setContract] = useState(false);
+  const [categories, setCtegories] = useState();
+  const [selectedCategory, setSelectedCategory] = useState();
+
+  const [pdf, setPdf] = useState();
 
   const [values, setValues] = useState({
     marketName: "",
@@ -28,6 +33,69 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
   const [profileImageUrl, setProfileImageUrl] = useState();
 
   useEffect(() => {
+    if (pdf) {
+      Notify.info("در حال آپلود فایل");
+      const formData = new FormData();
+      console.log("pdf");
+      console.log(pdf);
+      console.log("pdf");
+      formData.append("file", pdf);
+      formData.append("title", pdf.name);
+      axios
+        .post("https://api.artina.org/api/transaction/pdfs/", formData)
+        .then((res) => {
+          Notify.success("با موفقیت آپلود شد");
+          setContract(res.data.url);
+        })
+        .catch((res) => console.log(res));
+    }
+  }, [pdf]);
+
+  const handleSubmit = () => {
+    axios
+      .post(
+        `https://api.artina.org/api/exhibition/exhibitions/`,
+
+        {
+          marketName: values.marketName,
+          image: profileImageUrl,
+          start_date: values.start_date,
+          end_date: values.end_date,
+          description: values.description,
+          ticket: ticket,
+          ticketPrice: ticket ? ticketPrice : 0,
+          contract: contract,
+          application_deadline: values.application_deadline,
+          category: selectedCategory,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+        }
+      )
+      .then((res) => {
+        // setVisible(false)
+        console.log(res);
+      });
+  };
+
+  useEffect(() => {
+    axios
+      .get(`https://api.artina.org/api/exhibition/categories/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+      })
+      .then((res) => {
+        console.log("_____________________");
+        console.log("categories");
+        console.log(res.data);
+        console.log("_____________________");
+        setCtegories(res.data);
+      });
+  }, []);
+  useEffect(() => {
     if (profileImage) {
       Notify.info("در حال آپلود عکس");
       const formData = new FormData();
@@ -38,7 +106,9 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
           Notify.success("با موفقیت آپلود شد");
           setProfileImageUrl(res.data.image);
         })
-        .catch(() => Notify.failure("خطا در آپلود"));
+        .catch((res) => {Notify.failure("خطا در آپلود");
+      console.log(res)
+      });
     }
   }, [profileImage]);
 
@@ -51,7 +121,7 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
         لغو
       </BorderButton>
       <BorderButton
-        onClick={() => setVisible(false)}
+        onClick={() => handleSubmit()}
         className="w-full font-b4 text-center"
       >
         ثبت
@@ -74,7 +144,7 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
   return (
     <div className="card flex justify-content-center">
       <div
-        className="h-full w-full bg-[#0000aa05] hover:bg-[#0000aa08] rounded-2xl group flex items-center justify-center cursor-pointer  transition-all"
+        className="h-[420px] w-full bg-[#0000aa05] hover:bg-[#0000aa08] rounded-2xl group flex items-center justify-center cursor-pointer  transition-all"
         onClick={() => setVisible(true)}
       >
         <div className="text-[#000022] opacity-20 group-hover:opacity-40 transition-all group-hover:scale-105 ease-out duration-150 flex flex-col items-center">
@@ -246,26 +316,59 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
             />
 
             <div
-              className={`border-[1px] rounded-full px-3 py-1 cursor-pointer text-center ${
+              className={`border-[1px] rounded-full px-3 py-1 cursor-pointer text-center transition-all ${
                 ticket
                   ? "border-green-500 text-green-600 bg-green-50"
                   : "border-red-600 text-red-700 bg-red-50"
               }`}
-              onClick={()=>setTicket((prev) => !prev)}
+              onClick={() => setTicket((prev) => !prev)}
             >
               {ticket ? "تیکت دارد" : "تیکت ندارد"}
             </div>
-<div className="flex">
-  <div>انتخاب فایل قرارداد</div>
-  <input
-              type="file" accept="application/pdf, application/doc"
-              onChange={(e) => {
-                setContract(() => e.target.files[0]);
-                console.log(e.target.files[0])
-              }}
-            />
-</div>
-           
+            {ticket ? (
+              <SimpleInput
+                type="number"
+                title=" قیمت تیکت"
+                validationError="نمیتواند خالی باشد"
+                onChange={(e) => {
+                  setTicketPrice(e.target.value);
+                }}
+                defaultValue={null}
+                disabled={false}
+              />
+            ) : (
+              ""
+            )}
+            <div className="flex gap-3 items-center">
+              <div>انتخاب فایل قرارداد</div>
+              <input
+                type="file"
+                accept="application/pdf, application/doc"
+                onChange={(e) => {
+                  setPdf(() => e.target.files[0]);
+                }}
+              />
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {categories
+                ? categories.map((item, index) => (
+                    <>
+                      <div
+                        className={`px-3 py-1  transition-all cursor-pointer rounded-lg ${
+                          item.id == selectedCategory
+                            ? "bg-green-50 hover:bg-green-100 text-green-600"
+                            : "bg-slate-50 hover:bg-slate-100 text-slate-400"
+                        }`}
+                        key={index}
+                        onClick={() => setSelectedCategory(item.id)}
+                      >
+                        {item.name}
+                      </div>
+                    </>
+                  ))
+                : ""}
+            </div>
           </div>
         </div>
       </Dialog>

@@ -25,7 +25,7 @@ const Collections = () => {
       .then((res) => {
         setData(res.data);
       });
-  }, []);
+  }, [username]);
 
   return (
     <TestLayout>

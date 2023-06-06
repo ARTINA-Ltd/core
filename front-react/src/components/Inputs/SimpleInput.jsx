@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
 import { faL } from "@fortawesome/free-solid-svg-icons";
-import { DatePicker } from "zaman";
+import { DatePicker, TimePicker } from "zaman";
 
 const SimpleInput = ({
   onChange,
@@ -39,7 +39,6 @@ const SimpleInput = ({
         )
       );
       // setDefaultVal(new Date(,parseInt(defaultValue.split('/')[1]),parseInt(defaultValue.split('/')[0])));
-
     }
   }, [defaultValue]);
 
@@ -52,7 +51,6 @@ const SimpleInput = ({
           inputClass={`simple-input w-full z-50`}
           defaultValue={defaultVal}
           className={`z-[3102]`}
-
         />
       );
     } else if (type === "date" && disabled == false && !defaultValue) {
@@ -62,11 +60,9 @@ const SimpleInput = ({
           onChange={onChange}
           inputClass={`simple-input w-full z-50`}
           className={`z-[3102]`}
-
         />
       );
-    } 
-    else if (type === "date" && disabled == false) {
+    } else if (type === "date" && disabled == false) {
       return (
         <DatePicker
           accentColor="#4e45d0"
@@ -75,8 +71,7 @@ const SimpleInput = ({
           className={`z-[3102]`}
         />
       );
-    }
-    else if (type === "date" && disabled == true) {
+    } else if (type === "date" && disabled == true) {
       return (
         <input
           disabled={disabled}
@@ -113,7 +108,6 @@ const SimpleInput = ({
         <input
           disabled={disabled}
           onKeyUp={onChange}
-          onChange={handleChange}
           value={value}
           type="password"
           className={`simple-input w-full`}
@@ -125,7 +119,9 @@ const SimpleInput = ({
           }
         />
       );
-    }else {
+    } else if (type === "time") {
+      return <TimePicker accentColor="#4e45d0" onChange={onChange} />;
+    } else {
       return (
         <input
           disabled={disabled}
@@ -158,7 +154,13 @@ const SimpleInput = ({
         {title}
       </div>
 
-      <div className={`absolute left-2 top-1/2 -translate-y-1/2 text-sm bg-red-50 text-red-600 px-2 rounded-full font-b2 my-auto ${isValid ? 'opacity-[0%]' : 'opacity-[90%]'} transition-all`}>{validationError}</div>
+      <div
+        className={`absolute left-2 top-1/2 -translate-y-1/2 text-sm bg-red-50 text-red-600 px-2 rounded-full font-b2 my-auto ${
+          isValid ? "opacity-[0%]" : "opacity-[90%]"
+        } transition-all`}
+      >
+        {validationError}
+      </div>
     </div>
   );
 };

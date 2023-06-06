@@ -10,7 +10,7 @@ const OpenExhibitions = () => {
 
   useEffect(() => {
     axios
-      .get("http://api.artina.org/api/exhibition/open-for-artist-registration-exhibitions/", {
+      .get("https://api.artina.org/api/exhibition/open-for-artist-registration-exhibitions/", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
         },
@@ -18,7 +18,7 @@ const OpenExhibitions = () => {
       })
       .then((res) => {
         setData(res.data);
-      });
+      }).catch((res)=>console.log(res));
   }, []);
 
   return (

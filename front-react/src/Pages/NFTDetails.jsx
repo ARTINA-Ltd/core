@@ -117,9 +117,16 @@ const NFTDetails = () => {
     axios({
       method: "get",
       url: "https://api.artina.org/api/transaction/orders/",
+
+      headers: {
+        // Token_Id : id,
+        Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+      },
     })
       .then((d) => {
-        setReqData(d);
+        console.log("dddddd");
+        console.log(d);
+        // setReqData(d);
       })
       .catch();
   }, []);
@@ -130,7 +137,7 @@ const NFTDetails = () => {
         "https://api.artina.org/api/transaction/orders/",
         {
           token_id: id,
-          fee: ethereum,
+          fee: price.toFixed(0).toString(),
           status: 0,
         },
         {
@@ -145,6 +152,7 @@ const NFTDetails = () => {
       })
       .catch((exception) => {
         Notify.failure("خطا");
+        console.log(exception);
       });
   }
 

@@ -29,7 +29,7 @@ const BalanceDialog = () => {
         }
       )
       .then(() => Notify.success("با موفقیت شارژ شد"))
-      .catch(() => Notify.failure("خطا"))
+      .catch(() => Notify.failure("خطا"));
   };
   useEffect(() => {
     axios
@@ -42,8 +42,7 @@ const BalanceDialog = () => {
       .then((res) => {
         setData(res.data);
       })
-      .catch((e) => {
-      });
+      .catch((e) => {});
   }, []);
 
   const Footer = (
@@ -68,6 +67,20 @@ const BalanceDialog = () => {
       >
         شارژ کیف پول
       </BorderButton>
+
+      <BorderButton
+        className={"w-full font-b4 text-center"}
+        onClick={() => {
+          if (isCharge == true) {
+            updateBalance();
+          } else {
+            setIsCharge(true);
+          }
+        }}
+        autoFocus
+      >
+        برداشت
+      </BorderButton>
     </div>
   );
 
@@ -79,10 +92,12 @@ const BalanceDialog = () => {
 
   return (
     <div className="card flex justify-content-center">
-
-      <div className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]"
+      <div
+        className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]"
         onClick={() => setVisible(true)}
-        >کیف پول</div>
+      >
+        کیف پول
+      </div>
 
       <Dialog
         header={Header}
