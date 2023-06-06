@@ -67,7 +67,7 @@ class OrderViewSet(viewsets.ViewSet):
             return Response({'error': 'NFT with given token ID does not exist'}, status=HTTPStatus.NOT_FOUND)
         
         orders = Order.objects.filter(nft=nft)
-        serializer = OrderSerializer(orders, many=True)
+        serializer = serializers.OrderSerializer(orders, many=True)
         return Response(serializer.data, status=HTTPStatus.OK)
 
 
