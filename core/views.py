@@ -25,7 +25,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.conf import settings
 import os
-from Account.models import UserBalance, UserTurnover,TransactionType,TransactionCurrency
+from Account.models import UserBalance, UserTurnover,TransactionType,TransactionCurrency,Profile
 from http import HTTPStatus
 class OrderViewSet(viewsets.ViewSet):
     # queryset = Order.objects.all()
@@ -311,8 +311,23 @@ class NftDetailViewSet(viewsets.ViewSet):
         return serializer_class
 
 
- 
 
+
+class UsersWithNFTsViewSet(viewsets.ViewSet):
+
+    def list(self, request):
+        users_with_nfts = User.objects.filter(nft__isnull=False).distinct()
+        user_data = []
+        for user in users_with_nfts:
+            nft_count = NFT.objects.filter(owner=user).count()
+            profile = Profile.objects.get(user=user)
+            user_data.append({
+                'id': user.id,
+                'username': user.username,
+                'profile_picture': profile.profile_picture if profile.profile_picture else None,
+                'nft_count': nft_count,
+            })
+        return Response(user_data)
 
 
 class sellViewSet(viewsets.ViewSet):
