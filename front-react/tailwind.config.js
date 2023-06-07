@@ -22,6 +22,8 @@ module.exports = {
         // => @media (max-width: 1023px) { ... }
   
         'md': {'max': '767px'},
+
+        'mdrev': {'min': '768px'},
         // => @media (max-width: 767px) { ... }
   
         'sm': {'max': '500px'},

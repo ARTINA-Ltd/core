@@ -60,7 +60,7 @@ export default function CollectionDialog(tokenId) {
   );
   const Header = (
     <div>
-      <p className="font">فروش کالا</p>
+      <p className="font-b7">فروش nft</p>
     </div>
   );
   return (

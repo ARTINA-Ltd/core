@@ -49,6 +49,7 @@ const ApplicationReqDialog = ({
         setData(res.data);
         setVisible(false);
         Notify.success("عملیات با موفقیت انجام شد");
+        window.location.reload(true)
       })
       .catch(() => {});
   };

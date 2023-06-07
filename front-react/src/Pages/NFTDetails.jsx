@@ -114,21 +114,23 @@ const NFTDetails = () => {
       })
       .catch();
 
-    axios({
-      method: "get",
-      url: "https://api.artina.org/api/transaction/orders/",
-
-      headers: {
-        // Token_Id : id,
-        Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-      },
-    })
+    axios
+      .post(
+        "https://api.artina.org/api/transaction/orders/gettingorders/",
+        {
+          token_id: id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+        }
+      )
       .then((d) => {
-        console.log("dddddd");
-        console.log(d);
-        // setReqData(d);
+        console.log(d.data)
+        setReqData(d.data);
       })
-      .catch();
+      .catch((res) => console.log(res));
   }, []);
 
   function addRequest() {
@@ -227,7 +229,7 @@ const NFTDetails = () => {
             <div className="flex items-center pt-3">
               <div className="text-[32px] mx-auto">پیشنهادات</div>
             </div>
-            <Properties requests={reqData ? reqData : undefined} nft={id} />
+            <Properties requests={reqData ? reqData : null} nft={id} />
           </SimpleCard>
           {user && (data ? data.is_for_sale : true) ? (
             <>

@@ -26,12 +26,11 @@ function UserDashboard() {
   // const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
   const [UserDatas, setUserDatas] = useState(false);
-   var Token = localStorage.getItem("authTokens");
    const toastBC = useRef(null);
 
   const config = {
     headers: {
-      Authorization: `Bearer ${Token}`,
+      Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
     },
   };
   // const footerContent = (
@@ -75,7 +74,7 @@ function UserDashboard() {
             response.data.phone_number == null ||
             response.data.last_name == null
           ) {
-            navigate("/profile");
+            // navigate("/profile");
           }
           else{
             setUserDatas(response.data)
