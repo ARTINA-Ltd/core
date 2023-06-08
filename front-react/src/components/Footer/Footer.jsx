@@ -147,31 +147,35 @@ const Footer = () => {
       <div className="w-full flex items-center justify-center gap-3 mt-3">
         <div
           className="bg-indigo-500 rounded-md p-2 cursor-pointer"
-          onClick={window.open(
-            "https://instagram.com/artinanft?igshid=MzNlNGNkZWQ4Mg=="
-          )}
+          onClick={() =>
+            window.open(
+              "https://instagram.com/artinanft?igshid=MzNlNGNkZWQ4Mg=="
+            )
+          }
         >
           {icons.instagram}
         </div>
         <div
           className="bg-indigo-500 rounded-md p-2 cursor-pointer"
-          onClick={window.open("https://t.me/artinanft")}
+          onClick={() => window.open("https://t.me/artinanft")}
         >
           {icons.telegram}
         </div>
         <div
           className="bg-indigo-500 rounded-md p-2 cursor-pointer"
-          onClick={window.open(
-            "https://twitter.com/artina_nft?t=19-DEqjd_wl8kLxETYPZXg&s=09"
-          )}
+          onClick={() =>
+            window.open(
+              "https://twitter.com/artina_nft?t=19-DEqjd_wl8kLxETYPZXg&s=09"
+            )
+          }
         >
           {icons.twitter}
         </div>
         <div
           className="bg-indigo-500 rounded-md p-2 cursor-pointer"
-          onClick={window.open(
-            "https://www.linkedin.com/in/artina-nft-a8a66427a"
-          )}
+          onClick={() =>
+            window.open("https://www.linkedin.com/in/artina-nft-a8a66427a")
+          }
         >
           {icons.linkedin}
         </div>
