@@ -341,7 +341,7 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
             return Response({'error': 'Invalid currency.'}, status=status.HTTP_400_BAD_REQUEST)
         user_balance=None
         user_balance = UserBalance.objects.filter(user=user).first()
-        if name="deposit":
+        if name == "deposit":
             if user_balance :
                 n=user_balance.rial_available_balance 
                 n=n+ amount
@@ -349,7 +349,7 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
                 user_balance.save()
             else :
                 user_balance = UserBalance.objects.create(rial_available_balance=amount,user=user)
-        elif name="withraw" :
+        elif name == "withraw" :
             if user_balance :
                 n=user_balance.rial_available_balance 
                 n=n- amount
