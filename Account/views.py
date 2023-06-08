@@ -14,24 +14,6 @@ from django.contrib.auth.views import PasswordResetView
 from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 
-
-# class RegisterViewSet(viewsets.ModelViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = serializers.RegisterSerializer
-
-#     def create(self, request, *args, **kwargs):
-#         serializer = self.get_serializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         self.perform_create(serializer)
-#         headers = self.get_success_headers(serializer.data)
-#         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-# from ratelimit.decorators import ratelimit
-
-# # def signup(request):
-#     ip_address = request.META.get('REMOTE_ADDR')
-#     if User.objects.filter(ip_address=ip_address).count() >= 4:
-#         return HttpResponseBadRequest('Too many sign-up requests from this IP address.')
-
 class RegisterViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = serializers.RegisterSerializer
@@ -359,17 +341,28 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
             return Response({'error': 'Invalid currency.'}, status=status.HTTP_400_BAD_REQUEST)
         user_balance=None
         user_balance = UserBalance.objects.filter(user=user).first()
-        if user_balance :
-            n=user_balance.rial_available_balance 
-            n=n+ amount
-            user_balance.rial_available_balance =n
-            user_balance.save()
-        else :
-            user_balance = UserBalance.objects.create(rial_available_balance=amount,user=user)
+        if name="deposit":
+            if user_balance :
+                n=user_balance.rial_available_balance 
+                n=n+ amount
+                user_balance.rial_available_balance =n
+                user_balance.save()
+            else :
+                user_balance = UserBalance.objects.create(rial_available_balance=amount,user=user)
+        elif name="withraw" :
+            if user_balance :
+                n=user_balance.rial_available_balance 
+                n=n- amount
+                user_balance.rial_available_balance =n
+                user_balance.save()
+            else :
+                return Response({'error': 'you have no money to withdraw.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
         UserTurnover.objects.create(user=user, transaction_type=transaction_type, 
                                     transaction_currency=transaction_currency, transaction_value=amount)
 
-        return Response({'success': 'Balance charged successfully.'}, status=status.HTTP_200_OK)
+        return Response({'success': 'Balance changed successfully.'}, status=status.HTTP_200_OK)
 
 
 

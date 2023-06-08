@@ -259,9 +259,7 @@ class MyImageViewSet(viewsets.ModelViewSet):
             image_url = request.build_absolute_uri(serializer.data['image'])
         return Response({'id': serializer.data['id'], 'image': image_url}, status=status.HTTP_201_CREATED, headers=headers)
 
-from rest_framework import viewsets
-from rest_framework.response import Response
-# from rest_framework.status import HTTPStatus
+
 from django.conf import settings
 from .models import PDF
 from .serializers import PDFSerializer
