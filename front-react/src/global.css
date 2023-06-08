@@ -69,3 +69,10 @@
   .css-15c7cx9{
     z-index: 99989;
   }
+
+  .dashboard-table th,td{
+    padding: 10px;
+    text-align: center;
+align-items: center;
+justify-items: center;
+  }

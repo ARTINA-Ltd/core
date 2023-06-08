@@ -9,6 +9,7 @@ import { useParams } from "react-router";
 import SimpleInput from "../components/Inputs/SimpleInput";
 import { UserContext } from "../App";
 import { Notify } from "notiflix";
+import BorderButton from "../components/Buttons/BorderButton";
 
 const NFTDetails = () => {
   const [data, setData] = useState();
@@ -127,8 +128,8 @@ const NFTDetails = () => {
         }
       )
       .then((d) => {
-        console.log(d.data)
-        setReqData(d.data);
+        console.log(d.data);
+        setReqData(d);
       })
       .catch((res) => console.log(res));
   }, []);
@@ -224,50 +225,19 @@ const NFTDetails = () => {
             </div>
           </SimpleCard>
         </div>
-        <div>
-          <SimpleCard className="bg-white w-full flex flex-col relative gap-12 items-center mt-12">
+        <div className="flex gap-6">
+          <SimpleCard className="bg-white grow flex flex-col relative gap-3 items-center mt-4">
             <div className="flex items-center pt-3">
               <div className="text-[32px] mx-auto">پیشنهادات</div>
             </div>
             <Properties requests={reqData ? reqData : null} nft={id} />
           </SimpleCard>
+
           {user && (data ? data.is_for_sale : true) ? (
             <>
               <SimpleCard
-                id="InsertRequest"
-                className="bg-[#4e45d0] w-full flex flex-col relative gap-12 items-center mt-12"
-              >
-                <div className="flex items-center pt-3">
-                  <div className="text-[32px] mx-auto text-white">
-                    قیمت پیشنهادی
-                  </div>
-                </div>
-                <div className="flex gap-12 w-full">
-                  <SimpleInput
-                    className={"text-white bg-[#7168f3] rounded-lg "}
-                    placeholder={"مثلا: 3"}
-                    title="قیمت پیشنهادی شما به اتریم"
-                    onChange={(e) => {
-                      setPrice(e.target.value * 104759811);
-                      setEthereum(e.target.value);
-                    }}
-                  />
-                  <div className="bg-[#7168f3] cursor-pointer text-white text-[16px] w-[60%] flex justify-center rounded-lg">
-                    قیمت به تومان:
-                    <div className="text-yellow-300">&nbsp;{price}&nbsp;</div>
-                    تومان
-                  </div>
-                  <div
-                    className="bg-sky-400 cursor-pointer text-white text-[16px] w-[25%] flex justify-center rounded-lg hover:bg-sky-500 transition-all"
-                    onClick={() => addRequest()}
-                  >
-                    ثبت
-                  </div>
-                </div>
-              </SimpleCard>
-              <SimpleCard
                 id="UserRequests"
-                className="bg-white w-full flex flex-col relative gap-12 items-center mt-12"
+                className="bg-white w-1/3 flex flex-col relative gap-3 items-center mt-4"
               >
                 <div className="flex items-center pt-3">
                   <div className="text-[32px] mx-auto">پیشنهاد های شما</div>
@@ -276,6 +246,34 @@ const NFTDetails = () => {
                   requests={reqData ? reqData : undefined}
                   nft={id}
                 />
+                <hr className="text-black opacity-50 bg-black" />
+                <div >ثبت پیشنهاد جدید</div>
+                <div className="flex gap-1 w-full flex-col">
+                  <div className="flex items-center gap-3">
+                    <div className="grow">
+                      <SimpleInput
+                        className={"rounded-lg "}
+                        placeholder={"مثلا: 3"}
+                        title="قیمت پیشنهادی شما به اتریم"
+                        onChange={(e) => {
+                          setPrice(e.target.value * 104759811);
+                          setEthereum(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <BorderButton
+                      className="w-1/4 text-center"
+                      onClick={() => addRequest()}
+                    >
+                      ثبت
+                    </BorderButton>
+                  </div>
+                  <div className="flex gap-1 pr-4 text-sm">
+                    قیمت به تومان:
+                    <div className="text-indigo-600">&nbsp;{price}&nbsp;</div>
+                    تومان
+                  </div>
+                </div>
               </SimpleCard>
             </>
           ) : (
