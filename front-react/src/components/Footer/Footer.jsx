@@ -105,24 +105,6 @@ const Footer = () => {
         </div>
         <div className="w-auto flex shrink-0 gap-2 items-start">
           <div className="flex items-center justify-center p-3 rounded-xl bg-indigo-500">
-            <a
-              className="w-[110px] h-[110px]"
-              referrerPolicy="origin"
-              target="_blank"
-              href="https://trustseal.enamad.ir/?id=339851&amp;Code=F4HSRl9q4dYEext5JuBT"
-            >
-              <img
-                width="110"
-                height="110"
-                referrerPolicy="origin"
-                src="https://Trustseal.eNamad.ir/logo.aspx?id=339851&amp;Code=F4HSRl9q4dYEext5JuBT"
-                alt=""
-                className="cursor-pointer"
-                id="F4HSRl9q4dYEext5JuBT"
-              ></img>
-            </a>
-          </div>
-          <div className="flex items-center justify-center p-3 rounded-xl bg-indigo-500">
             <div className="w-[110px] h-[110px]">
               <img
                 width="110"
@@ -142,8 +124,27 @@ const Footer = () => {
               />
             </div>
           </div>
+          <div className="flex items-center justify-center p-3 rounded-xl bg-indigo-500">
+            <a
+              className="w-[110px] h-[110px]"
+              referrerPolicy="origin"
+              target="_blank"
+              href="https://trustseal.enamad.ir/?id=339851&amp;Code=F4HSRl9q4dYEext5JuBT"
+            >
+              <img
+                width="110"
+                height="110"
+                referrerPolicy="origin"
+                src="https://Trustseal.eNamad.ir/logo.aspx?id=339851&amp;Code=F4HSRl9q4dYEext5JuBT"
+                alt=""
+                className="cursor-pointer"
+                id="F4HSRl9q4dYEext5JuBT"
+              ></img>
+            </a>
+          </div>
         </div>
       </div>
+
       <div className="w-full flex items-center justify-center gap-3 mt-3">
         <div
           className="bg-indigo-500 rounded-md p-2 cursor-pointer"
