@@ -48,7 +48,7 @@ class Profile(models.Model):
     national_card_picture = models.TextField(verbose_name="عکس کارت ملی",null=True,blank=False,default="http://api.artina.org/static/images/NC.png")
     profile_picture = models.TextField(verbose_name="عکس پروفایل",
                                         null=True, blank=False, default="http://api.artina.org/static/images/default_C7876ge.webp",)
-    # email = models.EmailField(max_length=50, verbose_name="ایمیل", null=True, blank=False)
+    email = models.EmailField(max_length=50, verbose_name="ایمیل", null=True, blank=False)
     email_verified = models.BooleanField(default=False)
     role = models.ForeignKey(Role, on_delete=models.CASCADE, default=1)
     

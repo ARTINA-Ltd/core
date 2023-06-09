@@ -421,11 +421,13 @@ class UserPictureViewSet(viewsets.ViewSet):
 class PaymentGateViewSet(viewsets.ViewSet):
     def create(self, request, *args, **kwargs):
         user = self.request.user
-        amount = request.data.get("amount")  # Change the amount as needed
+        amount = request.data.get("amount")  
         email= user.profile.email
-        response = self.send_payment_request(amount, email)
+        response = self.send_payment_request(amount)
         if response.status_code == 200:
             payment_info = response.json()
+            print(payment_info)
+            # data=payment_info[1].get('data')
             authority = payment_info['data']['authority']
             payment = Payment.objects.create(user=user, amount=amount, authority=authority)
             redirect_url = self.get_redirect_url(payment)
@@ -451,9 +453,10 @@ class PaymentGateViewSet(viewsets.ViewSet):
         else:
             return Response(response.json(), status=response.status_code)
 
-    def send_payment_request(self, amount, email):
+    def send_payment_request(self, amount):
         user=self.request.user
-        mobile=user.profile__phone_number
+        mobile=user.profile.phone_number
+        email=user.profile.email
         url = 'https://api.zarinpal.com/pg/v4/payment/request.json'
         headers = {
             'accept': 'application/json',
@@ -463,8 +466,8 @@ class PaymentGateViewSet(viewsets.ViewSet):
             'merchant_id': '21ab62e9-e04b-4da5-b8d1-1bd7fca78e41',
             'amount': amount,
             'callback_url': 'http://localhost:8000/api/account/payment/verify/',
-            'description': 'Transaction description.',  # Change the description as needed
-            'metadata': {'mobile': mobile, 'email': email}
+            'description': 'Transaction description.', 
+            'metadata': {'mobile': "09387731214", 'email': "zehi.sh@gmail.com"}
         }
         response = requests.post(url, headers=headers, json=data)
         return response
