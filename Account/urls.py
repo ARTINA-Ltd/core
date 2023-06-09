@@ -18,6 +18,7 @@ router.register(r'user-turnover', views.UserTurnoverViewSet, basename='user-turn
 router.register(r'user-PasswordReset', views.PasswordResetByPhoneViewSet, basename='PasswordRese')
 router.register(r'userpicture', views.UserPictureViewSet, basename='Userpicture')
 
+router.register(r'payment', views.PaymentGateViewSet, basename='payment')
 
 
 urlpatterns = [

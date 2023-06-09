@@ -127,3 +127,16 @@ class UserTurnover(models.Model):
     transaction_type = models.ForeignKey(TransactionType, default="deposit",on_delete=models.CASCADE)
     transaction_currency=models.ForeignKey(TransactionCurrency, default="rial",on_delete=models.CASCADE)
     transaction_value=models.IntegerField(default=0,verbose_name="volume")
+    date = models.DateTimeField(auto_now=True)
+
+
+
+
+class Payment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    amount = models.PositiveIntegerField()
+    authority = models.CharField(max_length=100)
+    is_paid = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.user} - {self.amount}'
