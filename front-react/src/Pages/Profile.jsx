@@ -167,19 +167,18 @@ function Profile() {
       });
   }
 
-
-  function validation(){
-    if (shabaNumber.length === 24){
+  function validation() {
+    if (shabaNumber.length === 24) {
       return true;
+    } else {
+      Notify.failure("شماره شبا بایستی 24 رقمی باشد");
+      return false;
     }
-    else {
-      Notify.failure("شماره شبا بایستی 24 رقمی باشد")
-      return false}
   }
 
   function UpdateInfo() {
     //
-    if (validation()){
+    if (validation()) {
       var b_date;
       if (typeof values.birthdate !== "string") {
         b_date = values.birthdate;
@@ -222,7 +221,7 @@ function Profile() {
               ? profileImageUrl
               : user.data.profile_picture,
             shaba_number: shabaNumber,
-  
+
             // role: user ? user.data.role : ""
           },
           {
@@ -239,8 +238,6 @@ function Profile() {
           Notify.failure("خطا");
         });
     }
-   
-    
   }
 
   function ValidateEmail(mail) {
@@ -309,6 +306,13 @@ function Profile() {
     <TestLayout connectWallet={false}>
       <div className="flex gap-5 items-start ">
         <SimpleCard className={"flex flex-col gap-4 bg-white w-full"}>
+          {user && user.data.role == "user_zero" ? 
+          <div className="w-full bg-red-50 text-red-500 py-2 text-center rounded-lg">مشخصات شما هنوز احراز نشده است!</div>
+          
+          :
+          
+          <div className="w-full bg-green-50 text-green-600 py-2 text-center rounded-lg">سطح کاربری شما {user.data.role} میباشد.</div>
+          }
           <div className="text-[24px] font-b9">اطلاعات شخصی</div>
           <div className="flex gap-4 items-center">
             <div className="flex-shrink-0 relative group">
@@ -574,7 +578,15 @@ function Profile() {
             <div className="text-white text-[27px] mb-2 z-10 font-b9">
               اطلاعات حساب کاربری
             </div>
-            <div className="text-white font-b3">تصویر کارت ملی </div>
+            <BorderButton
+              className={"text-white border-white"}
+              onClick={() =>
+                window.open("http://api.artina.org/static/pdfs/Form.docx")
+              }
+            >
+              متن احراز هویت
+            </BorderButton>{" "}
+            <div className="text-white font-b3">آپلود فرم احراز هویت</div>
             <div className="flex justify-center z-10 group relative w-full h-auto">
               <img
                 src={
@@ -583,7 +595,7 @@ function Profile() {
                     : `${
                         user
                           ? user.data.national_card_picture
-                          : "https://thumbs.dreamstime.com/b/id-card-white-background-business-identification-icon-identity-template-badge-personal-contact-78370022.jpg"
+                          : "/5.png"
                       }`
                 }
                 className="w-auto h-auto rounded-2xl"
@@ -637,7 +649,6 @@ function Profile() {
 
               <SimpleInput
                 defaultValue={user != null ? shabaNumber : null}
-
                 title={"اینجا بنویسید"}
                 type="number"
                 onChange={(e) => setShabaNumber(e.target.value)}

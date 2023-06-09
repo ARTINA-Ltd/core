@@ -47,40 +47,6 @@ const BalanceDialog = () => {
       .catch((e) => {});
   }, []);
 
-  const Footer = (
-    <div className="flex gap-5">
-      <BorderButton
-        className={"w-full font-b4 text-center"}
-        onClick={() => {
-          if (isCharge == true) {
-            updateBalance("deposit");
-          } else {
-            setIsCharge(true);
-          }
-          setAction("deposit");
-        }}
-        autoFocus
-      >
-        شارژ کیف پول
-      </BorderButton>
-
-      <BorderButton
-        className={"w-full font-b4 text-center"}
-        onClick={() => {
-          setAction("withraw");
-
-          if (isCharge == true) {
-            updateBalance("withraw");
-          } else {
-            setIsCharge(true);
-          }
-        }}
-        autoFocus
-      >
-        برداشت
-      </BorderButton>
-    </div>
-  );
 
   const Header = (
     <div className="flex gap-4">
@@ -109,6 +75,72 @@ const BalanceDialog = () => {
     </div>
   );
 
+  const footer = () => {
+    if (isCharge === false) {
+      return (
+        <>
+          <div
+            className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all"
+            onClick={() => {
+              if (isCharge == true) {
+                updateBalance("deposit");
+              } else {
+                setIsCharge(true);
+              }
+              setAction("deposit");
+            }}
+          >
+            برداشت
+          </div>
+          <div
+            className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all"
+            onClick={() => {
+              if (isCharge == true) {
+                updateBalance("withraw");
+              } else {
+                setIsCharge(true);
+              }
+              setAction("withraw");
+            }}
+          >
+            شارژ کیف پول
+          </div>
+        </>
+      );
+    } else if (action == "withraw") {
+      return (
+        <div
+          className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all"
+          onClick={() => {
+            if (isCharge == true) {
+              updateBalance("withraw");
+            } else {
+              setIsCharge(true);
+            }
+            setAction("withraw");
+          }}
+        >
+          شارژ کیف پول
+        </div>
+      );
+    } else {
+      return (
+        <div
+          className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all"
+          onClick={() => {
+            if (isCharge == true) {
+              updateBalance("deposit");
+            } else {
+              setIsCharge(true);
+            }
+            setAction("deposit");
+          }}
+        >
+          برداشت
+        </div>
+      );
+    }
+  };
   return (
     <div className="card flex justify-content-center">
       <div
@@ -121,24 +153,45 @@ const BalanceDialog = () => {
       <Dialog
         header={Header}
         visible={visible}
-        style={{ width: "25vw", direction: "rtl" }}
+        style={{ width: "70vw", direction: "rtl" }}
         onHide={() => setVisible(false)}
-        footer={Footer}
         className="font-b4"
       >
         {!isCharge ? (
-          <div className="w-full flex gap-4 flex-col items-center font-b4">
-            <div className="bg-[#fafafa] border-r-[2px] border-[#4e45d0] w-full py-3 px-2 flex justify-between">
-              <div>موجودی ریالی قابل معامله :</div>
-              <div>{getData ? getData.rial_available_balance : ""}</div>
+          <div className="w-full flex gap-4 font-b4">
+            <div className="bg-[#4e45d0] rounded-xl w-full py-20 flex flex-col items-start justify-center text-white gap-4 relative group overflow-hidden">
+              <img
+                src="/mand1.png"
+                className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all  duration-700"
+              />
+              <div className="text-2xl font-b6 px-10">
+                موجودی ریالی قابل معامله{" "}
+              </div>
+              <div className="text-lg text-yellow-300 px-10 self-end">
+                {getData ? getData.rial_available_balance : ""} ریال
+              </div>
             </div>
-            <div className="bg-[#fafafa] border-r-[2px] border-[#4e45d0] w-full py-3 px-2 flex justify-between">
-              <div>موجودی ریالی غیر قابل معامله: </div>{" "}
-              <div>{getData ? getData.rial_unavailable_balance : ""}</div>
+            <div className="bg-[#4e45d0] rounded-xl w-full py-20 flex flex-col items-start justify-center text-white gap-4 relative group overflow-hidden">
+              <img
+                src="/mand1.png"
+                className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all duration-700"
+              />
+              <div className="text-2xl font-b6 px-10">
+                موجودی ریالی غیر قابل معامله
+              </div>{" "}
+              <div className="text-lg text-yellow-300 px-10 self-end">
+                {getData ? getData.rial_unavailable_balance : ""} ریال
+              </div>
             </div>
-            <div className="bg-[#fafafa] border-r-[2px] border-[#4e45d0] w-full py-3 px-2 flex justify-between">
-              <div>موجودی اتریوم</div>
-              <div>{getData ? getData.eth_balance : ""}</div>
+            <div className="bg-[#4e45d0] rounded-xl w-full py-20 flex flex-col items-start justify-center text-white gap-4 relative group overflow-hidden">
+              <img
+                src="/mand1.png"
+                className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all  duration-700"
+              />
+              <div className="text-2xl font-b6 px-10">موجودی اتریوم</div>
+              <div className="text-lg text-yellow-300 px-10 self-end">
+                {getData ? getData.eth_balance : ""} اتریوم
+              </div>
             </div>
           </div>
         ) : (
@@ -153,6 +206,9 @@ const BalanceDialog = () => {
             />
           </div>
         )}
+        <div className="font-b4 w-full flex justify-end items-center mt-7 gap-3">
+          {footer()}
+        </div>
       </Dialog>
     </div>
   );

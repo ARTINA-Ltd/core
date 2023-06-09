@@ -14,47 +14,44 @@ function Properties({ requests, nft }) {
           <div className="py-2 inline-block w-full">
             <div className="overflow-hidden">
               <table className="w-full">
-                <thead className="border-b ">
+                <thead className="">
                   <tr>
                     <th
                       scope="col"
-                      className="text-4xl sm:text-3xl font-bold text-gray-900 px-6 py-4 text-center"
+                      className=" -bold text-gray-900 px-6 py-4 text-center"
                     >
-                      #
+                      پیشنهاد دهنده
                     </th>
                     <th
                       scope="col"
-                      className="text-4xl sm:text-3xl font-bold text-gray-900 px-6 py-4 text-center"
+                      className=" -bold text-gray-900 px-6 py-4 text-center"
                     >
-                      نام
+                      قیمت
                     </th>
                     <th
                       scope="col"
-                      className="text-4xl sm:text-3xl font-bold text-gray-900 px-6 py-4 text-center"
+                      className=" -bold text-gray-900 px-6 py-4 text-center"
                     >
-                      مبلغ
-                    </th>
-                    <th
-                      scope="col"
-                      className="text-4xl sm:text-3xl font-bold text-gray-900 px-6 py-4 text-center"
-                    >
-                      مبلغ به تومان
+                      تاریخ
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {requests
-                    ? requests.map((req) => (
-                        <tr className="border-b">
-                          <td className="px-6 py-4 whitespace-nowrap text-2xl font-medium text-gray-900 font"></td>
-                          <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
+                    ? requests.data.map((req) => (
+                        <tr className="border-t">
+                          <td className=" text-gray-900  px-6 py-4 whitespace-nowrap ">
                             {req.bidder}
                           </td>
-                          <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
-                            {req.fee}
+                          <td className=" text-gray-900  px-6 py-4 whitespace-nowrap ">
+                            {req.fee} ريال
                           </td>
-                          <td className="text-2xl text-gray-900 font-light px-6 py-4 whitespace-nowrap font">
-                            {req.fee * 104759811}
+                          <td className=" text-gray-900  px-6 py-4 whitespace-nowrap ">
+                            {Intl.DateTimeFormat("fa", {
+                              year: "numeric",
+                              month: "numeric",
+                              day: "numeric",
+                            }).format(new Date(req.date))}
                           </td>
                         </tr>
                       ))

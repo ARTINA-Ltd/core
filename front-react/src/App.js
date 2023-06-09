@@ -34,6 +34,7 @@ import ExhibitionCollections from "./Pages/ExhibitionCollections";
 import RequestsList from "./Pages/RequestsList";
 import Exhibitor from "./Pages/Exhibitor";
 import UserCollections from "./Pages/UserCollections";
+import Dashboard from "./Pages/Dashboard";
 
 const activeChainId = ChainId.Goerli;
 
@@ -124,6 +125,7 @@ export default () => {
                 />
                 <Route exact path="upload-page" element={<NFTUploadPage />} />
                 <Route exact path="UserDashboard" element={<UserDashboard />} />
+                <Route exact path="dashboard" element={<Dashboard />} />
                 <Route exact path="profile" element={<Profile />} />
                 <Route exact path="exhibitor" element={<Exhibitor />} />
                 <Route exact path="collections/:username" element={<Collections />} />
