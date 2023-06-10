@@ -20,6 +20,103 @@ const Dashboard = () => {
     ],
   });
 
+  useEffect(() => {
+    axios
+      .get("https://api.artina.org/api/account/user-balance/get_balance/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+        mode: "cors",
+      })
+      .then((res) => {
+        console.log("------succ-----");
+        console.log("000000000000000");
+        console.log(res);
+        console.log("---------------");
+      })
+      .catch((res) => {
+        console.log("------err------");
+        console.log("000000000000000");
+        console.log(res);
+        console.log("---------------");
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(
+        `https://api.artina.org/api/account/user-turnover/2/`
+        // {
+        //   headers: {
+        //     Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        //   },
+        // }
+      )
+      .then((res) => {
+        console.log("------succ-----");
+        console.log("111111111111111");
+        console.log(res);
+        console.log("---------------");
+        // setData(res.data);
+      })
+      .catch((res) => {
+        console.log("------err------");
+        console.log("111111111111111");
+        console.log(res);
+        console.log("---------------");
+        // setData(res.data);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(
+        `https://api.artina.org/api/account/user-turnover/turnover_in_month/`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log("------succ-----");
+        console.log("222222222222222");
+        console.log(res);
+        console.log("---------------");
+        // setData(res.data);
+      })
+      .catch((res) => {
+        console.log("------err------");
+        console.log("222222222222222");
+        console.log(res);
+        console.log("---------------");
+        // setData(res.data);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`https://api.artina.org/api/account/user-turnover/get_last_ten/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+      })
+      .then((res) => {
+        console.log("------succ-----");
+        console.log("333333333333333");
+        console.log(res);
+        console.log("---------------");
+        // setData(res.data);
+      })
+      .catch((res) => {
+        console.log("------err------");
+        console.log("333333333333333");
+        console.log(res);
+        console.log("---------------");
+        // setData(res.data);
+      });
+  }, []);
+
   const [lightOptions] = useState({
     plugins: {
       legend: {
@@ -89,16 +186,14 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
-<div className="flex justify-center">
-<Chart
-                type="pie"
-                data={chartData}
-                options={lightOptions}
-                style={{ position: "relative", width: "50%" }}
-              />
-
-</div>
-             
+              <div className="flex justify-center">
+                <Chart
+                  type="pie"
+                  data={chartData}
+                  options={lightOptions}
+                  style={{ position: "relative", width: "50%" }}
+                />
+              </div>
             </SimpleCard>
             <SimpleCard className="bg-white w-full h-full flex-col items-center justify-start ">
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
@@ -131,7 +226,6 @@ const Dashboard = () => {
                 </div>
               </div>
             </SimpleCard>
-           
           </div>
           <div className="flex flex-col w-full gap-3">
             <SimpleCard className="bg-white  w-full h-full">
@@ -139,187 +233,196 @@ const Dashboard = () => {
                 نمایشگاه ها{" "}
               </div>
               <table className="dashboard-table w-full text-center">
-                <tr>
-                  <th>عکس</th>
-                  <th>نام نمایشگاه</th>
-                  <th>درصد کمیسیون</th>
-                  <th>سود حاصل</th>
-                  <th>حجم فروش به اتر</th>
-                  <th>حجم فروش</th>
-                  <th>تاریخ پایان</th>
-                  <th></th>
-                </tr>
-                <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
-                  <td>
-                    <div className="flex justify-center w-full">
-                      <img
-                        src="/1.jpg"
-                        alt=""
-                        className="w-[42px] h-[42px] rounded-xl"
-                      />
-                    </div>
-                  </td>
-                  <td>تست</td>
-                  <td className="items-center justify-center">
-                    <div className="flex justify-center w-full">
-                      <div className="px-2 py-1 text-sm bg-green-100 text-green-500 rounded-md">
-                        +11%
+                <thead>
+                  <tr>
+                    <th>عکس</th>
+                    <th>نام نمایشگاه</th>
+                    <th>درصد کمیسیون</th>
+                    <th>سود حاصل</th>
+                    <th>حجم فروش به اتر</th>
+                    <th>حجم فروش</th>
+                    <th>تاریخ پایان</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
+                    <td>
+                      <div className="flex justify-center w-full">
+                        <img
+                          src="/1.jpg"
+                          alt=""
+                          className="w-[42px] h-[42px] rounded-xl"
+                        />
                       </div>
-                    </div>
-                  </td>
-                  <td>24000ربال</td>
-                  <td>11اتریوم</td>
-                  <td>29654400 ریال</td>
-                  <td>1402/03/13</td>
-                  <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.3"
-                      stroke="currentColor"
-                      width={"1em"}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15.75 19.5L8.25 12l7.5-7.5"
-                      />
-                    </svg>
-                  </td>
-                </tr>
+                    </td>
+                    <td>تست</td>
+                    <td className="items-center justify-center">
+                      <div className="flex justify-center w-full">
+                        <div className="px-2 py-1 text-sm bg-green-100 text-green-500 rounded-md">
+                          +11%
+                        </div>
+                      </div>
+                    </td>
+                    <td>24000ربال</td>
+                    <td>11اتریوم</td>
+                    <td>29654400 ریال</td>
+                    <td>1402/03/13</td>
+                    <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.3"
+                        stroke="currentColor"
+                        width={"1em"}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15.75 19.5L8.25 12l7.5-7.5"
+                        />
+                      </svg>
+                    </td>
+                  </tr>
 
-                <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
-                  <td>
-                    <div className="flex justify-center w-full">
-                      <img
-                        src="/1.jpg"
-                        alt=""
-                        className="w-[42px] h-[42px] rounded-xl"
-                      />
-                    </div>
-                  </td>
-                  <td>تست</td>
-                  <td className="items-center justify-center">
-                    <div className="flex justify-center w-full">
-                      <div className="px-2 py-1 text-sm bg-red-100 text-red-500 rounded-md">
-                        -17%
+                  <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
+                    <td>
+                      <div className="flex justify-center w-full">
+                        <img
+                          src="/1.jpg"
+                          alt=""
+                          className="w-[42px] h-[42px] rounded-xl"
+                        />
                       </div>
-                    </div>
-                  </td>
-                  <td>24000ربال</td>
-                  <td>11اتریوم</td>
-                  <td>29654400 ریال</td>
-                  <td>1402/03/13</td>
-                  <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.3"
-                      stroke="currentColor"
-                      width={"1em"}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15.75 19.5L8.25 12l7.5-7.5"
-                      />
-                    </svg>
-                  </td>
-                </tr>
+                    </td>
+                    <td>تست</td>
+                    <td className="items-center justify-center">
+                      <div className="flex justify-center w-full">
+                        <div className="px-2 py-1 text-sm bg-red-100 text-red-500 rounded-md">
+                          -17%
+                        </div>
+                      </div>
+                    </td>
+                    <td>24000ربال</td>
+                    <td>11اتریوم</td>
+                    <td>29654400 ریال</td>
+                    <td>1402/03/13</td>
+                    <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.3"
+                        stroke="currentColor"
+                        width={"1em"}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15.75 19.5L8.25 12l7.5-7.5"
+                        />
+                      </svg>
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </SimpleCard>
 
             <SimpleCard className="bg-white  w-full h-full">
-            <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
-سفارشات باز شما
-            </div>
-            <table className="dashboard-table w-full text-center">
-              <tr>
-                <th>عکس</th>
-                <th>نام nft</th>
-                <th>تست </th>
-                <th>تست </th>
-                <th></th>
-              </tr>
-              <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
-                <td>
-                  <div className="flex justify-center w-full">
-                    <img
-                      src="/1.jpg"
-                      alt=""
-                      className="w-[42px] h-[42px] rounded-xl"
-                    />
-                  </div>
-                </td>
-                <td>تست</td>
-                <td className="items-center justify-center">
-                  <div className="flex justify-center w-full">
-                    <div className="px-2 py-1 text-sm bg-green-100 text-green-500 rounded-md">
-                      +11%
-                    </div>
-                  </div>
-                </td>
-                <td>24000ربال</td>
-                
-                <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.3"
-                    stroke="currentColor"
-                    width={"1em"}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.75 19.5L8.25 12l7.5-7.5"
-                    />
-                  </svg>
-                </td>
-              </tr>
+              <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
+                سفارشات باز شما
+              </div>
+              <table className="dashboard-table w-full text-center">
+                <thead>
+                  <tr>
+                    <th>عکس</th>
+                    <th>نام nft</th>
+                    <th>تست </th>
+                    <th>تست </th>
+                    <th></th>
+                  </tr>
+                </thead>
 
-              <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
-                <td>
-                  <div className="flex justify-center w-full">
-                    <img
-                      src="/1.jpg"
-                      alt=""
-                      className="w-[42px] h-[42px] rounded-xl"
-                    />
-                  </div>
-                </td>
-                <td>تست</td>
-                <td className="items-center justify-center">
-                  <div className="flex justify-center w-full">
-                    <div className="px-2 py-1 text-sm bg-red-100 text-red-500 rounded-md">
-                      -17%
-                    </div>
-                  </div>
-                </td>
-                <td>24000ربال</td>
+                <tbody>
+                  <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
+                    <td>
+                      <div className="flex justify-center w-full">
+                        <img
+                          src="/1.jpg"
+                          alt=""
+                          className="w-[42px] h-[42px] rounded-xl"
+                        />
+                      </div>
+                    </td>
+                    <td>تست</td>
+                    <td className="items-center justify-center">
+                      <div className="flex justify-center w-full">
+                        <div className="px-2 py-1 text-sm bg-green-100 text-green-500 rounded-md">
+                          +11%
+                        </div>
+                      </div>
+                    </td>
+                    <td>24000ربال</td>
 
-                <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.3"
-                    stroke="currentColor"
-                    width={"1em"}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.75 19.5L8.25 12l7.5-7.5"
-                    />
-                  </svg>
-                </td>
-              </tr>
-            </table>
-          </SimpleCard>
+                    <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.3"
+                        stroke="currentColor"
+                        width={"1em"}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15.75 19.5L8.25 12l7.5-7.5"
+                        />
+                      </svg>
+                    </td>
+                  </tr>
+
+                  <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
+                    <td>
+                      <div className="flex justify-center w-full">
+                        <img
+                          src="/1.jpg"
+                          alt=""
+                          className="w-[42px] h-[42px] rounded-xl"
+                        />
+                      </div>
+                    </td>
+                    <td>تست</td>
+                    <td className="items-center justify-center">
+                      <div className="flex justify-center w-full">
+                        <div className="px-2 py-1 text-sm bg-red-100 text-red-500 rounded-md">
+                          -17%
+                        </div>
+                      </div>
+                    </td>
+                    <td>24000ربال</td>
+
+                    <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.3"
+                        stroke="currentColor"
+                        width={"1em"}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15.75 19.5L8.25 12l7.5-7.5"
+                        />
+                      </svg>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </SimpleCard>
           </div>
         </div>
       </TestLayout>

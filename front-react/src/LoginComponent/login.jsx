@@ -58,7 +58,7 @@ const Login = () => {
           localStorage.setItem("authTokens", res.data.access);
           userChange(res);
           Notify.success("با موفقیت وارد شدید");
-          navigate("/profile");
+          navigate("/dashboard");
         }
       })
       .catch((res) => {
