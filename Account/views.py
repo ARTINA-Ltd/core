@@ -13,6 +13,12 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordResetView
 from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
+from rest_framework.response import Response
+from .models import Payment
+from .models import UserBalance, TransactionType, TransactionCurrency
+from .serializers import UserBalanceSerializer
+from django.utils import timezone
+
 
 class RegisterViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -252,9 +258,8 @@ class SendVerificationCodeViewSet(viewsets.ViewSet):
         else:
             # Handle error response
             return Response({'status': 'failed'})
-
-
-
+from datetime import datetime, timedelta
+from django.db.models import Q , Sum
 class UserTurnoverViewSet(viewsets.ModelViewSet):
     queryset = UserTurnover.objects.all()
     serializer_class = serializers.UserTurnoverSerializer
@@ -265,9 +270,9 @@ class UserTurnoverViewSet(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
     
     
-    @action(detail=True, methods=['get'])
-    def turnover(self, request, pk=None):
-        user = self.get_object().user
+    @action(detail=False, methods=['get'])
+    def turnover_in_month(self, request):
+        user = self.request.user
         turnovers = UserTurnover.objects.filter(user=user)
         
         # Calculate turnover for the last month
@@ -284,16 +289,18 @@ class UserTurnoverViewSet(viewsets.ModelViewSet):
 
         return Response(data, status=status.HTTP_200_OK)
 
+    @action(detail=False, methods=['get'])
+    def get_last_ten(self, request):
+        queryset = self.get_queryset().order_by('-id')[:10]
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+        
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        queryset = self.get_last_ten(queryset)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
-
-
-
-
-from rest_framework import status, viewsets
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from .models import UserBalance, TransactionType, TransactionCurrency
-from .serializers import UserBalanceSerializer
 
 class UserBalanceViewSet(viewsets.ModelViewSet):
     queryset = UserBalance.objects.all()
@@ -341,7 +348,7 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
             return Response({'error': 'Invalid currency.'}, status=status.HTTP_400_BAD_REQUEST)
         user_balance=None
         user_balance = UserBalance.objects.filter(user=user).first()
-        if name="deposit":
+        if name=="deposit":
             if user_balance :
                 n=user_balance.rial_available_balance 
                 n=n+ amount
@@ -349,7 +356,7 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
                 user_balance.save()
             else :
                 user_balance = UserBalance.objects.create(rial_available_balance=amount,user=user)
-        elif name="withraw" :
+        elif name=="withraw" :
             if user_balance :
                 n=user_balance.rial_available_balance 
                 n=n- amount
@@ -404,3 +411,80 @@ class UserPictureViewSet(viewsets.ViewSet):
         serializer = serializers.UserInfoSerializer(profile)
         print(profile)
         return Response(serializer.data)
+
+
+
+
+
+
+
+class PaymentGateViewSet(viewsets.ViewSet):
+    def create(self, request, *args, **kwargs):
+        user = self.request.user
+        amount = request.data.get("amount")  
+        email= user.profile.email
+        response = self.send_payment_request(amount)
+        if response.status_code == 200:
+            payment_info = response.json()
+            print(payment_info)
+            # data=payment_info[1].get('data')
+            authority = payment_info['data']['authority']
+            payment = Payment.objects.create(user=user, amount=amount, authority=authority)
+            redirect_url = self.get_redirect_url(payment)
+            return Response({'url': redirect_url}, status=status.HTTP_200_OK)
+        else:
+            return Response(response.json(), status=response.status_code)
+
+    @action(detail=False, methods=['get'])
+    def verify(self, request):
+        payment_id = request.GET.get('payment_id')
+        payment = Payment.objects.get(id=payment_id)
+
+        response = self.verify_payment(payment.amount, payment.authority)
+        if response.status_code == 200:
+            verification_info = response.json()
+            status = verification_info['data']['code']
+            if status == 100:
+                payment.is_paid = True
+                payment.save()
+                return Response({'status': 'success'}, status=status.HTTP_200_OK)
+            else:
+                return Response({'status': 'failure'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(response.json(), status=response.status_code)
+
+    def send_payment_request(self, amount):
+        user=self.request.user
+        mobile=user.profile.phone_number
+        email=user.profile.email
+        url = 'https://api.zarinpal.com/pg/v4/payment/request.json'
+        headers = {
+            'accept': 'application/json',
+            'content-type': 'application/json'
+        }
+        data = {
+            'merchant_id': '21ab62e9-e04b-4da5-b8d1-1bd7fca78e41',
+            'amount': amount,
+            'callback_url': 'http://localhost:8000/api/account/payment/verify/',
+            'description': 'Transaction description.', 
+            'metadata': {'mobile': "09387731214", 'email': "zehi.sh@gmail.com"}
+        }
+        response = requests.post(url, headers=headers, json=data)
+        return response
+
+    def verify_payment(self, amount, authority):
+        url = 'https://api.zarinpal.com/pg/v4/payment/verify.json'
+        headers = {
+            'accept': 'application/json',
+            'content-type': 'application/json'
+        }
+        data = {
+            'merchant_id': '21ab62e9-e04b-4da5-b8d1-1bd7fca78e41',
+            'amount': amount,
+            'authority': authority
+        }
+        response = requests.post(url, headers=headers, json=data)
+        return response
+
+    def get_redirect_url(self, payment):
+        return f'https://www.zarinpal.com/pg/StartPay/{payment.authority}'

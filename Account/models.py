@@ -48,7 +48,7 @@ class Profile(models.Model):
     national_card_picture = models.TextField(verbose_name="عکس کارت ملی",null=True,blank=False,default="http://api.artina.org/static/images/NC.png")
     profile_picture = models.TextField(verbose_name="عکس پروفایل",
                                         null=True, blank=False, default="http://api.artina.org/static/images/default_C7876ge.webp",)
-    # email = models.EmailField(max_length=50, verbose_name="ایمیل", null=True, blank=False)
+    email = models.EmailField(max_length=50, verbose_name="ایمیل", null=True, blank=False)
     email_verified = models.BooleanField(default=False)
     role = models.ForeignKey(Role, on_delete=models.CASCADE, default=1)
     
@@ -127,3 +127,16 @@ class UserTurnover(models.Model):
     transaction_type = models.ForeignKey(TransactionType, default="deposit",on_delete=models.CASCADE)
     transaction_currency=models.ForeignKey(TransactionCurrency, default="rial",on_delete=models.CASCADE)
     transaction_value=models.IntegerField(default=0,verbose_name="volume")
+    date = models.DateTimeField(auto_now=True)
+
+
+
+
+class Payment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    amount = models.PositiveIntegerField()
+    authority = models.CharField(max_length=100)
+    is_paid = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.user} - {self.amount}'

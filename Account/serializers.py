@@ -79,3 +79,12 @@ class UserTurnoverSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserTurnover
         fields = ('id', 'user', 'transaction_type', 'transaction_currency', 'transaction_value')
+
+
+from .models import Payment
+
+
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = '__all__'

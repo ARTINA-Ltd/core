@@ -31,6 +31,9 @@ class Exhibition(models.Model):
                               null=True, blank=True)
     category = models.ForeignKey(Category, default=1, on_delete=models.CASCADE)
     application_deadline = models.DateTimeField(default=timezone.now)
+    commision= models.IntegerField(verbose_name="درصد سود",default=10,blank=True)
+
+    
     def has_ticket(self):
         if self.ticket is None:
             return False

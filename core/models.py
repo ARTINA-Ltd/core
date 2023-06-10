@@ -6,6 +6,7 @@ from django.core import validators
 from datetime import datetime
 import pytz
 from django.db.models import Avg
+from django.conf import settings
 
 
 class NFT(models.Model):
@@ -86,6 +87,7 @@ class Order(models.Model):
     fee = models.IntegerField(verbose_name="قیمت", null=False, blank=False)
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
     status = models.IntegerField(choices=[(0, 'open'), (1, 'close')])
+    report = models.IntegerField(choices=[(0, 'unsuccessful'), (1, 'successful'),(2,'pending')],default=2)
 
     def __str__(self):
         return f'{self.bidder.username} bid {self.fee} on {self.nft.name}'
@@ -96,8 +98,6 @@ class MyImage(models.Model):
     image = models.ImageField(upload_to='static/images/')
 
 
-from django.db import models
-from django.conf import settings
 
 class PDF(models.Model):
     title = models.CharField(max_length=255)
