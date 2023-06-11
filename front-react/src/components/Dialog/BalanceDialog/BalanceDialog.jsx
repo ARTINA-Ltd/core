@@ -30,8 +30,17 @@ const BalanceDialog = () => {
           mode: "cors",
         }
       )
-      .then((res) => console.log(res))
-      .catch(() => Notify.failure("خطا"));
+      .then((res) => {
+        if (act =="deposit"){
+          Notify.success("با موفقیت شارژ شد")
+        }else{
+          Notify.failure("با موفقیت برداشت شد")
+        }
+      })
+      .catch((res) => {
+        console.log(res);
+        Notify.failure("خطا")
+      });
   };
   useEffect(() => {
     axios
@@ -83,11 +92,11 @@ const BalanceDialog = () => {
             className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all"
             onClick={() => {
               if (isCharge == true) {
-                updateBalance("deposit");
+                updateBalance("withraw");
               } else {
                 setIsCharge(true);
               }
-              setAction("deposit");
+              setAction("withraw");
             }}
           >
             برداشت
@@ -96,28 +105,28 @@ const BalanceDialog = () => {
             className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all"
             onClick={() => {
               if (isCharge == true) {
-                updateBalance("withraw");
+                updateBalance("deposit");
               } else {
                 setIsCharge(true);
               }
-              setAction("withraw");
+              setAction("deposit");
             }}
           >
             شارژ کیف پول
           </div>
         </>
       );
-    } else if (action == "withraw") {
+    } else if (action == "deposit") {
       return (
         <div
           className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all"
           onClick={() => {
             if (isCharge == true) {
-              updateBalance("withraw");
+              updateBalance("deposit");
             } else {
               setIsCharge(true);
             }
-            setAction("withraw");
+            setAction("deposit");
           }}
         >
           شارژ کیف پول
@@ -129,11 +138,11 @@ const BalanceDialog = () => {
           className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all"
           onClick={() => {
             if (isCharge == true) {
-              updateBalance("deposit");
+              updateBalance("withraw");
             } else {
               setIsCharge(true);
             }
-            setAction("deposit");
+            setAction("withraw");
           }}
         >
           برداشت
