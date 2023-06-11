@@ -161,9 +161,9 @@ function Profile() {
             )
             .then((e) => {
               userChange();
-
+              
               Notify.success("ارسال شد");
-            });
+            }).catch(()=>Notify.failure("شماره تکراری میباشد"));
         })
         .catch((e) => {
           Notify.failure("خطا");

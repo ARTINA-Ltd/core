@@ -67,6 +67,9 @@ const Footer = () => {
             <a href="/support" className="mr-2 font-b3">
               پشتیبانی
             </a>
+            <a href="/exhibition-list" className="mr-2 font-b3">
+              همه نمایشگاه ها
+            </a>
           </div>
 
           <div className="w-full flex flex-col gap-2">

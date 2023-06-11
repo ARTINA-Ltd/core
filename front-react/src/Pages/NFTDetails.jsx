@@ -152,8 +152,7 @@ const NFTDetails = () => {
       )
       .then((response) => {
         Notify.success("پیشنهاد شما با موفقیت ثبت شد");
-        window.location.reload(true)
-
+        window.location.reload(true);
       })
       .catch((exception) => {
         Notify.failure("خطا");
@@ -249,32 +248,34 @@ const NFTDetails = () => {
                   nft={id}
                 />
                 <hr className="text-black opacity-50 bg-black" />
-                <div >ثبت پیشنهاد جدید</div>
-                <div className="flex gap-1 w-full flex-col">
-                  <div className="flex items-center gap-3">
-                    <div className="grow">
-                      <SimpleInput
-                      type={"number"}
-                        className={"rounded-lg "}
-                        placeholder={"مثلا: 3"}
-                        title="قیمت پیشنهادی شما به اتریم"
-                        onChange={(e) => {
-                          setPrice(e.target.value * 104759811);
-                          setEthereum(e.target.value);
-                        }}
-                      />
+                <div className="bg-indigo-100 rounded-xl p-3 w-full">
+                  <div className="w-full text-center font-b6 text-xl">ثبت پیشنهاد جدید</div>
+                  <div className="flex gap-1 w-full flex-col">
+                    <div className="flex items-center gap-3">
+                      <div className="grow">
+                        <SimpleInput
+                          type={"number"}
+                          className={"rounded-lg "}
+                          placeholder={"مثلا: 3"}
+                          title="قیمت پیشنهادی شما به اتریم"
+                          onChange={(e) => {
+                            setPrice(e.target.value * 104759811);
+                            setEthereum(e.target.value);
+                          }}
+                        />
+                      </div>
+                      <BorderButton
+                        className="w-1/4 text-center"
+                        onClick={() => addRequest()}
+                      >
+                        ثبت
+                      </BorderButton>
                     </div>
-                    <BorderButton
-                      className="w-1/4 text-center"
-                      onClick={() => addRequest()}
-                    >
-                      ثبت
-                    </BorderButton>
-                  </div>
-                  <div className="flex gap-1 pr-4 text-sm">
-                    قیمت به تومان:
-                    <div className="text-indigo-600">&nbsp;{price}&nbsp;</div>
-                    تومان
+                    <div className="flex gap-1 pr-4 text-sm">
+                      قیمت به تومان:
+                      <div className="text-indigo-600">&nbsp;{price}&nbsp;</div>
+                      تومان
+                    </div>
                   </div>
                 </div>
               </SimpleCard>
