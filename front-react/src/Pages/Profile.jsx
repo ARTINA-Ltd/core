@@ -175,11 +175,11 @@ function Profile() {
     if (shabaNumber !== null) {
       if (shabaNumber.length === 24) {
         return true;
+      } else {
+        Notify.failure("شماره شبا بایستی 24 رقمی باشد");
+        return false;
       }
-    } else {
-      Notify.failure("شماره شبا بایستی 24 رقمی باشد");
-      return false;
-    }
+    } else return true;
   }
 
   function UpdateInfo() {
@@ -545,7 +545,7 @@ function Profile() {
               }`}
             >
               <div
-                className={`w-1/3 shrink-0 ${
+                className={`w-1/3 ${
                   !showPhoneValidate
                     ? "hidden"
                     : "bg-sky-400 cursor-pointer hover:bg-sky-500 w-full text-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center"
@@ -555,7 +555,7 @@ function Profile() {
                 ثبت
               </div>
               <div
-                className={`w-1/3 shrink-0 ${
+                className={`w-1/3  ${
                   isPhoneDisabled
                     ? "bg-[#4e45d0] cursor-not-allowed hover:bg-[#372fac]"
                     : "bg-[#372fac] cursor-pointer"

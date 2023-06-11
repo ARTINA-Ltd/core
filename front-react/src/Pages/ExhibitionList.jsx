@@ -26,7 +26,7 @@ const ExhibitionList = () => {
       {getData
         ? getData.map((item, index) => (
             <div
-            onClick={() => navigate(`/artist-application-form/${item.id}`)}
+            onClick={() => navigate(`/exhibition-collections/${item.id}`)}
             
             >
               <SimpleCard

@@ -75,9 +75,11 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
         }
       )
       .then((res) => {
-        // setVisible(false)
-        console.log(res);
-      });
+        setVisible(false)
+Notify.success("نمایشگاه با موفقت افزوده شد")
+        window.location.reload(true)
+
+      }).catch(()=>{Notify.failure("خطا")});
   };
 
   useEffect(() => {

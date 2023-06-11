@@ -147,8 +147,8 @@ const SimpleInput = ({
     >
       {input()}
       <div
-        className={`text-[14px] font-b5 pr-2 pointer-events-none absolute bottom-[50%] translate-y-1/2 right-2 transition-all ${
-          focus ? "bottom-[110%] text-[14px] text-[#4e45d0]" : ""
+        className={`text-[14px] font-b5 pr-2 pointer-events-none absolute translate-y-1/2 right-2  transition-all ${
+          focus ? "bottom-[110%] text-[14px] text-[#4e45d0]" : "bottom-[50%] "
         }`}
       >
         {title}

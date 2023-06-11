@@ -152,6 +152,8 @@ const NFTDetails = () => {
       )
       .then((response) => {
         Notify.success("پیشنهاد شما با موفقیت ثبت شد");
+        window.location.reload(true)
+
       })
       .catch((exception) => {
         Notify.failure("خطا");
@@ -237,7 +239,7 @@ const NFTDetails = () => {
             <>
               <SimpleCard
                 id="UserRequests"
-                className="bg-white w-1/3 flex flex-col relative gap-3 items-center mt-4"
+                className="bg-white w-1/2 flex flex-col relative gap-3 items-center mt-4"
               >
                 <div className="flex items-center pt-3">
                   <div className="text-[32px] mx-auto">پیشنهاد های شما</div>
@@ -252,6 +254,7 @@ const NFTDetails = () => {
                   <div className="flex items-center gap-3">
                     <div className="grow">
                       <SimpleInput
+                      type={"number"}
                         className={"rounded-lg "}
                         placeholder={"مثلا: 3"}
                         title="قیمت پیشنهادی شما به اتریم"

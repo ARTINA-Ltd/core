@@ -404,33 +404,32 @@ const Header = ({ connectWallet = false }) => {
       <header>
         <div className="flex justify-center h-[80px] bg-[#f9f9f9] font-b3">
           <div className="flex items-center justify-between w-[90%] justify-self-center">
-            <div className="flex items-center gap-12">
+            <div className="flex items-center gap-8 text-sm">
               {user
                 ? ActiveItems.map((item, index) => (
-                  <div
-                    key={index}
-                    className="cursor-pointer flex items-center gap-2 hover:text-[#4e45d0] transition-all duration-200"
-                    onClick={() => {
-                      navigate(item.link);
-                    }}
-                  >
-                    {item.icon}
-                    {item.title}
-                  </div>
-                ))
+                    <div
+                      key={index}
+                      className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200"
+                      onClick={() => {
+                        navigate(item.link);
+                      }}
+                    >
+                      {item.icon}
+                      {item.title}
+                    </div>
+                  ))
                 : NotActiveItems.map((item, index) => (
-                  <div
-                    className="cursor-pointer flex items-center gap-2 hover:text-[#4e45d0] transition-all duration-200"
-                    onClick={() => {
-                      navigate(item.link);
-                    }}
-                    key={index}
-
-                  >
-                    {item.icon}
-                    {item.title}
-                  </div>
-                ))}
+                    <div
+                      className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200"
+                      onClick={() => {
+                        navigate(item.link);
+                      }}
+                      key={index}
+                    >
+                      {item.icon}
+                      {item.title}
+                    </div>
+                  ))}
               <a
                 href="https://metaverse.artina.org"
                 className="bg-[#eee] text-[#4e45d0] px-3 py-[4px] rounded-full hover:scale-105 transition-all duration-200 border-[#4e45d0] border-[1px]"
@@ -462,8 +461,9 @@ const Header = ({ connectWallet = false }) => {
                       alt=""
                     />
                     <div
-                      className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-[#f9f9f9] min-w-[200px] ${isHidden ? "opacity-0 pointer-events-none" : ""
-                        } absolute translate-x-1/3`}
+                      className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-[#f9f9f9] min-w-[200px] ${
+                        isHidden ? "opacity-0 pointer-events-none" : ""
+                      } absolute translate-x-1/3`}
                     >
                       <div className="w-full py-2 px-3 hover:bg-[#0000aa07] flex gap-2 items-center justify-between cursor-pointer">
                         <img
@@ -472,17 +472,29 @@ const Header = ({ connectWallet = false }) => {
                           alt=""
                         />
                         <div>
-                          <div className="text-left text-sm font-b5 ">{user.data.first_name} {user.data.last_name}</div>
+                          <div className="text-left text-sm font-b5 ">
+                            {user.data.first_name} {user.data.last_name}
+                          </div>
                           <div className="text-left font-b2 text-sm">
                             {user.data.username}
                           </div>
                         </div>
                       </div>
                       <hr />
+                      <div
+                        className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]"
+                        onClick={() => navigate("/dashboard")}
+                      >
+                        داشبورد
+                      </div>
                       <BalanceDialog />
-                      <div className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]" onClick={() => navigate('/profile')}>
+                      <div
+                        className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]"
+                        onClick={() => navigate("/profile")}
+                      >
                         پروفایل
                       </div>
+
                       <div
                         className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]"
                         onClick={(e) => {

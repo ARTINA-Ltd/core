@@ -156,13 +156,13 @@ const Dashboard = () => {
                   <div className="flex gap-2 items-center justify-between">
                     مانده قابل برداشت:
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
-                      24000 تومان
+                      24000 ریال
                     </div>
                   </div>
                   <div className="flex gap-2 items-center justify-between">
                     مانده قابل معامله:
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
-                      120000 تومان
+                      120000 ریال
                     </div>
                   </div>
                 </div>
@@ -250,7 +250,7 @@ const Dashboard = () => {
                     <td>
                       <div className="flex justify-center w-full">
                         <img
-                          src="/1.jpg"
+                          src="/2.jpg"
                           alt=""
                           className="w-[42px] h-[42px] rounded-xl"
                         />
@@ -349,7 +349,7 @@ const Dashboard = () => {
                     <td>
                       <div className="flex justify-center w-full">
                         <img
-                          src="/1.jpg"
+                          src="/2.jpg"
                           alt=""
                           className="w-[42px] h-[42px] rounded-xl"
                         />
