@@ -54,10 +54,11 @@ const Support = () => {
           defaultValue={null}
         />
 
-        <SimpleInput
-          className={"mt-6"}
+<div className="mt-3">متن درخواست</div>
+        <textarea
+          className={"w-full border-[1px] border-indigo-600 mt-1 min-h-[70px]"}
           type="text"
-          title="متن درخواست"
+          title=""
           isValid={values.text != ""}
           validationError="نمیتواند خالی باشد"
           onChange={(e) =>

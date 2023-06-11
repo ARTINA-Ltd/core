@@ -57,9 +57,7 @@ const Footer = () => {
             <div href="" className="font-b8">
               آرتینا
             </div>
-            <a href="/upload-page" className="mr-2 font-b3">
-              صفحه ضرب NFT
-            </a>
+           
             <a href="/collections" className="mr-2 font-b3">
               کالکشن ها
             </a>
@@ -81,7 +79,7 @@ const Footer = () => {
             <a href="" className="mr-2 font-b3">
               پیش بینی کننده قیمت ان اف تی
             </a>
-            <a href="" className="mr-2 font-b3">
+            <a href="https://ai.artina.org/generate_pic" className="mr-2 font-b3">
               تولید عکس با هوش مصنوعی
             </a>
             <a href="https://blog.artina.org/" className="mr-2 font-b3">
