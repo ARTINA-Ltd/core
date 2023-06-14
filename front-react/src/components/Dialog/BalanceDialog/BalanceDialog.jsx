@@ -15,6 +15,19 @@ const BalanceDialog = () => {
   const [action, setAction] = useState();
 
   const updateBalance = (act) => {
+    if (act == "deposit"){
+      axios.post(
+        "https://api.artina.org/api/account/payment/",
+        { amount: amount },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+          mode: "cors",
+        }
+      ).then((res)=>{window.open(res.data.url)}).catch(console.log);
+    }else{
+      
     axios
       .post(
         "https://api.artina.org/api/account/user-balance/updating_balance/",
@@ -30,8 +43,19 @@ const BalanceDialog = () => {
           mode: "cors",
         }
       )
-      .then((res) => console.log(res))
-      .catch(() => Notify.failure("خطا"));
+      .then((res) => {
+        if (act == "deposit") {
+          Notify.success("با موفقیت شارژ شد");
+        } else {
+          Notify.failure("با موفقیت برداشت شد");
+        }
+      })
+      .catch((res) => {
+        console.log(res);
+        Notify.failure("خطا");
+      });
+    }
+    
   };
   useEffect(() => {
     axios
@@ -46,7 +70,6 @@ const BalanceDialog = () => {
       })
       .catch((e) => {});
   }, []);
-
 
   const Header = (
     <div className="flex gap-4">
@@ -83,11 +106,11 @@ const BalanceDialog = () => {
             className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all"
             onClick={() => {
               if (isCharge == true) {
-                updateBalance("deposit");
+                updateBalance("withraw");
               } else {
                 setIsCharge(true);
               }
-              setAction("deposit");
+              setAction("withraw");
             }}
           >
             برداشت
@@ -96,28 +119,28 @@ const BalanceDialog = () => {
             className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all"
             onClick={() => {
               if (isCharge == true) {
-                updateBalance("withraw");
+                updateBalance("deposit");
               } else {
                 setIsCharge(true);
               }
-              setAction("withraw");
+              setAction("deposit");
             }}
           >
             شارژ کیف پول
           </div>
         </>
       );
-    } else if (action == "withraw") {
+    } else if (action == "deposit") {
       return (
         <div
           className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all"
           onClick={() => {
             if (isCharge == true) {
-              updateBalance("withraw");
+              updateBalance("deposit");
             } else {
               setIsCharge(true);
             }
-            setAction("withraw");
+            setAction("deposit");
           }}
         >
           شارژ کیف پول
@@ -129,11 +152,11 @@ const BalanceDialog = () => {
           className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all"
           onClick={() => {
             if (isCharge == true) {
-              updateBalance("deposit");
+              updateBalance("withraw");
             } else {
               setIsCharge(true);
             }
-            setAction("deposit");
+            setAction("withraw");
           }}
         >
           برداشت
@@ -145,7 +168,10 @@ const BalanceDialog = () => {
     <div className="card flex justify-content-center">
       <div
         className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]"
-        onClick={() => setVisible(true)}
+        onClick={() => {
+          setVisible(true);
+          setIsCharge(false);
+        }}
       >
         کیف پول
       </div>
@@ -154,7 +180,10 @@ const BalanceDialog = () => {
         header={Header}
         visible={visible}
         style={{ width: "70vw", direction: "rtl" }}
-        onHide={() => setVisible(false)}
+        onHide={() => {
+          setVisible(false);
+          setIsCharge(false);
+        }}
         className="font-b4"
       >
         {!isCharge ? (
@@ -195,10 +224,10 @@ const BalanceDialog = () => {
             </div>
           </div>
         ) : (
-          <div className="w-full flex gap-4 flex-col items-center font-b4 mt-2">
+          <div className="w-full flex gap-4 flex-col items-center font-b4 mt-4">
             <SimpleInput
               type="number"
-              title="مقدار"
+              title="مقدار(ریال)"
               placeholder="مثلا: 654"
               isValid={amount != ""}
               validationError="نمیتواند خالی باشد"

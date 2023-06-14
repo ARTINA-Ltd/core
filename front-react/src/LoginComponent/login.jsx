@@ -97,7 +97,7 @@ const Login = () => {
           className={"mt-6"}
           type="text"
           title="نام کاربری"
-          placeholder="مثلا: علیرضا"
+          placeholder="مثلا: alireza"
           isValid={values.username != ""}
           validationError="نمیتواند خالی باشد"
           onChange={(e) =>
@@ -112,7 +112,7 @@ const Login = () => {
           className={"mt-6"}
           type="password"
           title="رمز عبور"
-          placeholder="مثلا: علیرضا"
+          
           isValid={values.password != ""}
           validationError="نمیتواند خالی باشد"
           onChange={(e) =>

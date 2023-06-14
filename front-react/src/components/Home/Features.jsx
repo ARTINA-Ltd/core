@@ -28,7 +28,7 @@ const Features = ({ className = "" }) => {
   return (
     <div className={`${className}  w-full flex justify-center lg:my-10`}>
       <div className={`w-4/5 flex flex-col items-center`}>
-        <div className="font-b9 text-[40px] mb-4">امکانات آرتینا</div>
+        <div className="font-b9 text-[40px] mb-4" >امکانات آرتینا</div>
         <div ref={sliderRef} className="keen-slider ">
           <div className="keen-slider__slide">
             <div className={"w-full cursor-pointer"}>
@@ -41,7 +41,7 @@ const Features = ({ className = "" }) => {
             </div>
           </div>
           <div className="keen-slider__slide">
-            <div className={"w-full cursor-pointer"}>
+            <div className={"w-full cursor-pointer"} onClick={()=>window.open("https://metaverse.artina.org/")}>
               <img
                 src="/Metaverse-logo.jpeg"
                 className="w-[200px] h-[200px] object-cover rounded-full m-auto"
@@ -50,7 +50,7 @@ const Features = ({ className = "" }) => {
               <div className="mt-3 font-b5 text-[24px] text-center">متاورس</div>
             </div>
           </div><div className="keen-slider__slide">
-            <div className={"w-full cursor-pointer"}>
+            <div className={"w-full cursor-pointer"} onClick={()=>window.open("https://blog.artina.org/")}>
               <img
                 src="/Blog-logo.jpeg"
                 className="w-[200px] h-[200px] object-cover rounded-full m-auto"
@@ -59,13 +59,13 @@ const Features = ({ className = "" }) => {
               <div className="mt-3 font-b5 text-[24px] text-center">بلاگ</div>
             </div>
           </div><div className="keen-slider__slide">
-            <div className={"w-full cursor-pointer"}>
+            <div className={"w-full cursor-pointer"} onClick={()=>window.open("https://ai.artina.org/generate_pic")}>
               <img
                 src="/AI-logo.png"
                 className="w-[200px] h-[200px] object-cover rounded-full m-auto"
                 alt=""
               />
-              <div className="mt-3 font-b5 text-[24px] text-center">آرتینا AI</div>
+              <div className="mt-3 font-b5 text-[24px] text-center" >آرتینا AI</div>
             </div>
           </div><div className="keen-slider__slide">
             <div className={"w-full cursor-pointer"}>
