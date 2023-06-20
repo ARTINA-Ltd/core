@@ -5,6 +5,10 @@ from core import serializers
 from eth_account import Account
 from thirdweb.types.nft import NFTMetadataInput 
 import json
+import requests
+from rest_framework import viewsets
+from rest_framework.response import Response
+
 from web3 import Web3
 from thirdweb import ThirdwebSDK
 from django.contrib.auth.models import User
@@ -90,6 +94,11 @@ class NFTRateViewSet(viewsets.ModelViewSet):
             rate_obj.rating = data["rating"]
             rate_obj.save()
             return Response(serializers.NFTRateSerializer(rate_obj).data) 
+from django.http import JsonResponse
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
+from .models import NFT
 
 class NftViewSet(viewsets.ModelViewSet):
     queryset = NFT.objects.all()
@@ -107,6 +116,14 @@ class NftViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(top_5_expensive, many=True)
         return Response(serializer.data)
 
+    @action(detail=False, methods=["get"])
+    def get_nft_image_urls(self,request):
+        user=self.request.user
+        nfts = NFT.objects.filter(owner=user)
+        data = {}
+        for nft in nfts:
+            data[str(nft.token_id)] = nft.image_url
+        return JsonResponse(data)
 
     @action(detail=False, methods=["put"])
     def sell(self, request, pk=None):
@@ -286,6 +303,7 @@ class UserCollectionViewSet(viewsets.ViewSet):
         return NFT.objects.filter(owner=user)
         
 
+
 class UserNFTViewSet(viewsets.ViewSet):
     serializer_class = serializers.NFTSerializer
     # permission_classes = [permissions.IsAuthenticated]
@@ -377,7 +395,6 @@ class WinnerviewSet(viewsets.ViewSet):
 
         return Response({"winner": highest_bid.user, "price": highest_bid.fee}, status=status.HTTP_200_OK)
     
-import requests
 
 def get_nakamigos_listings():
     url = "https://api.opensea.io/v2/listings/collection/nakamigos/all"
@@ -394,10 +411,6 @@ def get_nakamigos_listings():
 
 
 
-
-import requests
-from rest_framework import viewsets
-from rest_framework.response import Response
 
 class NakamigosListingsViewSet(viewsets.ViewSet):
     def list(self, request):

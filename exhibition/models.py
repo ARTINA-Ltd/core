@@ -25,8 +25,7 @@ class Exhibition(models.Model):
     start_date = models.DateTimeField(verbose_name="تاریخ شروع", default=timezone.now)
     end_date = models.DateTimeField(verbose_name="تاریخ پایان")
     description = models.TextField(null=True, blank=True)
-    ticket = models.BooleanField(null=True, default=False)
-    ticket_price = models.IntegerField(verbose_name="قیمت",default=10000, null=False, blank=False)
+    has_ticket = models.BooleanField(null=True, default=False)
     contract = models.TextField(verbose_name="contract",
                               null=True, blank=True)
     category = models.ForeignKey(Category, default=1, on_delete=models.CASCADE)
@@ -34,51 +33,22 @@ class Exhibition(models.Model):
     commision= models.IntegerField(verbose_name="درصد سود",default=10,blank=True)
 
     
-    def has_ticket(self):
-        if self.ticket is None:
-            return False
-        else:
-            return True
-    
+
     def has_expired(self):
         return datetime.now(tz=pytz.timezone('Asia/Tehran')) > self.end_date
 
     def has_started(self):
         return datetime.now(tz=pytz.timezone('Asia/Tehran')) > self.start_date
     
-    def __str__(self):
-        return f'{self.marketName} by {self.user.username}'
 
-    # Note: Artist can not apply for the exhibition 2 days before start date or later
-    def can_apply(self):
-        if self.has_expired():
-            return False
-        elif datetime.now(tz=pytz.timezone('Asia/Tehran')) > self.start_date - timedelta(days=2):
-            return False
-        else:
-            return True
-
-    # TODO : we need the `has_requested` function to check if a user has requested for a exhibition or not before,
-    #   change the `is_accepted` to the state base in NFtEx object
-
-    def get_artists(self):
-        artists = set(map(lambda x: x.nfts.first().owner, self.nftexs.filter(state='accepted').all()))
-        return artists
-    
-    def has_artist_pending_request(self, artist):
-        requests = list(map(lambda x: x.nfts.first().owner == artist, self.nftexs.filter(state='pending')))
-        if len(requests):
-            return True
-        else:
-            return False
 
 
 class Ticket(models.Model):
     ticket_id = models.IntegerField(verbose_name="ticket_id", default=1000)
-    exhibition_id = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='tickets')
+    exhibition = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='tickets')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     price = models.IntegerField(null=False, blank=False, default=20000, validators=[validators.MinValueValidator(5000)])
-    ticket_count = models.IntegerField(null=True, blank=True, default=100)
+    expiration_date = models.DateTimeField(verbose_name="تاریخ پایان", default=timezone.now)
 
 
 class Application(models.Model):

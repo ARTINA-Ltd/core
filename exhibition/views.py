@@ -1,6 +1,7 @@
 from distutils.log import error
 from django.contrib.auth.models import User
-
+from datetime import timedelta
+import random
 from exhibition import models
 from exhibition import serializers
 
@@ -11,8 +12,8 @@ from rest_framework import status
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from .models import NFT, Exhibition, Application , Category
-from .serializers import NFTSerializer, ExhibitionSerializer, ApplicationSerializer , CategorySerializer
+from .models import NFT, Exhibition, Application , Category , Ticket
+from .serializers import NFTSerializer, ExhibitionSerializer, ApplicationSerializer , CategorySerializer ,TicketSerializer
 from django.utils import timezone
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
@@ -226,7 +227,16 @@ class ExhibitionInfoView(viewsets.ModelViewSet):
             'description': serialized_data['description'],
         }
         return Response(response_data, status=status.HTTP_200_OK)
-
+        
+    @action(detail=False, methods=['post'])
+    def has_ticket(self, request):
+        exhibition_id = request.data.get('exhibition_id')
+        exhibition = get_object_or_404(Exhibition, pk=exhibition_id)
+        has_ticket = exhibition.has_ticket
+        if has_ticket==True : 
+            return Response({'has_ticket': 'True'})
+        else :
+            return Response({'has_ticket': 'False'})
 
 
 class OpenExhibitionListView(viewsets.ModelViewSet):
@@ -252,3 +262,69 @@ class NFTByExhibitionViewSet(viewsets.ViewSet):
 
         serializer = NFTSerializer(nfts, many=True)
         return Response(serializer.data)
+
+
+
+
+
+class TicketViewSet(viewsets.ViewSet):
+    queryset = Ticket.objects.all()
+    serializer_class = serializers.TicketSerializer
+    def create(self, request):
+        user=self.request.user
+        exhibition_id=request.data.get("exhibition_id")
+        exhibition = Exhibition.objects.get(id=exhibition_id)
+        price=request.data.get("price")
+        expiration_date = timezone.now() + timedelta(days=10)
+        random_number = random.randint(1000, 9999)
+        ticket_id = int(str(random_number)+"00"+str(exhibition_id))
+        ticket = Ticket.objects.create(
+        ticket_id=ticket_id,
+        exhibition=exhibition,
+        user=user,
+        price=price,
+        expiration_date=expiration_date
+        )
+        return Response(status=status.HTTP_201_CREATED)
+
+    @action(detail=False, methods=['get'])
+    def get_user_tickets(self,request):
+        user = self.request.user
+        tickets = Ticket.objects.filter(user=user)
+        serializer = serializers.TicketSerializer(tickets, many=True)
+        return Response(serializer.data)
+
+
+    @action(detail=False, methods=['post'])
+    def get_exhibition_tickets(self, request):
+        exhibition_id = request.data.get('exhibition_id')
+        exhibition = Exhibition.objects.filter(id=exhibition_id).first()
+        tickets = Ticket.objects.filter(exhibition=exhibition)
+        serializer = serializers.TicketSerializer(tickets, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['post'])
+    def calculate_exhibition_revenue(self, request):
+        exhibition_id = request.data.get('exhibition_id')
+        exhibition=Exhibition.objects.get(id=exhibition_id)
+        tickets = exhibition.tickets.all() 
+        total = 0
+        for ticket in tickets: 
+            total += ticket.price * 0.8
+        return Response({'revenue': total})
+
+    @action(detail=False, methods=['get'])
+    def calculate_user_revenue(self, request):
+        user_id = self.request.query_params.get('user')
+        exhibitions = Exhibition.objects.filter(user_id=user_id)
+        total = 0
+        for exhibition in exhibitions:
+            tickets = exhibition.tickets.all()
+            for ticket in tickets:
+                total += ticket.price * 0.8  
+        return Response({'revenue': total})
+
+
+
+
+     

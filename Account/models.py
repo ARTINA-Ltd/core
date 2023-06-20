@@ -95,11 +95,11 @@ User.add_to_class('get_artist_applications', get_artist_applications)
 
 
 class UserTicket(models.Model):
-    ticket_id = models.IntegerField(verbose_name="ticket_id", default=1000)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    subject = models.CharField(max_length=70, verbose_name="موضوع", null=True, blank=False)
-    date = models.DateTimeField(auto_now=True)
-    text = models.TextField(max_length=200, verbose_name="متن", null=True, blank=False)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    email = models.EmailField(max_length=50,null=True,blank=False)
+    subject = models.CharField(max_length=255,null=True,blank=False)
+    text = models.TextField(max_length=200,null=True,blank=False)
+    ticket_id = models.CharField(max_length=6, unique=True)
 
 
 class PhoneVerification(models.Model):

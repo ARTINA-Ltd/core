@@ -159,35 +159,39 @@ class ProfileViewSet(viewsets.ModelViewSet):
         profile.delete()
         return Response(status=204)
 
-# corner of a persian caligraphy exhibition. some family are looking at arts and discussing about it use colors : #A74AC7 , #5865F2 , #9D00FF
 import random
 
-class TicketViewSet(viewsets.ViewSet):
-    queryset = UserTicket.objects.all()
-    # serializer_class = serializers.TicketSerializer
+import uuid
 
-    def create(self, request, *args, **kwargs):
-        user = self.request.user
+
+class TicketViewSet(viewsets.ViewSet):
+
+    def create(self, request):
+        user = request.user
+        is_authenticated = user.is_authenticated
+        email = request.data.get('email')
+        subject = request.data.get('subject')
+        text = request.data.get('text')
+
+        if not subject:
+            return Response({'error': 'subject is required.'}, status=status.HTTP_400_BAD_REQUEST)
+        if not text:
+            return Response({'error': 'text is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not is_authenticated:
+            if not email:
+                return Response({'error': 'email is required.'}, status=status.HTTP_400_BAD_REQUEST)
+            user = None
+
         ticket_count = UserTicket.objects.filter(user=user).count()
         if ticket_count >= 5:
             raise PermissionDenied("You have reached the maximum number of tickets.")
-        
-        subject = request.data.get('subject')
-        text = request.data.get("text")
-
-        if not subject:
-            return Response({'error': 'subject is required.'}, status.HTTP_400_BAD_REQUEST)
-        if not text:
-            return Response({'error': 'text is required.'}, status.HTTP_400_BAD_REQUEST)
-    
-        # Generate a unique 6-digit ticket ID
         unique_id = random.randint(100000, 999999)
-        while UserTicket.objects.filter(ticket_id=unique_id).exists():
-            unique_id = random.randint(100000, 999999)
+        UserTicket.objects.create(user=user, email=email, subject=subject, text=text, ticket_id=unique_id)
 
-        UserTicket.objects.create(user=user,subject=subject,text=text,ticket_id=unique_id)
+        return Response({'success': 'Ticket created successfully.','token':unique_id}, status=status.HTTP_201_CREATED)
 
-        return Response(status=status.HTTP_201_CREATED)
+
 
 class PhoneVerificationViewSet(viewsets.ViewSet):
     queryset = PhoneVerification.objects.all()
@@ -465,7 +469,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
         data = {
             'merchant_id': '21ab62e9-e04b-4da5-b8d1-1bd7fca78e41',
             'amount': amount,
-            'callback_url': 'http://localhost:8000/api/account/payment/verify/',
+            'callback_url': 'http://api.artina.org/api/account/payment/verify/',
             'description': 'Transaction description.', 
             'metadata': {'mobile': "09387731214", 'email': "zehi.sh@gmail.com"}
         }
