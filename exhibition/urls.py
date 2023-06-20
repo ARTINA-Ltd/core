@@ -18,6 +18,11 @@ router.register(r'ExhibitionInfoView', views.ExhibitionInfoView, basename='Exhib
 router.register(r'user-exhibitions', views.UserExhibitionsViewSet,basename="user-exhibitions")
 router.register(r'exhibition/(?P<exhibition_id>\d+)', views.NFTByExhibitionViewSet, basename='exhibitionnfts')
 router.register(r'categories', views.CategoryViewSet,basename='categories')
+router.register(r'Ticket', views.TicketViewSet,basename='Ticket')
+
+
+
+
 urlpatterns = [
     path('', include(router.urls)),
 ]

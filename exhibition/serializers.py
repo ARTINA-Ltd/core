@@ -61,7 +61,7 @@ class NumberSerializer(serializers.Serializer):
 
 
 from rest_framework import serializers
-from .models import NFT, Exhibition, Application , Category
+from .models import NFT, Exhibition, Application , Category, Ticket
 # CustomUser
 
 
@@ -69,6 +69,11 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ('id', 'name')
+
+class TicketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ticket
+        fields = '__all__'
 
 
 class NFTSerializer(serializers.ModelSerializer):

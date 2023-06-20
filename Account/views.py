@@ -469,7 +469,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
         data = {
             'merchant_id': '21ab62e9-e04b-4da5-b8d1-1bd7fca78e41',
             'amount': amount,
-            'callback_url': 'http://localhost:8000/api/account/payment/verify/',
+            'callback_url': 'http://api.artina.org/api/account/payment/verify/',
             'description': 'Transaction description.', 
             'metadata': {'mobile': "09387731214", 'email': "zehi.sh@gmail.com"}
         }
