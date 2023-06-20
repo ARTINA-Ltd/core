@@ -8,6 +8,8 @@ import { useState } from "react";
 
 const Dashboard = () => {
   const [getData, setData] = useState();
+  const [tickets, setTickets] = useState();
+  const [profit, setProfit] = useState();
 
   const [chartData] = useState({
     labels: ["اتریوم", "ریال", "تست"],
@@ -37,6 +39,54 @@ const Dashboard = () => {
       .catch((res) => {
         console.log("------err------");
         console.log("000000000000000");
+        console.log(res);
+        console.log("---------------");
+      });
+  }, []);
+  useEffect(() => {
+    axios
+      .get("https://api.artina.org/api/exhibition/Ticket/get_user_tickets/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+        mode: "cors",
+      })
+      .then((res) => {
+        console.log("------succ-----");
+        console.log("get_user_tickets");
+        console.log(res);
+        console.log("---------------");
+        setTickets(res.data);
+      })
+      .catch((res) => {
+        console.log("------err------");
+        console.log("get_user_tickets");
+        console.log(res);
+        console.log("---------------");
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(
+        "https://api.artina.org/api/exhibition/Ticket/calculate_user_revenue/",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+          mode: "cors",
+        }
+      )
+      .then((res) => {
+        console.log("------succ-----");
+        console.log("calculate_user_revenue");
+        console.log(res);
+        console.log("---------------");
+        setProfit(res.data);
+      })
+      .catch((res) => {
+        console.log("------err------");
+        console.log("calculate_user_revenue");
         console.log(res);
         console.log("---------------");
       });
@@ -186,6 +236,18 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
+
+              <div className="my-3">
+                <div
+                  id=""
+                  className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4"
+                >
+                  <div className="font-b6">سود حاصل از بلیت نمایشگاه</div>
+                  <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
+                    {profit ? profit.revenue : ""} تومان
+                  </div>
+                </div>
+              </div>
               <div className="flex justify-center">
                 <Chart
                   type="pie"
@@ -227,10 +289,10 @@ const Dashboard = () => {
               </div>
             </SimpleCard>
           </div>
-          <div className="flex flex-col w-full gap-3">
+          <div className="flex flex-col w-full gap-5">
             <SimpleCard className="bg-white  w-full h-full">
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
-                نمایشگاه ها{" "}
+                نمایشگاه ها
               </div>
               <table className="dashboard-table w-full text-center">
                 <thead>
@@ -420,6 +482,62 @@ const Dashboard = () => {
                       </svg>
                     </td>
                   </tr>
+                </tbody>
+              </table>
+            </SimpleCard>
+
+            <SimpleCard className="bg-white  w-full h-full">
+              <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
+                بلیت ها
+              </div>
+              <table className="dashboard-table w-full text-center">
+                <thead>
+                  <tr>
+                    <th>شماره بلیت</th>
+                    <th>آیدی نمایشگاه</th>
+                    <th>قیمت</th>
+                    <th>تاریخ انقضا</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {tickets &&
+                    tickets.map((item, index) => (
+                      <tr
+                        className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all"
+                        key={index}
+                      >
+                        <td>{item.ticket_id}</td>
+                        <td>{item.exhibition}</td>
+                        <td>{item.price}</td>
+                        <td>
+                          {Intl.DateTimeFormat("fa", {
+                            year: "numeric",
+                            month: "numeric",
+                            day: "numeric",
+                            minute: "numeric",
+                            hour: "numeric",
+                          }).format(new Date(item.expiration_date))}
+                        </td>
+
+                        <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.3"
+                            stroke="currentColor"
+                            width={"1em"}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15.75 19.5L8.25 12l7.5-7.5"
+                            />
+                          </svg>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </SimpleCard>

@@ -143,7 +143,7 @@ const Form = (props) => {
           </button>
         </div>
         <button className="form-btn" onClick={addNewStudent}>
-          ثبت نمایشگاه{" "}
+          ثبت نمایشگاه
         </button>
       </div>
     </div>

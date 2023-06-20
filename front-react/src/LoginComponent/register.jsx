@@ -19,30 +19,39 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+  const [isChecekd, setIsChecekd] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("https://api.artina.org/api/account/register/", {
-        username: values.username,
-        email: values.email,
-        password: values.password,
-      })
-      .then((response) => {
-        Notiflix.Notify.success("ثبت نام با موفقیت انجام شد");
-        navigate("/login");
-      })
-      .catch((response) => {
-        if (response.response.data.error == "This username is already taken.") {
-          Notiflix.Notify.failure("نام کاربری تکراری میباشد.");
-        }
-        if (response.response.data.error == "This email is already registered.") {
-          Notiflix.Notify.failure("ایمیل وارد شده تکراری میباشد.");
-        }
 
-      });
+    if (isChecekd == true){
+      axios
+        .post("https://api.artina.org/api/account/register/", {
+          username: values.username,
+          email: values.email,
+          password: values.password,
+        })
+        .then((response) => {
+          Notiflix.Notify.success("ثبت نام با موفقیت انجام شد");
+          navigate("/login");
+        })
+        .catch((response) => {
+          if (response.response.data.error == "This username is already taken.") {
+            Notiflix.Notify.failure("نام کاربری تکراری میباشد.");
+          }
+          if (
+            response.response.data.error == "This email is already registered."
+          ) {
+            Notiflix.Notify.failure("ایمیل وارد شده تکراری میباشد.");
+          }
+        });
+    } else{
+      Notiflix.Notify.failure("برای ثبت درخواست ابتدا میبایست قراردار را بپذیرید");
+
+    }
+    
   };
 
   const onChange = (e) => {
@@ -142,7 +151,34 @@ const Register = () => {
           defaultValue={""}
         />
         <div className="mt-5 flex justify-center">
-          <BorderButton onClick={handleSubmit}>ثبت نام</BorderButton>
+          <div className="w-full flex justify-end items-center gap-4">
+            <a
+              href="/"
+              className="text-gray-400 hover:text-gray-500 hover:bg-gray-50 px-2 py-1 transition-all duration-100 font-b2 rounded-md"
+            >
+              مشاهده قوانین
+            </a>
+            <div
+              className={`cursor-pointer rounded-full flex items-center gap-3 ${
+                !isChecekd
+                  ? "hover:bg-rose-50  hover:scale-105 transition-all border-[1px] border-rose-400 text-rose-400"
+                  : "hover:bg-green-50 hover:scale-105 transition-all text-green-600 border-[1px] border-green-600"
+              } transition-all px-3 py-2`}
+              onClick={() => setIsChecekd((prev) => !prev)}
+            >
+              <div
+                className={`h-4 w-4 ${
+                  isChecekd
+                    ? "bg-green-600"
+                    : "bg-rose-50 border-[1px] border-rose-400"
+                } rounded-full`}
+              />
+              <div> با قوانین موافقم</div>
+            </div>
+            <BorderButton className={"px-6 py-3"} onClick={handleSubmit}>
+            ثبت نام            
+            </BorderButton>
+          </div>
         </div>
 
         <div className="bg-[#0000aa10] px-5 py-3 rounded-2xl mt-5 text-center">

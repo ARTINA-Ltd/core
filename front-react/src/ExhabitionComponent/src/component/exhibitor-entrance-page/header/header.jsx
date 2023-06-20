@@ -20,7 +20,7 @@ const Section_1 = () => {
         <div className="header-btn-container">
           <button className="section-1-header-button">بیشتر بدانید</button>
           <button onClick={togglePopup} className="section-1-header-button">
-            {" "}
+            
             ایجاد کردن
           </button>
           {isOpen && <Form handleClose={togglePopup} />}

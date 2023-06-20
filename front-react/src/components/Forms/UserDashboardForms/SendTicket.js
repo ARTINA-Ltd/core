@@ -29,8 +29,8 @@ const SendTicket = () => {
             </div>
             <div className="  lg:col-3 ">
             <Button className="m-3 font lg:h-auto  align-items-center justify-content-center ">
-              {" "}
-              واریز{" "}
+              
+              واریز
             </Button>
             
             </div>
@@ -49,8 +49,8 @@ const SendTicket = () => {
             </div>
             <div className="lg:col-3">
             <Button className="m-3 font  lg:h-auto align-items-center justify-content-center">
-              {" "}
-              برداشت{" "}
+              
+              برداشت
             </Button>
             
             </div>

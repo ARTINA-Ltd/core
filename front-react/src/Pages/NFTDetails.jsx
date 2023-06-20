@@ -257,7 +257,7 @@ const NFTDetails = () => {
                           type={"number"}
                           className={"rounded-lg "}
                           placeholder={"مثلا: 3"}
-                          title="قیمت پیشنهادی شما به اتریم"
+                          title="قیمت پیشنهادی شما به اتریوم"
                           onChange={(e) => {
                             setPrice(e.target.value * 104759811);
                             setEthereum(e.target.value);

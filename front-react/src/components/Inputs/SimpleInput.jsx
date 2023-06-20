@@ -13,15 +13,23 @@ const SimpleInput = ({
   defaultValue = "",
   disabled = false,
   className,
+  ltr = false
 }) => {
   const [focus, setFocus] = useState(defaultValue === null ? false : true);
-  const [value, setValue] = useState();
+  const [value, setValue] = useState("");
   const [defaultVal, setDefaultVal] = useState();
 
   const handleChange = (event) => {
     const inputValue = event.target.value;
-    if (/^\d*$/.test(inputValue)) {
-      setValue(inputValue);
+
+    if (inputValue == ""){
+      setValue("");
+    }
+    else{
+      if (/^[\d+.]*$/.test(inputValue)) {
+    
+          setValue(inputValue);
+        } else setValue((prev) => prev);
     }
   };
   useEffect(() => {
@@ -103,12 +111,31 @@ const SimpleInput = ({
           }
         />
       );
-    } else if (type === "password") {
+      
+    } 
+    else if (type === "double") {
       return (
         <input
           disabled={disabled}
           onKeyUp={onChange}
+          onChange={handleChange}
           value={value}
+          type="text"
+          className={`simple-input w-full`}
+          placeholder={!focus ? "" : placeholder}
+          defaultValue={defaultValue}
+          onFocus={() => setFocus(true)}
+          onBlur={(e) =>
+            e.target.value === "" ? setFocus(false) : setFocus(true)
+          }
+        />
+      );
+      
+    }else if (type === "password") {
+      return (
+        <input
+          disabled={disabled}
+          onKeyUp={onChange}
           type="password"
           className={`simple-input w-full`}
           placeholder={!focus ? "" : placeholder}
@@ -131,6 +158,7 @@ const SimpleInput = ({
           placeholder={!focus ? "" : placeholder}
           defaultValue={defaultValue}
           onFocus={() => setFocus(true)}
+          dir={ltr? "ltr" : "rtl"}
           onBlur={(e) =>
             e.target.value === "" ? setFocus(false) : setFocus(true)
           }

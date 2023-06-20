@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useEffect, useContext, useRef } from "react";
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  useContext,
+  useRef,
+} from "react";
 import Dropzone from "./Dropzone";
 import "./UploadItem.css";
 import axios from "axios";
@@ -43,38 +49,43 @@ const UploadItem = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    Notify.info("در حال ضرب اثر. ممکن است کمی طول بکشد...");
 
-    axios
-      .post(
-        "https://api.artina.org/api/transaction/NFTViewSet/",
-        {
-          nft_name: upladObj.item_name,
-          creator: upladObj.creator,
-          last_price: upladObj.last_price,
-          image_nft: imageUrl,
-          description_nft: upladObj.description,
-          external_link: upladObj.external_link,
-          author_address: address,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+    if (address) {
+      setIsLoading(true);
+      Notify.info("در حال ضرب اثر. ممکن است کمی طول بکشد...");
+
+      axios
+        .post(
+          "https://api.artina.org/api/transaction/NFTViewSet/",
+          {
+            nft_name: upladObj.item_name,
+            creator: upladObj.creator,
+            last_price: upladObj.last_price,
+            image_nft: imageUrl,
+            description_nft: upladObj.description,
+            external_link: upladObj.external_link,
+            author_address: address,
           },
-          mode: "cors",
-        }
-      )
-      .then((res) => {
-        setTokenId(res.data);
-        Notify.success("درخواست شما با موفقیت ثبت شد");
-        setIsLoading(false);
-        setIsUploaded(true);
-      })
-      .catch((e) => {
-        Notify.failure("خطا");
-        setIsLoading(false);
-      });
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            },
+            mode: "cors",
+          }
+        )
+        .then((res) => {
+          setTokenId(res.data);
+          Notify.success("درخواست شما با موفقیت ثبت شد");
+          setIsLoading(false);
+          setIsUploaded(true);
+        })
+        .catch((e) => {
+          Notify.failure("خطا");
+          setIsLoading(false);
+        });
+    } else {
+      Notify.failure("به کانکت والت متصل شوید");
+    }
   };
   const handleCopy = () => {
     navigator.clipboard.writeText("0x2a18fecb3579238cda960b5977f46e500fb6e735");
@@ -99,19 +110,17 @@ const UploadItem = () => {
     <div>
       <div className="flex gap-5 items-start">
         <SimpleCard className="bg-[#4e45d0] w-[45%] flex flex-col relative gap-5 items-center overflow-hidden">
-          
           <div className="relative group w-full">
+            <img
+              className="w-full h-auto max-h-[800px] rounded-2xl"
+              src={
+                imageUrl
+                  ? imageUrl
+                  : "https://api.artina.org/static/images/No_Image_Available.jpg"
+              }
+            />
 
-          <img
-            className="w-full h-auto max-h-[800px] rounded-2xl"
-            src={
-              imageUrl
-                ? imageUrl
-                : "https://api.artina.org/static/images/No_Image_Available.jpg"
-            }
-          />
-
-          <div
+            <div
               className="group-hover:opacity-80 opacity-0 cursor-pointer duration-300 bg-black transition-all h-full w-full absolute inset-0 m-auto items-center justify-center flex rounded-2xl"
               onClick={() => inputFile.current.click()}
             >
@@ -147,7 +156,6 @@ const UploadItem = () => {
               ref={inputFile}
             />
           </div>
-          
         </SimpleCard>
         <SimpleCard className={"flex flex-col gap-12 bg-white w-full"}>
           <div className="text-[24px]">ضرب اثر</div>
@@ -193,6 +201,7 @@ const UploadItem = () => {
           </div>
           <div className="w-full">
             <SimpleInput
+              ltr={true}
               type="text"
               title="لینک خارجی"
               placeholder="مثلا:https://www.artina.org"
@@ -208,7 +217,7 @@ const UploadItem = () => {
           <div className="w-full">
             <SimpleInput
               type="text"
-              title="قیمت پایه"
+              title="قیمت پایه(اتریوم)"
               placeholder="مثلا: 129"
               onChange={
                 (e) => hanndleNumberChange(e) // isValid={formValues.first_name != ""}
@@ -218,14 +227,11 @@ const UploadItem = () => {
           </div>
           <div className="flex justify-end">
             {!isLoading ? (
-              <BorderButton
-                className=""
-                onClick={handleSubmit}
-              >
+              <BorderButton className="" onClick={handleSubmit}>
                 ضرب اثر
               </BorderButton>
             ) : (
-              <BorderButton className=" text-white text-[14px] bg-[#302c66] py-5 px-[6rem] rounded-lg cursor-not-allowed transition-all flex items-center gap-3">
+              <BorderButton className=" text-[14px] bg-[#302c66] py-5 px-[6rem] rounded-lg cursor-not-allowed transition-all flex items-center gap-3">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
