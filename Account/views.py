@@ -15,7 +15,7 @@ from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from .models import Payment
-from .models import UserBalance, TransactionType, TransactionCurrency
+from .models import UserBalance, TransactionType, TransactionCurrency, TicketUser
 from .serializers import UserBalanceSerializer
 from django.utils import timezone
 
@@ -199,11 +199,11 @@ class TicketViewSet(viewsets.ViewSet):
                 return Response({'error': 'email is required.'}, status=status.HTTP_400_BAD_REQUEST)
             user = None
 
-        ticket_count = Ticket.objects.filter(user=user).count()
+        ticket_count = TicketUser.objects.filter(user=user).count()
         if ticket_count >= 5:
             raise PermissionDenied("You have reached the maximum number of tickets.")
         unique_id = random.randint(100000, 999999)
-        Ticket.objects.create(user=user, email=email, subject=subject, text=text, ticket_id=unique_id)
+        TicketUser.objects.create(user=user, email=email, subject=subject, text=text, ticket_id=unique_id)
 
         return Response({'success': 'Ticket created successfully.','token':unique_id}, status=status.HTTP_201_CREATED)
 
