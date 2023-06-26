@@ -102,11 +102,7 @@ export default () => {
                 {/* {Token=='null' ? <></> ::} */}
                 <Route path="/" element={<Home />} />
                 <Route exact path="artist-page" element={<ArtistPage />} />
-                <Route
-                  exact
-                  path="artist-application-form/:id"
-                  element={<ArtistApplicationForm />}
-                />
+                <Route exact path="artist-application-form/:id" element={<ArtistApplicationForm />} />
                 <Route exact path="nft-details/:id" element={<NFTDetails />} />
                 <Route exact path="Commission" element={<Commission />} />
                 <Route exact path="login" element={<Login />} />
@@ -127,11 +123,7 @@ export default () => {
                 {/* <Route exact path="request-lists" element={<RequestLists />} /> */}
                 <Route exact path="requests-list" element={<RequestsList />} />
                 <Route exact path="show-request" element={<ShowRequests />} />
-                <Route
-                  exact
-                  path="request-details"
-                  element={<RequestDetails />}
-                />
+                <Route exact path="request-details" element={<RequestDetails />}/>
                 <Route exact path="upload-page" element={<NFTUploadPage />} />
                 <Route exact path="UserDashboard" element={<UserDashboard />} />
                 <Route exact path="dashboard" element={<Dashboard />} />
