@@ -36,6 +36,9 @@ import Exhibitor from "./Pages/Exhibitor";
 import UserCollections from "./Pages/UserCollections";
 import Dashboard from "./Pages/Dashboard";
 import AboutUs from "./Pages/AboutUs";
+import HelpMint from "./Pages/help-mint";
+import HelpCreateExhibition from "./Pages/help-create-exhibition";
+import HelpCreateWallet from "./Pages/help-create-wallet";
 
 const activeChainId = ChainId.Goerli;
 
@@ -113,6 +116,10 @@ export default () => {
                 
                 <Route exact path="contact" element={<Contact />} />
                 <Route exact path="about-us" element={<AboutUs />} />
+
+                <Route exact path="help-mint" element={<HelpMint />} />
+                <Route exact path="help-create-exhibition" element={<HelpCreateExhibition />} />
+                <Route exact path="help-create-wallet" element={<HelpCreateWallet />} />
 
                 <Route exact path="exhibition-list" element={<ExhibitionList />} />
                 <Route exact path="open-exhibitions" element={<OpenExhibitions />} />
