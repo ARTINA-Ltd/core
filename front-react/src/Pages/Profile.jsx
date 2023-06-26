@@ -606,7 +606,7 @@ function Profile() {
               }
             >
               متن احراز هویت
-            </BorderButton>{" "}
+            </BorderButton>
             <div className="text-white font-b3">آپلود فرم احراز هویت</div>
             <div className="flex justify-center z-10 group relative w-full h-auto">
               <img

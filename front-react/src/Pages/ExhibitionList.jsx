@@ -17,6 +17,7 @@ const ExhibitionList = () => {
         mode: "cors",
       })
       .then((res) => {
+        console.log(res.data);
         setData(res.data);
       });
   }, []);
@@ -25,10 +26,7 @@ const ExhibitionList = () => {
     <TestLayout className="flex flex-col gap-5">
       {getData
         ? getData.map((item, index) => (
-            <div
-            onClick={() => navigate(`/exhibition-collections/${item.id}`)}
-            
-            >
+            <div onClick={() => navigate(`/exhibition-collections/${item.id}`)}>
               <SimpleCard
                 className={
                   "bg-white flex gap-10 items-center group relative overflow-hidden cursor-pointer"
@@ -43,7 +41,7 @@ const ExhibitionList = () => {
                     {item.marketName}
                   </div>
                   <div className="text-2xl font-b5 flex gap-1 items-center">
-                    مجموعه دار:{" "}
+                    مجموعه دار:
                     <div className="bg-[#0000aa10] px-4 rounded-lg py-1">
                       {item.user}
                     </div>
@@ -66,6 +64,16 @@ const ExhibitionList = () => {
                       }).format(new Date(item.application_deadline))}
                     </div>
                   </div>
+
+                  {item.has_ticket === true ? (
+                    <div className="flex items-center gap-1 font-b4 text-lg">
+                      <div className="bg-blue-50 text-blue-800 rounded-lg px-4 py-1 opacity-70">
+                        این نمایشگاه بلیت دارد
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div className="w-full"></div>
                 <img

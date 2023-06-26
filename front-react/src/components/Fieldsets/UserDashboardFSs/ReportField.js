@@ -35,15 +35,15 @@ function ReportField() {
 
             >
               <div className=" flex justify-content-start text-5xl p-2 m-2   ">
-                {" "}
+                
                 <p className="font  ">مانده قابل برداشت : 1111111.111</p>
               </div>
               <div className=" flex justify-content-start text-5xl p-2  m-2     ">
-                {" "}
+                
                 <p className="  font  ">مانده قابل معامله : 999999.2292</p>
               </div>
               <div className="flex justify-content-start text-5xl p-2  m-2 font">
-                {" "}
+                
                 <p
                   className=" 
                   font

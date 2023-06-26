@@ -62,7 +62,7 @@ function Handlelogin(){
     }
 }
     return (
-        <div className={" "} >
+        <div className= >
             <Navbar/>
             {/* <div className="container">         */}
         <div className=" flex justify-center   bg-no-repeat      " dir='rtl'>

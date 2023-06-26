@@ -149,8 +149,8 @@ function UserDashboardTable() {
     return (
       <div style={{ fontFamily: "IRANSansWeb" }}>
         <span className="image-text text-4xl">
-          {" "}
-          {TableData.Exhibitionname}{" "}
+          
+          {TableData.Exhibitionname}
         </span>
       </div>
     );

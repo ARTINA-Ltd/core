@@ -33,7 +33,7 @@ const ExhebitionList = ({ className }) => {
 
   const [sliderRef] = useKeenSlider({
     slides: {
-      perView: isMobile ? 1 : isTablet ? 2 : 3,
+      perView: isMobile ? 1 : isTablet ? 2 : 5,
       spacing: isMobile ? 15 : isTablet ? 20 : 30,
     },
   });

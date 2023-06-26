@@ -75,7 +75,7 @@ const Section_1 = () => {
                   شروع نمایشگاه
                 </p1>
                 <p1>
-                  {" "}
+                  
                   {new Date(items.end_date).toLocaleDateString("fa-IR")}:تاریخ
                   اتمام نمایشگاه
                 </p1>

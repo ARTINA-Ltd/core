@@ -27,6 +27,15 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
     application_deadline: "",
   });
 
+  const [validate, setValidate] = useState({
+    marketName: false,
+    image: false,
+    start_date: false,
+    end_date: false,
+    description: false,
+    application_deadline: false,
+  });
+
   const inputFile = useRef(null);
 
   const [profileImage, setProfileImage] = useState();
@@ -224,17 +233,17 @@ Notify.success("نمایشگاه با موفقت افزوده شد")
               type="text"
               title="نام نمایشگاه"
               placeholder="مثلا: نمایشگاه تست"
-              // isValid={validate.first_name}
+              isValid={validate.marketName}
               validationError="نمیتواند خالی باشد"
               onChange={(e) => {
                 setValues((prev) => ({
                   ...prev,
                   marketName: e.target.value,
                 }));
-                // setValidate((prev) => ({
-                //   ...prev,
-                //   first_name: e.target.value != "",
-                // }));
+                setValidate((prev) => ({
+                  ...prev,
+                  marketName: e.target.value != "",
+                }));
               }}
               defaultValue={null}
               disabled={false}
@@ -244,17 +253,17 @@ Notify.success("نمایشگاه با موفقت افزوده شد")
               type="text"
               title="توضیحات نمایشگاه"
               placeholder="مثلا: نمایشگاه تست"
-              // isValid={validate.first_name}
+              isValid={validate.description}
               validationError="نمیتواند خالی باشد"
               onChange={(e) => {
                 setValues((prev) => ({
                   ...prev,
                   description: e.target.value,
                 }));
-                // setValidate((prev) => ({
-                //   ...prev,
-                //   first_name: e.target.value != "",
-                // }));
+                setValidate((prev) => ({
+                  ...prev,
+                  description: e.target.value != "",
+                }));
               }}
               defaultValue={null}
               disabled={false}
@@ -263,17 +272,17 @@ Notify.success("نمایشگاه با موفقت افزوده شد")
             <SimpleInput
               type="date"
               title="تاریخ شروع"
-              // isValid={validate.first_name}
+              isValid={validate.start_date}
               validationError="نمیتواند خالی باشد"
               onChange={(e) => {
                 setValues((prev) => ({
                   ...prev,
                   start_date: e.value,
                 }));
-                // setValidate((prev) => ({
-                //   ...prev,
-                //   first_name: e.target.value != "",
-                // }));
+                setValidate((prev) => ({
+                  ...prev,
+                  start_date: e.value != "",
+                }));
               }}
               defaultValue={null}
               disabled={false}
@@ -282,17 +291,17 @@ Notify.success("نمایشگاه با موفقت افزوده شد")
             <SimpleInput
               type="date"
               title="تاریخ پایان"
-              // isValid={validate.first_name}
+              isValid={validate.end_date}
               validationError="نمیتواند خالی باشد"
               onChange={(e) => {
                 setValues((prev) => ({
                   ...prev,
                   end_date: e.value,
                 }));
-                // setValidate((prev) => ({
-                //   ...prev,
-                //   first_name: e.target.value != "",
-                // }));
+                setValidate((prev) => ({
+                  ...prev,
+                  end_date: e.value != "",
+                }));
               }}
               defaultValue={null}
               disabled={false}
@@ -301,17 +310,17 @@ Notify.success("نمایشگاه با موفقت افزوده شد")
             <SimpleInput
               type="date"
               title=" آخرین مهلت ثبت نام"
-              // isValid={validate.first_name}
+              isValid={validate.application_deadline}
               validationError="نمیتواند خالی باشد"
               onChange={(e) => {
                 setValues((prev) => ({
                   ...prev,
                   application_deadline: e.value,
                 }));
-                // setValidate((prev) => ({
-                //   ...prev,
-                //   first_name: e.target.value != "",
-                // }));
+                setValidate((prev) => ({
+                  ...prev,
+                  application_deadline: e.value != "",
+                }));
               }}
               defaultValue={null}
               disabled={false}
@@ -331,6 +340,7 @@ Notify.success("نمایشگاه با موفقت افزوده شد")
               <SimpleInput
                 type="number"
                 title=" قیمت تیکت"
+                isValid={ticketPrice !== ""}
                 validationError="نمیتواند خالی باشد"
                 onChange={(e) => {
                   setTicketPrice(e.target.value);

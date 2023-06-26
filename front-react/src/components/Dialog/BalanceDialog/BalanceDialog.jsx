@@ -194,7 +194,7 @@ const BalanceDialog = () => {
                 className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all  duration-700"
               />
               <div className="text-2xl font-b6 px-10">
-                موجودی ریالی قابل معامله{" "}
+                موجودی ریالی قابل معامله
               </div>
               <div className="text-lg text-yellow-300 px-10 self-end">
                 {getData ? getData.rial_available_balance : ""} ریال
@@ -207,7 +207,7 @@ const BalanceDialog = () => {
               />
               <div className="text-2xl font-b6 px-10">
                 موجودی ریالی غیر قابل معامله
-              </div>{" "}
+              </div>
               <div className="text-lg text-yellow-300 px-10 self-end">
                 {getData ? getData.rial_unavailable_balance : ""} ریال
               </div>

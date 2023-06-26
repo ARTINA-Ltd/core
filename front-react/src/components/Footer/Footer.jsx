@@ -86,7 +86,7 @@ const Footer = () => {
               تولید عکس با هوش مصنوعی
             </a>
             <a href="https://blog.artina.org/" className="mr-2 font-b3">
-              بلاگ خبری
+              بلاگ 
             </a>
           </div>
           <div className="w-full flex flex-col gap-2">
