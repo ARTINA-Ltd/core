@@ -62,6 +62,18 @@ class LoginViewSet(viewsets.ViewSet):
         }
         return Response(response_data, status=status.HTTP_200_OK)
 
+class SubdomainMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        host = request.get_host()
+        subdomain = host.split('.')[0] if '.' in host else None
+        request.subdomain = subdomain
+        response = self.get_response(request)
+        return response
+
+
 
 class UserInfoViewSet(viewsets.ViewSet):
     authentication_classes = [JWTAuthentication]
@@ -170,7 +182,11 @@ class TicketViewSet(viewsets.ViewSet):
         user = request.user
         is_authenticated = user.is_authenticated
         email = request.data.get('email')
+        subject = request.data.get('name')
+        subject = request.data.get('last_name')
         subject = request.data.get('subject')
+        subject = request.data.get('phone_number')
+        subject = request.data.get('image_url')
         text = request.data.get('text')
 
         if not subject:
@@ -183,11 +199,11 @@ class TicketViewSet(viewsets.ViewSet):
                 return Response({'error': 'email is required.'}, status=status.HTTP_400_BAD_REQUEST)
             user = None
 
-        ticket_count = UserTicket.objects.filter(user=user).count()
+        ticket_count = Ticket.objects.filter(user=user).count()
         if ticket_count >= 5:
             raise PermissionDenied("You have reached the maximum number of tickets.")
         unique_id = random.randint(100000, 999999)
-        UserTicket.objects.create(user=user, email=email, subject=subject, text=text, ticket_id=unique_id)
+        Ticket.objects.create(user=user, email=email, subject=subject, text=text, ticket_id=unique_id)
 
         return Response({'success': 'Ticket created successfully.','token':unique_id}, status=status.HTTP_201_CREATED)
 

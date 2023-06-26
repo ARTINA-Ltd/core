@@ -45,7 +45,7 @@ class Profile(models.Model):
     cell_number = models.CharField(max_length=11, verbose_name="شماره تلفن ثابت", null=True, blank=False)
     shaba_number = models.CharField(max_length=24, verbose_name="shaba_number", null=True, blank=True)
     address = models.TextField(max_length=200, verbose_name="آدرس", null=True, blank=False)
-    national_card_picture = models.TextField(verbose_name="عکس کارت ملی",null=True,blank=False,default="http://78.38.35.249:8000/static/images/Fig.png")
+    national_card_picture = models.TextField(verbose_name="عکس کارت ملی",null=True,blank=False,default="http://api.artina.org/static/images/Fig.png")
     profile_picture = models.TextField(verbose_name="عکس پروفایل",
                                         null=True, blank=False, default="http://api.artina.org/static/images/default_C7876ge.webp",)
     email = models.EmailField(max_length=50, verbose_name="ایمیل", null=True, blank=False)
@@ -94,12 +94,17 @@ User.add_to_class('is_artist', is_artist)
 User.add_to_class('get_artist_applications', get_artist_applications)
 
 
-class UserTicket(models.Model):
+class Ticket(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     email = models.EmailField(max_length=50,null=True,blank=False)
+    name = models.CharField(max_length=255,null=True,blank=False)
+    last_name = models.CharField(max_length=255,null=True,blank=False)
+    phone_number = models.CharField(max_length=255,null=True,blank=True)
+    image_url = models.CharField(max_length=255,null=True,blank=True)
     subject = models.CharField(max_length=255,null=True,blank=False)
     text = models.TextField(max_length=200,null=True,blank=False)
     ticket_id = models.CharField(max_length=6, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class PhoneVerification(models.Model):

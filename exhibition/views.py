@@ -293,6 +293,20 @@ class TicketViewSet(viewsets.ViewSet):
         tickets = Ticket.objects.filter(user=user)
         serializer = serializers.TicketSerializer(tickets, many=True)
         return Response(serializer.data)
+   
+    @action(detail=False, methods=['post']) 
+    def check_user_ticket(self,request):
+        user = self.request.user
+        exhibition_id=request.data.get("exhibition_id")
+        exhibition = Exhibition.objects.filter(id=exhibition_id).first()
+        ticket=None
+        ticket = Ticket.objects.filter(user=user,exhibition=exhibition)
+        if ticket==None : 
+                    return Response({"user_has_ticket":"False"})
+        else : 
+                    return Response({"user_has_ticket":"True"})
+
+
 
 
     @action(detail=False, methods=['post'])
@@ -315,7 +329,7 @@ class TicketViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=['get'])
     def calculate_user_revenue(self, request):
-        user_id = self.request.query_params.get('user')
+        user_id = self.request.user
         exhibitions = Exhibition.objects.filter(user_id=user_id)
         total = 0
         for exhibition in exhibitions:
