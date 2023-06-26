@@ -35,6 +35,7 @@ import RequestsList from "./Pages/RequestsList";
 import Exhibitor from "./Pages/Exhibitor";
 import UserCollections from "./Pages/UserCollections";
 import Dashboard from "./Pages/Dashboard";
+import AboutUs from "./Pages/AboutUs";
 
 const activeChainId = ChainId.Goerli;
 
@@ -111,7 +112,8 @@ export default () => {
                 <Route exact path="register" element={<Register />} />
                 
                 <Route exact path="contact" element={<Contact />} />
-                
+                <Route exact path="about-us" element={<AboutUs />} />
+
                 <Route exact path="exhibition-list" element={<ExhibitionList />} />
                 <Route exact path="open-exhibitions" element={<OpenExhibitions />} />
 
