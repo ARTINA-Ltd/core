@@ -15,7 +15,7 @@ from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from .models import Payment
-from .models import UserBalance, TransactionType, TransactionCurrency
+from .models import UserBalance, TransactionType, TransactionCurrency, TicketUser
 from .serializers import UserBalanceSerializer
 from django.utils import timezone
 

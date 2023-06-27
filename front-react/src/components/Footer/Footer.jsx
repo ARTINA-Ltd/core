@@ -93,14 +93,14 @@ const Footer = () => {
             <a href="" className="font-b8">
               راهنما
             </a>
-            <a href="" className="mr-2 font-b3">
-              راهنمای احراز هویت
+            <a href="help-create-wallet" className="mr-2 font-b3">
+              راهنمای ساخت کیف پول
             </a>
-            <a href="" className="mr-2 font-b3">
+            <a href="/help-mint" className="mr-2 font-b3">
               راهنمای ضرب ان اف تی
             </a>
-            <a href="" className="mr-2 font-b3">
-              راهنمای ایجاد نمایشگاه سه بعدی
+            <a href="/help-create-exhibition" className="mr-2 font-b3">
+              راهنمای ایجاد نمایشگاه
             </a>
           </div>
         </div>
