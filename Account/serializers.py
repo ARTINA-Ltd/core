@@ -59,7 +59,7 @@ class UserInfoSerializer(serializers.ModelSerializer):
 
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Ticket
+        model = TicketUser
         fields =  '__all__'
         # read_only_fields = ['ticket_id']
         

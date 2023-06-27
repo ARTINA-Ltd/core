@@ -199,11 +199,11 @@ class TicketViewSet(viewsets.ViewSet):
                 return Response({'error': 'email is required.'}, status=status.HTTP_400_BAD_REQUEST)
             user = None
 
-        ticket_count = Ticket.objects.filter(user=user).count()
+        ticket_count = TicketUser.objects.filter(user=user).count()
         if ticket_count >= 5:
             raise PermissionDenied("You have reached the maximum number of tickets.")
         unique_id = random.randint(100000, 999999)
-        Ticket.objects.create(user=user, email=email, subject=subject, text=text, ticket_id=unique_id)
+        TicketUser.objects.create(user=user, email=email, subject=subject, text=text, ticket_id=unique_id)
 
         return Response({'success': 'Ticket created successfully.','token':unique_id}, status=status.HTTP_201_CREATED)
 
@@ -457,8 +457,8 @@ class PaymentGateViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=['get'])
     def verify(self, request):
-        payment_id = request.GET.get('payment_id')
-        payment = Payment.objects.get(id=payment_id)
+        authority = request.GET.get('Authority')
+        payment = Payment.objects.get(authority=authority)
 
         response = self.verify_payment(payment.amount, payment.authority)
         if response.status_code == 200:

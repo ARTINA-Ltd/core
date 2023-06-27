@@ -11,9 +11,9 @@ from django.conf import settings
 
 class NFT(models.Model):
     token_id = models.IntegerField(default=0, null=False, blank=False)
-    name = models.CharField(max_length=15, null=False, blank=False)
+    name = models.CharField(max_length=100, null=False, blank=False)
     owner = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)
-    creator = models.CharField(max_length=15, null=False, blank=False)
+    creator = models.CharField(max_length=100, null=False, blank=False)
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
     last_price = models.IntegerField(verbose_name='آخرین قیمت', null=False, blank=False)
     image_url = models.TextField(default='data:image', null=False, blank=False)

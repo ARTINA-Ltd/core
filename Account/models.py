@@ -94,7 +94,7 @@ User.add_to_class('is_artist', is_artist)
 User.add_to_class('get_artist_applications', get_artist_applications)
 
 
-class Ticket(models.Model):
+class TicketUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     email = models.EmailField(max_length=50,null=True,blank=False)
     name = models.CharField(max_length=255,null=True,blank=False)
