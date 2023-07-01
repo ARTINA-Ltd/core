@@ -83,6 +83,7 @@ export default () => {
       )
       .then((data) => {
         setUser(data);
+        console.log(data);
       })
       .catch(setUser(undefined));
   };

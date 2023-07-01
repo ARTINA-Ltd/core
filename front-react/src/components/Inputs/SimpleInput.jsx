@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./style.css";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 import { DatePicker, TimePicker } from "zaman";
+import Select from "react-select";
 
 const SimpleInput = ({
   onChange,
@@ -13,23 +14,27 @@ const SimpleInput = ({
   defaultValue = "",
   disabled = false,
   className,
-  ltr = false
+  ltr = false,
 }) => {
   const [focus, setFocus] = useState(defaultValue === null ? false : true);
   const [value, setValue] = useState("");
   const [defaultVal, setDefaultVal] = useState();
 
+  const options = [
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
+  ];
+
   const handleChange = (event) => {
     const inputValue = event.target.value;
 
-    if (inputValue == ""){
+    if (inputValue == "") {
       setValue("");
-    }
-    else{
+    } else {
       if (/^[\d+.]*$/.test(inputValue)) {
-    
-          setValue(inputValue);
-        } else setValue((prev) => prev);
+        setValue(inputValue);
+      } else setValue((prev) => prev);
     }
   };
   useEffect(() => {
@@ -111,9 +116,7 @@ const SimpleInput = ({
           }
         />
       );
-      
-    } 
-    else if (type === "double") {
+    } else if (type === "double") {
       return (
         <input
           disabled={disabled}
@@ -130,8 +133,7 @@ const SimpleInput = ({
           }
         />
       );
-      
-    }else if (type === "password") {
+    } else if (type === "password") {
       return (
         <input
           disabled={disabled}
@@ -148,6 +150,10 @@ const SimpleInput = ({
       );
     } else if (type === "time") {
       return <TimePicker accentColor="#4e45d0" onChange={onChange} />;
+    } else if (type === "dropdown") {
+      return (
+        <Select options={options} className={"simple-input2 w-full"} unstyled />
+      );
     } else {
       return (
         <input
@@ -158,7 +164,7 @@ const SimpleInput = ({
           placeholder={!focus ? "" : placeholder}
           defaultValue={defaultValue}
           onFocus={() => setFocus(true)}
-          dir={ltr? "ltr" : "rtl"}
+          dir={ltr ? "ltr" : "rtl"}
           onBlur={(e) =>
             e.target.value === "" ? setFocus(false) : setFocus(true)
           }

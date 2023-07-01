@@ -80,7 +80,13 @@ const UploadItem = () => {
           setIsUploaded(true);
         })
         .catch((e) => {
-          Notify.failure("خطا");
+          if (e.response.data.error == "your money is not enough") {
+            Notify.failure(
+              "موجودی حساب شما کافی نیست لطفا ابتدا کیف پول خود را شارژ کنید"
+            );
+          } else {
+            Notify.failure("خطا");
+          }
           setIsLoading(false);
         });
     } else {

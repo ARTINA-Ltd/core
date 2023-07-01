@@ -161,9 +161,15 @@ function Profile() {
             )
             .then((e) => {
               userChange();
-              
+
               Notify.success("ارسال شد");
-            }).catch(()=>Notify.failure("شماره تکراری میباشد"));
+            })
+            .catch(() => {
+              Notify.failure("شماره تکراری میباشد");
+              setIsPhoneDisabled(false);
+              setShowPhoneValidate(false);
+              setCounterPause(true);
+            });
         })
         .catch((e) => {
           Notify.failure("خطا");
@@ -597,7 +603,7 @@ function Profile() {
               className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
             />
             <div className="text-white text-[27px] mb-2 z-10 font-b9">
-              اطلاعات حساب کاربری
+              آپلود فرم احراز هویت{" "}
             </div>
             <BorderButton
               className={"text-white border-white"}
@@ -607,7 +613,6 @@ function Profile() {
             >
               متن احراز هویت
             </BorderButton>
-            <div className="text-white font-b3">آپلود فرم احراز هویت</div>
             <div className="flex justify-center z-10 group relative w-full h-auto">
               <img
                 src={
@@ -666,7 +671,11 @@ function Profile() {
 
               <SimpleInput
                 defaultValue={user && user.data ? user.data.shaba_number : null}
-                disabled={user != null ? user.data.shaba_number != null : null}
+                disabled={
+                  user && user.data != null
+                    ? user.data.shaba_number != null
+                    : null
+                }
                 title={"اینجا بنویسید"}
                 type="number"
                 onChange={(e) => setShabaNumber(e.target.value)}

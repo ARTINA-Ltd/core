@@ -27,10 +27,16 @@ const NFTList = ({ className }) => {
             <th scope="col" className="text-center py-3 sm:px-1">
               نام
             </th>
-            <th scope="col" className="text-center py-3 sm:px-1 sm:w-1/5 sm:hidden">
+            <th
+              scope="col"
+              className="text-center py-3 sm:px-1 sm:w-1/5 sm:hidden"
+            >
               آخرین قیمت
             </th>
-            <th scope="col" className="hidden text-center py-3 sm:px-1 sm:w-full sm:block">
+            <th
+              scope="col"
+              className="hidden text-center py-3 sm:px-1 sm:w-full sm:block"
+            >
               قیمت
             </th>
             <th scope="col" className="text-center py-3 sm:px-1 sm:hidden">
@@ -41,39 +47,73 @@ const NFTList = ({ className }) => {
         <tbody>
           {data
             ? data.map((item, index) => (
-              <tr
-                className="border-t group cursor-pointer transition duration-100  hover:bg-[#0000ff08]"
-                key={index}
-                onClick={() => navigate(`/nft-details/${item.token_id}`)}
-              >
-                <td className="whitespace-nowrap pr-6 font-medium sm:pl-2 sm:pr-3">
-                  <img
-                    src={item.image_url}
-                    className="rounded-lg h-[90px] w-[90px] mr-4 object-cover my-1 sm:h-[90px] sm:w-[90px]"
-                    alt=""
-                  />
-                </td>
-                <td className="whitespace-nowrap px-6 py-4 sm:px-1 sm:w-2/5">{item.name}</td>
-                <td className="whitespace-nowrap px-6 py-4 sm:px-1">{item.last_price}</td>
-                <td className="whitespace-nowrap px-6 py-4 sm:hidden">{item.creator}</td>
-                <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.3"
-                    stroke="currentColor"
-                    width={"1em"}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.75 19.5L8.25 12l7.5-7.5"
+                <tr
+                  className="border-t group cursor-pointer transition duration-100 items-center justify-center hover:bg-[#0000ff08]"
+                  key={index}
+                  onClick={() => navigate(`/nft-details/${item.token_id}`)}
+                >
+                  <td className="whitespace-nowrap pr-6 font-medium sm:pl-2 sm:pr-3">
+                    <img
+                      src={item.image_url}
+                      className="rounded-lg h-[90px] w-[90px] mr-4 object-cover my-1 sm:h-[90px] sm:w-[90px]"
+                      alt=""
                     />
-                  </svg>
-                </td>
-              </tr>
-            ))
+                  </td>
+                  <td className="whitespace-nowrap px-6 py-4 sm:px-1 sm:w-2/5">
+                    {item.name}
+                  </td>
+                  <td className="whitespace-nowrap px-6 py-4 sm:px-1">
+                    <div className="flex w-full justify-center">
+                      {item.last_price}
+
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-label="Ethereum"
+                        role="img"
+                        viewBox="0 0 512 512"
+                        width={"1.5em"}
+                      >
+                        <rect
+                          width="512"
+                          height="512"
+                          rx="15%"
+                          fill="#ffffff"
+                        />
+                        <path fill="#3C3C3B" d="m256 362v107l131-185z" />
+                        <path
+                          fill="#343434"
+                          d="m256 41l131 218-131 78-132-78"
+                        />
+                        <path
+                          fill="#8C8C8C"
+                          d="m256 41v158l-132 60m0 25l132 78v107"
+                        />
+                        <path fill="#141414" d="m256 199v138l131-78" />
+                        <path fill="#393939" d="m124 259l132-60v138" />
+                      </svg>
+                    </div>
+                  </td>
+                  <td className="whitespace-nowrap px-6 py-4 sm:hidden">
+                    {item.creator}
+                  </td>
+                  <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.3"
+                      stroke="currentColor"
+                      width={"1em"}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.75 19.5L8.25 12l7.5-7.5"
+                      />
+                    </svg>
+                  </td>
+                </tr>
+              ))
             : undefined}
         </tbody>
       </table>
