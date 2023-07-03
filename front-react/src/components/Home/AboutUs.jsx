@@ -13,7 +13,7 @@ const AboutUs = ({ className }) => {
         <div className="font-b9 text-[40px] mb-4">
           درباره ما
         </div>
-        <div className="font-b2 text-[22px] text-center sm:">
+        <div className="font-b2 text-[22px] text-center sm:text-[17px]">
           آرتینا یک پلتفرم خرید و فروش آثار هنری در قالب NFT با رویکرد توانمند
           سازی هنرمندان در بنمایش گذاشتن و خرید و فروش آثارشان است و برای
           نمایشگاه دار ها و هنرمندان امکان ایجاد نمایشگاه های مجازی و خرید و
