@@ -39,6 +39,7 @@ import AboutUs from "./Pages/AboutUs";
 import HelpMint from "./Pages/help-mint";
 import HelpCreateExhibition from "./Pages/help-create-exhibition";
 import HelpCreateWallet from "./Pages/help-create-wallet";
+import PrivacyPolicy from "./Pages/PrivacyPolicy";
 
 const activeChainId = ChainId.Goerli;
 
@@ -113,7 +114,8 @@ export default () => {
                 
                 <Route exact path="contact" element={<Contact />} />
                 <Route exact path="about-us" element={<AboutUs />} />
-
+                <Route exact path="privacy-policy" element={<PrivacyPolicy />} />
+                
                 <Route exact path="help-mint" element={<HelpMint />} />
                 <Route exact path="help-create-exhibition" element={<HelpCreateExhibition />} />
                 <Route exact path="help-create-wallet" element={<HelpCreateWallet />} />
