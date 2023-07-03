@@ -59,7 +59,7 @@ const NFTList = ({ className }) => {
                       alt=""
                     />
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4 sm:px-1 sm:w-2/5">
+                  <td className="whitespace-nowrap px-6 py-4 sm:px-1 sm:w-2/5 sm:whitespace-normal">
                     {item.name}
                   </td>
                   <td className="whitespace-nowrap px-6 py-4 sm:px-1">

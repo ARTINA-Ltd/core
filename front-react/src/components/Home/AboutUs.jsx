@@ -10,7 +10,7 @@ const AboutUs = ({ className }) => {
         className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
       />
       <div className={`w-2/3 flex flex-col items-center sm:w-4/5`}>
-        <div className="font-b9 text-[40px] mb-4">
+        <div className="font-b9 text-[40px] mb-4 sm:text-[30px]">
           درباره ما
         </div>
         <div className="font-b2 text-[22px] text-center sm:text-[17px]">

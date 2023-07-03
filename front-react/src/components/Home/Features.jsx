@@ -28,7 +28,7 @@ const Features = ({ className = "" }) => {
   return (
     <div className={`${className}  w-full flex justify-center lg:my-10`}>
       <div className={`w-4/5 flex flex-col items-center`}>
-        <div className="font-b9 text-[40px] mb-4" >امکانات آرتینا</div>
+        <div className="font-b9 text-[40px] mb-4 sm:text-[30px]" >امکانات آرتینا</div>
         <div ref={sliderRef} className="keen-slider ">
           <div className="keen-slider__slide">
             <div className={"w-full cursor-pointer"}>

@@ -44,7 +44,7 @@ const ExhebitionList = ({ className }) => {
           src="/4.png"
           className=" opacity-[10%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
         />
-        <div className="font-b9 text-[40px] mb-2">لیست نمایشگاه ها</div>
+        <div className="font-b9 text-[40px] mb-2 sm:text-[30px]">لیست نمایشگاه ها</div>
         <div className="font-b5 text-lg mb-4 cursor-pointer opacity-40"
                 onClick={() => navigate(`/exhibition-list`)}
         
