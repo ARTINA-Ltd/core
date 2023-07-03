@@ -198,7 +198,7 @@ const ArtistApplicationForm = () => {
                         </div>
                         <div className="w-full flex justify-end items-center gap-4">
                           <a
-                            href="/"
+                            href="/privacy-policy"
                             className="text-gray-400 hover:text-gray-500 hover:bg-gray-50 px-2 py-1 transition-all duration-100 font-b2 rounded-md"
                           >
                             مشاهده قوانین
