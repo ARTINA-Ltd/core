@@ -230,7 +230,7 @@ const BalanceDialog = () => {
               title="مقدار(ریال)"
               placeholder="مثلا: 654"
               isValid={amount != ""}
-              validationError="نمیتواند خالی باشد"
+              validationError="نمی‌تواند خالی باشد"
               onChange={(e) => setAmount(e.target.value)}
             />
           </div>

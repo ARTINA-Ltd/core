@@ -234,7 +234,7 @@ Notify.success("نمایشگاه با موفقت افزوده شد")
               title="نام نمایشگاه"
               placeholder="مثلا: نمایشگاه تست"
               isValid={validate.marketName}
-              validationError="نمیتواند خالی باشد"
+              validationError="نمی‌تواند خالی باشد"
               onChange={(e) => {
                 setValues((prev) => ({
                   ...prev,
@@ -254,7 +254,7 @@ Notify.success("نمایشگاه با موفقت افزوده شد")
               title="توضیحات نمایشگاه"
               placeholder="مثلا: نمایشگاه تست"
               isValid={validate.description}
-              validationError="نمیتواند خالی باشد"
+              validationError="نمی‌تواند خالی باشد"
               onChange={(e) => {
                 setValues((prev) => ({
                   ...prev,
@@ -273,7 +273,7 @@ Notify.success("نمایشگاه با موفقت افزوده شد")
               type="date"
               title="تاریخ شروع"
               isValid={validate.start_date}
-              validationError="نمیتواند خالی باشد"
+              validationError="نمی‌تواند خالی باشد"
               onChange={(e) => {
                 setValues((prev) => ({
                   ...prev,
@@ -292,7 +292,7 @@ Notify.success("نمایشگاه با موفقت افزوده شد")
               type="date"
               title="تاریخ پایان"
               isValid={validate.end_date}
-              validationError="نمیتواند خالی باشد"
+              validationError="نمی‌تواند خالی باشد"
               onChange={(e) => {
                 setValues((prev) => ({
                   ...prev,
@@ -311,7 +311,7 @@ Notify.success("نمایشگاه با موفقت افزوده شد")
               type="date"
               title=" آخرین مهلت ثبت نام"
               isValid={validate.application_deadline}
-              validationError="نمیتواند خالی باشد"
+              validationError="نمی‌تواند خالی باشد"
               onChange={(e) => {
                 setValues((prev) => ({
                   ...prev,
@@ -341,7 +341,7 @@ Notify.success("نمایشگاه با موفقت افزوده شد")
                 type="number"
                 title=" قیمت تیکت"
                 isValid={ticketPrice !== ""}
-                validationError="نمیتواند خالی باشد"
+                validationError="نمی‌تواند خالی باشد"
                 onChange={(e) => {
                   setTicketPrice(e.target.value);
                 }}

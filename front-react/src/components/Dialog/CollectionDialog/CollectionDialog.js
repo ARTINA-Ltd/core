@@ -96,7 +96,7 @@ export default function CollectionDialog(tokenId) {
             type="date"
             title="تاریخ آغاز فروش "
             placeholder="مثلا"
-            validationError="نمیتواند خالی باشد"
+            validationError="نمی‌تواند خالی باشد"
             defaultValue={null}
             onChange={(e) => setStartDate(e.value)}
           />
@@ -113,7 +113,7 @@ export default function CollectionDialog(tokenId) {
             type="date"
             title="تاریخ پایان فروش "
             placeholder="مثلا"
-            validationError="نمیتواند خالی باشد"
+            validationError="نمی‌تواند خالی باشد"
             defaultValue={null}
             onChange={(e) => setEndDate(e.value)}
           />
@@ -130,7 +130,7 @@ export default function CollectionDialog(tokenId) {
           type="text"
           title="قیمت "
           placeholder="مثلا"
-          validationError="نمیتواند خالی باشد"
+          validationError="نمی‌تواند خالی باشد"
           defaultValue={null}
           onChange={(e) => setPrice(e.target.value)}
         />

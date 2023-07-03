@@ -99,7 +99,7 @@ const Login = () => {
           title="نام کاربری"
           placeholder="مثلا: alireza"
           isValid={values.username != ""}
-          validationError="نمیتواند خالی باشد"
+          validationError="نمی‌تواند خالی باشد"
           onChange={(e) =>
             setValues((prev) => ({
               ...prev,
@@ -114,7 +114,7 @@ const Login = () => {
           title="رمز عبور"
           
           isValid={values.password != ""}
-          validationError="نمیتواند خالی باشد"
+          validationError="نمی‌تواند خالی باشد"
           onChange={(e) =>
             setValues((prev) => ({
               ...prev,

@@ -49,7 +49,7 @@ const ForgetPassword = () => {
             title="شماره موبایل"
             placeholder="مثلا: 09121234567"
             isValid={values.phone_number != ""}
-            validationError="نمیتواند خالی باشد"
+            validationError="نمی‌تواند خالی باشد"
             onChange={(e) =>
               setValues((prev) => ({
                 ...prev,
@@ -74,7 +74,7 @@ const ForgetPassword = () => {
               title="کد"
               placeholder="مثلا: 12345"
               isValid={values.code != ""}
-              validationError="نمیتواند خالی باشد"
+              validationError="نمی‌تواند خالی باشد"
               onChange={(e) =>
                 setValues((prev) => ({
                   ...prev,
@@ -89,7 +89,7 @@ const ForgetPassword = () => {
               title="رمز عبور جدید"
               placeholder="مثلا: 12345"
               isValid={values.password != ""}
-              validationError="نمیتواند خالی باشد"
+              validationError="نمی‌تواند خالی باشد"
               onChange={(e) =>
                 setValues((prev) => ({
                   ...prev,

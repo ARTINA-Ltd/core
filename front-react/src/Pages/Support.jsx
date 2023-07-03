@@ -186,7 +186,7 @@ const Support = () => {
           type="text"
           title=""
           isValid={values.text != ""}
-          validationError="نمیتواند خالی باشد"
+          validationError="نمی‌تواند خالی باشد"
           onChange={(e) =>
             setValues((prev) => ({
               ...prev,

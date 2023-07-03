@@ -387,7 +387,7 @@ function Profile() {
                 title="نام"
                 placeholder="مثلا: علیرضا"
                 isValid={validate.first_name}
-                validationError="نمیتواند خالی باشد"
+                validationError="نمی‌تواند خالی باشد"
                 onChange={(e) => {
                   setValues((prev) => ({
                     ...prev,
@@ -406,7 +406,7 @@ function Profile() {
                 title="نام خانوادگی"
                 placeholder="مثلا: موسوی"
                 isValid={validate.last_name}
-                validationError="نمیتواند خالی باشد"
+                validationError="نمی‌تواند خالی باشد"
                 onChange={(e) => {
                   setValues((prev) => ({
                     ...prev,
@@ -450,7 +450,7 @@ function Profile() {
               type="date"
               title="تاریخ تولد"
               placeholder="مثلا: 1375/06/11"
-              validationError="نمیتواند خالی باشد"
+              validationError="نمی‌تواند خالی باشد"
               isValid={validate.birthdate}
               onChange={(e) => {
                 setValues((prev) => ({ ...prev, birthdate: e.value }));
@@ -465,7 +465,7 @@ function Profile() {
               title="آدرس"
               placeholder="مثلا: تهران ..."
               isValid={validate.address}
-              validationError="نمیتواند خالی باشد"
+              validationError="نمی‌تواند خالی باشد"
               onChange={(e) => {
                 setValues((prev) => ({
                   ...prev,
@@ -486,7 +486,7 @@ function Profile() {
               title="شماره ثابت"
               placeholder="02112345678"
               isValid={validate.cell_number}
-              validationError="نمیتواند خالی باشد"
+              validationError="نمی‌تواند خالی باشد"
               onChange={(e) => {
                 setValues((prev) => ({
                   ...prev,
@@ -513,7 +513,7 @@ function Profile() {
               title="شماره موبایل"
               placeholder="09123456789"
               isValid={validate.phone_number}
-              validationError="نمیتواند خالی باشد"
+              validationError="نمی‌تواند خالی باشد"
               onChange={(e) => {
                 setValues((prev) => ({
                   ...prev,
@@ -580,7 +580,7 @@ function Profile() {
                 title="ایمیل "
                 placeholder="09123456789"
                 isValid={ValidateEmail(values.email)}
-                validationError="نمیتواند خالی باشد"
+                validationError="نمی‌تواند خالی باشد"
                 onChange={(e) =>
                   setValues((prev) => ({
                     ...prev,

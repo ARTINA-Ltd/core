@@ -96,7 +96,7 @@ const Register = () => {
           title="نام کاربری"
           placeholder="مثلا: alireza"
           isValid={values.username != ""}
-          validationError="نمیتواند خالی باشد"
+          validationError="نمی‌تواند خالی باشد"
           onChange={(e) =>
             setValues((prev) => ({
               ...prev,
@@ -111,7 +111,7 @@ const Register = () => {
           title="ایمیل"
           placeholder="مثلا: example@gmail.com"
           isValid={values.email != ""}
-          validationError="نمیتواند خالی باشد"
+          validationError="نمی‌تواند خالی باشد"
           onChange={(e) =>
             setValues((prev) => ({
               ...prev,
@@ -126,7 +126,7 @@ const Register = () => {
           title="رمز عبور"
           placeholder=""
           isValid={values.password != ""}
-          validationError="نمیتواند خالی باشد"
+          validationError="نمی‌تواند خالی باشد"
           onChange={(e) =>
             setValues((prev) => ({
               ...prev,
@@ -141,7 +141,7 @@ const Register = () => {
           title="تکرار رمز عبور"
           placeholder=""
           isValid={values.confirmPassword != ""}
-          validationError="نمیتواند خالی باشد"
+          validationError="نمی‌تواند خالی باشد"
           onChange={(e) =>
             setValues((prev) => ({
               ...prev,
