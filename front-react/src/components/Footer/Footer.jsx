@@ -51,28 +51,27 @@ const Footer = () => {
 
   return (
     <div className="w-full bg-[#4e45d0] text-white py-4">
-      <div className="flex justify-between w-3/4 mx-auto">
-        <div className="grow flex">
-          <div className="w-full flex flex-col gap-2">
-            <div href="" className="font-b8">
+      <div className="flex justify-between w-3/4 mx-auto sm:flex-col">
+        <div className="grow flex sm:flex-col mb-5">
+          <div className="w-full flex flex-col gap-2 mb-4">
+            <div href="" className="font-b8" id="collection-header">
               آرتینا
             </div>
-           
-            <a href="/collections" className="mr-2 font-b3">
+            <a href="/collections" className="mr-2 font-b3 collection-item">
               کالکشن ها
             </a>
-            <a href="/commission" className="mr-2 font-b3">
+            <a href="/commission" className="mr-2 font-b3 collection-item">
               کارمزدها
             </a>
-            <a href="/support" className="mr-2 font-b3">
+            <a href="/support" className="mr-2 font-b3 collection-item">
               پشتیبانی
             </a>
-            <a href="/exhibition-list" className="mr-2 font-b3">
+            <a href="/exhibition-list" className="mr-2 font-b3 collection-item">
               همه نمایشگاه ها
             </a>
           </div>
 
-          <div className="w-full flex flex-col gap-2">
+          <div className="w-full flex flex-col gap-2 mb-4">
             <div href="" className="font-b8">
               امکانات
             </div>
@@ -86,10 +85,10 @@ const Footer = () => {
               تولید عکس با هوش مصنوعی
             </a>
             <a href="https://blog.artina.org/" className="mr-2 font-b3">
-              بلاگ 
+              بلاگ
             </a>
           </div>
-          <div className="w-full flex flex-col gap-2">
+          <div className="w-full flex flex-col gap-2 mb-4">
             <a href="" className="font-b8">
               راهنما
             </a>
@@ -104,9 +103,9 @@ const Footer = () => {
             </a>
           </div>
         </div>
-        <div className="w-auto flex shrink-0 gap-2 items-start">
+        <div className="w-auto flex shrink-0 gap-2 items-start sm:justify-center">
           <div className="flex items-center justify-center p-3 rounded-xl bg-indigo-500">
-            <div className="w-[110px] h-[110px]">
+            <div className="w-[110px] h-[110px] sm:w-[75px] sm:h-[75px]">
               <img
                 width="110"
                 height="110"
@@ -127,7 +126,7 @@ const Footer = () => {
           </div>
           <div className="flex items-center justify-center p-3 rounded-xl bg-indigo-500">
             <a
-              className="w-[110px] h-[110px]"
+              className="w-[110px] h-[110px] sm:w-[75px] sm:h-[75px]"
               referrerPolicy="origin"
               target="_blank"
               href="https://trustseal.enamad.ir/?id=339851&amp;Code=F4HSRl9q4dYEext5JuBT"
