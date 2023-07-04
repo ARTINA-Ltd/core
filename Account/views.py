@@ -182,11 +182,11 @@ class TicketViewSet(viewsets.ViewSet):
         user = request.user
         is_authenticated = user.is_authenticated
         email = request.data.get('email')
-        subject = request.data.get('name')
-        subject = request.data.get('last_name')
+        name = request.data.get('name')
+        last_name = request.data.get('last_name')
         subject = request.data.get('subject')
-        subject = request.data.get('phone_number')
-        subject = request.data.get('image_url')
+        phone_number = request.data.get('phone_number')
+        image_url = request.data.get('image_url')
         text = request.data.get('text')
 
         if not subject:
