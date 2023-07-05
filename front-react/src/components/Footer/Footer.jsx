@@ -81,7 +81,10 @@ const Footer = () => {
             <a href="" className="mr-2 font-b3">
               پیش بینی کننده قیمت ان اف تی
             </a>
-            <a href="https://ai.artina.org/generate_pic" className="mr-2 font-b3">
+            <a
+              href="https://ai.artina.org/generate_pic"
+              className="mr-2 font-b3"
+            >
               تولید عکس با هوش مصنوعی
             </a>
             <a href="https://blog.artina.org/" className="mr-2 font-b3">
@@ -100,6 +103,9 @@ const Footer = () => {
             </a>
             <a href="/help-create-exhibition" className="mr-2 font-b3">
               راهنمای ایجاد نمایشگاه
+            </a>
+            <a href="/privacy-policy" className="mr-2 font-b3">
+              قوانین و مقررات{" "}
             </a>
           </div>
         </div>

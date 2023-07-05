@@ -15,16 +15,12 @@ const SimpleInput = ({
   disabled = false,
   className,
   ltr = false,
+  options
 }) => {
   const [focus, setFocus] = useState(defaultValue === null ? false : true);
   const [value, setValue] = useState("");
   const [defaultVal, setDefaultVal] = useState();
 
-  const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
 
   const handleChange = (event) => {
     const inputValue = event.target.value;

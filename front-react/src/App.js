@@ -29,7 +29,7 @@ import ForgetPassword from "./Pages/ForgetPassword";
 import Home from "./Pages/Home";
 import ExhibitionList from "./Pages/ExhibitionList";
 import OpenExhibitions from "./Pages/OpenExhibitions";
-import ArtistApplicationForm from './Pages/ArtistApplicationForm';
+import ArtistApplicationForm from "./Pages/ArtistApplicationForm";
 import ExhibitionCollections from "./Pages/ExhibitionCollections";
 import RequestsList from "./Pages/RequestsList";
 import Exhibitor from "./Pages/Exhibitor";
@@ -40,14 +40,13 @@ import HelpMint from "./Pages/help-mint";
 import HelpCreateExhibition from "./Pages/help-create-exhibition";
 import HelpCreateWallet from "./Pages/help-create-wallet";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
-
+import AI from "./Pages/AI";
 const activeChainId = ChainId.Goerli;
 
 export const UserContext = createContext();
 export const UserChangeContext = createContext();
 
 export default () => {
-
   const [user, setUser] = useState();
 
   const bodyParameters = {
@@ -65,7 +64,9 @@ export default () => {
       method: "get",
       // url: "https://api.artina.org/api/account/user-info/",
       url: "https://api.artina.org/api/account/user-info/",
-      headers: { Authorization: `Bearer ${localStorage.getItem("authTokens")}` },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+      },
       mode: "cors",
     })
       .then((data) => {
@@ -80,7 +81,12 @@ export default () => {
       .get(
         // url: "http://78.38.35.249:8000/api/account/user-info/",
         "https://api.artina.org/api/account/user-info/",
-        { headers: { Authorization: `Bearer ${localStorage.getItem("authTokens")}` }, mode: "cors" }
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+          mode: "cors",
+        }
       )
       .then((data) => {
         setUser(data);
@@ -104,37 +110,82 @@ export default () => {
                 {/* {Token=='null' ? <></> ::} */}
                 <Route path="/" element={<Home />} />
                 <Route exact path="artist-page" element={<ArtistPage />} />
-                <Route exact path="artist-application-form/:id" element={<ArtistApplicationForm />} />
+                <Route
+                  exact
+                  path="artist-application-form/:id"
+                  element={<ArtistApplicationForm />}
+                />
                 <Route exact path="nft-details/:id" element={<NFTDetails />} />
                 <Route exact path="Commission" element={<Commission />} />
                 <Route exact path="login" element={<Login />} />
-                <Route exact path="forget-password" element={<ForgetPassword />} />
+                <Route
+                  exact
+                  path="forget-password"
+                  element={<ForgetPassword />}
+                />
                 <Route exact path="support" element={<Support />} />
                 <Route exact path="register" element={<Register />} />
-                
+
                 <Route exact path="contact" element={<Contact />} />
                 <Route exact path="about-us" element={<AboutUs />} />
-                <Route exact path="privacy-policy" element={<PrivacyPolicy />} />
-                
-                <Route exact path="help-mint" element={<HelpMint />} />
-                <Route exact path="help-create-exhibition" element={<HelpCreateExhibition />} />
-                <Route exact path="help-create-wallet" element={<HelpCreateWallet />} />
+                <Route
+                  exact
+                  path="privacy-policy"
+                  element={<PrivacyPolicy />}
+                />
 
-                <Route exact path="exhibition-list" element={<ExhibitionList />} />
-                <Route exact path="open-exhibitions" element={<OpenExhibitions />} />
+                <Route exact path="help-mint" element={<HelpMint />} />
+                <Route
+                  exact
+                  path="help-create-exhibition"
+                  element={<HelpCreateExhibition />}
+                />
+                <Route
+                  exact
+                  path="help-create-wallet"
+                  element={<HelpCreateWallet />}
+                />
+
+                <Route
+                  exact
+                  path="exhibition-list"
+                  element={<ExhibitionList />}
+                />
+                <Route
+                  exact
+                  path="open-exhibitions"
+                  element={<OpenExhibitions />}
+                />
 
                 {/* <Route exact path="request-lists" element={<RequestLists />} /> */}
                 <Route exact path="requests-list" element={<RequestsList />} />
                 <Route exact path="show-request" element={<ShowRequests />} />
-                <Route exact path="request-details" element={<RequestDetails />}/>
+                <Route
+                  exact
+                  path="request-details"
+                  element={<RequestDetails />}
+                />
                 <Route exact path="upload-page" element={<NFTUploadPage />} />
                 <Route exact path="UserDashboard" element={<UserDashboard />} />
                 <Route exact path="dashboard" element={<Dashboard />} />
                 <Route exact path="profile" element={<Profile />} />
                 <Route exact path="exhibitor" element={<Exhibitor />} />
-                <Route exact path="collections/:username" element={<Collections />} />
-                <Route exact path="user-collections" element={<UserCollections />} />
-                <Route exact path="exhibition-collections/:id" element={<ExhibitionCollections />} />
+                <Route
+                  exact
+                  path="collections/:username"
+                  element={<Collections />}
+                />
+                <Route
+                  exact
+                  path="user-collections"
+                  element={<UserCollections />}
+                />
+                <Route
+                  exact
+                  path="exhibition-collections/:id"
+                  element={<ExhibitionCollections />}
+                />
+                <Route exact path="ai" element={<AI />} />
               </Routes>
             </div>
           </UserChangeContext.Provider>

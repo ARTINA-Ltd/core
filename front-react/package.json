@@ -46,6 +46,7 @@
     "react-slideshow-image": "^4.0.5",
     "sass": "^1.56.1",
     "slideshow": "^1.0.4",
+    "swiper": "^10.0.3",
     "tailwind": "^4.0.0",
     "tw-elements": "^1.0.0-alpha12",
     "web-vitals": "^2.1.4",
