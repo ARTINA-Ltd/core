@@ -140,8 +140,8 @@ const UploadItem = () => {
 
   return (
     <div>
-      <div className="flex gap-5 items-start">
-        <SimpleCard className="bg-[#4e45d0] w-[45%] flex flex-col relative gap-5 items-center overflow-hidden">
+      <div className="flex gap-5 items-start lg:flex-col lg:items-center">
+        <SimpleCard className="bg-[#4e45d0] w-[45%] flex flex-col relative gap-5 items-center overflow-hidden lg:w-[55%] md:w-[65%] sm:w-[80%]">
           <div className="relative group w-full">
             <img
               className="w-full h-auto max-h-[800px] rounded-2xl"
@@ -189,9 +189,9 @@ const UploadItem = () => {
             />
           </div>
         </SimpleCard>
-        <SimpleCard className={"flex flex-col gap-12 bg-white w-full"}>
+        <SimpleCard className={"flex flex-col gap-12 bg-white w-full sm:gap-4"}>
           <div className="text-[24px]">ضرب اثر</div>
-          <div className="flex gap-4">
+          <div className="flex gap-4 sm:flex-col">
             <SimpleInput
               type="text"
               title="نام اثر"
@@ -217,7 +217,7 @@ const UploadItem = () => {
               defaultValue={null}
             />
           </div>
-          <div className="w-full flex gap-4">
+          <div className="w-full flex gap-4 sm:flex-col">
             <div className="w-full">
               <SimpleInput
                 options={options}
