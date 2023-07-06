@@ -29,7 +29,7 @@ const ExhibitionList = () => {
             <div onClick={() => navigate(`/exhibition-collections/${item.id}`)}>
               <SimpleCard
                 className={
-                  "bg-white flex gap-10 items-center group relative overflow-hidden cursor-pointer"
+                  "bg-white flex gap-10 items-center group relative overflow-hidden cursor-pointer sm:flex-col sm:w-full"
                 }
               >
                 <img
@@ -37,7 +37,7 @@ const ExhibitionList = () => {
                   className=" opacity-[0%] absolute top-1/2 -translate-y-1/2 pointer-events-none group-hover:opacity-[20%] group-hover:-translate-x-1/3 transition-all duration-500 ease-out"
                 />
                 <div className="flex flex-col w-1/2 z-10 justify-center items-center gap-3 absolute">
-                  <div className="flex w-full justify-center font-b9 text-[75px]">
+                  <div className="flex w-full justify-center font-b9 text-[60px] lg:text-[40px]">
                     {item.marketName}
                   </div>
                   <div className="text-2xl font-b5 flex gap-1 items-center">
@@ -47,17 +47,18 @@ const ExhibitionList = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-1 font-b5 text-2xl">
-                    <div>تاریخ پایان ثبت نام:</div>
+                  <div className="flex items-center gap-1 font-b5 text-2xl lg:flex-col">
                     <div>
+                      تاریخ پایان ثبت نام: &nbsp;
                       {Intl.DateTimeFormat("fa", {
                         year: "numeric",
                         month: "numeric",
                         day: "numeric",
                       }).format(new Date(item.application_deadline))}
+                      &nbsp;
                     </div>
-                    <div> &nbsp; &nbsp; &nbsp;ساعت:</div>
                     <div>
+                      &nbsp; ساعت: &nbsp;
                       {Intl.DateTimeFormat("fa", {
                         minute: "numeric",
                         hour: "numeric",
@@ -79,7 +80,7 @@ const ExhibitionList = () => {
                 <img
                   src={item.image}
                   alt=""
-                  className="w-full h-72 object-cover rounded-xl z-10 group-hover:ml-24 transition-all duration-200 ease-out"
+                  className="w-5/6 h-72 object-cover rounded-xl z-10 group-hover:ml-24 transition-all duration-200 ease-out lg:w-4/5"
                 />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
