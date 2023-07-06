@@ -155,7 +155,7 @@ Notify.success("نمایشگاه با موفقت افزوده شد")
   return (
     <div className="card flex justify-content-center">
       <div
-        className="h-[420px] w-full bg-[#0000aa05] hover:bg-[#0000aa08] rounded-2xl group flex items-center justify-center cursor-pointer  transition-all"
+        className="h-[420px] w-full bg-[#0000aa05] hover:bg-[#0000aa08] rounded-2xl group flex items-center justify-center cursor-pointer  transition-all md:h-[300px] sm:h-[250px]"
         onClick={() => setVisible(true)}
       >
         <div className="text-[#000022] opacity-20 group-hover:opacity-40 transition-all group-hover:scale-105 ease-out duration-150 flex flex-col items-center">

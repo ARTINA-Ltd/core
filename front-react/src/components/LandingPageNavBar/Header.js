@@ -465,7 +465,7 @@ const Header = ({ connectWallet = false }) => {
               {connectWallet === true ? (
                 <div>
                   <ConnectWallet
-                    btnTitle="کانکت والت"
+                    btnTitle="اتصال کیف پول"
                     colorMode="dark"
                     accentColor="#ffffff40"
                     className="m-0 p-0 scale-75 border-none text-white hover:bg-indigo-400 transition-all"
