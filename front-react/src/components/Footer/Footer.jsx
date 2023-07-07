@@ -51,8 +51,8 @@ const Footer = () => {
 
   return (
     <div className="w-full bg-[#4e45d0] text-white py-4">
-      <div className="flex justify-between w-3/4 mx-auto sm:flex-col">
-        <div className="grow flex sm:flex-col mb-5">
+      <div className="flex justify-between w-3/4 mx-auto lg:flex-col lg:w-4/5">
+        <div className="grow flex mb-5 lg: sm:flex-col">
           <div className="w-full flex flex-col gap-2 mb-4">
             <div href="" className="font-b8" id="collection-header">
               آرتینا
@@ -109,7 +109,7 @@ const Footer = () => {
             </a>
           </div>
         </div>
-        <div className="w-auto flex shrink-0 gap-2 items-start sm:justify-center">
+        <div className="w-auto flex shrink-0 gap-2 items-start lg:justify-center">
           <div className="flex items-center justify-center p-3 rounded-xl bg-indigo-500">
             <div className="w-[110px] h-[110px] sm:w-[75px] sm:h-[75px]">
               <img
