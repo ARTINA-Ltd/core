@@ -41,6 +41,7 @@ import HelpCreateExhibition from "./Pages/help-create-exhibition";
 import HelpCreateWallet from "./Pages/help-create-wallet";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import AI from "./Pages/AI";
+import Metaverse from "./Pages/Metaverse";
 const activeChainId = ChainId.Goerli;
 
 export const UserContext = createContext();
@@ -186,6 +187,7 @@ export default () => {
                   element={<ExhibitionCollections />}
                 />
                 <Route exact path="ai" element={<AI />} />
+                <Route exact path="metaverse" element={<Metaverse />} />
               </Routes>
             </div>
           </UserChangeContext.Provider>

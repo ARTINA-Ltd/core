@@ -6,6 +6,8 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
 
+import "./Home.css"
+
 const Features = ({ className = "" }) => {
   // const [isMobile, setIsMobile] = useState(false);
   // const [isTablet, setIsTablet] = useState(false);
@@ -29,8 +31,8 @@ const Features = ({ className = "" }) => {
   //   },
   // });
   return (
-    <div className={`${className}  w-full flex justify-center lg:my-10`}>
-      <div className={`w-4/5 flex flex-col items-center`}>
+    <div className={`${className}  w-full flex justify-center lg:my-10 `}>
+      <div className={`w-4/5 flex flex-col items-center text-black`}>
         <div className="font-b9 text-[40px] mb-4 sm:text-[30px]">
           امکانات آرتینا
         </div>
@@ -44,7 +46,7 @@ const Features = ({ className = "" }) => {
 
           }}
           modules={[Pagination]}
-          className="mySwiper"
+          className="aboutus"
         >
           <SwiperSlide>
             <div className={"w-full cursor-pointer"}>

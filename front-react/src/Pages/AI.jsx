@@ -2,6 +2,7 @@ import axios from "axios";
 import { Block } from "notiflix";
 import React, { useState } from "react";
 import BorderButton from "../components/Buttons/BorderButton";
+import AiImagesCard from "../components/Cards/AiImagesCard";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import SimpleInput from "../components/Inputs/SimpleInput";
 import TestLayout from "../Layouts/TestLayout";
@@ -12,12 +13,12 @@ const AI = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsClicekd(true);
+    setIsClicekd(e=>!e);
 
-    Block.dots("#ai-image");
-    Block.circle("#images");
-    Block.remove("#ai-image", 2000);
-    Block.remove("#images", 2000);
+    // Block.dots("#ai-image");
+    // Block.circle("#images");
+    // Block.remove("#ai-image", 2000);
+    // Block.remove("#images", 2000);
 
     // await axios
     //   .post(
@@ -46,10 +47,18 @@ const AI = () => {
   };
 
   return (
-    <TestLayout className="flex flex-col justify-center form-input gap-5 items-center">
-      <div className={`${!isClicekd ? "" : "hidden"} transition-all`}></div>
-      <div id="ai-image" className="rounded-2xl w-2/3 transition-all">
-        <SimpleCard className={"bg-[#ffffff] w-full sm:m-4 transition-all"}>
+    <TestLayout
+      className={`flex flex-col items-center transition-all ${
+        isClicekd ? "mt-20" : "mt-60"
+      } gap-5`}
+      rev={true}
+    >
+      <div id="ai-image" className="rounded-2xl w-1/3 md:w-[97%] xl:w-2/3 ">
+        <SimpleCard
+          className={
+            "bg-[#ffffff] w-full sm:m-4 transition-all bg-white/20 backdrop-blur-lg "
+          }
+        >
           <div className="text-[24px] text-center transition-all">
             تولید عکس با هوش مصنوعی
           </div>
@@ -69,45 +78,15 @@ const AI = () => {
           </div>
         </SimpleCard>
       </div>
-      <div className={`${!isClicekd ? "" : "hidden"}  transition-all`}></div>
+
+
       <div
         id="images"
-        className={`grid grid-cols-2 col-span-2 gap-5 rounded-2xl w-2/3 p-4 bg-indigo-500 ${
-          !isClicekd ? "hidden" : ""
+        className={`transition-all ${
+          !isClicekd ? "opacity-0" : ""
         }`}
       >
-        <SimpleCard className="bg-[#ffffffc7]">
-          <img src="/2.jpg" alt="" className="object-cover rounded-2xl" />
-          <div className="flex justify-center w-full mt-3 gap-3">
-            <BorderButton>دانلود عکس</BorderButton>
-            <BorderButton>اشتراک گذاری</BorderButton>
-          </div>
-        </SimpleCard>
-
-        <SimpleCard className="bg-white">
-          {" "}
-          <img src="/2.jpg" alt="" className="object-cover rounded-2xl" />
-          <div className="flex justify-center w-full mt-3 gap-3">
-            <BorderButton>دانلود عکس</BorderButton>
-            <BorderButton>اشتراک گذاری</BorderButton>
-          </div>
-        </SimpleCard>
-        <SimpleCard className="bg-white">
-          {" "}
-          <img src="/2.jpg" alt="" className="object-cover rounded-2xl" />
-          <div className="flex justify-center w-full mt-3 gap-3">
-            <BorderButton>دانلود عکس</BorderButton>
-            <BorderButton>اشتراک گذاری</BorderButton>
-          </div>
-        </SimpleCard>
-        <SimpleCard className="bg-white">
-          {" "}
-          <img src="/2.jpg" alt="" className="object-cover rounded-2xl" />
-          <div className="flex justify-center w-full mt-3 gap-3">
-            <BorderButton>دانلود عکس</BorderButton>
-            <BorderButton>اشتراک گذاری</BorderButton>
-          </div>
-        </SimpleCard>
+        <AiImagesCard/>
       </div>
     </TestLayout>
   );

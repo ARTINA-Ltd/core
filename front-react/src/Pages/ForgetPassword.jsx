@@ -61,7 +61,9 @@ const ForgetPassword = () => {
           />
 
           <div className={`justify-end mt-3 ${!isClicked ? 'flex' : 'hidden'}`}>
-            <BorderButton onClick={handleSend}>ارسال کد</BorderButton>
+            <BorderButton onClick={handleSend}
+              size="lg"
+              >ارسال کد</BorderButton>
           </div>
         </div>
 

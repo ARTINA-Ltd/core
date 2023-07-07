@@ -12,7 +12,7 @@ import UserMenuCard from "../Cards/UserDashboardCards/UserMenuCard";
 import { useRef } from "react";
 import { Hidden } from "@mui/material";
 
-const Header = ({ connectWallet = false }) => {
+const Header = ({ connectWallet = false, rev = false }) => {
   const user = useContext(UserContext);
   const userChange = useContext(UserChangeContext);
 
@@ -428,14 +428,14 @@ const Header = ({ connectWallet = false }) => {
   return (
     <>
       <header>
-        <div className="flex justify-center h-[80px] bg-[#f9f9f9] font-b3">
+        <div className={`flex justify-center h-[80px]  ${rev? '':'from-[#f9f9f9] bg-gradient-to-b'}  font-b3`}>
           <div className="flex items-center justify-between w-[90%] justify-self-center">
             <div className="flex items-center gap-8 text-sm lg:hidden">
               {user
                 ? ActiveItems.map((item, index) => (
                     <div
                       key={index}
-                      className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200"
+                      className="cursor-pointer flex items-center gap-1 hover:text-[#a5a0ee] transition-all duration-200"
                       onClick={() => {
                         navigate(item.link);
                       }}
@@ -456,12 +456,10 @@ const Header = ({ connectWallet = false }) => {
                       {item.title}
                     </div>
                   ))}
-              <a
-                href="https://metaverse.artina.org"
-                className="bg-[#eee] text-[#4e45d0] px-3 py-[4px] rounded-full hover:scale-105 transition-all duration-200 border-[#4e45d0] border-[1px]"
-              >
-                متاورس
-              </a>
+              <div 
+                className="bg-[#eee] cursor-pointer text-[#4e45d0] px-3 py-[4px] rounded-full hover:scale-105 transition-all duration-200 border-[#4e45d0] border-[1px]"
+onClick={()=>navigate('/metaverse')}
+>متاورس</div>
               {connectWallet === true ? (
                 <div>
                   <ConnectWallet

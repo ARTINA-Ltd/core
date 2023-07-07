@@ -103,12 +103,12 @@ td {
 
 
 
-.swiper {
+.aboutus.swiper {
   width: 100%;
   height: 100%;
 }
 
-.swiper-slide {
+.aboutus.swiper-slide {
   /* Center slide text vertically */
   margin-bottom: 30px;
   display: flex;
@@ -116,7 +116,8 @@ td {
   align-items: center;
 }
 
-.swiper-slide img {
+.aboutus.swiper-slide img {
   display: block;
   object-fit: cover;
 }
+
