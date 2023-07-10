@@ -3,13 +3,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
 import "swiper/css/effect-cards";
-import "./AiImagesCard.css";
 import "swiper/css/navigation";
 
 import { EffectCards } from "swiper/modules";
 import { Navigation } from "swiper/modules";
 
 const AiImagesCard = () => {
+  require("./AiImagesCard.css");
+
   return (
     <Swiper
       effect={"cards"}

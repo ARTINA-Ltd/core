@@ -103,21 +103,3 @@ td {
 
 
 
-.aboutus.swiper {
-  width: 100%;
-  height: 100%;
-}
-
-.aboutus.swiper-slide {
-  /* Center slide text vertically */
-  margin-bottom: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.aboutus.swiper-slide img {
-  display: block;
-  object-fit: cover;
-}
-

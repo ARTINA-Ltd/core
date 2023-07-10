@@ -6,9 +6,10 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
 
-import "./Home.css"
 
 const Features = ({ className = "" }) => {
+  require("./Home.css");
+
   // const [isMobile, setIsMobile] = useState(false);
   // const [isTablet, setIsTablet] = useState(false);
 
@@ -38,12 +39,27 @@ const Features = ({ className = "" }) => {
         </div>
 
         <Swiper
-          slidesPerView={4}
-          spaceBetween={60}
+          slidesPerView={1}
+          spaceBetween={10}
           pagination={{
             dynamicBullets: true,
             clickable: true,
 
+          }}
+          breakpoints={{
+           
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 40,
+            },
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 50,
+            },
+            1280: {
+              slidesPerView: 4,
+              spaceBetween: 50,
+            },
           }}
           modules={[Pagination]}
           className="aboutus"

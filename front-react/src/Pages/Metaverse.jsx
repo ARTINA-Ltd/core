@@ -7,7 +7,12 @@ const Metaverse = () => {
       className={`flex flex-col items-center transition-all`}
       wfull={true}
     >
-      <iframe src="https://metaverse.artina.org/" className="w-full h-[100vh]" frameBorder={0}></iframe>
+      <iframe
+        src={`https://metaverse.artina.org/${localStorage.getItem(
+          "authTokens"
+        )}`}
+        className="w-full h-[100vh]"
+      ></iframe>
     </TestLayout>
   );
 };

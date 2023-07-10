@@ -428,7 +428,11 @@ const Header = ({ connectWallet = false, rev = false }) => {
   return (
     <>
       <header>
-        <div className={`flex justify-center h-[80px]  ${rev? '':'from-[#f9f9f9] bg-gradient-to-b'}  font-b3`}>
+        <div
+          className={`flex justify-center h-[80px]  ${
+            rev ? "" : "from-[#f9f9f9] bg-gradient-to-b"
+          }  font-b3`}
+        >
           <div className="flex items-center justify-between w-[90%] justify-self-center">
             <div className="flex items-center gap-8 text-sm lg:hidden">
               {user
@@ -456,10 +460,12 @@ const Header = ({ connectWallet = false, rev = false }) => {
                       {item.title}
                     </div>
                   ))}
-              <div 
+              <div
                 className="bg-[#eee] cursor-pointer text-[#4e45d0] px-3 py-[4px] rounded-full hover:scale-105 transition-all duration-200 border-[#4e45d0] border-[1px]"
-onClick={()=>navigate('/metaverse')}
->متاورس</div>
+                onClick={() => navigate("/metaverse")}
+              >
+                متاورس
+              </div>
               {connectWallet === true ? (
                 <div>
                   <ConnectWallet
@@ -597,33 +603,52 @@ onClick={()=>navigate('/metaverse')}
           </svg>
         </div>
 
-        <div className="w-full flex flex-col gap-2 justify-center items-center">
-          {user
-            ? ActiveItems.map((item, index) => (
-                <div
-                  key={index}
-                  className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200 px-5 py-2 bg-[#f0f0f0] rounded-lg w-[90%]"
-                  onClick={() => {
-                    navigate(item.link);
-                  }}
-                >
-                  {item.icon}
-                  {item.title}
-                </div>
-              ))
-            : NotActiveItems.map((item, index) => (
-                <div
-                  className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200 px-5 py-2 bg-[#f0f0f0] rounded-lg w-[90%]"
-                  onClick={() => {
-                    navigate(item.link);
-                  }}
-                  key={index}
-                >
-                  {item.icon}
-                  {item.title}
-                </div>
-              ))}
-        </div>
+          <div className="w-full flex flex-col gap-2 justify-center items-center">
+            {user
+              ? ActiveItems.map((item, index) => (
+                  <div
+                    key={index}
+                    className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200 px-5 py-2 bg-[#f0f0f0] rounded-lg w-[90%]"
+                    onClick={() => {
+                      navigate(item.link);
+                    }}
+                  >
+                    {item.icon}
+                    {item.title}
+                  </div>
+                ))
+              : NotActiveItems.map((item, index) => (
+                  <div
+                    className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200 px-5 py-2 bg-[#f0f0f0] rounded-lg w-[90%]"
+                    onClick={() => {
+                      navigate(item.link);
+                    }}
+                    key={index}
+                  >
+                    {item.icon}
+                    {item.title}
+                  </div>
+                ))}
+
+            <div
+              className="cursor-pointer flex items-center gap-1 text-white transition-all duration-200 px-5 py-2 bg-[#4e45d0] rounded-lg w-[90%]"
+              onClick={() => navigate("/metaverse")}
+            >
+              متاورس
+            </div>
+          </div>
+          {connectWallet === true ? (
+            <div className="w-full fixed bottom-10">
+              <ConnectWallet
+                btnTitle="اتصال کیف پول"
+                colorMode="dark"
+                accentColor="#4e45d0"
+                className="m-0 p-0 scale-75 border-none text-white hover:bg-indigo-400 transition-all w-full"
+              />
+            </div>
+          ) : (
+            ""
+          )}
       </div>
     </>
   );
