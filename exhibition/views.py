@@ -341,4 +341,37 @@ class TicketViewSet(viewsets.ViewSet):
 
 
 
-     
+
+
+
+from django.utils import timezone
+from rest_framework import viewsets, permissions, status
+from rest_framework.response import Response
+
+from .models import Exhibition, Ticket
+from .serializers import ExhibitionSerializer
+
+
+class ExTicketViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = ExhibitionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        now = timezone.now()
+        queryset = Exhibition.objects.filter(start_date__lte=now, end_date__gte=now)
+        ticket_exhibitions = Ticket.objects.filter(user=user).values_list('exhibition_id', flat=True)
+        for exhibition in queryset:
+            exhibition.has_ticket = exhibition.tickets.exists()
+            exhibition.user_has_ticket = exhibition.id in ticket_exhibitions
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        data = serializer.data
+        user = self.request.user
+        ticket_exhibitions = Ticket.objects.filter(user=user).values_list('exhibition_id', flat=True)
+        for exhibition_data in data:
+            exhibition_data['user_has_ticket'] = exhibition_data.pop('has_ticket') and exhibition_data['id'] in ticket_exhibitions
+        return Response(data)

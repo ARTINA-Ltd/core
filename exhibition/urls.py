@@ -12,13 +12,14 @@ router.register(r'ExhibitorOpenExhibitions/(?P<exhibitor_id>\d+)', views.Exhibit
 router.register(r'artist-user-past-exhibitions', views.ArtistClosedExhibitionsViewSet, basename='artist-user-past-exhibitions')
 router.register(r'artist-user-online-exhibitions', views.ArtistOpenExhibitionsViewSet, basename='artist-user-online-exhibitions')
 router.register(r'open-for-artist-registration-exhibitions', views.OpenForArtistRegistrationExhibitionsViewSet, basename='open-for-artist-registration-exhibitions')
-router.register(r'OpenExhibitionList', views.OpenExhibitionListView, basename='OpenExhibitionList'),
 router.register(r'ExhibitionInfoView', views.ExhibitionInfoView, basename='ExhibitionInfoView')
 # router.register(r'ExhibitorApplicationsAcceptance', views.ExhibitorApplicationsViewSet.as_view(), basename='ExhibitorApplicationsAcceptance')
 router.register(r'user-exhibitions', views.UserExhibitionsViewSet,basename="user-exhibitions")
 router.register(r'exhibition/(?P<exhibition_id>\d+)', views.NFTByExhibitionViewSet, basename='exhibitionnfts')
 router.register(r'categories', views.CategoryViewSet,basename='categories')
 router.register(r'Ticket', views.TicketViewSet,basename='Ticket')
+router.register(r'ExTicketViewSet', views.ExTicketViewSet,basename='ExTicketViewSet')
+
 
 
 
