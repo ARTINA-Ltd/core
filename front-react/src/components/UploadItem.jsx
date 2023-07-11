@@ -29,14 +29,37 @@ const UploadItem = () => {
   const [isUploaded, setIsUploaded] = useState(false);
 
   const [tokenId, setTokenId] = useState();
+  const [hasPhysical, setHasPhysical] = useState();
+  const [categories, setCtegories] = useState();
+  const [options, setOptions] = useState([{ value: "1", label: "1" }]);
 
-  const hanndleNumberChange = (e) => {
-    const re = /^[0-9\b]+$/;
-    if (e.target.value === "" || re.test(e.target.value)) {
-      setOploadObj({ ...upladObj, last_price: e.target.value });
+  useEffect(() => {
+    if (categories != undefined) {
+      console.log("1")
+      categories.forEach((element) => {
+        setOptions((e) => [...e, { value: element.id, name: element.name }]);
+      console.log(element);
+
+      });
+      console.log(options);
     }
-  };
+  }, [categories]);
 
+  useEffect(() => {
+    axios
+      .get(`https://api.artina.org/api/exhibition/categories/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+      })
+      .then((res) => {
+        console.log("_____________________");
+        console.log("categories");
+        console.log(res.data);
+        console.log("_____________________");
+        setCtegories(res.data);
+      });
+  }, []);
   const address = useAddress();
   const [upladObj, setOploadObj] = useState({
     image: "",
@@ -44,12 +67,11 @@ const UploadItem = () => {
     description: "",
     external_link: "",
     creator: "",
-    last_price: 0,
+    last_price: "",
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (address) {
       setIsLoading(true);
       Notify.info("در حال ضرب اثر. ممکن است کمی طول بکشد...");
@@ -65,6 +87,7 @@ const UploadItem = () => {
             description_nft: upladObj.description,
             external_link: upladObj.external_link,
             author_address: address,
+            is_physical: hasPhysical,
           },
           {
             headers: {
@@ -78,8 +101,11 @@ const UploadItem = () => {
           Notify.success("درخواست شما با موفقیت ثبت شد");
           setIsLoading(false);
           setIsUploaded(true);
+          console.log(res);
         })
         .catch((e) => {
+          console.log(e);
+
           if (e.response.data.error == "your money is not enough") {
             Notify.failure(
               "موجودی حساب شما کافی نیست لطفا ابتدا کیف پول خود را شارژ کنید"
@@ -114,8 +140,8 @@ const UploadItem = () => {
 
   return (
     <div>
-      <div className="flex gap-5 items-start">
-        <SimpleCard className="bg-[#4e45d0] w-[45%] flex flex-col relative gap-5 items-center overflow-hidden">
+      <div className="flex gap-5 items-start lg:flex-col lg:items-center">
+        <SimpleCard className="bg-[#4e45d0] w-[45%] flex flex-col relative gap-5 items-center overflow-hidden lg:w-[55%] md:w-[65%] sm:w-[80%]">
           <div className="relative group w-full">
             <img
               className="w-full h-auto max-h-[800px] rounded-2xl"
@@ -163,9 +189,9 @@ const UploadItem = () => {
             />
           </div>
         </SimpleCard>
-        <SimpleCard className={"flex flex-col gap-12 bg-white w-full"}>
+        <SimpleCard className={"flex flex-col gap-12 bg-white w-full sm:gap-4"}>
           <div className="text-[24px]">ضرب اثر</div>
-          <div className="flex gap-12">
+          <div className="flex gap-4 sm:flex-col">
             <SimpleInput
               type="text"
               title="نام اثر"
@@ -191,6 +217,52 @@ const UploadItem = () => {
               defaultValue={null}
             />
           </div>
+          <div className="w-full flex gap-4 sm:flex-col">
+            <div className="w-full">
+              <SimpleInput
+                options={options}
+                type="dropdown"
+                defaultValue={null}
+              />
+            </div>
+            <div className="w-full">
+              <SimpleInput
+                type="number"
+                title="قیمت پایه(اتریوم)"
+                placeholder="مثلا: 129"
+                onChange={(e) =>
+                  setOploadObj(
+                    // isValid={formValues.first_name != ""}
+                    { ...upladObj, last_price: e.target.value }
+                  )
+                }
+                defaultValue={null}
+              />
+            </div>
+          </div>
+          <div className="w-full flex gap-3 items-center">
+            <div className="">اثر نسخه فیزیکی دارد؟</div>
+            <div
+              className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${
+                hasPhysical
+                  ? "bg-green-100 text-green-400"
+                  : "bg-gray-100 text-gray-400"
+              } transition-all`}
+              onClick={() => setHasPhysical(true)}
+            >
+              بله
+            </div>
+            <div
+              className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${
+                !hasPhysical
+                  ? "bg-red-100 text-red-400"
+                  : "bg-gray-100 text-gray-400"
+              } transition-all`}
+              onClick={() => setHasPhysical(false)}
+            >
+              خیر
+            </div>
+          </div>
           <div className="w-full">
             <SimpleInput
               type="text"
@@ -205,6 +277,7 @@ const UploadItem = () => {
               defaultValue={null}
             />
           </div>
+
           <div className="w-full">
             <SimpleInput
               ltr={true}
@@ -220,17 +293,7 @@ const UploadItem = () => {
               defaultValue={null}
             />
           </div>
-          <div className="w-full">
-            <SimpleInput
-              type="text"
-              title="قیمت پایه(اتریوم)"
-              placeholder="مثلا: 129"
-              onChange={
-                (e) => hanndleNumberChange(e) // isValid={formValues.first_name != ""}
-              }
-              defaultValue={null}
-            />
-          </div>
+
           <div className="flex justify-end">
             {!isLoading ? (
               <BorderButton className="" onClick={handleSubmit}>

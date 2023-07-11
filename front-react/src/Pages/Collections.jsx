@@ -38,7 +38,7 @@ const Collections = () => {
           </div>
         </div>
       )}
-      <div className="grid grid-cols-4 gap-5 w-full items-center ">
+      <div className="grid grid-cols-4 gap-5 w-full items-center lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
         {getData
           ? getData.map((item, index) => (
               <div className="col-span-1" key={index}>

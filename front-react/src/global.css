@@ -46,33 +46,60 @@
 }
 
 .notiflix-notify {
-    font-family: "KalamehSemiBold", system-ui, sans-serif !important;
-  }
+  font-family: "KalamehSemiBold", system-ui, sans-serif !important;
+}
 
-  .d-grid{
-    display: grid;
-  }
+.d-grid {
+  display: grid;
+}
 
-  ::-moz-selection { 
-    color: white;
-    background: #4e45d0;
-    border-radius: 40px;
+::-moz-selection {
+  color: white;
+  background: #4e45d0;
+  border-radius: 40px;
+}
+::selection {
+  color: white;
 
-  }
-  ::selection {
-    color: white;
+  background: #4e45d0;
+}
 
-    background: #4e45d0;
-  }
+.css-15c7cx9 {
+  z-index: 99989;
+}
+
+.dashboard-table th,
+td {
+  padding: 10px;
+  text-align: center;
+  align-items: center;
+  justify-items: center;
+}
+
+.arrow {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  fill: #fff;
+  cursor: pointer;
+  z-index: 99;
+}
+
+.arrow--left {
+  left: 25px;
+}
+
+.arrow--right {
+  left: auto;
+  right: 25px;
+}
+
+.arrow--disabled {
+  fill: rgba(255, 255, 255, 0.5);
+}
 
 
-  .css-15c7cx9{
-    z-index: 99989;
-  }
 
-  .dashboard-table th,td{
-    padding: 10px;
-    text-align: center;
-align-items: center;
-justify-items: center;
-  }
