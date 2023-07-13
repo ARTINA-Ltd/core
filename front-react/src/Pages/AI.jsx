@@ -66,7 +66,7 @@ const AI = () => {
             className={"mt-6"}
             type="text"
             title="توضیحات عکس"
-            placeholder="مثلا: alireza"
+            placeholder="مثلا: گل"
             isValid={descriotion != ""}
             validationError="نمی‌تواند خالی باشد"
             onChange={(e) => setDescription(e.target.value)}

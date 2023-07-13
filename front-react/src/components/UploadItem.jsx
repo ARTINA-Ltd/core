@@ -3,7 +3,7 @@ import React, {
   useCallback,
   useEffect,
   useContext,
-  useRef,
+  useRef
 } from "react";
 import Dropzone from "./Dropzone";
 import "./UploadItem.css";
@@ -21,9 +21,9 @@ import BorderButton from "./Buttons/BorderButton";
 const UploadItem = () => {
   const user = useContext(UserContext);
   const inputFile = useRef(null);
-
   const [image, setImage] = useState();
   const [imageUrl, setImageUrl] = useState();
+  const [selectedCategory, setSelectedCategory] = useState();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
@@ -31,28 +31,29 @@ const UploadItem = () => {
   const [tokenId, setTokenId] = useState();
   const [hasPhysical, setHasPhysical] = useState();
   const [categories, setCtegories] = useState();
-  const [options, setOptions] = useState([{ value: "1", label: "1" }]);
+  const [options, setOptions] = useState([]);
 
-  useEffect(() => {
-    if (categories != undefined) {
-      console.log("1")
-      categories.forEach((element) => {
-        setOptions((e) => [...e, { value: element.id, name: element.name }]);
-      console.log(element);
+  useEffect(
+    () => {
+      if (categories != undefined) {
+        setOptions([]);
 
-      });
-      console.log(options);
-    }
-  }, [categories]);
+        categories.forEach(element => {
+          setOptions(e => [...e, { value: element.id, label: element.name }]);
+        });
+      }
+    },
+    [categories]
+  );
 
   useEffect(() => {
     axios
       .get(`https://api.artina.org/api/exhibition/categories/`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-        },
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`
+        }
       })
-      .then((res) => {
+      .then(res => {
         console.log("_____________________");
         console.log("categories");
         console.log(res.data);
@@ -67,10 +68,13 @@ const UploadItem = () => {
     description: "",
     external_link: "",
     creator: "",
-    last_price: "",
+    last_price: ""
   });
 
-  const handleSubmit = (e) => {
+  const handleCategoryChange = e => {
+    setSelectedCategory(e.value);
+  };
+  const handleSubmit = e => {
     e.preventDefault();
     if (address) {
       setIsLoading(true);
@@ -88,22 +92,23 @@ const UploadItem = () => {
             external_link: upladObj.external_link,
             author_address: address,
             is_physical: hasPhysical,
+            category: selectedCategory
           },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+              Authorization: `Bearer ${localStorage.getItem("authTokens")}`
             },
-            mode: "cors",
+            mode: "cors"
           }
         )
-        .then((res) => {
+        .then(res => {
           setTokenId(res.data);
           Notify.success("درخواست شما با موفقیت ثبت شد");
           setIsLoading(false);
           setIsUploaded(true);
           console.log(res);
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
 
           if (e.response.data.error == "your money is not enough") {
@@ -123,20 +128,23 @@ const UploadItem = () => {
     navigator.clipboard.writeText("0x2a18fecb3579238cda960b5977f46e500fb6e735");
     Notify.success("کپی شد!");
   };
-  useEffect(() => {
-    if (image) {
-      Notify.info("در حال آپلود عکس");
-      const formData = new FormData();
-      formData.append("image", image, image.name);
-      axios
-        .post("https://api.artina.org/api/transaction/images/", formData)
-        .then((res) => {
-          Notify.success("با موفقیت آپلود شد");
-          setImageUrl(res.data.image);
-        })
-        .catch(() => Notify.failure("خطا در آپلود"));
-    }
-  }, [image]);
+  useEffect(
+    () => {
+      if (image) {
+        Notify.info("در حال آپلود عکس");
+        const formData = new FormData();
+        formData.append("image", image, image.name);
+        axios
+          .post("https://api.artina.org/api/transaction/images/", formData)
+          .then(res => {
+            Notify.success("با موفقیت آپلود شد");
+            setImageUrl(res.data.image);
+          })
+          .catch(() => Notify.failure("خطا در آپلود"));
+      }
+    },
+    [image]
+  );
 
   return (
     <div>
@@ -182,7 +190,7 @@ const UploadItem = () => {
               hidden
               accept="image/*"
               type="file"
-              onChange={(e) => {
+              onChange={e => {
                 setImage(() => e.target.files[0]);
               }}
               ref={inputFile}
@@ -196,24 +204,22 @@ const UploadItem = () => {
               type="text"
               title="نام اثر"
               placeholder="مثلا: تابلو نقاشی"
-              onChange={(e) =>
+              onChange={e =>
                 setOploadObj(
                   // isValid={formValues.first_name != ""}
                   { ...upladObj, item_name: e.target.value }
-                )
-              }
+                )}
               defaultValue={null}
             />
             <SimpleInput
               type="text"
               title="نام هنرمند"
               placeholder="مثلا: علیرضا موسوی"
-              onChange={(e) =>
+              onChange={e =>
                 setOploadObj(
                   // isValid={formValues.first_name != ""}
                   { ...upladObj, creator: e.target.value }
-                )
-              }
+                )}
               defaultValue={null}
             />
           </div>
@@ -222,7 +228,7 @@ const UploadItem = () => {
               <SimpleInput
                 options={options}
                 type="dropdown"
-                defaultValue={null}
+                onChange={handleCategoryChange}
               />
             </div>
             <div className="w-full">
@@ -230,12 +236,11 @@ const UploadItem = () => {
                 type="number"
                 title="قیمت پایه(اتریوم)"
                 placeholder="مثلا: 129"
-                onChange={(e) =>
+                onChange={e =>
                   setOploadObj(
                     // isValid={formValues.first_name != ""}
                     { ...upladObj, last_price: e.target.value }
-                  )
-                }
+                  )}
                 defaultValue={null}
               />
             </div>
@@ -243,21 +248,17 @@ const UploadItem = () => {
           <div className="w-full flex gap-3 items-center">
             <div className="">اثر نسخه فیزیکی دارد؟</div>
             <div
-              className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${
-                hasPhysical
-                  ? "bg-green-100 text-green-400"
-                  : "bg-gray-100 text-gray-400"
-              } transition-all`}
+              className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${hasPhysical
+                ? "bg-green-100 text-green-400"
+                : "bg-gray-100 text-gray-400"} transition-all`}
               onClick={() => setHasPhysical(true)}
             >
               بله
             </div>
             <div
-              className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${
-                !hasPhysical
-                  ? "bg-red-100 text-red-400"
-                  : "bg-gray-100 text-gray-400"
-              } transition-all`}
+              className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${!hasPhysical
+                ? "bg-red-100 text-red-400"
+                : "bg-gray-100 text-gray-400"} transition-all`}
               onClick={() => setHasPhysical(false)}
             >
               خیر
@@ -268,12 +269,11 @@ const UploadItem = () => {
               type="text"
               title="توضیحات"
               placeholder=""
-              onChange={(e) =>
+              onChange={e =>
                 setOploadObj(
                   // isValid={formValues.first_name != ""}
                   { ...upladObj, description: e.target.value }
-                )
-              }
+                )}
               defaultValue={null}
             />
           </div>
@@ -284,83 +284,78 @@ const UploadItem = () => {
               type="text"
               title="لینک خارجی"
               placeholder="مثلا:https://www.artina.org"
-              onChange={(e) =>
+              onChange={e =>
                 setOploadObj(
                   // isValid={formValues.first_name != ""}
                   { ...upladObj, external_link: e.target.value }
-                )
-              }
+                )}
               defaultValue={null}
             />
           </div>
 
           <div className="flex justify-end">
-            {!isLoading ? (
-              <BorderButton className="" onClick={handleSubmit}>
-                ضرب اثر
-              </BorderButton>
-            ) : (
-              <BorderButton className=" text-[14px] bg-[#302c66] py-5 px-[6rem] rounded-lg cursor-not-allowed transition-all flex items-center gap-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-4 h-4 animate-bounce"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
-                  />
-                </svg>
-                <div className="whitespace-nowrap"> در حال ضرب...</div>
-              </BorderButton>
-            )}
+            {!isLoading
+              ? <BorderButton className="" size="lg" onClick={handleSubmit}>
+                  ضرب اثر
+                </BorderButton>
+              : <BorderButton className=" text-[14px] bg-[#302c66] py-5 px-[6rem] rounded-lg cursor-not-allowed transition-all flex items-center gap-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-4 h-4 animate-bounce"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
+                    />
+                  </svg>
+                  <div className="whitespace-nowrap"> در حال ضرب...</div>
+                </BorderButton>}
           </div>
         </SimpleCard>
       </div>
-      {isUploaded ? (
-        <SimpleCard className={"bg-green-50 mt-12 flex gap-12"}>
-          <div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.1"
-              stroke="currentColor"
-              className="w-40 h-40 text-green-600"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 019 9v.375M10.125 2.25A3.375 3.375 0 0113.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 013.375 3.375M9 15l2.25 2.25L15 12"
-              />
-            </svg>
-          </div>
-          <div className="text-right leading-[40px]">
-            <div className="text-[20px] text-green-600">
-              اثر شما با موفقیت تبدیل به ان اف تی شد و حالا میتونید رو کیف
-              پولتون ببینیدش
+      {isUploaded
+        ? <SimpleCard className={"bg-green-50 mt-12 flex gap-12"}>
+            <div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.1"
+                stroke="currentColor"
+                className="w-40 h-40 text-green-600"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 019 9v.375M10.125 2.25A3.375 3.375 0 0113.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 013.375 3.375M9 15l2.25 2.25L15 12"
+                />
+              </svg>
             </div>
-            <div className="text-[16px] text-green-900">
-              وارد کیف پولتون شید روی تب nft روی import بزنید در قسمت contract
-              کد زیر رو کپی کنید و در قسمت TokenId عدد {tokenId} را وارد کنید و
-              ثبت رو بزنید.
+            <div className="text-right leading-[40px]">
+              <div className="text-[20px] text-green-600">
+                اثر شما با موفقیت تبدیل به ان اف تی شد و حالا میتونید رو کیف
+                پولتون ببینیدش
+              </div>
+              <div className="text-[16px] text-green-900">
+                وارد کیف پولتون شید روی تب nft روی import بزنید در قسمت contract
+                کد زیر رو کپی کنید و در قسمت TokenId عدد {tokenId} را وارد کنید
+                و ثبت رو بزنید.
+              </div>
+              <div
+                className="text-[16px] text-green-900 bg-green-100 rounded-full w-min whitespace-nowrap px-7 cursor-pointer flex gap-12 items-center"
+                onClick={handleCopy}
+              >
+                <div>کد:</div>
+                0x2A18FECb3579238CdA960B5977f46E500Fb6e735
+              </div>
             </div>
-            <div
-              className="text-[16px] text-green-900 bg-green-100 rounded-full w-min whitespace-nowrap px-7 cursor-pointer flex gap-12 items-center"
-              onClick={handleCopy}
-            >
-              <div>کد:</div>
-              0x2A18FECb3579238CdA960B5977f46E500Fb6e735
-            </div>
-          </div>
-        </SimpleCard>
-      ) : (
-        ""
-      )}
+          </SimpleCard>
+        : ""}
     </div>
   );
 };

@@ -102,6 +102,7 @@ const NFTDetails = () => {
       )
       .then((d) => {
         setData(d.data);
+        console.log(d.data)
       });
 
     axios({
@@ -218,6 +219,11 @@ const NFTDetails = () => {
                 {data ? data.description : ""}
               </div>
             </div>
+            <div className="w-full flex justify-end">
+              <a href={data ? data.external_link : ""} className="bg-indigo-50 hover:bg-indigo-100 transition-all py-1 px-4 text-gray-600 rounded-lg">لینک خارجی</a>
+
+            </div>
+
             <div className="relative flex items-center justify-self-end bg-[#f1f2f7] px-10 py-3 rounded-xl">
               <div className="absolute text-[16px] opacity-50">آخرین قیمت</div>
               <div className="text-[22px] mx-auto">

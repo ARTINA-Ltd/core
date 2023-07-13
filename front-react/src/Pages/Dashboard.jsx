@@ -10,33 +10,32 @@ const Dashboard = () => {
   const [getData, setData] = useState();
   const [tickets, setTickets] = useState();
   const [profit, setProfit] = useState();
+  const [getBalance, setBalance] = useState();
 
   const [chartData] = useState({
-    labels: ["اتریوم", "ریال", "تست"],
+    labels: ["اتریوم", "تومان"],
     datasets: [
       {
-        data: [300, 50, 100],
-        backgroundColor: ["#42A5F5", "#66BB6A", "#FFA726"],
-        hoverBackgroundColor: ["#64B5F6", "#81C784", "#FFB74D"],
-      },
-    ],
+        data: [300, 50],
+      }
+    ]
   });
 
   useEffect(() => {
     axios
       .get("https://api.artina.org/api/account/user-balance/get_balance/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`
         },
-        mode: "cors",
+        mode: "cors"
       })
-      .then((res) => {
+      .then(res => {
         console.log("------succ-----");
         console.log("000000000000000");
         console.log(res);
         console.log("---------------");
       })
-      .catch((res) => {
+      .catch(res => {
         console.log("------err------");
         console.log("000000000000000");
         console.log(res);
@@ -47,18 +46,18 @@ const Dashboard = () => {
     axios
       .get("https://api.artina.org/api/exhibition/Ticket/get_user_tickets/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`
         },
-        mode: "cors",
+        mode: "cors"
       })
-      .then((res) => {
+      .then(res => {
         console.log("------succ-----");
         console.log("get_user_tickets");
         console.log(res);
         console.log("---------------");
         setTickets(res.data);
       })
-      .catch((res) => {
+      .catch(res => {
         console.log("------err------");
         console.log("get_user_tickets");
         console.log(res);
@@ -72,19 +71,19 @@ const Dashboard = () => {
         "https://api.artina.org/api/exhibition/Ticket/calculate_user_revenue/",
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`
           },
-          mode: "cors",
+          mode: "cors"
         }
       )
-      .then((res) => {
+      .then(res => {
         console.log("------succ-----");
         console.log("calculate_user_revenue");
         console.log(res);
         console.log("---------------");
         setProfit(res.data);
       })
-      .catch((res) => {
+      .catch(res => {
         console.log("------err------");
         console.log("calculate_user_revenue");
         console.log(res);
@@ -102,14 +101,14 @@ const Dashboard = () => {
         //   },
         // }
       )
-      .then((res) => {
+      .then(res => {
         console.log("------succ-----");
         console.log("111111111111111");
         console.log(res);
         console.log("---------------");
         // setData(res.data);
       })
-      .catch((res) => {
+      .catch(res => {
         console.log("------err------");
         console.log("111111111111111");
         console.log(res);
@@ -124,18 +123,18 @@ const Dashboard = () => {
         `https://api.artina.org/api/account/user-turnover/turnover_in_month/`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-          },
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`
+          }
         }
       )
-      .then((res) => {
+      .then(res => {
         console.log("------succ-----");
         console.log("222222222222222");
         console.log(res);
         console.log("---------------");
         // setData(res.data);
       })
-      .catch((res) => {
+      .catch(res => {
         console.log("------err------");
         console.log("222222222222222");
         console.log(res);
@@ -148,17 +147,17 @@ const Dashboard = () => {
     axios
       .get(`https://api.artina.org/api/account/user-turnover/get_last_ten/`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-        },
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`
+        }
       })
-      .then((res) => {
+      .then(res => {
         console.log("------succ-----");
         console.log("333333333333333");
         console.log(res);
         console.log("---------------");
         // setData(res.data);
       })
-      .catch((res) => {
+      .catch(res => {
         console.log("------err------");
         console.log("333333333333333");
         console.log(res);
@@ -167,14 +166,29 @@ const Dashboard = () => {
       });
   }, []);
 
+  useEffect(() => {
+    axios
+      .get("https://api.artina.org/api/account/user-balance/get_balance/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`
+        },
+        mode: "cors"
+      })
+      .then(res => {
+        setBalance(res.data);
+        console.log(res.data);
+      })
+      .catch(e => {});
+  }, []);
+
   const [lightOptions] = useState({
     plugins: {
       legend: {
         labels: {
-          color: "#495057",
-        },
-      },
-    },
+          color: "#495057"
+        }
+      }
+    }
   });
 
   useEffect(() => {
@@ -188,8 +202,7 @@ const Dashboard = () => {
     //   });
   }, []);
 
-  return (
-    <div>
+  return <div>
       <TestLayout>
         <div className="flex gap-3 items-start">
           <div className="flex flex-col gap-3 w-2/3">
@@ -198,50 +211,48 @@ const Dashboard = () => {
                 گزارش مالی
               </div>
               <div className="grid grid-cols-2 gap-2">
-                <div
-                  id="rials"
-                  className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4"
-                >
-                  <div className="font-b6">ریال</div>
-                  <div className="flex gap-2 items-center justify-between">
-                    مانده قابل برداشت:
-                    <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
-                      24000 ریال
-                    </div>
-                  </div>
+                <div id="rials" className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4">
+                  <div className="font-b6">تومان</div>
                   <div className="flex gap-2 items-center justify-between">
                     مانده قابل معامله:
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
-                      120000 ریال
+                      {getBalance
+                        ? getBalance.rial_available_balance
+                        : ""}{" "}
+                      تومان
+                    </div>
+                  </div>
+                  <div className="flex gap-2 items-center justify-between">
+                    مانده غیر قابل معامله:
+                    <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
+                      {getBalance ? getBalance.rial_unavailable_balance : ""}
+                      تومان
                     </div>
                   </div>
                 </div>
 
-                <div
-                  id="ethrs"
-                  className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4"
-                >
+                <div id="ethrs" className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4">
                   <div className="font-b6">اتریوم</div>
-                  <div className="flex gap-2 items-center justify-between">
-                    مانده قابل برداشت:
-                    <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
-                      2 اتریوم
-                    </div>
-                  </div>
                   <div className="flex gap-2 items-center justify-between">
                     مانده قابل معامله:
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
-                      11 اتریوم
+                      {getBalance ? getBalance.eth_balance : ""} اتریوم
+                    </div>
+                  </div>
+                  <div className="flex gap-2 items-center justify-between">
+                    مانده غیر قابل معامله:
+                    <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
+                      {getBalance
+                        ? getBalance.eth_unavailable_balance
+                        : ""}{" "}
+                      اتریوم
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="my-3">
-                <div
-                  id=""
-                  className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4"
-                >
+                <div id="" className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4">
                   <div className="font-b6">سود حاصل از بلیت نمایشگاه</div>
                   <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
                     {profit ? profit.revenue : ""} تومان
@@ -249,12 +260,7 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="flex justify-center">
-                <Chart
-                  type="pie"
-                  data={chartData}
-                  options={lightOptions}
-                  style={{ position: "relative", width: "50%" }}
-                />
+                <Chart type="pie" data={chartData} options={lightOptions} style={{ position: "relative", width: "50%" }} />
               </div>
             </SimpleCard>
             <SimpleCard className="bg-white w-full h-full flex-col items-center justify-start ">
@@ -271,19 +277,8 @@ const Dashboard = () => {
               <div className="w-full bg-slate-50 cursor-pointer mt-3 py-1 group rounded-lg text-center flex items-center justify-center gap-4">
                 مشاهده همه
                 <div className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.3"
-                    stroke="currentColor"
-                    width={"1em"}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.75 19.5L8.25 12l7.5-7.5"
-                    />
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.3" stroke="currentColor" width={"1em"}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                   </svg>
                 </div>
               </div>
@@ -304,18 +299,14 @@ const Dashboard = () => {
                     <th>حجم فروش به اتر</th>
                     <th>حجم فروش</th>
                     <th>تاریخ پایان</th>
-                    <th></th>
+                    <th />
                   </tr>
                 </thead>
                 <tbody>
                   <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
                     <td>
                       <div className="flex justify-center w-full">
-                        <img
-                          src="/2.jpg"
-                          alt=""
-                          className="w-[42px] h-[42px] rounded-xl"
-                        />
+                        <img src="/2.jpg" alt="" className="w-[42px] h-[42px] rounded-xl" />
                       </div>
                     </td>
                     <td>تست</td>
@@ -328,22 +319,11 @@ const Dashboard = () => {
                     </td>
                     <td>24000ربال</td>
                     <td>11اتریوم</td>
-                    <td>29654400 ریال</td>
+                    <td>29654400 تومان</td>
                     <td>1402/03/13</td>
                     <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.3"
-                        stroke="currentColor"
-                        width={"1em"}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M15.75 19.5L8.25 12l7.5-7.5"
-                        />
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.3" stroke="currentColor" width={"1em"}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                       </svg>
                     </td>
                   </tr>
@@ -351,11 +331,7 @@ const Dashboard = () => {
                   <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
                     <td>
                       <div className="flex justify-center w-full">
-                        <img
-                          src="/1.jpg"
-                          alt=""
-                          className="w-[42px] h-[42px] rounded-xl"
-                        />
+                        <img src="/1.jpg" alt="" className="w-[42px] h-[42px] rounded-xl" />
                       </div>
                     </td>
                     <td>تست</td>
@@ -368,22 +344,11 @@ const Dashboard = () => {
                     </td>
                     <td>24000ربال</td>
                     <td>11اتریوم</td>
-                    <td>29654400 ریال</td>
+                    <td>29654400 تومان</td>
                     <td>1402/03/13</td>
                     <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.3"
-                        stroke="currentColor"
-                        width={"1em"}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M15.75 19.5L8.25 12l7.5-7.5"
-                        />
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.3" stroke="currentColor" width={"1em"}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                       </svg>
                     </td>
                   </tr>
@@ -402,7 +367,7 @@ const Dashboard = () => {
                     <th>نام nft</th>
                     <th>تست </th>
                     <th>تست </th>
-                    <th></th>
+                    <th />
                   </tr>
                 </thead>
 
@@ -410,11 +375,7 @@ const Dashboard = () => {
                   <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
                     <td>
                       <div className="flex justify-center w-full">
-                        <img
-                          src="/2.jpg"
-                          alt=""
-                          className="w-[42px] h-[42px] rounded-xl"
-                        />
+                        <img src="/2.jpg" alt="" className="w-[42px] h-[42px] rounded-xl" />
                       </div>
                     </td>
                     <td>تست</td>
@@ -428,19 +389,8 @@ const Dashboard = () => {
                     <td>24000ربال</td>
 
                     <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.3"
-                        stroke="currentColor"
-                        width={"1em"}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M15.75 19.5L8.25 12l7.5-7.5"
-                        />
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.3" stroke="currentColor" width={"1em"}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                       </svg>
                     </td>
                   </tr>
@@ -448,11 +398,7 @@ const Dashboard = () => {
                   <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
                     <td>
                       <div className="flex justify-center w-full">
-                        <img
-                          src="/1.jpg"
-                          alt=""
-                          className="w-[42px] h-[42px] rounded-xl"
-                        />
+                        <img src="/1.jpg" alt="" className="w-[42px] h-[42px] rounded-xl" />
                       </div>
                     </td>
                     <td>تست</td>
@@ -466,19 +412,8 @@ const Dashboard = () => {
                     <td>24000ربال</td>
 
                     <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.3"
-                        stroke="currentColor"
-                        width={"1em"}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M15.75 19.5L8.25 12l7.5-7.5"
-                        />
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.3" stroke="currentColor" width={"1em"}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                       </svg>
                     </td>
                   </tr>
@@ -497,26 +432,31 @@ const Dashboard = () => {
                     <th>آیدی نمایشگاه</th>
                     <th>قیمت</th>
                     <th>تاریخ انقضا</th>
-                    <th></th>
+                    <th />
                   </tr>
                 </thead>
                 <tbody>
-                  {tickets &&
-                    tickets.map((item, index) => (
+                  {tickets && tickets.map((item, index) =>
                       <tr
                         className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all"
                         key={index}
                       >
-                        <td>{item.ticket_id}</td>
-                        <td>{item.exhibition}</td>
-                        <td>{item.price}</td>
+                        <td>
+                          {item.ticket_id}
+                        </td>
+                        <td>
+                          {item.exhibition}
+                        </td>
+                        <td>
+                          {item.price}
+                        </td>
                         <td>
                           {Intl.DateTimeFormat("fa", {
                             year: "numeric",
                             month: "numeric",
                             day: "numeric",
                             minute: "numeric",
-                            hour: "numeric",
+                            hour: "numeric"
                           }).format(new Date(item.expiration_date))}
                         </td>
 
@@ -537,15 +477,14 @@ const Dashboard = () => {
                           </svg>
                         </td>
                       </tr>
-                    ))}
+                    )}
                 </tbody>
               </table>
             </SimpleCard>
           </div>
         </div>
       </TestLayout>
-    </div>
-  );
+    </div>;
 };
 
 export default Dashboard;
