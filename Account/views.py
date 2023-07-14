@@ -99,7 +99,7 @@ class UserInfoViewSet(viewsets.ViewSet):
             'email': user.email,
             'role': str(profile.role),
             'shaba_number':profile.shaba_number,
-            'postal_code':postal_code
+            'postal_code':profile.postal_code
         }
         return Response(data)
 
