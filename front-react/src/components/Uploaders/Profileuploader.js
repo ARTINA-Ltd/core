@@ -137,7 +137,7 @@ export default function Profileuploader() {
             </p>
 
             <i
-              class="pi pi-camera mt-3 p-5"
+              className="pi pi-camera mt-3 p-5"
               style={{
                 fontSize: "18em",
                 borderRadius: "80%",
@@ -158,15 +158,7 @@ export default function Profileuploader() {
             <Image src={imageUrl} alt="Image" width="250" />
 
             {UserData.profile_picture}
-            {/* <i
-              class="pi pi-camera mt-3 p-5"
-              style={{
-                fontSize: "18em",
-                borderRadius: "80%",
-                backgroundColor: "var(--surface-b)",
-                color: "var(--surface-d)",
-              }}
-            ></i> */}
+
           </div>
         )}
       </>

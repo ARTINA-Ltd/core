@@ -27,7 +27,7 @@ function Profile() {
     phone_number: user ? user.data.phone_number : "",
     email: user ? user.data.email : "",
     address: user ? user.data.address : "",
-    postal_code: user ? user.data.postal_code : ""
+    postal_code: user ? user.data.postal_code : "",
   });
 
   const [validate, setValidate] = useState({
@@ -39,7 +39,7 @@ function Profile() {
     phone_number: true,
     email: true,
     address: true,
-    postal_code: true
+    postal_code: true,
   });
 
   const [counter, setCounter] = useState(10);
@@ -75,12 +75,12 @@ function Profile() {
         "https://api.artina.org/api/account/phone-verification/",
         {
           phone_number: values.phone_number,
-          verification_code: phoneVerificationCode
+          verification_code: phoneVerificationCode,
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
         }
       )
       .then(e => {
@@ -116,9 +116,9 @@ function Profile() {
       axios
         .put(
           // "https://api.artina.org/api/account/profile/",
-          `https://api.artina.org/api/account/profile/${user
-            ? user.data.id
-            : ""}/`,
+          `https://api.artina.org/api/account/profile/${
+            user ? user.data.id : ""
+          }/`,
           {
             user: user ? user.data.id : "",
             first_name: values.first_name,
@@ -129,7 +129,7 @@ function Profile() {
                 ? Intl.DateTimeFormat("en-UK", {
                     year: "numeric",
                     month: "numeric",
-                    day: "numeric"
+                    day: "numeric",
                   }).format(b_date)
                 : null,
             phone_number: values.phone_number,
@@ -142,14 +142,14 @@ function Profile() {
             profile_picture: profileImageUrl
               ? profileImageUrl
               : user.data.profile_picture,
-            shaba_number: shabaNumber
+            shaba_number: shabaNumber,
 
             // role: user ? user.data.role : ""
           },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            },
           }
         )
         .then(res => {
@@ -159,7 +159,7 @@ function Profile() {
               "https://api.artina.org/api/account/send-verification-code/",
               {
                 phone_number: values.phone_number,
-                username: user.data.username
+                username: user.data.username,
               }
             )
             .then(e => {
@@ -210,9 +210,9 @@ function Profile() {
       axios
         .put(
           // "https://api.artina.org/api/account/profile/",
-          `https://api.artina.org/api/account/profile/${user
-            ? user.data.id
-            : ""}/`,
+          `https://api.artina.org/api/account/profile/${
+            user ? user.data.id : ""
+          }/`,
           {
             user: user ? user.data.id : "",
             first_name: values.first_name,
@@ -223,7 +223,7 @@ function Profile() {
                 ? Intl.DateTimeFormat("en-UK", {
                     year: "numeric",
                     month: "numeric",
-                    day: "numeric"
+                    day: "numeric",
                   }).format(b_date)
                 : null,
             phone_number: values.phone_number,
@@ -235,14 +235,14 @@ function Profile() {
             profile_picture: profileImageUrl
               ? profileImageUrl
               : user.data.profile_picture,
-            shaba_number: shabaNumber
+            shaba_number: shabaNumber,
 
             // role: user ? user.data.role : ""
           },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            },
           }
         )
         .then(res => {
@@ -262,106 +262,105 @@ function Profile() {
     return false;
   }
 
-  useEffect(
-    () => {
-      console.log(user);
-      if (user && user.data) {
-        setValues(prev => ({
-          ...prev,
-          first_name: user ? user.data.first_name : "",
-          last_name: user ? user.data.last_name : "",
-          national_code: user ? user.data.national_code : "",
-          birthdate: user ? user.data.birthdate : "",
-          address: user ? user.data.address : "",
-          postal_code: user ? user.data.postal_code : "",
-          cell_number: user ? user.data.cell_number : "",
-          phone_number: user ? user.data.phone_number : "",
-          email: user ? user.data.email : ""
-        }));
-        if (user) {
-          setShabaNumber(user ? user.data.shaba_number : null);
-          setIsPhoneVerified(
-            user ? user.data.phone_number_verified == true : null
-          );
-        }
+  useEffect(() => {
+    console.log(user);
+    if (user && user.data) {
+      setValues(prev => ({
+        ...prev,
+        first_name: user ? user.data.first_name : "",
+        last_name: user ? user.data.last_name : "",
+        national_code: user ? user.data.national_code : "",
+        birthdate: user ? user.data.birthdate : "",
+        address: user ? user.data.address : "",
+        postal_code: user ? user.data.postal_code : "",
+        cell_number: user ? user.data.cell_number : "",
+        phone_number: user ? user.data.phone_number : "",
+        email: user ? user.data.email : "",
+      }));
+      if (user) {
+        setShabaNumber(user ? user.data.shaba_number : null);
+        setIsPhoneVerified(
+          user ? user.data.phone_number_verified == true : null
+        );
       }
-    },
-    [user]
-  );
+    }
+  }, [user]);
 
-  useEffect(
-    () => {
-      if (nationalCardImage) {
-        Block.circle("#nationalCardImage");
+  useEffect(() => {
+    if (nationalCardImage) {
+      Block.circle("#nationalCardImage");
 
-        Notify.info("در حال آپلود عکس");
-        const formData = new FormData();
-        formData.append("image", nationalCardImage, nationalCardImage.name);
-        axios
-          .post("https://api.artina.org/api/transaction/images/", formData)
-          .then(res => {
-            Block.remove("#nationalCardImage",2000);
+      Notify.info("در حال آپلود عکس");
+      const formData = new FormData();
+      formData.append("image", nationalCardImage, nationalCardImage.name);
+      axios
+        .post("https://api.artina.org/api/transaction/images/", formData)
+        .then(res => {
+          Block.remove("#nationalCardImage", 3000);
 
-            Notify.success("با موفقیت آپلود شد");
-            setNationalCardImageUrl(res.data.image);
-          })
-          .catch(() => {
-            Notify.failure("خطا در آپلود");
-            Block.remove("#nationalCardImage", 2000);
-          });
-      }
-    },
-    [nationalCardImage]
-  );
+          Notify.success("با موفقیت آپلود شد");
+          setNationalCardImageUrl(res.data.image);
+        })
+        .catch(() => {
+          Notify.failure("خطا در آپلود");
+          Block.remove("#nationalCardImage", 3000);
+        });
+    }
+  }, [nationalCardImage]);
 
-  useEffect(
-    () => {
-      if (profileImage) {
-        Notify.info("در حال آپلود عکس");
-        const formData = new FormData();
-        formData.append("image", profileImage, profileImage.name);
-        axios
-          .post("https://api.artina.org/api/transaction/images/", formData)
-          .then(res => {
-            Notify.success("با موفقیت آپلود شد");
-            setProfileImageUrl(res.data.image);
-          })
-          .catch(() => Notify.failure("خطا در آپلود"));
-      }
-    },
-    [profileImage]
-  );
+  useEffect(() => {
+    if (profileImage) {
+      Block.circle("#profileImage");
 
-  useEffect(
-    () => {
-      if (counter > 0 && !counterPause) {
-        setTimeout(() => setCounter(counter - 1), 1000);
-      }
-    },
-    [counter]
-  );
+      Notify.info("در حال آپلود عکس");
+      const formData = new FormData();
+      formData.append("image", profileImage, profileImage.name);
+      axios
+        .post("https://api.artina.org/api/transaction/images/", formData)
+        .then(res => {
+          Notify.success("با موفقیت آپلود شد");
+          setProfileImageUrl(res.data.image);
+          Block.remove("#profileImage", 3000);
+        })
+        .catch(() => {
+          Notify.failure("خطا در آپلود");
+
+          Block.remove("#profileImage", 3000);
+        });
+    }
+  }, [profileImage]);
+
+  useEffect(() => {
+    if (counter > 0 && !counterPause) {
+      setTimeout(() => setCounter(counter - 1), 1000);
+    }
+  }, [counter]);
 
   return (
     <TestLayout connectWallet={false}>
       <div className="flex gap-5 items-start ">
         <SimpleCard className={"flex flex-col gap-4 bg-white w-full"}>
-          {user && user.data.role == "user_zero"
-            ? <div className="w-full bg-red-50 text-red-500 py-2 text-center rounded-lg">
-                مشخصات شما هنوز احراز نشده است!
-              </div>
-            : <div className="w-full bg-green-50 text-green-600 py-2 text-center rounded-lg">
-                سطح کاربری شما {user ? user.data.role : ""} میباشد.
-              </div>}
+          {user && user.data.role == "user_zero" ? (
+            <div className="w-full bg-red-50 text-red-500 py-2 text-center rounded-lg">
+              مشخصات شما هنوز احراز نشده است!
+            </div>
+          ) : (
+            <div className="w-full bg-green-50 text-green-600 py-2 text-center rounded-lg">
+              سطح کاربری شما {user ? user.data.role : ""} میباشد.
+            </div>
+          )}
           <div className="text-[24px] font-b9">اطلاعات شخصی</div>
           <div className="flex gap-4 items-center">
-            <div className="flex-shrink-0 relative group">
+            <div className="flex-shrink-0 relative group rounded-full" id="profileImage">
               <img
                 src={
                   profileImageUrl
                     ? profileImageUrl
-                    : `${user
-                        ? user.data.profile_picture
-                        : "https://i.pinimg.com/originals/66/b8/58/66b858099df3127e83cb1f1168f7a2c6.jpg"}`
+                    : `${
+                        user
+                          ? user.data.profile_picture
+                          : "https://i.pinimg.com/originals/66/b8/58/66b858099df3127e83cb1f1168f7a2c6.jpg"
+                      }`
                 }
                 className="pointer-events-none rounded-full overflow-hidden object-cover w-[200px] h-[200px] flex-shrink-0"
               />
@@ -410,11 +409,11 @@ function Profile() {
                 onChange={e => {
                   setValues(prev => ({
                     ...prev,
-                    first_name: e.target.value
+                    first_name: e.target.value,
                   }));
                   setValidate(prev => ({
                     ...prev,
-                    first_name: e.target.value != ""
+                    first_name: e.target.value != "",
                   }));
                 }}
                 defaultValue={user != null ? user.data.first_name : null}
@@ -430,7 +429,7 @@ function Profile() {
                   setValues(prev => ({ ...prev, last_name: e.target.value }));
                   setValidate(prev => ({
                     ...prev,
-                    last_name: e.target.value != ""
+                    last_name: e.target.value != "",
                   }));
                 }}
                 defaultValue={user != null ? user.data.last_name : null}
@@ -449,14 +448,14 @@ function Profile() {
               onChange={e => {
                 setValues(prev => ({
                   ...prev,
-                  national_code: e.target.value
+                  national_code: e.target.value,
                 }));
                 setValidate(prev => ({
                   ...prev,
                   national_code:
                     e.target.value !== null
                       ? e.target.value.length == 10
-                      : false
+                      : false,
                 }));
               }}
               defaultValue={user != null ? user.data.national_code : null}
@@ -487,7 +486,7 @@ function Profile() {
                 setValues(prev => ({ ...prev, address: e.target.value }));
                 setValidate(prev => ({
                   ...prev,
-                  address: e.target.value != ""
+                  address: e.target.value != "",
                 }));
               }}
               defaultValue={user != null ? user.data.postal_code : null}
@@ -502,7 +501,7 @@ function Profile() {
                 setValues(prev => ({ ...prev, postal_code: e.target.value }));
                 setValidate(prev => ({
                   ...prev,
-                  postal_code: e.target.value != ""
+                  postal_code: e.target.value != "",
                 }));
               }}
               defaultValue={user != null ? user.data.postal_code : null}
@@ -523,7 +522,7 @@ function Profile() {
                   cell_number:
                     e.target.value !== null
                       ? e.target.value.length == 11
-                      : false
+                      : false,
                 }));
               }}
               defaultValue={user != null ? user.data.cell_number : null}
@@ -543,50 +542,55 @@ function Profile() {
               onChange={e => {
                 setValues(prev => ({
                   ...prev,
-                  phone_number: e.target.value
+                  phone_number: e.target.value,
                 }));
                 setValidate(prev => ({
                   ...prev,
                   phone_number:
                     e.target.value !== null
                       ? e.target.value.length == 11
-                      : false
+                      : false,
                 }));
               }}
               defaultValue={user != null ? user.data.phone_number : null}
               disabled={isPhoneVerified}
             />
             <div
-              className={`${showPhoneValidate && !isPhoneVerified
-                ? ""
-                : "hidden"}`}
+              className={`${
+                showPhoneValidate && !isPhoneVerified ? "" : "hidden"
+              }`}
             >
               <SimpleInput
                 type="number"
                 title="کد "
                 placeholder="1234"
-                onChange={e => setPhoneVerificationCode(e.target.value) // isValid={}
+                onChange={
+                  e => setPhoneVerificationCode(e.target.value) // isValid={}
                 }
                 defaultValue={null}
               />
             </div>
             <div
-              className={`transition-all w-1/2 shrink-0 ${isPhoneVerified
-                ? "hidden"
-                : "flex gap-4 "}`}
+              className={`transition-all w-1/2 shrink-0 ${
+                isPhoneVerified ? "hidden" : "flex gap-4 "
+              }`}
             >
               <div
-                className={`w-1/3 ${!showPhoneValidate
-                  ? "hidden"
-                  : "bg-sky-400 cursor-pointer hover:bg-sky-500 w-full text-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center"} `}
+                className={`w-1/3 ${
+                  !showPhoneValidate
+                    ? "hidden"
+                    : "bg-sky-400 cursor-pointer hover:bg-sky-500 w-full text-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center"
+                } `}
                 onClick={handleSendPhoneVerificationCode}
               >
                 ثبت
               </div>
               <div
-                className={`w-1/3  ${isPhoneDisabled
-                  ? "bg-[#4e45d0] cursor-not-allowed hover:bg-[#372fac]"
-                  : "bg-[#372fac] cursor-pointer"} w-full text-nowrap flex-nowrap whitespace-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center`}
+                className={`w-1/3  ${
+                  isPhoneDisabled
+                    ? "bg-[#4e45d0] cursor-not-allowed hover:bg-[#372fac]"
+                    : "bg-[#372fac] cursor-pointer"
+                } w-full text-nowrap flex-nowrap whitespace-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center`}
                 onClick={() => (!isPhoneDisabled ? hanldeClickPhone() : "")}
               >
                 {isPhoneDisabled ? `ارسال مجدد کد (${counter})` : "ارسال کد"}
@@ -605,8 +609,9 @@ function Profile() {
                 onChange={e =>
                   setValues(prev => ({
                     ...prev,
-                    email: e.target.value
-                  }))}
+                    email: e.target.value,
+                  }))
+                }
                 defaultValue={user != null ? user.data.email : null}
                 disabled={user != null ? user.data.email != null : null}
               />
@@ -628,7 +633,8 @@ function Profile() {
             <BorderButton
               className={"text-white border-white"}
               onClick={() =>
-                window.open("http://api.artina.org/static/pdfs/Form.docx")}
+                window.open("http://api.artina.org/static/pdfs/Form.docx")
+              }
             >
               متن احراز هویت
             </BorderButton>

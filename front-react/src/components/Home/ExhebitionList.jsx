@@ -62,7 +62,7 @@ const ExhebitionList = ({ className }) => {
           >
             {data
               ? data.map((item, index) =>
-                  <SwiperSlide>
+                  <SwiperSlide key={index}>
                     <SimpleCard className={"bg-white w-full  cursor-pointer lg:p-5"}>
                       <img
                         src={item.image}

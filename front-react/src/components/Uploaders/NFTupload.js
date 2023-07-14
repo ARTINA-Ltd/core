@@ -90,7 +90,7 @@ export default function NFTupload() {
                 </span> */}
                 <p className='font text-3xl'>لطفا  فایل nft      خود را اینجا بارگذاری بکنید</p>
 
-<i class="pi pi-camera  " style={{ fontSize: '18em', borderRadius: '80%', backgroundColor: 'var(--surface-b)', color: 'var(--surface-d)' }}></i>
+<i className="pi pi-camera  " style={{ fontSize: '18em', borderRadius: '80%', backgroundColor: 'var(--surface-b)', color: 'var(--surface-d)' }}></i>
  
                 
             </div>

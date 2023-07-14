@@ -27,6 +27,15 @@ const Collections = () => {
       });
   }, [username]);
 
+  const handleClickShow = (e,childIsVisible) =>{
+    console.log("salam")
+    childIsVisible(true)
+  }
+
+  const handleClickHide = (e,childIsVisible) =>{
+    console.log("khodahafeez")
+    childIsVisible(false)
+  }
   return (
     <TestLayout>
       {getData && getData.length > 0 ? (
@@ -43,12 +52,15 @@ const Collections = () => {
           ? getData.map((item, index) => (
               <div className="col-span-1" key={index}>
                 <ImageCard
-                  className="bg-white"
+                  className="bg-white"                  
                   src={item.image_url}
                   price={item.last_price}
                   onClick={() => navigate(`/nft-details/${item.token_id}`)}
                   tokenId={item.token_id}
                   showSell={user ? user.data.username === username : false}
+                  visible={item == null}
+                  onClickShow={handleClickShow}
+                  onClickHide={handleClickHide}
                 >
                   {item.name}
                 </ImageCard>
