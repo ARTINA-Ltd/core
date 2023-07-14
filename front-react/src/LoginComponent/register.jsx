@@ -11,34 +11,46 @@ import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import BorderButton from "../components/Buttons/BorderButton";
 import SimpleInput from "../components/Inputs/SimpleInput";
 import Notiflix from "notiflix";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Register = () => {
   const [values, setValues] = useState({
     username: "",
     email: "",
     password: "",
-    confirmPassword: "",
+    confirmPassword: ""
   });
   const [isChecekd, setIsChecekd] = useState(false);
+  const [captchaRes, setCaptchaRes] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleCaptchaChange = e => {
+    if (e.length != 0) {
+      setCaptchaRes(true);
+    } else {
+      setCaptchaRes(false);
+    }
+  };
+
+  const handleSubmit = e => {
     e.preventDefault();
 
-    if (isChecekd == true){
+    if (isChecekd == true) {
       axios
         .post("https://api.artina.org/api/account/register/", {
           username: values.username,
           email: values.email,
-          password: values.password,
+          password: values.password
         })
-        .then((response) => {
+        .then(response => {
           Notiflix.Notify.success("ثبت نام با موفقیت انجام شد");
           navigate("/login");
         })
-        .catch((response) => {
-          if (response.response.data.error == "This username is already taken.") {
+        .catch(response => {
+          if (
+            response.response.data.error == "This username is already taken."
+          ) {
             Notiflix.Notify.failure("نام کاربری تکراری میباشد.");
           }
           if (
@@ -47,17 +59,17 @@ const Register = () => {
             Notiflix.Notify.failure("ایمیل وارد شده تکراری میباشد.");
           }
         });
-    } else{
-      Notiflix.Notify.failure("برای ثبت درخواست ابتدا میبایست قراردار را بپذیرید");
-
+    } else {
+      Notiflix.Notify.failure(
+        "برای ثبت درخواست ابتدا میبایست قراردار را بپذیرید"
+      );
     }
-    
   };
 
-  const onChange = (e) => {
+  const onChange = e => {
     setValues({
       ...values,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
@@ -67,7 +79,7 @@ const Register = () => {
 
     const scope = [
       "https://www.googleapis.com/auth/userinfo.email",
-      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/userinfo.profile"
     ].join(" ");
 
     const params = {
@@ -77,7 +89,7 @@ const Register = () => {
       redirect_uri: `http://localhost:8000/api/v1/auth/login/google/`,
       prompt: "select_account",
       access_type: "offline",
-      scope,
+      scope
     };
 
     const urlParams = new URLSearchParams(params).toString();
@@ -87,9 +99,8 @@ const Register = () => {
 
   return (
     <TestLayout className="flex items-center justify-center form-input w-full">
-      <SimpleCard className={"bg-[#ffffff] w-[450px] sm:m-4"}>
+      <SimpleCard className={"bg-[#ffffff] w-[550px] sm:m-4"}>
         <div className="text-[24px] text-center">فرم ثبت نام</div>
-
         <SimpleInput
           className={"mt-6"}
           type="text"
@@ -97,12 +108,11 @@ const Register = () => {
           placeholder="مثلا: alireza"
           isValid={values.username != ""}
           validationError="نمی‌تواند خالی باشد"
-          onChange={(e) =>
-            setValues((prev) => ({
+          onChange={e =>
+            setValues(prev => ({
               ...prev,
-              username: e.target.value,
-            }))
-          }
+              username: e.target.value
+            }))}
           defaultValue={""}
         />
         <SimpleInput
@@ -112,12 +122,11 @@ const Register = () => {
           placeholder="مثلا: example@gmail.com"
           isValid={values.email != ""}
           validationError="نمی‌تواند خالی باشد"
-          onChange={(e) =>
-            setValues((prev) => ({
+          onChange={e =>
+            setValues(prev => ({
               ...prev,
-              email: e.target.value,
-            }))
-          }
+              email: e.target.value
+            }))}
           defaultValue={""}
         />
         <SimpleInput
@@ -127,12 +136,11 @@ const Register = () => {
           placeholder=""
           isValid={values.password != ""}
           validationError="نمی‌تواند خالی باشد"
-          onChange={(e) =>
-            setValues((prev) => ({
+          onChange={e =>
+            setValues(prev => ({
               ...prev,
-              password: e.target.value,
-            }))
-          }
+              password: e.target.value
+            }))}
           defaultValue={""}
         />
         <SimpleInput
@@ -142,45 +150,48 @@ const Register = () => {
           placeholder=""
           isValid={values.confirmPassword != ""}
           validationError="نمی‌تواند خالی باشد"
-          onChange={(e) =>
-            setValues((prev) => ({
+          onChange={e =>
+            setValues(prev => ({
               ...prev,
-              confirmPassword: e.target.value,
-            }))
-          }
+              confirmPassword: e.target.value
+            }))}
           defaultValue={""}
         />
-        <div className="mt-5 flex justify-center">
-          <div className="w-full flex justify-end items-center gap-4">
-            <a
-              href="/privacy-policy"
-              className="text-gray-400 hover:text-gray-500 hover:bg-gray-50 px-2 py-1 transition-all duration-100 font-b2 rounded-md"
-            >
-              مشاهده قوانین
-            </a>
+        <div className="w-full flex justify-center items-center mt-5">
+          <ReCAPTCHA
+            sitekey={"6LecwBMnAAAAAItOWnJM8T17TlvnA1ewPIUGDuj_"}
+            onChange={handleCaptchaChange}
+          />
+        </div>{" "}
+        <div className="w-full mt-5 flex justify-between items-center gap-4">
+          <a
+            href="/privacy-policy"
+            className="text-gray-400 hover:text-gray-500 hover:bg-gray-50 px-2 py-1 transition-all duration-100 font-b2 rounded-md"
+          >
+            مشاهده قوانین
+          </a>
+          <div
+            className={`cursor-pointer rounded-full flex items-center gap-3 ${!isChecekd
+              ? "hover:bg-rose-50  hover:scale-105 transition-all border-[1px] border-rose-400 text-rose-400"
+              : "hover:bg-green-50 hover:scale-105 transition-all text-green-600 border-[1px] border-green-600"} transition-all px-3 py-2`}
+            onClick={() => setIsChecekd(prev => !prev)}
+          >
             <div
-              className={`cursor-pointer rounded-full flex items-center gap-3 ${
-                !isChecekd
-                  ? "hover:bg-rose-50  hover:scale-105 transition-all border-[1px] border-rose-400 text-rose-400"
-                  : "hover:bg-green-50 hover:scale-105 transition-all text-green-600 border-[1px] border-green-600"
-              } transition-all px-3 py-2`}
-              onClick={() => setIsChecekd((prev) => !prev)}
-            >
-              <div
-                className={`h-4 w-4 ${
-                  isChecekd
-                    ? "bg-green-600"
-                    : "bg-rose-50 border-[1px] border-rose-400"
-                } rounded-full`}
-              />
-              <div> با قوانین موافقم</div>
-            </div>
-            <BorderButton className={"px-6 py-3"} onClick={handleSubmit}>
-            ثبت نام            
-            </BorderButton>
+              className={`h-4 w-4 ${isChecekd
+                ? "bg-green-600"
+                : "bg-rose-50 border-[1px] border-rose-400"} rounded-full`}
+            />
+            <div> با قوانین موافقم</div>
           </div>
+          <BorderButton
+            className={"px-6 py-3"}
+            size="lg"
+            onClick={!captchaRes ? () => {} : handleSubmit}
+            disabled={!captchaRes}
+          >
+            ثبت نام
+          </BorderButton>
         </div>
-
         <div className="bg-[#0000aa10] px-5 py-3 rounded-2xl mt-5 text-center">
           <Link to="/Login" className="text-indigo-900">
             از قبل حساب کاربری دارید ؟ وارد شوید.

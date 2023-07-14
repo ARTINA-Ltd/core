@@ -99,7 +99,7 @@ const Exhibitor = () => {
                 >
                   <SimpleCard
                     key={index}
-                    className="h-[420px] w-full bg-[#0000aa05] hover:bg-[#0000aa08] p-0 relative group cursor-pointer md:h-[300px] sm:h-[250px]"
+                    className="h-[420px] w-full bg-[#0000aa05] hover:bg-[#0000aa08] transition-all p-0 relative group cursor-pointer md:h-[300px] sm:h-[250px]"
                     noPadding={true}
                   >
                     <img
@@ -107,8 +107,14 @@ const Exhibitor = () => {
                       className="h-full w-full object-cover rounded-2xl"
                       alt=""
                     />
-                    <div className="absolute h-full w-full top-0 rounded-2xl bg-gradient-to-t text-lg font-b4 group-hover:text-xl from-black flex items-end justify-center pb-4 text-white group-hover:pb-6 transition-all">
+                    <div className="absolute h-full w-full top-0 rounded-2xl bg-gradient-to-t text-lg font-b4 group-hover:text-xl gap-3 from-black flex items-end justify-center pb-4 text-white group-hover:pb-6 transition-all">
+                      
+                      <div className="flex flex-col items-center justify-center w-full">
                       {item.marketName}
+
+                        <div className="bg-white/20  w-full hover:bg-white/30 py-2 text-sm backdrop-blur-md" >متاورس</div>
+                      </div>
+
                     </div>
                   </SimpleCard>
                 </div>
@@ -117,9 +123,16 @@ const Exhibitor = () => {
           </div>
         </SimpleCard>
 
-        <div className="w-[90%] bg-[#4e45d0] rounded-xl py-4 mb-9 mt-2 text-center text-white text-xl font-b5 cursor-pointer mx-auto hover:text-[22px] transition-all"
+        <div className="w-[90%] bg-[#4e45d0] rounded-xl justify-center gap-5 flex py-12 mb-9 mt-2 text-center text-white text-xl font-b5 cursor-pointer mx-auto hover:text-[22px] transition-all"
           onClick={() => navigate(`/requests-list`)}
-        >مشاهده لیست درخواست ها</div>
+        >
+          <div className="animate-pulse"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+</svg>
+</div>
+          مشاهده لیست درخواست ها
+        
+        </div>
 
         <SimpleCard className={"bg-white mx-auto w-[90%] mt-5 text-center"}>
           <div className="font-b6 text-2xl mb-4 mx-auto md:mb-4 sm:text-xl">
