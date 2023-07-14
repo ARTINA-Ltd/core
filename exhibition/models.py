@@ -34,13 +34,6 @@ class Exhibition(models.Model):
 
     
 
-    def has_expired(self):
-        return datetime.now(tz=pytz.timezone('Asia/Tehran')) > self.end_date
-
-    def has_started(self):
-        return datetime.now(tz=pytz.timezone('Asia/Tehran')) > self.start_date
-    
-
 
 
 class Ticket(models.Model):
