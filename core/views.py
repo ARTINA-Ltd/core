@@ -32,8 +32,8 @@ import os
 from Account.models import UserBalance, UserTurnover,TransactionType,TransactionCurrency,Profile
 from http import HTTPStatus
 class OrderViewSet(viewsets.ViewSet):
-    # queryset = Order.objects.all()
-    # serializer_class = serializers.OrderSerializer
+    queryset = Order.objects.all()
+    serializer_class = serializers.OrderSerializer
     
     def create(self, request, *args, **kwargs):
         fee = request.data.get('fee')
@@ -74,6 +74,12 @@ class OrderViewSet(viewsets.ViewSet):
         serializer = serializers.OrderSerializer(orders, many=True)
         return Response(serializer.data, status=HTTPStatus.OK)
 
+    @action(detail=False, methods=['get'])
+    def get_user_order(self,request):
+        user = self.request.user
+        orders=Order.objects.filter(bidder=user, status=0)
+        serializer = serializers.OrderSerializer(orders, many=True)
+        return Response(serializer.data, status=HTTPStatus.OK)
 
 class NFTRateViewSet(viewsets.ModelViewSet):
     queryset = NFTReviewRating.objects.all()
