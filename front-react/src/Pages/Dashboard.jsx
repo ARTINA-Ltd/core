@@ -11,37 +11,9 @@ const Dashboard = () => {
   const [tickets, setTickets] = useState();
   const [profit, setProfit] = useState();
   const [getBalance, setBalance] = useState();
+  const [artistOpenExhibitions, setArtistOpenExhibitions] = useState();
+  const [reqData, setReqData] = useState();
 
-  const [chartData] = useState({
-    labels: ["اتریوم", "تومان"],
-    datasets: [
-      {
-        data: [300, 50],
-      }
-    ]
-  });
-
-  useEffect(() => {
-    axios
-      .get("https://api.artina.org/api/account/user-balance/get_balance/", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`
-        },
-        mode: "cors"
-      })
-      .then(res => {
-        console.log("------succ-----");
-        console.log("000000000000000");
-        console.log(res);
-        console.log("---------------");
-      })
-      .catch(res => {
-        console.log("------err------");
-        console.log("000000000000000");
-        console.log(res);
-        console.log("---------------");
-      });
-  }, []);
   useEffect(() => {
     axios
       .get("https://api.artina.org/api/exhibition/Ticket/get_user_tickets/", {
@@ -51,17 +23,17 @@ const Dashboard = () => {
         mode: "cors"
       })
       .then(res => {
-        console.log("------succ-----");
-        console.log("get_user_tickets");
-        console.log(res);
-        console.log("---------------");
+        // console.log("------succ-----");
+        // console.log("get_user_tickets");
+        // console.log(res);
+        // console.log("---------------");
         setTickets(res.data);
       })
       .catch(res => {
-        console.log("------err------");
-        console.log("get_user_tickets");
-        console.log(res);
-        console.log("---------------");
+        // console.log("------err------");
+        // console.log("get_user_tickets");
+        // console.log(res);
+        // console.log("---------------");
       });
   }, []);
 
@@ -77,17 +49,17 @@ const Dashboard = () => {
         }
       )
       .then(res => {
-        console.log("------succ-----");
-        console.log("calculate_user_revenue");
-        console.log(res);
-        console.log("---------------");
+        // console.log("------succ-----");
+        // console.log("calculate_user_revenue");
+        // console.log(res);
+        // console.log("---------------");
         setProfit(res.data);
       })
       .catch(res => {
-        console.log("------err------");
-        console.log("calculate_user_revenue");
-        console.log(res);
-        console.log("---------------");
+        // console.log("------err------");
+        // console.log("calculate_user_revenue");
+        // console.log(res);
+        // console.log("---------------");
       });
   }, []);
 
@@ -102,17 +74,17 @@ const Dashboard = () => {
         // }
       )
       .then(res => {
-        console.log("------succ-----");
-        console.log("111111111111111");
-        console.log(res);
-        console.log("---------------");
+        // console.log("------succ-----");
+        // console.log("111111111111111");
+        // console.log(res);
+        // console.log("---------------");
         // setData(res.data);
       })
       .catch(res => {
-        console.log("------err------");
-        console.log("111111111111111");
-        console.log(res);
-        console.log("---------------");
+        // console.log("------err------");
+        // console.log("111111111111111");
+        // console.log(res);
+        // console.log("---------------");
         // setData(res.data);
       });
   }, []);
@@ -128,17 +100,17 @@ const Dashboard = () => {
         }
       )
       .then(res => {
-        console.log("------succ-----");
-        console.log("222222222222222");
-        console.log(res);
-        console.log("---------------");
+        // console.log("------succ-----");
+        // console.log("222222222222222");
+        // console.log(res);
+        // console.log("---------------");
         // setData(res.data);
       })
       .catch(res => {
-        console.log("------err------");
-        console.log("222222222222222");
-        console.log(res);
-        console.log("---------------");
+        // console.log("------err------");
+        // console.log("222222222222222");
+        // console.log(res);
+        // console.log("---------------");
         // setData(res.data);
       });
   }, []);
@@ -151,17 +123,17 @@ const Dashboard = () => {
         }
       })
       .then(res => {
-        console.log("------succ-----");
-        console.log("333333333333333");
-        console.log(res);
-        console.log("---------------");
+        // console.log("------succ-----");
+        // console.log("333333333333333");
+        // console.log(res);
+        // console.log("---------------");
         // setData(res.data);
       })
       .catch(res => {
-        console.log("------err------");
-        console.log("333333333333333");
-        console.log(res);
-        console.log("---------------");
+        // console.log("------err------");
+        // console.log("333333333333333");
+        // console.log(res);
+        // console.log("---------------");
         // setData(res.data);
       });
   }, []);
@@ -176,9 +148,38 @@ const Dashboard = () => {
       })
       .then(res => {
         setBalance(res.data);
-        console.log(res.data);
       })
       .catch(e => {});
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`https://api.artina.org/api/exhibition/user-exhibitions/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`
+        }
+      })
+      .then(res => {
+        setArtistOpenExhibitions(res.data);
+        console.log(res.data);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .post(
+        "https://api.artina.org/api/transaction/orders/",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`
+          }
+        }
+      )
+      .then(d => {
+        console.log(d.data);
+        setReqData(d);
+      })
+      .catch(res => console.log(res));
   }, []);
 
   const [lightOptions] = useState({
@@ -191,18 +192,34 @@ const Dashboard = () => {
     }
   });
 
-  useEffect(() => {
-    // axios
-    //   .get(
-    //     `https://api.artina.org/api/transaction/collection/${username}/nfts/`,
-    //     {}
-    //   )
-    //   .then((res) => {
-    //     setData(res.data);
-    //   });
-  }, []);
+  const [chartData, setChartData] = useState({
+    labels: ["اتریوم", "تومان"],
+    datasets: [
+      {
+        data: [300, 50]
+      }
+    ]
+  });
 
-  return <div>
+  useEffect(
+    () => {
+      setChartData({
+        labels: ["اتریوم(بر حسب تومان)", "تومان"],
+        datasets: [
+          {
+            data: [
+              getBalance ? getBalance.eth_balance * 104759811 : 0,
+              getBalance ? getBalance.rial_available_balance : 0
+            ]
+          }
+        ]
+      });
+    },
+    [getBalance]
+  );
+
+  return (
+    <div>
       <TestLayout>
         <div className="flex gap-3 items-start">
           <div className="flex flex-col gap-3 w-2/3">
@@ -211,14 +228,15 @@ const Dashboard = () => {
                 گزارش مالی
               </div>
               <div className="grid grid-cols-2 gap-2">
-                <div id="rials" className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4">
+                <div
+                  id="rials"
+                  className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4"
+                >
                   <div className="font-b6">تومان</div>
                   <div className="flex gap-2 items-center justify-between">
                     مانده قابل معامله:
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
-                      {getBalance
-                        ? getBalance.rial_available_balance
-                        : ""}{" "}
+                      {getBalance ? getBalance.rial_available_balance : ""}{" "}
                       تومان
                     </div>
                   </div>
@@ -231,7 +249,10 @@ const Dashboard = () => {
                   </div>
                 </div>
 
-                <div id="ethrs" className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4">
+                <div
+                  id="ethrs"
+                  className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4"
+                >
                   <div className="font-b6">اتریوم</div>
                   <div className="flex gap-2 items-center justify-between">
                     مانده قابل معامله:
@@ -252,7 +273,10 @@ const Dashboard = () => {
               </div>
 
               <div className="my-3">
-                <div id="" className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4">
+                <div
+                  id=""
+                  className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4"
+                >
                   <div className="font-b6">سود حاصل از بلیت نمایشگاه</div>
                   <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
                     {profit ? profit.revenue : ""} تومان
@@ -260,7 +284,12 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="flex justify-center">
-                <Chart type="pie" data={chartData} options={lightOptions} style={{ position: "relative", width: "50%" }} />
+                <Chart
+                  type="pie"
+                  data={chartData}
+                  options={lightOptions}
+                  style={{ position: "relative", width: "50%" }}
+                />
               </div>
             </SimpleCard>
             <SimpleCard className="bg-white w-full h-full flex-col items-center justify-start ">
@@ -277,8 +306,19 @@ const Dashboard = () => {
               <div className="w-full bg-slate-50 cursor-pointer mt-3 py-1 group rounded-lg text-center flex items-center justify-center gap-4">
                 مشاهده همه
                 <div className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.3" stroke="currentColor" width={"1em"}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.3"
+                    stroke="currentColor"
+                    width={"1em"}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15.75 19.5L8.25 12l7.5-7.5"
+                    />
                   </svg>
                 </div>
               </div>
@@ -303,55 +343,67 @@ const Dashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
-                    <td>
-                      <div className="flex justify-center w-full">
-                        <img src="/2.jpg" alt="" className="w-[42px] h-[42px] rounded-xl" />
-                      </div>
-                    </td>
-                    <td>تست</td>
-                    <td className="items-center justify-center">
-                      <div className="flex justify-center w-full">
-                        <div className="px-2 py-1 text-sm bg-green-100 text-green-500 rounded-md">
-                          +11%
-                        </div>
-                      </div>
-                    </td>
-                    <td>24000ربال</td>
-                    <td>11اتریوم</td>
-                    <td>29654400 تومان</td>
-                    <td>1402/03/13</td>
-                    <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.3" stroke="currentColor" width={"1em"}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                      </svg>
-                    </td>
-                  </tr>
-
-                  <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
-                    <td>
-                      <div className="flex justify-center w-full">
-                        <img src="/1.jpg" alt="" className="w-[42px] h-[42px] rounded-xl" />
-                      </div>
-                    </td>
-                    <td>تست</td>
-                    <td className="items-center justify-center">
-                      <div className="flex justify-center w-full">
-                        <div className="px-2 py-1 text-sm bg-red-100 text-red-500 rounded-md">
-                          -17%
-                        </div>
-                      </div>
-                    </td>
-                    <td>24000ربال</td>
-                    <td>11اتریوم</td>
-                    <td>29654400 تومان</td>
-                    <td>1402/03/13</td>
-                    <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.3" stroke="currentColor" width={"1em"}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                      </svg>
-                    </td>
-                  </tr>
+                  {artistOpenExhibitions
+                    ? artistOpenExhibitions.map((item, index) =>
+                        <tr
+                          className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all"
+                          key={index}
+                        >
+                          <td>
+                            <div className="flex justify-center w-full">
+                              <img
+                                src={item.image}
+                                alt=""
+                                className="w-[42px] h-[42px] rounded-xl"
+                              />
+                            </div>
+                          </td>
+                          <td>
+                            {item.marketName}
+                          </td>
+                          <td className="items-center justify-center">
+                            <div className="flex justify-center w-full">
+                              <div className="px-2 py-1 text-sm bg-green-100 text-green-500 rounded-md">
+                                ???
+                              </div>
+                            </div>
+                          </td>
+                          <td>???</td>
+                          <td>???</td>
+                          <td>???</td>
+                          <td className="flex flex-col justify-center">
+                            {Intl.DateTimeFormat("fa", {
+                              year: "numeric",
+                              month: "numeric",
+                              day: "numeric"
+                            }).format(new Date(item.end_date))}
+                            <div className="text-sm bg-slate-100 px-1 rounded-md">
+                              ساعت: &nbsp;
+                              {Intl.DateTimeFormat("fa", {
+                                minute: "numeric",
+                                hour: "numeric"
+                              }).format(new Date(item.end_date))}
+                            </div>
+                          </td>
+                          <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.3"
+                              stroke="currentColor"
+                              width={"1em"}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M15.75 19.5L8.25 12l7.5-7.5"
+                              />
+                            </svg>
+                          </td>
+                        </tr>
+                      )
+                    : ""}
                 </tbody>
               </table>
             </SimpleCard>
@@ -375,7 +427,11 @@ const Dashboard = () => {
                   <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
                     <td>
                       <div className="flex justify-center w-full">
-                        <img src="/2.jpg" alt="" className="w-[42px] h-[42px] rounded-xl" />
+                        <img
+                          src="/2.jpg"
+                          alt=""
+                          className="w-[42px] h-[42px] rounded-xl"
+                        />
                       </div>
                     </td>
                     <td>تست</td>
@@ -389,8 +445,19 @@ const Dashboard = () => {
                     <td>24000ربال</td>
 
                     <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.3" stroke="currentColor" width={"1em"}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.3"
+                        stroke="currentColor"
+                        width={"1em"}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15.75 19.5L8.25 12l7.5-7.5"
+                        />
                       </svg>
                     </td>
                   </tr>
@@ -398,7 +465,11 @@ const Dashboard = () => {
                   <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
                     <td>
                       <div className="flex justify-center w-full">
-                        <img src="/1.jpg" alt="" className="w-[42px] h-[42px] rounded-xl" />
+                        <img
+                          src="/1.jpg"
+                          alt=""
+                          className="w-[42px] h-[42px] rounded-xl"
+                        />
                       </div>
                     </td>
                     <td>تست</td>
@@ -412,8 +483,19 @@ const Dashboard = () => {
                     <td>24000ربال</td>
 
                     <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.3" stroke="currentColor" width={"1em"}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.3"
+                        stroke="currentColor"
+                        width={"1em"}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15.75 19.5L8.25 12l7.5-7.5"
+                        />
                       </svg>
                     </td>
                   </tr>
@@ -436,7 +518,8 @@ const Dashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {tickets && tickets.map((item, index) =>
+                  {tickets &&
+                    tickets.map((item, index) =>
                       <tr
                         className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all"
                         key={index}
@@ -484,7 +567,8 @@ const Dashboard = () => {
           </div>
         </div>
       </TestLayout>
-    </div>;
+    </div>
+  );
 };
 
 export default Dashboard;

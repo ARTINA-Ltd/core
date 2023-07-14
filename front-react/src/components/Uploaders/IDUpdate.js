@@ -134,7 +134,7 @@ export default function IDUpdate() {
             </p>
 
             <i
-              class="pi pi-id-card mt-3 p-5"
+              className="pi pi-id-card mt-3 p-5"
               style={{
                 fontSize: "18em",
                 borderRadius: "80%",

@@ -10,7 +10,7 @@ const Home = () => {
   return (
     <TestLayout wfull={true}>
       <MainSlider />
-      <NFTList className={"-mt-64 z-10 relative"} />
+      <NFTList className={"-mt-96 z-10 relative lg:mt-0 "} />
       <ExhebitionList className="mt-12" />
       <AboutUs className={"mt-20"} />
       <Features className={"my-20"} />

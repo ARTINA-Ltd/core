@@ -50,20 +50,10 @@ export const UserChangeContext = createContext();
 export default () => {
   const [user, setUser] = useState();
 
-  const bodyParameters = {
-    key: "value",
-  };
-  // axios.post('https://api.artina.org/api/account/user-info',
-  //       config)
-  //       .then(data =>{
-  //         setUser(data);
-  //         console.log("data: ")
-  //         console.log(data)
-  //       }).catch(console.log)
+
   useEffect(() => {
     axios({
       method: "get",
-      // url: "https://api.artina.org/api/account/user-info/",
       url: "https://api.artina.org/api/account/user-info/",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
@@ -73,14 +63,13 @@ export default () => {
       .then((data) => {
         setUser(data);
       })
-      .catch(setUser(undefined));
+      .catch(()=>setUser(undefined));
   }, []);
 
   const userChange = async () => {
     console.log("called");
     await axios
       .get(
-        // url: "http://78.38.35.249:8000/api/account/user-info/",
         "https://api.artina.org/api/account/user-info/",
         {
           headers: {
@@ -93,12 +82,15 @@ export default () => {
         setUser(data);
         console.log(data);
       })
-      .catch(setUser(undefined));
+      .catch(() => setUser(undefined));
   };
 
   return (
     <>
-      <ThirdwebProvider desiredChainId={activeChainId}>
+      <ThirdwebProvider
+        activeChain="ethereum"
+        autoConnect={false}
+      >
         <UserContext.Provider value={user}>
           <UserChangeContext.Provider value={userChange}>
             <div className="App">
@@ -108,7 +100,6 @@ export default () => {
               />
 
               <Routes>
-                {/* {Token=='null' ? <></> ::} */}
                 <Route path="/" element={<Home />} />
                 <Route exact path="artist-page" element={<ArtistPage />} />
                 <Route

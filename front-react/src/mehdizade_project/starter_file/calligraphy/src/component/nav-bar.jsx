@@ -19,45 +19,6 @@ const Navbar = () => {
     const showSidebar = () => setSidebar(!sidebar);
 
     return (
-//     <Fragment>
-//       <div>
-//         <img
-//           className="menu-icon"
-//           src={images["menue-icon.png"]}
-//           onClick={showSidebar}
-//         />
-//         <p>salam</p>
-//         <div className={sidebar ? "navbar-section  ac" : "navbar-section  d1"}>
-//           <img
-//             className="close-navbar"
-//             src={images["close-icon.png"]}
-//             onClick={showSidebar}
-//           />
-//           <div className="menu">
-//             <Link to="/" className="menu-item">
-//               خانه
-//             </Link>
-
-//             <Link to="/loginpage" className="menu-item">
-
-// ورود
-//             </Link>
-//             <Link to="/requests" className="menu-item">
-//               درخواست ها
-//             </Link>
-//           </div>
-//           <div className="inner-addon">
-//             {/* <input type="text" />
-//             <i class="icon-bar"></i> */}
-//            <Link to={"/"} > <button className="walletconnect">اتصال به کیف پول</button></Link>
-//                           <img className="logo" src={Logo} alt="" />
-
-//           </div>
-//         </div>
-
-//       </div>
-//       <Outlet />
-//     </Fragment>
 
 
         <Fragment>

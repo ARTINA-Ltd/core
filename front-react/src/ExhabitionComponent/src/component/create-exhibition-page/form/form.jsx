@@ -67,10 +67,7 @@ const Form = (props) => {
           <p className="form-title">پوستر مورد نظر خود را انتخاب کنید</p>
           <div className="upload-container">
             <label id="upload-label" for="inputTag">
-              {/* <img
-                src="http://100dayscss.com/codepen/upload.svg"
-                class="upload-icon"
-              /> */}
+
               <input
                 id="inputTag"
                 type="file"
@@ -121,7 +118,7 @@ const Form = (props) => {
             <input
               value={isChecked}
               onChange={handleContarctChange}
-              class="checkmark"
+              className="checkmark"
               type="checkbox"
             />
             <p className="ticket-title"> نمایشگاه من بلیط دارد</p>

@@ -17,8 +17,8 @@ const AI = () => {
 
     // Block.dots("#ai-image");
     // Block.circle("#images");
-    // Block.remove("#ai-image", 2000);
-    // Block.remove("#images", 2000);
+    // Block.remove("#ai-image", 3000);
+    // Block.remove("#images", 3000);
 
     // await axios
     //   .post(

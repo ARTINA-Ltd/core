@@ -65,7 +65,7 @@ export default function CollectionDialog(tokenId) {
   );
   return (
     <div className="card flex justify-content-center">
-      <BorderButton className={"flex gap-1"} onClick={() => setVisible(true)}>
+      <BorderButton className={"flex gap-1"} size="lg" onClick={() => setVisible(true)}>
         <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"

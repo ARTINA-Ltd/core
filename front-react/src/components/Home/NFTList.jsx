@@ -18,7 +18,7 @@ const NFTList = ({ className }) => {
     <div
       className={`${className} flex flex-col w-full justify-center items-center`}
     >
-      <table className="w-2/3 text-right font-b3 bg-white rounded-2xl  shadow-lg shadow-[#0000f006] sm:w-full sm:rounded-none lg:w-4/5">
+      <table className="w-2/3 text-right font-b3 bg-white rounded-2xl  shadow-lg shadow-[#0000f006] sm:w-full sm:rounded-none overflow-hidden lg:w-4/5">
         <thead className="font-b7">
           <tr>
             <th scope="col" className="pr-10 py-3 sm:pr-5 sm:pl-3">
@@ -48,7 +48,7 @@ const NFTList = ({ className }) => {
           {data
             ? data.map((item, index) => (
                 <tr
-                  className="border-t group cursor-pointer transition duration-100 items-center justify-center hover:bg-[#0000ff08]"
+                  className="border-t group cursor-pointer transition duration-75 ease-out items-center justify-center  hover:bg-[#0000ff08]"
                   key={index}
                   onClick={() => navigate(`/nft-details/${item.token_id}`)}
                 >

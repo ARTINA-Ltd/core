@@ -16,7 +16,7 @@ const SimpleInput = ({
   className,
   ltr = false,
   options,
-  menuPlacement
+  menuPlacement,
 }) => {
   const [focus, setFocus] = useState(defaultValue === null ? false : true);
   const [value, setValue] = useState("");
@@ -24,11 +24,18 @@ const SimpleInput = ({
 
   const customStyles = {
     option: (defaultStyles, state) => ({
-      ...defaultStyles,
       color: state.isSelected ? "#ffffff" : "#202020",
-      backgroundColor: state.isSelected ? "#4e45d0" : "#ffffff",
-      padding: "8px"
-    })
+      backgroundColor: state.isSelected ? "#4e45d0" : "#4e45d012",
+      padding: "8px",
+      marginTop: "6px",
+      marginButtom: "6px",
+      borderRadius: "7px",
+      border: "solid #0000aa15 1px",
+      cursor: "pointer",
+      transitionProperty: "all",
+      transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+      transitionDuration: "150ms",
+    }),
   };
 
   const handleChange = event => {
@@ -42,26 +49,23 @@ const SimpleInput = ({
       } else setValue(prev => prev);
     }
   };
-  useEffect(
-    () => {
-      setFocus(
-        (defaultValue === null || defaultValue === undefined) && type != "date"
-          ? false
-          : true
+  useEffect(() => {
+    setFocus(
+      (defaultValue === null || defaultValue === undefined) && type != "date"
+        ? false
+        : true
+    );
+    if (type == "date" && defaultValue !== null) {
+      setDefaultVal(
+        new Date(
+          parseInt(defaultValue.split("/")[2]),
+          parseInt(defaultValue.split("/")[1]) - 1,
+          parseInt(defaultValue.split("/")[0])
+        )
       );
-      if (type == "date" && defaultValue !== null) {
-        setDefaultVal(
-          new Date(
-            parseInt(defaultValue.split("/")[2]),
-            parseInt(defaultValue.split("/")[1]) - 1,
-            parseInt(defaultValue.split("/")[0])
-          )
-        );
-        // setDefaultVal(new Date(,parseInt(defaultValue.split('/')[1]),parseInt(defaultValue.split('/')[0])));
-      }
-    },
-    [defaultValue]
-  );
+      // setDefaultVal(new Date(,parseInt(defaultValue.split('/')[1]),parseInt(defaultValue.split('/')[0])));
+    }
+  }, [defaultValue]);
 
   const input = () => {
     if (type === "date" && disabled == false && defaultVal) {
@@ -69,7 +73,7 @@ const SimpleInput = ({
         <DatePicker
           accentColor="#4e45d0"
           onChange={onChange}
-          inputClass={`simple-input w-full z-50`}
+          inputClass={`simple-input w-full`}
           defaultValue={defaultVal}
           className={`z-[3102]`}
         />
@@ -79,7 +83,7 @@ const SimpleInput = ({
         <DatePicker
           accentColor="#4e45d0"
           onChange={onChange}
-          inputClass={`simple-input w-full z-50`}
+          inputClass={`simple-input w-full`}
           className={`z-[3102]`}
         />
       );
@@ -88,7 +92,7 @@ const SimpleInput = ({
         <DatePicker
           accentColor="#4e45d0"
           onChange={onChange}
-          inputClass={`simple-input w-full z-50`}
+          inputClass={`simple-input w-full`}
           className={`z-[3102]`}
         />
       );
@@ -103,7 +107,8 @@ const SimpleInput = ({
           defaultValue={new Intl.DateTimeFormat("fa").format(defaultVal)}
           onFocus={() => setFocus(true)}
           onBlur={e =>
-            e.target.value === "" ? setFocus(false) : setFocus(true)}
+            e.target.value === "" ? setFocus(false) : setFocus(true)
+          }
         />
       );
     } else if (
@@ -117,12 +122,13 @@ const SimpleInput = ({
           onChange={handleChange}
           value={value}
           type="text"
-          className={`simple-input w-full`}
+          className={`simple-input w-full translate-x-0`}
           placeholder={!focus ? "" : placeholder}
           defaultValue={defaultValue}
           onFocus={() => setFocus(true)}
           onBlur={e =>
-            e.target.value === "" ? setFocus(false) : setFocus(true)}
+            e.target.value === "" ? setFocus(false) : setFocus(true)
+          }
         />
       );
     } else if (type === "double") {
@@ -138,7 +144,8 @@ const SimpleInput = ({
           defaultValue={defaultValue}
           onFocus={() => setFocus(true)}
           onBlur={e =>
-            e.target.value === "" ? setFocus(false) : setFocus(true)}
+            e.target.value === "" ? setFocus(false) : setFocus(true)
+          }
         />
       );
     } else if (type === "password") {
@@ -152,7 +159,8 @@ const SimpleInput = ({
           defaultValue={defaultValue}
           onFocus={() => setFocus(true)}
           onBlur={e =>
-            e.target.value === "" ? setFocus(false) : setFocus(true)}
+            e.target.value === "" ? setFocus(false) : setFocus(true)
+          }
         />
       );
     } else if (type === "time") {
@@ -163,8 +171,8 @@ const SimpleInput = ({
           options={options}
           onChange={onChange}
           className={"simple-input2 w-full"}
-          unstyled
           styles={customStyles}
+          unstyled
           menuPlacement={menuPlacement}
         />
       );
@@ -180,7 +188,8 @@ const SimpleInput = ({
           onFocus={() => setFocus(true)}
           dir={ltr ? "ltr" : "rtl"}
           onBlur={e =>
-            e.target.value === "" ? setFocus(false) : setFocus(true)}
+            e.target.value === "" ? setFocus(false) : setFocus(true)
+          }
         />
       );
     }
@@ -188,23 +197,23 @@ const SimpleInput = ({
 
   return (
     <div
-      className={`w-full items-start gap-1 relative ${disabled
-        ? "opacity-50"
-        : ""} ${className} flex flex-col`}
+      className={`w-full items-start gap-1 relative ${
+        disabled ? "opacity-50" : ""
+      } ${className} flex flex-col`}
     >
       {input()}
       <div
-        className={`text-[14px] font-b5 pr-2 pointer-events-none absolute translate-y-1/2 right-2  transition-all ${focus
-          ? "bottom-[110%] text-[14px] text-[#4e45d0]"
-          : "bottom-[50%] "}`}
+        className={`text-[14px] font-b5 pr-2 pointer-events-none absolute translate-y-1/2 right-2  transition-all ${
+          focus ? "bottom-[110%] text-[14px] text-[#4e45d0]" : "bottom-[50%] "
+        }`}
       >
         {title}
       </div>
 
       <div
-        className={`absolute left-2 top-1/2 -translate-y-1/2 text-sm bg-red-50 text-red-600 px-2 rounded-full font-b2 my-auto ${isValid
-          ? "opacity-[0%]"
-          : "opacity-[90%]"} transition-all`}
+        className={`absolute left-2 top-1/2 -translate-y-1/2 text-sm bg-red-50 text-red-600 px-2 rounded-full font-b2 my-auto ${
+          isValid ? "opacity-[0%]" : "opacity-[90%]"
+        } transition-all`}
       >
         {validationError}
       </div>

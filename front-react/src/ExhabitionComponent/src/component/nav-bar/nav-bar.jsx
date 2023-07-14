@@ -39,7 +39,7 @@ const Navbar = () => {
           </div>
           <div className="inner-addon">
             <input type="text" />
-            <i class="icon-bar"></i>
+            <i className="icon-bar"></i>
           </div>
         </div>
         
