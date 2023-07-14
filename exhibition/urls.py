@@ -19,6 +19,7 @@ router.register(r'exhibition/(?P<exhibition_id>\d+)', views.NFTByExhibitionViewS
 router.register(r'categories', views.CategoryViewSet,basename='categories')
 router.register(r'Ticket', views.TicketViewSet,basename='Ticket')
 router.register(r'ExTicketViewSet', views.ExTicketViewSet,basename='ExTicketViewSet')
+router.register(r'OpenExhibitionListView', views.OpenExhibitionListView,basename='OpenExhibitionListView')
 
 
 
