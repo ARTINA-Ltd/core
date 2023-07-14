@@ -13,7 +13,7 @@ const MainSlider = () => {
   return (
     <>
       <div
-        className="w-full h-[968px] keen-slider lg:h-[550px] md:h-[400px]"
+        className="w-full"
       >
         <Swiper navigation={true} modules={[Navigation]} slidesPerView={1} spaceBetween={0}>
           <SwiperSlide>

@@ -164,9 +164,9 @@ const Support = () => {
           <SimpleInput
             className={"mt-6"}
             type="text"
-            validationError={"بایستی 10 رقم باشد"}
+            validationError={"بایستی 11 رقم باشد"}
             title="شماره تلفن"
-            isValid={values.phone_number && values.phone_number.length != 10}
+            isValid={values.phone_number && values.phone_number.length != 11}
             onChange={e =>
               setValues(prev => ({
                 ...prev,
@@ -197,7 +197,6 @@ const Support = () => {
           type="text"
           title=""
           isValid={values.text != ""}
-          validationError="نمی‌تواند خالی باشد"
           onChange={e =>
             setValues(prev => ({
               ...prev,

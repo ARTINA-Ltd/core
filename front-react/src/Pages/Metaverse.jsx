@@ -8,9 +8,7 @@ const Metaverse = () => {
       wfull={true}
     >
       <iframe
-        src={`https://metaverse.artina.org/${localStorage.getItem(
-          "authTokens"
-        )}`}
+        src={`https://metaverse.artina.org`}
         className="w-full h-[100vh]"
       ></iframe>
     </TestLayout>

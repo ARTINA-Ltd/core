@@ -8,10 +8,8 @@ import TestLayout from "../Layouts/TestLayout";
 const Exhibitor = () => {
   const [artistOpenExhibitions, setArtistOpenExhibitions] = useState();
   const [artistClosedExhibitions, setArtistClosedExhibitions] = useState();
-  const [
-    openRegistrationExhibitions,
-    setOpenRegistrationExhibitions
-  ] = useState();
+  const [openRegistrationExhibitions, setOpenRegistrationExhibitions] =
+    useState();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,11 +18,11 @@ const Exhibitor = () => {
         `https://api.artina.org/api/exhibition/artist-user-past-exhibitions/`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
         }
       )
-      .then(res => {
+      .then((res) => {
         console.log("_____________________");
         console.log("artistClosedExhibitions");
         console.log(res.data);
@@ -39,7 +37,7 @@ const Exhibitor = () => {
       .get(
         `https://api.artina.org/api/exhibition/open-for-artist-registration-exhibitions/`
       )
-      .then(res => {
+      .then((res) => {
         console.log("_____________________");
         console.log("OpenRegistrationExhibitions");
         console.log(res.data);
@@ -52,10 +50,10 @@ const Exhibitor = () => {
     axios
       .get(`https://api.artina.org/api/exhibition/user-exhibitions/`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`
-        }
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
       })
-      .then(res => {
+      .then((res) => {
         console.log("_____________________");
         console.log("user exhibitions");
         console.log(res.data);
@@ -87,10 +85,11 @@ const Exhibitor = () => {
           <div className="grid grid-cols-5 gap-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-1">
             <AddExhibitionDialog />
             {artistOpenExhibitions
-              ? artistOpenExhibitions.map((item, index) =>
+              ? artistOpenExhibitions.map((item, index) => (
                   <div
                     onClick={() =>
-                      navigate(`/artist-application-form/${item.id}`)}
+                      navigate(`/artist-application-form/${item.id}`)
+                    }
                   >
                     <SimpleCard
                       key={index}
@@ -106,14 +105,23 @@ const Exhibitor = () => {
                         <div className="flex flex-col items-center justify-center w-full">
                           {item.marketName}
 
-                          <div className="bg-white/20  w-full hover:bg-white/30 py-2 text-sm backdrop-blur-md">
+                          <div
+                            className="bg-white/20  w-full hover:bg-white/30 py-2 text-sm backdrop-blur-md"
+                            onClick={() =>
+                              window.open(
+                                `https://metaverse.artina.org/${localStorage.getItem(
+                                  "authTokens"
+                                )}`
+                              )
+                            }
+                          >
                             متاورس
                           </div>
                         </div>
                       </div>
                     </SimpleCard>
                   </div>
-                )
+                ))
               : ""}
           </div>
         </SimpleCard>
@@ -156,37 +164,41 @@ const Exhibitor = () => {
               </div>
             </div>
           </div>
-          {openRegistrationExhibitions && openRegistrationExhibitions.length > 0
-            ? <div>
-                <div className="grid grid-cols-5 gap-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-1">
-                  {openRegistrationExhibitions.map((item, index) =>
-                    <div
-                      onClick={() =>
-                        navigate(`/artist-application-form/${item.id}`)}
+          {openRegistrationExhibitions &&
+          openRegistrationExhibitions.length > 0 ? (
+            <div>
+              <div className="grid grid-cols-5 gap-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-1">
+                {openRegistrationExhibitions.map((item, index) => (
+                  <div
+                    onClick={() =>
+                      navigate(`/artist-application-form/${item.id}`)
+                    }
+                  >
+                    <SimpleCard
+                      key={index}
+                      className="h-[320px] w-full bg-[#0000aa05] hover:bg-[#0000aa08] p-0 relative group cursor-pointer"
+                      noPadding={true}
                     >
-                      <SimpleCard
-                        key={index}
-                        className="h-[320px] w-full bg-[#0000aa05] hover:bg-[#0000aa08] p-0 relative group cursor-pointer"
-                        noPadding={true}
-                      >
-                        <img
-                          src={item.image}
-                          className="h-full w-full object-cover rounded-2xl "
-                          alt=""
-                        />
-                        <div className="absolute h-full w-full top-0 rounded-2xl bg-gradient-to-t text-lg font-b4 group-hover:text-xl from-black flex items-end justify-center pb-4 text-white group-hover:pb-6 transition-all">
-                          {item.marketName}
-                        </div>
-                      </SimpleCard>
-                    </div>
-                  )}
-                </div>
+                      <img
+                        src={item.image}
+                        className="h-full w-full object-cover rounded-2xl "
+                        alt=""
+                      />
+                      <div className="absolute h-full w-full top-0 rounded-2xl bg-gradient-to-t text-lg font-b4 group-hover:text-xl from-black flex items-end justify-center pb-4 text-white group-hover:pb-6 transition-all">
+                        {item.marketName}
+                      </div>
+                    </SimpleCard>
+                  </div>
+                ))}
               </div>
-            : <div>
-                <div className="flex w-full justify-center opacity-30">
-                  نمایشگاهی موجود نمیباشد
-                </div>
-              </div>}
+            </div>
+          ) : (
+            <div>
+              <div className="flex w-full justify-center opacity-30">
+                نمایشگاهی موجود نمیباشد
+              </div>
+            </div>
+          )}
         </SimpleCard>
 
         <SimpleCard className={"bg-white mx-auto w-[90%] mt-5 text-center"}>
@@ -194,37 +206,40 @@ const Exhibitor = () => {
             نمایشگاه های قبلی شما
           </div>
 
-          {artistClosedExhibitions && artistClosedExhibitions.length > 0
-            ? <div>
-                <div className="grid grid-cols-5 gap-5">
-                  {artistClosedExhibitions.map((item, index) =>
-                    <div
-                      onClick={() =>
-                        navigate(`/artist-application-form/${item.id}`)}
+          {artistClosedExhibitions && artistClosedExhibitions.length > 0 ? (
+            <div>
+              <div className="grid grid-cols-5 gap-5">
+                {artistClosedExhibitions.map((item, index) => (
+                  <div
+                    onClick={() =>
+                      navigate(`/artist-application-form/${item.id}`)
+                    }
+                  >
+                    <SimpleCard
+                      key={index}
+                      className="h-[280px] w-full bg-[#0000aa05] hover:bg-[#0000aa08] p-0 relative group cursor-pointer opacity-60 hover:opacity-100 transition-all"
+                      noPadding={true}
                     >
-                      <SimpleCard
-                        key={index}
-                        className="h-[280px] w-full bg-[#0000aa05] hover:bg-[#0000aa08] p-0 relative group cursor-pointer opacity-60 hover:opacity-100 transition-all"
-                        noPadding={true}
-                      >
-                        <img
-                          src={item.image}
-                          className="h-full w-full object-cover rounded-2xl "
-                          alt=""
-                        />
-                        <div className="absolute h-full w-full top-0 rounded-2xl bg-gradient-to-t text-lg font-b4 group-hover:text-xl from-black flex items-end justify-center pb-4 text-white group-hover:pb-6 transition-all">
-                          {item.marketName}
-                        </div>
-                      </SimpleCard>
-                    </div>
-                  )}
-                </div>
+                      <img
+                        src={item.image}
+                        className="h-full w-full object-cover rounded-2xl "
+                        alt=""
+                      />
+                      <div className="absolute h-full w-full top-0 rounded-2xl bg-gradient-to-t text-lg font-b4 group-hover:text-xl from-black flex items-end justify-center pb-4 text-white group-hover:pb-6 transition-all">
+                        {item.marketName}
+                      </div>
+                    </SimpleCard>
+                  </div>
+                ))}
               </div>
-            : <div>
-                <div className="flex w-full justify-center opacity-30">
-                  نمایشگاهی موجود نمیباشد
-                </div>
-              </div>}
+            </div>
+          ) : (
+            <div>
+              <div className="flex w-full justify-center opacity-30">
+                نمایشگاهی موجود نمیباشد
+              </div>
+            </div>
+          )}
         </SimpleCard>
       </TestLayout>
     </div>
