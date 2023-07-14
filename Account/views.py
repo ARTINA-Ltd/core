@@ -99,7 +99,7 @@ class UserInfoViewSet(viewsets.ViewSet):
             'email': user.email,
             'role': str(profile.role),
             'shaba_number':profile.shaba_number,
-            'postal_code':postal_code
+            'postal_code':profile.postal_code
         }
         return Response(data)
 
@@ -338,7 +338,7 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
             'rial_available_balance': user_balance.rial_available_balance,
             'rial_unavailable_balance': user_balance.rial_untradable_balance,
             'eth_balance': user_balance.eth_balance,
-            'eth_unavailable_balance' : eth_unavailable_balance
+            'eth_unavailable_balance' : user_balance.eth_unavailable_balance
             
             # Add other balance fields as needed
         }
