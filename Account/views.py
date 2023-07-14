@@ -98,7 +98,8 @@ class UserInfoViewSet(viewsets.ViewSet):
             'profile_picture': profile.profile_picture,
             'email': user.email,
             'role': str(profile.role),
-            'shaba_number':profile.shaba_number
+            'shaba_number':profile.shaba_number,
+            'postal_code':postal_code
         }
         return Response(data)
 
@@ -150,7 +151,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, pk=None):
         profile = self.get_object()
-        if profile.user != request.user:
+        if profile.user != reeth_unavailable_balancequest.user:
             return Response({'error': 'You do not have permission to access this profile.'}, status=403)
         serializer = self.get_serializer(profile)
         return Response(serializer.data)
@@ -337,6 +338,7 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
             'rial_available_balance': user_balance.rial_available_balance,
             'rial_unavailable_balance': user_balance.rial_untradable_balance,
             'eth_balance': user_balance.eth_balance,
+            'eth_unavailable_balance' : eth_unavailable_balance
             
             # Add other balance fields as needed
         }

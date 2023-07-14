@@ -51,7 +51,7 @@ class Profile(models.Model):
     email = models.EmailField(max_length=50, verbose_name="ایمیل", null=True, blank=False)
     email_verified = models.BooleanField(default=False)
     role = models.ForeignKey(Role, on_delete=models.CASCADE, default=1)
-    
+    postal_code =models.CharField(max_length=10, verbose_name="postal_code", null=True, blank=True) 
     # def __str__(self):
     #     return self.user.username + " " + self.first_name + " " + self.last_name + " " + self.national_code + " "\
     #            + self.email + " "
@@ -70,28 +70,6 @@ class ArtistReviewRating(models.Model):
     def __str__(self):
         return f'{self.artist.username} Get Rank : ( {self.rating} )  from {self.user.username}'
 # TODO : Functions needed for default Django User model
-
-
-def get_artist_applications(self):
-    nfts = self.nft_set.all()
-    applications = []
-    for nft in nfts:
-        applications += nft.nftexs.filter(state='pending').all()
-    return set(applications)
-# TODO: check for future delete, handled in front-end
-
-
-def is_artist(self):
-    try:
-        profile = self.profile
-        if profile.role.name == 'artist':
-            return True
-    except:
-        return False
-
-
-User.add_to_class('is_artist', is_artist)
-User.add_to_class('get_artist_applications', get_artist_applications)
 
 
 class TicketUser(models.Model):
@@ -125,7 +103,7 @@ class UserBalance(models.Model):
     rial_available_balance = models.IntegerField(default=100000,verbose_name="mojudi")
     rial_untradable_balance = models.IntegerField(default=0,verbose_name="unavailable mojudi")
     eth_balance = models.IntegerField(default=0,verbose_name="mojudi etherium")
-    
+    eth_unavailable_balance = models.FloatField(default=0 , verbose_name="eth_unavailable_balance")    
 
 class UserTurnover(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

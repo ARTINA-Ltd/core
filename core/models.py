@@ -23,8 +23,9 @@ class NFT(models.Model):
     description = models.TextField(max_length=200, null=True, blank=True)
     external_link = models.URLField(null=True, blank=True)
     author_address=models.CharField(null=True,max_length=45,default="0x2293221D7c357FB04De9c7D0dEeBcA427407429D")
-    # image = models.ImageField(upload_to="./static/NFTS", null=True, blank=True)
     in_exhibition = models.BooleanField(default=False)
+    is_visible=models.BooleanField(default=True)
+    has_physical= models.BooleanField(default=False)
     def has_expired(self):
         return datetime.now(tz=pytz.timezone('Asia/Tehran')) > self.end_date
 

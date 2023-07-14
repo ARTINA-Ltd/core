@@ -145,6 +145,18 @@ class NftViewSet(viewsets.ModelViewSet):
         return Response({"message": "NFT is now for sale."}, status=status.HTTP_200_OK)
 
 
+    @action(detail=False, methods=['put'])
+    def toggle_visibility(self, request, pk=None):
+        nft_id = request.data.get('token_id')
+        nft=NFT.objects.filter(token_id=nft_id).first()
+        if nft.owner != self.request.user:
+            return Response({'error': 'You do not have permission to perform this action.'}, status=403)
+
+        nft.is_visible = not nft.is_visible
+        nft.save()
+        serializer = self.get_serializer(nft)
+        return Response(serializer.data)
+
 
 
 
