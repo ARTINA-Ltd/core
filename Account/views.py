@@ -305,7 +305,7 @@ class UserTurnoverViewSet(viewsets.ModelViewSet):
 
         data = {
             'last_month_turnover': last_month_turnover,
-            'all_turnovers': UserTurnoverSerializer(turnovers, many=True).data,
+            'all_turnovers': serializers.UserTurnoverSerializer(turnovers, many=True).data,
         }
 
         return Response(data, status=status.HTTP_200_OK)

@@ -373,5 +373,5 @@ class ExTicketViewSet(viewsets.ReadOnlyModelViewSet):
         user = self.request.user
         ticket_exhibitions = Ticket.objects.filter(user=user).values_list('exhibition_id', flat=True)
         for exhibition_data in data:
-            exhibition_data['user_has_ticket'] = exhibition_data.pop('has_ticket') and exhibition_data['id'] in ticket_exhibitions
+            exhibition_data['user_has_ticket'] = exhibition_data['has_ticket'] and exhibition_data['id'] in ticket_exhibitions
         return Response(data)
