@@ -24,18 +24,37 @@ const Collections = () => {
       )
       .then((res) => {
         setData(res.data);
+        console.log(res.data);
       });
   }, [username]);
 
-  const handleClickShow = (e,childIsVisible) =>{
-    console.log("salam")
-    childIsVisible(true)
-  }
+  const handleClickShow = (e, childIsVisible, tokenid) => {
+    console.log("salam");
+    console.log(tokenid)
+    axios
+      .put(
+        `https://api.artina.org/api/transaction/nfts/toggle_visibility/`,
+        {
+          token_id: tokenid,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+          mode: "cors",
+        }
+      )
+      .then((res) => {
+        setData(res.data);
+        console.log(res.data);
+      });
+    childIsVisible(true);
+  };
 
-  const handleClickHide = (e,childIsVisible) =>{
-    console.log("khodahafeez")
-    childIsVisible(false)
-  }
+  const handleClickHide = (e, childIsVisible) => {
+    console.log("khodahafeez");
+    childIsVisible(false);
+  };
   return (
     <TestLayout>
       {getData && getData.length > 0 ? (
@@ -52,15 +71,15 @@ const Collections = () => {
           ? getData.map((item, index) => (
               <div className="col-span-1" key={index}>
                 <ImageCard
-                  className="bg-white"                  
+                  className="bg-white"
                   src={item.image_url}
                   price={item.last_price}
                   onClick={() => navigate(`/nft-details/${item.token_id}`)}
                   tokenId={item.token_id}
                   showSell={user ? user.data.username === username : false}
-                  visible={item == null}
-                  onClickShow={handleClickShow}
-                  onClickHide={handleClickHide}
+                  visible={item.is_visible}
+                  onClickShow={(e, x) => handleClickShow(e, x, item.token_id)}
+                  onClickHide={(e, x) => handleClickHide(e, x, item.token_id)}
                 >
                   {item.name}
                 </ImageCard>

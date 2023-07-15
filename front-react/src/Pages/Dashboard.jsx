@@ -13,7 +13,7 @@ const Dashboard = () => {
   const [getBalance, setBalance] = useState();
   const [artistOpenExhibitions, setArtistOpenExhibitions] = useState();
   const [reqData, setReqData] = useState();
-
+//https://api.artina.org/api/transaction/orders/get_user_order
   useEffect(() => {
     axios
       .get("https://api.artina.org/api/exhibition/Ticket/get_user_tickets/", {
