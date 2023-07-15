@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router";
 import { useContext } from "react";
 import { UserContext } from "../App";
+import { Notify } from "notiflix";
 
 const Collections = () => {
   const [getData, setData] = useState();
@@ -29,8 +30,6 @@ const Collections = () => {
   }, [username]);
 
   const handleClickShow = (e, childIsVisible, tokenid) => {
-    console.log("salam");
-    console.log(tokenid)
     axios
       .put(
         `https://api.artina.org/api/transaction/nfts/toggle_visibility/`,
@@ -45,14 +44,31 @@ const Collections = () => {
         }
       )
       .then((res) => {
-        setData(res.data);
+        Notify.success("مجموعه ی شما برای عموم قابل نمایش است")
         console.log(res.data);
       });
     childIsVisible(true);
   };
 
-  const handleClickHide = (e, childIsVisible) => {
-    console.log("khodahafeez");
+  const handleClickHide = (e, childIsVisible,tokenid) => {
+    axios
+      .put(
+        `https://api.artina.org/api/transaction/nfts/toggle_visibility/`,
+        {
+          token_id: tokenid,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+          mode: "cors",
+        }
+      )
+      .then((res) => {
+        Notify.success("مجموعه ی شما فقط برای شما نمایش داده میشود")
+
+        console.log(res.data);
+      });
     childIsVisible(false);
   };
   return (

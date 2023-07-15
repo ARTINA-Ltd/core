@@ -17,6 +17,8 @@ const SimpleInput = ({
   ltr = false,
   options,
   menuPlacement,
+  onKeyPress,
+  shabaNum = false
 }) => {
   const [focus, setFocus] = useState(defaultValue === null ? false : true);
   const [value, setValue] = useState("");
@@ -38,15 +40,19 @@ const SimpleInput = ({
     }),
   };
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     const inputValue = event.target.value;
-
-    if (inputValue == "") {
-      setValue("");
+    if (inputValue.length > 24 && shabaNum) {
+      event.preventDefault();
+      event.stopPropagation();
     } else {
-      if (/^[\d+.]*$/.test(inputValue)) {
-        setValue(inputValue);
-      } else setValue(prev => prev);
+      if (inputValue == "") {
+        setValue("");
+      } else {
+        if (/^[\d+.]*$/.test(inputValue)) {
+          setValue(inputValue);
+        } else setValue((prev) => prev);
+      }
     }
   };
   useEffect(() => {
@@ -106,7 +112,7 @@ const SimpleInput = ({
           placeholder={!focus ? "" : placeholder}
           defaultValue={new Intl.DateTimeFormat("fa").format(defaultVal)}
           onFocus={() => setFocus(true)}
-          onBlur={e =>
+          onBlur={(e) =>
             e.target.value === "" ? setFocus(false) : setFocus(true)
           }
         />
@@ -119,6 +125,7 @@ const SimpleInput = ({
         <input
           disabled={disabled}
           onKeyUp={onChange}
+          // onKeyDown={}
           onChange={handleChange}
           value={value}
           type="text"
@@ -126,7 +133,7 @@ const SimpleInput = ({
           placeholder={!focus ? "" : placeholder}
           defaultValue={defaultValue}
           onFocus={() => setFocus(true)}
-          onBlur={e =>
+          onBlur={(e) =>
             e.target.value === "" ? setFocus(false) : setFocus(true)
           }
         />
@@ -143,7 +150,7 @@ const SimpleInput = ({
           placeholder={!focus ? "" : placeholder}
           defaultValue={defaultValue}
           onFocus={() => setFocus(true)}
-          onBlur={e =>
+          onBlur={(e) =>
             e.target.value === "" ? setFocus(false) : setFocus(true)
           }
         />
@@ -158,7 +165,7 @@ const SimpleInput = ({
           placeholder={!focus ? "" : placeholder}
           defaultValue={defaultValue}
           onFocus={() => setFocus(true)}
-          onBlur={e =>
+          onBlur={(e) =>
             e.target.value === "" ? setFocus(false) : setFocus(true)
           }
         />
@@ -168,6 +175,7 @@ const SimpleInput = ({
     } else if (type === "dropdown") {
       return (
         <Select
+          placeholder={placeholder}
           options={options}
           onChange={onChange}
           className={"simple-input2 w-full"}
@@ -187,7 +195,7 @@ const SimpleInput = ({
           defaultValue={defaultValue}
           onFocus={() => setFocus(true)}
           dir={ltr ? "ltr" : "rtl"}
-          onBlur={e =>
+          onBlur={(e) =>
             e.target.value === "" ? setFocus(false) : setFocus(true)
           }
         />

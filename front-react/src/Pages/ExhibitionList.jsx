@@ -23,7 +23,7 @@ const ExhibitionList = () => {
           },
           mode: "cors",
         })
-        .then(res => {
+        .then((res) => {
           setData(res.data);
 
           console.log("Extiiiiiiiiiiiiiiiii");
@@ -38,12 +38,45 @@ const ExhibitionList = () => {
           },
           mode: "cors",
         })
-        .then(res => {
+        .then((res) => {
           console.log(res.data);
         });
     }
   }, []);
 
+  const handleTicket = (item) => {
+    if (item.has_ticket && item.user_has_ticket) {
+      return (
+        <div className="flex items-center gap-1 font-b4 text-lg">
+          <div className="bg-blue-50 text-blue-800 rounded-lg px-4 py-1 opacity-70">
+            شما بلیت این نمایشگاه را دارید
+          </div>
+        </div>
+      );
+    } else if (item.has_ticket && !item.user_has_ticket) {
+      return (
+        <div className="flex items-center gap-1 font-b4 text-lg">
+          <div className="bg-red-50 text-red-800 rounded-lg px-4 py-1 opacity-70">
+            شما بلیت این نمایشگاه را ندارید
+          </div>
+          <BuyTicketDialog
+            onClick={(event) => event.stopPropagation()}
+            price={item.commision}
+            exhibitionId={item.id}
+            exhibitionName={item.marketName}
+          />
+        </div>
+      );
+    } else {
+      return (
+        <div className="flex items-center gap-1 font-b4 text-lg">
+          <div className="bg-blue-50 text-blue-800 rounded-lg px-4 py-1 opacity-70">
+            نمایشگاه رایگان
+          </div>
+        </div>
+      );
+    }
+  };
   return (
     <TestLayout className="flex flex-col gap-5">
       {getData
@@ -91,35 +124,7 @@ const ExhibitionList = () => {
                     </div>
                   </div>
 
-                  {item.has_ticket === true ? (
-                    <div className="flex items-center gap-1 font-b4 text-lg">
-                      <div className="bg-blue-50 text-blue-800 rounded-lg px-4 py-1 opacity-70">
-                        این نمایشگاه بلیت دارد
-                      </div>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-
-                  {item.user_has_ticket  === true? (
-                    <div className="flex items-center gap-1 font-b4 text-lg">
-                      <div className="bg-blue-50 text-blue-800 rounded-lg px-4 py-1 opacity-70">
-                        شما بلیت این نمایشگاه را دارید
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-1 font-b4 text-lg">
-                      <div className="bg-red-50 text-red-800 rounded-lg px-4 py-1 opacity-70">
-                        شما بلیت این نمایشگاه را ندارید
-                      </div>
-                      <BuyTicketDialog
-                        onClick={event => event.stopPropagation()}
-                        price={item.commision}
-                        exhibitionId={item.id}
-                        exhibitionName={item.marketName}
-                      />
-                    </div>
-                  )}
+                  {handleTicket(item)}
                 </div>
                 <div className="w-full"></div>
                 <img

@@ -231,7 +231,9 @@ const UploadItem = () => {
               <SimpleInput
                 options={options}
                 type="dropdown"
+                placeholder={"انتخاب دسته بندی"}
                 onChange={handleCategoryChange}
+                title="دسته بندی"
               />
             </div>
             <div className="w-full">

@@ -15,7 +15,7 @@ const MainSlider = () => {
       <div
         className="w-full"
       >
-        <Swiper navigation={true} modules={[Navigation]} slidesPerView={1} spaceBetween={0}>
+        <Swiper navigation={true} loop={true} modules={[Navigation]} slidesPerView={1} spaceBetween={0}>
           <SwiperSlide>
               <img src="/1.jpg" className="object-cover w-full" alt="" />
           </SwiperSlide>

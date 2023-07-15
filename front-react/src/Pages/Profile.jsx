@@ -628,7 +628,7 @@ function Profile() {
               className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
             />
             <div className="text-white text-[27px] mb-2 z-10 font-b9">
-              آپلود فرم احراز هویت{" "}
+              آپلود فرم احراز هویت
             </div>
             <BorderButton
               className={"text-white border-white"}
@@ -708,6 +708,7 @@ function Profile() {
                 type="number"
                 onChange={e => setShabaNumber(e.target.value)}
                 className="border-none text-white"
+                shabaNum={true}
               />
             </div>
           </SimpleCard>

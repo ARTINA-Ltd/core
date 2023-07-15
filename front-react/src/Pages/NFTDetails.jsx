@@ -102,7 +102,7 @@ const NFTDetails = () => {
       )
       .then((d) => {
         setData(d.data);
-        console.log(d.data)
+        console.log(d.data);
       });
 
     axios({
@@ -219,9 +219,41 @@ const NFTDetails = () => {
                 {data ? data.description : ""}
               </div>
             </div>
-            <div className="w-full flex justify-end">
-              <a href={data ? data.external_link : ""} className="bg-indigo-50 hover:bg-indigo-100 transition-all py-1 px-4 text-gray-600 rounded-lg">لینک خارجی</a>
+            <div className="w-full flex justify-between items-center">
+              {data && data.has_physical ? (
+                <>
+                  <div className="bg-green-50 text-green-400  py-1 text-sm px-3 rounded-md">
+                    اثر نسخه فیزیکی دارد
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="bg-red-50 text-red-400 py-1 text-sm px-3 rounded-md">
+                    اثر نسخه فیزیکی ندارد
+                  </div>
+                </>
+              )}
 
+              <a
+                href={data ? data.external_link : ""}
+                className="bg-[#f1f2f7] hover:bg-[#e5e6eb] transition-all text-gray-600 py-1 text-sm px-3 rounded-md flex gap-1 items-center"
+              >
+                لینک خارجی
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"
+                    />
+                  </svg>
+              </a>
             </div>
 
             <div className="relative flex items-center justify-self-end bg-[#f1f2f7] px-10 py-3 rounded-xl">
@@ -255,7 +287,9 @@ const NFTDetails = () => {
                 />
                 <hr className="text-black opacity-50 bg-black" />
                 <div className="bg-indigo-100 rounded-xl p-3 w-full">
-                  <div className="w-full text-center font-b6 text-xl">ثبت پیشنهاد جدید</div>
+                  <div className="w-full text-center font-b6 text-xl">
+                    ثبت پیشنهاد جدید
+                  </div>
                   <div className="flex gap-1 w-full flex-col">
                     <div className="flex items-center gap-3">
                       <div className="grow">

@@ -105,7 +105,7 @@ const Footer = () => {
               راهنمای ایجاد نمایشگاه
             </a>
             <a href="/privacy-policy" className="mr-2 font-b3">
-              قوانین و مقررات{" "}
+              قوانین و مقررات
             </a>
           </div>
         </div>

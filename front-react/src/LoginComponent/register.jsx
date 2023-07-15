@@ -162,7 +162,7 @@ const Register = () => {
             sitekey={"6LecwBMnAAAAAItOWnJM8T17TlvnA1ewPIUGDuj_"}
             onChange={handleCaptchaChange}
           />
-        </div>{" "}
+        </div>
         <div className="w-full mt-5 flex justify-between items-center gap-4">
           <a
             href="/privacy-policy"

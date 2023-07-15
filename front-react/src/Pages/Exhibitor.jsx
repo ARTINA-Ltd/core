@@ -108,8 +108,8 @@ const Exhibitor = () => {
                           <div
                             className="bg-white/20  w-full hover:bg-white/30 py-2 text-sm backdrop-blur-md"
                             onClick={() =>
-                              window.open(
-                                `https://metaverse.artina.org/${localStorage.getItem(
+                              navigate(
+                                `/metaverse/${localStorage.getItem(
                                   "authTokens"
                                 )}`
                               )

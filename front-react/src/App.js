@@ -3,7 +3,6 @@ import { createContext, useEffect, useState } from "react";
 
 import StarterFile from "./Pages/StarterFile";
 import ArtistPage from "./Pages/ArtistPage";
-import HomePage from "./Pages/HomePage";
 import NFTDetails from "./Pages/NFTDetails";
 // import Login from "./Pages/LoginPage";
 // import Register from "./LoginComponent/SignUp";
@@ -179,7 +178,7 @@ export default () => {
                   element={<ExhibitionCollections />}
                 />
                 <Route exact path="ai" element={<AI />} />
-                <Route exact path="metaverse" element={<Metaverse />} />
+                <Route exact path="metaverse/:token?" element={<Metaverse />} />
               </Routes>
             </div>
           </UserChangeContext.Provider>
