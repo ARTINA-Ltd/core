@@ -31,6 +31,7 @@ urlpatterns = [
     path('api/core/', include(core_urls)),
     path('api/exhibition/', include(ex_urls)),
     path('api/transaction/', include('core.urls')),
+    path('api/AI/', include('AI.urls')),
     path('api/account/', include(acc_urls)),
     path('api/login/', TokenObtainPairView.as_view()),
     path('api/login/refresh/', TokenRefreshView.as_view()),

@@ -19,8 +19,9 @@ class GeneratedImageViewSet(viewsets.ModelViewSet):
         height = request.data.get('height', '512')
 
         # Call the image generator API
-        api_url = 'https://image-generator-api.com/api/generate'
-        api_key = settings.IMAGE_GENERATOR_API_KEY
+
+        api_url = "https://stablediffusionapi.com/api/v3/text2img"
+        api_key = 'yiI8NLs7JSCy210kcWlJAkR4LHqI5tDZsPkrrQEP6odRUyb6Ej08oJUyC7jX'
         params = {
             'key': api_key,
             'prompt': text,
