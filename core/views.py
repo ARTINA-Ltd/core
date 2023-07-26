@@ -1,6 +1,6 @@
 from core import models
 from Account import models
-from core.models import NFT , Order , MyImage , NFTReviewRating
+from core.models import NFT , Order , MyImage , NFTRating
 from core import serializers
 from eth_account import Account
 from thirdweb.types.nft import NFTMetadataInput 
@@ -8,6 +8,12 @@ import json
 import requests
 from rest_framework import viewsets
 from rest_framework.response import Response
+
+from django.http import JsonResponse
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
+from .models import NFT
 
 from web3 import Web3
 from thirdweb import ThirdwebSDK
@@ -31,6 +37,9 @@ from django.conf import settings
 import os
 from Account.models import UserBalance, UserTurnover,TransactionType,TransactionCurrency,Profile
 from http import HTTPStatus
+from django.db.models import Count, Q
+from .serializers import NFTRatingSerializer
+
 class OrderViewSet(viewsets.ViewSet):
     queryset = Order.objects.all()
     serializer_class = serializers.OrderSerializer
@@ -81,30 +90,6 @@ class OrderViewSet(viewsets.ViewSet):
         serializer = serializers.OrderSerializer(orders, many=True)
         return Response(serializer.data, status=HTTPStatus.OK)
 
-class NFTRateViewSet(viewsets.ModelViewSet):
-    queryset = NFTReviewRating.objects.all()
-    serializer_class = serializers.NFTRateSerializer
-
-    def create(self, request, *args, **kwargs):
-        serializer = serializers.NFTRateSerializer
-        serializer = serializer(data=request.data)
-        if not serializer.is_valid():
-            return Response(serializer.errors)
-        data = serializer.validated_data
-        print("test " + str(data))
-        rate_obj = models.NFTReviewRating.objects.filter(user = data["user"] , nft = data["nft"]).first()
-        if rate_obj is None:
-            return super().create(request, *args, **kwargs)
-        else:
-            rate_obj.review = data["review"]
-            rate_obj.rating = data["rating"]
-            rate_obj.save()
-            return Response(serializers.NFTRateSerializer(rate_obj).data) 
-from django.http import JsonResponse
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework import status
-from .models import NFT
 
 class NftViewSet(viewsets.ModelViewSet):
     queryset = NFT.objects.all()
@@ -162,8 +147,55 @@ class NftViewSet(viewsets.ModelViewSet):
         nft.save()
         serializer = self.get_serializer(nft)
         return Response(serializer.data)
+      
+      
+    @action(detail=False, methods=['put'])
+    def view_NFT(self, request, pk=None):
+        nft_id = request.data.get('token_id')
+        nft=NFT.objects.filter(token_id=nft_id).first()
+        nft.view_count =  nft.view_count +1
+        nft.save()
+        serializer = self.get_serializer(nft)
+        return Response(serializer.data)   
 
 
+    @action(detail=False, methods=['put'])
+    def share_NFT(self, request, pk=None):
+        nft_id = request.data.get('token_id')
+        nft=NFT.objects.filter(token_id=nft_id).first()
+        nft.share_count =  nft.share_count +1
+        nft.save()
+        serializer = self.get_serializer(nft)
+        return Response(serializer.data)
+  
+
+class NFTRatingViewSet(viewsets.ModelViewSet):
+    queryset = NFTRating.objects.all()
+    serializer_class = serializers.NFTRatingSerializer
+
+    @action(detail=False, methods=['post'])
+    def like(self, request):
+        nft_id = request.data.get("token_id")
+        nft=NFT.objects.filter(token_id=nft_id).first()
+        user = self.request.user
+        if NFTRating.objects.filter(nft=nft, user=user).exists():
+            return Response({'status': 'you have already liked this NFT'}, status=status.HTTP_400_BAD_REQUEST)
+        nft_rating=NFTRating.objects.create(nft=nft,user=user,like=True)
+        nft_rating.save()
+        return Response({'status': 'NFT liked'})
+
+    @action(detail=False , methods=['get'])
+    def most_liked(self, request):
+        most_liked_nfts = NFT.objects.annotate(like_count=Count('nft__like', filter=Q(nft__like=True))).order_by('-like_count')[:5]
+        serializer = serializers.NFTSerializer(most_liked_nfts, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False , methods=['get'])
+    def user_likes(self, request, pk=None):
+        user = self.request.user
+        liked_nfts = NFT.objects.filter(nft__user=user, nft__like=True)
+        serializer = serializers.NFTSerializer(liked_nfts, many=True)
+        return Response(serializer.data)
 
 
 
@@ -339,8 +371,11 @@ class NftDetailViewSet(viewsets.ViewSet):
         token_id = request.data.get('token_id')
         nft = NFT.objects.get(token_id=token_id)
         serializer = self.get_serializer(nft)
-        return Response(serializer.data)
-
+        ratings = NFTRating.objects.filter(nft=nft, like=True)
+        count = ratings.count()
+        data = {"nft": serializer.data, "count": count}
+        return Response(data)
+        
     def get_serializer(self, *args, **kwargs):
         serializer_class = self.serializer_class(*args, **kwargs)
         return serializer_class
@@ -445,3 +480,90 @@ class NakamigosListingsViewSet(viewsets.ViewSet):
         data = response.json()
 
         return Response(data)
+
+
+
+
+PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
+
+# # Optionally, instantiate a new signer to pass into the SDK
+signer = Account.from_key(PRIVATE_KEY)
+
+# # Finally, you can create a new instance of the SDK to use
+sdk = ThirdwebSDK("mumbai",signer)
+
+contractmain = sdk.get_marketplace("0x80Acf8E21519B0808CC9a59218c415a237ef7C65")
+
+
+class listingViewSet(viewsets.ViewSet):
+
+    def create(self,request):
+        token_id=request.data.get('token_id')
+        user=self.request.user
+
+
+
+
+    def authWallet():
+        payload = sdk.auth.login('artina.org'
+        )
+
+
+from django.http import JsonResponse
+# from ThirdwebSDK import LocalWallet
+# from thirdweb import ThirdwebSDK
+
+class WalletViewSet(viewsets.ViewSet):
+
+
+    def authenticate_wallet(request):
+        domain = 'artina.org'
+
+        # Generate a login payload for the connected wallet
+        sdk = ThirdWebSDK()
+        payload = sdk.auth.login(domain)
+
+        # Generate an authentication token for the logged in wallet
+        token = sdk.auth.generate_auth_token(domain, payload)
+
+        # Authenticate the token and get the address of the authenticating wallet
+        address = sdk.auth.authenticate(domain, token)
+
+        # Return the authenticated address as a JSON response
+        return JsonResponse({'address': address})
+
+# # comment wallet part
+# #part im working on
+# from thirdweb import ThirdwebSDK 
+# # from sdk_options import SDKOptions
+# sdk1 = ThirdwebSDK("mumbai", options=SDKOptions(secret_key="03c191bc52cf51d0e011063336339e37"))
+# contractthree = sdk.get_contract("0x3c580A3227adc9EfF961910AA4F667234999Dc3F")
+# class LocalWalletViewSet(viewsets.ViewSet):
+   
+#     @action(detail=False, methods=['get'])
+#     def createWallet(self,request):
+        
+#         data = contractthree.call("createAccount", _admin, _data)
+#         # wallet = LocalWallet()
+#         # generate a random wallet
+#         # user_wallet= wallet.generate()
+#         print(data)
+
+
+# part i worked on and need changes
+
+#         # connect the wallet to the application
+#         await wallet.connect()
+
+# # at any point, you can save the wallet to persistent storage
+# await wallet.save(config)
+# # and load it back up
+# await wallet.load(config)
+
+# # you can also export the wallet out of the application
+# exported_wallet = await wallet.export(config)
+# # and import it back in
+# await wallet.import_(exported_wallet, config)
+
+# # You can then use this wallet to perform transactions via the SDK
+# sdk = await ThirdwebSDK.from_wallet(wallet, "goerli")
