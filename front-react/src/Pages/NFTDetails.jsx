@@ -17,6 +17,7 @@ const NFTDetails = () => {
   const { id } = useParams();
   const [price, setPrice] = useState(0);
   const [ethereum, setEthereum] = useState(0);
+  const [likeCount, setLikeCount] = useState(0);
   const user = useContext(UserContext);
 
   const icons = {
@@ -106,7 +107,7 @@ const NFTDetails = () => {
           },
         }
       )
-      .then((d) => {
+      .then(d => {
         console.log("view");
         console.log(d);
       });
@@ -115,7 +116,7 @@ const NFTDetails = () => {
   const handleClickLike = () => {
     axios
       .post(
-        "https://api.artina.org/api/transaction/nft_rating/like/",
+        "https://api.artina.org/api/transaction/nft_ratings/like/",
         {
           token_id: id,
         },
@@ -125,7 +126,7 @@ const NFTDetails = () => {
           },
         }
       )
-      .then((d) => {
+      .then(d => {
         console.log("like");
         console.log(d);
       });
@@ -136,8 +137,19 @@ const NFTDetails = () => {
       .post("https://api.artina.org/api/transaction/nft-detail/", {
         token_id: id,
       })
-      .then((d) => {
+      .then(d => {
         setData(d.data.nft);
+        setLikeCount(d.data.count);
+        console.log(d.data);
+      });
+
+    axios
+      .post("https://api.artina.org/api/transaction/nft_ratings/user_likes/", {
+        token_id: id,
+      })
+      .then(d => {
+        // setLike(d.data.nft);
+        console.log(d.data);
         console.log(d.data);
       });
 
@@ -153,7 +165,7 @@ const NFTDetails = () => {
           },
         }
       )
-      .then((d) => {
+      .then(d => {
         console.log("view");
         console.log(d);
       });
@@ -170,10 +182,10 @@ const NFTDetails = () => {
           },
         }
       )
-      .then((d) => {
+      .then(d => {
         setReqData(d);
       })
-      .catch((res) => console.log(res));
+      .catch(res => console.log(res));
   }, []);
 
   function addRequest() {
@@ -192,11 +204,11 @@ const NFTDetails = () => {
           mode: "cors",
         }
       )
-      .then((response) => {
+      .then(response => {
         Notify.success("پیشنهاد شما با موفقیت ثبت شد");
         window.location.reload(true);
       })
-      .catch((exception) => {
+      .catch(exception => {
         Notify.failure("خطا");
         console.log(exception);
       });
@@ -216,9 +228,14 @@ const NFTDetails = () => {
                 className="rounded-xl h-auto w-full object-cover"
               />
               <div className="flex gap-3 w-full">
-                <div className="bg-[#7168f3] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]">
+                <div
+                  className={`${
+                    data && data.user_liked ? "bg-[#7168f3]" : "bg-[#7168f3]"
+                  } w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]`}
+                  onClick={handleClickLike}
+                >
                   {icons.heart}
-                  <div className="text-white text-[16px]">1571</div>
+                  <div className="text-white text-[16px]">{likeCount}</div>
                 </div>
                 <div className="bg-[#7168f3] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]">
                   {icons.eye}
@@ -346,7 +363,7 @@ const NFTDetails = () => {
                           className={"rounded-lg "}
                           placeholder={"مثلا: 3"}
                           title="قیمت پیشنهادی شما به اتریوم"
-                          onChange={(e) => {
+                          onChange={e => {
                             setPrice(e.target.value * 104759811);
                             setEthereum(e.target.value);
                           }}

@@ -4,20 +4,34 @@ import { useNavigate } from "react-router";
 
 const NFTList = ({ className }) => {
   const [data, setData] = useState();
+  const [dataLiked, setDataLiked] = useState();
+
+  const [selected, setSelected] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get("https://api.artina.org/api/transaction/nfts/top_5_expensive/")
-      .then((d) => {
-        setData(d.data);
-      });
+    axios.get('https://api.artina.org/api/transaction/nfts/top_5_expensive/').then(d => {
+      setData(d.data);
+    });
+
+    axios.get('https://api.artina.org/api/transaction/nft_ratings/most_liked/').then(d => {
+      setDataLiked(d.data);
+    });
   }, []);
+
+    useEffect(() => {
+   
+  }, [selected]);
 
   return (
     <div
       className={`${className} flex flex-col w-full justify-center items-center`}
     >
+      <div className="flex gap-6 bg-white rounded-t-xl px-3 pt-1">
+        <div className={`cursor-pointer rounded-t-xl py-2 px-6 mt-2 ${selected? 'bg-gray-200':''}`} onClick={()=>setSelected(true)}>گرانترین</div>
+        <div className={`cursor-pointer rounded-t-xl py-2 px-6 mt-2 ${selected? '':'bg-gray-200'}`} onClick={()=>setSelected(false)}>محبوبترین</div>
+      </div>
+      {selected ? 
       <table className="w-2/3 text-right font-b3 bg-white rounded-2xl  shadow-lg shadow-[#0000f006] sm:w-full sm:rounded-none overflow-hidden lg:w-4/5">
         <thead className="font-b7">
           <tr>
@@ -117,6 +131,85 @@ const NFTList = ({ className }) => {
             : undefined}
         </tbody>
       </table>
+      
+      :
+      
+      
+      <table className="w-2/3 text-right font-b3 bg-white rounded-2xl  shadow-lg shadow-[#0000f006] sm:w-full sm:rounded-none overflow-hidden lg:w-4/5">
+        <thead className="font-b7">
+          <tr>
+            <th scope="col" className="pr-10 py-3 sm:pr-5 sm:pl-3">
+              #
+            </th>
+            <th scope="col" className="text-center py-3 sm:px-1">
+              نام
+            </th>
+            <th
+              scope="col"
+              className="text-center py-3 sm:px-1 sm:w-1/5 sm:hidden"
+            >
+              تعداد لایک
+            </th>
+            <th
+              scope="col"
+              className="hidden text-center py-3 sm:px-1 sm:w-full sm:block"
+            >
+              قیمت
+            </th>
+            <th scope="col" className="text-center py-3 sm:px-1 sm:hidden">
+              خالق اثر
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {dataLiked
+            ? dataLiked.map((item, index) => (
+                <tr
+                  className="border-t group cursor-pointer transition duration-75 ease-out items-center justify-center  hover:bg-[#0000ff08]"
+                  key={index}
+                  onClick={() => navigate(`/nft-details/${item.token_id}`)}
+                >
+                  <td className="whitespace-nowrap pr-6 font-medium sm:pl-2 sm:pr-3">
+                    <img
+                      src={item.image_url}
+                      className="rounded-lg h-[90px] w-[90px] mr-4 object-cover my-1 sm:h-[90px] sm:w-[90px]"
+                      alt=""
+                    />
+                  </td>
+                  <td className="whitespace-nowrap px-6 py-4 sm:px-1 sm:w-2/5 sm:whitespace-normal">
+                    {item.name}
+                  </td>
+                  <td className="whitespace-nowrap px-6 py-4 sm:px-1">
+                    <div className="flex w-full justify-center">
+                      {item.like_count}
+
+                     
+                    </div>
+                  </td>
+                  <td className="whitespace-nowrap px-6 py-4 sm:hidden">
+                    {item.creator}
+                  </td>
+                  <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.3"
+                      stroke="currentColor"
+                      width={"1em"}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.75 19.5L8.25 12l7.5-7.5"
+                      />
+                    </svg>
+                  </td>
+                </tr>
+              ))
+            : undefined}
+        </tbody>
+      </table>}
     </div>
   );
 };

@@ -230,6 +230,7 @@ function Profile() {
                 : null,
             phone_number: values.phone_number,
             cell_number: values.cell_number,
+            postal_code:values.postal_code,
             address: values.address,
             national_card_picture: nationalCardImageUrl
               ? nationalCardImageUrl
