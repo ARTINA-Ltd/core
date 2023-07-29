@@ -91,30 +91,72 @@ const NFTDetails = () => {
     ),
   };
 
-  useEffect(() => {
+  const handleClickShare = () => {
+    navigator.clipboard.writeText(window.location.href);
+    Notify.success("لینک کپی شد");
     axios
-      .post(
-        "https://api.artina.org/api/transaction/nft-detail/",
+      .put(
+        "https://api.artina.org/api/transaction/nfts/share_NFT/",
         {
           token_id: id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
         }
-        //  url: "https://api.artina.org/api/account/profile/",
       )
       .then((d) => {
-        setData(d.data);
+        console.log("view");
+        console.log(d);
+      });
+  };
+
+  const handleClickLike = () => {
+    axios
+      .post(
+        "https://api.artina.org/api/transaction/nft_rating/like/",
+        {
+          token_id: id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+        }
+      )
+      .then((d) => {
+        console.log("like");
+        console.log(d);
+      });
+  };
+
+  useEffect(() => {
+    axios
+      .post("https://api.artina.org/api/transaction/nft-detail/", {
+        token_id: id,
+      })
+      .then((d) => {
+        setData(d.data.nft);
         console.log(d.data);
       });
 
-    axios({
-      method: "get",
-      url: "https://api.artina.org/api/transaction/rate/",
-    })
+    axios
+      .put(
+        "https://api.artina.org/api/transaction/nfts/view_NFT/",
+        {
+          token_id: id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+        }
+      )
       .then((d) => {
-        // console.log("_______rate_______");
-        // console.log(d);
-        // console.log("__________________");
-      })
-      .catch();
+        console.log("view");
+        console.log(d);
+      });
 
     axios
       .post(
@@ -129,7 +171,6 @@ const NFTDetails = () => {
         }
       )
       .then((d) => {
-        console.log(d.data);
         setReqData(d);
       })
       .catch((res) => console.log(res));
@@ -181,11 +222,18 @@ const NFTDetails = () => {
                 </div>
                 <div className="bg-[#7168f3] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]">
                   {icons.eye}
-                  <div className="text-white text-[16px]">24566</div>
+                  <div className="text-white text-[16px]">
+                    {data && data.view_count + 1}
+                  </div>
                 </div>
-                <div className="bg-[#7168f3] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]">
+                <div
+                  className="bg-[#7168f3] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]"
+                  onClick={handleClickShare}
+                >
                   {icons.share}
-                  <div className="text-white text-[16px]">270</div>
+                  <div className="text-white text-[16px]">
+                    {data && data.share_count}
+                  </div>
                 </div>
               </div>
             </div>
@@ -239,20 +287,20 @@ const NFTDetails = () => {
                 className="bg-[#f1f2f7] hover:bg-[#e5e6eb] transition-all text-gray-600 py-1 text-sm px-3 rounded-md flex gap-1 items-center"
               >
                 لینک خارجی
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-4 h-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"
-                    />
-                  </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-4 h-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"
+                  />
+                </svg>
               </a>
             </div>
 

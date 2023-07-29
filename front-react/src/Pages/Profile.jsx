@@ -12,6 +12,8 @@ import { Block, Notify } from "notiflix";
 import BorderButton from "../components/Buttons/BorderButton";
 
 function Profile() {
+
+
   const user = useContext(UserContext);
   const userChange = useContext(UserChangeContext);
 
@@ -336,6 +338,7 @@ function Profile() {
     }
   }, [counter]);
 
+
   return (
     <TestLayout connectWallet={false}>
       <div className="flex gap-5 items-start ">
@@ -460,6 +463,7 @@ function Profile() {
               }}
               defaultValue={user != null ? user.data.national_code : null}
               disabled={user != null ? user.data.national_code != null : false}
+              maxChars={10}
             />
             <SimpleInput
               type="date"
@@ -506,6 +510,7 @@ function Profile() {
               }}
               defaultValue={user != null ? user.data.postal_code : null}
               disabled={user != null ? user.data.postal_code != null : null}
+              maxChars={10}
             />
           </div>
           <div className="flex gap-4">
@@ -527,6 +532,7 @@ function Profile() {
               }}
               defaultValue={user != null ? user.data.cell_number : null}
               disabled={user != null ? user.data.cell_number != null : null}
+              maxChars={11}
             />
           </div>
 
@@ -554,6 +560,7 @@ function Profile() {
               }}
               defaultValue={user != null ? user.data.phone_number : null}
               disabled={isPhoneVerified}
+              maxChars={11}
             />
             <div
               className={`${
@@ -708,7 +715,7 @@ function Profile() {
                 type="number"
                 onChange={e => setShabaNumber(e.target.value)}
                 className="border-none text-white"
-                shabaNum={true}
+                maxChars={24}
               />
             </div>
           </SimpleCard>

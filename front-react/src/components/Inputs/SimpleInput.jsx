@@ -18,7 +18,7 @@ const SimpleInput = ({
   options,
   menuPlacement,
   onKeyPress,
-  shabaNum = false
+  maxChars
 }) => {
   const [focus, setFocus] = useState(defaultValue === null ? false : true);
   const [value, setValue] = useState("");
@@ -42,7 +42,7 @@ const SimpleInput = ({
 
   const handleChange = (event) => {
     const inputValue = event.target.value;
-    if (inputValue.length > 24 && shabaNum) {
+    if (maxChars && inputValue.length > maxChars) {
       event.preventDefault();
       event.stopPropagation();
     } else {

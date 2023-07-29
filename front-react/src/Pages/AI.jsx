@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Block } from "notiflix";
+import { Block, Notify } from "notiflix";
 import React, { useState } from "react";
 import BorderButton from "../components/Buttons/BorderButton";
 import AiImagesCard from "../components/Cards/AiImagesCard";
@@ -10,40 +10,41 @@ import TestLayout from "../Layouts/TestLayout";
 const AI = () => {
   const [descriotion, setDescription] = useState();
   const [isClicekd, setIsClicekd] = useState(false);
+  const [getImages, setImages] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsClicekd(e=>!e);
+    setIsClicekd(true);
 
-    // Block.dots("#ai-image");
-    // Block.circle("#images");
-    // Block.remove("#ai-image", 3000);
+    Block.circle("#ai-image");
     // Block.remove("#images", 3000);
 
-    // await axios
-    //   .post(
-    //     "https://api.artina.org/api/account/login/",
-    //     {
-    //       username: values.username,
-    //       password: values.password,
-    //     },
-    //     {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //     }
-    //   )
-    //   .then((res) => {
-    //     if (res.status === 200) {
-    //       localStorage.setItem("authTokens", res.data.access);
-    //       userChange(res);
-    //       Notify.success("با موفقیت وارد شدید");
-    //       navigate("/dashboard");
-    //     }
-    //   })
-    //   .catch((res) => {
-    //     Notify.failure("خطا");
-    //   });
+    await axios
+      .post(
+        "https://api.artina.org/api/AI/generated_images/",
+        {
+          text: descriotion,
+          width: "512",
+          height: "1016",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+          mode: "cors",
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        setImages(res.data.image_url)
+      })
+      .catch((res) => {
+        Notify.failure("خطا");
+      })
+      .finally(() => {
+        console.log("sth");
+        Block.remove("#ai-image", 3000);
+      });
   };
 
   return (
@@ -79,14 +80,17 @@ const AI = () => {
         </SimpleCard>
       </div>
 
-
       <div
         id="images"
-        className={`transition-all ${
-          !isClicekd ? "opacity-0" : ""
-        }`}
+        className={`transition-all ${!isClicekd ? "opacity-0" : ""}`}
       >
-        <AiImagesCard/>
+        <div className="flex flex-col relative rounded-2xl overflow-hidden">
+        <img src={getImages} alt="" className="object-cover rounded-2xl"/>
+          <div className="absolute bottom-10 left-0 right-0 mx-auto bg-black/10 backdrop-blur-xl py-4 z-30 text-center text-sm cursor-pointer text-white mb-4">
+            Share | <a href={getImages} download={'ai.jpg'}>Download</a>
+          </div>
+        </div>
+        {/* <AiImagesCard images={getImages} /> */}
       </div>
     </TestLayout>
   );
