@@ -373,9 +373,16 @@ class NftDetailViewSet(viewsets.ViewSet):
         serializer = self.get_serializer(nft)
         ratings = NFTRating.objects.filter(nft=nft, like=True)
         count = ratings.count()
-        data = {"nft": serializer.data, "count": count}
-        return Response(data)
         
+        # Check if the request is from an authenticated user
+        if request.user.is_authenticated:
+            user_liked = NFTRating.objects.filter(user=request.user, nft=nft, like=True).exists()
+            data = {"nft": serializer.data, "count": count, "user_liked": user_liked}
+        else:
+            data = {"nft": serializer.data, "count": count}
+        
+        return Response(data, status=status.HTTP_200_OK)
+           
     def get_serializer(self, *args, **kwargs):
         serializer_class = self.serializer_class(*args, **kwargs)
         return serializer_class
