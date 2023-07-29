@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { Chart } from "primereact/chart";
 import { useState } from "react";
+import AllTurnOversDialog from "../components/Dialog/AllTurnOversDialog/AllTurnOversDialog";
 
 const Dashboard = () => {
   const [getData, setData] = useState();
@@ -17,7 +18,6 @@ const Dashboard = () => {
 
   const [getLastMonthTurnover, setLastMonthTurnover] = useState();
   const [getAllTurnovers, setAllTurnovers] = useState();
-
 
   //https://api.artina.org/api/transaction/orders/get_user_order
   useEffect(() => {
@@ -82,10 +82,9 @@ const Dashboard = () => {
       .then((res) => {
         console.log("-----monthturnovers-----");
         console.log(res.data);
-        setLastMonthTurnover(res.data.last_month_turnover)
-        setAllTurnovers(res.data.all_turnovers)
+        setLastMonthTurnover(res.data.last_month_turnover);
+        setAllTurnovers(res.data.all_turnovers);
         console.log("---------");
-       
       })
       .catch((res) => {
         // console.log("------err------");
@@ -323,9 +322,7 @@ const Dashboard = () => {
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
                 گردش حساب
               </div>
-              <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
-                سفارشات باز شما
-              </div>
+
               <table className="dashboard-table w-full text-center">
                 <thead>
                   <tr>
@@ -339,54 +336,48 @@ const Dashboard = () => {
                 <tbody>
                   {getAllTurnovers ? (
                     getAllTurnovers.map((item, index) => (
-                      <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
-                        <td>{item.transaction_currency == 1 ? 'تومان' : 'اتریوم'}</td>
-                        <td>{item.transaction_type == 2 ? 'برداشت' : 'واریز'}</td>
+                      <>
+                        {index < 5 ? (
+                          <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
+                            <td>
+                              {item.transaction_currency == 1
+                                ? "تومان"
+                                : "اتریوم"}
+                            </td>
+                            <td>
+                              {item.transaction_type == 2 ? "برداشت" : "واریز"}
+                            </td>
 
-                        <td>{item.transaction_value} تومان</td>
+                            <td>{item.transaction_value} تومان</td>
 
-                        <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.3"
-                            stroke="currentColor"
-                            width={"1em"}
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M15.75 19.5L8.25 12l7.5-7.5"
-                            />
-                          </svg>
-                        </td>
-                      </tr>
+                            <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.3"
+                                stroke="currentColor"
+                                width={"1em"}
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M15.75 19.5L8.25 12l7.5-7.5"
+                                />
+                              </svg>
+                            </td>
+                          </tr>
+                        ) : (
+                          <></>
+                        )}
+                      </>
                     ))
                   ) : (
                     <></>
                   )}
                 </tbody>
               </table>
-              <div className="w-full bg-slate-50 cursor-pointer mt-3 py-1 group rounded-lg text-center flex items-center justify-center gap-4">
-                مشاهده همه
-                <div className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.3"
-                    stroke="currentColor"
-                    width={"1em"}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.75 19.5L8.25 12l7.5-7.5"
-                    />
-                  </svg>
-                </div>
-              </div>
+             <AllTurnOversDialog turnovers={getAllTurnovers}/>
             </SimpleCard>
           </div>
           <div className="flex flex-col w-full gap-5">
