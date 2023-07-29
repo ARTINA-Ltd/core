@@ -451,8 +451,19 @@ class NotifyUserViewSet(viewsets.ModelViewSet):
         queryset = self.get_queryset().order_by('-id')[:10]
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+    @action(detail=False, methods=['post'])
 
+    def seenMsg(self,request):
+        user=self.request.user
+        notif_id = request.data.get('notif_id')
+        notif=NotifyUser.objects.filter(id=notif_id).first()
+        if notif.user != self.request.user:
+            return Response({'error': 'You do not have permission to perform this action.'}, status=403)
 
+        notif.message_seen = True
+        notif.save()
+        serializer = self.get_serializer(notif)
+        return Response(serializer.data)
 
 
 

@@ -191,7 +191,7 @@ class NFTRatingViewSet(viewsets.ModelViewSet):
         # Serialize the NFTs and add the like count to each one
         serialized_nfts = []
         for nft in most_liked_nfts:
-            serialized_nft = self.get_serializer(nft).data
+            serialized_nft = serializers.NFTSerializer.get_serializer(nft).data
             serialized_nft['like_count'] = nft.like_count
             serialized_nfts.append(serialized_nft)
         
@@ -436,7 +436,6 @@ class sellViewSet(viewsets.ViewSet):
         nft.save()
 
         return Response({"message": "NFT is now for sale."}, status=status.HTTP_200_OK)
-
 
 
 
