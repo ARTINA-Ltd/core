@@ -184,11 +184,18 @@ class NFTRatingViewSet(viewsets.ModelViewSet):
         nft_rating.save()
         return Response({'status': 'NFT liked'})
 
-    @action(detail=False , methods=['get'])
+    @action(detail=False, methods=['get'])
     def most_liked(self, request):
         most_liked_nfts = NFT.objects.annotate(like_count=Count('nft__like', filter=Q(nft__like=True))).order_by('-like_count')[:5]
-        serializer = serializers.NFTSerializer(most_liked_nfts, many=True)
-        return Response(serializer.data)
+        
+        # Serialize the NFTs and add the like count to each one
+        serialized_nfts = []
+        for nft in most_liked_nfts:
+            serialized_nft = self.get_serializer(nft).data
+            serialized_nft['like_count'] = nft.like_count
+            serialized_nfts.append(serialized_nft)
+        
+        return Response(serialized_nfts, status=status.HTTP_200_OK)
 
     @action(detail=False , methods=['get'])
     def user_likes(self, request, pk=None):
@@ -382,7 +389,7 @@ class NftDetailViewSet(viewsets.ViewSet):
             data = {"nft": serializer.data, "count": count}
         
         return Response(data, status=status.HTTP_200_OK)
-           
+
     def get_serializer(self, *args, **kwargs):
         serializer_class = self.serializer_class(*args, **kwargs)
         return serializer_class

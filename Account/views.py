@@ -99,7 +99,8 @@ class UserInfoViewSet(viewsets.ViewSet):
             'email': user.email,
             'role': str(profile.role),
             'shaba_number':profile.shaba_number,
-            'postal_code':profile.postal_code
+            'postal_code':profile.postal_code,
+            'bio':profile.bio
         }
         return Response(data)
 
@@ -434,6 +435,22 @@ class UserPictureViewSet(viewsets.ViewSet):
         print(profile)
         return Response(serializer.data)
 
+from .serializers import NotifyUserSerializer
+
+class NotifyUserViewSet(viewsets.ModelViewSet):
+    queryset = NotifyUser.objects.all()
+    serializer_class = NotifyUserSerializer
+    
+    def get_queryset(self):
+        user = self.request.user
+        return NotifyUser.objects.filter(user=user)
+        
+    @action(detail=False, methods=['get'])
+    def notifList(self, request):
+        user=self.request.user
+        queryset = self.get_queryset().order_by('-id')[:10]
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 

@@ -52,6 +52,9 @@ class Profile(models.Model):
     email_verified = models.BooleanField(default=False)
     role = models.ForeignKey(Role, on_delete=models.CASCADE, default=1)
     postal_code =models.CharField(max_length=10, verbose_name="postal_code", null=True, blank=True) 
+    bio = models.TextField(max_length=500, verbose_name="biography", null=True, blank=True)
+
+  
     # def __str__(self):
     #     return self.user.username + " " + self.first_name + " " + self.last_name + " " + self.national_code + " "\
     #            + self.email + " "
@@ -84,6 +87,12 @@ class TicketUser(models.Model):
     ticket_id = models.CharField(max_length=6, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+
+class NotifyUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    text = models.TextField(max_length=200,null=True,blank=False)
+    message_seen = models.BooleanField(default=False)
 
 class PhoneVerification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -17,9 +17,8 @@ router.register(r'user-balance', views.UserBalanceViewSet, basename='user-balanc
 router.register(r'user-turnover', views.UserTurnoverViewSet, basename='user-turnover')
 router.register(r'user-PasswordReset', views.PasswordResetByPhoneViewSet, basename='PasswordRese')
 router.register(r'userpicture', views.UserPictureViewSet, basename='Userpicture')
-
 router.register(r'payment', views.PaymentGateViewSet, basename='payment')
-
+router.register(r'NotifyUserViewSet', views.NotifyUserViewSet, basename='NotifyUserViewSet')
 
 urlpatterns = [
     path('', include(router.urls)),
