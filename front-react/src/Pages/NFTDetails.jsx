@@ -37,6 +37,22 @@ const NFTDetails = () => {
         />
       </svg>
     ),
+    red_heart: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth="1.9"
+        stroke="currentColor"
+        className="text-red-400 h-[40%]"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+        />
+      </svg>
+    ),
     eye: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -229,12 +245,10 @@ const NFTDetails = () => {
               />
               <div className="flex gap-3 w-full">
                 <div
-                  className={`${
-                    data && data.user_liked ? "bg-[#7168f3]" : "bg-[#7168f3]"
-                  } w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]`}
+                  className={` w-full h-16 bg-[#7168f3] rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]`}
                   onClick={handleClickLike}
                 >
-                  {icons.heart}
+                  {data && data.user_liked ? icons.red_heart : icons.heart}
                   <div className="text-white text-[16px]">{likeCount}</div>
                 </div>
                 <div className="bg-[#7168f3] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]">

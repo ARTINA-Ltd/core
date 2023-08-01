@@ -12,6 +12,7 @@ import { Notify } from "notiflix";
 
 const Collections = () => {
   const [getData, setData] = useState();
+  const [getUser, setUser] = useState();
   const user = useContext(UserContext);
 
   const navigate = useNavigate();
@@ -27,6 +28,18 @@ const Collections = () => {
         setData(res.data);
         console.log(res.data);
       });
+
+      axios
+      .get(`https://api.artina.org/api/transaction/UsersWithNFTsViewSet/`)
+      .then((res) => {
+        console.log(res);
+        setUser(res.data.filter((e)=>{return e.username == username})[0]);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+
+
   }, [username]);
 
   const handleClickShow = (e, childIsVisible, tokenid) => {
@@ -73,6 +86,20 @@ const Collections = () => {
   };
   return (
     <TestLayout>
+      {user && getUser && user.data.username != username &&
+      
+      <>
+      <div className="w-full flex gap-16 items-center p-6 bg-white rounded-xl mb-4">
+        <img src={getUser.profile_picture} className="rounded-full object-cover h-52 w-52 flex-shrink-0" alt="" />
+        <div className="w-full flex flex-col font-b6">
+          <div>هنرمند: <span className="font-b3 px-1">{getUser.name}</span></div>
+          <div>شناسه هنرمند:  <span className="font-b3 px-1">{getUser.username}</span></div>
+          <div>درباره هنرمند:  <span className="font-b3 px-1">{getUser.bio}</span></div>
+          <div>تعداد ان اف تی: <span className="font-b3 px-1">{getUser.nft_count} عدد</span></div>
+        </div>
+      </div>
+      </>
+      }
       {getData && getData.length > 0 ? (
         ""
       ) : (

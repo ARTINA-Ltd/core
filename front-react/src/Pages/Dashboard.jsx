@@ -9,6 +9,7 @@ import AllTurnOversDialog from "../components/Dialog/AllTurnOversDialog/AllTurnO
 
 const Dashboard = () => {
   const [getData, setData] = useState();
+  const [getLikedNfts, setLikedNfts] = useState();
   const [tickets, setTickets] = useState();
   const [profit, setProfit] = useState();
   const [getBalance, setBalance] = useState();
@@ -67,6 +68,18 @@ const Dashboard = () => {
         // console.log(res);
         // console.log("---------------");
       });
+
+    axios
+      .get("https://api.artina.org/api/transaction/nft_ratings/user_likes/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+        mode: "cors",
+      })
+      .then((res) => {
+        setLikedNfts(res.data);
+      })
+      .catch((res) => {});
   }, []);
 
   useEffect(() => {
@@ -377,7 +390,7 @@ const Dashboard = () => {
                   )}
                 </tbody>
               </table>
-             <AllTurnOversDialog turnovers={getAllTurnovers}/>
+              <AllTurnOversDialog turnovers={getAllTurnovers} />
             </SimpleCard>
           </div>
           <div className="flex flex-col w-full gap-5">
@@ -550,6 +563,61 @@ const Dashboard = () => {
                             hour: "numeric",
                           }).format(new Date(item.expiration_date))}
                         </td>
+
+                        <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.3"
+                            stroke="currentColor"
+                            width={"1em"}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15.75 19.5L8.25 12l7.5-7.5"
+                            />
+                          </svg>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </SimpleCard>
+
+            <SimpleCard className="bg-white  w-full h-full">
+              <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
+                nft هایی که پسندیده اید
+              </div>
+              <table className="dashboard-table w-full text-center">
+                <thead>
+                  <tr>
+                    <th>عکس nft</th>
+                    <th>نام</th>
+                    <th>قیمت</th>
+                    <th />
+                  </tr>
+                </thead>
+                <tbody>
+                  {getLikedNfts &&
+                    getLikedNfts.map((item, index) => (
+                      <tr
+                        className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all"
+                        key={index}
+                      >
+                        <td>
+                          <div className="flex justify-center w-full">
+                            <img
+                              src={item.image_url}
+                              alt=""
+                              className="w-[42px] h-[42px] rounded-xl"
+                            />
+                          </div>
+                        </td>
+                        <td>{item.name}</td>
+                        <td>{item.last_price}</td>
+                        
 
                         <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
                           <svg
