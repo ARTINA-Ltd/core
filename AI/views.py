@@ -4,9 +4,10 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 from django.conf import settings
-from .models import GeneratedImage
+from .models import GeneratedImage , WaitList
 from .serializers import GeneratedImageSerializer
 import json
+from rest_framework.decorators import action
 
 class GeneratedImageViewSet(viewsets.ModelViewSet):
     queryset = GeneratedImage.objects.all()
@@ -51,3 +52,21 @@ class GeneratedImageViewSet(viewsets.ModelViewSet):
         # Serialize the generated image and return it in the response
         serializer = GeneratedImageSerializer(generated_image)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+
+
+class WaitListViewSet(viewsets.ViewSet):
+    @action(detail=False, methods=['post'])
+    def get_email(self, request):
+        email = request.data.get('email')
+        
+        # Check if the email already exists
+        if WaitList.objects.filter(email=email).exists():
+            return Response(status=status.HTTP_409_CONFLICT)
+        
+        if email:
+            WaitList.objects.create(email=email)
+            return Response(status=status.HTTP_201_CREATED)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)

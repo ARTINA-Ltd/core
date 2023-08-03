@@ -9,3 +9,9 @@ class GeneratedImage(models.Model):
 
     def __str__(self):
         return f"Image for user {self.user.username} generated on {self.date_created}"
+
+
+
+
+class WaitList(models.Model):
+    email=models.EmailField(max_length=50,null=True,blank=False)
