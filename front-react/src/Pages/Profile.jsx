@@ -29,6 +29,7 @@ function Profile() {
     phone_number: user ? user.data.phone_number : "",
     email: user ? user.data.email : "",
     address: user ? user.data.address : "",
+    bio: user ? user.data.bio : "",
     postal_code: user ? user.data.postal_code : "",
   });
 
@@ -41,6 +42,7 @@ function Profile() {
     phone_number: true,
     email: true,
     address: true,
+    bio: true,
     postal_code: true,
   });
 
@@ -137,6 +139,7 @@ function Profile() {
             phone_number: values.phone_number,
             cell_number: values.cell_number,
             address: values.address,
+            bio: values.bio,
             postal_code: values.postal_code,
             national_card_picture: nationalCardImageUrl
               ? nationalCardImageUrl
@@ -230,7 +233,9 @@ function Profile() {
                 : null,
             phone_number: values.phone_number,
             cell_number: values.cell_number,
+            postal_code:values.postal_code,
             address: values.address,
+            bio: values.bio,
             national_card_picture: nationalCardImageUrl
               ? nationalCardImageUrl
               : user.data.national_card_picture,
@@ -274,6 +279,7 @@ function Profile() {
         national_code: user ? user.data.national_code : "",
         birthdate: user ? user.data.birthdate : "",
         address: user ? user.data.address : "",
+        bio: user ? user.data.bio : "",
         postal_code: user ? user.data.postal_code : "",
         cell_number: user ? user.data.cell_number : "",
         phone_number: user ? user.data.phone_number : "",
@@ -403,7 +409,9 @@ function Profile() {
               />
             </div>
             <div className="flex w-full gap-4">
-              <SimpleInput
+              <div className="w-full flex flex-col gap-4">
+                <div className="flex w-full gap-4">
+                <SimpleInput
                 type="text"
                 title="نام"
                 placeholder="مثلا: علیرضا"
@@ -438,9 +446,28 @@ function Profile() {
                 defaultValue={user != null ? user.data.last_name : null}
                 disabled={user != null ? user.data.last_name != null : null}
               />
+                </div>
+
+                <SimpleInput
+              className={"col-span-3"}
+              type="text"
+              title="درباره من"
+              isValid={validate.bio}
+              validationError="نمی‌تواند خالی باشد"
+              onChange={e => {
+                setValues(prev => ({ ...prev, bio: e.target.value }));
+                setValidate(prev => ({
+                  ...prev,
+                  bio: e.target.value != "",
+                }));
+              }}
+              defaultValue={user != null ? user.data.bio : null}
+              disabled={user != null ? user.data.bio != null : null}
+            />
+              </div>
             </div>
           </div>
-
+         
           <div className="flex gap-4">
             <SimpleInput
               type="number"
@@ -493,8 +520,8 @@ function Profile() {
                   address: e.target.value != "",
                 }));
               }}
-              defaultValue={user != null ? user.data.postal_code : null}
-              disabled={user != null ? user.data.postal_code != null : null}
+              defaultValue={user != null ? user.data.address : null}
+              disabled={user != null ? user.data.address != null : null}
             />
             <SimpleInput
               type="number"

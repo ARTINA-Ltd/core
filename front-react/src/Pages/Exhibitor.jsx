@@ -23,11 +23,6 @@ const Exhibitor = () => {
         }
       )
       .then((res) => {
-        console.log("_____________________");
-        console.log("artistClosedExhibitions");
-        console.log(res.data);
-        console.log("_____________________");
-
         setArtistClosedExhibitions(res.data);
       });
   }, []);
@@ -38,10 +33,6 @@ const Exhibitor = () => {
         `https://api.artina.org/api/exhibition/open-for-artist-registration-exhibitions/`
       )
       .then((res) => {
-        console.log("_____________________");
-        console.log("OpenRegistrationExhibitions");
-        console.log(res.data);
-        console.log("_____________________");
         setOpenRegistrationExhibitions(res.data);
       });
   }, []);
@@ -86,11 +77,7 @@ const Exhibitor = () => {
             <AddExhibitionDialog />
             {artistOpenExhibitions
               ? artistOpenExhibitions.map((item, index) => (
-                  <div
-                    onClick={() =>
-                      navigate(`/artist-application-form/${item.id}`)
-                    }
-                  >
+                  <div>
                     <SimpleCard
                       key={index}
                       className="h-[420px] w-full bg-[#0000aa05] hover:bg-[#0000aa08] transition-all p-0 relative group cursor-pointer md:h-[300px] sm:h-[250px]"
@@ -100,6 +87,9 @@ const Exhibitor = () => {
                         src={item.image}
                         className="h-full w-full object-cover rounded-2xl"
                         alt=""
+                        onClick={() =>
+                          navigate(`/artist-application-form/${item.id}`)
+                        }
                       />
                       <div className="absolute h-full w-full top-0 rounded-2xl bg-gradient-to-t text-lg font-b4 group-hover:text-xl gap-3 from-black flex items-end justify-center pb-4 text-white group-hover:pb-6 transition-all">
                         <div className="flex flex-col items-center justify-center w-full">
@@ -107,13 +97,10 @@ const Exhibitor = () => {
 
                           <div
                             className="bg-white/20  w-full hover:bg-white/30 py-2 text-sm backdrop-blur-md"
-                            onClick={() =>
-                              navigate(
-                                `/metaverse/${localStorage.getItem(
-                                  "authTokens"
-                                )}`
-                              )
-                            }
+                            onClick={(e) => {
+                              console.log(item.id);
+                              navigate(`/metaverse/${item.id}`);
+                            }}
                           >
                             متاورس
                           </div>
