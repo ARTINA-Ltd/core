@@ -13,22 +13,61 @@ const HelpCreateWallet = () => {
                     </div>
                     <div className="text-[25px] mb-2 text-right mr-5">کیف پول متامسک</div>
                     <div className="text-[18px] mb-4 text-justify px-6">
-                        ۱- وارد این لینک شوید.
+                        ۱- وارد
+                        <a className="text-[18px] mb-4 text-justify text-purple-700" href="https://metamask.io/download/"> صفحه متامسک </a>
+                        شوید.
                     </div>
                     <div className="text-[18px] mb-4 text-justify px-6">
-                        ۲- نسخه ویندوز یا موبایل و یا افزونه مرورگر را انتخاب کنید
+                        ۲- نسخه ویندوز یا موبایل و یا افزونه مرورگر را انتخاب کنید.
                     </div>
                     <div className="text-[18px] mb-4 text-justify px-6">
                         ۳- یک زمر 12 تا 24 کلمه ای تولید می شود و باید با دقت آن ها را نگهداری کنید.
                     </div>
+                    <div className="text-[18px] mb-4 text-justify px-6">
+                        ۴- در منوی بالا بر روی دکمه زیر کلیک کنید.
+                    </div>
+                    <div className="text-[18px] mb-4 text-justify px-6">
+                        <img
+                            src="/help-wallet-1.png"
+                            className=" object-cover m-auto"
+                            alt=""
+                        />
+                    </div>
+                    <div className="text-[18px] mb-4 text-justify px-6">
+                        ۵- در قسمت select a network ، گزینه add network را بزنید.
+                    </div>
+                    <div className="text-[18px] mb-4 text-justify px-6">
+                        <img
+                            src="/help-wallet-2.png"
+                            className=" object-cover m-auto"
+                            alt=""
+                        />
+                    </div>
+                    <div className="text-[18px] mb-4 text-justify px-6">
+                        ۶- مقادیر زیر را برای شبکه جدید وارد کنید.
+                    </div>
+                    <div dir="rtl" className="text-[18px] mb-4 px-6 text-left">
+                    Network Name: Mumbai
+                    <br />
+                    New RPC URL: https://polygon-mumbai.infura.io/v3/4458cf4d1689497b9a38b1d6bbf05e78
+                    <br />
+                    Chain ID: 80001
+                    <br />
+                    Currency Symbol: MATIC
+                    <br />
+                    Block Explorer URL: https://mumbai.polygonscan.com
+                    </div>
+                    <div className="text-[18px] mb-4 text-justify px-6">
+                        ۷- مقادیر وارد کرده را ذخیره نمایید.
+                    </div>
 
-                    <div className="text-[25px] mb-2 text-right mr-5">کیف پول تراست ولت</div>
+                    {/* <div className="text-[25px] mb-2 text-right mr-5">کیف پول تراست ولت</div>
                     <div className="text-[18px] mb-4 text-justify px-6">
                         ۱- وارد این لینک شوید.
                     </div>
                     <div className="text-[18px] mb-4 text-justify px-6">
                         ۲- یک زمر 12 تا 24 کلمه ای تولید می شود و باید با دقت آن ها را نگهداری کنید.
-                    </div>
+                    </div> */}
                 </SimpleCard>
             </div>
         </TestLayout>
