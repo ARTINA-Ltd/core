@@ -216,9 +216,6 @@ sdk = ThirdwebSDK("mumbai", options=SDKOptions(secret_key="rEql_yRermO9c4z64ThyV
 contract = sdk.get_nft_collection("0x2A18FECb3579238CdA960B5977f46E500Fb6e735")
 
 
-YOUR_SECRET_KEY"
-
-
 
 
 
