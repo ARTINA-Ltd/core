@@ -4,8 +4,7 @@ from datetime import timedelta
 import random
 from exhibition import models
 from exhibition import serializers
-
-from rest_framework import viewsets
+from .models import Exhibition
 # from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
@@ -375,3 +374,27 @@ class ExTicketViewSet(viewsets.ReadOnlyModelViewSet):
         for exhibition_data in data:
             exhibition_data['user_has_ticket'] = exhibition_data['has_ticket'] and exhibition_data['id'] in ticket_exhibitions
         return Response(data)
+
+
+
+
+
+class UserPastExhibitionsViewSet(viewsets.ViewSet):
+    @action(detail=False, methods=['get'])
+    def get_user_past_exhibitions(self, request):
+        user = self.request.user 
+        current_datetime = timezone.now()
+        user_exhibitions = Exhibition.objects.filter(user=user, end_date__lt=current_datetime)
+        serialized_exhibitions = ExhibitionSerializer(user_exhibitions, many=True) 
+        return Response(serialized_exhibitions.data)
+
+
+
+class AcceptedExhibitionsViewSet(viewsets.ViewSet):
+    @action(detail=False, methods=['get'])
+    def get_accepted_exhibitions(self, request):
+        user = self.request.user  # Assuming the user is authenticated
+        accepted_applications = Application.objects.filter(artist=user, status='accepted')
+        accepted_exhibitions = Exhibition.objects.filter(applications__in=accepted_applications)
+        serialized_exhibitions = ExhibitionSerializer(accepted_exhibitions, many=True)
+        return Response(serialized_exhibitions.data)
