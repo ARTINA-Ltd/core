@@ -27,7 +27,7 @@ const UploadItem = () => {
   const [selectedCategory, setSelectedCategory] = useState();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [isUploaded, setIsUploaded] = useState(true);
+  const [isUploaded, setIsUploaded] = useState(false);
 
   const [tokenId, setTokenId] = useState();
   const [hasPhysical, setHasPhysical] = useState();
