@@ -27,7 +27,7 @@ const UploadItem = () => {
   const [selectedCategory, setSelectedCategory] = useState();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [isUploaded, setIsUploaded] = useState(false);
+  const [isUploaded, setIsUploaded] = useState(true);
 
   const [tokenId, setTokenId] = useState();
   const [hasPhysical, setHasPhysical] = useState();
@@ -352,13 +352,12 @@ const UploadItem = () => {
           </div>
           <div className="text-right leading-[40px]">
             <div className="text-[20px] text-green-600">
-              اثر شما با موفقیت تبدیل به ان اف تی شد و حالا میتونید رو کیف
-              پولتون ببینیدش
+              اثر شما با موفقیت تبدیل به ان اف تی شد؛ حال می‌تونید آن را در کیف پول خود اضافه کنید.
             </div>
             <div className="text-[16px] text-green-900">
-              وارد کیف پولتون شید روی تب nft روی import بزنید در قسمت contract
-              کد زیر رو کپی کنید و در قسمت TokenId عدد {tokenId} را وارد کنید و
-              ثبت رو بزنید.
+              وارد کیف پول خود شوید و روی بخش nft بر روی import کلیک نمایید. در قسمت contract
+              کد زیر را کپی کرده و در قسمت TokenId عدد {tokenId} را وارد کنید و
+              بر روی ثبت کلیک نمایید.
             </div>
             <div
               className="text-[16px] text-green-900 bg-green-100 rounded-full w-min whitespace-nowrap px-7 cursor-pointer flex gap-12 items-center"
