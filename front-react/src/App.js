@@ -41,6 +41,7 @@ import HelpCreateWallet from "./Pages/help-create-wallet";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import AI from "./Pages/AI";
 import Metaverse from "./Pages/Metaverse";
+import GetMail from "./Pages/GetMail";
 const activeChainId = ChainId.Goerli;
 
 export const UserContext = createContext();
@@ -179,6 +180,7 @@ export default () => {
                 />
                 <Route exact path="ai" element={<AI />} />
                 <Route exact path="metaverse/:token?" element={<Metaverse />} />
+                <Route exact path="join-artina" element={<GetMail />}></Route>
               </Routes>
             </div>
           </UserChangeContext.Provider>
