@@ -13,7 +13,7 @@ const HelpCreateExhibition = () => {
                     </div>
                     <div className="text-[18px] mb-4 text-justify px-6">
                         ۲- سپس آثار خود در آرتینا ضرب کنید. چنانجه هنوز اثری را ضرب نکرده اید، می‌توانید
-                        <a className="text-[18px] mb-4 text-justify text-purple-700" href="https://artina.org/help-create-wallet"> راهنمای ضرب ان اف تی </a>
+                        <a className="text-[18px] mb-4 text-justify text-purple-700" href="https://artina.org/help-mint"> راهنمای ضرب ان اف تی </a>
                         را مشاهده کنید.
                     </div>
                     <div className="text-[18px] mb-4 text-justify px-6">
