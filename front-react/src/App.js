@@ -63,7 +63,7 @@ export default () => {
       .then((data) => {
         setUser(data);
       })
-      .catch(()=>setUser(undefined));
+      .catch(() => setUser(undefined));
   }, []);
 
   const userChange = async () => {
@@ -82,8 +82,10 @@ export default () => {
         setUser(data);
         console.log(data);
       })
-      .catch((res) => {setUser(undefined)
-      console.log(res)});
+      .catch((res) => {
+        setUser(undefined)
+        console.log(res)
+      });
   };
 
   return (
@@ -103,84 +105,39 @@ export default () => {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route exact path="artist-page" element={<ArtistPage />} />
-                <Route
-                  exact
-                  path="artist-application-form/:id"
-                  element={<ArtistApplicationForm />}
-                />
+                <Route exact path="artist-application-form/:id" element={<ArtistApplicationForm />} />
                 <Route exact path="nft-details/:id" element={<NFTDetails />} />
                 <Route exact path="Commission" element={<Commission />} />
                 <Route exact path="login" element={<Login />} />
-                <Route
-                  exact
-                  path="forget-password"
-                  element={<ForgetPassword />}
-                />
+                <Route exact path="forget-password" element={<ForgetPassword />} />
                 <Route exact path="support" element={<Support />} />
                 <Route exact path="register" element={<Register />} />
 
                 <Route exact path="contact" element={<Contact />} />
                 <Route exact path="about-us" element={<AboutUs />} />
-                <Route
-                  exact
-                  path="privacy-policy"
-                  element={<PrivacyPolicy />}
-                />
+                <Route exact path="privacy-policy" element={<PrivacyPolicy />} />
 
                 <Route exact path="help-mint" element={<HelpMint />} />
-                <Route
-                  exact
-                  path="help-create-exhibition"
-                  element={<HelpCreateExhibition />}
-                />
-                <Route
-                  exact
-                  path="help-create-wallet"
-                  element={<HelpCreateWallet />}
-                />
+                <Route exact path="help-create-exhibition" element={<HelpCreateExhibition />} />
+                <Route exact path="help-create-wallet" element={<HelpCreateWallet />} />
 
-                <Route
-                  exact
-                  path="exhibition-list"
-                  element={<ExhibitionList />}
-                />
-                <Route
-                  exact
-                  path="open-exhibitions"
-                  element={<OpenExhibitions />}
-                />
-
-                {/* <Route exact path="request-lists" element={<RequestLists />} /> */}
+                <Route exact path="exhibition-list" element={<ExhibitionList />} />
+                <Route exact path="open-exhibitions" element={<OpenExhibitions />} />
                 <Route exact path="requests-list" element={<RequestsList />} />
                 <Route exact path="show-request" element={<ShowRequests />} />
-                <Route
-                  exact
-                  path="request-details"
-                  element={<RequestDetails />}
-                />
+                <Route exact path="request-details" element={<RequestDetails />} />
                 <Route exact path="upload-page" element={<NFTUploadPage />} />
                 <Route exact path="UserDashboard" element={<UserDashboard />} />
                 <Route exact path="dashboard" element={<Dashboard />} />
                 <Route exact path="profile" element={<Profile />} />
                 <Route exact path="exhibitor" element={<Exhibitor />} />
-                <Route
-                  exact
-                  path="collections/:username"
-                  element={<Collections />}
-                />
-                <Route
-                  exact
-                  path="user-collections"
-                  element={<UserCollections />}
-                />
-                <Route
-                  exact
-                  path="exhibition-collections/:id"
-                  element={<ExhibitionCollections />}
-                />
+                <Route exact path="collections/:username" element={<Collections />} />
+                <Route exact path="user-collections" element={<UserCollections />} />
+                <Route exact path="exhibition-collections/:id" element={<ExhibitionCollections />} />
                 <Route exact path="ai" element={<AI />} />
                 <Route exact path="metaverse/:token?" element={<Metaverse />} />
                 <Route exact path="join-artina" element={<GetMail />}></Route>
+                {/* <Route exact path="request-lists" element={<RequestLists />} /> */}
               </Routes>
             </div>
           </UserChangeContext.Provider>
