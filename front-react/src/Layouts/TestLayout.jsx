@@ -15,8 +15,8 @@ const TestLayout = ({
       style={{ direction: "rtl" }}
       className={`${
         rev
-          ? 'bg-[#f9f9f9] bg-cover bg-[url("http://localhost:3003/6.jpg")] '
-          : 'bg-[#f9f9f9] bg-[length:300px] bg-[url("http://localhost:3003/12.png")] '
+          ? 'bg-[#f9f9f9] bg-cover bg-[url("https://artina.org/6.jpg")] '
+          : 'bg-[#f9f9f9] bg-[length:300px] bg-[url("https://artina.org/12.png")] '
       }   overflow-hidden`}
     >
       <Header connectWallet={connectWallet} rev={rev} />
