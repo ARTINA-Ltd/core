@@ -245,13 +245,8 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
 
         try:
             user=self.request.user
-            author_address = request.data.get('author_address')
-            nft_name = request.data.get('nft_name')
-            description_nft = request.data.get('description_nft')
-            image_nft = request.data.get('image_nft')
-            creator = request.data.get('creator')
-            external_link = request.data.get('external_link')
-            last_price = request.data.get('last_price')
+
+
 
         except KeyError as e:
             return Response(
@@ -492,31 +487,39 @@ class NakamigosListingsViewSet(viewsets.ViewSet):
         return Response(data)
 
 
-
-
-PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
-
-# # Optionally, instantiate a new signer to pass into the SDK
-signer = Account.from_key(PRIVATE_KEY)
-
-# # Finally, you can create a new instance of the SDK to use
-sdk = ThirdwebSDK("mumbai",signer)
-
 contractmain = sdk.get_marketplace("0x80Acf8E21519B0808CC9a59218c415a237ef7C65")
-
 
 class listingViewSet(viewsets.ViewSet):
 
     def create(self,request):
-        token_id=request.data.get('token_id')
         user=self.request.user
+        token_id=request.data.get('token_id')
+        pricePerToken = request.data.get('pricePerToken')
+        author_address = request.data.get('author_address')
+
+        listing = {
+          "assetContractAddress": "0x2A18FECb3579238CdA960B5977f46E500Fb6e735",
+          "tokenId": token_id,
+          "quantity": 1,
+          "currencyContractAddress": NATIVE_TOKEN_ADDRESS,
+          "pricePerToken": pricePerToken,
+          "startTimestamp": datetime.now().date(),
+          "endTimestamp": datetime.now()+5,
+          "isReservedListing": false
+        }
+        tx = contractmain.directListings.createListing(listing)
+        receipt = tx.receipt # the transaction receipt
+        id = tx.id # the id of the newly created listing
+        return Response(
+            nft.token_id,
+            status=status.HTTP_201_CREATED,
+            ) 
 
 
 
 
-    def authWallet():
-        payload = sdk.auth.login('artina.org'
-        )
+    # def authWallet():
+    #     payload = sdk.auth.login('artina.org')
 
 
 from django.http import JsonResponse
