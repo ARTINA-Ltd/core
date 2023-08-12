@@ -204,19 +204,17 @@ class NFTRatingViewSet(viewsets.ModelViewSet):
         serializer = serializers.NFTSerializer(liked_nfts, many=True)
         return Response(serializer.data)
 
-
+from thirdweb.types import SDKOptions
 
 PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
-
+secret_key="rEql_yRermO9c4z64ThyVUbo41NE4V2kJXyFuNNYRMX7vST7GHWC2G_tasal5a9MXH90AZ-ymHBN9vJFltO5mw"
 # # Optionally, instantiate a new signer to pass into the SDK
 signer = Account.from_key(PRIVATE_KEY)
+sdk = ThirdwebSDK.from_private_key(PRIVATE_KEY, "mumbai", SDKOptions(secret_key))
 # # Finally, you can create a new instance of the SDK to use
 # sdk = ThirdwebSDK("mumbai",signer)
-sdk = ThirdwebSDK("mumbai", options=SDKOptions(secret_key="rEql_yRermO9c4z64ThyVUbo41NE4V2kJXyFuNNYRMX7vST7GHWC2G_tasal5a9MXH90AZ-ymHBN9vJFltO5mw"))
+# sdk = ThirdwebSDK("mumbai", options=SDKOptions(secret_key="rEql_yRermO9c4z64ThyVUbo41NE4V2kJXyFuNNYRMX7vST7GHWC2G_tasal5a9MXH90AZ-ymHBN9vJFltO5mw"))
 contract = sdk.get_nft_collection("0x2A18FECb3579238CdA960B5977f46E500Fb6e735")
-
-
-YOUR_SECRET_KEY"
 
 
 
