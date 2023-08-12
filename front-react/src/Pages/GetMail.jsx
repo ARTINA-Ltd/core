@@ -8,79 +8,83 @@ import SimpleInput from "../components/Inputs/SimpleInput";
 import TestLayout from "../Layouts/TestLayout";
 
 const GetMail = () => {
-  const [descriotion, setDescription] = useState();
-  const [isClicekd, setIsClicekd] = useState(false);
+  const [description, setDescription] = useState("");
+  const [isClicked, setIsClicked] = useState(false);
   const [getImages, setImages] = useState([]);
+  const [isValidEmail, setIsValidEmail] = useState(true); // State to track email validity
+
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsClicekd(true);
 
-    Block.circle("#ai-image");
-    // Block.remove("#images", 3000);
+    if (!emailRegex.test(description)) {
+      setIsValidEmail(false);
+      return;
+    }
 
-    await axios
-      .post(
-        "https://api.artina.org/api/AI/generated_images/",
+    setIsClicked(true);
+    setIsValidEmail(true); // Reset email validation state
+
+    try {
+      const response = await axios.post(
+        "https://api.artina.org/api/AI/WaitListViewSet/get_email/",
         {
-          text: descriotion,
-          width: "512",
-          height: "1016",
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-          },
-          mode: "cors",
+          email: description,
         }
-      )
-      .then((res) => {
-        console.log(res);
-        setImages(res.data.image_url)
-      })
-      .catch((res) => {
-        Notify.failure("خطا");
-      })
-      .finally(() => {
-        console.log("sth");
-        Block.remove("#ai-image", 3000);
-      });
+      );
+
+      console.log(response);
+      Notify.success("ایمیل شما با موفقیت ثبت شد");
+    } catch (error) {
+      if (error.response && error.response.status === 409) {
+        Notify.failure("ایمیل آدرس وارد شده تکراری است");
+      } else {
+        console.error(error);
+        Notify.failure("خطا در ثبت ایمیل");
+      }
+    } finally {
+      console.log("Done");
+    }
   };
 
-  return (
-    <TestLayout
-      className={`flex flex-col items-center transition-all ${
-        isClicekd ? "mt-10" : "mt-60"
-      } gap-5`}
-      rev={true}
-    >
-      <div id="ai-image" className="rounded-2xl w-1/3 md:w-[90%] xl:w-2/3 ">
-        <SimpleCard
-          className={
-            "bg-[#ffffff] w-full sm:m-4 transition-all bg-white/80 "
-          }
-        >
-          <div className="text-[24px] text-center transition-all">
-          عضویت در خبرنامه آرتینا
-          </div>
-          <SimpleInput
-            className={"mt-6"}
-            type="text"
-            title="ایمیل خود را وارد کنید"
-            placeholder="مثلا: mail@artina.org"
-            isValid={descriotion != ""}
-            validationError="نمی‌تواند خالی باشد"
-            onChange={(e) => setDescription(e.target.value)}
-            defaultValue={""}
-          />
 
-          <div className="flex justify-center mt-5">
-            <BorderButton onClick={handleSubmit}>عضویت</BorderButton>
-          </div>
-        </SimpleCard>
-      </div>
-    </TestLayout>
-  );
+return (
+  <TestLayout
+    className={`flex flex-col items-center transition-all ${isClicked ? "mt-10" : "mt-60"
+      } gap-5`}
+    rev={true}
+  >
+    <div
+      id="ai-image"
+      className="rounded-2xl w-1/3 md:w-[90%] xl:w-2/3 "
+    >
+      <SimpleCard
+        className={
+          "bg-[#ffffff] w-full sm:m-4 transition-all bg-white/80 "
+        }
+      >
+        <div className="text-[24px] text-center transition-all">
+          عضویت در خبرنامه آرتینا
+        </div>
+        <SimpleInput
+          className={"mt-6"}
+          type="text"
+          title="ایمیل خود را وارد کنید"
+          placeholder="مثلا: mail@artina.org"
+          isValid={isValidEmail}
+          validationError="لطفاً یک ایمیل معتبر وارد کنید"
+          onChange={(e) => setDescription(e.target.value)}
+          defaultValue={description}
+        />
+
+        <div className="flex justify-center mt-5">
+          <BorderButton onClick={handleSubmit}>عضویت</BorderButton>
+        </div>
+      </SimpleCard>
+    </div>
+  </TestLayout>
+);
 };
 
 export default GetMail;
