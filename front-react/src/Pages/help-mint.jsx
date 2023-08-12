@@ -9,19 +9,62 @@ const HelpMint = () => {
                 <SimpleCard className={'text-center bg-white leading-[40px]'}>
                     <div className="text-[32px] mb-5">راهنمای ضرب ان اف تی</div>
                     <div className="text-[18px] mb-4 text-justify px-6">
-                        ۱- ابتدا لاگین کنید.
+                        ۱- ابتدا وارد اکانت خود شوید.
                     </div>
                     <div className="text-[18px] mb-4 text-justify px-6">
-                        ۲- وارد صفحه ضرب اثر شوید.
+                        ۲- سپس وارد صفحه «ضرب اثر» شوید.
                     </div>
                     <div className="text-[18px] mb-4 text-justify px-6">
-                        ۳- سپس کانکت والت را زده و به کیف پولتان متصل شوید.
+                        ۳- بر روی کانکت والت کلیک کرده و به کیف پولتان متصل شوید.
+                        چنانچه کیف پول دیجیتال ندارید، می‌توانید صفحه
+                        <a className="text-[18px] mb-4 text-justify text-purple-700" href="https://artina.org/help-create-wallet"> ساخت کیف پول </a>
+                        را مطالعه نمایید.
                     </div>
                     <div className="text-[18px] mb-4 text-justify px-6">
-                        ۴- در نهایت با اپلود تصویر دلخواه ضرب اثر را انجام داده و این اثر در مجموعه های من قابل رویت است.
+                        ۴- اطلاعات مورد نیاز را با توجه به اثر خود تکمیل کنید؛ لازم به ذکر است که پر کردن تمامی مقادیر در صفحه ضرب اثر به جز: «توضیحات» و «لینک خارجی» اجباری می‌باشد.
                     </div>
                     <div className="text-[18px] mb-4 text-justify px-6">
-                        ۵- با انجام مراحل زیر این اثر ضرب شده می تواند در کیف پولتان نمایش داده شود.
+                        ✔️ تصویر زیر نمونه ای از ضرب اثر را نمایش می‌دهد.
+                    </div>
+                    <div className="text-[18px] mb-4 text-justify px-6">
+                        <img
+                            src="/help-mint-1.png"
+                            className=" object-cover m-auto"
+                            alt=""
+                        />
+                    </div>
+                    <div className="text-[18px] mb-4 text-justify px-6">
+                        ۵- سپس بر روی «ضرب اثر» کلیک کنید.
+                    </div>
+                    <div className="text-[18px] mb-4 text-justify px-6">
+                        ۶- چنانچه عملیات ضرب با موفقیت انجام شود، پیغام موفقیت آمیز بودن ضرب را دریافت می‌کنید. همانند تصویر زیر:
+                    </div>
+                    <div className="text-[18px] mb-4 text-justify px-6">
+                        <img
+                            src="/help-mint-2.png"
+                            className=" object-cover m-auto"
+                            alt=""
+                        />
+                    </div>
+                    <div className="text-[18px] mb-4 text-justify px-6">
+                        ۷- با توجه به دستور العمل گفته شده در پیغام، ان اف تی خود را در کیف پول خود نمایش دهید.
+                    </div>
+                    <div className="text-[18px] mb-4 text-justify px-6">
+                        <img
+                            src="/help-mint-3.png"
+                            className=" object-cover m-auto"
+                            alt=""
+                        />
+                    </div>
+                    <div className="text-[18px] mb-4 text-justify px-6">
+                        ۸- در نهایت اثر شما در کیف پول قابل مشاهده می‌باشد. 🎉
+                    </div>
+                    <div className="text-[18px] mb-4 text-justify px-6">
+                        <img
+                            src="/help-mint-4.png"
+                            className=" object-cover m-auto"
+                            alt=""
+                        />
                     </div>
                 </SimpleCard>
             </div>
