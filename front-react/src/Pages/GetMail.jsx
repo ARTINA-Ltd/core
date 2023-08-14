@@ -49,42 +49,54 @@ const GetMail = () => {
   };
 
 
-return (
-  <TestLayout
-    className={`flex flex-col items-center transition-all ${isClicked ? "mt-10" : "mt-60"
-      } gap-5`}
-    rev={true}
-  >
+  return (
+    // <TestLayout
+    //   className={`flex flex-col items-center transition-all ${isClicked ? "mt-10" : "mt-60"
+    //     } gap-5`}
+    //   rev={true}
+    // >
     <div
-      id="ai-image"
-      className="rounded-2xl w-1/3 md:w-[90%] xl:w-2/3 "
+      style={{ direction: "rtl" }}
+      className={`bg-[#f9f9f9] bg-cover bg-[url("https://artina.org/6.jpg")] '
+          overflow-hidden`}
     >
-      <SimpleCard
-        className={
-          "bg-[#ffffff] w-full sm:m-4 transition-all bg-white/80 "
-        }
+      <div
+        className={` m-auto my-0 pt-1 pb-5 min-h-[92vh] flex flex-col items-center transition-all ${isClicked ? "mt-10" : "mt-60"
+          } gap-5`}
       >
-        <div className="text-[24px] text-center transition-all">
-          عضویت در خبرنامه آرتینا
-        </div>
-        <SimpleInput
-          className={"mt-6"}
-          type="text"
-          title="ایمیل خود را وارد کنید"
-          placeholder="مثلا: mail@artina.org"
-          isValid={isValidEmail}
-          validationError="لطفاً یک ایمیل معتبر وارد کنید"
-          onChange={(e) => setDescription(e.target.value)}
-          defaultValue={description}
-        />
 
-        <div className="flex justify-center mt-5">
-          <BorderButton onClick={handleSubmit}>عضویت</BorderButton>
+        <div
+          id="ai-image"
+          className="rounded-2xl w-1/3 xl:w-2/3 md:w-[50%] sm:w-11/12"
+        >
+          <SimpleCard
+            className={
+              "bg-[#ffffff] w-full transition-all bg-white/80 sm:m-0"
+            }
+          >
+            <div className="text-[24px] text-center transition-all">
+              عضویت در خبرنامه آرتینا
+            </div>
+            <SimpleInput
+              className={"mt-6"}
+              type="text"
+              title="ایمیل خود را وارد کنید"
+              placeholder="مثلا: mail@artina.org"
+              isValid={isValidEmail}
+              validationError="لطفاً یک ایمیل معتبر وارد کنید"
+              onChange={(e) => setDescription(e.target.value)}
+              defaultValue={description}
+            />
+
+            <div className="flex justify-center mt-5">
+              <BorderButton onClick={handleSubmit}>عضویت</BorderButton>
+            </div>
+          </SimpleCard>
         </div>
-      </SimpleCard>
+      </div>
     </div>
-  </TestLayout>
-);
+    // {/* </TestLayout> */}
+  );
 };
 
 export default GetMail;
