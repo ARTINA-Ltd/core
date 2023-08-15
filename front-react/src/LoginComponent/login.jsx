@@ -52,7 +52,11 @@ const Login = () => {
         }
       })
       .catch(res => {
-        Notify.failure("خطا");
+        if (res.response && res.response.status === 401) {
+          Notify.failure("نام کاربری یا رمز عبور اشتباه است");
+        } else {
+          Notify.failure("خطا در ارتباط");
+        }
       });
     // const response = await fetch(
     //   "http://78.38.35.249:8000/api/account/login/",
