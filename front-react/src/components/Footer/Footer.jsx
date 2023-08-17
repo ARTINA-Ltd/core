@@ -82,7 +82,7 @@ const Footer = () => {
               پیش بینی کننده قیمت ان اف تی
             </a>
             <a
-              href="https://ai.artina.org/generate_pic"
+              href="https://artina.org/ai"
               className="mr-2 font-b3"
             >
               تولید عکس با هوش مصنوعی

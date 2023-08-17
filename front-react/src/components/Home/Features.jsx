@@ -108,7 +108,7 @@ const Features = ({ className = "" }) => {
           <SwiperSlide>
             <div
               className={"w-full cursor-pointer"}
-              onClick={() => window.open("https://ai.artina.org/generate_pic")}
+              onClick={() => window.open("https://artina.org/ai")}
             >
               <img
                 src="/AI-logo.png"
