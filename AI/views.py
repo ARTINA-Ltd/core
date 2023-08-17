@@ -8,6 +8,13 @@ from .models import GeneratedImage , WaitList
 from .serializers import GeneratedImageSerializer
 import json
 from rest_framework.decorators import action
+from googletrans import Translator
+
+def translate_persian_to_english(persian_text):
+    translator = Translator()
+    translated = translator.translate(persian_text, src='fa', dest='en')
+    return translated.text
+
 
 class GeneratedImageViewSet(viewsets.ModelViewSet):
     queryset = GeneratedImage.objects.all()
@@ -19,8 +26,10 @@ class GeneratedImageViewSet(viewsets.ModelViewSet):
         text = request.data.get('text')
         width = request.data.get('width', '512')
         height = request.data.get('height', '512')
+
+        textl=translate_persian_to_english(text)
         addedtext= "with no human in it"
-        line=addedtext+text
+        line=textl+addedtext
         # Call the image generator API
         api_url = "https://stablediffusionapi.com/api/v3/text2img"
         api_key = 'yiI8NLs7JSCy210kcWlJAkR4LHqI5tDZsPkrrQEP6odRUyb6Ej08oJUyC7jX'
