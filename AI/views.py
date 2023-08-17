@@ -19,20 +19,21 @@ class GeneratedImageViewSet(viewsets.ModelViewSet):
         text = request.data.get('text')
         width = request.data.get('width', '512')
         height = request.data.get('height', '512')
-
+        addedtext= "with no human in it"
+        line=addedtext+text
         # Call the image generator API
         api_url = "https://stablediffusionapi.com/api/v3/text2img"
         api_key = 'yiI8NLs7JSCy210kcWlJAkR4LHqI5tDZsPkrrQEP6odRUyb6Ej08oJUyC7jX'
         params = {
             'key': api_key,
-            'prompt': text,
+            'prompt': line,
             'width': width,
             'height': height,
             'samples': '1',
             'num_inference_steps': '20',
             'guidance_scale': 7.5,
             'multi_lingual': "yes",
-            'safety_checker': 'no',
+            'safety_checker': 'yes',
             'enhance_prompt': 'yes',
         }
         headers = {
