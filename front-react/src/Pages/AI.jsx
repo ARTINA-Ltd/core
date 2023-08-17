@@ -25,7 +25,7 @@ const AI = () => {
         {
           text: descriotion,
           width: "512",
-          height: "1016",
+          height: "720",
         },
         {
           headers: {
@@ -39,7 +39,12 @@ const AI = () => {
         setImages(res.data.image_url)
       })
       .catch((res) => {
+        if (res.response && res.response.status === 401) {
+          Notify.failure("در ابتدا می‌بایست لاگین کنید");
+        }
+        else {
         Notify.failure("خطا");
+        }
       })
       .finally(() => {
         console.log("sth");

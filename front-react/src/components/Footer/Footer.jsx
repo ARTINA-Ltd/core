@@ -57,7 +57,7 @@ const Footer = () => {
             <div href="" className="font-b8" id="collection-header">
               آرتینا
             </div>
-            <a href="/collections" className="mr-2 font-b3 collection-item">
+            <a href="/user-collections" className="mr-2 font-b3 collection-item">
               کالکشن ها
             </a>
             <a href="/commission" className="mr-2 font-b3 collection-item">
@@ -78,9 +78,9 @@ const Footer = () => {
             <a href="https://metaverse.artina.org/" className="mr-2 font-b3">
               متاورس
             </a>
-            <a href="" className="mr-2 font-b3">
+            {/* <a href="" className="mr-2 font-b3">
               پیش بینی کننده قیمت ان اف تی
-            </a>
+            </a> */}
             <a
               href="https://artina.org/ai"
               className="mr-2 font-b3"
