@@ -9,11 +9,12 @@ from .serializers import GeneratedImageSerializer
 import json
 from rest_framework.decorators import action
 from googletrans import Translator
+from translate import Translator
 
 def translate_persian_to_english(persian_text):
-    translator = Translator()
-    translated = translator.translate(persian_text, src='fa', dest='en')
-    return translated.text
+    translator = Translator(to_lang="en", from_lang="fa")
+    translation = translator.translate(persian_text)
+    return translation
 
 
 class GeneratedImageViewSet(viewsets.ModelViewSet):
