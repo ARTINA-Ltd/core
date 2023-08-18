@@ -32,7 +32,7 @@ class GeneratedImageViewSet(viewsets.ModelViewSet):
         line=textl+addedtext
         # Call the image generator API
         api_url = "https://stablediffusionapi.com/api/v3/text2img"
-        api_key = 'yiI8NLs7JSCy210kcWlJAkR4LHqI5tDZsPkrrQEP6odRUyb6Ej08oJUyC7jX'
+        api_key = 'ksKUTDAJjb8DZLMNeRWIN74jH6og0TKFt9UDAPtH23GkgtbMPDfnu80Bb5tu'
         params = {
             'key': api_key,
             'prompt': line,
