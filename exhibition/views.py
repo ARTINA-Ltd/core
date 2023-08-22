@@ -398,3 +398,47 @@ class AcceptedExhibitionsViewSet(viewsets.ViewSet):
         accepted_exhibitions = Exhibition.objects.filter(applications__in=accepted_applications)
         serialized_exhibitions = ExhibitionSerializer(accepted_exhibitions, many=True)
         return Response(serialized_exhibitions.data)
+
+
+
+
+import os
+import requests
+from django.conf import settings
+from django.utils import timezone
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from django.db.models import Q
+from .models import Exhibition, Application, NFT
+# from .serializers import MyImageSerializer  # Import your image serializer
+
+class ProcessExhibitionDeadlineViewSet(viewsets.ViewSet):
+    def create(self, request, *args, **kwargs):
+        # Get exhibitions with application deadlines that have passed
+        current_datetime = timezone.now()
+        expired_exhibitions = Exhibition.objects.filter(
+            Q(application_deadline__lte=current_datetime)
+        )
+        
+        # Define the base path for exhibition images
+        folder_base_path = os.path.join(settings.MEDIA_ROOT, 'exhibition_images')
+        
+        for exhibition in expired_exhibitions:
+            folder_name = str(exhibition.id)
+            folder_path = os.path.join(folder_base_path, folder_name)
+            os.makedirs(folder_path, exist_ok=True)
+            
+            for application in exhibition.applications.all():
+                for nft in application.nft.all():
+                    # Download the image from the URL
+                    image_url = nft.image_url
+                    response = requests.get(image_url)
+                    if response.status_code == 200:
+                        image_data = response.content
+                        # Save the image to the exhibition folder
+                        image_filename = os.path.basename(image_url)
+                        new_image_path = os.path.join(folder_path, image_filename)
+                        with open(new_image_path, 'wb') as f:
+                            f.write(image_data)
+        
+        return Response({'message': 'Exhibition deadlines processed successfully.'}, status=status.HTTP_200_OK)

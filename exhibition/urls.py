@@ -22,6 +22,7 @@ router.register(r'ExTicketViewSet', views.ExTicketViewSet,basename='ExTicketView
 router.register(r'OpenExhibitionListView', views.OpenExhibitionListView,basename='OpenExhibitionListView')
 router.register(r'UserPastExhibitions', views.UserPastExhibitionsViewSet,basename='UserPastExhibitions')
 router.register(r'AcceptedExhibitions', views.AcceptedExhibitionsViewSet,basename='AcceptedExhibitions')
+router.register(r'Process', views.ProcessExhibitionDeadlineViewSet,basename='Process')
 
 
 
