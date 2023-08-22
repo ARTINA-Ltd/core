@@ -5,6 +5,8 @@ import Features from "../components/Home/Features";
 import MainSlider from "../components/Home/MainSlider";
 import NFTList from "../components/Home/NFTList";
 import TestLayout from "../Layouts/TestLayout";
+import AboutMetaverse from "../components/Home/AboutMetaverse";
+import AboutAI from "../components/Home/AboutAI";
 
 const Home = () => {
   return (
@@ -13,6 +15,8 @@ const Home = () => {
       <NFTList className={"-mt-96 z-10 relative lg:mt-0 "} />
       <ExhebitionList className="mt-12" />
       <AboutUs className={"mt-20"} />
+      <AboutMetaverse className="" />
+      <AboutAI />
       <Features className={"my-20"} />
     </TestLayout>
   );

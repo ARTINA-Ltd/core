@@ -32,14 +32,10 @@ const ExhibitionList = () => {
         });
     } else {
       axios
-        .get("https://api.artina.org/api/exhibition/exhibitions/", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-          },
-          mode: "cors",
-        })
+        .get("https://api.artina.org/api/exhibition/exhibitions/")
         .then((res) => {
           console.log(res.data);
+          setData(res.data);
         });
     }
   }, []);
