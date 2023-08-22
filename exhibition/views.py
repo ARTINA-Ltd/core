@@ -410,6 +410,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.db.models import Q
 from .models import Exhibition, Application, NFT
+# from .serializers import MyImageSerializer  # Import your image serializer
 
 class ProcessExhibitionDeadlineViewSet(viewsets.ViewSet):
     def create(self, request, *args, **kwargs):
@@ -441,3 +442,20 @@ class ProcessExhibitionDeadlineViewSet(viewsets.ViewSet):
                             f.write(image_data)
         
         return Response({'message': 'Exhibition deadlines processed successfully.'}, status=status.HTTP_200_OK)
+
+
+    @action(detail=False, methods=['post'])
+    def checkExhibitionDeadline(self,request):
+        user=self.request.user
+        id=request.data.get("id")
+        current_datetime = timezone.now()
+        expired_exhibition=None
+        expired_exhibition = Exhibition.objects.filter(Q(application_deadline__lte=current_datetime)
+        ,id=id).first()
+        if expired_exhibition!=None :
+            return Response({'message': 'you will get your virtual exhibition today! .'}, status=status.HTTP_200_OK)
+        else :
+            return Response({'message': 'your exhibition deadline is not expired.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
