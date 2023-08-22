@@ -410,7 +410,6 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.db.models import Q
 from .models import Exhibition, Application, NFT
-# from .serializers import MyImageSerializer  # Import your image serializer
 
 class ProcessExhibitionDeadlineViewSet(viewsets.ViewSet):
     def create(self, request, *args, **kwargs):
