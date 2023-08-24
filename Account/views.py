@@ -467,7 +467,7 @@ class NotifyUserViewSet(viewsets.ModelViewSet):
 
 
 
-
+from rest_framework import status as drf_status
 class PaymentGateViewSet(viewsets.ViewSet):
     def create(self, request, *args, **kwargs):
         user = self.request.user
@@ -493,13 +493,13 @@ class PaymentGateViewSet(viewsets.ViewSet):
         response = self.verify_payment(payment.amount, payment.authority)
         if response.status_code == 200:
             verification_info = response.json()
-            status = verification_info['data']['code']
-            if status == 100:
+            verification_status = verification_info['data']['code'] 
+            if verification_status == 100:
                 payment.is_paid = True
                 payment.save()
-                return Response({'status': 'success'}, status=status.HTTP_200_OK)
+                return Response({'status': 'success'}, status=drf_status.HTTP_200_OK)  # Use drf_status here
             else:
-                return Response({'status': 'failure'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'status': 'failure'}, status=drf_status.HTTP_400_BAD_REQUEST)  # Use drf_status here
         else:
             return Response(response.json(), status=response.status_code)
 

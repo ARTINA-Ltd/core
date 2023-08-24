@@ -100,7 +100,9 @@ db.sqlite3
 ### Related to our project ###
 
 node_modules/
-
+.exhibition_images/
+/exhibition_images
+/exhibition_images/
 /static/
 .static/
 

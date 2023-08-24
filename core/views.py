@@ -489,6 +489,7 @@ class NakamigosListingsViewSet(viewsets.ViewSet):
 
 
 contractmain = sdk.get_marketplace("0x80Acf8E21519B0808CC9a59218c415a237ef7C65")
+from datetime import datetime, timedelta
 
 class listingViewSet(viewsets.ViewSet):
 
@@ -497,6 +498,7 @@ class listingViewSet(viewsets.ViewSet):
         token_id=request.data.get('token_id')
         pricePerToken = request.data.get('pricePerToken')
         author_address = request.data.get('author_address')
+        NATIVE_TOKEN_ADDRESS = "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889"  # MATIC token on Mumbai Testnet
 
         listing = {
           "assetContractAddress": "0x2A18FECb3579238CdA960B5977f46E500Fb6e735",
@@ -505,21 +507,22 @@ class listingViewSet(viewsets.ViewSet):
           "currencyContractAddress": NATIVE_TOKEN_ADDRESS,
           "pricePerToken": pricePerToken,
           "startTimestamp": datetime.now().date(),
-          "endTimestamp": datetime.now()+5,
-          "isReservedListing": false
+          "endTimestamp": datetime.now() + timedelta(minutes=5),
+          "isReservedListing": False
         }
-        tx = contractmain.directListings.createListing(listing)
+        tx =contractmain.create_listing(listing)
         receipt = tx.receipt # the transaction receipt
         id = tx.id # the id of the newly created listing
         return Response(
-            nft.token_id,
+            {"message": "Listing created successfully",
+            "listing_id":nft.token_id},
             status=status.HTTP_201_CREATED,
             ) 
 
 
 
 
-    # def authWallet():
+    # def authWallet():.createListing
     #     payload = sdk.auth.login('artina.org')
 
 
