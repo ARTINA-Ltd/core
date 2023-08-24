@@ -42,6 +42,7 @@ import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import AI from "./Pages/AI";
 import Metaverse from "./Pages/Metaverse";
 import GetMail from "./Pages/GetMail";
+import NotFound from "./Pages/NotFound";
 const activeChainId = ChainId.Goerli;
 
 export const UserContext = createContext();
@@ -137,6 +138,7 @@ export default () => {
                 <Route exact path="ai" element={<AI />} />
                 <Route exact path="metaverse/:token?" element={<Metaverse />} />
                 <Route exact path="join-artina" element={<GetMail />}></Route>
+                <Route path="*" element={<NotFound />} />
                 {/* <Route exact path="request-lists" element={<RequestLists />} /> */}
               </Routes>
             </div>
