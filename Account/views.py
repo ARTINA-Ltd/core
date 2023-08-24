@@ -502,10 +502,10 @@ class PaymentGateViewSet(viewsets.ViewSet):
                 success_url = f'http://artina.org/payment_status/?status=success'
                 failure_url = f'http://artina.org/payment_status/?status=failure'
 
-                if verification_status == 100:
-                    return redirect(success_url)
-                else:
-                    return redirect(failure_url)
+            if verification_status == 100:
+                return redirect(success_url)
+            else:
+                return redirect(failure_url)
         else:
             return Response(response.json(), status=response.status_code)
 
