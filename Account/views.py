@@ -422,8 +422,7 @@ class PasswordResetByPhoneViewSet(viewsets.ViewSet):
 
 
 
-
-                    
+from django.shortcuts import redirect                  
 from .serializers import UserInfoSerializer
 
 class UserPictureViewSet(viewsets.ViewSet):
