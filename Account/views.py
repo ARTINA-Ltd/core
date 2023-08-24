@@ -486,22 +486,29 @@ class PaymentGateViewSet(viewsets.ViewSet):
             return Response(response.json(), status=response.status_code)
 
     @action(detail=False, methods=['get'])
-    def verify(self, request):
-        authority = request.GET.get('Authority')
-        payment = Payment.objects.get(authority=authority)
 
-        response = self.verify_payment(payment.amount, payment.authority)
-        if response.status_code == 200:
-            verification_info = response.json()
-            verification_status = verification_info['data']['code'] 
+def verify(self, request):
+    authority = request.GET.get('Authority')
+    payment = Payment.objects.get(authority=authority)
+
+    response = self.verify_payment(payment.amount, payment.authority)
+    if response.status_code == 200:
+        verification_info = response.json()
+        verification_status = verification_info['data']['code'] 
+        if verification_status == 100:
+            payment.is_paid = True
+            payment.save()
+
+            # Redirect to your React front-end with payment status
+            success_url = f'http://artina.org/payment_status/?status=success'
+            failure_url = f'http://artina.org/payment_status/?status=failure'
+
             if verification_status == 100:
-                payment.is_paid = True
-                payment.save()
-                return Response({'status': 'success'}, status=drf_status.HTTP_200_OK)  # Use drf_status here
+                return redirect(success_url)
             else:
-                return Response({'status': 'failure'}, status=drf_status.HTTP_400_BAD_REQUEST)  # Use drf_status here
-        else:
-            return Response(response.json(), status=response.status_code)
+                return redirect(failure_url)
+    else:
+        return Response(response.json(), status=response.status_code)
 
     def send_payment_request(self, amount):
         user=self.request.user
