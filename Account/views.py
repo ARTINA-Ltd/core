@@ -499,8 +499,8 @@ class PaymentGateViewSet(viewsets.ViewSet):
                 payment.save()
 
                 # Redirect to your React front-end with payment status
-                success_url = f'http://artina.org/payment_status/?status=success'
-                failure_url = f'http://artina.org/payment_status/?status=failure'
+            success_url = f'http://artina.org/payment_status/?status=success'
+            failure_url = f'http://artina.org/payment_status/?status=failure'
 
             if verification_status == 100:
                 return redirect(success_url)
