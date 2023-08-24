@@ -489,8 +489,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
     def verify(self, request):
         authority = request.GET.get('Authority')
         payment = Payment.objects.get(authority=authority)
-        success_url = f'http://artina.org/payment_status/?status=success'
-        failure_url = f'http://artina.org/payment_status/?status=failure'
+
         response = self.verify_payment(payment.amount, payment.authority)
         if response.status_code == 200:
             verification_info = response.json()
@@ -500,14 +499,15 @@ class PaymentGateViewSet(viewsets.ViewSet):
                 payment.save()
 
                 # Redirect to your React front-end with payment status
+            success_url = f'http://artina.org/payment_status/?status=success'
+            failure_url = f'http://artina.org/payment_status/?status=failure'
 
-
-        if verification_status == 100:
-            return redirect(success_url)
+            if verification_status == 100:
+                return redirect(success_url)
+            else:
+                return redirect(failure_url)
         else:
             return redirect(failure_url)
-        # else:
-        #     return Response(response.json(), status=response.status_code)
 
     def send_payment_request(self, amount):
         user=self.request.user
