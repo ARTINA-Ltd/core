@@ -132,3 +132,28 @@ class Payment(models.Model):
 
     def __str__(self):
         return f'{self.user} - {self.amount}'
+
+
+class Wallet(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    address = models.CharField(max_length=42, unique=True)  # Ethereum/Matic address
+    balance = models.DecimalField(max_digits=20, decimal_places=6, default=0)  # Matic balance
+
+
+from django.db import models
+from django.contrib.auth.models import User
+
+class Transaction(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('completed', 'Completed'),
+        ('failed', 'Failed'),
+    )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    matic_amount = models.DecimalField(max_digits=20, decimal_places=6)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.matic_amount} Matic ({self.status})"

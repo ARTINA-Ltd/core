@@ -45,12 +45,6 @@ class NFTRating(models.Model):
         return f'{self.nft.name} Get Rank : ( {self.rating} )  from {self.user.username}'
 
 
-class Wallet(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    address = models.CharField(verbose_name="wallet address", max_length=100)
-
-    def __str__(self):
-        return f'{self.user.username}\'s wallet'
 
 
 class Order(models.Model):

@@ -489,7 +489,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
     def verify(self, request):
         authority = request.GET.get('Authority')
         payment = Payment.objects.get(authority=authority)
-        failure_url = f'http://artina.org/payment_status/?status=failure'
+        failure_url = f'http://artina.org/payment_status/?status=failed&authority={authority}'
 
         response = self.verify_payment(payment.amount, payment.authority)
         if response.status_code == 200:
@@ -500,7 +500,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
                 payment.save()
 
                 # Redirect to your React front-end with payment status
-            success_url = f'http://artina.org/payment_status/?status=success'
+            success_url = f'http://artina.org/payment_status/?status=success&authority={authority}'
 
             if verification_status == 100:
                 return redirect(success_url)
@@ -544,3 +544,123 @@ class PaymentGateViewSet(viewsets.ViewSet):
 
     def get_redirect_url(self, payment):
         return f'https://www.zarinpal.com/pg/StartPay/{payment.authority}'
+
+
+
+
+
+#exchange
+
+
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from rest_framework.decorators import action
+from django.contrib.auth.models import User
+from .models import Wallet
+from web3 import Web3
+import os
+
+w3 = Web3(Web3.HTTPProvider("https://matic-mainnet.chainstacklabs.com"))
+
+class WalletViewSet(viewsets.ViewSet):
+    @action(detail=False, methods=['post'])
+    def create_wallet(self, request):
+        user = request.user
+
+        # Check if the user already has a wallet
+        if Wallet.objects.filter(user=user).exists():
+            return Response({'message': 'Wallet already exists for this user.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        private_key = Web3.toHex(os.urandom(32))  # Generate a random private key
+        account = w3.eth.account.privateKeyToAccount(private_key)
+
+        wallet = Wallet.objects.create(user=user, address=account.address)
+        
+        return Response({'message': 'Wallet created successfully.', 'address': wallet.address}, status=status.HTTP_201_CREATED)
+
+
+
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from .models import Transaction
+from .serializers import TransactionSerializer  
+from web3 import Web3
+
+import time
+from web3 import Web3
+
+def connect_with_retry():
+    max_retries = 3
+    retry_delay = 5  # seconds
+    print("trying")
+    retries = 0
+    while retries < max_retries:
+        try:
+            w3 = Web3(Web3.HTTPProvider("https://matic-mainnet.chainstacklabs.com"))
+            if w3.isConnected():
+                return w3
+        except Exception as e:
+            print(f"Error connecting: {e}")
+        
+        retries += 1
+        time.sleep(retry_delay)
+    
+    raise Exception("Failed to connect to the Matic network.")
+
+
+
+class TransactionViewSet(viewsets.ViewSet):
+    def create(self, request):
+        user = request.user
+        matic_amount = request.data.get('matic_amount')
+        matic_price= 27216
+        needed_balance=matic_amount*matic_price
+        balance=UserBalance.objects.filter(user=user).first()
+        userbalance=balance.rial_available_balance
+        print (userbalance)
+        # Check if user has sufficient balance
+        if userbalance < needed_balance:
+            return Response({'message': 'Insufficient balance.'}, status=status.HTTP_400_BAD_REQUEST)
+         # Now use connect_with_retry() to get a connected Web3 instance
+        w3 = connect_with_retry()
+        balance = w3.eth.getBalance("0x2293221D7c357FB04De9c7D0dEeBcA427407429D")
+        print(f"Balance: {balance}")
+
+        # Create a transaction record
+        transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='pending')
+
+        # Lock the amount in user's wallet (pseudo-code)
+        # user.wallet.balance -= matic_amount
+        # user.wallet.save()
+        PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
+
+        # Initiate Matic transfer 
+        recipient_address = user.wallet.address
+        private_key = PRIVATE_KEY
+        gas_price = w3.toWei('5', 'gwei')  # Example gas price
+        gas_limit = 21000  # Example gas limit
+
+        nonce = w3.eth.getTransactionCount(w3.toChecksumAddress("0x2293221D7c357FB04De9c7D0dEeBcA427407429D"))
+        print(nonce)
+        transaction_data = {
+            'to': recipient_address,
+            'value': w3.toWei(matic_amount, 'ether'),
+            'gas': gas_limit,
+            'gasPrice': gas_price,
+            'nonce': nonce,
+        }
+        
+        signed_txn = w3.eth.account.signTransaction(transaction_data, private_key)
+        print(signed_txn)
+        tx_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)
+        print(tx_hash)
+        tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+        print(tx_receipt)
+        if tx_receipt.status == 1:
+            transaction.status = 'completed'
+            transaction.save()
+            return Response({'message': 'Purchase successful.'}, status=status.HTTP_200_OK)
+        else:
+            transaction.status = 'failed'
+            transaction.save()
+            return Response({'message': 'Transaction failed.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

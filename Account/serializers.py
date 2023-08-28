@@ -67,7 +67,12 @@ class TicketSerializer(serializers.ModelSerializer):
         model = TicketUser
         fields =  '__all__'
         # read_only_fields = ['ticket_id']
-        
+
+class TransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields =  '__all__'
+          
 class PhoneVerificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = PhoneVerification

@@ -19,6 +19,9 @@ router.register(r'user-PasswordReset', views.PasswordResetByPhoneViewSet, basena
 router.register(r'userpicture', views.UserPictureViewSet, basename='Userpicture')
 router.register(r'payment', views.PaymentGateViewSet, basename='payment')
 router.register(r'NotifyUserViewSet', views.NotifyUserViewSet, basename='NotifyUserViewSet')
+router.register(r'wallet', views.WalletViewSet, basename='wallet')
+router.register(r'Transaction', views.TransactionViewSet, basename='Transaction')
+
 
 urlpatterns = [
     path('', include(router.urls)),
