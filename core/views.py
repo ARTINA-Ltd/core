@@ -207,10 +207,11 @@ class NFTRatingViewSet(viewsets.ModelViewSet):
 from thirdweb.types import SDKOptions
 
 PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
-secret_key="rEql_yRermO9c4z64ThyVUbo41NE4V2kJXyFuNNYRMX7vST7GHWC2G_tasal5a9MXH90AZ-ymHBN9vJFltO5mw"
+secret_key="dd0cZsTqYO9v8PJdRO8uuikrKvi6SpZKYbNdIqvn-d2-Df1QXTb9PUXUOJfO4OcJg9EUP3zQbx3jLJR1raQY9w"
 # # Optionally, instantiate a new signer to pass into the SDK
 signer = Account.from_key(PRIVATE_KEY)
 sdk = ThirdwebSDK.from_private_key(PRIVATE_KEY, "mumbai", SDKOptions(secret_key))
+print(f"sdk is :{sdk}")
 # # Finally, you can create a new instance of the SDK to use
 # sdk = ThirdwebSDK("mumbai",signer)
 # sdk = ThirdwebSDK("mumbai", options=SDKOptions(secret_key="rEql_yRermO9c4z64ThyVUbo41NE4V2kJXyFuNNYRMX7vST7GHWC2G_tasal5a9MXH90AZ-ymHBN9vJFltO5mw"))
@@ -245,7 +246,13 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
 
         try:
             user=self.request.user
-
+            author_address = request.data.get('author_address')
+            nft_name = request.data.get('nft_name')
+            description_nft = request.data.get('description_nft')
+            image_nft = request.data.get('image_nft')
+            creator = request.data.get('creator')
+            external_link = request.data.get('external_link')
+            last_price = request.data.get('last_price')
 
 
         except KeyError as e:
@@ -280,7 +287,9 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
             tx=None
         # Mint the NFT to the specified address
             try:
+                print("start")
                 tx = contract.mint_to(author_address, NFTMetadataInput.from_json(nft_metadata))
+                print(f"tx is :{tx}")
                 print("done")
                 token_id = tx.id
                 print(token_id)
@@ -488,99 +497,99 @@ class NakamigosListingsViewSet(viewsets.ViewSet):
         return Response(data)
 
 
-contractmain = sdk.get_marketplace("0x80Acf8E21519B0808CC9a59218c415a237ef7C65")
-from datetime import datetime, timedelta
+# contractmain = sdk.get_marketplace("0x80Acf8E21519B0808CC9a59218c415a237ef7C65")
+# from datetime import datetime, timedelta
 
-class listingViewSet(viewsets.ViewSet):
+# class listingViewSet(viewsets.ViewSet):
 
-    def create(self,request):
-        user=self.request.user
-        token_id=request.data.get('token_id')
-        pricePerToken = request.data.get('pricePerToken')
-        author_address = request.data.get('author_address')
-        NATIVE_TOKEN_ADDRESS = "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889"  # MATIC token on Mumbai Testnet
+#     def create(self,request):
+#         user=self.request.user
+#         token_id=request.data.get('token_id')
+#         pricePerToken = request.data.get('pricePerToken')
+#         author_address = request.data.get('author_address')
+#         NATIVE_TOKEN_ADDRESS = "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889"  # MATIC token on Mumbai Testnet
 
-        listing = {
-          "assetContractAddress": "0x2A18FECb3579238CdA960B5977f46E500Fb6e735",
-          "tokenId": token_id,
-          "quantity": 1,
-          "currencyContractAddress": NATIVE_TOKEN_ADDRESS,
-          "pricePerToken": pricePerToken,
-          "startTimestamp": datetime.now().date(),
-          "endTimestamp": datetime.now() + timedelta(minutes=5),
-          "isReservedListing": False
-        }
-        tx =contractmain.create_listing(listing)
-        receipt = tx.receipt # the transaction receipt
-        id = tx.id # the id of the newly created listing
-        return Response(
-            {"message": "Listing created successfully",
-            "listing_id":nft.token_id},
-            status=status.HTTP_201_CREATED,
-            ) 
-
-
+#         listing = {
+#           "assetContractAddress": "0x2A18FECb3579238CdA960B5977f46E500Fb6e735",
+#           "tokenId": token_id,
+#           "quantity": 1,
+#           "currencyContractAddress": NATIVE_TOKEN_ADDRESS,
+#           "pricePerToken": pricePerToken,
+#           "startTimestamp": datetime.now().date(),
+#           "endTimestamp": datetime.now() + timedelta(minutes=5),
+#           "isReservedListing": False
+#         }
+#         tx =contractmain.create_listing(listing)
+#         receipt = tx.receipt # the transaction receipt
+#         id = tx.id # the id of the newly created listing
+#         return Response(
+#             {"message": "Listing created successfully",
+#             "listing_id":nft.token_id},
+#             status=status.HTTP_201_CREATED,
+#             ) 
 
 
-    # def authWallet():.createListing
-    #     payload = sdk.auth.login('artina.org')
 
 
-from django.http import JsonResponse
-# from ThirdwebSDK import LocalWallet
-# from thirdweb import ThirdwebSDK
-
-class WalletViewSet(viewsets.ViewSet):
+#     # def authWallet():.createListing
+#     #     payload = sdk.auth.login('artina.org')
 
 
-    def authenticate_wallet(request):
-        domain = 'artina.org'
+# from django.http import JsonResponse
+# # from ThirdwebSDK import LocalWallet
+# # from thirdweb import ThirdwebSDK
 
-        # Generate a login payload for the connected wallet
-        sdk = ThirdWebSDK()
-        payload = sdk.auth.login(domain)
+# class WalletViewSet(viewsets.ViewSet):
 
-        # Generate an authentication token for the logged in wallet
-        token = sdk.auth.generate_auth_token(domain, payload)
 
-        # Authenticate the token and get the address of the authenticating wallet
-        address = sdk.auth.authenticate(domain, token)
+#     def authenticate_wallet(request):
+#         domain = 'artina.org'
 
-        # Return the authenticated address as a JSON response
-        return JsonResponse({'address': address})
+#         # Generate a login payload for the connected wallet
+#         sdk = ThirdWebSDK()
+#         payload = sdk.auth.login(domain)
 
-# # comment wallet part
-# #part im working on
-# from thirdweb import ThirdwebSDK 
-# # from sdk_options import SDKOptions
-# sdk1 = ThirdwebSDK("mumbai", options=SDKOptions(secret_key="03c191bc52cf51d0e011063336339e37"))
-# contractthree = sdk.get_contract("0x3c580A3227adc9EfF961910AA4F667234999Dc3F")
-# class LocalWalletViewSet(viewsets.ViewSet):
+#         # Generate an authentication token for the logged in wallet
+#         token = sdk.auth.generate_auth_token(domain, payload)
+
+#         # Authenticate the token and get the address of the authenticating wallet
+#         address = sdk.auth.authenticate(domain, token)
+
+#         # Return the authenticated address as a JSON response
+#         return JsonResponse({'address': address})
+
+# # # comment wallet part
+# # #part im working on
+# # from thirdweb import ThirdwebSDK 
+# # # from sdk_options import SDKOptions
+# # sdk1 = ThirdwebSDK("mumbai", options=SDKOptions(secret_key="03c191bc52cf51d0e011063336339e37"))
+# # contractthree = sdk.get_contract("0x3c580A3227adc9EfF961910AA4F667234999Dc3F")
+# # class LocalWalletViewSet(viewsets.ViewSet):
    
-#     @action(detail=False, methods=['get'])
-#     def createWallet(self,request):
+# #     @action(detail=False, methods=['get'])
+# #     def createWallet(self,request):
         
-#         data = contractthree.call("createAccount", _admin, _data)
-#         # wallet = LocalWallet()
-#         # generate a random wallet
-#         # user_wallet= wallet.generate()
-#         print(data)
+# #         data = contractthree.call("createAccount", _admin, _data)
+# #         # wallet = LocalWallet()
+# #         # generate a random wallet
+# #         # user_wallet= wallet.generate()
+# #         print(data)
 
 
-# part i worked on and need changes
+# # part i worked on and need changes
 
-#         # connect the wallet to the application
-#         await wallet.connect()
+# #         # connect the wallet to the application
+# #         await wallet.connect()
 
-# # at any point, you can save the wallet to persistent storage
-# await wallet.save(config)
-# # and load it back up
-# await wallet.load(config)
+# # # at any point, you can save the wallet to persistent storage
+# # await wallet.save(config)
+# # # and load it back up
+# # await wallet.load(config)
 
-# # you can also export the wallet out of the application
-# exported_wallet = await wallet.export(config)
-# # and import it back in
-# await wallet.import_(exported_wallet, config)
+# # # you can also export the wallet out of the application
+# # exported_wallet = await wallet.export(config)
+# # # and import it back in
+# # await wallet.import_(exported_wallet, config)
 
-# # You can then use this wallet to perform transactions via the SDK
-# sdk = await ThirdwebSDK.from_wallet(wallet, "goerli")
+# # # You can then use this wallet to perform transactions via the SDK
+# # sdk = await ThirdwebSDK.from_wallet(wallet, "goerli")

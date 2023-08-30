@@ -559,8 +559,9 @@ from django.contrib.auth.models import User
 from .models import Wallet
 from web3 import Web3
 import os
-
-w3 = Web3(Web3.HTTPProvider("https://matic-mainnet.chainstacklabs.com"))
+# w3 = Web3(Web3.HTTPProvider("https://matic-mainnet.chainstacklabs.com"))
+# w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
+w3 = Web3(Web3.HTTPProvider("https://mumbai.rpc.thirdweb.com"))
 
 class WalletViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
@@ -574,10 +575,9 @@ class WalletViewSet(viewsets.ViewSet):
         private_key = Web3.toHex(os.urandom(32))  # Generate a random private key
         account = w3.eth.account.privateKeyToAccount(private_key)
 
-        wallet = Wallet.objects.create(user=user, address=account.address)
+        wallet = Wallet.objects.create(user=user, address=account.address, private_key=private_key)
         
         return Response({'message': 'Wallet created successfully.', 'address': wallet.address}, status=status.HTTP_201_CREATED)
-
 
 
 from rest_framework import viewsets, status
@@ -585,10 +585,12 @@ from rest_framework.response import Response
 from .models import Transaction
 from .serializers import TransactionSerializer  
 from web3 import Web3
-
 import time
-from web3 import Web3
+from web3 import Web3, eth
+import os
+import json
 
+# Initialize Web3 connection
 def connect_with_retry():
     max_retries = 3
     retry_delay = 5  # seconds
@@ -596,7 +598,7 @@ def connect_with_retry():
     retries = 0
     while retries < max_retries:
         try:
-            w3 = Web3(Web3.HTTPProvider("https://matic-mainnet.chainstacklabs.com"))
+            w3 = Web3(Web3.HTTPProvider("https://mumbai.rpc.thirdweb.com"))
             if w3.isConnected():
                 return w3
         except Exception as e:
@@ -607,47 +609,39 @@ def connect_with_retry():
     
     raise Exception("Failed to connect to the Matic network.")
 
-
-
 class TransactionViewSet(viewsets.ViewSet):
     def create(self, request):
         user = request.user
         matic_amount = request.data.get('matic_amount')
-        matic_price= 27216
-        needed_balance=matic_amount*matic_price
-        balance=UserBalance.objects.filter(user=user).first()
-        userbalance=balance.rial_available_balance
-        print (userbalance)
+        matic_price = 27216
+        needed_balance = matic_amount * matic_price
+        
+        balance = UserBalance.objects.filter(user=user).first()
+        userbalance = balance.rial_available_balance
+        print(userbalance)
+        
         # Check if user has sufficient balance
         if userbalance < needed_balance:
             return Response({'message': 'Insufficient balance.'}, status=status.HTTP_400_BAD_REQUEST)
-         # Now use connect_with_retry() to get a connected Web3 instance
+        
+        # Now use connect_with_retry() to get a connected Web3 instance
         w3 = connect_with_retry()
-        balance = w3.eth.getBalance("0x2293221D7c357FB04De9c7D0dEeBcA427407429D")
-        print(f"Balance: {balance}")
-
-        # Create a transaction record
-        transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='pending')
-
-        # Lock the amount in user's wallet (pseudo-code)
-        # user.wallet.balance -= matic_amount
-        # user.wallet.save()
-        PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
-
-        # Initiate Matic transfer 
+        
         recipient_address = user.wallet.address
-        private_key = PRIVATE_KEY
+        print(f"ad:{recipient_address}")
+        private_key = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
         gas_price = w3.toWei('5', 'gwei')  # Example gas price
         gas_limit = 21000  # Example gas limit
-
-        nonce = w3.eth.getTransactionCount(w3.toChecksumAddress("0x2293221D7c357FB04De9c7D0dEeBcA427407429D"))
-        print(nonce)
+        
+        # nonce = w3.eth.getTransactionCount(user.wallet.address)
+        nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
         transaction_data = {
             'to': recipient_address,
             'value': w3.toWei(matic_amount, 'ether'),
             'gas': gas_limit,
             'gasPrice': gas_price,
             'nonce': nonce,
+            'chainId': 137
         }
         
         signed_txn = w3.eth.account.signTransaction(transaction_data, private_key)
@@ -657,10 +651,57 @@ class TransactionViewSet(viewsets.ViewSet):
         tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
         print(tx_receipt)
         if tx_receipt.status == 1:
-            transaction.status = 'completed'
-            transaction.save()
+            transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='completed')
             return Response({'message': 'Purchase successful.'}, status=status.HTTP_200_OK)
         else:
-            transaction.status = 'failed'
-            transaction.save()
+            transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='failed')
             return Response({'message': 'Transaction failed.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+
+    def transfer_nft(private_key, sender_address, recipient_address, token_id):
+        nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
+        #contract
+        nft_contract_address = "0x2A18FECb3579238CdA960B5977f46E500Fb6e735"
+        
+        # Read ABI from JSON file
+        abi_filename = "ABI.json"
+        with open(abi_filename, "r") as abi_file:
+            nft_contract_abi = json.load(abi_file)
+
+        nft_contract = w3.eth.contract(address=nft_contract_address, abi=nft_contract_abi)
+    
+        tx_hash = nft_contract.functions.safeTransferFrom(sender_address, recipient_address, token_id).buildTransaction({
+            'chainId': 137,  # Chain ID for Polygon (Matic) mainnet
+            'gas': 2000000,  # gas value
+            'gasPrice': w3.toWei('5', 'gwei'),  # gas price
+            'nonce': nonce,
+        })
+        signed_txn = w3.eth.account.signTransaction(tx_hash, private_key)
+        tx_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)
+        return tx_hash
+
+
+
+
+
+class TransactionNFTViewSet(viewsets.ViewSet):
+    def create(self, request):
+        token_id = request.data.get('token_id')
+        sender = request.data.get('sender')
+        recipient = request.data.get('recipient')
+        sender=User.objects.filter(username=sender).first()
+        recipient=User.objects.filter(username=recipient).first()
+        
+        #sender
+        sender_address = sender.wallet.address
+        sender_private_key = sender.wallet.private_key
+        
+        #recipient
+        recipient_address=recipient.wallet.address
+        
+        tx_hash = transfer_nft(sender_private_key, sender_address, recipient_address, token_id)
+        print(f"Transaction hash: {tx_hash.hex()}")
+        return tx_hash
+

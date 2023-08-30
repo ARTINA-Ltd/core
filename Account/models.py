@@ -137,6 +137,7 @@ class Payment(models.Model):
 class Wallet(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     address = models.CharField(max_length=42, unique=True)  # Ethereum/Matic address
+    private_key= models.CharField(max_length=200, unique=True, default=0)
     balance = models.DecimalField(max_digits=20, decimal_places=6, default=0)  # Matic balance
 
 
