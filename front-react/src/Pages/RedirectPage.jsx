@@ -10,12 +10,14 @@ function RedirectedPage() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const paymentStatus = searchParams.get('status');
+  const AuthorityStatus = searchParams.get('authority');
+
 
   const navigate = useNavigate();
 
   return (
     <div>
-      {paymentStatus !== 'success' ? (
+      {paymentStatus === 'success' ? (
         <TestLayout>
           <div className="w-[55%] m-auto mt-20 lg:w-4/5 md:w-11/12 md:mt-14 sm:mt-10">
             <SimpleCard className={'text-center bg-white leading-[40px]'}>
@@ -32,7 +34,7 @@ function RedirectedPage() {
               </div>
               <div className="text-[20px] mb-12 md:text-[15px] sm:text-[12px]">
                 <span className="bg-indigo-400 px-4 py-2 rounded-xl">
-                  10002918324802752342940595094530
+                  {{AuthorityStatus}}
                 </span>
               </div>
               <BorderButton
