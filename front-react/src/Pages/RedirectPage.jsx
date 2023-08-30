@@ -11,6 +11,7 @@ function RedirectedPage() {
   const searchParams = new URLSearchParams(location.search);
   const paymentStatus = searchParams.get('status');
   const AuthorityStatus = searchParams.get('authority');
+  const withoutAAndZeros = AuthorityStatus.replace(/^A0*/, '');
 
 
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ function RedirectedPage() {
               </div>
               <div className="text-[20px] mb-12 md:text-[15px] sm:text-[12px]">
                 <span className="bg-indigo-400 px-4 py-2 rounded-xl">
-                  {AuthorityStatus}
+                  {withoutAAndZeros}
                 </span>
               </div>
               <BorderButton
@@ -57,6 +58,14 @@ function RedirectedPage() {
                 />
               </div>
               <div className="text-[32px] mb-5 md:text-[25px]">پرداخت شما با خطا مواجه شد.</div>
+              <div className="text-[20px] mb-3 text-center md:text-[17px]">
+                شماره پیگیری
+              </div>
+              <div className="text-[20px] mb-12 md:text-[15px] sm:text-[12px]">
+                <span className="bg-indigo-400 px-4 py-2 rounded-xl">
+                  {withoutAAndZeros}
+                </span>
+              </div>
               <BorderButton
                 className="inline-block font-b5"
                 onClick={() => navigate("/dashboard")}
