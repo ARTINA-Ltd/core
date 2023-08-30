@@ -34,7 +34,7 @@ function RedirectedPage() {
               </div>
               <div className="text-[20px] mb-12 md:text-[15px] sm:text-[12px]">
                 <span className="bg-indigo-400 px-4 py-2 rounded-xl">
-                  {{AuthorityStatus}}
+                  {AuthorityStatus}
                 </span>
               </div>
               <BorderButton
