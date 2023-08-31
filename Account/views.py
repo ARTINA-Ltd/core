@@ -666,7 +666,7 @@ def transfer_nft(private_key, sender_address, recipient_address, token_id):
     nft_contract_address = "0x2A18FECb3579238CdA960B5977f46E500Fb6e735"
         
     # Read ABI from JSON file
-    abi_filename = "ABI.json"
+    abi_filename = "./ABI.json"
     with open(abi_filename, "r") as abi_file:
         nft_contract_abi = json.load(abi_file)
 
