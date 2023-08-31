@@ -660,27 +660,29 @@ class TransactionViewSet(viewsets.ViewSet):
 
 
 
-    def transfer_nft(private_key, sender_address, recipient_address, token_id):
-        nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
-        #contract
-        nft_contract_address = "0x2A18FECb3579238CdA960B5977f46E500Fb6e735"
+def transfer_nft(private_key, sender_address, recipient_address, token_id):
+    nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
+    #contract
+    nft_contract_address = "0x2A18FECb3579238CdA960B5977f46E500Fb6e735"
         
-        # Read ABI from JSON file
-        abi_filename = "ABI.json"
-        with open(abi_filename, "r") as abi_file:
-            nft_contract_abi = json.load(abi_file)
+    # Read ABI from JSON file
+    abi_filename = "ABI.json"
+    with open(abi_filename, "r") as abi_file:
+        nft_contract_abi = json.load(abi_file)
 
-        nft_contract = w3.eth.contract(address=nft_contract_address, abi=nft_contract_abi)
+    nft_contract = w3.eth.contract(address=nft_contract_address, abi=nft_contract_abi)
     
-        tx_hash = nft_contract.functions.safeTransferFrom(sender_address, recipient_address, token_id).buildTransaction({
-            'chainId': 137,  # Chain ID for Polygon (Matic) mainnet
-            'gas': 2000000,  # gas value
-            'gasPrice': w3.toWei('5', 'gwei'),  # gas price
-            'nonce': nonce,
-        })
-        signed_txn = w3.eth.account.signTransaction(tx_hash, private_key)
-        tx_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)
-        return tx_hash
+    tx_hash = nft_contract.functions.safeTransferFrom(sender_address, recipient_address, token_id).buildTransaction({
+        'chainId': 137,  # Chain ID for Polygon (Matic) mainnet
+        'gas': 2000000,  # gas value
+        'gasPrice': w3.toWei('5', 'gwei'),  # gas price
+        'nonce': nonce,
+    })
+    signed_txn = w3.eth.account.signTransaction(tx_hash, private_key)
+    print(f"signed_txn is : {signed_txn}")
+    tx_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)
+    print(f"tx_hash is : {tx_hash}")
+    return tx_hash
 
 
 
