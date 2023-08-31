@@ -676,7 +676,7 @@ def transfer_nft(private_key, sender_address, recipient_address, token_id):
     nft_contract = w3.eth.contract(address=nft_contract_address, abi=nft_contract_abi)
     
     tx_hash = nft_contract.functions.safeTransferFrom(sender_address, recipient_address, token_id).buildTransaction({
-        'chainId': 137,  # Chain ID for Polygon (Matic) mainnet
+        'chainId': 80001,  # Chain ID for Polygon (Matic) mainnet
         'gas': 2000000,  # gas value
         'gasPrice': w3.toWei('5', 'gwei'),  # gas price
         'nonce': nonce,
