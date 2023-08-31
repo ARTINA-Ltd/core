@@ -708,5 +708,9 @@ class TransactionNFTViewSet(viewsets.ViewSet):
         
         tx_hash = transfer_nft(sender_private_key, sender_address, recipient_address, token_id)
         print(f"Transaction hash: {tx_hash.hex()}")
-        return tx_hash
+        response_data = {
+            "message": f"Transaction initiated. Transaction hash: {tx_hash.hex()}"
+        }
+        
+        return Response(response_data, status=status.HTTP_200_OK)
 
