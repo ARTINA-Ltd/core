@@ -78,9 +78,9 @@ const Footer = () => {
             <a href="https://metaverse.artina.org/" className="mr-2 font-b3">
               متاورس
             </a>
-            {/* <a href="" className="mr-2 font-b3">
-              پیش بینی کننده قیمت ان اف تی
-            </a> */}
+            <a href="" className="mr-2 font-b3">
+            سوالات متداول
+            </a>
             <a
               href="https://artina.org/ai"
               className="mr-2 font-b3"
