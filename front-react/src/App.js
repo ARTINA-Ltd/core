@@ -141,6 +141,7 @@ export default () => {
                 <Route exact path="metaverse/:token?" element={<Metaverse />} />
                 <Route exact path="join-artina" element={<GetMail />}></Route>
                 <Route exact path="payment_status" element={<RedirectedPage />} />
+                <Route exact path="FAQ" element={<HelpQuestions />} />
                 <Route path="*" element={<NotFound />} />
                 {/* <Route exact path="request-lists" element={<RequestLists />} /> */}
               </Routes>
