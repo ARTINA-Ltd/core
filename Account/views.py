@@ -332,6 +332,7 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
     def get_balance(self, request):
         user = self.request.user
         user_balance = UserBalance.objects.filter(user=user).first()
+        user_wallet = Wallet.objects.filter(user=user).first()
         if not user_balance:
             return Response({'error': 'User balance not found.'}, status=status.HTTP_404_NOT_FOUND)
         
@@ -339,8 +340,8 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
             'rial_available_balance': user_balance.rial_available_balance,
             'rial_unavailable_balance': user_balance.rial_untradable_balance,
             'eth_balance': user_balance.eth_balance,
-            'eth_unavailable_balance' : user_balance.eth_unavailable_balance
-            
+            'eth_unavailable_balance' : user_balance.eth_unavailable_balance,
+            'wallet_address' : user_wallet.address
             # Add other balance fields as needed
         }
 
