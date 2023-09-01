@@ -11,5 +11,9 @@ admin.site.register(models.TicketUser)
 admin.site.register(models.UserTurnover)
 admin.site.register(models.UserBalance)
 admin.site.register(models.TransactionCurrency)
+admin.site.register(models.TransactionCurrency)
 admin.site.register(models.TransactionType)
 admin.site.register(models.PhoneVerification)
+admin.site.register(models.Wallet)
+
+

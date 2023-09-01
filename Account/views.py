@@ -559,7 +559,6 @@ from django.contrib.auth.models import User
 from .models import Wallet
 from web3 import Web3
 import os
-# w3 = Web3(Web3.HTTPProvider("https://matic-mainnet.chainstacklabs.com"))
 # w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
 w3 = Web3(Web3.HTTPProvider("https://mumbai.rpc.thirdweb.com"))
 
@@ -624,8 +623,9 @@ class TransactionViewSet(viewsets.ViewSet):
         # Check if user has sufficient balance
         if userbalance < needed_balance:
             return Response({'message': 'Insufficient balance.'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        # Now use connect_with_retry() to get a connected Web3 instance
+        balance.rial_available_balance=balance.rial_available_balance - needed_balance
+        balance.save()
+        # use connect_with_retry() to get a connected Web3 instance
         w3 = connect_with_retry()
         
         recipient_address = user.wallet.address
