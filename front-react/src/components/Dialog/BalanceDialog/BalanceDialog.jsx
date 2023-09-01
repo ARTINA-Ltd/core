@@ -13,9 +13,56 @@ const BalanceDialog = () => {
   const [isCharge, setIsCharge] = useState(false);
   const [amount, setAmount] = useState();
   const [action, setAction] = useState();
+  const [address, setAddress] = useState("");
+
+  useEffect(() => {
+    axios
+      .get("https://api.artina.org/api/account/user-balance/get_balance/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+        mode: "cors",
+      })
+      .then((res) => {
+        setData(res.data);
+        console.log(res.data.rial_available_balance)
+        if (res.data && res.data.wallet_address) {
+          setAddress(res.data.wallet_address);
+        }
+      })
+      .catch((e) => {});
+  }, []);
+
+  const createWallet = () => {
+    axios
+      .post(
+        "https://api.artina.org/api/account/wallet/create_wallet/",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+          mode: "cors",
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        if (res.status === 201) {
+          const createdAddress = res.data.address;
+          setAddress(createdAddress);
+          Notify.success("کیف پول شما با موفقیت ساخته شد")
+        }
+
+      })
+      .catch((error) => {
+        console.log(error);
+        Notify.failure("خطا در ساخت کیف پول");
+      });
+  };
+
 
   const updateBalance = (act) => {
-    if (act == "deposit"){
+    if (act == "deposit") {
       axios.post(
         "https://api.artina.org/api/account/payment/",
         { amount: amount },
@@ -43,33 +90,19 @@ const BalanceDialog = () => {
           mode: "cors",
         }
       )
-      .then((res) => {
-        if (act == "deposit") {
-          Notify.success("با موفقیت شارژ شد");
-        } else {
-          Notify.failure("با موفقیت برداشت شد");
-        }
-      })
-      .catch((res) => {
-        console.log(res);
-        Notify.failure("خطا");
-      });
+        .then((res) => {
+          if (act == "deposit") {
+            Notify.success("با موفقیت شارژ شد");
+          } else {
+            Notify.failure("با موفقیت برداشت شد");
+          }
+        })
+        .catch((res) => {
+          console.log(res);
+          Notify.failure("خطا");
+        });
     }
-    
   };
-  useEffect(() => {
-    axios
-      .get("https://api.artina.org/api/account/user-balance/get_balance/", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-        },
-        mode: "cors",
-      })
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((e) => {});
-  }, []);
 
   const Header = (
     <div className="flex gap-4">
@@ -102,6 +135,20 @@ const BalanceDialog = () => {
     if (isCharge === false) {
       return (
         <>
+          {address && (
+            <div className="text-lg">
+              آدرس کیف پول: {address}
+            </div>
+          )}
+          {!address && (<div
+            className="border-[1px] cursor-pointer border-indigo-500 bg-indigo-100 text-indigo-500 rounded-xl py-2 px-6 hover:scale-105 transition-all"
+            onClick={() => {
+              createWallet();
+            }}
+          >
+            ساخت کیف پول
+          </div>
+          )}
           <div
             className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all"
             onClick={() => {
