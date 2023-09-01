@@ -37,6 +37,7 @@ import Dashboard from "./Pages/Dashboard";
 import AboutUs from "./Pages/AboutUs";
 import HelpMint from "./Pages/help-mint";
 import HelpCreateExhibition from "./Pages/help-create-exhibition";
+import HelpQuestions from "./Pages/help-questions";
 import HelpCreateWallet from "./Pages/help-create-wallet";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import AI from "./Pages/AI";
