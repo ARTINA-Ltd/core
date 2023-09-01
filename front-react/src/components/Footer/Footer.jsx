@@ -82,7 +82,7 @@ const Footer = () => {
             سوالات متداول
             </a>
             <a
-              href="https://artina.org/ai"
+              href="https://artina.org/help-questions"
               className="mr-2 font-b3"
             >
               تولید عکس با هوش مصنوعی
