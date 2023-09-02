@@ -638,7 +638,7 @@ class TransactionViewSet(viewsets.ViewSet):
         balance.rial_available_balance=balance.rial_available_balance - needed_balance
         balance.save()
         # use connect_with_retry() to get a connected Web3 instance
-        w3 = connect_with_retry()
+        # w3 = connect_with_retry()
         
         recipient_address = user.wallet.address
         print(f"ad:{recipient_address}")
@@ -654,7 +654,7 @@ class TransactionViewSet(viewsets.ViewSet):
             'gas': gas_limit,
             'gasPrice': gas_price,
             'nonce': nonce,
-            'chainId': 137
+            'chainId': 80001
         }
         
         signed_txn = w3.eth.account.signTransaction(transaction_data, private_key)
@@ -669,6 +669,30 @@ class TransactionViewSet(viewsets.ViewSet):
         else:
             transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='failed')
             return Response({'message': 'Transaction failed.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+    @action(detail=False, methods=['get'])
+    def get_balance(self, request):
+        user = self.request.user
+        user_wallet = Wallet.objects.filter(user=user).first()
+        if not user_wallet:
+            balance = {
+            'rial_available_balance': user_wallet.balance,
+            'wallet_address' : ""
+            # Add other balance fields as needed
+            }
+            return Response(balance, status=status.HTTP_200_OK)
+
+        if not user_balance:
+            return Response({'error': 'User balance not found.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        balance = {
+             'rial_available_balance': user_wallet.balance,
+            'wallet_address' : user_wallet.address
+            # Add other balance fields as needed
+        }
+
+        return Response(balance, status=status.HTTP_200_OK)
 
 
 
