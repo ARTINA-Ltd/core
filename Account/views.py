@@ -665,7 +665,7 @@ class TransactionViewSet(viewsets.ViewSet):
         user_wallet = Wallet.objects.filter(user=user).first()
         if not user_wallet:
             balance = {
-            'matic_balance': user_wallet.balance,
+            'matic_balance': 0,
             'wallet_address' : ""
             # Add other balance fields as needed
             }
