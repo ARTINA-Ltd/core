@@ -15,6 +15,7 @@ const MetaExplanation = () => {
         boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.2)',
         borderRadius: '8px',
         margin: '0 10px', // Add margin for spacing between images
+        width: '25%', // Reduce the size to a quarter
       };
     
       const importantTextStyle = {
