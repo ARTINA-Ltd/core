@@ -6,10 +6,13 @@ const MetaExplanation = () => {
     const imageStyle = {
         boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.2)',
         borderRadius: '8px',
+
       };
     
       const importantTextStyle = {
         fontWeight: 'bold',
+        color: "#7B1FA2",
+        fontSize: '18px'
       };
     return (
         <TestLayout>
@@ -23,9 +26,8 @@ const MetaExplanation = () => {
         می توانند آواتاری سه بعدی از خود تولید کنند که در این دنیای مجازی به
         گشت و گذار و تفحص بپردازند.
       </p>
-      {/* Insert the first image here */}
       <img
-        src="INSERT_FIRST_IMAGE_URL_HERE"
+        src="./meta1.jpg"
         alt="تصویر اول"
         style={imageStyle}
       />
@@ -37,9 +39,8 @@ const MetaExplanation = () => {
         داده و Email ها، سوشال مدیا، واقعیت مجازی، و پخش های آنلاین دسترسی
         داریم.
       </p>
-      {/* Insert the second image here */}
       <img
-        src="INSERT_SECOND_IMAGE_URL_HERE"
+        src="./meta2.jpg"
         alt="تصویر دوم"
         style={imageStyle}
       />
