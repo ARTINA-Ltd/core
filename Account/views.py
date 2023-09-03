@@ -634,7 +634,6 @@ class TransactionViewSet(viewsets.ViewSet):
         gas_price = w3.toWei('5', 'gwei')  # Example gas price
         gas_limit = 21000  # Example gas limit
         
-        # nonce = w3.eth.getTransactionCount(user.wallet.address)
         nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
         transaction_data = {
             'to': recipient_address,
@@ -663,6 +662,7 @@ class TransactionViewSet(viewsets.ViewSet):
     def get_balance(self, request):
         user = self.request.user
         user_wallet = Wallet.objects.filter(user=user).first()
+
         if not user_wallet:
             balance = {
             'matic_balance': 0,
@@ -671,7 +671,10 @@ class TransactionViewSet(viewsets.ViewSet):
             }
             return Response(balance, status=status.HTTP_200_OK)
 
-
+        balance = w3.eth.getBalance(user_wallet.address)
+        print(f"Balance: {balance}")
+        user_wallet.balance=balance
+        user_wallet.save
         balance = {
             'matic_balance': user_wallet.balance,
             'wallet_address' : user_wallet.address

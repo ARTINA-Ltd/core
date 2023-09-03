@@ -37,6 +37,7 @@ import Dashboard from "./Pages/Dashboard";
 import AboutUs from "./Pages/AboutUs";
 import HelpMint from "./Pages/help-mint";
 import HelpCreateExhibition from "./Pages/help-create-exhibition";
+import MetaExplanation from "./Pages/metaverse_explanation";
 import HelpQuestions from "./Pages/help-questions";
 import HelpCreateWallet from "./Pages/help-create-wallet";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
@@ -123,7 +124,8 @@ export default () => {
                 <Route exact path="help-mint" element={<HelpMint />} />
                 <Route exact path="help-create-exhibition" element={<HelpCreateExhibition />} />
                 <Route exact path="help-create-wallet" element={<HelpCreateWallet />} />
-
+                <Route exact path="metaverse_explanation" element={<MetaExplanation />} />
+                
                 <Route exact path="exhibition-list" element={<ExhibitionList />} />
                 <Route exact path="open-exhibitions" element={<OpenExhibitions />} />
                 <Route exact path="requests-list" element={<RequestsList />} />
