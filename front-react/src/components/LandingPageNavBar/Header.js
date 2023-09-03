@@ -12,6 +12,7 @@ import UserMenuCard from "../Cards/UserDashboardCards/UserMenuCard";
 import { useRef } from "react";
 import { Hidden } from "@mui/material";
 import axios from "axios";
+import BalanceDialogMatic from "../Dialog/BalanceDialog/BalanceDialogMatic";
 
 const Header = ({ connectWallet = false, rev = false }) => {
   const user = useContext(UserContext);
@@ -652,6 +653,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                         داشبورد
                       </div>
                       <BalanceDialog />
+                      <BalanceDialogMatic />
                       <div
                         className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]"
                         onClick={() => navigate("/profile")}

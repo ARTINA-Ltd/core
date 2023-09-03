@@ -7,7 +7,7 @@ import axios from "axios";
 import SimpleInput from "../../Inputs/SimpleInput";
 import { Notify } from "notiflix";
 
-const BalanceDialog = () => {
+const BalanceDialogMatic = () => {
   const [visible, setVisible] = useState(false);
   const [getData, setData] = useState();
   const [isCharge, setIsCharge] = useState(false);
@@ -17,31 +17,90 @@ const BalanceDialog = () => {
 
   useEffect(() => {
     axios
-      .get("https://api.artina.org/api/account/user-balance/get_balance/", {
+      .get("https://api.artina.org/api/account/Transaction/get_balance/", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
         },
         mode: "cors",
       })
       .then((res) => {
+        console.log("Test")
+        console.log(res)
+        console.log("Test")
         setData(res.data);
+        console.log(res.data.matic_balance)
+        if (res.data && res.data.wallet_address) {
+          setAddress(res.data.wallet_address);
+        }
       })
       .catch((e) => { });
   }, []);
 
-
-  const updateBalance = (act) => {
-    if (act == "deposit") {
-      axios.post(
-        "https://api.artina.org/api/account/payment/",
-        { amount: amount },
+  const createWallet = () => {
+    axios
+      .post(
+        "https://api.artina.org/api/account/wallet/create_wallet/",
+        {},
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
           },
           mode: "cors",
         }
-      ).then((res) => { window.open(res.data.url) }).catch(console.log);
+      )
+      .then((res) => {
+        console.log(res);
+        if (res.status === 201) {
+          const createdAddress = res.data.address;
+          setAddress(createdAddress);
+          Notify.success("کیف پول شما با موفقیت ساخته شد")
+        }
+
+      })
+      .catch((error) => {
+        console.log(error);
+        Notify.failure("خطا در ساخت کیف پول");
+      });
+  };
+
+
+  const updateMatic = () => {
+    axios.post(
+      "https://api.artina.org/api/account/payment/",
+      { amount: amount },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+        mode: "cors",
+      }
+    ).then((res) => {
+      window.open(res.data.url)
+    }).catch(console.log);
+  }
+
+
+
+  const updateBalance = (act) => {
+    if (act == "deposit") {
+      axios.post(
+        "https://api.artina.org/api/account/Transaction/",
+        { matic_amount: parseInt(amount) },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+          mode: "cors",
+        }
+      ).then((res) => { 
+        if (res.status === 200) {
+            Notify.success("کیف پول شما با موفقیت شارژ شد")
+        }
+        else if (res.status === 400) {
+            Notify.failure("موجودی شما برای انجام تراکنش کافی نمی‌باشد")
+        }
+        // window.open(res.data.url) 
+    }).catch(console.log);
     } else {
 
       axios
@@ -104,6 +163,20 @@ const BalanceDialog = () => {
     if (isCharge === false) {
       return (
         <>
+          {address && (
+            <div className="text-lg">
+              آدرس کیف پول: {address}
+            </div>
+          )}
+          {!address && (<div
+            className="border-[1px] cursor-pointer border-indigo-500 bg-indigo-100 text-indigo-500 rounded-xl py-2 px-6 hover:scale-105 transition-all"
+            onClick={() => {
+              createWallet();
+            }}
+          >
+            ساخت کیف پول
+          </div>
+          )}
           <div
             className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all"
             onClick={() => {
@@ -175,7 +248,7 @@ const BalanceDialog = () => {
           setIsCharge(false);
         }}
       >
-        کیف پول
+        کیف پول Matic
       </div>
 
       <Dialog
@@ -196,22 +269,10 @@ const BalanceDialog = () => {
                 className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all  duration-700"
               />
               <div className="text-2xl font-b6 px-10">
-                موجودی ریالی قابل معامله
+                موجودی Matic
               </div>
               <div className="text-lg text-yellow-300 px-10 self-end">
-                {getData ? getData.rial_available_balance : ""} ریال
-              </div>
-            </div>
-            <div className="bg-[#4e45d0] rounded-xl w-full py-20 flex flex-col items-start justify-center text-white gap-4 relative group overflow-hidden">
-              <img
-                src="/mand1.png"
-                className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all duration-700"
-              />
-              <div className="text-2xl font-b6 px-10">
-                موجودی ریالی غیر قابل معامله
-              </div>
-              <div className="text-lg text-yellow-300 px-10 self-end">
-                {getData ? getData.rial_unavailable_balance : ""} ریال
+                {getData ? getData.matic_balance : ""} Matic
               </div>
             </div>
           </div>
@@ -220,8 +281,8 @@ const BalanceDialog = () => {
             <div className="w-full flex gap-4 flex-col items-center font-b4 mt-4">
               <SimpleInput
                 type="number"
-                title="مقدار(ریال)"
-                placeholder="مثلا: 100000"
+                title="مقدار(Matic)"
+                placeholder="مثلا: 100"
                 isValid={amount != ""}
                 validationError="نمی‌تواند خالی باشد"
                 onChange={(e) => setAmount(e.target.value)}
@@ -237,4 +298,4 @@ const BalanceDialog = () => {
   );
 };
 
-export default BalanceDialog;
+export default BalanceDialogMatic;
