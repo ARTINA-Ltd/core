@@ -32,19 +32,7 @@ const MetaExplanation = () => {
             <div className="w-[55%] m-auto lg:w-4/5 md:w-11/12">
                 <SimpleCard className={'text-center bg-white leading-[40px]'}>
                 <div dir="rtl" style={{ textAlign: 'justify' }}>
-      <div style={imageContainerStyle}>
-        <img
-          src="./meta1.jpg"
-          alt="تصویر اول"
-          style={imageStyle}
-        />
-
-        <img
-          src="./meta2.jpg"
-          alt="تصویر دوم"
-          style={imageStyle}
-        />
-      </div>
+      <h1 style={importantTextStyle}>دنیای مجازی</h1>
 
       <p>
         متاورس، به معنای دنیای برتری است که از فضاهای دیجیتال سه بعدی تشکیل شده
@@ -66,6 +54,22 @@ const MetaExplanation = () => {
         عینک بزنین و وارد متاورس بشید. اونجا می تونید همکارانتونو یا حتی میز
         کارتونو ببینین!!
       </p>
+
+      <div style={imageContainerStyle}>
+        <img
+          src="./meta1.jpg"
+          alt="تصویر اول"
+          style={imageStyle}
+        />
+
+        <img
+          src="./meta2.jpg"
+          alt="تصویر دوم"
+          style={imageStyle}
+        />
+      </div>
+
+
 
       <h2>کاربردهای متاورس:</h2>
       <ul>
