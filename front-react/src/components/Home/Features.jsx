@@ -35,7 +35,7 @@ const Features = ({ className = "" }) => {
     <div className={`${className}  w-full flex justify-center lg:my-10 `}>
       <div className={`w-4/5 flex flex-col items-center text-black`}>
         <div className="font-b9 text-[40px] mb-4 sm:text-[30px]">
-          امکانات آرتینا
+          نوآوری‌های آرتینا
         </div>
 
         <Swiper
@@ -117,6 +117,51 @@ const Features = ({ className = "" }) => {
               />
               <div className="mt-3 font-b5 text-[24px] text-center">
                 آرتینا AI
+              </div>
+            </div>
+          </SwiperSlide>
+
+          <SwiperSlide>
+            <div className={"w-full cursor-pointer"}>
+              <img
+                src="/wallet-vector-icon.jpg"
+                className="w-[200px] h-[200px] object-cover rounded-full m-auto"
+                alt=""
+              />
+              <div className="mt-3 font-b5 text-[24px] text-center">
+                ساخت کیف پول Matic
+              </div>
+            </div>
+          </SwiperSlide>
+
+          <SwiperSlide>
+            <div
+              className={"w-full cursor-pointer"}
+              onClick={() => window.open("https://artina.org/ai")}
+            >
+              <img
+                src="/matic-logo.png"
+                className="w-[200px] h-[200px] object-cover rounded-full m-auto"
+                alt=""
+              />
+              <div className="mt-3 font-b5 text-[24px] text-center">
+                رهگیری تراکنش‌ها
+              </div>
+            </div>
+          </SwiperSlide>
+
+          <SwiperSlide>
+            <div
+              className={"w-full cursor-pointer"}
+              onClick={() => window.open("https://artina.org/ai")}
+            >
+              <img
+                src="/matic-ic.png"
+                className="w-[200px] h-[200px] object-cover rounded-full m-auto"
+                alt=""
+              />
+              <div className="mt-3 font-b5 text-[24px] text-center">
+                خرید مستقیم Matic
               </div>
             </div>
           </SwiperSlide>

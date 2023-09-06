@@ -17,14 +17,13 @@ const MainSlider = () => {
       >
         <Swiper navigation={true} loop={true} modules={[Navigation]} slidesPerView={1} spaceBetween={0}>
           <SwiperSlide>
-              <img src="/4.jpg" className="object-cover w-full" alt="" />
+            <img src="/2 - Copy.jpg" className="object-cover w-full" alt="" />
           </SwiperSlide>
           <SwiperSlide>
-              <img src="/2 - Copy.jpg" className="object-cover w-full" alt="" />
+            <img src="/4.jpg" className="object-cover w-full" alt="" />
           </SwiperSlide>
         </Swiper>
       </div>
-      
     </>
   );
 };
