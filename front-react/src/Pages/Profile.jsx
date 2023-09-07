@@ -667,7 +667,7 @@ function Profile() {
             <BorderButton
               className={"text-white border-white"}
               onClick={() =>
-                window.open("http://api.artina.org/static/pdfs/Form.docx")
+                window.open("http://api.artina.org/static/pdfs/Form-new-version.pdf")
               }
             >
               متن احراز هویت
