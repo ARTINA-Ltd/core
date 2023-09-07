@@ -1,0 +1,65 @@
+import React from "react";
+import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
+import TestLayout from "../Layouts/TestLayout";
+
+const questionImp2 = () => {
+
+      const imageContainerStyle = {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+      };
+    
+      const imageStyle = {
+        boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.2)',
+        borderRadius: '8px',
+        margin: '0 10px', // Add margin for spacing between images
+        width: '25%', // Reduce the size to a quarter
+      };
+    
+      const importantTextStyle = {
+        fontWeight: 'bold',
+        fontSize: '20px', // Increase font size for the entire text
+        textAlign: 'center',
+        color: "#7B1FA2",
+
+      };
+    
+
+    return (
+        <TestLayout>
+            <div className="w-[55%] m-auto lg:w-4/5 md:w-11/12">
+                <SimpleCard className={'text-center bg-white leading-[40px]'}>
+                <div dir="rtl" style={{ textAlign: 'justify' }}>
+      <h1 style={importantTextStyle}>چطور میتوانم تمام خرید و فروش هایم را در بلاک چین ببینم؟
+</h1>
+
+      <p>
+استفاده از اکسپلورر بلاک‌چین (Blockchain Explorer): اکثر بلاک‌چین‌ها اکسپلوررهایی را فراهم می‌کنند که به شما امکان جستجوی تراکنش‌ها، بلوک‌ها و آدرس‌ها را می‌دهند. برای مثال، اگر شما برای بیتکوین می‌خواهید تراکنش‌ها را ببینید، می‌توانید به وب‌سایت "Blockchain.info" یا "Blockchair.com" مراجعه کنید.
+
+      </p>
+      <p>
+      استفاده از نرم‌افزار کیف پول بلاک‌چین: اگر یک کیف پول دیجیتال دارید (مانند کیف پول بیتکوین)، می‌توانید تراکنش‌های خود را در آن مشاهده کنید. این کیف پول‌ها اغلب تراکنش‌ها را به صورت جزئی و کامل نشان می‌دهند.
+       </p>
+
+      <p>
+      استفاده از وب‌سایت رسمی بلاک‌چین: برخی از بلاک‌چین‌ها و پروژه‌های مختلف دارای وب‌سایت‌های رسمی هستند که امکان مشاهده تراکنش‌ها و اطلاعات بیشتری را ارائه می‌دهند. به عنوان مثال، وب‌سایت رسمی Ethereum برای مشاهده تراکنش‌ها به "etherscan.io" اشاره می‌کند.
+      </p>
+
+      <div style={imageContainerStyle}>
+        <img
+          src="./meta1.jpg"
+          alt="تصویر اول"
+          style={imageStyle}
+        />
+
+  
+        
+                </SimpleCard>
+            </div>
+        </TestLayout>
+    );
+};
+
+export default questionImp2;
