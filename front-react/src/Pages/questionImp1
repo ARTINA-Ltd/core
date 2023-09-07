@@ -1,0 +1,62 @@
+import React from "react";
+import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
+import TestLayout from "../Layouts/TestLayout";
+
+const questionImp1 = () => {
+
+      const imageContainerStyle = {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+      };
+    
+      const imageStyle = {
+        boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.2)',
+        borderRadius: '8px',
+        margin: '0 10px', // Add margin for spacing between images
+        width: '25%', // Reduce the size to a quarter
+      };
+    
+      const importantTextStyle = {
+        fontWeight: 'bold',
+        fontSize: '20px', // Increase font size for the entire text
+        textAlign: 'center',
+        color: "#7B1FA2",
+
+      };
+    
+
+    return (
+        <TestLayout>
+            <div className="w-[55%] m-auto lg:w-4/5 md:w-11/12">
+                <SimpleCard className={'text-center bg-white leading-[40px]'}>
+                <div dir="rtl" style={{ textAlign: 'justify' }}>
+      <h1 style={importantTextStyle}>چرا آرتینا خرید و فروش مبتنی بر بلاک چین را ارایه می دهد؟</h1>
+
+
+      <p>
+      بلاک‌چین یک سیستم ثبت تراکنش‌هاست که اطلاعات را در بلوک‌های متصل به یکدیگر ذخیره می‌کند. این اطلاعات به صورت رمزشده و تغییرناپذیری ذخیره می‌شوند. از این رو، هیچ کس نمی‌تواند به راحتی اطلاعات را تغییر دهد یا تقلب کند.
+       </p>
+
+      <p>
+        به علاوه، بلاک‌چین به صورت توزیعی در شبکه‌های مختلف ذخیره می‌شود، بنابراین هرگونه تلاش برای تغییر اطلاعات بسیار مشکل است. این امر اعتماد بیشتری به ارزهای رمزی می‌دهد و تضمین می‌کند که تراکنش‌ها و مالکیت امن باشند. وقتی ارزهای رمزی را خریداری یا فروش می‌کنید، تراکنش‌ها به صورت عمومی در بلاک‌چین ثبت می‌شوند، که این امر شفافیت بیشتری به فرآیند معاملات اضافه می‌کند و تقلب را کاهش می‌دهد.
+
+      </p>
+
+      <div style={imageContainerStyle}>
+        <img
+          src="./meta1.jpg"
+          alt="تصویر اول"
+          style={imageStyle}
+        />
+
+  
+        
+                </SimpleCard>
+            </div>
+        </TestLayout>
+    );
+};
+
+export default questionImp1;
