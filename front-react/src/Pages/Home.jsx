@@ -8,6 +8,7 @@ import TestLayout from "../Layouts/TestLayout";
 import AboutMetaverse from "../components/Home/AboutMetaverse";
 import AboutAI from "../components/Home/AboutAI";
 import Innovations from "../components/Home/Innovations";
+import MostFrequentQuestions from "../components/Home/MostFreQuestions";
 
 const Home = () => {
   return (
@@ -18,7 +19,8 @@ const Home = () => {
       <AboutUs className={"mt-20"} />
       <AboutMetaverse className="" />
       <AboutAI />
-      <Innovations className={"my-10"}/>
+      <Innovations className={"my-10"} />
+      <MostFrequentQuestions className={"mt-10"} />
       {/* <Features className={"my-20"} /> */}
     </TestLayout>
   );

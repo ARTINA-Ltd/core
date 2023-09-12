@@ -25,7 +25,7 @@ const TestLayout = ({
       <div>
         {/* <div className={``}> */}
         <div
-          className={` m-auto my-0 pt-1 pb-5 min-h-[92vh] ${className} ${
+          className={` m-auto my-0 pt-1 min-h-[92vh] ${className} ${
             wfull ? "w-full" : "w-[90%]"
           }`}
         >
