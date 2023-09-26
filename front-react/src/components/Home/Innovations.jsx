@@ -33,7 +33,7 @@ const Innovations = ({ className = "" }) => {
                                 className="w-[150px] h-[150px] object-cover rounded-full m-auto"
                                 alt=""
                             />
-                            <div className="mt-3 font-b5 text-[20px] text-center">بلاگ</div>
+                            <div className="mt-3 font-b5 text-[20px] text-center">اخبار NFT</div>
                         </div>
                         <div className="mx-16 my-5">
                             <img
@@ -51,7 +51,7 @@ const Innovations = ({ className = "" }) => {
                                 className="w-[150px] h-[150px] object-cover rounded-full m-auto"
                                 alt=""
                             />
-                            <div className="mt-3 font-b5 text-[20px] text-center">ساخت کیف‌پول Matic</div>
+                            <div className="mt-3 font-b5 text-[20px] text-center">ساخت ولت اختصاصی</div>
                         </div>
                         <div className="mx-16 my-5">
                             <img
@@ -59,7 +59,7 @@ const Innovations = ({ className = "" }) => {
                                 className="w-[150px] h-[150px] object-cover rounded-full m-auto"
                                 alt=""
                             />
-                            <div className="mt-3 font-b5 text-[20px] text-center">رهگیری تراکنش‌ها</div>
+                            <div className="mt-3 font-b5 text-[20px] text-center">محاسبه گر Gas Fee</div>
                         </div>
                         <div className="mx-16 my-5">
                             <img
@@ -67,7 +67,7 @@ const Innovations = ({ className = "" }) => {
                                 className="w-[150px] h-[150px] object-cover rounded-full m-auto"
                                 alt=""
                             />
-                            <div className="mt-3 font-b5 text-[20px] text-center">خرید مستقیم Matic</div>
+                            <div className="mt-3 font-b5 text-[20px] text-center">تحلیل داده Division</div>
                         </div>
                         <div className="mx-16 my-5">
                             <img
@@ -75,7 +75,7 @@ const Innovations = ({ className = "" }) => {
                                 className="w-[150px] h-[150px] object-cover rounded-full m-auto"
                                 alt=""
                             />
-                            <div className="mt-3 font-b5 text-[20px] text-center">بستر بلاکچینی</div>
+                            <div className="mt-3 font-b5 text-[20px] text-center">قرارداد هوشمند آرتینا</div>
                         </div>
                     </div>
                 </div>

@@ -69,6 +69,9 @@ const Footer = () => {
             <a href="/exhibition-list" className="mr-2 font-b3 collection-item">
               همه نمایشگاه ها
             </a>
+            <a href="/whitepaper" className="mr-2 font-b3 collection-item">
+              سپید‌نامه
+            </a>
           </div>
 
           <div className="w-full flex flex-col gap-2 mb-4">
