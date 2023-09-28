@@ -46,6 +46,7 @@ import Metaverse from "./Pages/Metaverse";
 import GetMail from "./Pages/GetMail";
 import NotFound from "./Pages/NotFound";
 import RedirectedPage from "./Pages/RedirectPage";
+import WhitePaper from "./Pages/WhitePaper";
 const activeChainId = ChainId.Goerli;
 
 export const UserContext = createContext();
@@ -144,6 +145,7 @@ export default () => {
                 <Route exact path="join-artina" element={<GetMail />}></Route>
                 <Route exact path="payment_status" element={<RedirectedPage />} />
                 <Route exact path="FAQ" element={<HelpQuestions />} />
+                <Route exact path="whitepaper" element={<WhitePaper />} />
                 <Route path="*" element={<NotFound />} />
                 {/* <Route exact path="request-lists" element={<RequestLists />} /> */}
               </Routes>
