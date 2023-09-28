@@ -31,13 +31,13 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'Account',
     'exhibition',
     'core',
@@ -60,8 +60,42 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'Account.middleware.FailedLoginMiddleware',
     
     ]
+JAZZMIN_SETTINGS = {
+    "title": "Artina Admin",
+    "site_title": "Artina Admin",
+    "site_header": "Artina",
+    
+    # logo for your project (defaults to static/jazzmin/img/default.png)
+    "site_logo": "my_project/img/logo.png",
+    
+    # Set the link for the logo (defaults to admin:index)
+    "site_logo_url": "/admin/",
+    
+    # Add related model counts (ForeignKey and OneToOne included)
+    "related_modal_active": True,
+    
+    # More options here: https://github.com/farridav/django-jazzmin#jazzmin-settings
+}
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": True,
+    "footer_small_text": True,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": "navbar-dark",  # navbar-light or navbar-dark
+    "accent": "accent-primary",  # primary, secondary, etc.
+    
+    # Configure the side menu (order, grouping, and titles)
+    "order_with_respect_to": ["myapp", "otherapp"],
+    "custom_links": {
+        "myapp": [{"name": "Make Payment", "url": "make_payment"}],
+    },
+    "related_modal_active": False,
+    
+    # More options here: https://github.com/farridav/django-jazzmin#ui-tweaks
+}
 
 #CORS_ALLOWED_ORIGINS = [
 #    'http://0.0.0.0:3000'
@@ -119,6 +153,44 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ARTINA.wsgi.application'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'myapp.log',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'myapp': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+    },
+}
 
 
 # Database
@@ -132,7 +204,10 @@ DATABASES = {
         'USER': 'administrator',
         'PASSWORD': 'N0thing!Yet',
         'HOST': 'localhost',
-        'PORT': '', }
+        'PORT': '',
+        'TEST': {
+            'NAME': 'mytestdatabase',
+        }, }
 }
 
 # DATABASES = {

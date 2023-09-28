@@ -42,6 +42,9 @@ class RegisterViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+import logging
+
+# logger = logging.getLogger('myapp')
 
 class LoginViewSet(viewsets.ViewSet):
 
@@ -54,7 +57,6 @@ class LoginViewSet(viewsets.ViewSet):
 
         if user is None:
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-
         refresh = RefreshToken.for_user(user)
         response_data = {
             'refresh': str(refresh),
