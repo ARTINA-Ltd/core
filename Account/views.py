@@ -505,7 +505,22 @@ class PaymentGateViewSet(viewsets.ViewSet):
             success_url = f'http://artina.org/payment_status/?status=success&authority={authority}'
 
             if verification_status == 100:
-                
+                transaction_type = TransactionType.objects.get(name="deposit")
+                transaction_currency = TransactionCurrency.objects.get(name="rial")
+                user_balance=None
+                user_balance = UserBalance.objects.filter(user=self.user).first()
+                if user_balance :
+                    n=user_balance.rial_available_balance 
+                    n=n+ amount
+                    user_balance.rial_available_balance =n
+                    user_balance.save()
+
+                else :
+                    user_balance = UserBalance.objects.create(rial_available_balance=amount,user=user)
+
+                UserTurnover.objects.create(user=self.user, transaction_type=transaction_type, 
+                                    transaction_currency=transaction_currency, transaction_value=amount)
+
                 return redirect(success_url)
             else:
                 return redirect(failure_url)
