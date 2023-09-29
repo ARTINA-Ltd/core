@@ -13,7 +13,7 @@ updates:
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     allow:
       # Allow only direct updates for
       # Django and any packages starting "django"
