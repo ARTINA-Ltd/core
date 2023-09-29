@@ -480,8 +480,9 @@ class PaymentGateViewSet(viewsets.ViewSet):
             print(payment_info)
             # data=payment_info[1].get('data')
             authority = payment_info['data']['authority']
-            payment = Payment.objects.create(user=user, amount=amount, authority=authority)
+            Payment.objects.create(user=user, amount=amount, authority=authority)
             redirect_url = self.get_redirect_url(payment)
+
             return Response({'url': redirect_url}, status=status.HTTP_200_OK)
         else:
             return Response(response.json(), status=response.status_code)
@@ -500,7 +501,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
             if verification_status == 100:
                 payment.is_paid = True
                 payment.save()
-
+                self.update_balance_and_record_turnover(user=payment.user, amount=payment.amount, currency='rial', transaction_type_name="deposit")
                 # Redirect to your React front-end with payment status
             success_url = f'http://artina.org/payment_status/?status=success&authority={authority}'
 
@@ -546,6 +547,17 @@ class PaymentGateViewSet(viewsets.ViewSet):
 
     def get_redirect_url(self, payment):
         return f'https://www.zarinpal.com/pg/StartPay/{payment.authority}'
+
+    def update_balance_and_record_turnover(self, user, amount, currency, transaction_type_name):
+        user_balance, _ = UserBalance.objects.get_or_create(user=user)
+        transaction_type = TransactionType.objects.get(name=transaction_type_name)
+        transaction_currency = TransactionCurrency.objects.get(name=currency)
+
+        if currency == 'rial':
+            user_balance.rial_available_balance += amount
+            user_balance.save()
+
+        UserTurnover.objects.create(user=user, transaction_type=transaction_type, transaction_currency=transaction_currency, transaction_value=amount)
 
 
 
