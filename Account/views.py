@@ -478,6 +478,22 @@ class PaymentGateViewSet(viewsets.ViewSet):
         if response.status_code == 200:
             payment_info = response.json()
             print(payment_info)
+            transaction_type = TransactionType.objects.get(name="deposit")
+            transaction_currency = TransactionCurrency.objects.get(name="rial")
+            user_balance=None
+            user_balance = UserBalance.objects.filter(user=user).first()
+            if user_balance :
+                n=user_balance.rial_available_balance 
+                n=n+ amount
+                user_balance.rial_available_balance =n
+                user_balance.save()
+
+            else :
+                user_balance = UserBalance.objects.create(rial_available_balance=amount,user=user)
+
+                UserTurnover.objects.create(user=user, transaction_type=transaction_type, 
+                                    transaction_currency=transaction_currency, transaction_value=amount)
+
             # data=payment_info[1].get('data')
             authority = payment_info['data']['authority']
             payment = Payment.objects.create(user=user, amount=amount, authority=authority)
@@ -505,22 +521,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
             success_url = f'http://artina.org/payment_status/?status=success&authority={authority}'
 
             if verification_status == 100:
-                transaction_type = TransactionType.objects.get(name="deposit")
-                transaction_currency = TransactionCurrency.objects.get(name="rial")
-                user_balance=None
-                user_balance = UserBalance.objects.filter(user=user).first()
-                if user_balance :
-                    n=user_balance.rial_available_balance 
-                    n=n+ amount
-                    user_balance.rial_available_balance =n
-                    user_balance.save()
-
-                else :
-                    user_balance = UserBalance.objects.create(rial_available_balance=amount,user=user)
-
-                UserTurnover.objects.create(user=user, transaction_type=transaction_type, 
-                                    transaction_currency=transaction_currency, transaction_value=amount)
-
+           
                 return redirect(success_url)
             else:
                 return redirect(failure_url)
