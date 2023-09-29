@@ -492,7 +492,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
         authority = request.GET.get('Authority')
         payment = Payment.objects.get(authority=authority)
         failure_url = f'http://artina.org/payment_status/?status=failed&authority={authority}'
-
+        user=user=self.request.user
         response = self.verify_payment(payment.amount, payment.authority)
         if response.status_code == 200:
             verification_info = response.json()
@@ -508,7 +508,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
                 transaction_type = TransactionType.objects.get(name="deposit")
                 transaction_currency = TransactionCurrency.objects.get(name="rial")
                 user_balance=None
-                user_balance = UserBalance.objects.filter(user=self.user).first()
+                user_balance = UserBalance.objects.filter(user=user).first()
                 if user_balance :
                     n=user_balance.rial_available_balance 
                     n=n+ amount
@@ -518,7 +518,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
                 else :
                     user_balance = UserBalance.objects.create(rial_available_balance=amount,user=user)
 
-                UserTurnover.objects.create(user=self.user, transaction_type=transaction_type, 
+                UserTurnover.objects.create(user=user, transaction_type=transaction_type, 
                                     transaction_currency=transaction_currency, transaction_value=amount)
 
                 return redirect(success_url)
