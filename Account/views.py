@@ -501,7 +501,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
             if verification_status == 100:
                 payment.is_paid = True
                 payment.save()
-                self.update_balance_and_record_turnover(user=payment.user, amount=payment.amount, currency='rial', transaction_type_name="deposit")
+                # self.update_balance_and_record_turnover(user=payment.user, amount=payment.amount, currency='rial', transaction_type_name="deposit")
                 # Redirect to your React front-end with payment status
             success_url = f'http://artina.org/payment_status/?status=success&authority={authority}'
 
