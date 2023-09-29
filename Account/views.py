@@ -469,107 +469,48 @@ class NotifyUserViewSet(viewsets.ModelViewSet):
 
 
 from rest_framework import status as drf_status
-# class PaymentGateViewSet(viewsets.ViewSet):
-#     def create(self, request, *args, **kwargs):
-#         user = self.request.user
-#         amount = request.data.get("amount")  
-#         email= user.profile.email
-#         response = self.send_payment_request(amount)
-#         if response.status_code == 200:
-#             payment_info = response.json()
-#             print(payment_info)
-#             # data=payment_info[1].get('data')
-#             authority = payment_info['data']['authority']
-#             Payment.objects.create(user=user, amount=amount, authority=authority)
-#             redirect_url = self.get_redirect_url(payment)
-
-#             return Response({'url': redirect_url}, status=status.HTTP_200_OK)
-#         else:
-#             return Response(response.json(), status=response.status_code)
-
-#     @action(detail=False, methods=['get'])
-
-#     def verify(self, request):
-#         authority = request.GET.get('Authority')
-#         payment = Payment.objects.get(authority=authority)
-#         failure_url = f'http://artina.org/payment_status/?status=failed&authority={authority}'
-
-#         response = self.verify_payment(payment.amount, payment.authority)
-#         if response.status_code == 200:
-#             verification_info = response.json()
-#             verification_status = verification_info['data']['code'] 
-#             if verification_status == 100:
-#                 payment.is_paid = True
-#                 payment.save()
-#                 self.update_balance_and_record_turnover(user=payment.user, amount=payment.amount, currency='rial', transaction_type_name="deposit")
-#                 # Redirect to your React front-end with payment status
-#             success_url = f'http://artina.org/payment_status/?status=success&authority={authority}'
-
-#             if verification_status == 100:
-#                 return redirect(success_url)
-#             else:
-#                 return redirect(failure_url)
-#         else:
-#             return redirect(failure_url)
-from rest_framework import status
-from django.db import transaction, IntegrityError
-
 class PaymentGateViewSet(viewsets.ViewSet):
-
     def create(self, request, *args, **kwargs):
         user = self.request.user
-        amount = request.data.get("amount")
-
-        try:
-            response = self.send_payment_request(amount)
-
-            if response.status_code != 200:
-                return Response(response.json(), status=response.status_code)
-
+        amount = request.data.get("amount")  
+        email= user.profile.email
+        response = self.send_payment_request(amount)
+        if response.status_code == 200:
             payment_info = response.json()
+            print(payment_info)
+            # data=payment_info[1].get('data')
             authority = payment_info['data']['authority']
-            Payment.objects.create(user=user, amount=amount, authority=authority)
-            redirect_url = self.get_redirect_url(authority)
+            payment = Payment.objects.create(user=user, amount=amount, authority=authority)
+            redirect_url = self.get_redirect_url(payment)
             return Response({'url': redirect_url}, status=status.HTTP_200_OK)
-        
-        except requests.RequestException as e:
-            return Response({'error': f'Payment gateway error: {str(e)}'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
-        except IntegrityError:
-            return Response({'error': 'Database error while creating payment record.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(response.json(), status=response.status_code)
 
     @action(detail=False, methods=['get'])
+
     def verify(self, request):
         authority = request.GET.get('Authority')
+        payment = Payment.objects.get(authority=authority)
+        failure_url = f'http://artina.org/payment_status/?status=failed&authority={authority}'
 
-        try:
-            payment = Payment.objects.get(authority=authority)
-            response = self.verify_payment(payment.amount, payment.authority)
-
-            if response.status_code != 200:
-                return Response(response.json(), status=response.status_code)
-
+        response = self.verify_payment(payment.amount, payment.authority)
+        if response.status_code == 200:
             verification_info = response.json()
-            verification_status = verification_info['data']['code']
-
-            if verification_status != 100:
-                failure_url = f'http://artina.org/payment_status/?status=failed&authority={authority}'
-                return redirect(failure_url)
-
-            with transaction.atomic():
+            verification_status = verification_info['data']['code'] 
+            if verification_status == 100:
                 payment.is_paid = True
                 payment.save()
 
-                self.update_balance_and_record_turnover(user=payment.user, amount=payment.amount, currency='rial', transaction_type_name="deposit")
-
+                # Redirect to your React front-end with payment status
             success_url = f'http://artina.org/payment_status/?status=success&authority={authority}'
-            return redirect(success_url)
-        
-        except Payment.DoesNotExist:
-            return Response({'error': 'Payment not found.'}, status=status.HTTP_404_NOT_FOUND)
-        except requests.RequestException as e:
-            return Response({'error': f'Payment gateway error: {str(e)}'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
-        except IntegrityError:
-            return Response({'error': 'Database error during payment verification.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+            if verification_status == 100:
+                
+                return redirect(success_url)
+            else:
+                return redirect(failure_url)
+        else:
+            return redirect(failure_url)
 
     def send_payment_request(self, amount):
         user=self.request.user
@@ -607,17 +548,6 @@ class PaymentGateViewSet(viewsets.ViewSet):
     def get_redirect_url(self, payment):
         return f'https://www.zarinpal.com/pg/StartPay/{payment.authority}'
 
-    def update_balance_and_record_turnover(self, user, amount, currency, transaction_type_name):
-        with transaction.atomic():
-            user_balance, _ = UserBalance.objects.get_or_create(user=user)
-            transaction_type = TransactionType.objects.get(name=transaction_type_name)
-            transaction_currency = TransactionCurrency.objects.get(name=currency)
-
-            if currency == 'rial':
-                user_balance.rial_available_balance += amount
-                user_balance.save()
-
-            UserTurnover.objects.create(user=user, transaction_type=transaction_type, transaction_currency=transaction_currency, transaction_value=amount)
 
 
 
