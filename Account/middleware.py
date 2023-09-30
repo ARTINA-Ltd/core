@@ -19,3 +19,25 @@ class FailedLoginMiddleware:
                 f.write(f"{datetime.now()}: Failed login attempt for user: {username}. Total attempts: {self.failed_logins[username]}\n")
 
         return response
+
+
+import logging
+
+logger = logging.getLogger('Account.PaymentGateViewSet')
+
+class PaymentLoggingMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # Before processing the view
+        if '/api/account/payment/' in request.path:
+            logger.debug(f"Payment request initiated by {request.user} with path: {request.path} and method: {request.method}")
+
+        response = self.get_response(request)
+
+        # After processing the view
+        if '/api/account/payment/' in request.path:
+            logger.debug(f"Payment response for {request.user} with status code: {response.status_code}")
+
+        return response

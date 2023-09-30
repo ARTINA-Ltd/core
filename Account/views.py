@@ -7,6 +7,8 @@ from django.contrib.auth import authenticate
 from rest_framework import viewsets
 from rest_framework.response import Response
 from . import serializers
+import logging
+
 import random
 import requests
 from django.contrib.auth.tokens import default_token_generator
@@ -42,7 +44,6 @@ class RegisterViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-import logging
 
 # logger = logging.getLogger('myapp')
 
@@ -472,6 +473,7 @@ from rest_framework import status as drf_status
 class PaymentGateViewSet(viewsets.ViewSet):
     def create(self, request, *args, **kwargs):
         user = self.request.user
+        # logger.debug('Payment creation initiated by user: %s', self.request.user)
         amount = request.data.get("amount")  
         email= user.profile.email
         response = self.send_payment_request(amount)
