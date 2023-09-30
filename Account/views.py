@@ -673,6 +673,7 @@ class TransactionViewSet(viewsets.ViewSet):
         print(tx_receipt)
         if tx_receipt.status == 1:
             transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='completed')
+            print(f"transaction:{transaction}")
             user_wallet.balance = matic_amount+ user_wallet.balance
             user_wallet.save()
             print(f"user_wallet is: {user_wallet}")
