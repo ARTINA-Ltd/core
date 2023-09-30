@@ -633,8 +633,9 @@ class TransactionViewSet(viewsets.ViewSet):
         user = request.user
         matic_amount = request.data.get('matic_amount')
         matic_price = 27216
+        matic_amount = float(request.data.get('matic_amount'))
         needed_balance = matic_amount * matic_price
-        
+
         balance = UserBalance.objects.filter(user=user).first()
         userbalance = balance.rial_available_balance
         print(userbalance)
@@ -674,7 +675,8 @@ class TransactionViewSet(viewsets.ViewSet):
             transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='completed')
             user_wallet.balance = matic_amount+ user_wallet.balance
             user_wallet.save()
-            print(f"the real balance is:{user.wallet.balance}")
+            print(f"user_wallet is: {user_wallet}")
+            print(f"the real balance is:{user_wallet.balance}")
             return Response({'message': 'Purchase successful.'}, status=status.HTTP_200_OK)
         else:
             transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='failed')
@@ -685,7 +687,7 @@ class TransactionViewSet(viewsets.ViewSet):
     def get_balance(self, request):
         user = self.request.user
         user_wallet = Wallet.objects.filter(user=user).first()
-
+        print(f"user_wallet is: {user_wallet}")
         if not user_wallet:
             balance = {
             'matic_balance': 0,
