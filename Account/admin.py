@@ -14,5 +14,7 @@ admin.site.register(models.TransactionCurrency)
 admin.site.register(models.TransactionType)
 admin.site.register(models.PhoneVerification)
 admin.site.register(models.Wallet)
+admin.site.register(models.Transaction)
+
 
 

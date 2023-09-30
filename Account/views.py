@@ -644,6 +644,7 @@ class TransactionViewSet(viewsets.ViewSet):
             return Response({'message': 'Insufficient balance.'}, status=status.HTTP_400_BAD_REQUEST)
         balance.rial_available_balance=balance.rial_available_balance - needed_balance
         balance.save()
+
         # use connect_with_retry() to get a connected Web3 instance
         # w3 = connect_with_retry()
         
@@ -671,6 +672,8 @@ class TransactionViewSet(viewsets.ViewSet):
         print(tx_receipt)
         if tx_receipt.status == 1:
             transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='completed')
+            user.wallet.balance = matic_amount+ user.wallet.balance
+            print(f"the real balance is:{user.wallet.balance}")
             return Response({'message': 'Purchase successful.'}, status=status.HTTP_200_OK)
         else:
             transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='failed')
@@ -690,10 +693,16 @@ class TransactionViewSet(viewsets.ViewSet):
             }
             return Response(balance, status=status.HTTP_200_OK)
 
-        balance = w3.eth.getBalance(user_wallet.address)
-        print(f"Balance: {balance}")
-        user_wallet.balance=balance
-        user_wallet.save
+        # balance = w3.eth.getBalance(user_wallet.address)
+        # print(f"Balance: {balance}")
+        # user_wallet.balance=balance
+        # user_wallet.save
+        # balance = {
+        #     'matic_balance': user_wallet.balance,
+        #     'wallet_address' : user_wallet.address
+        #     # Add other balance fields as needed
+        # }
+
         balance = {
             'matic_balance': user_wallet.balance,
             'wallet_address' : user_wallet.address
