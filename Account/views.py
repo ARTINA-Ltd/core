@@ -647,8 +647,8 @@ class TransactionViewSet(viewsets.ViewSet):
 
         # use connect_with_retry() to get a connected Web3 instance
         # w3 = connect_with_retry()
-        
-        recipient_address = user.wallet.address
+        user_wallet=Wallet.objects.filter(user=user).first()
+        recipient_address = user_wallet.address
         print(f"ad:{recipient_address}")
         private_key = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
         gas_price = w3.toWei('5', 'gwei')  # Example gas price
@@ -672,7 +672,8 @@ class TransactionViewSet(viewsets.ViewSet):
         print(tx_receipt)
         if tx_receipt.status == 1:
             transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='completed')
-            user.wallet.balance = matic_amount+ user.wallet.balance
+            user_wallet.balance = matic_amount+ user_wallet.balance
+            user_wallet.save()
             print(f"the real balance is:{user.wallet.balance}")
             return Response({'message': 'Purchase successful.'}, status=status.HTTP_200_OK)
         else:
