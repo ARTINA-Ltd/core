@@ -31,13 +31,14 @@ class PaymentLoggingMiddleware:
 
     def __call__(self, request):
         # Before processing the view
+        print(kli)
         if '/api/account/payment/' in request.path:
-            logger.debug(f"Payment request initiated by {request.user} with path: {request.path} and method: {request.method}")
-
+            logger.debug(f"Payment request initiated by {request.user}")
+        print(kooli)
         response = self.get_response(request)
 
-        # After processing the view
-        if '/api/account/payment/' in request.path:
-            logger.debug(f"Payment response for {request.user} with status code: {response.status_code}")
+        # # After processing the view
+        # if '/api/account/payment/' in request.path:
+        #     logger.debug(f"Payment response for {request.user} with status code: {response.status_code}")
 
         return response
