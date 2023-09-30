@@ -634,6 +634,7 @@ class TransactionViewSet(viewsets.ViewSet):
         user = request.user
         matic_amount = request.data.get('matic_amount')
         matic_price = 27216
+        matic_amount = Decimal(str(matic_amount))
         # matic_amount = float(request.data.get('matic_amount'))
         print(f"maticamount:{matic_amount}")
         needed_balance = matic_amount * matic_price
@@ -641,7 +642,6 @@ class TransactionViewSet(viewsets.ViewSet):
         balance = UserBalance.objects.filter(user=user).first()
         userbalance = balance.rial_available_balance
         print(userbalance)
-        matic_amount = Decimal(str(matic_amount))
         # Check if user has sufficient balance
         if userbalance < needed_balance:
             return Response({'message': 'Insufficient balance.'}, status=status.HTTP_400_BAD_REQUEST)
