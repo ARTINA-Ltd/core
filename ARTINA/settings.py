@@ -61,7 +61,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'Account.middleware.FailedLoginMiddleware',
-    'Account.middleware.PaymentLoggingMiddleware',
+    # 'Account.middleware.PaymentLoggingMiddleware',
     
     ]
 JAZZMIN_SETTINGS = {

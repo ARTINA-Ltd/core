@@ -21,24 +21,24 @@ class FailedLoginMiddleware:
         return response
 
 
-import logging
+# import logging
 
-logger = logging.getLogger('Account.PaymentGateViewSet')
+# logger = logging.getLogger('Account.PaymentGateViewSet')
 
-class PaymentLoggingMiddleware:
-    def __init__(self, get_response):
-        self.get_response = get_response
+# class PaymentLoggingMiddleware:
+#     def __init__(self, get_response):
+#         self.get_response = get_response
 
-    def __call__(self, request):
-        # Before processing the view
-        print("kli")
-        if '/api/account/payment/' in request.path:
-            logger.debug(f"Payment request initiated by {request.user}")
-        print("kooli")
-        response = self.get_response(request)
+#     def __call__(self, request):
+#         # Before processing the view
+#         print("kli")
+#         if '/api/account/payment/' in request.path:
+#             logger.debug(f"Payment request initiated by {request.user}")
+#         print("kooli")
+#         response = self.get_response(request)
 
-        # # After processing the view
-        # if '/api/account/payment/' in request.path:
-        #     logger.debug(f"Payment response for {request.user} with status code: {response.status_code}")
+#         # # After processing the view
+#         # if '/api/account/payment/' in request.path:
+#         #     logger.debug(f"Payment response for {request.user} with status code: {response.status_code}")
 
-        return response
+#         return response

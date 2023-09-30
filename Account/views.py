@@ -473,7 +473,6 @@ from rest_framework import status as drf_status
 class PaymentGateViewSet(viewsets.ViewSet):
     def create(self, request, *args, **kwargs):
         user = self.request.user
-        # logger.debug('Payment creation initiated by user: %s', self.request.user)
         amount = request.data.get("amount")  
         email= user.profile.email
         response = self.send_payment_request(amount)
@@ -642,7 +641,7 @@ class TransactionViewSet(viewsets.ViewSet):
         balance = UserBalance.objects.filter(user=user).first()
         userbalance = balance.rial_available_balance
         print(userbalance)
-        
+        matic_amount = Decimal(str(matic_amount))
         # Check if user has sufficient balance
         if userbalance < needed_balance:
             return Response({'message': 'Insufficient balance.'}, status=status.HTTP_400_BAD_REQUEST)
