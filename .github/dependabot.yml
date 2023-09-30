@@ -9,13 +9,3 @@ updates:
     directory: "/front-react" # Location of package manifests
     schedule:
       interval: "daily"
-
-  - package-ecosystem: "pip"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    allow:
-      # Allow only direct updates for
-      # Django and any packages starting "django"
-      - dependency-name: "django*"
-        dependency-type: "direct"
