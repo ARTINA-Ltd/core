@@ -31,10 +31,10 @@ class PaymentLoggingMiddleware:
 
     def __call__(self, request):
         # Before processing the view
-        print(kli)
+        print("kli")
         if '/api/account/payment/' in request.path:
             logger.debug(f"Payment request initiated by {request.user}")
-        print(kooli)
+        print("kooli")
         response = self.get_response(request)
 
         # # After processing the view
