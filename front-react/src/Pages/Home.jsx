@@ -9,6 +9,7 @@ import AboutMetaverse from "../components/Home/AboutMetaverse";
 import AboutAI from "../components/Home/AboutAI";
 import Innovations from "../components/Home/Innovations";
 import MostFrequentQuestions from "../components/Home/MostFreQuestions";
+import GasPrice from "../components/Home/GasPrice";
 
 const Home = () => {
   return (
@@ -20,7 +21,8 @@ const Home = () => {
       <AboutMetaverse className="" />
       <AboutAI />
       <Innovations className={"my-10"} />
-      <MostFrequentQuestions className={"mt-10"} />
+      <MostFrequentQuestions className={""} />
+      <GasPrice className={"mt-10"} />
       {/* <Features className={"my-20"} /> */}
     </TestLayout>
   );
