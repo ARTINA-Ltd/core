@@ -306,8 +306,15 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
             UserTurnover.objects.create(user=user, transaction_type=transactiontype, 
                                     transaction_currency=transactionCurrency, transaction_value=10000)
 
+            data = {
+            'token_id':  nft.token_id,
+            'blockNumber': tx.blockNumber,
+            'transactionHash': tx.transactionHash,
+            'blockHash': tx.blockHash,
+            'transactionIndex': tx.transactionIndex,
+            }
             return Response(
-                nft.token_id,
+              data,
                 status=status.HTTP_201_CREATED,
             )            
       
