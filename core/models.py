@@ -28,7 +28,10 @@ class NFT(models.Model):
     has_physical= models.BooleanField(default=False)
     view_count = models.IntegerField(default=0)
     share_count = models.IntegerField(default=0)
-
+    blockNumber= models.TextField(max_length=200, null=True, blank=True)
+    transactionHash= models.TextField(max_length=200, null=True, blank=True)
+    blockHash= models.TextField(max_length=200, null=True, blank=True)
+    transactionIndex= models.TextField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         return f'{self.name} by {self.creator} owned by {self.owner.username}'
