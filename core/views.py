@@ -97,7 +97,7 @@ class NftViewSet(viewsets.ModelViewSet):
 
 
     def list(self, *args):
-        queryset = models.NFT.objects.filter(id=id)
+        queryset = NFT.objects.filter(id=id)
         serializer_class = serializers.NFTSerializer
 
 
