@@ -8,7 +8,7 @@ class FailedLoginMiddleware:
     def __call__(self, request):
         response = self.get_response(request)
         
-        if request.path == '/api/account/login/' and request.method == "POST" and response.status_code == 200:  # Check if it's a POST request to the login view and it returned a 200 (which indicates a failed login in Django's built-in view).
+        if request.path == 'https://api.artina.org/api/account/login/' and request.method == "POST" and response.status_code == 200:  # Check if it's a POST request to the login view and it returned a 200 (which indicates a failed login in Django's built-in view).
             print("looooooooool")
             username = request.POST.get('username')
             self.failed_logins[username] = self.failed_logins.get(username, 0) + 1
