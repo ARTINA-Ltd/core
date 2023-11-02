@@ -25,7 +25,7 @@ setuptools==58.2.0
 dacite==1.6.0
 defusedxml==0.7.1
 Deprecated==1.2.13
-Django==4.1
+Django==4.1.13
 django-allauth==0.52.0
 django-jazzmin
 django-cors-headers==3.13.0
