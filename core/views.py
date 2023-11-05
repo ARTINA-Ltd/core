@@ -291,6 +291,9 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
                 tx = contract.mint_to(author_address, NFTMetadataInput.from_json(nft_metadata))
                 print(f"tx is :{tx}")
                 print("done")
+                with open('output.txt', 'w') as file:
+                file.write(f"Transaction ID: {tx.id}\n")
+     
                 token_id = tx.id
                 print(token_id)
             except Exception as e:
