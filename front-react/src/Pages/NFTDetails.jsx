@@ -19,6 +19,10 @@ const NFTDetails = () => {
   const [ethereum, setEthereum] = useState(0);
   const [likeCount, setLikeCount] = useState(0);
   const user = useContext(UserContext);
+  const [blockHash, setBlockHash] = useState();
+  const [blockNumber, setBlockNumber] = useState(0);
+  const [transactionHash, setTransactionHash] = useState();
+  const [transactionIndex, setTransactionIndex] = useState(0);
 
   const icons = {
     heart: (
@@ -156,7 +160,16 @@ const NFTDetails = () => {
       .then(d => {
         setData(d.data.nft);
         setLikeCount(d.data.count);
-        console.log(d.data);
+        // console.log("Details:", d.data.nft);
+        // setBlockHash(d.data.nft.blockHash);
+        // setBlockNumber(d.data.nft.blockNumber);
+        // setTransactionHash(d.data.nft.transactionHash);
+        // setTransactionIndex(d.data.nft.transactionIndex);
+
+        console.log("blockHash -> ", d.data.nft.blockHash);
+        console.log("blockNumber -> ", d.data.nft.blockNumber);
+        console.log("transactionHash -> ", d.data.nft.transactionHash);
+        console.log("transactionIndex -> ", d.data.nft.transactionIndex);
       });
 
     axios
@@ -165,7 +178,6 @@ const NFTDetails = () => {
       })
       .then(d => {
         // setLike(d.data.nft);
-        console.log(d.data);
         console.log(d.data);
       });
 
@@ -271,7 +283,7 @@ const NFTDetails = () => {
           </SimpleCard>
           <SimpleCard
             id="LeftSide"
-            className={"flex flex-col gap-12 bg-white w-full"}
+            className={"flex flex-col gap-8 bg-white w-full"}
           >
             <div className="relative flex items-center pt-3">
               <div className="absolute text-[16px] opacity-40">نام اثر</div>
@@ -282,6 +294,40 @@ const NFTDetails = () => {
               <div className="absolute text-[16px] opacity-40">هنرمند</div>
               <div className="text-[16px] mx-auto">
                 {data ? data.creator : ""}
+              </div>
+            </div>
+
+            <hr className="opacity-10 mx-32"></hr>
+            <div className="relative flex items-center">
+              <div className="absolute text-[16px] opacity-40">هش بلاک</div>
+              <div className="text-[16px] mx-auto">
+                {data ? data.blockHash : ""}
+              </div>
+            </div>
+
+            <hr className="opacity-10 mx-32"></hr>
+            <div className="relative flex items-center">
+              <div className="absolute text-[16px] opacity-40">هش تراکنش</div>
+              <div className="text-[16px] mx-auto">
+                {data ? data.transactionHash : ""}
+              </div>
+            </div>
+
+            <div className="flex justify-around mt-8">
+              {/* <hr className="opacity-10 mx-32"></hr> */}
+              <div className="relative flex w-full">
+                <div className="absolute text-[16px] opacity-40">شماره بلاک</div>
+                <div className="text-[16px] mx-auto">
+                  {data ? data.blockNumber : ""}
+                </div>
+              </div>
+
+              {/* <hr className="opacity-10 mx-32"></hr> */}
+              <div className="relative flex w-full">
+                <div className="absolute text-[16px] opacity-40">شماره تراکنش</div>
+                <div className="text-[16px] mx-auto">
+                  {data ? data.transactionIndex : ""}
+                </div>
               </div>
             </div>
             {/* <div className="relative flex items-center">
