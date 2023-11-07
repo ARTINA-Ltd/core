@@ -31,6 +31,7 @@ const UploadItem = () => {
 
   const [tokenId, setTokenId] = useState();
   const [hasPhysical, setHasPhysical] = useState();
+  const [hasInternalWallet, setHasInternalWallet] = useState(false);
   const [categories, setCtegories] = useState();
   const [options, setOptions] = useState([]);
 
@@ -91,6 +92,7 @@ const UploadItem = () => {
             author_address: address,
             is_physical: hasPhysical,
             category: selectedCategory,
+            has_internal_wallet: hasInternalWallet,
           },
           {
             headers: {
@@ -254,21 +256,19 @@ const UploadItem = () => {
           <div className="w-full flex gap-3 items-center">
             <div className="">اثر نسخه فیزیکی دارد؟</div>
             <div
-              className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${
-                hasPhysical
-                  ? "bg-green-100 text-green-400"
-                  : "bg-gray-100 text-gray-400"
-              } transition-all`}
+              className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${hasPhysical
+                ? "bg-green-100 text-green-400"
+                : "bg-gray-100 text-gray-400"
+                } transition-all`}
               onClick={() => setHasPhysical(true)}
             >
               بله
             </div>
             <div
-              className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${
-                !hasPhysical
-                  ? "bg-red-100 text-red-400"
-                  : "bg-gray-100 text-gray-400"
-              } transition-all`}
+              className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${!hasPhysical
+                ? "bg-red-100 text-red-400"
+                : "bg-gray-100 text-gray-400"
+                } transition-all`}
               onClick={() => setHasPhysical(false)}
             >
               خیر
@@ -305,7 +305,33 @@ const UploadItem = () => {
             />
           </div>
 
-          <div className="flex justify-end">
+
+          <div className="w-full flex gap-3 items-center">
+            <div className="">ضرب اثر با کیف پول داخل سایت؟</div>
+            <div
+              className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${hasInternalWallet
+                ? "bg-green-100 text-green-400"
+                : "bg-gray-100 text-gray-400"
+                } transition-all`}
+              onClick={() => setHasInternalWallet(true)}
+            >
+              بله
+            </div>
+            <div
+              className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${!hasInternalWallet
+                ? "bg-red-100 text-red-400"
+                : "bg-gray-100 text-gray-400"
+                } transition-all`}
+              onClick={() => setHasInternalWallet(false)}
+            >
+              خیر
+            </div>
+          </div>
+
+          <div className="flex justify-between">
+            <div className="text-[14px] text-gray-400 pt-2">
+              هزینه پایه ضرب اثر ۱۰,۰۰۰ تومان است.
+            </div>
             {!isLoading ? (
               <BorderButton className="" size="lg" onClick={handleSubmit}>
                 ضرب اثر
