@@ -299,7 +299,8 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
                 binary_transaction_hash = tx.receipt.transactionHash
                 transaction_index = tx.receipt.transactionIndex
                 transaction_hash = HexBytes(binary_transaction_hash).hex()
-                block_hash = tx.receipt.blockHash
+                binary_block_hash = tx.receipt.blockHash
+                block_hash=HexBytes(binary_block_hash).hex()
                 print(token_id)
             except Exception as e:
                 return Response(
