@@ -296,8 +296,9 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
      
                 token_id = tx.id
                 block_number = tx.receipt.blockNumber
-                transaction_hash = tx.receipt.transactionHash
+                binary_transaction_hash = tx.receipt.transactionHash
                 transaction_index = tx.receipt.transactionIndex
+                transaction_hash = HexBytes(binary_transaction_hash).hex()
                 block_hash = tx.receipt.blockHash
                 print(token_id)
             except Exception as e:
