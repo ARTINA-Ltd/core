@@ -292,17 +292,21 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
                 print(f"tx is :{tx}")
                 print("done")
                 with open('output.txt', 'w') as file:
-                    file.write(f"Transaction Info: {tx}\n")
+                    file.write(f"Transaction ID: {tx.id}\n")
      
                 token_id = tx.id
+                block_number = tx.receipt.blockNumber
+                transaction_hash = tx.receipt.transactionHash
+                transaction_index = tx.receipt.transactionIndex
+                block_hash = tx.receipt.blockHash
                 print(token_id)
             except Exception as e:
                 return Response(
                     {"error": str(e)},
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 )
-            nft=NFT.objects.create(author_address=author_address,name=nft_name,blockNumber=tx.blockNumber,
-                transactionHash=tx.transactionHash, blockHash=tx.blockHash,transactionIndex=tx.transactionIndex,
+            nft=NFT.objects.create(author_address=author_address,name=nft_name,blockNumber=blockNumber,
+                transactionHash=transactionHash, blockHash=blockHash,transactionIndex=transactionIndex,
                 description=description_nft,image_url=image_nft,creator=creator,external_link=external_link,
                 last_price=last_price,token_id=token_id,owner=user)
             transactiontype=TransactionType.objects.filter(name="withraw").first()
