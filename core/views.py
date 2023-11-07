@@ -305,8 +305,8 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
                     {"error": str(e)},
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 )
-            nft=NFT.objects.create(author_address=author_address,name=nft_name,blockNumber=blockNumber,
-                transactionHash=transactionHash, blockHash=blockHash,transactionIndex=transactionIndex,
+            nft=NFT.objects.create(author_address=author_address,name=nft_name,blockNumber=block_number,
+                transactionHash=transaction_hash, blockHash=block_hash,transactionIndex=transaction_index,
                 description=description_nft,image_url=image_nft,creator=creator,external_link=external_link,
                 last_price=last_price,token_id=token_id,owner=user)
             transactiontype=TransactionType.objects.filter(name="withraw").first()
