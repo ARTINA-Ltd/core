@@ -292,7 +292,7 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
                 print(f"tx is :{tx}")
                 print("done")
                 with open('output.txt', 'w') as file:
-                    file.write(f"Transaction ID: {tx.id}\n")
+                    file.write(f"Transaction Info: {tx}\n")
      
                 token_id = tx.id
                 print(token_id)
