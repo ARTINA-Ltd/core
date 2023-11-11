@@ -293,7 +293,8 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
                 print("done")
                 with open('output.txt', 'w') as file:
                     file.write(f"Transaction ID: {tx.id}\n")
-     
+                #has_internal_wallet= has_internal_wallet
+                #checking if he has any inside wallet so we can use other wise it should be implemented 
                 token_id = tx.id
                 block_number = tx.receipt.blockNumber
                 binary_transaction_hash = tx.receipt.transactionHash

@@ -468,13 +468,22 @@ class NotifyUserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
+    # Get the amount from request data
+     = request.data.get("amount")
+
+
 
 from rest_framework import status as drf_status
 class PaymentGateViewSet(viewsets.ViewSet):
     def create(self, request, *args, **kwargs):
         user = self.request.user
-        amount = request.data.get("amount")  
+        amount_str = request.data.get("amount")  
         email= user.profile.email
+        try:
+            amount = int(amount_str)
+        except ValueError:
+            return Response({"error": "Invalid amount. Please provide a valid integer."}, status=status.HTTP_400_BAD_REQUEST)
+
         response = self.send_payment_request(amount)
         if response.status_code == 200:
             payment_info = response.json()
