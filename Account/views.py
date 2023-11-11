@@ -468,8 +468,6 @@ class NotifyUserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-    # Get the amount from request data
-     = request.data.get("amount")
 
 
 
