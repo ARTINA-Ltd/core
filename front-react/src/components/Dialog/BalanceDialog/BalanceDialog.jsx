@@ -196,10 +196,10 @@ const BalanceDialog = () => {
                 className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all  duration-700"
               />
               <div className="text-2xl font-b6 px-10">
-                موجودی ریالی قابل معامله
+                موجودی قابل معامله
               </div>
               <div className="text-lg text-yellow-300 px-10 self-end">
-                {getData ? getData.rial_available_balance : ""} ریال
+                {getData ? getData.rial_available_balance : ""} تومان
               </div>
             </div>
             <div className="bg-[#4e45d0] rounded-xl w-full py-20 flex flex-col items-start justify-center text-white gap-4 relative group overflow-hidden">
@@ -208,10 +208,10 @@ const BalanceDialog = () => {
                 className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all duration-700"
               />
               <div className="text-2xl font-b6 px-10">
-                موجودی ریالی غیر قابل معامله
+                موجودی غیر قابل معامله
               </div>
               <div className="text-lg text-yellow-300 px-10 self-end">
-                {getData ? getData.rial_unavailable_balance : ""} ریال
+                {getData ? getData.rial_unavailable_balance : ""} تومان
               </div>
             </div>
           </div>
@@ -220,7 +220,7 @@ const BalanceDialog = () => {
             <div className="w-full flex gap-4 flex-col items-center font-b4 mt-4">
               <SimpleInput
                 type="number"
-                title="مقدار(ریال)"
+                title="مقدار(تومان)"
                 placeholder="مثلا: 100000"
                 isValid={amount != ""}
                 validationError="نمی‌تواند خالی باشد"

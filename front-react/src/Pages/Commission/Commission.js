@@ -32,9 +32,9 @@ export default function Commission() {
               </p>
               <p className="text-[18px] mb-4 text-justify px-6">
                 کارمزد به صورت درصد از حجم دارایی درخواستی محاسبه می‌شود. به طور
-                مثال اگر به عنوان فروشنده، بخواهید در برابر اتریوم ریال دریافت
-                کنید کارمزد به صورت درصد از ریال دریافت می‌شود، و بالعکس اگر به
-                عنوان خریدار بخواهید با ریال خود اتریوم خریداری نمایید، کارمزد به
+                مثال اگر به عنوان فروشنده، بخواهید در برابر اتریوم تومان دریافت
+                کنید کارمزد به صورت درصد از تومان دریافت می‌شود، و بالعکس اگر به
+                عنوان خریدار بخواهید اتریوم خریداری نمایید، کارمزد به
                 صورت درصد از اتریوم دریافت خواهد شد
               </p>
               <p className="text-[18px] mb-4 text-justify px-6">
@@ -53,11 +53,11 @@ export default function Commission() {
           </SimpleCard>
           <SimpleCard className={"bg-white mt-7"}>
             <div>
-              <p className="text-[32px] mb-5 text-center"> واریز و برداشت ریال</p>
-              <p className="text-[18px] mb-4 text-justify px-6">✔️ کارمزد واریز ریال صفر است.</p>
+              <p className="text-[32px] mb-5 text-center"> واریز و برداشت تومان</p>
+              <p className="text-[18px] mb-4 text-justify px-6">✔️ کارمزد واریز تومان صفر است.</p>
               <p className="text-[18px] mb-4 text-justify px-6">✔️ کارمزد از هر دو طرف معامله گرفته می‌شود.</p>
               <p className="text-[18px] mb-4 text-justify px-6">
-                کارمزد برداشت ریال به دلیل هزینه‌های بانکی و درگاه بانکی برای
+                کارمزد برداشت تومان به دلیل هزینه‌های بانکی و درگاه بانکی برای
                 تسویه، به صورت زیر می‌باشد:
               </p>
               <p className="text-[18px] mb-4 text-justify px-6">

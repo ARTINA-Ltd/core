@@ -8,7 +8,7 @@ export default function WidthdrawRate() {
           <thead>
             <tr>
               <th className="py-2 px-4 bg-indigo-700 text-white">کارمزد برداشت</th>
-              <th className="py-2 px-4 bg-indigo-700 text-white">میزان برداشت ریالی</th>
+              <th className="py-2 px-4 bg-indigo-700 text-white">میزان برداشت تومان</th>
             </tr>
           </thead>
           <tbody>
