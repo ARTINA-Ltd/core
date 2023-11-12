@@ -35,7 +35,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.conf import settings
 import os
-from Account.models import UserBalance, UserTurnover,TransactionType,TransactionCurrency,Profile
+from Account.models import Wallet , UserBalance, UserTurnover,TransactionType,TransactionCurrency,Profile
 from http import HTTPStatus
 from django.db.models import Count, Q
 from .serializers import NFTRatingSerializer
@@ -211,11 +211,12 @@ secret_key="dd0cZsTqYO9v8PJdRO8uuikrKvi6SpZKYbNdIqvn-d2-Df1QXTb9PUXUOJfO4OcJg9EU
 # # Optionally, instantiate a new signer to pass into the SDK
 signer = Account.from_key(PRIVATE_KEY)
 sdk = ThirdwebSDK.from_private_key(PRIVATE_KEY, "mumbai", SDKOptions(secret_key))
-print(f"sdk is :{sdk}")
+# print(f"sdk is :{sdk}")
 # # Finally, you can create a new instance of the SDK to use
 # sdk = ThirdwebSDK("mumbai",signer)
 # sdk = ThirdwebSDK("mumbai", options=SDKOptions(secret_key="rEql_yRermO9c4z64ThyVUbo41NE4V2kJXyFuNNYRMX7vST7GHWC2G_tasal5a9MXH90AZ-ymHBN9vJFltO5mw"))
 contract = sdk.get_nft_collection("0x2A18FECb3579238CdA960B5977f46E500Fb6e735")
+w3 = Web3(Web3.HTTPProvider("https://mumbai.rpc.thirdweb.com"))
 
 from hexbytes import HexBytes
 
@@ -246,6 +247,7 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
 
         try:
             user=self.request.user
+            has_internal_wallet = request.data.get('has_internal_wallet')
             author_address = request.data.get('author_address')
             nft_name = request.data.get('nft_name')
             description_nft = request.data.get('description_nft')
@@ -283,6 +285,17 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
             'properties': prop
 
         }
+            if has_internal_wallet == True :
+                if Wallet.objects.filter(user=user).exists():
+                    userWallet=Wallet.objects.filter(user=user).first()
+                    author_address= userWallet.address
+                else :
+                    private_key = Web3.toHex(os.urandom(32))  # Generate a random private key
+                    account = w3.eth.account.privateKeyToAccount(private_key)
+                    wallet = Wallet.objects.create(user=user, address=account.address, private_key=private_key)
+                    author_address=account.address
+
+
             print(nft_metadata)
             tx=None
         # Mint the NFT to the specified address
