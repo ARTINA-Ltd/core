@@ -85,7 +85,7 @@ const BalanceDialogMatic = () => {
     if (act == "deposit") {
       axios.post(
         "https://api.artina.org/api/account/Transaction/",
-        { matic_amount: parseInt(amount) },
+        { matic_amount: amount },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
