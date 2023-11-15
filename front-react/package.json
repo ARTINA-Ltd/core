@@ -16,7 +16,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@thirdweb-dev/react": "^3.14.15",
     "@thirdweb-dev/sdk": "^3.10.35",
-    "axios": "^1.1.3",
+    "axios": "^1.6.2",
     "bootstrap": "^5.2.3",
     "chart.js": "^4.2.0",
     "cuid": "^2.1.8",
