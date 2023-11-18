@@ -31,7 +31,7 @@ const BalanceDialog = () => {
 
 
   const updateBalance = (act) => {
-    if (act == "deposit") {
+    if (act === "deposit") {
       axios.post(
         "https://api.artina.org/api/account/payment/",
         { amount: amount },
@@ -60,7 +60,7 @@ const BalanceDialog = () => {
           }
         )
         .then((res) => {
-          if (act == "deposit") {
+          if (act === "deposit") {
             Notify.success("با موفقیت شارژ شد");
           } else {
             Notify.failure("با موفقیت برداشت شد");
@@ -107,7 +107,7 @@ const BalanceDialog = () => {
           <div
             className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all"
             onClick={() => {
-              if (isCharge == true) {
+              if (isCharge === true) {
                 updateBalance("withraw");
               } else {
                 setIsCharge(true);
@@ -120,7 +120,7 @@ const BalanceDialog = () => {
           <div
             className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all"
             onClick={() => {
-              if (isCharge == true) {
+              if (isCharge === true) {
                 updateBalance("deposit");
               } else {
                 setIsCharge(true);
@@ -132,12 +132,12 @@ const BalanceDialog = () => {
           </div>
         </>
       );
-    } else if (action == "deposit") {
+    } else if (action === "deposit") {
       return (
         <div
           className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all"
           onClick={() => {
-            if (isCharge == true) {
+            if (isCharge === true) {
               updateBalance("deposit");
             } else {
               setIsCharge(true);
@@ -153,7 +153,7 @@ const BalanceDialog = () => {
         <div
           className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all"
           onClick={() => {
-            if (isCharge == true) {
+            if (isCharge === true) {
               updateBalance("withraw");
             } else {
               setIsCharge(true);

@@ -22,7 +22,7 @@ const BorderButton = ({
     >
       <img
         src="/13.png"
-        className={`absolute top-[19px] bottom-0 left-0 ${size == "sm"
+        className={`absolute top-[19px] bottom-0 left-0 ${size === "sm"
           ? "-translate-x-14 group-hover:-translate-x-16"
           : "-translate-x-[74px] group-hover:-translate-x-[82px]"}  -translate-y-1/2 pointer-events-none duration-75 transition-all`}
       />
