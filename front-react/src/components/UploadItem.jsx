@@ -111,7 +111,7 @@ const UploadItem = () => {
         .catch(e => {
           console.log(e);
 
-          if (e.response.data.error == "your money is not enough") {
+          if (e.response.data.error === "your money is not enough") {
             Notify.failure(
               "موجودی حساب شما کافی نیست لطفا ابتدا کیف پول خود را شارژ کنید"
             );
@@ -120,7 +120,53 @@ const UploadItem = () => {
           }
           setIsLoading(false);
         });
-    } else {
+    } else if (hasInternalWallet) {
+      setIsLoading(true);
+      Notify.info("در حال ضرب اثر. ممکن است کمی طول بکشد...");
+
+      axios
+        .post(
+          "https://api.artina.org/api/transaction/NFTViewSet/",
+          {
+            nft_name: upladObj.item_name,
+            creator: upladObj.creator,
+            last_price: upladObj.last_price,
+            image_nft: imageUrl,
+            description_nft: upladObj.description,
+            external_link: upladObj.external_link,
+            author_address: '',
+            is_physical: hasPhysical,
+            category: selectedCategory,
+            has_internal_wallet: hasInternalWallet,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            },
+            mode: "cors",
+          }
+        )
+        .then(res => {
+          setTokenId(res.data);
+          Notify.success("درخواست شما با موفقیت ثبت شد");
+          setIsLoading(false);
+          setIsUploaded(true);
+          console.log(res);
+        })
+        .catch(e => {
+          console.log(e);
+
+          if (e.response.data.error === "your money is not enough") {
+            Notify.failure(
+              "موجودی حساب شما کافی نیست لطفا ابتدا کیف پول خود را شارژ کنید"
+            );
+          } else {
+            Notify.failure("خطا");
+          }
+          setIsLoading(false);
+        });
+    }
+    else {
       Notify.failure("به کانکت والت متصل شوید");
     }
   };
