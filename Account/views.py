@@ -8,7 +8,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from . import serializers
 import logging
-
+from .permissions import UserRolePermission
 import random
 import requests
 from django.contrib.auth.tokens import default_token_generator
@@ -103,7 +103,8 @@ class UserInfoViewSet(viewsets.ViewSet):
             'role': str(profile.role),
             'shaba_number':profile.shaba_number,
             'postal_code':profile.postal_code,
-            'bio':profile.bio
+            'bio':profile.bio,
+            'user_verified':profile.user_verified
         }
         return Response(data)
 
@@ -330,7 +331,7 @@ class UserTurnoverViewSet(viewsets.ModelViewSet):
 class UserBalanceViewSet(viewsets.ModelViewSet):
     queryset = UserBalance.objects.all()
     serializer_class = UserBalanceSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [UserRolePermission]
     @action(detail=False, methods=['get'])
     def get_balance(self, request):
         user = self.request.user

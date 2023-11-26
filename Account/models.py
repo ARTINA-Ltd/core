@@ -30,6 +30,7 @@ class Role(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user_verified = models.BooleanField(default=False)
     first_name = models.CharField(max_length=15, null=True, blank=False)
     last_name = models.CharField(max_length=25, null=True, blank=False)
     national_code = models.CharField(max_length=10, verbose_name="کدملی", null=True, blank=False,
@@ -55,9 +56,8 @@ class Profile(models.Model):
     bio = models.TextField(max_length=500, verbose_name="biography", null=True, blank=True)
 
   
-    # def __str__(self):
-    #     return self.user.username + " " + self.first_name + " " + self.last_name + " " + self.national_code + " "\
-    #            + self.email + " "
+    def __str__(self):
+        return self.user.username + " " + self.first_name + " " + self.last_name + " " 
 
 
 class ArtistReviewRating(models.Model):
@@ -69,10 +69,6 @@ class ArtistReviewRating(models.Model):
     def total_cal(self):
         avg = ArtistReviewRating.objects.aggregate(Avg('rating'))
         return avg
-
-    def __str__(self):
-        return f'{self.artist.username} Get Rank : ( {self.rating} )  from {self.user.username}'
-# TODO : Functions needed for default Django User model
 
 
 class TicketUser(models.Model):
