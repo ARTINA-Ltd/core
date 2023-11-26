@@ -68,8 +68,8 @@ export default function AllTurnOversDialog({ turnovers }) {
             {turnovers ? (
               turnovers.map((item, index) => (
                 <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all font-b4">
-                  <td>{item.transaction_currency == 1 ? "تومان" : "اتریوم"}</td>
-                  <td>{item.transaction_type == 2 ? "برداشت" : "واریز"}</td>
+                  <td>{item.transaction_currency === 1 ? "تومان" : "اتریوم"}</td>
+                  <td>{item.transaction_type === 2 ? "برداشت" : "واریز"}</td>
 
                   <td>{item.transaction_value} تومان</td>
 

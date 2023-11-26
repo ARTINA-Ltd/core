@@ -62,7 +62,7 @@ const ApplicationReqDialog = ({
         setData(res.data);
       })
       .catch(() => {});
-    if (temp == 0) {
+    if (temp === 0) {
       temp = 1;
       for (let i = 0; i < nfts.length; i++) {
         axios
