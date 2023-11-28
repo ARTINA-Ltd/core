@@ -20,7 +20,7 @@ chardet==3.0.4
 charset-normalizer==2.1.1
 click==8.0.3
 colorama==0.4.4
-cryptography==39.0.1
+cryptography==41.0.6
 setuptools==58.2.0
 dacite==1.6.0
 defusedxml==0.7.1
