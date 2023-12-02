@@ -146,9 +146,13 @@ const NFTDetails = () => {
           },
         }
       )
-      .then(d => {
+      .then(res => {
         console.log("like");
-        console.log(d);
+        console.log("status", res.status);
+        Notify.success("با موفقیت ثبت شد");
+      })
+      .catch(res => {
+        Notify.warning("قبلا پسندیده اید");
       });
   };
 
@@ -242,6 +246,24 @@ const NFTDetails = () => {
       });
   }
 
+  function formatString(inputString) {
+    const maxLength = 15;
+    const ellipsis = '...';
+
+    // Check if the input string is longer than the desired length
+    if (inputString === null) {
+      return "_";
+    }
+    else if (inputString.length > maxLength + ellipsis.length * 2) {
+      const firstPart = inputString.slice(0, maxLength);
+      const lastPart = inputString.slice(-maxLength);
+      return `${firstPart}${ellipsis}${lastPart}`;
+    } else {
+      // If the input string is already shorter, return it as is
+      return inputString;
+    }
+  }
+
   return (
     <TestLayout>
       <div>
@@ -287,8 +309,11 @@ const NFTDetails = () => {
           >
             <div className="relative flex items-center pt-3">
               <div className="absolute text-[16px] opacity-40">نام اثر</div>
-              <div className="text-[32px] mx-auto">{data ? data.name : ""}</div>
+              <div className="text-[32px] mx-auto">
+                {data ? data.name : ""}
+              </div>
             </div>
+
             <hr className="opacity-10 mx-32"></hr>
             <div className="relative flex items-center">
               <div className="absolute text-[16px] opacity-40">هنرمند</div>
@@ -301,30 +326,73 @@ const NFTDetails = () => {
             <div className="relative flex items-center">
               <div className="absolute text-[16px] opacity-40">هش بلاک</div>
               <div className="text-[16px] mx-auto">
-                {data ? data.blockHash : ""}
+                {data ? formatString(data.blockHash) : ""}
               </div>
             </div>
 
             <hr className="opacity-10 mx-32"></hr>
             <div className="relative flex items-center">
-              <div className="absolute text-[16px] opacity-40">هش تراکنش</div>
+              <div className="text-[16px] opacity-40">هش تراکنش</div>
               <div className="text-[16px] mx-auto">
-                {data ? data.transactionHash : ""}
+                {data ? formatString(data.transactionHash) : ""}
               </div>
+              <a
+                href={`https://mumbai.polygonscan.com/tx/${data ? data.transactionHash : ""}`}
+                className="bg-[#f1f2f7] hover:bg-[#e5e6eb] transition-all text-gray-600 py-1 text-sm px-3 rounded-md flex gap-1 items-center"
+              >
+                بلاک‌چین
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-4 h-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"
+                  />
+                </svg>
+              </a>
             </div>
 
             <div className="flex justify-around mt-8">
               {/* <hr className="opacity-10 mx-32"></hr> */}
               <div className="relative flex w-full">
-                <div className="absolute text-[16px] opacity-40">شماره بلاک</div>
+                <div className=" text-[16px] opacity-40">شماره بلاک</div>
                 <div className="text-[16px] mx-auto">
                   {data ? data.blockNumber : ""}
+                </div>
+                <div>
+                  <a
+                    href={`https://mumbai.polygonscan.com/block/${data ? data.blockNumber : ""}`}
+                    className="bg-[#f1f2f7] hover:bg-[#e5e6eb] transition-all text-gray-600 py-1 text-sm px-1 rounded-md flex gap-1 items-center"
+                  >
+                    بلاک‌چین
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="w-4 h-4"
+                    >
+                      {/* make blockchain svg path */}
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"
+                      />
+                    </svg>
+                  </a>
                 </div>
               </div>
 
               {/* <hr className="opacity-10 mx-32"></hr> */}
               <div className="relative flex w-full">
-                <div className="absolute text-[16px] opacity-40">شماره تراکنش</div>
+                <div className="text-[16px] opacity-40 mr-14">شماره تراکنش</div>
                 <div className="text-[16px] mx-auto">
                   {data ? data.transactionIndex : ""}
                 </div>
