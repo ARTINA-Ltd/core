@@ -6,6 +6,7 @@ import axios from "axios";
 import { Chart } from "primereact/chart";
 import { useState } from "react";
 import AllTurnOversDialog from "../components/Dialog/AllTurnOversDialog/AllTurnOversDialog";
+import { useNavigate } from "react-router";
 
 const Dashboard = () => {
   const [getData, setData] = useState();
@@ -19,6 +20,9 @@ const Dashboard = () => {
 
   const [getLastMonthTurnover, setLastMonthTurnover] = useState();
   const [getAllTurnovers, setAllTurnovers] = useState();
+
+  const navigate = useNavigate();
+
 
   //https://api.artina.org/api/transaction/orders/get_user_order
   useEffect(() => {
@@ -79,7 +83,7 @@ const Dashboard = () => {
       .then((res) => {
         setLikedNfts(res.data);
       })
-      .catch((res) => {});
+      .catch((res) => { });
   }, []);
 
   useEffect(() => {
@@ -168,7 +172,7 @@ const Dashboard = () => {
       .then((res) => {
         setBalance(res.data);
       })
-      .catch((e) => {});
+      .catch((e) => { });
   }, []);
 
   useEffect(() => {
@@ -211,7 +215,7 @@ const Dashboard = () => {
         console.log(res.data);
         setOrders(res.data);
       })
-      .catch((res) => {});
+      .catch((res) => { });
   }, []);
 
   const [lightOptions] = useState({
@@ -494,7 +498,10 @@ const Dashboard = () => {
                 <tbody>
                   {getOrders ? (
                     getOrders.map((item, index) => (
-                      <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
+                      <tr
+                        className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all"
+                        onClick={() => navigate(`/nft-details/${item.token_id}`)}
+                      >
                         <td>{item.nft}</td>
                         <td>
                           {Intl.DateTimeFormat("fa", {
@@ -604,6 +611,7 @@ const Dashboard = () => {
                     getLikedNfts.map((item, index) => (
                       <tr
                         className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all"
+                        onClick={() => navigate(`/nft-details/${item.token_id}`)}
                         key={index}
                       >
                         <td>
@@ -617,7 +625,7 @@ const Dashboard = () => {
                         </td>
                         <td>{item.name}</td>
                         <td>{item.last_price}</td>
-                        
+
 
                         <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
                           <svg
@@ -642,8 +650,8 @@ const Dashboard = () => {
             </SimpleCard>
           </div>
         </div>
-      </TestLayout>
-    </div>
+      </TestLayout >
+    </div >
   );
 };
 
