@@ -436,6 +436,8 @@ class UsersWithNFTsViewSet(viewsets.ViewSet):
                 'profile_picture': profile.profile_picture if profile.profile_picture else None,
                 'nft_count': nft_count,
                 'bio': profile.bio,
+                'user_verified':profile.user_verified,
+
             })
         return Response(user_data)
 
