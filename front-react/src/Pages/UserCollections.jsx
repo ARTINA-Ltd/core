@@ -45,6 +45,7 @@ const UserCollections = () => {
                   <NftRequestsCard
                     image={item.profile_picture}
                     firstName={item.username}
+                    verified={item.user_verified}
                     nftCount={item.nft_count}
                     onClick={() => navigate(`/collections/${item.username}`)}
                   />

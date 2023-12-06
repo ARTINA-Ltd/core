@@ -10,7 +10,8 @@ const NftRequestsCard = ({
   lastName,
   image,
   exhibition,
-  nftCount
+  nftCount,
+  verified
 }) => {
   const [data, setData] = useState();
 
@@ -29,6 +30,12 @@ const NftRequestsCard = ({
           <div className="flex gap-1 group-hover:translate-x-4 transition-all duration-300 ease-out">
             <div>{firstName}</div>
             <div>{lastName}</div>
+            {verified && (
+            <img
+              src="/Verified_Status.png"
+              className="w-5 h-5 group-hover:translate-x-4 transition-all duration-300 ease-out"
+            />
+          )}
           </div>
           {exhibition ? (
             <div className="flex gap-1 group-hover:translate-x-4 transition-all duration-300 ease-out">
@@ -49,8 +56,6 @@ const NftRequestsCard = ({
           ) : (
             ""
           )}
-  
-
         </div>
 
         <svg
