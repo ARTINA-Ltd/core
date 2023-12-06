@@ -215,8 +215,8 @@ sdk = ThirdwebSDK.from_private_key(PRIVATE_KEY, "mumbai", SDKOptions(secret_key)
 # # Finally, you can create a new instance of the SDK to use
 # sdk = ThirdwebSDK("mumbai",signer)
 # sdk = ThirdwebSDK("mumbai", options=SDKOptions(secret_key="rEql_yRermO9c4z64ThyVUbo41NE4V2kJXyFuNNYRMX7vST7GHWC2G_tasal5a9MXH90AZ-ymHBN9vJFltO5mw"))
-contract = sdk.get_nft_collection("0x2A18FECb3579238CdA960B5977f46E500Fb6e735")
-w3 = Web3(Web3.HTTPProvider("https://mumbai.rpc.thirdweb.com"))
+contract = sdk.get_nft_collection("0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a")
+w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
 
 from hexbytes import HexBytes
 

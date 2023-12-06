@@ -587,8 +587,8 @@ from django.contrib.auth.models import User
 from .models import Wallet
 from web3 import Web3
 import os
-# w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
-w3 = Web3(Web3.HTTPProvider("https://mumbai.rpc.thirdweb.com"))
+w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
+# w3 = Web3(Web3.HTTPProvider("https://mumbai.rpc.thirdweb.com"))
 
 class WalletViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
@@ -668,11 +668,11 @@ class TransactionViewSet(viewsets.ViewSet):
         nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
         transaction_data = {
             'to': recipient_address,
-            'value': w3.toWei(matic_amount, 'ether'),
+            'value': w3.toWei(matic_amount, 'matic'),
             'gas': gas_limit,
             'gasPrice': gas_price,
             'nonce': nonce,
-            'chainId': 80001
+            'chainId': 137
         }
         
         signed_txn = w3.eth.account.signTransaction(transaction_data, private_key)
@@ -731,7 +731,7 @@ class TransactionViewSet(viewsets.ViewSet):
 def transfer_nft(private_key, sender_address, recipient_address, token_id):
     nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
     #contract
-    nft_contract_address = "0x2A18FECb3579238CdA960B5977f46E500Fb6e735"
+    nft_contract_address = "0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a"
     abi_filename = os.path.join(settings.BASE_DIR, "Account", "ABI.json")
    
     # Read ABI from JSON file
@@ -743,7 +743,7 @@ def transfer_nft(private_key, sender_address, recipient_address, token_id):
     nft_contract = w3.eth.contract(address=nft_contract_address, abi=nft_contract_abi)
     
     tx_hash = nft_contract.functions.safeTransferFrom(sender_address, recipient_address, token_id).buildTransaction({
-        'chainId': 80001,  # Chain ID for Polygon (Matic) mainnet
+        'chainId': 137,  # Chain ID for Polygon (Matic) mainnet
         'gas': 2000000,  # gas value
         'gasPrice': w3.toWei('5', 'gwei'),  # gas price
         'nonce': nonce,
