@@ -8,13 +8,11 @@ import json
 import requests
 from rest_framework import viewsets
 from rest_framework.response import Response
-
 from django.http import JsonResponse
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
 from .models import NFT
-
 from web3 import Web3
 from thirdweb import ThirdwebSDK
 from django.contrib.auth.models import User
@@ -47,28 +45,37 @@ class OrderViewSet(viewsets.ViewSet):
     def create(self, request, *args, **kwargs):
         fee = request.data.get('fee')
         token_id = request.data.get('token_id')
-        status = request.data.get('status')
+        status = 0
         bidder=self.request.user
         user_balance=None
         user_balance = UserBalance.objects.filter(user=bidder).first()
         n=user_balance.rial_available_balance
         fee=int(fee)
+        nft = NFT.objects.get(token_id=token_id)
+
         if n< fee :
-            return Response(status=HTTPStatus.BAD_REQUEST)
+            return Response({'error': 'insufficient ballance'},status=HTTPStatus.BAD_REQUEST)
+        
+        if Order.objects.filter.first(nft=nft,bidder=bidder) :
+            return Response({'error': 'you had already order on this NFT'},status=HTTPStatus.BAD_REQUEST)
+
+
         else:
 
-            nft = NFT.objects.get(token_id=token_id)
             Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status)
             return Response(status=HTTPStatus.OK)
+    
+    @action(detail=False, methods=['post'])
+    def disable_order(self,request):
+        bidder=self.request.user
+        token_id = request.data.get('token_id')
+        status = 1
+        nft = NFT.objects.get(token_id=token_id)
+        order=Order.objects.filter.first(nft=nft,bidder=bidder)
+        order.status=status
+        order.save()
+        return Response({'msg': 'your order has been deleted'},status=HTTPStatus.OK)
 
-            # if nft.has_expired():
-                # return Response(status=HTTPStatus.BAD_REQUEST)
-            # else:
-            #     if nft.has_started():
-                # Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status)
-                # return Response(status=HTTPStatus.OK)
-            #     else:
-            #         return Response(status=HTTPStatus.BAD_REQUEST)
     @action(detail=False, methods=['post'])
     def gettingorders(self, request):
         token_id = request.data.get('token_id')
