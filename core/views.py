@@ -56,7 +56,7 @@ class OrderViewSet(viewsets.ViewSet):
         if n< fee :
             return Response({'error': 'insufficient ballance'},status=HTTPStatus.BAD_REQUEST)
         
-        if Order.objects.filter.first(nft=nft,bidder=bidder) :
+        if Order.objects.filter(nft=nft,bidder=bidder).first() :
             return Response({'error': 'you had already order on this NFT'},status=HTTPStatus.BAD_REQUEST)
 
 
@@ -71,7 +71,7 @@ class OrderViewSet(viewsets.ViewSet):
         token_id = request.data.get('token_id')
         status = 1
         nft = NFT.objects.get(token_id=token_id)
-        order=Order.objects.filter.first(nft=nft,bidder=bidder)
+        order=Order.objects.filter(nft=nft,bidder=bidder).first()
         order.status=status
         order.save()
         return Response({'msg': 'your order has been deleted'},status=HTTPStatus.OK)
