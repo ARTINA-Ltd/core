@@ -227,7 +227,6 @@ const NFTDetails = () => {
         {
           token_id: id,
           fee: price.toFixed(0).toString(),
-          status: 0,
         },
         {
           headers: {
