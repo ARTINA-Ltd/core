@@ -180,9 +180,10 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
       <Dialog
         header={Header}
         visible={visible}
-        style={{ width: "35vw", direction: "rtl" }}
+        style={{ direction: "rtl" }}
         onHide={() => setVisible(false)}
         footer={Footer}
+        className="w-[35%] lg:w-[70%] sm:w-[85%]"
       >
         <div className="font-b4">
           <div className="w-full flex items-center justify-center">

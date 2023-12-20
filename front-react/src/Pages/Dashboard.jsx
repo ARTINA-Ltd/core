@@ -254,8 +254,8 @@ const Dashboard = () => {
   return (
     <div>
       <TestLayout>
-        <div className="flex gap-3 items-start">
-          <div className="flex flex-col gap-3 w-2/3">
+        <div className="flex gap-3 items-star sm:flex-col">
+          <div className="flex flex-col gap-3 w-2/3 sm:w-full">
             <SimpleCard className="bg-white w-full h-full flex-col items-center justify-start">
               <div className="text-xl font-b6 px-4 mx-auto py-1 transition-all rounded-2xl mb-2 text-center">
                 گزارش مالی
@@ -266,14 +266,14 @@ const Dashboard = () => {
                   className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4"
                 >
                   <div className="font-b6">تومان</div>
-                  <div className="flex gap-2 items-center justify-between">
+                  <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-sm">
                     مانده قابل معامله:
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
                       {getBalance ? getBalance.rial_available_balance : ""}
                       تومان
                     </div>
                   </div>
-                  <div className="flex gap-2 items-center justify-between">
+                  <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-sm">
                     مانده غیر قابل معامله:
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
                       {getBalance ? getBalance.rial_unavailable_balance : ""}
@@ -287,13 +287,13 @@ const Dashboard = () => {
                   className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4"
                 >
                   <div className="font-b6">اتریوم</div>
-                  <div className="flex gap-2 items-center justify-between">
+                  <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-sm">
                     مانده قابل معامله:
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
                       {getBalance ? getBalance.eth_balance : ""} اتریوم
                     </div>
                   </div>
-                  <div className="flex gap-2 items-center justify-between">
+                  <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-sm">
                     مانده غیر قابل معامله:
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
                       {getBalance ? getBalance.eth_unavailable_balance : ""}
@@ -306,7 +306,7 @@ const Dashboard = () => {
               <div className="my-3">
                 <div
                   id=""
-                  className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4"
+                  className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4 sm:flex-col"
                 >
                   <div className="font-b6">سود حاصل از بلیت نمایشگاه</div>
                   <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
@@ -318,7 +318,7 @@ const Dashboard = () => {
               <div className="my-3">
                 <div
                   id=""
-                  className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4"
+                  className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4 sm:flex-col"
                 >
                   <div className="font-b6">مجموع حجم تراکنش های ماهانه</div>
                   <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
@@ -336,7 +336,7 @@ const Dashboard = () => {
               </div>
             </SimpleCard>
             <SimpleCard className="bg-white w-full h-full flex-col items-center justify-start ">
-              <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
+              <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center sm:px-1">
                 گردش حساب
               </div>
 

@@ -45,7 +45,7 @@ const NftRequestsCard = ({
             ""
           )}
           {nftCount ? (
-            <div className="flex gap-1 group-hover:translate-x-4 transition-all duration-300 ease-out items-center gap-1">
+            <div className="flex group-hover:translate-x-4 transition-all duration-300 ease-out items-center gap-1">
               <div>
 
               تعداد nft:

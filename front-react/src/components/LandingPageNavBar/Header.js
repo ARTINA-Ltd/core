@@ -489,7 +489,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
     <>
       <header>
         <div
-          className={`flex justify-center h-[80px]  ${
+          className={`flex justify-center h-[80px] sm:h-[60px] ${
             rev ? "" : "from-[#f9f9f9] bg-gradient-to-b"
           }  font-b3`}
         >
@@ -558,7 +558,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                 />
               </svg>
             </div>
-            <div className="flex gap-5 items-center">
+            <div className="flex gap-5 items-center ">
               {user ? (
                 <>
                   <div ref={ref2}>
