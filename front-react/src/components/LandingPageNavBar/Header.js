@@ -584,7 +584,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                     <div
                       className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-[#f9f9f9] min-w-[200px] ${
                         isHidden2 ? "opacity-0 pointer-events-none" : ""
-                      } absolute translate-x-1/3`}
+                      } absolute translate-x-1/3 sm:translate-x-0`}
                     >
                       {notifs &&
                         notifs.map((item, index) => (

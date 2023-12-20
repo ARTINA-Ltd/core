@@ -17,6 +17,7 @@ const Dashboard = () => {
   const [getOrders, setOrders] = useState();
   const [artistOpenExhibitions, setArtistOpenExhibitions] = useState();
   const [reqData, setReqData] = useState();
+  const [commission, setCommission] = useState();
 
   const [getLastMonthTurnover, setLastMonthTurnover] = useState();
   const [getAllTurnovers, setAllTurnovers] = useState();
@@ -184,7 +185,7 @@ const Dashboard = () => {
       })
       .then((res) => {
         setArtistOpenExhibitions(res.data);
-        console.log(res.data);
+        console.log("____Exhibitions____", res.data);
       });
   }, []);
 
@@ -398,19 +399,17 @@ const Dashboard = () => {
             </SimpleCard>
           </div>
           <div className="flex flex-col w-full gap-5">
-            <SimpleCard className="bg-white  w-full h-full">
+            <SimpleCard className="bg-white  w-full h-full sm:p-2">
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
                 نمایشگاه ها
               </div>
-              <table className="dashboard-table w-full text-center">
+              <table className="dashboard-table w-full text-center sm:text-[12px]">
                 <thead>
                   <tr>
-                    <th>عکس</th>
+                    <th className="sm:hidden">عکس</th>
                     <th>نام نمایشگاه</th>
-                    <th>درصد کمیسیون</th>
+                    <th>کمیسیون</th>
                     <th>سود حاصل</th>
-                    <th>حجم فروش به اتر</th>
-                    <th>حجم فروش</th>
                     <th>تاریخ پایان</th>
                     <th />
                   </tr>
@@ -422,7 +421,7 @@ const Dashboard = () => {
                         className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all"
                         key={index}
                       >
-                        <td>
+                        <td className="sm:hidden">
                           <div className="flex justify-center w-full">
                             <img
                               src={item.image}
@@ -435,12 +434,10 @@ const Dashboard = () => {
                         <td className="items-center justify-center">
                           <div className="flex justify-center w-full">
                             <div className="px-2 py-1 text-sm bg-green-100 text-green-500 rounded-md">
-                              ???
+                              {item.commision}%
                             </div>
                           </div>
                         </td>
-                        <td>???</td>
-                        <td>???</td>
                         <td>???</td>
                         <td className="flex flex-col justify-center">
                           {Intl.DateTimeFormat("fa", {
