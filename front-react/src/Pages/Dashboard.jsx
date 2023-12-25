@@ -336,12 +336,12 @@ const Dashboard = () => {
                 />
               </div>
             </SimpleCard>
-            <SimpleCard className="bg-white w-full h-full flex-col items-center justify-start ">
+            <SimpleCard className="bg-white w-full h-full flex-col items-center justify-start sm:p-3">
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center sm:px-1">
                 گردش حساب
               </div>
 
-              <table className="dashboard-table w-full text-center">
+              <table className="dashboard-table w-full text-center sm:text-xs">
                 <thead>
                   <tr>
                     <th>واحد ارز</th>
@@ -445,7 +445,7 @@ const Dashboard = () => {
                             month: "numeric",
                             day: "numeric",
                           }).format(new Date(item.end_date))}
-                          <div className="text-sm bg-slate-100 px-1 rounded-md">
+                          <div className="text-sm bg-slate-100 px-1 rounded-md sm:text-xs">
                             ساعت: &nbsp;
                             {Intl.DateTimeFormat("fa", {
                               minute: "numeric",
@@ -482,7 +482,7 @@ const Dashboard = () => {
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
                 سفارشات باز شما
               </div>
-              <table className="dashboard-table w-full text-center">
+              <table className="dashboard-table w-full text-cente sm:text-xs">
                 <thead>
                   <tr>
                     <th>نام nft</th>
@@ -534,11 +534,11 @@ const Dashboard = () => {
               </table>
             </SimpleCard>
 
-            <SimpleCard className="bg-white  w-full h-full">
+            <SimpleCard className="bg-white  w-full h-full sm:p-3">
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
                 بلیت ها
               </div>
-              <table className="dashboard-table w-full text-center">
+              <table className="dashboard-table w-full text-center sm:text-xs">
                 <thead>
                   <tr>
                     <th>شماره بلیت</th>
@@ -590,11 +590,11 @@ const Dashboard = () => {
               </table>
             </SimpleCard>
 
-            <SimpleCard className="bg-white  w-full h-full">
+            <SimpleCard className="bg-white  w-full h-full sm:p-3">
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
                 nft هایی که پسندیده اید
               </div>
-              <table className="dashboard-table w-full text-center">
+              <table className="dashboard-table w-full text-center sm:text-xs">
                 <thead>
                   <tr>
                     <th>عکس nft</th>
