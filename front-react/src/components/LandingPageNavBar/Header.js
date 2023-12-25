@@ -687,7 +687,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
               )}
 
               <img
-                className="h-16"
+                className="h-16 sm:h-12"
                 src={"/artina-logo.png"}
                 alt="logo"
                 onClick={userChange}

@@ -45,14 +45,14 @@ const GasPrice = ({ className = "" }) => {
                 </div>
 
                 <div className="flex-col w-full justify-center items-center">
-                    <div className="mt-8 font-b5 text-[25px] text-center mb-5">
+                    <div className="mt-8 font-b5 text-[25px] text-center mb-5 sm:text-[15px]">
                         میزان Gas Fee در شبکه پلیگان <div className="font-b7">{gasPrice} Gwei</div>
                     </div>
                     <div className="flex justify-center items-center mt-4 font-b5 text-[25px] text-center mb-10">
-                        <div className="mt-4 font-b5 text-[25px] text-center mb-5 ml-8">
+                        <div className="mt-4 font-b5 text-[25px] text-center mb-5 ml-8 sm:text-[15px]">
                             میانگین تراکنش در شبکه پلیگان <div className="font-b7">{averageTx} Gwei</div>
                         </div>
-                        <div className="mt-4 font-b5 text-[25px] text-center mb-5 mr-8">
+                        <div className="mt-4 font-b5 text-[25px] text-center mb-5 mr-8 sm:text-[15px]">
                             میانگین زمان تراکنش در شبکه پلیگان <div className="font-b7">{averageTime} ثانیه</div>
                         </div>
                     </div>
