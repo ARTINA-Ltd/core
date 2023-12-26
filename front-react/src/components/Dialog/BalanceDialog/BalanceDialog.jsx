@@ -181,12 +181,12 @@ const BalanceDialog = () => {
       <Dialog
         header={Header}
         visible={visible}
-        style={{ width: "70vw", direction: "rtl" }}
+        style={{ direction: "rtl" }}
         onHide={() => {
           setVisible(false);
           setIsCharge(false);
         }}
-        className="font-b4"
+        className="w-[70vw] font-b4 sm:w-[90%]"
       >
         {!isCharge ? (
           <div className="w-full flex gap-4 font-b4 sm:flex-col">

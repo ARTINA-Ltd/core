@@ -110,7 +110,7 @@ const ApplicationReqDialog = ({
   }, [nftDetails]);
 
   const Footer = (
-    <div className="flex gap-5">
+    <div className="flex gap-5 sm:gap-2 sm:mt-2 sm:pt-2">
       <BorderButton
         onClick={() => setVisible(false)}
         className="w-full font-b4 text-center"
@@ -147,7 +147,7 @@ const ApplicationReqDialog = ({
 
   const Header = (
     <div>
-      <p className="font-b9">تست</p>
+      <p className="font-b9">درخواست‌ها</p>
     </div>
   );
 
@@ -164,15 +164,15 @@ const ApplicationReqDialog = ({
       <Dialog
         header={Header}
         visible={visible}
-        style={{ width: "35vw", direction: "rtl" }}
+        style={{direction: "rtl" }}
         onHide={() => setVisible(false)}
         footer={Footer}
-        className="font-b4"
+        className="font-b4 w-[35vw] sm:w-[90%]"
       >
-        <div className={`flex flex-col w-full gap-4 font-b4 items-center`}>
+        <div className={`flex flex-col w-full gap-4 font-b4 items-center sm:gap-2`}>
           <img
             src={getData ? getData.profile_picture : ""}
-            className="h-[250px] w-[250px] shrink-0 object-cover rounded-full"
+            className="h-[250px] w-[250px] shrink-0 object-cover rounded-full sm:h-[120px] sm:w-[120px]"
             alt=""
           />
           <div className="flex gap-1 text-2xl font-b6">
@@ -180,14 +180,14 @@ const ApplicationReqDialog = ({
             <div>{getData ? getData.last_name : ""}</div>
           </div>
         </div>
-        <div className="w-full rounded-2xl my-4 bg-slate-100 text-slate-400 px-4 py-2 font-b5">
+        <div className="w-full rounded-2xl my-4 bg-slate-100 text-slate-400 px-4 py-2 font-b5 sm:px-2">
           توضیحات:{description}
         </div>
         {nftDetails.map((item, index) => (
           <div
             key={index}
             onClick={() => navigate(`/nft-details/${item.token_id}`)}
-            className="flex gap-4 w-full cursor-pointer group my-2 bg-slate-50 hover:bg-slate-200 transition-all items-center justify-between rounded-2xl font-b5 p-2"
+            className="flex gap-4 w-full cursor-pointer group my-2 bg-slate-50 hover:bg-slate-200 transition-all items-center justify-between rounded-2xl font-b5 p-2 sm:rounded-sm sm:flex-col sm:gap-2"
           >
             <img
               src={item.image_url}
@@ -196,7 +196,7 @@ const ApplicationReqDialog = ({
             />
             <div className="font-b7">{item.name}</div>
             <div className="font-b3">{item.last_price}اتریوم</div>
-            <div className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
+            <div className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200 sm:pl-0">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

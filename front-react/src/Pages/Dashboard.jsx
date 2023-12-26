@@ -267,14 +267,14 @@ const Dashboard = () => {
                   className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4"
                 >
                   <div className="font-b6">تومان</div>
-                  <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-sm">
+                  <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
                     مانده قابل معامله:
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
                       {getBalance ? getBalance.rial_available_balance : ""}
                       تومان
                     </div>
                   </div>
-                  <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-sm">
+                  <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
                     مانده غیر قابل معامله:
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
                       {getBalance ? getBalance.rial_unavailable_balance : ""}
@@ -288,13 +288,13 @@ const Dashboard = () => {
                   className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4"
                 >
                   <div className="font-b6">اتریوم</div>
-                  <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-sm">
+                  <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
                     مانده قابل معامله:
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
                       {getBalance ? getBalance.eth_balance : ""} اتریوم
                     </div>
                   </div>
-                  <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-sm">
+                  <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
                     مانده غیر قابل معامله:
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
                       {getBalance ? getBalance.eth_unavailable_balance : ""}
@@ -453,7 +453,7 @@ const Dashboard = () => {
                             }).format(new Date(item.end_date))}
                           </div>
                         </td>
-                        <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
+                        <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200 sm:pl-2">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -545,7 +545,7 @@ const Dashboard = () => {
                     <th>آیدی نمایشگاه</th>
                     <th>قیمت</th>
                     <th>تاریخ انقضا</th>
-                    <th />
+                    {/* <th /> */}
                   </tr>
                 </thead>
                 <tbody>

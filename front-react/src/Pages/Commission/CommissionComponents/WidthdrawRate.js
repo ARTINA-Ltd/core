@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 export default function WidthdrawRate() {
   return (
     <div>
-      <div className="m-8">
+      <div className="m-8 sm:m-2 sm:text-[10px]">
         <table className="w-full">
           <thead>
             <tr>

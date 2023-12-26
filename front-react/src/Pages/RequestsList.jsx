@@ -59,8 +59,8 @@ const RequestsList = () => {
         </div>
 
         <SimpleCard className={"bg-white flex flex-col items-center mt-8"}>
-          <div className="text-4xl font-b9 mb-6">لیست درخواست ها</div>
-          <div className="grid gap-4 grid-cols-4">
+          <div className="text-4xl font-b9 mb-6 sm:text-lg sm:font-b5">لیست درخواست ها</div>
+          <div className="grid gap-4 grid-cols-4 sm:grid-cols-1">
             {getData
               ? getData.map((item, index) => (
                   <>

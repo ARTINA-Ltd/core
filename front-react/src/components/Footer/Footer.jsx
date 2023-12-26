@@ -81,11 +81,11 @@ const Footer = () => {
             <a href="https://metaverse.artina.org/" className="mr-2 font-b3">
               متاورس
             </a>
-            <a href="https://artina.org/FAQ" className="mr-2 font-b3">
+            <a href="/FAQ" className="mr-2 font-b3">
             سوالات متداول
             </a>
             <a
-              href="https://artina.org/ai"
+              href="/ai"
               className="mr-2 font-b3"
             >
               تولید عکس با هوش مصنوعی

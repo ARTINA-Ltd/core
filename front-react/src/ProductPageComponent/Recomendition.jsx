@@ -34,29 +34,29 @@ function Recomendition({ requests, nft }) {
 
   return (
     <>
-      <div className="flex flex-col lg:mr-[40px] sm:mr-[2px] lg:ml-[40px] w-full">
-        <div className="overflow-x-auto  lg:mx-8">
-          <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+      <div className="flex flex-col lg:mr-[40px] sm:m-2 lg:ml-[40px] w-full">
+        <div className="overflow-x-auto  lg:mx-8 sm:mx-2">
+          <div className="py-2 inline-block min-w-full lg:px-8 sm:px-2 sm:py-0">
             <div className="overflow-hidden">
               <table className="min-w-full">
                 <thead className="">
                   <tr>
                     <th
                       scope="col"
-                      className="  text-gray-900 px-6 py-4 text-center"
+                      className="text-gray-900 px-6 py-4 text-center sm:px-2 sm:text-xs"
                     >
                       قیمت
                     </th>
                     <th
                       scope="col"
-                      className="  text-gray-900 px-6 py-4 text-center"
+                      className="text-gray-900 px-6 py-4 text-center sm:px-2 sm:text-xs"
                     >
                       تاریخ
                     </th>
 
                     <th
                       scope="col"
-                      className="  text-gray-900 px-6 py-4 text-center"
+                      className="text-gray-900 px-6 py-4 text-center sm:px-2 sm:text-xs"
                     >
                       لغو پیشنهاد
                     </th>
@@ -67,10 +67,10 @@ function Recomendition({ requests, nft }) {
                     ? requests.data.map((req) =>
                       req.bidder == user.data.id ? (
                         <tr className="border-t">
-                          <td className=" text-gray-900 font-light px-6 py-4 whitespace-nowrap ">
+                          <td className=" text-gray-900 font-light px-6 py-4 whitespace-nowrap sm:px-2">
                             {req.fee} ريال
                           </td>
-                          <td className=" text-gray-900  px-6 py-4 whitespace-nowrap ">
+                          <td className=" text-gray-900  px-6 py-4 whitespace-nowrap sm:px-2">
                             {Intl.DateTimeFormat("fa", {
                               year: "numeric",
                               month: "numeric",
@@ -78,7 +78,7 @@ function Recomendition({ requests, nft }) {
                             }).format(new Date(req.date))}
                           </td>
 
-                          <td className=" text-gray-900 font-light px-6 py-4 whitespace-nowrap ">
+                          <td className=" text-gray-900 font-light px-6 py-4 whitespace-nowrap sm:px-0">
                             <div className="w-full flex justify-center">
                               <BorderButton
                                 className="w-1/4 text-center"

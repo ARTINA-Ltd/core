@@ -10,6 +10,7 @@ import SimpleInput from "../../Inputs/SimpleInput";
 import axios from "axios";
 import { Notify } from "notiflix";
 import BorderButton from "../../Buttons/BorderButton";
+
 export default function CollectionDialog(tokenId) {
   const [visible, setVisible] = useState(false);
   const [startDate, setStartDate] = useState();
@@ -87,11 +88,12 @@ export default function CollectionDialog(tokenId) {
       <Dialog
         header={Header}
         visible={visible}
-        style={{ width: "50vw", direction: "rtl" }}
+        style={{ direction: "rtl" }}
         onHide={() => setVisible(false)}
         footer={footerContent}
+        className="w-[50vw] sm:w-[90%]"
       >
-        <div className="flex gap-12 pt-5 items-center font-b4">
+        <div className="flex gap-12 pt-5 items-center font-b4 lg:flex-col">
           <SimpleInput
             type="date"
             title="تاریخ آغاز فروش "
@@ -108,7 +110,7 @@ export default function CollectionDialog(tokenId) {
             />
           </div>
         </div>
-        <div className="flex gap-12 pt-5 items-center font-b4">
+        <div className="flex gap-12 pt-5 items-center font-b4 lg:flex-col">
           <SimpleInput
             type="date"
             title="تاریخ پایان فروش "

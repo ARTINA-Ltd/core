@@ -89,8 +89,8 @@ const Collections = () => {
       {user && getUser && user.data.username != username &&
       
       <>
-      <div className="w-full flex gap-16 items-center p-6 bg-white rounded-xl mb-4">
-        <img src={getUser.profile_picture} className="rounded-full object-cover h-52 w-52 flex-shrink-0" alt="" />
+      <div className="w-full flex gap-16 items-center p-6 bg-white rounded-xl mb-4 sm:p-3 sm:gap-4 sm:flex-col">
+        <img src={getUser.profile_picture} className="rounded-full object-cover h-52 w-52 flex-shrink-0 sm:w-[120px] sm:h-[120px]" alt="" />
         <div className="w-full flex flex-col font-b6">
           <div>هنرمند: <span className="font-b3 px-1">{getUser.name}</span></div>
           <div>شناسه هنرمند:  <span className="font-b3 px-1">{getUser.username}</span></div>

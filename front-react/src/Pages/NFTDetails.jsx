@@ -266,7 +266,7 @@ const NFTDetails = () => {
   return (
     <TestLayout>
       <div>
-        <div className="flex gap-4 items-start">
+        <div className="flex gap-4 items-start lg:flex-col">
           <SimpleCard
             id="RightSide"
             className="bg-[#4e45d0] w-full flex flex-col relative gap-6 items-center "
@@ -278,20 +278,20 @@ const NFTDetails = () => {
               />
               <div className="flex gap-3 w-full">
                 <div
-                  className={` w-full h-16 bg-[#7168f3] rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]`}
+                  className={` w-full h-16 bg-[#7168f3] rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda] sm:px-2 sm:h-10 sm:justify-around`}
                   onClick={handleClickLike}
                 >
                   {data && data.user_liked ? icons.red_heart : icons.heart}
                   <div className="text-white text-[16px]">{likeCount}</div>
                 </div>
-                <div className="bg-[#7168f3] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]">
+                <div className="bg-[#7168f3] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda] sm:px-2 sm:h-10 sm:justify-around">
                   {icons.eye}
                   <div className="text-white text-[16px]">
                     {data && data.view_count + 1}
                   </div>
                 </div>
                 <div
-                  className="bg-[#7168f3] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda]"
+                  className="bg-[#7168f3] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda] sm:px-2 sm:h-10 sm:justify-around"
                   onClick={handleClickShare}
                 >
                   {icons.share}
@@ -304,33 +304,30 @@ const NFTDetails = () => {
           </SimpleCard>
           <SimpleCard
             id="LeftSide"
-            className={"flex flex-col gap-8 bg-white w-full"}
+            className={"flex flex-col gap-8 bg-white w-full sm:gap-2"}
           >
-            <div className="relative flex items-center pt-3">
-              <div className="absolute text-[16px] opacity-40">نام اثر</div>
-              <div className="text-[32px] mx-auto">
+            <div className="flex items-center pt-3 sm:flex-col sm:gap-2">
+              <div className="text-[16px] opacity-40">نام اثر</div>
+              <div className="text-[32px] mx-auto sm:text-[20px]">
                 {data ? data.name : ""}
               </div>
             </div>
 
-            <hr className="opacity-10 mx-32"></hr>
-            <div className="relative flex items-center">
-              <div className="absolute text-[16px] opacity-40">هنرمند</div>
+            <div className="flex items-center sm:flex-col sm:gap-2">
+              <div className="text-[16px] opacity-40">هنرمند</div>
               <div className="text-[16px] mx-auto">
                 {data ? data.creator : ""}
               </div>
             </div>
 
-            <hr className="opacity-10 mx-32"></hr>
-            <div className="relative flex items-center">
-              <div className="absolute text-[16px] opacity-40">هش بلاک</div>
+            <div className="flex items-center sm:flex-col sm:gap-2">
+              <div className="text-[16px] opacity-40">هش بلاک</div>
               <div className="text-[16px] mx-auto">
                 {data ? formatString(data.blockHash) : ""}
               </div>
             </div>
 
-            <hr className="opacity-10 mx-32"></hr>
-            <div className="relative flex items-center">
+            <div className="flex items-center sm:flex-col sm:gap-2">
               <div className="text-[16px] opacity-40">هش تراکنش</div>
               <div className="text-[16px] mx-auto">
                 {data ? formatString(data.transactionHash) : ""}
@@ -357,8 +354,7 @@ const NFTDetails = () => {
               </a>
             </div>
 
-            <div className="flex justify-around mt-8">
-              {/* <hr className="opacity-10 mx-32"></hr> */}
+            <div className="flex justify-around mt-8 sm:flex-col sm:gap-2">
               <div className="relative flex w-full">
                 <div className=" text-[16px] opacity-40">شماره بلاک</div>
                 <div className="text-[16px] mx-auto">
@@ -391,7 +387,7 @@ const NFTDetails = () => {
 
               {/* <hr className="opacity-10 mx-32"></hr> */}
               <div className="relative flex w-full">
-                <div className="text-[16px] opacity-40 mr-14">شماره تراکنش</div>
+                <div className="text-[16px] opacity-40 mr-14 sm:mr-0">شماره تراکنش</div>
                 <div className="text-[16px] mx-auto">
                   {data ? data.transactionIndex : ""}
                 </div>
@@ -405,9 +401,9 @@ const NFTDetails = () => {
                     </div> */}
             <hr className="opacity-10 mx-32"></hr>
 
-            <div className="relative flex items-center h-full">
-              <div className="absolute text-[16px] opacity-40">توضیحات</div>
-              <div className="text-[16px] mr-36 self-start text-right">
+            <div className="flex items-center h-full sm:flex-col sm:gap-2 sm:mb-4">
+              <div className="text-[16px] opacity-40">توضیحات</div>
+              <div className="text-[16px] mr-36 self-start text-right sm:mr-0">
                 {data ? data.description : ""}
               </div>
             </div>
@@ -448,18 +444,18 @@ const NFTDetails = () => {
               </a>
             </div>
 
-            <div className="relative flex items-center justify-self-end bg-[#f1f2f7] px-10 py-3 rounded-xl">
-              <div className="absolute text-[16px] opacity-50">آخرین قیمت</div>
+            <div className="flex items-center justify-self-end bg-[#f1f2f7] px-10 py-3 rounded-xl">
+              <div className="text-[16px] opacity-50">آخرین قیمت</div>
               <div className="text-[22px] mx-auto">
                 {data ? data.last_price : ""} اتریوم
               </div>
             </div>
           </SimpleCard>
         </div>
-        <div className="flex gap-6">
+        <div className="flex gap-6 sm:flex-col">
           <SimpleCard className="bg-white grow flex flex-col relative gap-3 items-center mt-4">
             <div className="flex items-center pt-3">
-              <div className="text-[32px] mx-auto">پیشنهادات</div>
+              <div className="text-[32px] mx-auto sm:text-[20px]">پیشنهادات</div>
             </div>
             <Properties requests={reqData ? reqData : null} nft={id} />
           </SimpleCard>
@@ -468,22 +464,24 @@ const NFTDetails = () => {
             <>
               <SimpleCard
                 id="UserRequests"
-                className="bg-white w-1/2 flex flex-col relative gap-3 items-center mt-4"
+                className="bg-white w-1/2 flex flex-col relative gap-3 items-center mt-4 sm:w-full sm:mt-0"
               >
                 <div className="flex items-center pt-3">
-                  <div className="text-[32px] mx-auto">پیشنهاد های شما</div>
+                  <div className="text-[32px] mx-auto sm:text-[20px]">پیشنهاد های شما</div>
                 </div>
                 <Recomendition
                   requests={reqData ? reqData : undefined}
                   nft={id}
                 />
-                <hr className="text-black opacity-50 bg-black" />
+
+                {/* <hr className="text-black opacity-50 bg-black" /> */}
+
                 <div className="bg-indigo-100 rounded-xl p-3 w-full">
-                  <div className="w-full text-center font-b6 text-xl">
+                  <div className="w-full text-center font-b6 text-xl sm:mb-8">
                     ثبت پیشنهاد جدید
                   </div>
                   <div className="flex gap-1 w-full flex-col">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 sm:my-2">
                       <div className="grow">
                         <SimpleInput
                           type={"number"}
@@ -503,7 +501,7 @@ const NFTDetails = () => {
                         ثبت
                       </BorderButton>
                     </div>
-                    <div className="flex gap-1 pr-4 text-sm">
+                    <div className="flex pr-4 text-xs sm:pr-0 sm:gap-2 sm:my-2">
                       قیمت به تومان:
                       <div className="text-indigo-600">&nbsp;{price}&nbsp;</div>
                       تومان
