@@ -12,10 +12,10 @@ const ExhibitionList = () => {
 
   const user = useContext(UserContext);
 
-  useEffect(() => {}, []);
+  // useEffect(() => {}, []);
 
   useEffect(() => {
-    if (user) {
+    if (localStorage.getItem("authTokens") !== "null") {
       axios
         .get("https://api.artina.org/api/exhibition/ExTicketViewSet/", {
           headers: {
@@ -29,6 +29,9 @@ const ExhibitionList = () => {
           console.log("Extiiiiiiiiiiiiiiiii");
           console.log(res.data);
           console.log("Extiiiiiiiiiiiiiiiii");
+        })
+        .catch((err) => {
+          console.log(err);
         });
     } else {
       axios
