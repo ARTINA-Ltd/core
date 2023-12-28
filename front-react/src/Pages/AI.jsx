@@ -59,10 +59,10 @@ const AI = () => {
       } gap-5`}
       rev={true}
     >
-      <div id="ai-image" className="rounded-2xl w-1/3 md:w-[97%] xl:w-2/3 ">
+      <div id="ai-image" className="rounded-2xl w-1/3 md:w-[97%] xl:w-2/3 sm:w-full">
         <SimpleCard
           className={
-            "bg-[#ffffff] w-full sm:m-4 transition-all bg-white/20 backdrop-blur-lg "
+            "bg-[#ffffff] w-full transition-all bg-white/20 backdrop-blur-lg sm:m-0"
           }
         >
           <div className="text-[24px] text-center transition-all">

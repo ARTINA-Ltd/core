@@ -50,16 +50,17 @@ export default function AllTurnOversDialog({ turnovers }) {
       <Dialog
         header={Header}
         visible={visible}
-        style={{ width: "50vw", direction: "rtl" }}
+        style={{ direction: "rtl" }}
         onHide={() => setVisible(false)}
         footer={footerContent}
+        className="w-[50vw] sm:w-[90%]"
       >
         <table className="dashboard-table w-full text-center">
           <thead>
             <tr>
-              <th>واحد ارز</th>
-              <th>نوع تراکنش </th>
-              <th>مقدار(تومان) </th>
+              <th className="text-md font-b4">واحد ارز</th>
+              <th className="text-md font-b4">نوع تراکنش </th>
+              <th className="text-md font-b4">مقدار(تومان) </th>
               <th />
             </tr>
           </thead>
@@ -67,13 +68,13 @@ export default function AllTurnOversDialog({ turnovers }) {
           <tbody>
             {turnovers ? (
               turnovers.map((item, index) => (
-                <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all font-b4">
+                <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all font-b4 sm:text-xs">
                   <td>{item.transaction_currency === 1 ? "تومان" : "اتریوم"}</td>
                   <td>{item.transaction_type === 2 ? "برداشت" : "واریز"}</td>
 
                   <td>{item.transaction_value} تومان</td>
 
-                  <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
+                  <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200 sm:pl-2">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"

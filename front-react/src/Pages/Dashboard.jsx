@@ -17,6 +17,7 @@ const Dashboard = () => {
   const [getOrders, setOrders] = useState();
   const [artistOpenExhibitions, setArtistOpenExhibitions] = useState();
   const [reqData, setReqData] = useState();
+  const [commission, setCommission] = useState();
 
   const [getLastMonthTurnover, setLastMonthTurnover] = useState();
   const [getAllTurnovers, setAllTurnovers] = useState();
@@ -184,7 +185,7 @@ const Dashboard = () => {
       })
       .then((res) => {
         setArtistOpenExhibitions(res.data);
-        console.log(res.data);
+        console.log("____Exhibitions____", res.data);
       });
   }, []);
 
@@ -254,8 +255,8 @@ const Dashboard = () => {
   return (
     <div>
       <TestLayout>
-        <div className="flex gap-3 items-start">
-          <div className="flex flex-col gap-3 w-2/3">
+        <div className="flex gap-3 items-star sm:flex-col">
+          <div className="flex flex-col gap-3 w-2/3 sm:w-full">
             <SimpleCard className="bg-white w-full h-full flex-col items-center justify-start">
               <div className="text-xl font-b6 px-4 mx-auto py-1 transition-all rounded-2xl mb-2 text-center">
                 گزارش مالی
@@ -266,14 +267,14 @@ const Dashboard = () => {
                   className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4"
                 >
                   <div className="font-b6">تومان</div>
-                  <div className="flex gap-2 items-center justify-between">
+                  <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
                     مانده قابل معامله:
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
                       {getBalance ? getBalance.rial_available_balance : ""}
                       تومان
                     </div>
                   </div>
-                  <div className="flex gap-2 items-center justify-between">
+                  <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
                     مانده غیر قابل معامله:
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
                       {getBalance ? getBalance.rial_unavailable_balance : ""}
@@ -287,13 +288,13 @@ const Dashboard = () => {
                   className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4"
                 >
                   <div className="font-b6">اتریوم</div>
-                  <div className="flex gap-2 items-center justify-between">
+                  <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
                     مانده قابل معامله:
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
                       {getBalance ? getBalance.eth_balance : ""} اتریوم
                     </div>
                   </div>
-                  <div className="flex gap-2 items-center justify-between">
+                  <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
                     مانده غیر قابل معامله:
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
                       {getBalance ? getBalance.eth_unavailable_balance : ""}
@@ -306,7 +307,7 @@ const Dashboard = () => {
               <div className="my-3">
                 <div
                   id=""
-                  className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4"
+                  className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4 sm:flex-col"
                 >
                   <div className="font-b6">سود حاصل از بلیت نمایشگاه</div>
                   <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
@@ -318,7 +319,7 @@ const Dashboard = () => {
               <div className="my-3">
                 <div
                   id=""
-                  className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4"
+                  className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4 sm:flex-col"
                 >
                   <div className="font-b6">مجموع حجم تراکنش های ماهانه</div>
                   <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
@@ -335,12 +336,12 @@ const Dashboard = () => {
                 />
               </div>
             </SimpleCard>
-            <SimpleCard className="bg-white w-full h-full flex-col items-center justify-start ">
-              <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
+            <SimpleCard className="bg-white w-full h-full flex-col items-center justify-start sm:p-3">
+              <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center sm:px-1">
                 گردش حساب
               </div>
 
-              <table className="dashboard-table w-full text-center">
+              <table className="dashboard-table w-full text-center sm:text-xs">
                 <thead>
                   <tr>
                     <th>واحد ارز</th>
@@ -398,19 +399,17 @@ const Dashboard = () => {
             </SimpleCard>
           </div>
           <div className="flex flex-col w-full gap-5">
-            <SimpleCard className="bg-white  w-full h-full">
+            <SimpleCard className="bg-white  w-full h-full sm:p-2">
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
                 نمایشگاه ها
               </div>
-              <table className="dashboard-table w-full text-center">
+              <table className="dashboard-table w-full text-center sm:text-[12px]">
                 <thead>
                   <tr>
-                    <th>عکس</th>
+                    <th className="sm:hidden">عکس</th>
                     <th>نام نمایشگاه</th>
-                    <th>درصد کمیسیون</th>
+                    <th>کمیسیون</th>
                     <th>سود حاصل</th>
-                    <th>حجم فروش به اتر</th>
-                    <th>حجم فروش</th>
                     <th>تاریخ پایان</th>
                     <th />
                   </tr>
@@ -422,7 +421,7 @@ const Dashboard = () => {
                         className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all"
                         key={index}
                       >
-                        <td>
+                        <td className="sm:hidden">
                           <div className="flex justify-center w-full">
                             <img
                               src={item.image}
@@ -435,12 +434,10 @@ const Dashboard = () => {
                         <td className="items-center justify-center">
                           <div className="flex justify-center w-full">
                             <div className="px-2 py-1 text-sm bg-green-100 text-green-500 rounded-md">
-                              ???
+                              {item.commision}%
                             </div>
                           </div>
                         </td>
-                        <td>???</td>
-                        <td>???</td>
                         <td>???</td>
                         <td className="flex flex-col justify-center">
                           {Intl.DateTimeFormat("fa", {
@@ -448,7 +445,7 @@ const Dashboard = () => {
                             month: "numeric",
                             day: "numeric",
                           }).format(new Date(item.end_date))}
-                          <div className="text-sm bg-slate-100 px-1 rounded-md">
+                          <div className="text-sm bg-slate-100 px-1 rounded-md sm:text-xs">
                             ساعت: &nbsp;
                             {Intl.DateTimeFormat("fa", {
                               minute: "numeric",
@@ -456,7 +453,7 @@ const Dashboard = () => {
                             }).format(new Date(item.end_date))}
                           </div>
                         </td>
-                        <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
+                        <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200 sm:pl-2">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -485,7 +482,7 @@ const Dashboard = () => {
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
                 سفارشات باز شما
               </div>
-              <table className="dashboard-table w-full text-center">
+              <table className="dashboard-table w-full text-cente sm:text-xs">
                 <thead>
                   <tr>
                     <th>نام nft</th>
@@ -537,18 +534,18 @@ const Dashboard = () => {
               </table>
             </SimpleCard>
 
-            <SimpleCard className="bg-white  w-full h-full">
+            <SimpleCard className="bg-white  w-full h-full sm:p-3">
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
                 بلیت ها
               </div>
-              <table className="dashboard-table w-full text-center">
+              <table className="dashboard-table w-full text-center sm:text-xs">
                 <thead>
                   <tr>
                     <th>شماره بلیت</th>
                     <th>آیدی نمایشگاه</th>
                     <th>قیمت</th>
                     <th>تاریخ انقضا</th>
-                    <th />
+                    {/* <th /> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -593,11 +590,11 @@ const Dashboard = () => {
               </table>
             </SimpleCard>
 
-            <SimpleCard className="bg-white  w-full h-full">
+            <SimpleCard className="bg-white  w-full h-full sm:p-3">
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
                 nft هایی که پسندیده اید
               </div>
-              <table className="dashboard-table w-full text-center">
+              <table className="dashboard-table w-full text-center sm:text-xs">
                 <thead>
                   <tr>
                     <th>عکس nft</th>

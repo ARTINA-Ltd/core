@@ -22,7 +22,7 @@ const Home = () => {
       <AboutAI />
       <Innovations className={"my-10"} />
       <MostFrequentQuestions className={""} />
-      <GasPrice className={"mt-10"} />
+      <GasPrice className={"mt-10 sm:m-3"} />
       {/* <Features className={"my-20"} /> */}
     </TestLayout>
   );

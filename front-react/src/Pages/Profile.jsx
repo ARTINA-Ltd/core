@@ -110,18 +110,17 @@ function Profile() {
         b_date =
           values.birthdate != "" && values.birthdate != null
             ? new Date(
-                values.birthdate.split("/")[2],
-                values.birthdate.split("/")[1] - 1,
-                values.birthdate.split("/")[0]
-              )
+              values.birthdate.split("/")[2],
+              values.birthdate.split("/")[1] - 1,
+              values.birthdate.split("/")[0]
+            )
             : "";
       }
 
       axios
         .put(
           // "https://api.artina.org/api/account/profile/",
-          `https://api.artina.org/api/account/profile/${
-            user ? user.data.id : ""
+          `https://api.artina.org/api/account/profile/${user ? user.data.id : ""
           }/`,
           {
             user: user ? user.data.id : "",
@@ -131,10 +130,10 @@ function Profile() {
             birthdate:
               b_date != ""
                 ? Intl.DateTimeFormat("en-UK", {
-                    year: "numeric",
-                    month: "numeric",
-                    day: "numeric",
-                  }).format(b_date)
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                }).format(b_date)
                 : null,
             phone_number: values.phone_number,
             cell_number: values.cell_number,
@@ -206,17 +205,16 @@ function Profile() {
         b_date =
           values.birthdate != "" && values.birthdate != null
             ? new Date(
-                values.birthdate.split("/")[2],
-                values.birthdate.split("/")[1] - 1,
-                values.birthdate.split("/")[0]
-              )
+              values.birthdate.split("/")[2],
+              values.birthdate.split("/")[1] - 1,
+              values.birthdate.split("/")[0]
+            )
             : "";
       }
       axios
         .put(
           // "https://api.artina.org/api/account/profile/",
-          `https://api.artina.org/api/account/profile/${
-            user ? user.data.id : ""
+          `https://api.artina.org/api/account/profile/${user ? user.data.id : ""
           }/`,
           {
             user: user ? user.data.id : "",
@@ -226,14 +224,14 @@ function Profile() {
             birthdate:
               b_date != ""
                 ? Intl.DateTimeFormat("en-UK", {
-                    year: "numeric",
-                    month: "numeric",
-                    day: "numeric",
-                  }).format(b_date)
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                }).format(b_date)
                 : null,
             phone_number: values.phone_number,
             cell_number: values.cell_number,
-            postal_code:values.postal_code,
+            postal_code: values.postal_code,
             address: values.address,
             bio: values.bio,
             national_card_picture: nationalCardImageUrl
@@ -347,7 +345,7 @@ function Profile() {
 
   return (
     <TestLayout connectWallet={false}>
-      <div className="flex gap-5 items-start ">
+      <div className="flex gap-5 items-start sm:flex-col">
         <SimpleCard className={"flex flex-col gap-4 bg-white w-full"}>
           {user && user.data.role == "user_zero" ? (
             <div className="w-full bg-red-50 text-red-500 py-2 text-center rounded-lg">
@@ -365,13 +363,12 @@ function Profile() {
                 src={
                   profileImageUrl
                     ? profileImageUrl
-                    : `${
-                        user
-                          ? user.data.profile_picture
-                          : "https://i.pinimg.com/originals/66/b8/58/66b858099df3127e83cb1f1168f7a2c6.jpg"
-                      }`
+                    : `${user
+                      ? user.data.profile_picture
+                      : "https://i.pinimg.com/originals/66/b8/58/66b858099df3127e83cb1f1168f7a2c6.jpg"
+                    }`
                 }
-                className="pointer-events-none rounded-full overflow-hidden object-cover w-[200px] h-[200px] flex-shrink-0"
+                className="pointer-events-none rounded-full overflow-hidden object-cover w-[200px] h-[200px] flex-shrink-0 sm:w-[120px] sm:h-[120px]"
               />
               <div
                 className="group-hover:visible opacity-70 invisible cursor-pointer bg-gradient-to-b from-black to-[#00000050] w-[200px] h-[200px] absolute inset-0  items-center justify-center flex rounded-full"
@@ -410,64 +407,64 @@ function Profile() {
             </div>
             <div className="flex w-full gap-4">
               <div className="w-full flex flex-col gap-4">
-                <div className="flex w-full gap-4">
-                <SimpleInput
-                type="text"
-                title="نام"
-                placeholder="مثلا: علیرضا"
-                isValid={validate.first_name}
-                validationError="نمی‌تواند خالی باشد"
-                onChange={e => {
-                  setValues(prev => ({
-                    ...prev,
-                    first_name: e.target.value,
-                  }));
-                  setValidate(prev => ({
-                    ...prev,
-                    first_name: e.target.value != "",
-                  }));
-                }}
-                defaultValue={user != null ? user.data.first_name : null}
-                disabled={user != null ? user.data.first_name != null : null}
-              />
-              <SimpleInput
-                type="text"
-                title="نام خانوادگی"
-                placeholder="مثلا: موسوی"
-                isValid={validate.last_name}
-                validationError="نمی‌تواند خالی باشد"
-                onChange={e => {
-                  setValues(prev => ({ ...prev, last_name: e.target.value }));
-                  setValidate(prev => ({
-                    ...prev,
-                    last_name: e.target.value != "",
-                  }));
-                }}
-                defaultValue={user != null ? user.data.last_name : null}
-                disabled={user != null ? user.data.last_name != null : null}
-              />
+                <div className="flex w-full gap-4 sm:flex-col">
+                  <SimpleInput
+                    type="text"
+                    title="نام"
+                    placeholder="مثلا: علیرضا"
+                    isValid={validate.first_name}
+                    validationError="نمی‌تواند خالی باشد"
+                    onChange={e => {
+                      setValues(prev => ({
+                        ...prev,
+                        first_name: e.target.value,
+                      }));
+                      setValidate(prev => ({
+                        ...prev,
+                        first_name: e.target.value != "",
+                      }));
+                    }}
+                    defaultValue={user != null ? user.data.first_name : null}
+                    disabled={user != null ? user.data.first_name != null : null}
+                  />
+                  <SimpleInput
+                    type="text"
+                    title="نام خانوادگی"
+                    placeholder="مثلا: موسوی"
+                    isValid={validate.last_name}
+                    validationError="نمی‌تواند خالی باشد"
+                    onChange={e => {
+                      setValues(prev => ({ ...prev, last_name: e.target.value }));
+                      setValidate(prev => ({
+                        ...prev,
+                        last_name: e.target.value != "",
+                      }));
+                    }}
+                    defaultValue={user != null ? user.data.last_name : null}
+                    disabled={user != null ? user.data.last_name != null : null}
+                  />
                 </div>
 
                 <SimpleInput
-              className={"col-span-3"}
-              type="text"
-              title="درباره من"
-              isValid={validate.bio}
-              validationError="نمی‌تواند خالی باشد"
-              onChange={e => {
-                setValues(prev => ({ ...prev, bio: e.target.value }));
-                setValidate(prev => ({
-                  ...prev,
-                  bio: e.target.value != "",
-                }));
-              }}
-              defaultValue={user != null ? user.data.bio : null}
-              disabled={user != null ? user.data.bio != null : null}
-            />
+                  className={"col-span-3"}
+                  type="text"
+                  title="درباره من"
+                  isValid={validate.bio}
+                  validationError="نمی‌تواند خالی باشد"
+                  onChange={e => {
+                    setValues(prev => ({ ...prev, bio: e.target.value }));
+                    setValidate(prev => ({
+                      ...prev,
+                      bio: e.target.value != "",
+                    }));
+                  }}
+                  defaultValue={user != null ? user.data.bio : null}
+                  disabled={user != null ? user.data.bio != null : null}
+                />
               </div>
             </div>
           </div>
-         
+
           <div className="flex gap-4">
             <SimpleInput
               type="number"
@@ -505,9 +502,9 @@ function Profile() {
               disabled={user != null ? user.data.birthdate != null : null}
             />
           </div>
-          <div className="grid grid-cols-4">
+          <div className="grid grid-cols-4 sm:grid-cols-3">
             <SimpleInput
-              className={"col-span-3"}
+              className={"col-span-3 sm:col-span-2"}
               type="text"
               title="آدرس"
               placeholder="مثلا: تهران ..."
@@ -590,9 +587,8 @@ function Profile() {
               maxChars={11}
             />
             <div
-              className={`${
-                showPhoneValidate && !isPhoneVerified ? "" : "hidden"
-              }`}
+              className={`${showPhoneValidate && !isPhoneVerified ? "" : "hidden"
+                }`}
             >
               <SimpleInput
                 type="number"
@@ -605,26 +601,23 @@ function Profile() {
               />
             </div>
             <div
-              className={`transition-all w-1/2 shrink-0 ${
-                isPhoneVerified ? "hidden" : "flex gap-4 "
-              }`}
+              className={`transition-all w-1/2 shrink-0 ${isPhoneVerified ? "hidden" : "flex gap-4 "
+                }`}
             >
               <div
-                className={`w-1/3 ${
-                  !showPhoneValidate
+                className={`w-1/3 ${!showPhoneValidate
                     ? "hidden"
                     : "bg-sky-400 cursor-pointer hover:bg-sky-500 w-full text-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center"
-                } `}
+                  } `}
                 onClick={handleSendPhoneVerificationCode}
               >
                 ثبت
               </div>
               <div
-                className={`w-1/3  ${
-                  isPhoneDisabled
+                className={`w-1/3  ${isPhoneDisabled
                     ? "bg-[#4e45d0] cursor-not-allowed hover:bg-[#372fac]"
                     : "bg-[#372fac] cursor-pointer"
-                } w-full text-nowrap flex-nowrap whitespace-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center`}
+                  } w-full text-nowrap flex-nowrap whitespace-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center`}
                 onClick={() => (!isPhoneDisabled ? hanldeClickPhone() : "")}
               >
                 {isPhoneDisabled ? `ارسال مجدد کد (${counter})` : "ارسال کد"}
@@ -655,13 +648,13 @@ function Profile() {
             <BorderButton onClick={() => UpdateInfo()}>ثبت</BorderButton>
           </div>
         </SimpleCard>
-        <div className="flex flex-col gap-4 items-center justify-center w-[35%] relative">
+        <div className="flex flex-col gap-4 items-center justify-center w-[35%] relative sm:w-full">
           <SimpleCard className="bg-[#4e45d0] flex flex-col relative gap-4 items-center overflow-hidden w-full">
             <img
               src="/mand1.png"
               className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
             />
-            <div className="text-white text-[27px] mb-2 z-10 font-b9">
+            <div className="text-white text-[27px] mb-2 z-10 font-b9 sm:text-[20px]">
               آپلود فرم احراز هویت
             </div>
             <BorderButton

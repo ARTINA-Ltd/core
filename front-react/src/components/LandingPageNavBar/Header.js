@@ -489,7 +489,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
     <>
       <header>
         <div
-          className={`flex justify-center h-[80px]  ${
+          className={`flex justify-center h-[80px] sm:h-[60px] ${
             rev ? "" : "from-[#f9f9f9] bg-gradient-to-b"
           }  font-b3`}
         >
@@ -558,7 +558,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                 />
               </svg>
             </div>
-            <div className="flex gap-5 items-center">
+            <div className="flex gap-5 items-center ">
               {user ? (
                 <>
                   <div ref={ref2}>
@@ -584,7 +584,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                     <div
                       className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-[#f9f9f9] min-w-[200px] ${
                         isHidden2 ? "opacity-0 pointer-events-none" : ""
-                      } absolute translate-x-1/3`}
+                      } absolute translate-x-1/3 sm:translate-x-0`}
                     >
                       {notifs &&
                         notifs.map((item, index) => (
@@ -687,7 +687,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
               )}
 
               <img
-                className="h-16"
+                className="h-16 sm:h-12"
                 src={"/artina-logo.png"}
                 alt="logo"
                 onClick={userChange}

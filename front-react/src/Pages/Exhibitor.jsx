@@ -56,12 +56,12 @@ const Exhibitor = () => {
   return (
     <div>
       <TestLayout wfull={true}>
-        <SimpleCard className="bg-[#4e45d0] flex flex-col relative gap-4 items-center justify-center overflow-hidden w-[90%] h-96 mx-auto mb-5 md:h-72 sm:h-64">
+        <SimpleCard className="bg-[#4e45d0] flex flex-col relative gap-4 items-center justify-center overflow-hidden w-[90%] h-96 mx-auto mb-5 md:h-72 sm:h-52">
           <img
             src="/mand1.png"
             className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
           />
-          <div className="text-white text-6xl mb-4 z-10 font-b7 sm:text-4xl">
+          <div className="text-white text-6xl mb-4 z-10 font-b7 sm:text-3xl">
             مدیریت فعالیت ها
           </div>
         </SimpleCard>
@@ -114,7 +114,7 @@ const Exhibitor = () => {
         </SimpleCard>
 
         <div
-          className="w-[90%] bg-[#4e45d0] rounded-xl justify-center gap-5 flex py-12 mb-9 mt-2 text-center text-white text-xl font-b5 cursor-pointer mx-auto hover:text-[22px] transition-all"
+          className="w-[90%] bg-[#4e45d0] rounded-xl justify-center gap-5 flex py-12 mb-9 mt-2 text-center text-white text-xl font-b5 cursor-pointer mx-auto hover:text-[22px] transition-all sm:text-lg sm:font-b4 sm:py-4 sm:mt-9"
           onClick={() => navigate(`/requests-list`)}
         >
           <div className="animate-pulse">

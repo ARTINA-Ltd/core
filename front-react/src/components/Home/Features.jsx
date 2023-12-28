@@ -4,7 +4,7 @@ import "keen-slider/keen-slider.min.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
-import { Pagination } from "swiper/modules";
+import { Pagination, SwiperCore } from "swiper/modules";
 
 
 const Features = ({ className = "" }) => {
@@ -49,8 +49,8 @@ const Features = ({ className = "" }) => {
           breakpoints={{
            
             768: {
-              slidesPerView: 2,
-              spaceBetween: 40,
+              slidesPerView: 1,
+              spaceBetween: 10,
             },
             1024: {
               slidesPerView: 3,
@@ -68,7 +68,7 @@ const Features = ({ className = "" }) => {
             <div className={"w-full cursor-pointer"}>
               <img
                 src="/3.png"
-                className="w-[200px] h-[200px] object-cover rounded-full m-auto"
+                className="w-[200px] h-[200px] object-cover rounded-full m-auto sm:mx-2"
                 alt=""
               />
               <div className="mt-3 font-b5 text-[24px] text-center">
@@ -84,7 +84,7 @@ const Features = ({ className = "" }) => {
             >
               <img
                 src="/Metaverse-logo.jpeg"
-                className="w-[200px] h-[200px] object-cover rounded-full m-auto"
+                className="w-[200px] h-[200px] object-cover rounded-full m-auto sm:mx-2"
                 alt=""
               />
               <div className="mt-3 font-b5 text-[24px] text-center">متاورس</div>
@@ -98,7 +98,7 @@ const Features = ({ className = "" }) => {
             >
               <img
                 src="/Blog-logo.jpeg"
-                className="w-[200px] h-[200px] object-cover rounded-full m-auto"
+                className="w-[200px] h-[200px] object-cover rounded-full m-auto sm:mx-2"
                 alt=""
               />
               <div className="mt-3 font-b5 text-[24px] text-center">بلاگ</div>
@@ -112,7 +112,7 @@ const Features = ({ className = "" }) => {
             >
               <img
                 src="/AI-logo.png"
-                className="w-[200px] h-[200px] object-cover rounded-full m-auto"
+                className="w-[200px] h-[200px] object-cover rounded-full m-auto sm:mx-2"
                 alt=""
               />
               <div className="mt-3 font-b5 text-[24px] text-center">
@@ -125,7 +125,7 @@ const Features = ({ className = "" }) => {
             <div className={"w-full cursor-pointer"}>
               <img
                 src="/wallet-vector-icon.jpg"
-                className="w-[200px] h-[200px] object-cover rounded-full m-auto"
+                className="w-[200px] h-[200px] object-cover rounded-full m-auto sm:mx-2"
                 alt=""
               />
               <div className="mt-3 font-b5 text-[24px] text-center">
@@ -141,7 +141,7 @@ const Features = ({ className = "" }) => {
             >
               <img
                 src="/matic-logo.png"
-                className="w-[200px] h-[200px] object-cover rounded-full m-auto"
+                className="w-[200px] h-[200px] object-cover rounded-full m-auto sm:mx-2"
                 alt=""
               />
               <div className="mt-3 font-b5 text-[24px] text-center">
@@ -157,7 +157,7 @@ const Features = ({ className = "" }) => {
             >
               <img
                 src="/matic-ic.png"
-                className="w-[200px] h-[200px] object-cover rounded-full m-auto"
+                className="w-[200px] h-[200px] object-cover rounded-full m-auto sm:mx-2"
                 alt=""
               />
               <div className="mt-3 font-b5 text-[24px] text-center">
@@ -170,7 +170,7 @@ const Features = ({ className = "" }) => {
             <div className={"w-full cursor-pointer"}>
               <img
                 src="/Blockchain-logo.png"
-                className="w-[200px] h-[200px] object-cover rounded-full m-auto"
+                className="w-[200px] h-[200px] object-cover rounded-full m-auto sm:m-1"
                 alt=""
               />
               <div className="mt-3 font-b5 text-[24px] text-center">

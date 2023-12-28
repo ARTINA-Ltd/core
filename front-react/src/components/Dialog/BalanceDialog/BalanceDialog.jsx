@@ -105,7 +105,7 @@ const BalanceDialog = () => {
       return (
         <>
           <div
-            className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all"
+            className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all sm:text-xs sm:px-4"
             onClick={() => {
               if (isCharge === true) {
                 updateBalance("withraw");
@@ -118,7 +118,7 @@ const BalanceDialog = () => {
             برداشت
           </div>
           <div
-            className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all"
+            className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all sm:text-xs sm:px-4"
             onClick={() => {
               if (isCharge === true) {
                 updateBalance("deposit");
@@ -135,7 +135,7 @@ const BalanceDialog = () => {
     } else if (action === "deposit") {
       return (
         <div
-          className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all"
+          className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all sm:text-xs sm:px-4"
           onClick={() => {
             if (isCharge === true) {
               updateBalance("deposit");
@@ -151,7 +151,7 @@ const BalanceDialog = () => {
     } else {
       return (
         <div
-          className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all"
+          className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all sm:text-xs sm:px-4 sm:w-[50%]"
           onClick={() => {
             if (isCharge === true) {
               updateBalance("withraw");
@@ -181,33 +181,33 @@ const BalanceDialog = () => {
       <Dialog
         header={Header}
         visible={visible}
-        style={{ width: "70vw", direction: "rtl" }}
+        style={{ direction: "rtl" }}
         onHide={() => {
           setVisible(false);
           setIsCharge(false);
         }}
-        className="font-b4"
+        className="w-[70vw] font-b4 sm:w-[90%]"
       >
         {!isCharge ? (
-          <div className="w-full flex gap-4 font-b4">
-            <div className="bg-[#4e45d0] rounded-xl w-full py-20 flex flex-col items-start justify-center text-white gap-4 relative group overflow-hidden">
+          <div className="w-full flex gap-4 font-b4 sm:flex-col">
+            <div className="bg-[#4e45d0] rounded-xl w-full py-20 flex flex-col items-start justify-center text-white gap-4 relative group overflow-hidden sm:py-4">
               <img
                 src="/mand1.png"
-                className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all  duration-700"
+                className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all  duration-700 sm:text-sm"
               />
-              <div className="text-2xl font-b6 px-10">
+              <div className="text-2xl font-b6 px-10 sm:text-xs">
                 موجودی قابل معامله
               </div>
               <div className="text-lg text-yellow-300 px-10 self-end">
                 {getData ? getData.rial_available_balance : ""} تومان
               </div>
             </div>
-            <div className="bg-[#4e45d0] rounded-xl w-full py-20 flex flex-col items-start justify-center text-white gap-4 relative group overflow-hidden">
+            <div className="bg-[#4e45d0] rounded-xl w-full py-20 flex flex-col items-start justify-center text-white gap-4 relative group overflow-hidden sm:py-4">
               <img
                 src="/mand1.png"
                 className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all duration-700"
               />
-              <div className="text-2xl font-b6 px-10">
+              <div className="text-2xl font-b6 px-10 sm:text-xs">
                 موجودی غیر قابل معامله
               </div>
               <div className="text-lg text-yellow-300 px-10 self-end">

@@ -17,12 +17,12 @@ const MostFrequentQuestions = ({ className = "" }) => {
                     </div>
 
                     <div className="flex-col w-full text-white">
-                        <div className="flex justify-between mt-5">
-                            <div className="w-6/12 mx-8 my-5 border-dotted border-2 border-indigo-400 rounded-3xl px-5">
-                                <div className="mt-3 font-b5 text-[20px] text-center">
+                        <div className="flex justify-between mt-5 sm:flex-col sm:items-center sm:mt-2">
+                            <div className="w-6/12 mx-8 my-5 border-dotted border-2 border-indigo-400 rounded-3xl px-5 sm:w-[95%] sm:mx-2 sm:my-2">
+                                <div className="mt-3 font-b5 text-[20px] text-center sm:text-[15px]">
                                     چرا آرتینا خرید و فروش مبتنی بر بلاک چین را ارایه می دهد؟
                                 </div>
-                                <div className="my-3 font-b3 text-[15px] text-justify">
+                                <div className="my-3 font-b3 text-[15px] text-justify sm:text-[10px]">
                                     بلاک‌چین یک سیستم ثبت تراکنش‌هاست که اطلاعات را در بلوک‌های متصل به یکدیگر ذخیره می‌کند.
                                     این اطلاعات به صورت رمزشده و تغییرناپذیری ذخیره می‌شوند.
                                     از این رو، هیچ کس نمی‌تواند به راحتی اطلاعات را تغییر دهد یا تقلب کند.
@@ -32,11 +32,11 @@ const MostFrequentQuestions = ({ className = "" }) => {
                                     که این امر شفافیت بیشتری به فرآیند معاملات اضافه می‌کند و تقلب را کاهش می‌دهد.
                                 </div>
                             </div>
-                            <div className="w-6/12 mx-8 my-5 border-dotted border-2 border-indigo-400 rounded-3xl px-5">
-                                <div className="mt-3 font-b5 text-[20px] text-center">
+                            <div className="w-6/12 mx-8 my-5 border-dotted border-2 border-indigo-400 rounded-3xl px-5 sm:w-[95%] sm:mx-2 sm:my-2">
+                                <div className="mt-3 font-b5 text-[20px] text-center sm:text-[15px]">
                                     چطور می‌توانیم تراکنش ها را در بلاک چین مشاهده کنیم؟
                                 </div>
-                                <div className="my-3 font-b3 text-[15px] text-justify">
+                                <div className="my-3 font-b3 text-[15px] text-justify sm:text-[10px]">
                                     <div className="font-b5">
                                         استفاده از اکسپلورر بلاک‌چین (Blockchain Explorer):
                                     </div>
@@ -52,12 +52,12 @@ const MostFrequentQuestions = ({ className = "" }) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex justify-between mb-5">
-                            <div className="w-6/12 mx-8 my-5 border-dotted border-2 border-indigo-400 rounded-3xl px-5">
-                                <div className="mt-3 font-b5 text-[20px] text-center">
+                        <div className="flex justify-between mb-5 sm:flex-col sm:items-center sm:mb-2">
+                            <div className="w-6/12 mx-8 my-5 border-dotted border-2 border-indigo-400 rounded-3xl px-5 sm:w-[95%] sm:mx-2 sm:my-2">
+                                <div className="mt-3 font-b5 text-[20px] text-center sm:text-[15px]">
                                     از کجا از اصالت ان اف تی مطمئن شوم؟
                                 </div>
-                                <div className="my-3 font-b3 text-[15px] text-justify">
+                                <div className="my-3 font-b3 text-[15px] text-justify sm:text-[10px]">
                                     <div className="font-b5">
                                         تحقیق در مورد ارتباط هنرمند:
                                     </div>
@@ -70,11 +70,11 @@ const MostFrequentQuestions = ({ className = "" }) => {
                                     همچنین، بررسی تاریخچه تراکنش‌ها و اطلاعات بلاک‌چین می‌تواند اصالت NFT را تأیید کند.
                                 </div>
                             </div>
-                            <div className="w-6/12 mx-8 my-5 border-dotted border-2 border-indigo-400 rounded-3xl px-5">
-                                <div className="mt-3 font-b5 text-[20px] text-center">
+                            <div className="w-6/12 mx-8 my-5 border-dotted border-2 border-indigo-400 rounded-3xl px-5 sm:w-[95%] sm:mx-2 sm:my-2">
+                                <div className="mt-3 font-b5 text-[20px] text-center sm:text-[15px]">
                                     چرا استفاده از قرارداد های هوشمند بهترین انتخاب است؟
                                 </div>
-                                <div className="my-3 font-b3 text-[15px] text-justify">
+                                <div className="my-3 font-b3 text-[15px] text-justify sm:text-[10px]">
                                     <div className="font-b5">
                                         امنیت بیشتر:
                                     </div>

@@ -18,19 +18,19 @@ function Properties({ requests, nft }) {
                   <tr>
                     <th
                       scope="col"
-                      className=" -bold text-gray-900 px-6 py-4 text-center"
+                      className=" -bold text-gray-900 px-6 py-4 text-center sm:px-2 sm:text-xs"
                     >
                       پیشنهاد دهنده
                     </th>
                     <th
                       scope="col"
-                      className=" -bold text-gray-900 px-6 py-4 text-center"
+                      className=" -bold text-gray-900 px-6 py-4 text-center sm:px-2 sm:text-xs"
                     >
                       قیمت
                     </th>
                     <th
                       scope="col"
-                      className=" -bold text-gray-900 px-6 py-4 text-center"
+                      className=" -bold text-gray-900 px-6 py-4 text-center sm:px-2 sm:text-xs"
                     >
                       تاریخ
                     </th>
@@ -40,13 +40,13 @@ function Properties({ requests, nft }) {
                   {requests
                     ? requests.data.map((req) => (
                         <tr className="border-t">
-                          <td className=" text-gray-900  px-6 py-4 whitespace-nowrap ">
+                          <td className=" text-gray-900  px-6 py-4 whitespace-nowrap sm:text-xs">
                             {req.bidder}
                           </td>
-                          <td className=" text-gray-900  px-6 py-4 whitespace-nowrap ">
+                          <td className=" text-gray-900  px-6 py-4 whitespace-nowrap sm:text-xs">
                             {req.fee} ريال
                           </td>
-                          <td className=" text-gray-900  px-6 py-4 whitespace-nowrap ">
+                          <td className=" text-gray-900  px-6 py-4 whitespace-nowrap sm:text-xs">
                             {Intl.DateTimeFormat("fa", {
                               year: "numeric",
                               month: "numeric",

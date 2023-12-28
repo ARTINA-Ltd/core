@@ -116,11 +116,11 @@ const ArtistApplicationForm = () => {
               <span key={index}>
                 <img
                   src={item.image}
-                  className="w-full h-[700px] object-cover"
+                  className="w-full h-[700px] object-cover sm:h-[500px]"
                   alt=""
                 />
                 <div className="w-full rounded-xl z-20 flex justify-center inset-0 m-auto">
-                  <div className="bg-white w-1/3  h-min  font-b7 -mt-[400px] rounded-2xl shadow-lg text-center p-3 opacity-70 flex flex-col gap-2">
+                  <div className="bg-white w-1/3  h-min  font-b7 -mt-[400px] rounded-2xl shadow-lg text-center p-3 opacity-70 flex flex-col gap-2 sm:w-4/5">
                     <div className="text-2xl font-b9">{item.marketName}</div>
                     <div className="flex items-center gap-5 justify-center py-3 rounded-lg bg-gray-50 hover:bg-gray-100">
                       <div>تاریخ شروع :{formatDate(item.start_date)}</div>
@@ -144,30 +144,30 @@ const ArtistApplicationForm = () => {
                 <div className="flex w-full justify-center mt-5">
                   <SimpleCard
                     className={
-                      "bg-white  min-h-[200px] justify-center w-2/3 text-center flex flex-col gap-5"
+                      "bg-white  min-h-[200px] justify-center w-2/3 text-center flex flex-col gap-5 sm:w-[90%]"
                     }
                   >
-                    <div className="font-b9 text-4xl">توضیحات نمایشگاه</div>
-                    <div className=" text-2xl">{item.description}</div>
+                    <div className="font-b9 text-4xl sm:font-b6 sm:text-3xl">توضیحات نمایشگاه</div>
+                    <div className=" text-2xl sm:text-xl">{item.description}</div>
                   </SimpleCard>
                 </div>
 
                 {getNfts && getNfts.length > 0 ? (
                   <>
                     <div className="flex w-full justify-center mt-5">
-                      <SimpleCard className={"bg-white w-2/3 text-center"}>
-                        <div className="font-b9 text-3xl mb-2">پیام هنرمند</div>
+                      <SimpleCard className={"bg-white w-2/3 text-center sm:w-[90%]"}>
+                        <div className="font-b9 text-3xl mb-2 sm:font-b6 sm:mb-6">پیام هنرمند</div>
                         <div className="flex items-center gap-4 mb-4">
                           <SimpleInput
                             title={"متن پیام"}
                             onChange={(e) => setValue(e.target.value)}
                           />
                         </div>
-                        <div className="font-b9 text-3xl mb-2">
+                        <div className="font-b9 text-3xl mb-2 sm:font-b6 sm:text-xl">
                           ان اف تی های خود را انتخاب کنید
                         </div>
 
-                        <div className="d-grid grid-cols-4 gap-3">
+                        <div className="d-grid grid-cols-4 gap-3 sm:grid-cols-1">
                           {getNfts
                             ? getNfts.map((item, index) =>
                                 !item.is_for_sale ? (
@@ -196,7 +196,7 @@ const ArtistApplicationForm = () => {
                               )
                             : ""}
                         </div>
-                        <div className="w-full flex justify-end items-center gap-4">
+                        <div className="w-full flex justify-end items-center gap-4 sm:flex-col sm:gap-2">
                           <a
                             href="/privacy-policy"
                             className="text-gray-400 hover:text-gray-500 hover:bg-gray-50 px-2 py-1 transition-all duration-100 font-b2 rounded-md"

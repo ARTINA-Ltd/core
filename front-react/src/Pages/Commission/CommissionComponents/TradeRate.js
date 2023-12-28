@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function TradeRate() {
   return (
-    <div className="m-8">
+    <div className="m-8 sm:m-2 sm:text-[14px]">
       <table className="w-full">
         <thead>
           <tr>
