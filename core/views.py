@@ -1,6 +1,7 @@
 from core import models
 from Account import models
 from core.models import NFT , Order , MyImage , NFTRating
+from Account.views import transfer_nft
 from core import serializers
 from eth_account import Account
 from thirdweb.types.nft import NFTMetadataInput 
@@ -36,7 +37,11 @@ import os
 from Account.models import Wallet , UserBalance, UserTurnover,TransactionType,TransactionCurrency,Profile
 from http import HTTPStatus
 from django.db.models import Count, Q
-from .serializers import NFTRatingSerializer
+from .serializers import NFTRatingSerializer, OwnerWithLikesSerializer
+from .tasks import check_nft_end_time
+from django_filters import rest_framework as filters
+
+
 
 class OrderViewSet(viewsets.ViewSet):
     queryset = Order.objects.all()
@@ -52,7 +57,9 @@ class OrderViewSet(viewsets.ViewSet):
         n=user_balance.rial_available_balance
         fee=int(fee)
         nft = NFT.objects.get(token_id=token_id)
-
+        if (nft.owner==bidder):
+            return Response({'error': 'iyou are the owner, you can not bid'},status=HTTPStatus.BAD_REQUEST)
+           
         if n< fee :
             return Response({'error': 'insufficient ballance'},status=HTTPStatus.BAD_REQUEST)
         
@@ -74,7 +81,7 @@ class OrderViewSet(viewsets.ViewSet):
         order=Order.objects.filter(nft=nft,bidder=bidder).first()
         order.status=status
         order.save()
-        return Response({'msg': 'your order has been deleted'},status=HTTPStatus.OK)
+        return Response({'error': 'your order has been deleted'},status=HTTPStatus.OK)
 
     @action(detail=False, methods=['post'])
     def gettingorders(self, request):
@@ -86,7 +93,7 @@ class OrderViewSet(viewsets.ViewSet):
         if not nft:
             return Response({'error': 'NFT with given token ID does not exist'}, status=HTTPStatus.NOT_FOUND)
         
-        orders = Order.objects.filter(nft=nft)
+        orders = Order.objects.filter(nft=nft,status=0)
         serializer = serializers.OrderSerializer(orders, many=True)
         return Response(serializer.data, status=HTTPStatus.OK)
 
@@ -98,8 +105,32 @@ class OrderViewSet(viewsets.ViewSet):
         return Response(serializer.data, status=HTTPStatus.OK)
 
 
+class NFTFilter(filters.FilterSet):
+    search = filters.CharFilter(method='perform_search', label='Search')
+
+    class Meta:
+        model = NFT
+        fields = {
+            'name': ['exact', 'icontains'],
+            'creator': ['exact', 'icontains'],
+            'category__name': ['exact'],
+            'is_for_sale': ['exact'],
+            'start_date': ['exact', 'gte', 'lte'],
+            'end_date': ['exact', 'gte', 'lte'],
+            'last_price': ['exact', 'gte', 'lte'],
+        }
+
+    def perform_search(self, queryset, name, value):
+        return queryset.filter(
+            models.Q(name__icontains=value) |
+            models.Q(creator__icontains=value) |
+            models.Q(description__icontains=value)
+        )
+        
 class NftViewSet(viewsets.ModelViewSet):
     queryset = NFT.objects.all()
+    filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter)
+    filterset_class = NFTFilter
     serializer_class = serializers.NFTSerializer
 
 
@@ -139,7 +170,8 @@ class NftViewSet(viewsets.ModelViewSet):
         nft.end_date = end_date
         nft.last_price = floor_price
         nft.save()
-
+        check_nft_end_time.apply_async(args=[nft.id], eta=end_time)
+        print("check and sync task")
         return Response({"message": "NFT is now for sale."}, status=status.HTTP_200_OK)
 
 
@@ -211,6 +243,14 @@ class NFTRatingViewSet(viewsets.ModelViewSet):
         serializer = serializers.NFTSerializer(liked_nfts, many=True)
         return Response(serializer.data)
 
+
+    @action(detail=False, methods=['get'])
+    def top_owners_with_likes(self, request):
+        owners_with_likes = User.objects.annotate(likes_count=Count('nft__nftrating__id')).order_by('-likes_count')
+        serializer = OwnerWithLikesSerializer(owners_with_likes, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)    
+
 from thirdweb.types import SDKOptions
 
 PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
@@ -262,7 +302,9 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
             creator = request.data.get('creator')
             external_link = request.data.get('external_link')
             last_price = request.data.get('last_price')
-
+            category_title= request.data.get('category')
+            has_physical= request.data.get('has_physical')
+            category=category.objects.filter(name=category_title).first()
 
         except KeyError as e:
             return Response(
@@ -284,7 +326,10 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
             user_balance.rial_available_balance=n
             user_balance.save()
         # Create the NFT metadata
-            prop={}
+            prop={
+                'owner':user.username,
+                'creator': creator 
+            }
             nft_metadata = {
             'name': nft_name,
             'description': description_nft,
@@ -331,7 +376,7 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
             nft=NFT.objects.create(author_address=author_address,name=nft_name,blockNumber=block_number,
                 transactionHash=transaction_hash, blockHash=block_hash,transactionIndex=transaction_index,
                 description=description_nft,image_url=image_nft,creator=creator,external_link=external_link,
-                last_price=last_price,token_id=token_id,owner=user)
+                last_price=last_price,token_id=token_id,owner=user,has_physical=has_physical,category=category)
             transactiontype=TransactionType.objects.filter(name="withraw").first()
             transactionCurrency=TransactionCurrency.objects.filter(name="rial").first()
             UserTurnover.objects.create(user=user, transaction_type=transactiontype, 
@@ -470,32 +515,59 @@ class sellViewSet(viewsets.ViewSet):
         nft.last_price = floor_price
         nft.save()
 
+        check_nft_end_time.apply_async(args=[nft.id], eta=end_time)
+        print("applied changes")
         return Response({"message": "NFT is now for sale."}, status=status.HTTP_200_OK)
 
 
 
-class WinnerviewSet(viewsets.ViewSet):
-    queryset = NFT.objects.all()
-    # serializer_class = serializers.NFTSerializer
+# class WinnerviewSet(viewsets.ViewSet):
+#     queryset = NFT.objects.all()
+#     # serializer_class = serializers.NFTSerializer
 
     # @action(detail=True, methods=["get"])
-    def create(self, request):
-        nft_id = request.data.get('token_id')
-        nft = NFT.objects.get(token_id=nft_id)
-        if nft.end_date < timezone.now():
-            return Response({"error": "NFT has expired."}, status=status.HTTP_400_BAD_REQUEST)
-        
-        highest_bid = None
-        orders = Order.objects.filter(nft=nft)
-        for bid in orders:
-            if (highest_bid is None or bid.current_price > highest_bid.current_price):
-                highest_bid = bid
 
-        if highest_bid is None:
-            return Response({"error": "No bids found for this NFT."}, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response({"winner": highest_bid.user, "price": highest_bid.fee}, status=status.HTTP_200_OK)
+def order_Report(token_id):
     
+    nft = NFT.objects.get(token_id=token_id)
+    orders = Order.objects.filter(nft=nft)
+    for bid in orders:
+        if (bid.report==0):
+            n_bid = bid
+            n_bid.status=1
+            n_bid.report=2
+            n_bid.save()    
+    print("change report status done")
+
+
+def get_winnger(token_id):
+    nft = NFT.objects.get(token_id=token_id)
+    sender=nft.owner
+    if nft.end_date < timezone.now():
+        return Response({"error": "NFT has not expired."}, status=status.HTTP_400_BAD_REQUEST)
+        
+    highest_bid = None
+    orders = Order.objects.filter(nft=nft)
+    for bid in orders:
+        if (highest_bid is None or bid.fee > highest_bid.fee):
+            highest_bid = bid
+
+    if highest_bid is None:
+        return Response({"error": "No bids found for this NFT."}, status=status.HTTP_400_BAD_REQUEST)
+    highest_bid.report=1
+    highest_bid.status=1
+    highest_bid.save()
+    recipient=highest_bid.user
+    print(f"recipient>>>>>{recipient}")
+
+    order_Report(token_id)
+    result=transferNFT(nft_id,sender,recipient)
+    print(f"result>>>>>{result}")
+    return Response({"winner": highest_bid.user, "price": highest_bid.fee,'result':recipient}, status=status.HTTP_200_OK)
+    
+
+
 
 def get_nakamigos_listings():
     url = "https://api.opensea.io/v2/listings/collection/nakamigos/all"

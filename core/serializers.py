@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from core import models
+from django.contrib.auth.models import User
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -21,7 +22,13 @@ class NFTRatingSerializer(serializers.ModelSerializer):
         fields = ['user', 'nft', 'like', 'review']
 
 
+class OwnerWithLikesSerializer(serializers.ModelSerializer):
+    likes_count = serializers.IntegerField()
 
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'likes_count']
+        
 class MyImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.MyImage

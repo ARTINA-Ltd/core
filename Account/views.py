@@ -757,27 +757,25 @@ def transfer_nft(private_key, sender_address, recipient_address, token_id):
 
 
 
+def transferNFT(token_id,sender,recipient):
+    # sender=User.objects.filter(username=sender).first()
+    # recipient=User.objects.filter(username=recipient).first()
+        
+    #sender
+    sender_address = sender.wallet.address
+    sender_private_key = sender.wallet.private_key
+        
+    #recipient
+    recipient_address=recipient.wallet.address
+        
+    tx_hash = transfer_nft(sender_private_key, sender_address, recipient_address, token_id)
+    print(f"Transaction hash: {tx_hash.hex()}")
+    response_data = {
+        "message": f"Transaction initiated. Transaction hash: {tx_hash.hex()}"
+    }
+        
+    return Response(response_data, status=status.HTTP_200_OK)
 
-class TransactionNFTViewSet(viewsets.ViewSet):
-    def create(self, request):
-        token_id = request.data.get('token_id')
-        sender = request.data.get('sender')
-        recipient = request.data.get('recipient')
-        sender=User.objects.filter(username=sender).first()
-        recipient=User.objects.filter(username=recipient).first()
-        
-        #sender
-        sender_address = sender.wallet.address
-        sender_private_key = sender.wallet.private_key
-        
-        #recipient
-        recipient_address=recipient.wallet.address
-        
-        tx_hash = transfer_nft(sender_private_key, sender_address, recipient_address, token_id)
-        print(f"Transaction hash: {tx_hash.hex()}")
-        response_data = {
-            "message": f"Transaction initiated. Transaction hash: {tx_hash.hex()}"
-        }
-        
-        return Response(response_data, status=status.HTTP_200_OK)
+
+            
 

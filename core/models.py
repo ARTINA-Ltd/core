@@ -9,6 +9,12 @@ from django.db.models import Avg
 from django.conf import settings
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=10, verbose_name= " دسته بندی  ", null=True, blank=True, default="other")
+
+    def __str__(self):
+        return self.name
+
 class NFT(models.Model):
     token_id = models.IntegerField(default=0, null=False, blank=False)
     name = models.CharField(max_length=100, null=False, blank=False)
@@ -32,6 +38,7 @@ class NFT(models.Model):
     transactionHash= models.TextField(max_length=200, null=True, blank=True)
     blockHash= models.TextField(max_length=200, null=True, blank=True)
     transactionIndex= models.TextField(max_length=200, null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT,null=True)
 
     def __str__(self):
         return f'{self.name} by {self.creator} owned by {self.owner.username}'

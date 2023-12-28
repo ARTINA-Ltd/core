@@ -21,7 +21,7 @@ router.register(r'payment', views.PaymentGateViewSet, basename='payment')
 router.register(r'NotifyUserViewSet', views.NotifyUserViewSet, basename='NotifyUserViewSet')
 router.register(r'wallet', views.WalletViewSet, basename='wallet')
 router.register(r'Transaction', views.TransactionViewSet, basename='Transaction')
-router.register(r'TransactionNFT', views.TransactionNFTViewSet, basename='TransactionNFT')
+# router.register(r'TransactionNFT', views.TransactionNFTViewSet, basename='TransactionNFT')
 
 
 urlpatterns = [

@@ -4,4 +4,5 @@ from core import models
 admin.site.register(models.NFT)
 admin.site.register(models.Order)
 admin.site.register(models.NFTRating)
+admin.site.register(models.Category)
 
