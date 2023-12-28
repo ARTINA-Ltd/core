@@ -31,6 +31,7 @@ class Exhibition(models.Model):
     category = models.ForeignKey(Category, default=1, on_delete=models.CASCADE)
     application_deadline = models.DateTimeField(default=timezone.now)
     commision= models.IntegerField(verbose_name="درصد سود",default=10,blank=True)
+    price = models.IntegerField(null=True, blank=True, default=20000, validators=[validators.MinValueValidator(5000)])
 
     
 
@@ -40,7 +41,6 @@ class Ticket(models.Model):
     ticket_id = models.IntegerField(verbose_name="ticket_id", default=1000)
     exhibition = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='tickets')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    price = models.IntegerField(null=False, blank=False, default=20000, validators=[validators.MinValueValidator(5000)])
     expiration_date = models.DateTimeField(verbose_name="تاریخ پایان", default=timezone.now)
 
 
