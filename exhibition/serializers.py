@@ -12,13 +12,13 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id','username']
 
 
-class ExhibitionSerializer(serializers.ModelSerializer):
-    nftexs = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    user = UserSerializer()
+# class ExhibitionSerializer(serializers.ModelSerializer):
+#     nftexs = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+#     user = UserSerializer()
 
-    class Meta:
-        model = models.Exhibition
-        fields = ['exhibition_id', 'user.username', 'marketName', 'image', 'start_date', 'end_date', 'description', 'ticket', 'contract', 'category', 'nftexs']
+#     class Meta:
+#         model = models.Exhibition
+#         fields = ['exhibition_id', 'user.username', 'marketName', 'image', 'start_date', 'end_date', 'description', 'ticket', 'contract', 'category', 'nftexs']
 
 
 # class NFtExSerializer(serializers.ModelSerializer):
