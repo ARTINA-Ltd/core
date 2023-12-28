@@ -378,8 +378,8 @@ class ExTicketViewSet(viewsets.ReadOnlyModelViewSet):
         ticket_exhibitions = Ticket.objects.filter(user=user).values_list('exhibition_id', flat=True)
         for exhibition_data in data:
             exhibition_data['user_has_ticket'] = exhibition_data['has_ticket'] and exhibition_data['id'] in ticket_exhibitions
-            exhibition_data['has_ticket']=exhibition_data['has_ticket'] if exhibition_data['id'] in ticket_exhibitions else False
-        return Response(exhibition_data)
+            exhibition_data['has_ticket']=exhibition_data['has_ticket'] else False
+        return Response(data)
 
 
 
