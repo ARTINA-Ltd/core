@@ -493,7 +493,7 @@ class UsersWithNFTsViewSet(viewsets.ViewSet):
             })
         return Response(user_data)
 
-
+#not in use
 class sellViewSet(viewsets.ViewSet):
     queryset = NFT.objects.all()
     serializer_class = serializers.NFTSerializer
