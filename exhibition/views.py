@@ -355,16 +355,21 @@ class ExTicketViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ExhibitionSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     now = timezone.now()
+    #     queryset = Exhibition.objects.filter(start_date__lte=now, end_date__gte=now)
+    #     ticket_exhibitions = Ticket.objects.filter(user=user).values_list('exhibition_id', flat=True)
+    #     for exhibition in queryset:
+    #         exhibition.has_ticket = exhibition.tickets.exists()
+    #         exhibition.user_has_ticket = exhibition.id in ticket_exhibitions
+    #     return queryset
     def get_queryset(self):
-        user = self.request.user
         now = timezone.now()
-        queryset = Exhibition.objects.filter(start_date__lte=now, end_date__gte=now)
-        ticket_exhibitions = Ticket.objects.filter(user=user).values_list('exhibition_id', flat=True)
-        for exhibition in queryset:
-            exhibition.has_ticket = exhibition.tickets.exists()
-            exhibition.user_has_ticket = exhibition.id in ticket_exhibitions
-        return queryset
 
+        queryset = Exhibition.objects.filter(start_date__lte=now, end_date__gte=now)
+        return queryset
+    
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
@@ -374,7 +379,7 @@ class ExTicketViewSet(viewsets.ReadOnlyModelViewSet):
         for exhibition_data in data:
             exhibition_data['user_has_ticket'] = exhibition_data['has_ticket'] and exhibition_data['id'] in ticket_exhibitions
             exhibition_data['has_ticket']=exhibition_data['has_ticket'] if exhibition_data['id'] in ticket_exhibitions else False
-        return Response(data)
+        return Response(exhibition_data)
 
 
 
