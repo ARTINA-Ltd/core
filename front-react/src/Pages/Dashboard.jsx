@@ -35,9 +35,9 @@ const Dashboard = () => {
         mode: "cors",
       })
       .then((res) => {
-        // console.log("------succ-----");
+        console.log("_____Tickets_____");
         // console.log("get_user_tickets");
-        // console.log(res);
+        console.log(res.data);
         // console.log("---------------");
         setTickets(res.data);
       })
@@ -172,6 +172,7 @@ const Dashboard = () => {
       })
       .then((res) => {
         setBalance(res.data);
+        console.log("____Balance____", res.data);
       })
       .catch((e) => { });
   }, []);
