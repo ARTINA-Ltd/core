@@ -317,11 +317,6 @@ class TicketViewSet(viewsets.ViewSet):
         email= user.profile.email
         if amount is None or amount == 0 :
             return Response({"error": "this exhibition need no ticket."})
-        
-        try:
-            amount = int(amount_str)
-        except ValueError:
-            return Response({"error": "Invalid amount. Please provide a valid integer."}, status=status.HTTP_400_BAD_REQUEST)
 
         user_ticket=None
         user_ticket = Ticket.objects.filter(user=user,exhibition=exhibition).first()
