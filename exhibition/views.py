@@ -264,6 +264,7 @@ class NFTByExhibitionViewSet(viewsets.ViewSet):
 
 
 
+from rest_framework import status as drf_status
 
 
 class TicketViewSet(viewsets.ViewSet):
@@ -299,11 +300,112 @@ class TicketViewSet(viewsets.ViewSet):
         exhibition_id=request.data.get("exhibition_id")
         exhibition = Exhibition.objects.filter(id=exhibition_id).first()
         ticket=None
-        ticket = Ticket.objects.filter(user=user,exhibition=exhibition)
+        ticket = Ticket.objects.filter(user=user,exhibition=exhibition).first()
         if ticket==None : 
                     return Response({"user_has_ticket":"False"})
         else : 
                     return Response({"user_has_ticket":"True"})
+
+    @action(detail=False, methods=['post'])
+    def buy_ticket(self, request, *args, **kwargs):
+        user = self.request.user
+        exhibition_id = request.data.get("exhibition_id")  
+        exhibition=None
+        exhibition= Exhibition.objects.filter(id=exhibition_id).first()
+
+        amount=exhibition.price
+        email= user.profile.email
+        if amount == null :
+            return Response({"error": "this exhibition need no ticket."})
+        
+        try:
+            amount = int(amount_str)
+        except ValueError:
+            return Response({"error": "Invalid amount. Please provide a valid integer."}, status=status.HTTP_400_BAD_REQUEST)
+
+        user_ticket=None
+        user_ticket = Ticket.objects.filter(user=user,exhibition=exhibition).first()
+        if user_ticket :
+            return Response({"error": "you have the ticket."})
+
+        else :
+            response = self.send_payment_request(amount)
+            if response.status_code == 200:
+                payment_info = response.json()
+                print(payment_info)
+                user_ticket = user_ticket.objects.create(price=amount,user=user)
+
+                UserTurnover.objects.create(user=user, transaction_type=transaction_type, 
+                                    transaction_currency=transaction_currency, transaction_value=amount)
+
+                authority = payment_info['data']['authority']
+                payment = Payment.objects.create(user=user, amount=amount, authority=authority)
+                redirect_url = self.get_redirect_url(payment)
+                return Response({'url': redirect_url}, status=status.HTTP_200_OK)
+            else:
+                return Response(response.json(), status=response.status_code)
+
+    @action(detail=False, methods=['get'])
+
+    def verify(self, request):
+        authority = request.GET.get('Authority')
+        payment = Payment.objects.get(authority=authority)
+        failure_url = f'http://artina.org/payment_status/?status=failed&authority={authority}'
+        user=user=self.request.user
+        response = self.verify_payment(payment.amount, payment.authority)
+        if response.status_code == 200:
+            verification_info = response.json()
+            verification_status = verification_info['data']['code'] 
+            if verification_status == 100:
+                payment.is_paid = True
+                payment.save()
+
+                # Redirect to your React front-end with payment status
+            success_url = f'http://artina.org/payment_status/?status=success&authority={authority}'
+
+            if verification_status == 100:
+           
+                return redirect(success_url)
+            else:
+                return redirect(failure_url)
+        else:
+            return redirect(failure_url)
+
+    def send_payment_request(self, amount):
+        user=self.request.user
+        mobile=user.profile.phone_number
+        email=user.profile.email
+        url = 'https://api.zarinpal.com/pg/v4/payment/request.json'
+        headers = {
+            'accept': 'application/json',
+            'content-type': 'application/json'
+        }
+        data = {
+            'merchant_id': '21ab62e9-e04b-4da5-b8d1-1bd7fca78e41',
+            'amount': amount,
+            'callback_url': 'http://api.artina.org/api/account/payment/verify/',
+            'description': 'Transaction description.', 
+            'metadata': {'mobile': "09387731214", 'email': "zehi.sh@gmail.com"}
+        }
+        response = requests.post(url, headers=headers, json=data)
+        return response
+
+    def verify_payment(self, amount, authority):
+        url = 'https://api.zarinpal.com/pg/v4/payment/verify.json'
+        headers = {
+            'accept': 'application/json',
+            'content-type': 'application/json'
+        }
+        data = {
+            'merchant_id': '21ab62e9-e04b-4da5-b8d1-1bd7fca78e41',
+            'amount': amount,
+            'authority': authority
+        }
+        response = requests.post(url, headers=headers, json=data)
+        return response
+
+    def get_redirect_url(self, payment):
+        return f'https://www.zarinpal.com/pg/StartPay/{payment.authority}'
 
 
 
