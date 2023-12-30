@@ -328,7 +328,7 @@ class TicketViewSet(viewsets.ViewSet):
             if response.status_code == 200:
                 payment_info = response.json()
                 print(payment_info)
-                Ticket.objects.create(price=amount,user=user,exhibition=exhibition)
+                Ticket.objects.create(user=user,exhibition=exhibition)
 
                 UserTurnover.objects.create(user=user, transaction_type=transaction_type, 
                                     transaction_currency=transaction_currency, transaction_value=amount)
