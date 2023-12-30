@@ -325,14 +325,11 @@ class TicketViewSet(viewsets.ViewSet):
 
         else :
             response = self.send_payment_request(amount)
+            print(f"response>>>>>>>>>{response}")
             if response.status_code == 200:
                 payment_info = response.json()
                 print(payment_info)
                 Ticket.objects.create(user=user,exhibition=exhibition)
-
-                UserTurnover.objects.create(user=user, transaction_type=transaction_type, 
-                                    transaction_currency=transaction_currency, transaction_value=amount)
-
                 authority = payment_info['data']['authority']
                 payment = Payment.objects.create(user=user, amount=amount, authority=authority)
                 redirect_url = self.get_redirect_url(payment)
@@ -344,6 +341,7 @@ class TicketViewSet(viewsets.ViewSet):
 
     def verify(self, request):
         authority = request.GET.get('Authority')
+        print("<<<<<verify>>>>>>")
         payment = Payment.objects.get(authority=authority)
         failure_url = f'http://artina.org/payment_status/?status=failed&authority={authority}'
         user=user=self.request.user
@@ -370,6 +368,7 @@ class TicketViewSet(viewsets.ViewSet):
         user=self.request.user
         mobile=user.profile.phone_number
         email=user.profile.email
+        print("send payment")
         url = 'https://api.zarinpal.com/pg/v4/payment/request.json'
         headers = {
             'accept': 'application/json',
@@ -396,11 +395,14 @@ class TicketViewSet(viewsets.ViewSet):
             'amount': amount,
             'authority': authority
         }
+        print("verifyP>>>>>")
+
         response = requests.post(url, headers=headers, json=data)
         return response
 
     def get_redirect_url(self, payment):
         return f'https://www.zarinpal.com/pg/StartPay/{payment.authority}'
+
 
 
 
