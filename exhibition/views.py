@@ -4,6 +4,7 @@ from datetime import timedelta
 import random
 from exhibition import models
 from exhibition import serializers
+from Account.models import Payment
 from .models import Exhibition
 # from rest_framework.decorators import action
 from rest_framework.response import Response
