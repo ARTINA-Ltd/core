@@ -326,14 +326,13 @@ class TicketViewSet(viewsets.ViewSet):
 
         else :
             response = self.send_payment_request(amount)
-            print(f"response>>>>>>>>>{response}")
             if response.status_code == 200:
                 payment_info = response.json()
-                print(payment_info)
-                Ticket.objects.create(user=user,exhibition=exhibition)
+                print(f">>>>>{payment_info}")
                 authority = payment_info['data']['authority']
                 payment = Payment.objects.create(user=user, amount=amount, authority=authority)
                 redirect_url = self.get_redirect_url(payment)
+
                 return Response({'url': redirect_url}, status=status.HTTP_200_OK)
             else:
                 return Response(response.json(), status=response.status_code)
@@ -358,7 +357,7 @@ class TicketViewSet(viewsets.ViewSet):
             success_url = f'http://artina.org/payment_status/?status=success&authority={authority}'
 
             if verification_status == 100:
-           
+                Ticket.objects.create(user=user,exhibition=exhibition)
                 return redirect(success_url)
             else:
                 return redirect(failure_url)
