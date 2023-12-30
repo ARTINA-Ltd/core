@@ -315,7 +315,7 @@ class TicketViewSet(viewsets.ViewSet):
 
         amount=exhibition.price
         email= user.profile.email
-        if amount == null :
+        if amount is None or amount == 0 :
             return Response({"error": "this exhibition need no ticket."})
         
         try:
