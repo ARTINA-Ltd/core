@@ -1,49 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
-
+import axios from "axios";
 import BorderButton from './../../Buttons/BorderButton';
+import { useNavigate } from "react-router";
 
 
-
-
-
-
-export default function BuyTicketDialog({ onClick, exhibitionId, price,exhibitionName }) {
+export default function BuyTicketDialog({ onClick, exhibitionId, price, exhibitionName, hasLogin }) {
   const [visible, setVisible] = useState(false);
+  const navigate = useNavigate();
+  // const [amount, setAmount] = useState();
 
 
-
-  const submit = () => {
-
-    // axios
-    //   .put(
-    //     "https://api.artina.org/api/transaction/nfts/sell/",
-    //     {
-
-    //     },
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-    //       },
-    //       mode: "cors",
-    //     }
-    //   )
-    //   .then(() => {
-    //     Notify.success("با موفقیت ثبت شد");
-    //     setVisible(false);
-    //   })
-    //   .catch();
+  const buyTicket = () => {
+    if (!hasLogin) {
+      navigate("/login");
+    }
+    else {
+      axios.post(
+        "https://api.artina.org/api/exhibition/Ticket/buy_ticket/",
+        {
+          exhibition_id: exhibitionId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+          mode: "cors",
+        }
+      ).then((res) => { window.open(res.data.url) }).catch(console.log);
+    }
   };
 
-
   const footerContent = (
-      <div className="w-full flex justify-end font-b4">
+    <div className="w-full flex justify-end font-b4" onClick={buyTicket}>
 
 
 
-        <BorderButton size="lg">پرداخت</BorderButton>
-      </div>
+      <BorderButton size="lg">پرداخت</BorderButton>
+    </div>
 
   );
 
@@ -70,14 +65,14 @@ export default function BuyTicketDialog({ onClick, exhibitionId, price,exhibitio
         <div className="flex font-b4 gap-2 items-center w-full justify-between">
           <div className="flex gap-2 items-center">
             <div className="">
-              قیمت بلیت: 
+              قیمت بلیت:
             </div>
             <div className="bg-slate-100 hover:bg-slate-200 transition-all py-1 px-3 rounded-md duration-75 ease-out cursor-default">
               {price} تومان
             </div>
 
           </div>
-         
+
         </div>
       </Dialog>
     </div>

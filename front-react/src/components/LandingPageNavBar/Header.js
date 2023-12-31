@@ -489,37 +489,36 @@ const Header = ({ connectWallet = false, rev = false }) => {
     <>
       <header>
         <div
-          className={`flex justify-center h-[80px] sm:h-[60px] ${
-            rev ? "" : "from-[#f9f9f9] bg-gradient-to-b"
-          }  font-b3`}
+          className={`flex justify-center h-[80px] sm:h-[60px] ${rev ? "" : "from-[#f9f9f9] bg-gradient-to-b"
+            }  font-b3`}
         >
           <div className="flex items-center justify-between w-[90%] justify-self-center">
             <div className="flex items-center gap-8 text-sm lg:hidden">
               {user
                 ? ActiveItems.map((item, index) => (
-                    <div
-                      key={index}
-                      className="cursor-pointer flex items-center gap-1 hover:text-[#a5a0ee] transition-all duration-200"
-                      onClick={() => {
-                        navigate(item.link);
-                      }}
-                    >
-                      {item.icon}
-                      {item.title}
-                    </div>
-                  ))
+                  <div
+                    key={index}
+                    className="cursor-pointer flex items-center gap-1 hover:text-[#a5a0ee] transition-all duration-200"
+                    onClick={() => {
+                      navigate(item.link);
+                    }}
+                  >
+                    {item.icon}
+                    {item.title}
+                  </div>
+                ))
                 : NotActiveItems.map((item, index) => (
-                    <div
-                      className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200"
-                      onClick={() => {
-                        navigate(item.link);
-                      }}
-                      key={index}
-                    >
-                      {item.icon}
-                      {item.title}
-                    </div>
-                  ))}
+                  <div
+                    className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200"
+                    onClick={() => {
+                      navigate(item.link);
+                    }}
+                    key={index}
+                  >
+                    {item.icon}
+                    {item.title}
+                  </div>
+                ))}
               <div
                 className="bg-[#eee] cursor-pointer text-[#4e45d0] px-3 py-[4px] rounded-full hover:scale-105 transition-all duration-200 border-[#4e45d0] border-[1px]"
                 onClick={() => navigate("/metaverse")}
@@ -572,7 +571,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                         viewBox="0 0 24 24"
                         strokeWidth="1.5"
                         stroke="currentColor"
-                        className="w-6 h-6"
+                        className={`w-6 h-6 ${notifs ? "bg-none rounded-lg" : "bg-none"}`}
                       >
                         <path
                           strokeLinecap="round"
@@ -582,9 +581,8 @@ const Header = ({ connectWallet = false, rev = false }) => {
                       </svg>
                     </div>
                     <div
-                      className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-[#f9f9f9] min-w-[200px] ${
-                        isHidden2 ? "opacity-0 pointer-events-none" : ""
-                      } absolute translate-x-1/3 sm:translate-x-0`}
+                      className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-[#f9f9f9] min-w-[200px] ${isHidden2 ? "opacity-0 pointer-events-none" : ""
+                        } absolute translate-x-1/3 sm:translate-x-0`}
                     >
                       {notifs &&
                         notifs.map((item, index) => (
@@ -626,9 +624,8 @@ const Header = ({ connectWallet = false, rev = false }) => {
                       alt=""
                     />
                     <div
-                      className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-[#f9f9f9] min-w-[200px] ${
-                        isHidden ? "opacity-0 pointer-events-none" : ""
-                      } absolute translate-x-1/3`}
+                      className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-[#f9f9f9] min-w-[200px] ${isHidden ? "opacity-0 pointer-events-none" : ""
+                        } absolute translate-x-1/3`}
                     >
                       <div className="w-full py-2 px-3 hover:bg-[#0000aa07] flex gap-2 items-center justify-between cursor-pointer">
                         <img
@@ -687,19 +684,18 @@ const Header = ({ connectWallet = false, rev = false }) => {
               )}
 
               <img
-                className="h-16 sm:h-12"
-                src={"/artina-logo.png"}
+                className="h-16 sm:h-12 rounded-lg cursor-pointer"
+                src={"/Artina-Logo-1.jpeg"}
                 alt="logo"
-                onClick={userChange}
+                onClick={() => navigate("/")}
               />
             </div>
           </div>
         </div>
       </header>
       <div
-        className={`fixed w-full h-full z-50 inset-0 bg-[#f9f9f9] ${
-          menuIsVisible ? "" : "translate-x-full"
-        }  transition-all duration-500 ease-out`}
+        className={`fixed w-full h-full z-50 inset-0 bg-[#f9f9f9] ${menuIsVisible ? "" : "translate-x-full"
+          }  transition-all duration-500 ease-out`}
       >
         <div
           className="w-full flex justify-end p-5"
@@ -724,29 +720,29 @@ const Header = ({ connectWallet = false, rev = false }) => {
         <div className="w-full flex flex-col gap-2 justify-center items-center">
           {user
             ? ActiveItems.map((item, index) => (
-                <div
-                  key={index}
-                  className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200 px-5 py-2 bg-[#f0f0f0] rounded-lg w-[90%]"
-                  onClick={() => {
-                    navigate(item.link);
-                  }}
-                >
-                  {item.icon}
-                  {item.title}
-                </div>
-              ))
+              <div
+                key={index}
+                className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200 px-5 py-2 bg-[#f0f0f0] rounded-lg w-[90%]"
+                onClick={() => {
+                  navigate(item.link);
+                }}
+              >
+                {item.icon}
+                {item.title}
+              </div>
+            ))
             : NotActiveItems.map((item, index) => (
-                <div
-                  className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200 px-5 py-2 bg-[#f0f0f0] rounded-lg w-[90%]"
-                  onClick={() => {
-                    navigate(item.link);
-                  }}
-                  key={index}
-                >
-                  {item.icon}
-                  {item.title}
-                </div>
-              ))}
+              <div
+                className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200 px-5 py-2 bg-[#f0f0f0] rounded-lg w-[90%]"
+                onClick={() => {
+                  navigate(item.link);
+                }}
+                key={index}
+              >
+                {item.icon}
+                {item.title}
+              </div>
+            ))}
 
           <div
             className="cursor-pointer flex items-center gap-1 text-white transition-all duration-200 px-5 py-2 bg-[#4e45d0] rounded-lg w-[90%]"

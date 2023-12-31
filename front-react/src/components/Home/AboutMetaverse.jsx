@@ -22,7 +22,7 @@ const AboutMetaverse = ({ className }) => {
                 <div className="text-[18px] mb-4 text-justify pr-16 lg:pr-0 sm:mb-0">
                     <img
                         src="/AboutMetaverse.png"
-                        className=" object-cover max-w-2xl rounded-3xl lg:max-w-lg"
+                        className=" object-cover max-w-2xl rounded-3xl lg:max-w-md sm:max-w-sm"
                         alt=""
                     />
                 </div>

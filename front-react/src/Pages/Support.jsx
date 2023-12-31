@@ -95,10 +95,10 @@ const Support = () => {
   }, [image]);
   return (
     <TestLayout className="flex items-center justify-center gap-5">
-      <SimpleCard className={"bg-[#ffffff] w-1/2"}>
+      <SimpleCard className={"bg-[#ffffff] w-1/2 lg:w-4/5 sm:w-[90%]"}>
         <div className="text-[24px]">پشتیبانی</div>
 
-        <div className="flex gap-5">
+        <div className="flex gap-5 lg:flex-col">
           <SimpleInput
             className={"mt-6"}
             type="text"
@@ -115,7 +115,7 @@ const Support = () => {
           />
 
           <SimpleInput
-            className={"mt-6"}
+            className={"mt-6 lg:mt-2"}
             type="text"
             title="نام خانوادگی"
             validationError={"نمیتواند خالی باشد"}
@@ -145,7 +145,7 @@ const Support = () => {
           defaultValue={null}
         />
 
-        <div className="flex gap-5">
+        <div className="flex gap-5 lg:flex-col">
           <SimpleInput
             className={"mt-6"}
             type="text"
@@ -162,7 +162,7 @@ const Support = () => {
           />
 
           <SimpleInput
-            className={"mt-6"}
+            className={"mt-6 lg:mt-2"}
             type="text"
             validationError={"بایستی 11 رقم باشد"}
             title="شماره تلفن"

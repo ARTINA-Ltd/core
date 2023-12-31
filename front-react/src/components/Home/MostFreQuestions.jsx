@@ -17,8 +17,8 @@ const MostFrequentQuestions = ({ className = "" }) => {
                     </div>
 
                     <div className="flex-col w-full text-white">
-                        <div className="flex justify-between mt-5 sm:flex-col sm:items-center sm:mt-2">
-                            <div className="w-6/12 mx-8 my-5 border-dotted border-2 border-indigo-400 rounded-3xl px-5 sm:w-[95%] sm:mx-2 sm:my-2">
+                        <div className="flex justify-between mt-5 lg:flex-col lg:items-center lg:mt-2">
+                            <div className="w-6/12 mx-8 my-5 border-dotted border-2 border-indigo-400 rounded-3xl px-5 lg:w-[80%] sm:w-[95%] sm:mx-2 sm:my-2">
                                 <div className="mt-3 font-b5 text-[20px] text-center sm:text-[15px]">
                                     چرا آرتینا خرید و فروش مبتنی بر بلاک چین را ارایه می دهد؟
                                 </div>
@@ -32,7 +32,7 @@ const MostFrequentQuestions = ({ className = "" }) => {
                                     که این امر شفافیت بیشتری به فرآیند معاملات اضافه می‌کند و تقلب را کاهش می‌دهد.
                                 </div>
                             </div>
-                            <div className="w-6/12 mx-8 my-5 border-dotted border-2 border-indigo-400 rounded-3xl px-5 sm:w-[95%] sm:mx-2 sm:my-2">
+                            <div className="w-6/12 mx-8 my-5 border-dotted border-2 border-indigo-400 rounded-3xl px-5 lg:w-[80%] sm:w-[95%] sm:mx-2 sm:my-2">
                                 <div className="mt-3 font-b5 text-[20px] text-center sm:text-[15px]">
                                     چطور می‌توانیم تراکنش ها را در بلاک چین مشاهده کنیم؟
                                 </div>
@@ -52,8 +52,8 @@ const MostFrequentQuestions = ({ className = "" }) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex justify-between mb-5 sm:flex-col sm:items-center sm:mb-2">
-                            <div className="w-6/12 mx-8 my-5 border-dotted border-2 border-indigo-400 rounded-3xl px-5 sm:w-[95%] sm:mx-2 sm:my-2">
+                        <div className="flex justify-between mb-5 lg:flex-col lg:items-center lg:mb-2">
+                            <div className="w-6/12 mx-8 my-5 border-dotted border-2 border-indigo-400 rounded-3xl px-5 lg:w-[80%] sm:w-[95%] sm:mx-2 sm:my-2">
                                 <div className="mt-3 font-b5 text-[20px] text-center sm:text-[15px]">
                                     از کجا از اصالت ان اف تی مطمئن شوم؟
                                 </div>
@@ -70,7 +70,7 @@ const MostFrequentQuestions = ({ className = "" }) => {
                                     همچنین، بررسی تاریخچه تراکنش‌ها و اطلاعات بلاک‌چین می‌تواند اصالت NFT را تأیید کند.
                                 </div>
                             </div>
-                            <div className="w-6/12 mx-8 my-5 border-dotted border-2 border-indigo-400 rounded-3xl px-5 sm:w-[95%] sm:mx-2 sm:my-2">
+                            <div className="w-6/12 mx-8 my-5 border-dotted border-2 border-indigo-400 rounded-3xl px-5 lg:w-[80%] sm:w-[95%] sm:mx-2 sm:my-2">
                                 <div className="mt-3 font-b5 text-[20px] text-center sm:text-[15px]">
                                     چرا استفاده از قرارداد های هوشمند بهترین انتخاب است؟
                                 </div>

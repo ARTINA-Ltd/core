@@ -164,7 +164,7 @@ const BalanceDialogMatic = () => {
       return (
         <>
           {address && (
-            <div className="text-lg sm:text-xs">
+            <div className="text-lg lg:text-sm sm:text-xs">
               آدرس کیف پول: {address}
             </div>
           )}
@@ -178,7 +178,7 @@ const BalanceDialogMatic = () => {
               ساخت کیف پول
             </div>
           )}
-          <div className="flex gap-2 w-[25%] justify-between sm:w-[90%] items-center">
+          <div className="flex gap-2 w-[25%] justify-between lg:w-[60%] sm:w-[90%] items-center">
             <div
               className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-3 hover:scale-105 transition-all sm:px-2 sm:text-xs sm:w-32 sm:flex sm:justify-center"
               onClick={() => {
@@ -274,7 +274,7 @@ const BalanceDialogMatic = () => {
               <div className="text-2xl font-b6 px-10 sm:text-sm">
                 موجودی Matic
               </div>
-              <div className="text-lg text-yellow-300 px-10 self-end sm:px-2 sm:text-sm">
+              <div className="text-lg text-yellow-300 px-10 self-end lg:text-md sm:px-2 sm:text-sm">
                 {getData ? getData.matic_balance : ""} Matic
               </div>
             </div>
@@ -293,7 +293,7 @@ const BalanceDialogMatic = () => {
             </div>
           </div>
         )}
-        <div className="font-b4 w-full flex justify-end items-center mt-7 gap-3 sm:flex-col">
+        <div className="font-b4 w-full flex justify-end items-center mt-7 gap-3 lg:flex-col">
           {footer()}
         </div>
       </Dialog>
