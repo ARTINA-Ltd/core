@@ -6,7 +6,6 @@ const Pagination = ({
   totalRequests,
   paginate,
   currentPage,
-  setCurrentPage,
 }) => {
   const pageNumbers = [];
 
@@ -20,7 +19,7 @@ const Pagination = ({
         {pageNumbers.map((number) => (
           <div
             key={number}
-            className={`page-item ${currentPage == number ? "active" : ""} `}
+            className={`page-item ${currentPage === number ? "active" : ""} `}
           >
             <a onClick={() => paginate(number)} href="!#" className="page-link">
               {number}

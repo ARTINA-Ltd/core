@@ -103,8 +103,8 @@ const Support = () => {
             className={"mt-6"}
             type="text"
             title="نام"
-            validationError={"نمیتواند خالی باشد"}
-            isValid={values.name != ""}
+            validationError={"نمی‌تواند خالی باشد"}
+            isValid={values.name !== ""}
             onChange={e =>
               setValues(prev => ({
                 ...prev,
@@ -118,8 +118,8 @@ const Support = () => {
             className={"mt-6 lg:mt-2"}
             type="text"
             title="نام خانوادگی"
-            validationError={"نمیتواند خالی باشد"}
-            isValid={values.last_name != ""}
+            validationError={"نمی‌تواند خالی باشد"}
+            isValid={values.last_name !== ""}
             onChange={e =>
               setValues(prev => ({
                 ...prev,
@@ -134,8 +134,8 @@ const Support = () => {
           className={"mt-6"}
           type="text"
           title="موضوع"
-          validationError={"نمیتواند خالی باشد"}
-          isValid={values.subject != ""}
+          validationError={"نمی‌تواند خالی باشد"}
+          isValid={values.subject !== ""}
           onChange={e =>
             setValues(prev => ({
               ...prev,
@@ -150,8 +150,8 @@ const Support = () => {
             className={"mt-6"}
             type="text"
             title="ایمیل"
-            validationError={"نمیتواند خالی باشد"}
-            isValid={values.email != ""}
+            validationError={"نمی‌تواند خالی باشد"}
+            isValid={values.email !== ""}
             onChange={e =>
               setValues(prev => ({
                 ...prev,
@@ -166,7 +166,7 @@ const Support = () => {
             type="text"
             validationError={"بایستی 11 رقم باشد"}
             title="شماره تلفن"
-            isValid={values.phone_number && values.phone_number.length != 11}
+            isValid={values.phone_number && values.phone_number.length !== 11}
             onChange={e =>
               setValues(prev => ({
                 ...prev,
@@ -196,7 +196,7 @@ const Support = () => {
           }
           type="text"
           title=""
-          isValid={values.text != ""}
+          isValid={values.text !== ""}
           onChange={e =>
             setValues(prev => ({
               ...prev,

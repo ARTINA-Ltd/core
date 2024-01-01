@@ -2,11 +2,9 @@ import { Dialog } from "primereact/dialog";
 import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import BorderButton from "../../Buttons/BorderButton";
-import { Button } from "primereact/button";
 import axios from "axios";
 import SimpleInput from "../../Inputs/SimpleInput";
 import { Notify } from "notiflix";
-import NftRequestsCard from "./../../Cards/UserDashboardCards/NftRequestsCard";
 import { Block } from "notiflix";
 
 const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {

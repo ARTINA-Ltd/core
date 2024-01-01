@@ -1,8 +1,6 @@
 import { Dialog } from "primereact/dialog";
 import React, { useEffect } from "react";
 import { useState } from "react";
-import BorderButton from "../../Buttons/BorderButton";
-import { Button } from "primereact/button";
 import axios from "axios";
 import SimpleInput from "../../Inputs/SimpleInput";
 import { Notify } from "notiflix";

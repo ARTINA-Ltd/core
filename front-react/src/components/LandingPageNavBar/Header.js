@@ -1,16 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
 import "./Header.css";
-import Logo from "../../Pages/artina-logo.jpg";
-import { Avatar } from "primereact/avatar";
 import { useNavigate } from "react-router";
 import { UserContext } from "../../App";
 import { UserChangeContext } from "../../App";
 import { ConnectWallet } from "@thirdweb-dev/react";
 import BorderButton from "../Buttons/BorderButton";
 import BalanceDialog from "../Dialog/BalanceDialog/BalanceDialog";
-import UserMenuCard from "../Cards/UserDashboardCards/UserMenuCard";
 import { useRef } from "react";
-import { Hidden } from "@mui/material";
 import axios from "axios";
 import BalanceDialogMatic from "../Dialog/BalanceDialog/BalanceDialogMatic";
 
