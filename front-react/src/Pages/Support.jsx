@@ -95,16 +95,16 @@ const Support = () => {
   }, [image]);
   return (
     <TestLayout className="flex items-center justify-center gap-5">
-      <SimpleCard className={"bg-[#ffffff] w-1/2"}>
+      <SimpleCard className={"bg-[#ffffff] w-1/2 lg:w-4/5 sm:w-[90%]"}>
         <div className="text-[24px]">پشتیبانی</div>
 
-        <div className="flex gap-5">
+        <div className="flex gap-5 lg:flex-col">
           <SimpleInput
             className={"mt-6"}
             type="text"
             title="نام"
-            validationError={"نمیتواند خالی باشد"}
-            isValid={values.name != ""}
+            validationError={"نمی‌تواند خالی باشد"}
+            isValid={values.name !== ""}
             onChange={e =>
               setValues(prev => ({
                 ...prev,
@@ -115,11 +115,11 @@ const Support = () => {
           />
 
           <SimpleInput
-            className={"mt-6"}
+            className={"mt-6 lg:mt-2"}
             type="text"
             title="نام خانوادگی"
-            validationError={"نمیتواند خالی باشد"}
-            isValid={values.last_name != ""}
+            validationError={"نمی‌تواند خالی باشد"}
+            isValid={values.last_name !== ""}
             onChange={e =>
               setValues(prev => ({
                 ...prev,
@@ -134,8 +134,8 @@ const Support = () => {
           className={"mt-6"}
           type="text"
           title="موضوع"
-          validationError={"نمیتواند خالی باشد"}
-          isValid={values.subject != ""}
+          validationError={"نمی‌تواند خالی باشد"}
+          isValid={values.subject !== ""}
           onChange={e =>
             setValues(prev => ({
               ...prev,
@@ -145,13 +145,13 @@ const Support = () => {
           defaultValue={null}
         />
 
-        <div className="flex gap-5">
+        <div className="flex gap-5 lg:flex-col">
           <SimpleInput
             className={"mt-6"}
             type="text"
             title="ایمیل"
-            validationError={"نمیتواند خالی باشد"}
-            isValid={values.email != ""}
+            validationError={"نمی‌تواند خالی باشد"}
+            isValid={values.email !== ""}
             onChange={e =>
               setValues(prev => ({
                 ...prev,
@@ -162,11 +162,11 @@ const Support = () => {
           />
 
           <SimpleInput
-            className={"mt-6"}
+            className={"mt-6 lg:mt-2"}
             type="text"
             validationError={"بایستی 11 رقم باشد"}
             title="شماره تلفن"
-            isValid={values.phone_number && values.phone_number.length != 11}
+            isValid={values.phone_number && values.phone_number.length !== 11}
             onChange={e =>
               setValues(prev => ({
                 ...prev,
@@ -196,7 +196,7 @@ const Support = () => {
           }
           type="text"
           title=""
-          isValid={values.text != ""}
+          isValid={values.text !== ""}
           onChange={e =>
             setValues(prev => ({
               ...prev,

@@ -18,7 +18,7 @@ const AboutAI = ({ className }) => {
                 <div className="text-[18px] mb-4 text-justify pl-16 z-20 lg:pl-0">
                     <img
                         src="/AboutAI.png"
-                        className=" object-cover max-w-2xl md:max-w-lg rounded-3xl shadow-2xl"
+                        className=" object-cover max-w-2xl rounded-3xl shadow-2xl lg:max-w-md sm:max-w-sm"
                         alt=""
                     />
                 </div>

@@ -53,7 +53,7 @@ const NFTList = ({ className }) => {
             >
               قیمت
             </th>
-            <th scope="col" className="text-center py-3 sm:px-1 sm:hidden">
+            <th scope="col" className="text-center py-3 sm:px-1 lg:hidden">
               خالق اثر
             </th>
           </tr>
@@ -107,7 +107,7 @@ const NFTList = ({ className }) => {
                       </svg>
                     </div>
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4 sm:hidden">
+                  <td className="whitespace-nowrap px-6 py-4 lg:hidden">
                     {item.creator}
                   </td>
                   <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">

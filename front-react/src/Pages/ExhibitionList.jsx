@@ -43,6 +43,10 @@ const ExhibitionList = () => {
     }
   }, []);
 
+  // const handleNavigate = () => {
+  
+  // };
+
   const handleTicket = (item) => {
     if (item.has_ticket && item.user_has_ticket) {
       return (
@@ -60,9 +64,10 @@ const ExhibitionList = () => {
           </div>
           <BuyTicketDialog
             onClick={(event) => event.stopPropagation()}
-            price={item.commision}
+            price={item.price}
             exhibitionId={item.id}
             exhibitionName={item.marketName}
+            hasLogin={localStorage.getItem("authTokens") == "null" ? false : true}
           />
         </div>
       );

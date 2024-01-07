@@ -1,20 +1,12 @@
 import { Route, Routes } from "react-router";
 import { createContext, useEffect, useState } from "react";
-
-import StarterFile from "./Pages/StarterFile";
 import ArtistPage from "./Pages/ArtistPage";
 import NFTDetails from "./Pages/NFTDetails";
-// import Login from "./Pages/LoginPage";
-// import Register from "./LoginComponent/SignUp";
 import Register from "./LoginComponent/register";
 import Login from "./LoginComponent/login";
 import RequestDetails from "./ExhabitionComponent/src/component/request-artist-detail-page/r-page/request-detail";
 import ShowRequests from "./ExhabitionComponent/src/component/request-artist-detail-page/r-page/show-req";
-import RequestLists from "./ExhabitionComponent/src/component/requestlistforexhibition/requests/paging";
 import NFTUploadPage from "./Pages/NftUploadPage";
-import ShowCollection from "./components/ShowCollection";
-// eslint-disable-next-line import/no-anonymous-default-export
-import { ScrollPanel } from "primereact/scrollpanel";
 import { ChainId, ThirdwebProvider } from "@thirdweb-dev/react";
 import Profile from "./Pages/Profile";
 import UserDashboard from "./Pages/UserDashboard";
