@@ -32,7 +32,7 @@ class Exhibition(models.Model):
     application_deadline = models.DateTimeField(default=timezone.now)
     commision= models.IntegerField(verbose_name="درصد سود",default=10,blank=True)
     price = models.IntegerField(null=True, blank=True, default=20000, validators=[validators.MinValueValidator(5000)])
-
+    has_metaverse= models.BooleanField(null=True, default=False)
     
 
 
