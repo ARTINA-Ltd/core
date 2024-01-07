@@ -1,6 +1,6 @@
 from core import models
 from Account import models
-from core.models import NFT , Order , MyImage , NFTRating
+from core.models import NFT , Order , MyImage , NFTRating , Category
 from Account.views import transfer_nft
 from core import serializers
 from eth_account import Account
@@ -313,7 +313,7 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
                 status=status.HTTP_400_BAD_REQUEST,
             )
         
-        category=category.objects.filter(id=category_id).first()
+        category=Category.objects.filter(id=category_id).first()
         user_balance=None
         user_balance = UserBalance.objects.filter(user=user).first()
         print(user_balance)
