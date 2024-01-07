@@ -194,6 +194,12 @@ class TicketViewSet(viewsets.ViewSet):
         phone_number = request.data.get('phone_number')
         image_url = request.data.get('image_url')
         text = request.data.get('text')
+        if is_authenticated:
+            if not email:
+                if hasattr(user, 'profile') and user.profile.email:
+                    email = user.profile.email
+                else:
+                    email = "support@artina.org"
 
         if not subject:
             return Response({'error': 'subject is required.'}, status=status.HTTP_400_BAD_REQUEST)

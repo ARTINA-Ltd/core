@@ -302,15 +302,18 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
             creator = request.data.get('creator')
             external_link = request.data.get('external_link')
             last_price = request.data.get('last_price')
-            category_title= request.data.get('category')
+            category_id= request.data.get('category')
             has_physical= request.data.get('has_physical')
-            category=category.objects.filter(name=category_title).first()
+
+
 
         except KeyError as e:
             return Response(
                 {"error": f"Missing required field: {e}"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+        
+        category=category.objects.filter(id=category_id).first()
         user_balance=None
         user_balance = UserBalance.objects.filter(user=user).first()
         print(user_balance)
