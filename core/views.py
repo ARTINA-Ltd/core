@@ -243,7 +243,7 @@ class NFTRatingViewSet(viewsets.ModelViewSet):
         serializer = serializers.NFTSerializer(liked_nfts, many=True)
         return Response(serializer.data)
 
-    @action(detail=False , methods=['get'])
+    @action(detail=False , methods=['post'])
     def user_has_liked(self, request, pk=None):
         user = self.request.user
         nft_id = request.data.get("token_id")
