@@ -30,7 +30,7 @@ const UploadItem = () => {
   const [isUploaded, setIsUploaded] = useState(false);
 
   const [tokenId, setTokenId] = useState();
-  const [hasPhysical, setHasPhysical] = useState();
+  const [hasPhysical, setHasPhysical] = useState(false);
   const [hasInternalWallet, setHasInternalWallet] = useState(false);
   const [categories, setCtegories] = useState();
   const [options, setOptions] = useState([]);
@@ -90,7 +90,7 @@ const UploadItem = () => {
             description_nft: upladObj.description,
             external_link: upladObj.external_link,
             author_address: address,
-            is_physical: hasPhysical,
+            has_physical: hasPhysical,
             category: selectedCategory,
             has_internal_wallet: hasInternalWallet,
           },
@@ -110,6 +110,8 @@ const UploadItem = () => {
         })
         .catch(e => {
           console.log(e);
+          console.log("Category:", selectedCategory)
+          console.log("Has Physical:", hasPhysical)
 
           if (e.response.data.error === "your money is not enough") {
             Notify.failure(
@@ -135,7 +137,7 @@ const UploadItem = () => {
             description_nft: upladObj.description,
             external_link: upladObj.external_link,
             author_address: '',
-            is_physical: hasPhysical,
+            has_physical: hasPhysical,
             category: selectedCategory,
             has_internal_wallet: hasInternalWallet,
           },
@@ -155,6 +157,8 @@ const UploadItem = () => {
         })
         .catch(e => {
           console.log(e);
+          console.log("Category:", selectedCategory)
+          console.log("Has Physical:", hasPhysical)
 
           if (e.response.data.error === "your money is not enough") {
             Notify.failure(
@@ -171,7 +175,7 @@ const UploadItem = () => {
     }
   };
   const handleCopy = () => {
-    navigator.clipboard.writeText("0x2a18fecb3579238cda960b5977f46e500fb6e735");
+    navigator.clipboard.writeText("0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a");
     Notify.success("کپی شد!");
   };
   useEffect(() => {
@@ -436,7 +440,7 @@ const UploadItem = () => {
               onClick={handleCopy}
             >
               <div>کد:</div>
-              0x2A18FECb3579238CdA960B5977f46E500Fb6e735
+              0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a
             </div>
           </div>
         </SimpleCard>
