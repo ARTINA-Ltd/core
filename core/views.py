@@ -1,7 +1,7 @@
 from core import models
 from Account import models
 from core.models import NFT , Order , MyImage , NFTRating , Category
-from Account.views import transfer_nft
+from Account.views import transferNFT
 from core import serializers
 from eth_account import Account
 from thirdweb.types.nft import NFTMetadataInput 
@@ -170,7 +170,7 @@ class NftViewSet(viewsets.ModelViewSet):
         nft.end_date = end_date
         nft.last_price = floor_price
         nft.save()
-        check_nft_end_time.apply_async(args=[nft.id], eta=end_time)
+        check_nft_end_time.apply_async(args=[nft.id], eta=end_date)
         print("check and sync task")
         return Response({"message": "NFT is now for sale."}, status=status.HTTP_200_OK)
 
@@ -242,6 +242,18 @@ class NFTRatingViewSet(viewsets.ModelViewSet):
         liked_nfts = NFT.objects.filter(nft__user=user, nft__like=True)
         serializer = serializers.NFTSerializer(liked_nfts, many=True)
         return Response(serializer.data)
+
+    @action(detail=False , methods=['get'])
+    def user_has_liked(self, request, pk=None):
+        user = self.request.user
+        nft_id = request.data.get("token_id")
+        liked_nfts=None
+        liked_nfts = NFT.objects.filter(token_id=nft_id,nft__user=user, nft__like=True).first()
+        if liked_nfts==None:
+            return Response({"user_has_liked:False"})
+        else :
+            return Response({"user_has_liked:True"})
+
 
 
     @action(detail=False, methods=['get'])
@@ -518,7 +530,7 @@ class sellViewSet(viewsets.ViewSet):
         nft.last_price = floor_price
         nft.save()
 
-        check_nft_end_time.apply_async(args=[nft.id], eta=end_time)
+        check_nft_end_time.apply_async(args=[nft.id], eta=end_date)
         print("applied changes")
         return Response({"message": "NFT is now for sale."}, status=status.HTTP_200_OK)
 
@@ -565,6 +577,7 @@ def get_winnger(token_id):
     print(f"recipient>>>>>{recipient}")
 
     order_Report(token_id)
+    nft_id=token_id
     result=transferNFT(nft_id,sender,recipient)
     print(f"result>>>>>{result}")
     return Response({"winner": highest_bid.user, "price": highest_bid.fee,'result':recipient}, status=status.HTTP_200_OK)

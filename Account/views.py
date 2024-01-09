@@ -156,7 +156,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, pk=None):
         profile = self.get_object()
-        if profile.user != reeth_unavailable_balancequest.user:
+        if profile.user != request.user:
             return Response({'error': 'You do not have permission to access this profile.'}, status=403)
         serializer = self.get_serializer(profile)
         return Response(serializer.data)

@@ -294,6 +294,7 @@ class TicketViewSet(viewsets.ViewSet):
         tickets = Ticket.objects.filter(user=user)
         serializer = serializers.TicketSerializer(tickets, many=True)
         return Response(serializer.data)
+    #adding price of ticket to the data it pass
    
     @action(detail=False, methods=['post']) 
     def check_user_ticket(self,request):
