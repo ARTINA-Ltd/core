@@ -250,10 +250,11 @@ class NFTRatingViewSet(viewsets.ModelViewSet):
         liked_nfts=None
         liked_nfts = NFT.objects.filter(token_id=nft_id,nft__user=user, nft__like=True).first()
         if liked_nfts==None:
-            result=True
-            return Response(result)
+            result=False
+            return Response({'user_has_liked':result})
         else :
-            return Response(result)
+            result=True
+            return Response({'user_has_liked':result})
 
 
 
