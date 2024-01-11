@@ -6,6 +6,7 @@ import axios from "axios";
 import { Chart } from "primereact/chart";
 import { useState } from "react";
 import AllTurnOversDialog from "../components/Dialog/AllTurnOversDialog/AllTurnOversDialog";
+import AllNftDialog from "../components/Dialog/AllNftLikedDialog/AllNftDialog";
 import { useNavigate } from "react-router";
 
 const Dashboard = () => {
@@ -605,46 +606,54 @@ const Dashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {getLikedNfts &&
+                  {getLikedNfts ? (
                     getLikedNfts.map((item, index) => (
-                      <tr
-                        className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all"
-                        onClick={() => navigate(`/nft-details/${item.token_id}`)}
-                        key={index}
-                      >
-                        <td>
-                          <div className="flex justify-center w-full">
-                            <img
-                              src={item.image_url}
-                              alt=""
-                              className="w-[42px] h-[42px] rounded-xl"
-                            />
-                          </div>
-                        </td>
-                        <td>{item.name}</td>
-                        <td>{item.last_price}</td>
-
-
-                        <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.3"
-                            stroke="currentColor"
-                            width={"1em"}
+                      <>
+                        {index < 5 ? (
+                          <tr
+                            className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all"
+                            onClick={() => navigate(`/nft-details/${item.token_id}`)}
+                            key={index}
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M15.75 19.5L8.25 12l7.5-7.5"
-                            />
-                          </svg>
-                        </td>
-                      </tr>
-                    ))}
+                            <td>
+                              <div className="flex justify-center w-full">
+                                <img
+                                  src={item.image_url}
+                                  alt=""
+                                  className="w-[42px] h-[42px] rounded-xl"
+                                />
+                              </div>
+                            </td>
+                            <td>{item.name}</td>
+                            <td>{item.last_price}</td>
+                            <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.3"
+                                stroke="currentColor"
+                                width={"1em"}
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M15.75 19.5L8.25 12l7.5-7.5"
+                                />
+                              </svg>
+                            </td>
+                          </tr>
+                        ) : (
+                          <></>
+                        )}
+                      </>
+                    ))
+                    ) : (
+                    <></>
+                  )}
                 </tbody>
               </table>
+              <AllNftDialog likedNfts={getLikedNfts} />
             </SimpleCard>
           </div>
         </div>

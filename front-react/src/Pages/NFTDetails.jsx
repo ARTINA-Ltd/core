@@ -19,10 +19,10 @@ const NFTDetails = () => {
   const [ethereum, setEthereum] = useState(0);
   const [likeCount, setLikeCount] = useState(0);
   const user = useContext(UserContext);
-  const [blockHash, setBlockHash] = useState();
-  const [blockNumber, setBlockNumber] = useState(0);
-  const [transactionHash, setTransactionHash] = useState();
-  const [transactionIndex, setTransactionIndex] = useState(0);
+  const [like, setLike] = useState(false);
+  const [likeColor, setLikeColor] = useState(false);
+  const [shareCount, setShareCount] = useState(0);
+
 
   const icons = {
     heart: (
@@ -48,7 +48,7 @@ const NFTDetails = () => {
         viewBox="0 0 24 24"
         strokeWidth="1.9"
         stroke="currentColor"
-        className="text-red-400 h-[40%]"
+        className="text-red-400 h-[40%] fill-red-400"
       >
         <path
           strokeLinecap="round"
@@ -130,6 +130,7 @@ const NFTDetails = () => {
       .then(d => {
         console.log("view");
         console.log(d);
+        setShareCount(shareCount + 1);
       });
   };
 
@@ -150,6 +151,8 @@ const NFTDetails = () => {
         console.log("like");
         console.log("status", res.status);
         Notify.success("با موفقیت ثبت شد");
+        setLikeColor(true);
+        setLikeCount(likeCount + 1);
       })
       .catch(res => {
         Notify.warning("قبلا پسندیده اید");
@@ -164,16 +167,8 @@ const NFTDetails = () => {
       .then(d => {
         setData(d.data.nft);
         setLikeCount(d.data.count);
-        // console.log("Details:", d.data.nft);
-        // setBlockHash(d.data.nft.blockHash);
-        // setBlockNumber(d.data.nft.blockNumber);
-        // setTransactionHash(d.data.nft.transactionHash);
-        // setTransactionIndex(d.data.nft.transactionIndex);
-
-        console.log("blockHash -> ", d.data.nft.blockHash);
-        console.log("blockNumber -> ", d.data.nft.blockNumber);
-        console.log("transactionHash -> ", d.data.nft.transactionHash);
-        console.log("transactionIndex -> ", d.data.nft.transactionIndex);
+        console.log(d.data);
+        setShareCount(d.data.nft.share_count);
       });
 
     axios
@@ -218,7 +213,39 @@ const NFTDetails = () => {
         setReqData(d);
       })
       .catch(res => console.log(res));
-  }, []);
+
+    userHasLiked();
+
+  }, []
+  );
+
+  function userHasLiked() {
+    axios
+      .post(
+        "https://api.artina.org/api/transaction/nft_ratings/user_has_liked/",
+        {
+          token_id: id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+        }
+      )
+      .then(d => {
+        console.log("_Has User Like_");
+        console.log(d.data);
+        setLike(d.data);
+        setLikeColor(d.data.user_has_liked ? true : false);
+      })
+      .catch(res => {
+        console.log(res)
+        console.log("_Has User Like_");
+      }
+      );
+
+
+  }
 
   function addRequest() {
     axios
@@ -281,7 +308,9 @@ const NFTDetails = () => {
                   className={` w-full h-16 bg-[#7168f3] rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda] sm:px-2 sm:h-10 sm:justify-around`}
                   onClick={handleClickLike}
                 >
-                  {data && data.user_liked ? icons.red_heart : icons.heart}
+                  {data && likeColor ? icons.red_heart : icons.heart}
+                  {console.log("like ->>>>", like.user_has_liked)}
+                  {console.log("likeColor ->>>>", likeColor)}
                   <div className="text-white text-[16px]">{likeCount}</div>
                 </div>
                 <div className="bg-[#7168f3] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda] sm:px-2 sm:h-10 sm:justify-around">
@@ -296,7 +325,7 @@ const NFTDetails = () => {
                 >
                   {icons.share}
                   <div className="text-white text-[16px]">
-                    {data && data.share_count}
+                    {data && shareCount}
                   </div>
                 </div>
               </div>
