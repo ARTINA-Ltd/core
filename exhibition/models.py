@@ -67,3 +67,15 @@ class Application(models.Model):
     def __str__(self):
         return f'{self.nft.name} in {self.exhibition.marketName}'
 
+
+
+
+class Ex_Payment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    amount = models.PositiveIntegerField()
+    authority = models.CharField(max_length=100)
+    is_paid = models.BooleanField(default=False)
+    exhibition = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='payments')
+    def __str__(self):
+        return f'{self.user} - {self.amount}'
+

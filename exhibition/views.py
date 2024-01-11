@@ -2,22 +2,20 @@ from distutils.log import error
 from django.contrib.auth.models import User
 from datetime import timedelta
 import random
-from exhibition import models
 from exhibition import serializers
-from Account.models import Payment
 from .models import Exhibition
-# from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from .models import NFT, Exhibition, Application , Category , Ticket
+from .models import NFT, Exhibition, Application , Category , Ticket , Ex_Payment
 from .serializers import NFTSerializer, ExhibitionSerializer, ApplicationSerializer , CategorySerializer ,TicketSerializer
 from django.utils import timezone
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.decorators import action
+from django.shortcuts import redirect                  
 
 
 class UserExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
@@ -331,7 +329,7 @@ class TicketViewSet(viewsets.ViewSet):
                 payment_info = response.json()
                 print(f">>>>>{payment_info}")
                 authority = payment_info['data']['authority']
-                payment = Payment.objects.create(user=user, amount=amount, authority=authority)
+                payment = Ex_Payment.objects.create(user=user, amount=amount, authority=authority,exhibition=exhibition)
                 redirect_url = self.get_redirect_url(payment)
 
                 return Response({'url': redirect_url}, status=status.HTTP_200_OK)
@@ -340,12 +338,13 @@ class TicketViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=['get'])
 
-    def verify(self, request):
+    def verify(self, request):    
         authority = request.GET.get('Authority')
         print("<<<<<verify>>>>>>")
-        payment = Payment.objects.get(authority=authority)
+        payment = Ex_Payment.objects.get(authority=authority)
         failure_url = f'http://artina.org/payment_status/?status=failed&authority={authority}'
-        user=user=self.request.user
+        user = self.request.user
+        exhibition = None  # Define exhibition here
         response = self.verify_payment(payment.amount, payment.authority)
         if response.status_code == 200:
             verification_info = response.json()
@@ -354,16 +353,20 @@ class TicketViewSet(viewsets.ViewSet):
                 payment.is_paid = True
                 payment.save()
 
-                # Redirect to your React front-end with payment status
+                # Fetch the exhibition associated with the payment
+                exhibition = Exhibition.objects.get(id=payment.exhibition_id)
+
+            # Redirect to your React front-end with payment status
             success_url = f'http://artina.org/payment_status/?status=success&authority={authority}'
 
             if verification_status == 100:
-                Ticket.objects.create(user=user,exhibition=exhibition)
+                Ticket.objects.create(user=user, exhibition=exhibition)
                 return redirect(success_url)
             else:
                 return redirect(failure_url)
         else:
             return redirect(failure_url)
+    
 
     def send_payment_request(self, amount):
         user=self.request.user

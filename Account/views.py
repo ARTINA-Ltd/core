@@ -8,6 +8,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from . import serializers
 import logging
+from django.core.exceptions import ObjectDoesNotExist
 from .permissions import UserRolePermission
 import random
 import requests
@@ -493,21 +494,6 @@ class PaymentGateViewSet(viewsets.ViewSet):
         if response.status_code == 200:
             payment_info = response.json()
             print(payment_info)
-            transaction_type = TransactionType.objects.get(name="deposit")
-            transaction_currency = TransactionCurrency.objects.get(name="rial")
-            user_balance=None
-            user_balance = UserBalance.objects.filter(user=user).first()
-            if user_balance :
-                n=user_balance.rial_available_balance 
-                n=n+ amount
-                user_balance.rial_available_balance =n
-                user_balance.save()
-
-            else :
-                user_balance = UserBalance.objects.create(rial_available_balance=amount,user=user)
-
-                UserTurnover.objects.create(user=user, transaction_type=transaction_type, 
-                                    transaction_currency=transaction_currency, transaction_value=amount)
 
             # data=payment_info[1].get('data')
             authority = payment_info['data']['authority']
@@ -528,15 +514,28 @@ class PaymentGateViewSet(viewsets.ViewSet):
         if response.status_code == 200:
             verification_info = response.json()
             verification_status = verification_info['data']['code'] 
-            if verification_status == 100:
-                payment.is_paid = True
-                payment.save()
-
                 # Redirect to your React front-end with payment status
             success_url = f'http://artina.org/payment_status/?status=success&authority={authority}'
 
             if verification_status == 100:
-           
+                payment.is_paid = True
+                payment.save()                
+                transaction_type = TransactionType.objects.get(name="deposit")
+                transaction_currency = TransactionCurrency.objects.get(name="rial")
+                user_balance=None
+                user_balance = UserBalance.objects.filter(user=user).first()
+                if user_balance :
+                    n=user_balance.rial_available_balance 
+                    n=n+ payment.amount
+                    user_balance.rial_available_balance =n
+                    user_balance.save()
+
+                else :
+                    user_balance = UserBalance.objects.create(rial_available_balance=payment.amount,user=user)
+
+                    UserTurnover.objects.create(user=user, transaction_type=transaction_type, 
+                                    transaction_currency=transaction_currency, transaction_value=payment.amount)
+       
                 return redirect(success_url)
             else:
                 return redirect(failure_url)
