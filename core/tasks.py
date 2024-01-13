@@ -2,10 +2,11 @@
 from celery import shared_task
 from django.utils import timezone
 from .models import NFT
-from.views import get_winnger
 
 @shared_task
 def check_nft_end_time(nft_id):
+    from .views import get_winnger
+
     try:
         nft = NFT.objects.get(id=nft_id)
         now = timezone.now()
