@@ -13,3 +13,6 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
+# Example using RabbitMQ
+BROKER_URL = 'pyamqp://guest:guest@localhost//'
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
