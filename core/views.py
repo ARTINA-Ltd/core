@@ -170,8 +170,9 @@ class NftViewSet(viewsets.ModelViewSet):
         nft.end_date = end_date
         nft.last_price = floor_price
         nft.save()
-        check_nft_end_time.apply_async(args=[nft.id], eta=end_date)
-        print("check and sync task")
+        print("ok by database")
+        print(check_nft_end_time.apply_async(args=[nft.id], eta=end_date))
+        print(">>>>>>>>>>>check and sync task")
         return Response({"message": "NFT is now for sale."}, status=status.HTTP_200_OK)
 
 
