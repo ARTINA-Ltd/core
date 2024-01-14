@@ -9,9 +9,10 @@ def check_nft_end_time(nft_id):
 
     try:
         nft = NFT.objects.get(id=nft_id)
+        print(f">>>>>>>{nft}")
         now = timezone.now()
 
-        if now >= nft.end_time:
+        if now >= nft.end_date:
             # Call your winner function with the token_id
             get_winnger(nft.token_id)
     except NFT.DoesNotExist:
