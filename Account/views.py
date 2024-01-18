@@ -489,6 +489,8 @@ class PaymentGateViewSet(viewsets.ViewSet):
             amount = int(amount_str)
         except ValueError:
             return Response({"error": "Invalid amount. Please provide a valid integer."}, status=status.HTTP_400_BAD_REQUEST)
+        if amount<1000:
+            return Response({"error": "Invalid amount. Please provide a valid integer."}, status=status.HTTP_400_BAD_REQUEST)
 
         response = self.send_payment_request(amount)
         if response.status_code == 200:
@@ -532,10 +534,22 @@ class PaymentGateViewSet(viewsets.ViewSet):
 
                 else :
                     user_balance = UserBalance.objects.create(rial_available_balance=payment.amount,user=user)
-
+                    profile=Profile.objects.get(user=user)
                     UserTurnover.objects.create(user=user, transaction_type=transaction_type, 
                                     transaction_currency=transaction_currency, transaction_value=payment.amount)
-       
+                    # Send the SMS via Kavenegar API
+                    # The URL IS like : https://api.kavenegar.com/v1/{API-KEY}/verify/lookup.json
+                    response = requests.post(
+                        f"https://api.kavenegar.com/v1/"
+                        f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
+                        f"/verify/lookup.json",
+                        data={
+                        "receptor": profile.phone_number,
+                        "token": user.username,
+                        "token": payment.amount,
+                        "template": "AccountChargeVerification"
+                        }
+                        )
                 return redirect(success_url)
             else:
                 return redirect(failure_url)
