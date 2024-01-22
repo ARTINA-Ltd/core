@@ -28,7 +28,7 @@ app = Celery('ARTINA')
 # Configuration
 app.conf.beat_schedule = {
     'check-nft-end-times': {
-        'task': 'core.tasks.check_nft_end_times',
+        'task': 'core.tasks.check_nft_end_time',
         'schedule': crontab(minute='*/5'),  # Adjust the schedule as needed
     },
 }

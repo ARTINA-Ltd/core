@@ -39,7 +39,7 @@ from django.utils import timezone
 from .models import NFT
 
 @shared_task
-def check_nft_end_times():
+def check_nft_end_time():
     from .views import get_winner
 
     now = timezone.now()
