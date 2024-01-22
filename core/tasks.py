@@ -1,10 +1,8 @@
-# tasks.py
-from celery import shared_task
 from django.utils import timezone
 from .models import NFT
 # tasks.py
 from celery import shared_task
-from celery import periodic_task
+from celery.decorators import periodic_task
 from django.utils import timezone
 from .models import NFT
 from .views import get_winner
@@ -26,12 +24,28 @@ from .views import get_winner
 
 
 
-@periodic_task(run_every=timezone.timedelta(minutes=5))  # Adjust the interval as needed
+# @periodic_task(run_every=timezone.timedelta(minutes=5))  # Adjust the interval as needed
+# def check_nft_end_times():
+#     now = timezone.now()
+#     nfts_to_process = NFT.objects.filter(end_date__lte=now, is_for_sale =True)
+
+#     for nft in nfts_to_process:
+#         get_winner.delay(nft.token_id)  # Use delay to enqueue the task asynchronously
+#         nft.is_for_sale = False  # Assuming you have a field to track if the winner has been processed
+#         nft.save()
+
+# tasks.py
+from celery import shared_task
+from django.utils import timezone
+from .models import NFT
+from .views import get_winner
+
+@shared_task
 def check_nft_end_times():
     now = timezone.now()
-    nfts_to_process = NFT.objects.filter(end_date__lte=now, is_for_sale =True)
+    nfts_to_process = NFT.objects.filter(end_date__lte=now, is_for_sale=True)
 
     for nft in nfts_to_process:
-        get_winner.delay(nft.token_id)  # Use delay to enqueue the task asynchronously
-        nft.is_for_sale = False  # Assuming you have a field to track if the winner has been processed
+        get_winner(nft.token_id)  # Use delay to enqueue the task asynchronously
+        nft.is_for_sale = False  
         nft.save()
