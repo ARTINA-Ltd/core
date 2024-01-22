@@ -1,11 +1,10 @@
-from django.utils import timezone
-from .models import NFT
-# tasks.py
-from celery import shared_task
-from celery.decorators import periodic_task
-from django.utils import timezone
-from .models import NFT
-from .views import get_winner
+# from django.utils import timezone
+# from .models import NFT
+# # tasks.py
+# from celery import shared_task
+# from django.utils import timezone
+# from .models import NFT
+# from .views import get_winner
 
 # @shared_task
 # def check_nft_end_time(nft_id):
