@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate
 from rest_framework import viewsets
 from rest_framework.response import Response
 from . import serializers
+from rest_framework import status as drf_status
 import logging
 from django.core.exceptions import ObjectDoesNotExist
 from .permissions import UserRolePermission
@@ -19,8 +20,56 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from .models import Payment
 from .models import UserBalance, TransactionType, TransactionCurrency, TicketUser
-from .serializers import UserBalanceSerializer
+from .serializers import UserBalanceSerializer , NotifyUserSerializer,UserInfoSerializer
 from django.utils import timezone
+import random
+from django.core.exceptions import PermissionDenied
+import uuid
+from django.shortcuts import redirect                  
+from datetime import datetime, timedelta
+from django.db.models import Q , Sum
+from decimal import Decimal, getcontext
+
+#web3 exchange
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from rest_framework.decorators import action
+from django.contrib.auth.models import User
+from .models import Wallet, Transaction
+from web3 import Web3, eth
+import os
+import time
+import json
+from django.conf import settings
+
+
+class NotifyUserViewSet(viewsets.ModelViewSet):
+    queryset = NotifyUser.objects.all()
+    serializer_class = NotifyUserSerializer
+    
+    def get_queryset(self):
+        user = self.request.user
+        return NotifyUser.objects.filter(user=user)
+        
+    @action(detail=False, methods=['get'])
+    def notifList(self, request):
+        user=self.request.user
+        queryset = self.get_queryset().order_by('-id')[:10]
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+    @action(detail=False, methods=['post'])
+
+    def seenMsg(self,request):
+        user=self.request.user
+        notif_id = request.data.get('notif_id')
+        notif=NotifyUser.objects.filter(id=notif_id).first()
+        if notif.user != self.request.user:
+            return Response({'error': 'You do not have permission to perform this action.'}, status=403)
+
+        notif.message_seen = True
+        notif.save()
+        serializer = self.get_serializer(notif)
+        return Response(serializer.data)
 
 
 class RegisterViewSet(viewsets.ModelViewSet):
@@ -66,16 +115,16 @@ class LoginViewSet(viewsets.ViewSet):
         }
         return Response(response_data, status=status.HTTP_200_OK)
 
-class SubdomainMiddleware:
-    def __init__(self, get_response):
-        self.get_response = get_response
+# class SubdomainMiddleware:
+#     def __init__(self, get_response):
+#         self.get_response = get_response
 
-    def __call__(self, request):
-        host = request.get_host()
-        subdomain = host.split('.')[0] if '.' in host else None
-        request.subdomain = subdomain
-        response = self.get_response(request)
-        return response
+#     def __call__(self, request):
+#         host = request.get_host()
+#         subdomain = host.split('.')[0] if '.' in host else None
+#         request.subdomain = subdomain
+#         response = self.get_response(request)
+#         return response
 
 
 
@@ -113,7 +162,6 @@ class ArtistRateViewSet(viewsets.ModelViewSet):
     queryset = ArtistReviewRating.objects.all()
     serializer_class = serializers.ArtistRatingSerializer
 
-    # permission_classes = [IsAuthenticated]
     def create(self, request, *args, **kwargs):
         serializer = serializers.ArtistRatingSerializer
         serializer = serializer(data=request.data)
@@ -134,7 +182,6 @@ class ArtistRateViewSet(viewsets.ModelViewSet):
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = serializers.ProfileSerializer
-    # permission_classes = [IsAuthenticated]
 
     def list(self, request):
         queryset = self.get_queryset().filter(user=request.user)
@@ -178,10 +225,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
         profile.delete()
         return Response(status=204)
 
-import random
-
-import uuid
-
 
 class TicketViewSet(viewsets.ViewSet):
 
@@ -220,6 +263,15 @@ class TicketViewSet(viewsets.ViewSet):
 
         return Response({'success': 'Ticket created successfully.','token':unique_id}, status=status.HTTP_201_CREATED)
 
+
+class UserPictureViewSet(viewsets.ViewSet):
+    serializer_class = UserInfoSerializer
+    def retrieve(self, request, pk=None):
+        queryset = Profile.objects.filter(user_id=pk)
+        profile = get_object_or_404(Profile.objects.filter(user_id=pk), pk=pk)
+        serializer = serializers.UserInfoSerializer(profile)
+        print(profile)
+        return Response(serializer.data)
 
 
 class PhoneVerificationViewSet(viewsets.ViewSet):
@@ -285,14 +337,12 @@ class SendVerificationCodeViewSet(viewsets.ViewSet):
         )
 
         if response.status_code == 200:
-            # Create a new PhoneVerification object to store the code
 
             return Response({'status': 'success'})
         else:
             # Handle error response
             return Response({'status': 'failed'})
-from datetime import datetime, timedelta
-from django.db.models import Q , Sum
+
 class UserTurnoverViewSet(viewsets.ModelViewSet):
     queryset = UserTurnover.objects.all()
     serializer_class = serializers.UserTurnoverSerializer
@@ -352,7 +402,6 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
             'rial_unavailable_balance': user_balance.rial_untradable_balance,
             'eth_balance': user_balance.eth_balance,
             'eth_unavailable_balance' : user_balance.eth_unavailable_balance,
-            # Add other balance fields as needed
         }
 
         return Response(balance, status=status.HTTP_200_OK)
@@ -433,53 +482,10 @@ class PasswordResetByPhoneViewSet(viewsets.ViewSet):
 
 
 
-from django.shortcuts import redirect                  
-from .serializers import UserInfoSerializer
-
-class UserPictureViewSet(viewsets.ViewSet):
-    serializer_class = UserInfoSerializer
-    def retrieve(self, request, pk=None):
-        queryset = Profile.objects.filter(user_id=pk)
-        profile = get_object_or_404(Profile.objects.filter(user_id=pk), pk=pk)
-        serializer = serializers.UserInfoSerializer(profile)
-        print(profile)
-        return Response(serializer.data)
-
-from .serializers import NotifyUserSerializer
-
-class NotifyUserViewSet(viewsets.ModelViewSet):
-    queryset = NotifyUser.objects.all()
-    serializer_class = NotifyUserSerializer
-    
-    def get_queryset(self):
-        user = self.request.user
-        return NotifyUser.objects.filter(user=user)
-        
-    @action(detail=False, methods=['get'])
-    def notifList(self, request):
-        user=self.request.user
-        queryset = self.get_queryset().order_by('-id')[:10]
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-    @action(detail=False, methods=['post'])
-
-    def seenMsg(self,request):
-        user=self.request.user
-        notif_id = request.data.get('notif_id')
-        notif=NotifyUser.objects.filter(id=notif_id).first()
-        if notif.user != self.request.user:
-            return Response({'error': 'You do not have permission to perform this action.'}, status=403)
-
-        notif.message_seen = True
-        notif.save()
-        serializer = self.get_serializer(notif)
-        return Response(serializer.data)
 
 
 
 
-
-from rest_framework import status as drf_status
 class PaymentGateViewSet(viewsets.ViewSet):
     def create(self, request, *args, **kwargs):
         user = self.request.user
@@ -511,7 +517,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
         authority = request.GET.get('Authority')
         payment = Payment.objects.get(authority=authority)
         failure_url = f'http://artina.org/payment_status/?status=failed&authority={authority}'
-        user=user=self.request.user
+        user=self.request.user
         response = self.verify_payment(payment.amount, payment.authority)
         if response.status_code == 200:
             verification_info = response.json()
@@ -546,7 +552,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
                         data={
                         "receptor": profile.phone_number,
                         "token": user.username,
-                        "token": payment.amount,
+                        "token2": payment.amount,
                         "template": "AccountChargeVerification"
                         }
                         )
@@ -596,16 +602,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
 
 
 
-#exchange
 
-
-from rest_framework import viewsets, status
-from rest_framework.response import Response
-from rest_framework.decorators import action
-from django.contrib.auth.models import User
-from .models import Wallet
-from web3 import Web3
-import os
 w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
 # w3 = Web3(Web3.HTTPProvider("https://mumbai.rpc.thirdweb.com"))
 
@@ -626,16 +623,6 @@ class WalletViewSet(viewsets.ViewSet):
         return Response({'message': 'Wallet created successfully.', 'address': wallet.address}, status=status.HTTP_201_CREATED)
 
 
-from rest_framework import viewsets, status
-from rest_framework.response import Response
-from .models import Transaction
-from .serializers import TransactionSerializer  
-from web3 import Web3
-import time
-from web3 import Web3, eth
-import os
-import json
-from django.conf import settings
 
 # Initialize Web3 connection
 def connect_with_retry():
@@ -655,7 +642,8 @@ def connect_with_retry():
         time.sleep(retry_delay)
     
     raise Exception("Failed to connect to the Matic network.")
-from decimal import Decimal, getcontext
+
+
 class TransactionViewSet(viewsets.ViewSet):
     def create(self, request):
         user = request.user

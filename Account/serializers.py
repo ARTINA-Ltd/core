@@ -15,6 +15,9 @@ class RegisterSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(validated_data['username'], validated_data['email'], validated_data['password'])
         profile = Profile(user=user)
         profile.save()
+        msg = Msg.objects.get(id=0)
+        notify_User = NotifyUser(user=user , text=msg.text)
+        notify_User.save()
         return user
 
 

@@ -1,6 +1,6 @@
 from core import models
 from Account import models
-from core.models import NFT , Order , MyImage , NFTRating , Category
+from core.models import NFT , Order , MyImage , NFTRating , Category , Collection
 from Account.views import transferNFT
 from core import serializers
 from eth_account import Account
@@ -319,7 +319,8 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
             last_price = request.data.get('last_price')
             category_id= request.data.get('category')
             has_physical= request.data.get('has_physical')
-
+            data = request.data.get('data', {})
+            collection_id=request.data.get('collection')
 
 
         except KeyError as e:
@@ -329,6 +330,7 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
             )
         
         category=Category.objects.filter(id=category_id).first()
+        collection=Collection.objects.filter(id=collection_id).first()
         user_balance=None
         user_balance = UserBalance.objects.filter(user=user).first()
         print(user_balance)
@@ -352,7 +354,9 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
             'name': nft_name,
             'description': description_nft,
             'image': image_nft,
-            'properties': prop
+            'properties': prop,
+            'data': data,
+
 
         }
             if has_internal_wallet == True :
@@ -394,7 +398,7 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
             nft=NFT.objects.create(author_address=author_address,name=nft_name,blockNumber=block_number,
                 transactionHash=transaction_hash, blockHash=block_hash,transactionIndex=transaction_index,
                 description=description_nft,image_url=image_nft,creator=creator,external_link=external_link,
-                last_price=last_price,token_id=token_id,owner=user,has_physical=has_physical,category=category)
+                last_price=last_price,token_id=token_id,owner=user,has_physical=has_physical,category=category,data=data,collection=collection)
             transactiontype=TransactionType.objects.filter(name="withraw").first()
             transactionCurrency=TransactionCurrency.objects.filter(name="rial").first()
             UserTurnover.objects.create(user=user, transaction_type=transactiontype, 

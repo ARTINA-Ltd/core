@@ -14,6 +14,12 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Collection(models.Model):
+    name = models.CharField(max_length=10, verbose_name= " مجموعه", null=True, blank=True, default="other")
+
+    def __str__(self):
+        return self.name
 
 class NFT(models.Model):
     token_id = models.IntegerField(default=0, null=False, blank=False)
@@ -39,9 +45,12 @@ class NFT(models.Model):
     blockHash= models.TextField(max_length=200, null=True, blank=True)
     transactionIndex= models.TextField(max_length=200, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT,null=True)
-
+    collection = models.ForeignKey(Collection, on_delete=models.CASCADE,null=True)
+    traits = models.JSONField(null=True, blank=True)
+    
+    
     def __str__(self):
-        return f'{self.name} by {self.creator} owned by {self.owner.username}'
+        return f'{self.name} owned by {self.owner.username}'
 
 
 class NFTRating(models.Model):

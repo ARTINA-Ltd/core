@@ -37,7 +37,7 @@ class Profile(models.Model):
                                      validators=[validators.RegexValidator(regex='^[0-9]{10}$',
                                                                            message='کد ملی باید 10 رقمی باشد',
                                                                            code='invalid_national_code')])
-    birthdate = models.CharField(max_length=10, verbose_name="تاریخ تولد", null=True, blank=False)
+    birthdate = models.DateTimeField(verbose_name="تاریخ تولد", null=True, blank=False)
     phone_number = models.CharField(max_length=11, verbose_name="شماره تلفن", null=True, blank=False,
                                     validators=[validators.RegexValidator(regex='^[0-9]{11}$',
                                                                           message='شماره تلفن باید 11 رقمی باشد',
@@ -54,10 +54,12 @@ class Profile(models.Model):
     role = models.ForeignKey(Role, on_delete=models.CASCADE, default=1)
     postal_code =models.CharField(max_length=10, verbose_name="postal_code", null=True, blank=True) 
     bio = models.TextField(max_length=500, verbose_name="biography", null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
   
     def __str__(self):
-        return f'{self.user.username}'
+        return f"{self.user.username} - {self.first_name} {self.last_name}"
+
 
 
 class ArtistReviewRating(models.Model):
@@ -82,25 +84,41 @@ class TicketUser(models.Model):
     text = models.TextField(max_length=200,null=True,blank=False)
     ticket_id = models.CharField(max_length=6, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return f"{self.user.username} - {self.subject}"
 
+class Msg(models.Model):
+    name = models.CharField(max_length=25,null=True,blank=False)
+    text = models.TextField(max_length=200,null=True,blank=False)
+    def __str__(self):
+        return f"{self.name}"
 
 class NotifyUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     text = models.TextField(max_length=200,null=True,blank=False)
     message_seen = models.BooleanField(default=False)
+    def __str__(self):
+        return f"{self.user.username} - {self.text}"
 
 class PhoneVerification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=20)
     verification_code = models.CharField(max_length=6)
     created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return f"{self.user.username}"
+
 
 class TransactionType(models.Model):
     name = models.CharField(max_length=10, null=True, blank=False, default="deposit")
-  
+    def __str__(self):
+        return f"{self.name}"
+ 
 class TransactionCurrency(models.Model):
     name = models.CharField(max_length=10, null=True, blank=False, default="rial")
+    def __str__(self):
+        return f"{self.name}"
     
 
 class UserBalance(models.Model):
@@ -109,6 +127,8 @@ class UserBalance(models.Model):
     rial_untradable_balance = models.IntegerField(default=0,verbose_name="unavailable mojudi")
     eth_balance = models.IntegerField(default=0,verbose_name="mojudi etherium")
     eth_unavailable_balance = models.FloatField(default=0 , verbose_name="eth_unavailable_balance")    
+    def __str__(self):
+        return f"{self.user.username}"
 
 class UserTurnover(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -117,6 +137,8 @@ class UserTurnover(models.Model):
     transaction_value=models.IntegerField(default=0,verbose_name="volume")
     date = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"{self.user.username} - {self.date}"
 
 
 
@@ -125,6 +147,7 @@ class Payment(models.Model):
     amount = models.PositiveIntegerField()
     authority = models.CharField(max_length=100)
     is_paid = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.user} - {self.amount}'
@@ -135,10 +158,9 @@ class Wallet(models.Model):
     address = models.CharField(max_length=42, unique=True)  # Ethereum/Matic address
     private_key= models.CharField(max_length=200, unique=True, default=0)
     balance = models.DecimalField(max_digits=20, decimal_places=6, default=0)  # Matic balance
+    def __str__(self):
+        return f"{self.user.username}"
 
-
-from django.db import models
-from django.contrib.auth.models import User
 
 class Transaction(models.Model):
     STATUS_CHOICES = (

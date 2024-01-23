@@ -2,6 +2,7 @@ from distutils.log import error
 from django.contrib.auth.models import User
 from datetime import timedelta
 import random
+from Account.models import Profile
 from exhibition import serializers
 from .models import Exhibition
 from rest_framework.response import Response
@@ -346,6 +347,10 @@ class TicketViewSet(viewsets.ViewSet):
         user = self.request.user
         exhibition = None  # Define exhibition here
         response = self.verify_payment(payment.amount, payment.authority)
+
+        # Redirect to your React front-end with payment status
+        success_url = f'http://artina.org/payment_status/?status=success&authority={authority}'
+        profile=Profile.objects.get(user=user)
         if response.status_code == 200:
             verification_info = response.json()
             verification_status = verification_info['data']['code'] 
@@ -356,11 +361,21 @@ class TicketViewSet(viewsets.ViewSet):
                 # Fetch the exhibition associated with the payment
                 exhibition = Exhibition.objects.get(id=payment.exhibition_id)
 
-            # Redirect to your React front-end with payment status
-            success_url = f'http://artina.org/payment_status/?status=success&authority={authority}'
-
-            if verification_status == 100:
-                Ticket.objects.create(user=user, exhibition=exhibition)
+                ticket=Ticket.objects.create(user=user, exhibition=exhibition)
+                # Send the SMS via Kavenegar API
+                # The URL IS like : https://api.kavenegar.com/v1/{API-KEY}/verify/lookup.json
+                response = requests.post(
+                        f"https://api.kavenegar.com/v1/"
+                        f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
+                        f"/verify/lookup.json",
+                        data={
+                        "receptor": profile.phone_number,
+                        "token": user.username,
+                        "token2": ticket.id,
+                        "token3": exhibition.marketName,
+                        "template": "TicketVerification"
+                        }
+                        )
                 return redirect(success_url)
             else:
                 return redirect(failure_url)
