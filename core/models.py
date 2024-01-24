@@ -15,7 +15,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
     
-class Collection(models.Model):
+class CollectionNFT(models.Model):
     user = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)    
     name = models.CharField(max_length=10, verbose_name= " مجموعه", null=True, blank=True, default="other")
 
