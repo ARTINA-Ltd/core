@@ -37,7 +37,7 @@ class Profile(models.Model):
                                      validators=[validators.RegexValidator(regex='^[0-9]{10}$',
                                                                            message='کد ملی باید 10 رقمی باشد',
                                                                            code='invalid_national_code')])
-    birthdate = models.DateTimeField(verbose_name="تاریخ تولد", null=True, blank=False)
+    birthdate = models.CharField(max_length=10, verbose_name="تاریخ تولد", null=True, blank=False)
     phone_number = models.CharField(max_length=11, verbose_name="شماره تلفن", null=True, blank=False,
                                     validators=[validators.RegexValidator(regex='^[0-9]{11}$',
                                                                           message='شماره تلفن باید 11 رقمی باشد',
