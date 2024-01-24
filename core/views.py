@@ -37,7 +37,7 @@ import os
 from Account.models import Msg, Wallet , NotifyUser,UserBalance, UserTurnover,TransactionType,TransactionCurrency,Profile
 from http import HTTPStatus
 from django.db.models import Count, Q
-from .serializers import CategorySerializer, CollectionSerializer, NFTRatingSerializer, OwnerWithLikesSerializer
+from .serializers import CategorySerializer, CollectionNFTSerializer, NFTRatingSerializer, OwnerWithLikesSerializer
 from .tasks import check_nft_end_time
 from django_filters import rest_framework as filters
 
@@ -565,7 +565,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 class CollectionViewSet(viewsets.ModelViewSet):
     queryset = CollectionNFT.objects.all()
-    serializer_class = CollectionSerializer
+    serializer_class = CollectionNFTSerializer
 
     def get_queryset(self):
 

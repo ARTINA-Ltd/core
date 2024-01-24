@@ -3,10 +3,8 @@ from core import models
 from .models import Category, CollectionNFT
 from django.contrib.auth.models import User
 
-from .models import PDF, Category, CollectionNFT
+from .models import PDF, NFT
 
-from rest_framework import serializers
-from .models import PDF
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,25 +12,24 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = ['nft', 'bidder', 'fee', 'status', 'date']
         read_only_fields = ['date']
 
+
+class CollectionNFTSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CollectionNFT
+        fields = ('name',)
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('name')
-
-
-class CollectionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CollectionNFT
-        fields = ('name')
+        fields = ('name',)
 
 class NFTSerializer(serializers.ModelSerializer):
     category = CategorySerializer()
-    collection = CollectionSerializer()
+    collection = CollectionNFTSerializer()
+
     class Meta:
-        model = models.NFT
+        model = NFT
         fields = '__all__'
-
-
 
 class NFTRatingSerializer(serializers.ModelSerializer):
     class Meta:
