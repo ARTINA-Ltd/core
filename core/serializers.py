@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from core import models
+from .models import Category, Collection
 from django.contrib.auth.models import User
 
 
@@ -14,6 +15,17 @@ class NFTSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.NFT
         fields = '__all__'
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('id', 'name')
+
+
+class CollectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Collection
+        fields = ('id', 'name')
 
 
 class NFTRatingSerializer(serializers.ModelSerializer):
@@ -36,7 +48,7 @@ class MyImageSerializer(serializers.ModelSerializer):
 
 
 
-from .models import PDF
+from .models import PDF, Category, Collection
 
 from rest_framework import serializers
 from .models import PDF

@@ -34,10 +34,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.conf import settings
 import os
-from Account.models import Wallet , UserBalance, UserTurnover,TransactionType,TransactionCurrency,Profile
+from Account.models import Msg, Wallet , NotifyUser,UserBalance, UserTurnover,TransactionType,TransactionCurrency,Profile
 from http import HTTPStatus
 from django.db.models import Count, Q
-from .serializers import NFTRatingSerializer, OwnerWithLikesSerializer
+from .serializers import CategorySerializer, CollectionSerializer, NFTRatingSerializer, OwnerWithLikesSerializer
 from .tasks import check_nft_end_time
 from django_filters import rest_framework as filters
 
@@ -555,8 +555,17 @@ def order_Report(token_id):
             n_bid = bid
             n_bid.status=1
             n_bid.report=2
-            n_bid.save()    
+            n_bid.save()
+            # NotifyUser.objects.create(user=n_bid.bidder,text=Msg(1).text)    
     print("change report status done")
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+class CollectionViewSet(viewsets.ModelViewSet):
+    queryset = Collection.objects.all()
+    serializer_class = CollectionSerializer
 
 
 def get_winner(token_id):

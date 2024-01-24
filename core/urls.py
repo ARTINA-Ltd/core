@@ -9,6 +9,8 @@ router.register(r'NFTViewSet', views.NFTViewSet,basename='NFTViewSet')
 router.register(r'images', views.MyImageViewSet)
 router.register(r'pdfs', views.PDFViewSet)
 router.register(r'nft_ratings', views.NFTRatingViewSet,basename='nft_ratings')
+router.register(r'categories', views.CategoryViewSet,basename='categories')
+router.register(r'collections', views.CollectionViewSet,basename='collections')
 
 router.register(r'UserCollection', views.UserCollectionViewSet,basename="UserCollection")
 # router.register(r'Winner', views.WinnerviewSet,basename="Winner")
