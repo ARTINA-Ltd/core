@@ -14,12 +14,6 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = ['nft', 'bidder', 'fee', 'status', 'date']
         read_only_fields = ['date']
 
-
-class NFTSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.NFT
-        fields = '__all__'
-
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -30,6 +24,14 @@ class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = CollectionNFT
         fields = ('name')
+
+class NFTSerializer(serializers.ModelSerializer):
+    category = CategorySerializer()
+    collection = CollectionSerializer()
+    class Meta:
+        model = models.NFT
+        fields = '__all__'
+
 
 
 class NFTRatingSerializer(serializers.ModelSerializer):
