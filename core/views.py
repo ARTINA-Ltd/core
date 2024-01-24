@@ -537,7 +537,6 @@ class sellViewSet(viewsets.ViewSet):
         nft.last_price = floor_price
         nft.save()
 
-        check_nft_end_time.apply_async(args=[nft.id], eta=end_date)
         print("applied changes")
         return Response({"message": "NFT is now for sale."}, status=status.HTTP_200_OK)
 
