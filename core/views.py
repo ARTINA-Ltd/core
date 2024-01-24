@@ -536,7 +536,6 @@ class sellViewSet(viewsets.ViewSet):
         nft.end_date = end_date
         nft.last_price = floor_price
         nft.save()
-
         print("applied changes")
         return Response({"message": "NFT is now for sale."}, status=status.HTTP_200_OK)
 
