@@ -396,7 +396,7 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
             nft=NFT.objects.create(author_address=author_address,name=nft_name,blockNumber=block_number,
                 transactionHash=transaction_hash, blockHash=block_hash,transactionIndex=transaction_index,
                 description=description_nft,image_url=image_nft,creator=creator,external_link=external_link,
-                last_price=last_price,token_id=token_id,owner=user,has_physical=has_physical,category=category,data=data,collection=collection)
+                last_price=last_price,token_id=token_id,owner=user,has_physical=has_physical,category=category,traits=data,collection=collection)
             transactiontype=TransactionType.objects.filter(name="withraw").first()
             transactionCurrency=TransactionCurrency.objects.filter(name="rial").first()
             UserTurnover.objects.create(user=user, transaction_type=transactiontype, 
