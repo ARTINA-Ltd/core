@@ -3,6 +3,10 @@ from core import models
 from .models import Category, CollectionNFT
 from django.contrib.auth.models import User
 
+from .models import PDF, Category, CollectionNFT
+
+from rest_framework import serializers
+from .models import PDF
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
@@ -48,10 +52,6 @@ class MyImageSerializer(serializers.ModelSerializer):
 
 
 
-from .models import PDF, Category, Collection
-
-from rest_framework import serializers
-from .models import PDF
 
 class PDFSerializer(serializers.ModelSerializer):
     class Meta:
