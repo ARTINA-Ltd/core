@@ -559,7 +559,7 @@ def order_Report(token_id):
     print("change report status done")
 
 
-def get_winnger(token_id):
+def get_winner(token_id):
     nft = NFT.objects.get(token_id=token_id)
     sender=nft.owner
     if nft.end_date < timezone.now():
