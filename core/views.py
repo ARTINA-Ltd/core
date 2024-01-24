@@ -1,6 +1,6 @@
 from core import models
 from Account import models
-from core.models import NFT , Order , MyImage , NFTRating , Category , Collection
+from core.models import NFT , Order , MyImage , NFTRating , Category , CollectionNFT
 from Account.views import transferNFT
 from core import serializers
 from eth_account import Account
@@ -328,7 +328,7 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
             )
         
         category=Category.objects.filter(id=category_id).first()
-        collection=Collection.objects.filter(id=collection_id).first()
+        collection=CollectionNFT.objects.filter(id=collection_id).first()
         user_balance=None
         user_balance = UserBalance.objects.filter(user=user).first()
         print(user_balance)
@@ -564,13 +564,13 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
 
 class CollectionViewSet(viewsets.ModelViewSet):
-    queryset = Collection.objects.all()
+    queryset = CollectionNFT.objects.all()
     serializer_class = CollectionSerializer
 
     def get_queryset(self):
 
         user = self.request.user
-        return Collection.objects.filter(user=user)
+        return CollectionNFT.objects.filter(user=user)
   
 
 def get_winner(token_id):

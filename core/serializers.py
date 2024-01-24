@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from core import models
-from .models import Category, Collection
+from .models import Category, CollectionNFT
 from django.contrib.auth.models import User
 
 
@@ -24,7 +24,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Collection
+        model = CollectionNFT
         fields = ('id', 'name')
 
 
