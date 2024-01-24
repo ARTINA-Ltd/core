@@ -16,10 +16,11 @@ class Category(models.Model):
         return self.name
     
 class Collection(models.Model):
+    user = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)    
     name = models.CharField(max_length=10, verbose_name= " مجموعه", null=True, blank=True, default="other")
 
     def __str__(self):
-        return self.name
+        return f'{self.name} owned by {self.user.username}'
 
 class NFT(models.Model):
     token_id = models.IntegerField(default=0, null=False, blank=False)

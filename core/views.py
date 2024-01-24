@@ -567,6 +567,11 @@ class CollectionViewSet(viewsets.ModelViewSet):
     queryset = Collection.objects.all()
     serializer_class = CollectionSerializer
 
+    def get_queryset(self):
+
+        user = self.request.user
+        return Collection.objects.filter(user=user)
+  
 
 def get_winner(token_id):
     nft = NFT.objects.get(token_id=token_id)
