@@ -23,13 +23,13 @@ class NFTSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('id', 'name')
+        fields = ('name')
 
 
 class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = CollectionNFT
-        fields = ('id', 'name')
+        fields = ('name')
 
 
 class NFTRatingSerializer(serializers.ModelSerializer):
