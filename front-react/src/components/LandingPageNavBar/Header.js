@@ -577,7 +577,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                       </svg>
                     </div>
                     <div
-                      className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-[#f9f9f9] min-w-[200px] ${isHidden2 ? "opacity-0 pointer-events-none" : ""
+                      className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-[#f9f9f9] min-w-[250px] ${isHidden2 ? "opacity-0 pointer-events-none" : ""
                         } absolute translate-x-1/3 sm:translate-x-0`}
                     >
                       {notifs &&
@@ -620,7 +620,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                       alt=""
                     />
                     <div
-                      className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-[#f9f9f9] min-w-[200px] ${isHidden ? "opacity-0 pointer-events-none" : ""
+                      className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-[#f9f9f9] min-w-[250px] ${isHidden ? "opacity-0 pointer-events-none" : ""
                         } absolute translate-x-1/3`}
                     >
                       <div className="w-full py-2 px-3 hover:bg-[#0000aa07] flex gap-2 items-center justify-between cursor-pointer">
