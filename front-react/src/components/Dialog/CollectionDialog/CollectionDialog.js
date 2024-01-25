@@ -20,6 +20,11 @@ export default function CollectionDialog(tokenId) {
   const [price, setPrice] = useState();
 
   const submit = () => {
+    if (!startDate || !startTime || !endDate || !endTime || !price) {
+      Notify.failure("لطفاً تمام فیلدها را پر کنید");
+      return;
+    }
+  
     var start = startDate;
     var end = endDate;
     start.setHours(startTime.h , startTime.m)
@@ -66,7 +71,7 @@ export default function CollectionDialog(tokenId) {
   );
   return (
     <div className="card flex justify-content-center">
-      <BorderButton className={"flex gap-1"} size="lg" onClick={() => setVisible(true)}>
+      <BorderButton className={"flex gap-1 pr-5 pl-4 hover:pr-7 hover:pl-5"} size="lg" onClick={() => setVisible(true)}>
         <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
