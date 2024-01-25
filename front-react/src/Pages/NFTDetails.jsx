@@ -273,7 +273,7 @@ const NFTDetails = () => {
   }
 
   function formatString(inputString) {
-    const maxLength = 15;
+    const maxLength = 12;
     const ellipsis = '...';
 
     // Check if the input string is longer than the desired length
@@ -432,27 +432,30 @@ const NFTDetails = () => {
 
             <div className="flex justify-between items-center h-full sm:flex-col sm:gap-2 sm:mb-4">
               <div className="text-[16px] opacity-40">کالکشن</div>
-              <div className="text-[16px] mr-36 self-start text-right sm:mr-0">
-                {data ? data.collection.name : ""}
+              <div className="text-[16px] self-start text-right">
+                {data && data.collection ? data.collection.name : <div className="text-[16px]">ندارد</div>}
               </div>
               <div className="text-[16px] opacity-40">دسته بندی</div>
-              <div className="text-[16px] mr-36 self-start text-right sm:mr-0">
-                {data ? data.category.name : ""}
+              <div className="text-[16px] self-start text-right">
+                {data && data.category ? data.category.name : <div className="text-[16px]">ندارد</div>}
               </div>
             </div>
 
             <div className="flex items-center h-full sm:flex-col sm:gap-2 sm:mb-4">
               <div className="text-[16px] opacity-40">خاصیت‌ها</div>
-              <div className="text-[16px] mr-36 self-start text-right sm:mr-0">
-                {data ? data.traits.map((item, index) => (
-                  <div key={index} className="flex justify-between gap-10">
-                    <div className="text-[16px]">{index + 1}-</div>
-                    <div className="text-[16px] opacity-40 text-cyan-900">{item.name}:</div>
-                    <div className="text-[16px]">{item.type}</div>
-                    {console.log("--->>", item.name, item.type)}
-                  </div>
-                )
-                ) : ""}
+              <div className="text-[16px] mx-auto self-start text-right sm:mr-0">
+                {data && data.traits ? (
+                  data.traits.map((item, index) => (
+                    <div key={index} className="flex justify-between gap-10">
+                      <div className="text-[16px]">{index + 1}-</div>
+                      <div className="text-[16px] opacity-40 text-cyan-900">{item.name}:</div>
+                      <div className="text-[16px]">{item.type}</div>
+                      {console.log("--->>", item.name, item.type)}
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-[16px]">ندارد</div>
+                )}
               </div>
             </div>
 
