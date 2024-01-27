@@ -58,7 +58,7 @@ class OrderViewSet(viewsets.ViewSet):
         fee=int(fee)
         nft = NFT.objects.get(token_id=token_id)
         if (nft.owner==bidder):
-            return Response({'error': 'iyou are the owner, you can not bid'},status=HTTPStatus.BAD_REQUEST)
+            return Response({'error': 'you are the owner, you can not bid'},status=HTTPStatus.BAD_REQUEST)
            
         if n< fee :
             return Response({'error': 'insufficient ballance'},status=HTTPStatus.BAD_REQUEST)
