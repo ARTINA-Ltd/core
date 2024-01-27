@@ -29,6 +29,14 @@ const BalanceDialog = () => {
 
 
   const updateBalance = (act) => {
+    if (amount === "" || amount === undefined || typeof amount !== "number") {
+      Notify.failure("مقدار عددی را وارد کنید");
+      return;
+    }
+    if (amount < 10000) {
+      Notify.failure("مقدار وارد شده باید بیشتر از 10000 تومان باشد");
+      return;
+    }
     if (act === "deposit") {
       axios.post(
         "https://api.artina.org/api/account/payment/",

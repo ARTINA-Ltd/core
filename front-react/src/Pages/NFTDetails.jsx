@@ -273,7 +273,7 @@ const NFTDetails = () => {
   }
 
   function formatString(inputString) {
-    const maxLength = 15;
+    const maxLength = 12;
     const ellipsis = '...';
 
     // Check if the input string is longer than the desired length
@@ -383,7 +383,7 @@ const NFTDetails = () => {
               </a>
             </div>
 
-            <div className="flex justify-around mt-8 sm:flex-col sm:gap-2">
+            <div className="flex justify-around sm:flex-col sm:gap-2">
               <div className="relative flex w-full">
                 <div className=" text-[16px] opacity-40">شماره بلاک</div>
                 <div className="text-[16px] mx-auto">
@@ -428,7 +428,36 @@ const NFTDetails = () => {
                       </div>
                       <div className="text-[16px] mx-auto">{item.date}</div>
                     </div> */}
-            <hr className="opacity-10 mx-32"></hr>
+            {/* <hr className="opacity-10 mx-32"></hr> */}
+
+            <div className="flex justify-between items-center h-full sm:flex-col sm:gap-2 sm:mb-4">
+              <div className="text-[16px] opacity-40">کالکشن</div>
+              <div className="text-[16px] self-start text-right">
+                {data && data.collection ? data.collection.name : <div className="text-[16px]">ندارد</div>}
+              </div>
+              <div className="text-[16px] opacity-40">دسته بندی</div>
+              <div className="text-[16px] self-start text-right">
+                {data && data.category ? data.category.name : <div className="text-[16px]">ندارد</div>}
+              </div>
+            </div>
+
+            <div className="flex items-center h-full sm:flex-col sm:gap-2 sm:mb-4">
+              <div className="text-[16px] opacity-40">خاصیت‌ها</div>
+              <div className="text-[16px] mx-auto self-start text-right sm:mr-0">
+                {data && data.traits ? (
+                  data.traits.map((item, index) => (
+                    <div key={index} className="flex justify-between gap-10">
+                      <div className="text-[16px]">{index + 1}-</div>
+                      <div className="text-[16px] opacity-40 text-cyan-900">{item.name}:</div>
+                      <div className="text-[16px]">{item.type}</div>
+                      {console.log("--->>", item.name, item.type)}
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-[16px]">ندارد</div>
+                )}
+              </div>
+            </div>
 
             <div className="flex items-center h-full sm:flex-col sm:gap-2 sm:mb-4">
               <div className="text-[16px] opacity-40">توضیحات</div>
@@ -481,7 +510,7 @@ const NFTDetails = () => {
             </div>
           </SimpleCard>
         </div>
-        <div className="flex gap-6 sm:flex-col">
+        <div className="flex gap-6 md:flex-col">
           <SimpleCard className="bg-white grow flex flex-col relative gap-3 items-center mt-4">
             <div className="flex items-center pt-3">
               <div className="text-[32px] mx-auto sm:text-[20px]">پیشنهادات</div>
@@ -493,7 +522,7 @@ const NFTDetails = () => {
             <>
               <SimpleCard
                 id="UserRequests"
-                className="bg-white w-1/2 flex flex-col relative gap-3 items-center mt-4 sm:w-full sm:mt-0"
+                className="bg-white w-1/2 flex flex-col relative gap-3 items-center mt-4 md:w-full sm:mt-0"
               >
                 <div className="flex items-center pt-3">
                   <div className="text-[32px] mx-auto sm:text-[20px]">پیشنهاد های شما</div>

@@ -18,6 +18,7 @@ import { UserContext } from "../App";
 import SimpleInput from "./Inputs/SimpleInput";
 import BorderButton from "./Buttons/BorderButton";
 import { Block } from "notiflix";
+import { Dialog } from "primereact/dialog";
 
 const UploadItem = () => {
   const user = useContext(UserContext);
@@ -25,6 +26,9 @@ const UploadItem = () => {
   const [image, setImage] = useState();
   const [imageUrl, setImageUrl] = useState();
   const [selectedCategory, setSelectedCategory] = useState();
+  const [selectedCollection, setSelectedCollection] = useState();
+  const [visible, setVisible] = useState(false);
+
 
   const [isLoading, setIsLoading] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
@@ -32,35 +36,66 @@ const UploadItem = () => {
   const [tokenId, setTokenId] = useState();
   const [hasPhysical, setHasPhysical] = useState(false);
   const [hasInternalWallet, setHasInternalWallet] = useState(false);
-  const [categories, setCtegories] = useState();
-  const [options, setOptions] = useState([]);
+  const [categories, setCategories] = useState();
+  const [collections, setCollections] = useState();
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [collectionsOptions, setCollectionOptions] = useState([]);
 
   useEffect(() => {
     if (categories != undefined) {
-      setOptions([]);
+      setCategoryOptions([]);
 
       categories.forEach(element => {
-        setOptions(e => [...e, { value: element.id, label: element.name }]);
+        setCategoryOptions(e => [...e, { value: element.id, label: element.name }]);
       });
     }
   }, [categories]);
 
   useEffect(() => {
+    if (collections != undefined) {
+      setCollectionOptions([]);
+
+      collections.forEach(element => {
+        setCollectionOptions(e => [...e, { value: element.id, label: element.name }]);
+      });
+    }
+  }, [collections]);
+
+  useEffect(() => {
     axios
-      .get(`https://api.artina.org/api/exhibition/categories/`, {
+      .get(`https://api.artina.org/api/transaction/categories/`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
         },
       })
       .then(res => {
         console.log("_____________________");
-        console.log("categories");
+        console.log("Categories");
         console.log(res.data);
         console.log("_____________________");
-        setCtegories(res.data);
+        setCategories(res.data);
       });
   }, []);
+
+  useEffect(() => {
+    axios
+      .get(`https://api.artina.org/api/transaction/collections/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+      })
+      .then(res => {
+        console.log("_____________________");
+        console.log("Collection");
+        console.log(res.data);
+        console.log("_____________________");
+        setCollections(res.data);
+      });
+  }, []);
+
+
   const address = useAddress();
+
   const [upladObj, setOploadObj] = useState({
     image: "",
     item_name: "",
@@ -73,6 +108,11 @@ const UploadItem = () => {
   const handleCategoryChange = e => {
     setSelectedCategory(e.value);
   };
+
+  const handleCollectionChange = e => {
+    setSelectedCollection(e.value);
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
     if (address) {
@@ -93,6 +133,8 @@ const UploadItem = () => {
             has_physical: hasPhysical,
             category: selectedCategory,
             has_internal_wallet: hasInternalWallet,
+            data: uploadObj.properties,
+            collection: selectedCollection
           },
           {
             headers: {
@@ -140,6 +182,8 @@ const UploadItem = () => {
             has_physical: hasPhysical,
             category: selectedCategory,
             has_internal_wallet: hasInternalWallet,
+            data: uploadObj.properties,
+            collection: selectedCollection
           },
           {
             headers: {
@@ -198,6 +242,41 @@ const UploadItem = () => {
         });
     }
   }, [image]);
+
+
+  const [uploadObj, setUploadObj] = useState({
+    properties: [] // {name: '', type: ''}
+  });
+  const [newProperty, setNewProperty] = useState({
+    name: '',
+    type: ''
+  });
+
+  const handleInputChange = (property, value) => {
+    setNewProperty({
+      ...newProperty,
+      [property]: value
+    });
+  };
+
+  const handleAddProperty = () => {
+    setUploadObj({
+      ...uploadObj,
+      properties: [...uploadObj.properties, newProperty]
+    });
+    // Clear the form after adding a new property
+    setNewProperty({ name: '', type: '' });
+    setVisible(false);
+  };
+
+  const handleRemoveProperty = (index) => {
+    const updatedProperties = [...uploadObj.properties];
+    updatedProperties.splice(index, 1);
+    setUploadObj({
+      ...uploadObj,
+      properties: updatedProperties
+    });
+  };
 
   return (
     <div>
@@ -281,7 +360,7 @@ const UploadItem = () => {
           <div className="w-full flex gap-4 sm:flex-col">
             <div className="w-full">
               <SimpleInput
-                options={options}
+                options={categoryOptions}
                 type="dropdown"
                 placeholder={"انتخاب دسته بندی"}
                 onChange={handleCategoryChange}
@@ -292,7 +371,7 @@ const UploadItem = () => {
               <SimpleInput
                 type="number"
                 title="قیمت پایه(اتریوم)"
-                placeholder="مثلا: 129"
+                placeholder="مثلا: 1.4"
                 onChange={e =>
                   setOploadObj(
                     // isValid={formValues.first_name != ""}
@@ -301,6 +380,65 @@ const UploadItem = () => {
                 }
                 defaultValue={null}
               />
+            </div>
+          </div>
+          <div className="w-full flex gap-4 sm:flex-col">
+            <div className="w-full">
+              <SimpleInput
+                options={collectionsOptions}
+                type="dropdown"
+                placeholder={"انتخاب دسته بندی"}
+                onChange={handleCollectionChange}
+                title="کالکشن"
+              />
+            </div>
+            <div className="w-full">
+              <p className="text-[14px] cursor-pointer pt-2 border-r-2 pb-2 pr-3 border-indigo-600 font-b5" onClick={() => setVisible(true)}>
+                خاصیت ها را انتخاب کنید
+              </p>
+              {uploadObj.properties.map((property, index) => (
+                <div key={index} className="flex mt-4 items-center justify-between">
+                  {/* <p className="">{index + 1}-</p> */}
+                  <p className="">نام: {property.name}</p>
+                  <p className="">نوع: {property.type}</p>
+                  <BorderButton className="block" size="sm" onClick={() => handleRemoveProperty(index)}>
+                    حذف
+                  </BorderButton>
+                </div>
+              ))}
+              <Dialog
+                header="خاصیت ها"
+                visible={visible}
+                style={{ direction: "rtl" }}
+                className="w-[30rem] h-[15rem]"
+                onHide={() => setVisible(false)}
+              >
+                <div className="flex flex-col gap-4">
+                  <div className="flex gap-3 items-center mt-4">
+                    <SimpleInput
+                      type="text"
+                      title="اسم"
+                      placeholder="مثلا: جنس"
+                      onChange={(e) => handleInputChange('name', e.target.value)}
+                      value={newProperty.name}
+                      defaultValue={null}
+                    />
+                    <SimpleInput
+                      type="text"
+                      title="نوع"
+                      placeholder="مثلا: طلا"
+                      onChange={(e) => handleInputChange('type', e.target.value)}
+                      value={newProperty.type}
+                      defaultValue={null}
+                    />
+                  </div>
+                  <div className="flex justify-between">
+                    <BorderButton className="text-lg" size="sm" onClick={handleAddProperty}>
+                      ثبت
+                    </BorderButton>
+                  </div>
+                </div>
+              </Dialog>
             </div>
           </div>
           <div className="w-full flex gap-3 items-center">
