@@ -2,7 +2,7 @@ import pika
 
 # RabbitMQ connection parameters
 connection_params = pika.ConnectionParameters(
-    host='178.38.35.249',
+    host='127.0.0.1',
     port=5672,
     virtual_host='/',
     credentials=pika.PlainCredentials(username='guest', password='123qweasdZXC')
