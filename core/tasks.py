@@ -50,7 +50,8 @@ def check_nft_end_time():
 
     for nft in nfts_to_process:
         print(f"Processing NFT {nft.token_id}")
-        get_winner(nft.token_id)  # Use delay to enqueue the task asynchronously
+        line=get_winner(nft.token_id)  # Use delay to enqueue the task asynchronously
+        print(line)
         nft.is_for_sale = False 
         print(f"Finished processing NFT {nft.token_id}") 
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.>>>>>>>>>>line")
