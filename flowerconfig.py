@@ -1,2 +1,2 @@
 # flowerconfig.py
-BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+BROKER_URL = 'amqp://zahra:zahra@localhost:5672//'

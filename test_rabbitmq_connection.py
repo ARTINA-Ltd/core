@@ -5,7 +5,7 @@ connection_params = pika.ConnectionParameters(
     host='127.0.0.1',
     port=5672,
     virtual_host='/',
-    credentials=pika.PlainCredentials(username='guest', password='123qweasdZXC')
+    credentials=pika.PlainCredentials(username='zahra', password='')
 )
 
 # Establish connection
