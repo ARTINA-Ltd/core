@@ -624,7 +624,7 @@ class WalletViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=['post'])
     def get_wallet_user(self, request):
-        user = request.user        
+        user = self.request.user        
         if Wallet.objects.filter(user=user).exists():
             userWallet=Wallet.objects.filter(user=user).first()
             author_address= userWallet.address
