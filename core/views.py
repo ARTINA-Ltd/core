@@ -50,6 +50,7 @@ class OrderViewSet(viewsets.ViewSet):
     def create(self, request, *args, **kwargs):
         fee = request.data.get('fee')
         token_id = request.data.get('token_id')
+        eth = request.data.get('eth_fee')
         status = 0
         bidder=self.request.user
         user_balance=None
@@ -69,7 +70,7 @@ class OrderViewSet(viewsets.ViewSet):
 
         else:
 
-            Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status)
+            Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status,eth=eth)
             return Response(status=HTTPStatus.OK)
     
     @action(detail=False, methods=['post'])
@@ -574,34 +575,44 @@ class CollectionViewSet(viewsets.ModelViewSet):
   
 
 def get_winner(token_id):
-    print(f"this result is from get_winner{token_id}")
-    print(token_id.types)
-    return Response({"winner": {token_id}})
-    # nft = NFT.objects.get(token_id=token_id)
-    # sender=nft.owner
-    # if nft.end_date < timezone.now():
-    #     return Response({"error": "NFT has not expired."}, status=status.HTTP_400_BAD_REQUEST)
+    nft = NFT.objects.get(token_id=token_id)
+    sender=nft.owner
+    if nft.end_date < timezone.now():
+        return Response({"error": "NFT has not expired."}, status=status.HTTP_400_BAD_REQUEST)
         
-    # highest_bid = None
-    # orders = Order.objects.filter(nft=nft)
-    # for bid in orders:
-    #     if (highest_bid is None or bid.fee > highest_bid.fee):
-    #         highest_bid = bid
+    highest_bid = None
+    orders = Order.objects.filter(nft=nft)
+    for bid in orders:
+        if (highest_bid is None or bid.fee > highest_bid.fee):
+            highest_bid = bid
 
-    # if highest_bid is None:
-    #     return Response({"error": "No bids found for this NFT."}, status=status.HTTP_400_BAD_REQUEST)
-    # highest_bid.report=1
-    # highest_bid.status=1
-    # highest_bid.save()
-    # recipient=highest_bid.user
-    # print(f"recipient>>>>>{recipient}")
+    if highest_bid is None:
+        return Response({"error": "No bids found for this NFT."}, status=status.HTTP_400_BAD_REQUEST)
+    highest_bid.report=1
+    highest_bid.status=1
+    highest_bid.save()
+    recipient=highest_bid.user
+    print(f"recipient>>>>>{recipient}")
 
-    # order_Report(token_id)
-    # nft_id=token_id
-    # result=transferNFT(nft_id,sender,recipient)
-    # print(f"result>>>>>{result}")
-    # return Response({"winner": highest_bid.user, "price": highest_bid.fee,'result':recipient}, status=status.HTTP_200_OK)
+    order_Report(token_id)
+    nft_id=token_id
+    result=transferNFT(nft_id,sender,recipient)
+    print(f"result>>>>>{result}")
+    return Response({"winner": highest_bid.user, "price": highest_bid.fee,'result':recipient}, status=status.HTTP_200_OK)
+ 
+def order_Report(token_id):
     
+    nft = NFT.objects.get(token_id=token_id)
+    orders = Order.objects.filter(nft=nft)
+    for bid in orders:
+        if (bid.report==0):
+            n_bid = bid
+            n_bid.status=1
+            n_bid.report=2
+            n_bid.save()
+            # NotifyUser.objects.create(user=n_bid.bidder,text=Msg(1).text)    
+    print("change report status done")
+   
 
 
 

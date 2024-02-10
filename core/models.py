@@ -70,7 +70,8 @@ class NFTRating(models.Model):
 class Order(models.Model):
     nft = models.ForeignKey(NFT, null=False, blank=False, on_delete=models.CASCADE)
     bidder = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)
-    fee = models.IntegerField(verbose_name="قیمت", null=False, blank=False)
+    fee = models.FloatField(verbose_name="قیمت", null=False, blank=False)
+    eth = models.FloatField(verbose_name="قیمت به اتریوم", default=0)
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
     status = models.IntegerField(choices=[(0, 'open'), (1, 'close')])
     report = models.IntegerField(choices=[(0, 'unsuccessful'), (1, 'successful'),(2,'pending')],default=2)
