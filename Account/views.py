@@ -622,7 +622,22 @@ class WalletViewSet(viewsets.ViewSet):
         
         return Response({'message': 'Wallet created successfully.', 'address': wallet.address}, status=status.HTTP_201_CREATED)
 
+    @action(detail=False, methods=['post'])
+    def get_wallet_user(self, request):
+        user = request.user        
+        if Wallet.objects.filter(user=user).exists():
+            userWallet=Wallet.objects.filter(user=user).first()
+            author_address= userWallet.address
+            return Response({'message': 'user has a wallet.', 'address': author_address}, status=status.HTTP_200_OK)
 
+        else :
+            private_key = Web3.toHex(os.urandom(32))  # Generate a random private key
+            account = w3.eth.account.privateKeyToAccount(private_key)
+            wallet = Wallet.objects.create(user=user, address=account.address, private_key=private_key)
+            author_address=account.address
+            return Response({'message': 'user wallet has created.', 'address': author_address}, status=status.HTTP_201_CREATED)
+
+        
 
 # Initialize Web3 connection
 def connect_with_retry():
