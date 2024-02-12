@@ -624,7 +624,19 @@ class WalletViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=['post'])
     def get_wallet_user(self, request):
-        user = self.request.user        
+
+        try:
+
+            print(f"self is :>>>>>>>>>>>{self}")
+            user = self.request.user        
+            print(f"user is >>>>>>>>>>>>>>>>>>{user}")
+                    
+                    
+        except KeyError as e:
+            return Response(
+                {"error": f"Missing required field: {e}"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         if Wallet.objects.filter(user=user).exists():
             userWallet=Wallet.objects.filter(user=user).first()
             author_address= userWallet.address
