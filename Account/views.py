@@ -622,7 +622,7 @@ class WalletViewSet(viewsets.ViewSet):
         
         return Response({'message': 'Wallet created successfully.', 'address': wallet.address}, status=status.HTTP_201_CREATED)
 
-    @action(detail=False, methods=['post'])
+    @action(detail=False, methods=['get'])
     def get_wallet_user(self, request):
 
         try:
