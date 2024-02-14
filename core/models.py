@@ -18,7 +18,7 @@ class Category(models.Model):
 class CollectionNFT(models.Model):
     user = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)    
     name = models.CharField(max_length=10, verbose_name= " مجموعه", null=True, blank=True, default="other")
-
+    address = models.CharField(null=True,max_length=45,default="0x2293221D7c357FB04De9c7D0dEeBcA427407429D")
     def __str__(self):
         return f'{self.name} owned by {self.user.username}'
 

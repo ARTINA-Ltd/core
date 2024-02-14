@@ -38,7 +38,6 @@ from Account.models import Msg, Wallet , NotifyUser,UserBalance, UserTurnover,Tr
 from http import HTTPStatus
 from django.db.models import Count, Q
 from .serializers import CategorySerializer, CollectionNFTSerializer, NFTRatingSerializer, OwnerWithLikesSerializer
-from .tasks import check_nft_end_time
 from django_filters import rest_framework as filters
 
 
@@ -514,38 +513,6 @@ class UsersWithNFTsViewSet(viewsets.ViewSet):
             })
         return Response(user_data)
 
-#not in use
-class sellViewSet(viewsets.ViewSet):
-    queryset = NFT.objects.all()
-    serializer_class = serializers.NFTSerializer
-
-    # @action(detail=True, methods=["put"])
-    def update(self, request, pk=None):
-        nft_id = request.data.get('token_id')
-        start_date = request.data.get('start_date')
-        end_date = request.data.get('end_date')
-        floor_price = request.data.get('floor_price')
-        try:
-            nft = NFT.objects.get(token_id=nft_id)
-        except Http404:
-            return Response({"error": "NFT not found."}, status=status.HTTP_404_NOT_FOUND)
-
-        nft.is_for_sale = True
-        nft.start_date = start_date
-        nft.end_date = end_date
-        nft.last_price = floor_price
-        nft.save()
-        print("applied changes")
-        return Response({"message": "NFT is now for sale."}, status=status.HTTP_200_OK)
-
-
-
-# class WinnerviewSet(viewsets.ViewSet):
-#     queryset = NFT.objects.all()
-#     # serializer_class = serializers.NFTSerializer
-
-    # @action(detail=True, methods=["get"])
-
 
 def order_Report(token_id):
     
@@ -569,10 +536,36 @@ class CollectionViewSet(viewsets.ModelViewSet):
     serializer_class = CollectionNFTSerializer
 
     def get_queryset(self):
-
         user = self.request.user
         return CollectionNFT.objects.filter(user=user)
-  
+    
+    
+    def create(self, request, *args, **kwargs):
+        user = self.request.user
+        name = request.data.get('name')
+        address = request.data.get ('address')
+        CollectionNFT.objects.create(user=user,name=name,address=address)
+        user_balance=None
+        user_balance = UserBalance.objects.filter(user=user).first()
+        n=user_balance.rial_available_balance
+        if n < 10000 :
+            return Response(
+                {"error": "your money is not enough"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        else:
+            n=n-10000
+            user_balance.rial_available_balance=n
+            user_balance.save()        
+        transactiontype=TransactionType.objects.filter(name="withraw").first()
+        transactionCurrency=TransactionCurrency.objects.filter(name="rial").first()
+        UserTurnover.objects.create(user=user, transaction_type=transactiontype, 
+                            transaction_currency=transactionCurrency, transaction_value=10000)
+
+
+        return Response(status=status.HTTP_201_CREATED)  
+
+
 
 def get_winner(token_id):
     nft = NFT.objects.get(token_id=token_id)
@@ -649,99 +642,3 @@ class NakamigosListingsViewSet(viewsets.ViewSet):
         return Response(data)
 
 
-# contractmain = sdk.get_marketplace("0x80Acf8E21519B0808CC9a59218c415a237ef7C65")
-# from datetime import datetime, timedelta
-
-# class listingViewSet(viewsets.ViewSet):
-
-#     def create(self,request):
-#         user=self.request.user
-#         token_id=request.data.get('token_id')
-#         pricePerToken = request.data.get('pricePerToken')
-#         author_address = request.data.get('author_address')
-#         NATIVE_TOKEN_ADDRESS = "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889"  # MATIC token on Mumbai Testnet
-
-#         listing = {
-#           "assetContractAddress": "0x2A18FECb3579238CdA960B5977f46E500Fb6e735",
-#           "tokenId": token_id,
-#           "quantity": 1,
-#           "currencyContractAddress": NATIVE_TOKEN_ADDRESS,
-#           "pricePerToken": pricePerToken,
-#           "startTimestamp": datetime.now().date(),
-#           "endTimestamp": datetime.now() + timedelta(minutes=5),
-#           "isReservedListing": False
-#         }
-#         tx =contractmain.create_listing(listing)
-#         receipt = tx.receipt # the transaction receipt
-#         id = tx.id # the id of the newly created listing
-#         return Response(
-#             {"message": "Listing created successfully",
-#             "listing_id":nft.token_id},
-#             status=status.HTTP_201_CREATED,
-#             ) 
-
-
-
-
-#     # def authWallet():.createListing
-#     #     payload = sdk.auth.login('artina.org')
-
-
-# from django.http import JsonResponse
-# # from ThirdwebSDK import LocalWallet
-# # from thirdweb import ThirdwebSDK
-
-# class WalletViewSet(viewsets.ViewSet):
-
-
-#     def authenticate_wallet(request):
-#         domain = 'artina.org'
-
-#         # Generate a login payload for the connected wallet
-#         sdk = ThirdWebSDK()
-#         payload = sdk.auth.login(domain)
-
-#         # Generate an authentication token for the logged in wallet
-#         token = sdk.auth.generate_auth_token(domain, payload)
-
-#         # Authenticate the token and get the address of the authenticating wallet
-#         address = sdk.auth.authenticate(domain, token)
-
-#         # Return the authenticated address as a JSON response
-#         return JsonResponse({'address': address})
-
-# # # comment wallet part
-# # #part im working on
-# # from thirdweb import ThirdwebSDK 
-# # # from sdk_options import SDKOptions
-# # sdk1 = ThirdwebSDK("mumbai", options=SDKOptions(secret_key="03c191bc52cf51d0e011063336339e37"))
-# # contractthree = sdk.get_contract("0x3c580A3227adc9EfF961910AA4F667234999Dc3F")
-# # class LocalWalletViewSet(viewsets.ViewSet):
-   
-# #     @action(detail=False, methods=['get'])
-# #     def createWallet(self,request):
-        
-# #         data = contractthree.call("createAccount", _admin, _data)
-# #         # wallet = LocalWallet()
-# #         # generate a random wallet
-# #         # user_wallet= wallet.generate()
-# #         print(data)
-
-
-# # part i worked on and need changes
-
-# #         # connect the wallet to the application
-# #         await wallet.connect()
-
-# # # at any point, you can save the wallet to persistent storage
-# # await wallet.save(config)
-# # # and load it back up
-# # await wallet.load(config)
-
-# # # you can also export the wallet out of the application
-# # exported_wallet = await wallet.export(config)
-# # # and import it back in
-# # await wallet.import_(exported_wallet, config)
-
-# # # You can then use this wallet to perform transactions via the SDK
-# # sdk = await ThirdwebSDK.from_wallet(wallet, "goerli")

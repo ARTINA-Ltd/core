@@ -38,12 +38,12 @@ from datetime import timedelta
 from celery import shared_task
 from django.utils import timezone
 from .models import NFT
+from .views import get_winner
 
 @shared_task
 
 def check_nft_end_time():
     print("Task started")
-    from .views import get_winner
 
     now = timezone.now()
     nfts_to_process = NFT.objects.filter(end_date__lte=now, is_for_sale=True)

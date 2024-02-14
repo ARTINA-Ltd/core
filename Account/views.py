@@ -762,14 +762,13 @@ class TransactionViewSet(viewsets.ViewSet):
 
 
 
-def transfer_nft(private_key, sender_address, recipient_address, token_id):
+def transfer_nft(private_key, sender_address, recipient_address, token_id,nft_contract_address):
     nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
     #contract
-    nft_contract_address = "0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a"
+    # nft_contract_address = "0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a"
     abi_filename = os.path.join(settings.BASE_DIR, "Account", "ABI.json")
    
     # Read ABI from JSON file
-    # abi_filename = "./ABI.json"
 
     with open(abi_filename, "r") as abi_file:
         nft_contract_abi = json.load(abi_file)
@@ -792,9 +791,7 @@ def transfer_nft(private_key, sender_address, recipient_address, token_id):
 
 
 def transferNFT(token_id,sender,recipient):
-    # sender=User.objects.filter(username=sender).first()
-    # recipient=User.objects.filter(username=recipient).first()
-        
+   
     #sender
     sender_address = sender.wallet.address
     sender_private_key = sender.wallet.private_key
@@ -804,6 +801,9 @@ def transferNFT(token_id,sender,recipient):
         
     tx_hash = transfer_nft(sender_private_key, sender_address, recipient_address, token_id)
     print(f"Transaction hash: {tx_hash.hex()}")
+    nft=NFT.objects.filter(token_id=token_id).first()
+    nft.owner=recipient
+    nft.save()
     response_data = {
         "message": f"Transaction initiated. Transaction hash: {tx_hash.hex()}"
     }
