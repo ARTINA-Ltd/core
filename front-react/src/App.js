@@ -39,6 +39,7 @@ import GetMail from "./Pages/GetMail";
 import NotFound from "./Pages/NotFound";
 import RedirectedPage from "./Pages/RedirectPage";
 import WhitePaper from "./Pages/WhitePaper";
+import PreMint from "./Pages/PreMint";
 const activeChainId = ChainId.Goerli;
 
 export const UserContext = createContext();
@@ -125,6 +126,7 @@ export default () => {
                 <Route exact path="show-request" element={<ShowRequests />} />
                 <Route exact path="request-details" element={<RequestDetails />} />
                 <Route exact path="upload-page" element={<NFTUploadPage />} />
+                <Route exact path="pre-mint" element={<PreMint />} />
                 <Route exact path="UserDashboard" element={<UserDashboard />} />
                 <Route exact path="dashboard" element={<Dashboard />} />
                 <Route exact path="profile" element={<Profile />} />
