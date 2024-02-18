@@ -10,6 +10,7 @@ import SimpleInput from "../components/Inputs/SimpleInput";
 import { UserContext } from "../App";
 import { Notify } from "notiflix";
 import BorderButton from "../components/Buttons/BorderButton";
+import CountdownTimer from "../components/CountDown/CountDown";
 
 const NFTDetails = () => {
   const [data, setData] = useState();
@@ -22,6 +23,7 @@ const NFTDetails = () => {
   const [like, setLike] = useState(false);
   const [likeColor, setLikeColor] = useState(false);
   const [shareCount, setShareCount] = useState(0);
+  const [countdown, setCountdown] = useState(0);
 
 
   const icons = {
@@ -169,6 +171,7 @@ const NFTDetails = () => {
         setLikeCount(d.data.count);
         console.log(d.data);
         setShareCount(d.data.nft.share_count);
+        setCountdown(d.data.nft.end_date);
       });
 
     axios
@@ -211,6 +214,7 @@ const NFTDetails = () => {
       )
       .then(d => {
         setReqData(d);
+        console.log("_______Orders_______", d)
       })
       .catch(res => console.log(res));
 
@@ -254,6 +258,7 @@ const NFTDetails = () => {
         {
           token_id: id,
           fee: price.toFixed(0).toString(),
+          eth_fee: ethereum,
         },
         {
           headers: {
@@ -298,14 +303,19 @@ const NFTDetails = () => {
             id="RightSide"
             className="bg-[#4e45d0] w-full flex flex-col relative gap-6 items-center "
           >
-            <div className="flex flex-col gap-5 w-full">
+            <div className="relative w-full">
               <img
                 src={data ? data.image_url : ""}
                 className="rounded-xl h-auto w-full object-cover"
               />
+              <div className="absolute top-0 w-full h-[50px] flex justify-center items-center bg-white bg-opacity-50 rounded-xl text-[20px]">
+                <CountdownTimer end_date={data && countdown} className="" />
+              </div>
+            </div>
+            <div className="flex flex-col gap-5 w-full">
               <div className="flex gap-3 w-full">
                 <div
-                  className={` w-full h-16 bg-[#7168f3] rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda] sm:px-2 sm:h-10 sm:justify-around`}
+                  className={`w-full h-16 bg-[#7168f3] rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda] sm:px-2 sm:h-10 sm:justify-around`}
                   onClick={handleClickLike}
                 >
                   {data && likeColor ? icons.red_heart : icons.heart}
@@ -324,12 +334,11 @@ const NFTDetails = () => {
                   onClick={handleClickShare}
                 >
                   {icons.share}
-                  <div className="text-white text-[16px]">
-                    {data && shareCount}
-                  </div>
+                  <div className="text-white text-[16px]">{data && shareCount}</div>
                 </div>
               </div>
             </div>
+
           </SimpleCard>
           <SimpleCard
             id="LeftSide"

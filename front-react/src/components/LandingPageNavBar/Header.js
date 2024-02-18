@@ -337,7 +337,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
     // },
     {
       title: "ضرب اثر",
-      link: "/upload-page",
+      link: "/pre-mint",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"

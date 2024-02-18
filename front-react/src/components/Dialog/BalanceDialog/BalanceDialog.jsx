@@ -13,6 +13,8 @@ const BalanceDialog = () => {
   const [action, setAction] = useState();
   // const [address, setAddress] = useState("");
 
+  const isOnlyNumbers = /^\d+$/.test(amount) || /^[\u06F0-\u06F9]+$/.test(amount);
+
   useEffect(() => {
     axios
       .get("https://api.artina.org/api/account/user-balance/get_balance/", {
@@ -29,7 +31,9 @@ const BalanceDialog = () => {
 
 
   const updateBalance = (act) => {
-    if (amount === "" || amount === undefined || typeof amount !== "number") {
+    if (amount === "" || amount === undefined || isOnlyNumbers === false) {
+      // console.log(amount);
+      // console.log(typeof amount);
       Notify.failure("مقدار عددی را وارد کنید");
       return;
     }
@@ -40,7 +44,7 @@ const BalanceDialog = () => {
     if (act === "deposit") {
       axios.post(
         "https://api.artina.org/api/account/payment/",
-        { amount: amount },
+        { amount: amount * 10 },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
@@ -49,7 +53,6 @@ const BalanceDialog = () => {
         }
       ).then((res) => { window.open(res.data.url) }).catch(console.log);
     } else {
-
       axios
         .post(
           "https://api.artina.org/api/account/user-balance/updating_balance/",
