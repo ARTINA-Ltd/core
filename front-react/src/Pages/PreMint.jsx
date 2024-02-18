@@ -42,7 +42,7 @@ const PreMint = () => {
             });
             const address = await sdk.deployer.deployBuiltInContract("nft-collection", {
                 name: newCollectionName,
-                primary_sale_recipient: wallet,
+                primary_sale_recipient: "0x2293221D7c357FB04De9c7D0dEeBcA427407429D",
             });
             console.log("Deployed at", address);
         } catch (err) {
