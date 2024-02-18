@@ -5,7 +5,6 @@ import { useNavigate } from "react-router";
 import { Dialog } from "primereact/dialog";
 import SimpleInput from "../components/Inputs/SimpleInput";
 import BorderButton from "../components/Buttons/BorderButton";
-import DeployContract from "../components/DeployContract/DeployContract";
 import axios from "axios";
 import { ThirdwebSDK } from "@thirdweb-dev/sdk";
 
