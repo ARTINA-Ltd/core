@@ -673,7 +673,7 @@ def connect_with_retry():
 
 class Email(viewsets.ViewSet):
     queryset = PhoneVerification.objects.all()
-
+    @action(detail=False, methods=['post'])
     def send_email(subject,recipient_email,message):
         # Email configuration
         smtp_server = 'mailservice9.irandns.com'
@@ -702,7 +702,7 @@ class Email(viewsets.ViewSet):
             server.sendmail(sender_email, recipient_email, msg.as_string())
 
         print("Email sent successfully")
-
+    @action(detail=False, methods=['post'])
     def email_verification(self, request):
         email = request.data.get('email')
         user = User.objects.get(profile__email=email)
