@@ -706,6 +706,7 @@ class Email(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
     def email_verification(self, request):
         email = request.data.get('email')
+        user = self.request.user
         user = User.objects.get(profile__email=email)
         if not email:
             return Response({'error': 'email is required.'}, status.HTTP_400_BAD_REQUEST)
