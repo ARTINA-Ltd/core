@@ -450,14 +450,34 @@ class PDFViewSet(viewsets.ModelViewSet):
 
 class UserCollectionViewSet(viewsets.ViewSet):
     serializer_class = serializers.NFTSerializer
+    queryset = NFT.objects.all()
 
     def get_queryset(self):
 
         user = self.request.user
         return NFT.objects.filter(owner=user)
-        
 
+    def list(self, request, *args, **kwargs):
+        collection_id = request.query_params.get('collection_id')
+        if collection_id:
+            queryset = self.queryset.filter(collection_id=collection_id)
+        else:
+            queryset = self.queryset
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
+    def get_collection_nft(self, request):
+        collection_id = request.data.get('collection_id')
+        if collection_id:
+            collection=CollectionNFT.objects.get(id=collection_id)
+            queryset = NFT.objects.filter(collection=collection)
+            serializer = self.get_serializer(queryset, many=True)
+            return Response(serializer.data)
+        else :
+            return Response(
+                {"error": "your money is not enough"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 class UserNFTViewSet(viewsets.ViewSet):
     serializer_class = serializers.NFTSerializer
     # permission_classes = [permissions.IsAuthenticated]
@@ -524,7 +544,7 @@ def order_Report(token_id):
             n_bid.status=1
             n_bid.report=2
             n_bid.save()
-            # NotifyUser.objects.create(user=n_bid.bidder,text=Msg(1).text)    
+            NotifyUser.objects.create(user=n_bid.bidder,text=Msg(1).text)    
     print("change report status done")
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -603,7 +623,7 @@ def order_Report(token_id):
             n_bid.status=1
             n_bid.report=2
             n_bid.save()
-            # NotifyUser.objects.create(user=n_bid.bidder,text=Msg(1).text)    
+            NotifyUser.objects.create(user=n_bid.bidder,text=Msg(1).text)    
     print("change report status done")
    
 

@@ -18,8 +18,6 @@ from django.contrib.auth.views import PasswordResetView
 from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from .models import Payment
-from .models import UserBalance, TransactionType, TransactionCurrency, TicketUser
 from .serializers import UserBalanceSerializer , NotifyUserSerializer,UserInfoSerializer
 from django.utils import timezone
 import random
@@ -29,6 +27,9 @@ from django.shortcuts import redirect
 from datetime import datetime, timedelta
 from django.db.models import Q , Sum
 from decimal import Decimal, getcontext
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 #web3 exchange
 from rest_framework import viewsets, status
@@ -670,6 +671,86 @@ def connect_with_retry():
     
     raise Exception("Failed to connect to the Matic network.")
 
+class Email(viewsets.ViewSet):
+    queryset = PhoneVerification.objects.all()
+
+    def send_email(subject,recipient_email,message):
+        # Email configuration
+        smtp_server = 'mailservice9.irandns.com'
+        smtp_port = 587 
+        smtp_username = 'info@artina.org'
+        smtp_password = '123qweasdZXC'
+        sender_email = 'info@artina.org'
+        # Create a MIME object for the email
+        msg = MIMEMultipart()
+        msg['From'] = sender_email
+        msg['To'] = recipient_email
+        msg['Subject'] = subject
+
+        # Attach the message to the email
+        msg.attach(MIMEText(message, 'plain'))
+
+        # Connect to the SMTP server
+        with smtplib.SMTP(smtp_server, smtp_port) as server:
+            # Start TLS for security
+            server.starttls()
+
+            # Login to the SMTP server
+            server.login(smtp_username, smtp_password)
+
+            # Send the email
+            server.sendmail(sender_email, recipient_email, msg.as_string())
+
+        print("Email sent successfully")
+
+    def email_verification(self, request):
+        email = request.data.get('email')
+        user = User.objects.get(profile__email=email)
+        if not email:
+            return Response({'error': 'email is required.'}, status.HTTP_400_BAD_REQUEST)
+
+        if not user:
+            return Response({'error': 'user does not exist.'}, status.HTTP_400_BAD_REQUEST)
+
+        verification_code = random.randint(100000, 999999)
+        email_verification = EmailVerification.objects.filter(user=user).first()
+        if email_verification:
+            # Update the existing PhoneVerification object with the new verification code
+            email_verification.verification_code = verification_code
+            email_verification.save()
+            
+        else:
+            EmailVerification.objects.create(user=user, email=email, verification_code=verification_code)
+            print(f"Verification code for {email}: {verification_code}")
+        subject="verify email from ARTINA"
+        message = f"your verfication code is : {verification_code}"
+        self.send_email(subject,email,message)
+
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        user = self.request.user
+        if user.is_authenticated:
+            queryset = queryset.filter(user=user)
+        return queryset
+
+    def create(self, request, pk=None):
+        user = self.request.user
+        email = request.data.get('email')
+        verification_code = request.data.get("verification_code")
+        email_verification = EmailVerification.objects.get(email=email)
+        if email_verification.verification_code == verification_code:
+            profile=Profile.objects.filter(user=user).first()
+            profile.email_verified  = True
+            profile.save()
+            email_verification.delete()
+            return Response({"status": "success"})
+        else:
+            return Response({"status": "error", "error": "verification code is not correct"},
+                            status.HTTP_400_BAD_REQUEST)
+
+
+
 
 class TransactionViewSet(viewsets.ViewSet):
     def create(self, request):
@@ -788,7 +869,7 @@ def transfer_nft(private_key, sender_address, recipient_address, token_id,nft_co
     return tx_hash
 
 
-
+from core.models import NFT
 
 def transferNFT(token_id,sender,recipient):
    

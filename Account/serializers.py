@@ -81,6 +81,11 @@ class PhoneVerificationSerializer(serializers.ModelSerializer):
         model = PhoneVerification
         fields = ['user','id','phone_number','verification_code']
 
+class emailVerificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmailVerification
+        fields = ['user','id','phone_number','verification_code']
+
 
 
 class UserBalanceSerializer(serializers.ModelSerializer):
