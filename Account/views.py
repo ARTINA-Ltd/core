@@ -729,6 +729,8 @@ class Email(viewsets.ViewSet):
         subject="verify email from ARTINA"
         message = f"your verfication code is : {verification_code}"
         self.send_email(subject,email, message)
+        return Response({'success': 'email sent.'}, status.HTTP_200_OK)
+
 
 
     def get_queryset(self):
