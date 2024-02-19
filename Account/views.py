@@ -675,7 +675,7 @@ def connect_with_retry():
 class Email(viewsets.ViewSet):
     queryset = PhoneVerification.objects.all()
     @action(detail=False, methods=['post'])
-    def send_email(subject,recipient_email,message):
+    def send_email(self,subject,recipient_email,message):
         # Email configuration
         smtp_server = 'mailservice9.irandns.com'
         smtp_port = 587 
@@ -703,6 +703,8 @@ class Email(viewsets.ViewSet):
             server.sendmail(sender_email, recipient_email, msg.as_string())
 
         print("Email sent successfully")
+
+
     @action(detail=False, methods=['post'])
     def email_verification(self, request):
         email = request.data.get('email')
@@ -726,7 +728,7 @@ class Email(viewsets.ViewSet):
             print(f"Verification code for {email}: {verification_code}")
         subject="verify email from ARTINA"
         message = f"your verfication code is : {verification_code}"
-        self.send_email(subject,email,message)
+        self.send_email(subject,email, message)
 
 
     def get_queryset(self):
