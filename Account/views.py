@@ -96,7 +96,30 @@ class RegisterViewSet(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-# logger = logging.getLogger('myapp')
+#login v0
+# class LoginViewSet(viewsets.ViewSet):
+
+#     serializer_class = serializers.LoginSerializer
+
+#     def create(self, request):
+#         username = request.data.get('username')
+#         password = request.data.get('password')
+#         user = authenticate(username=username, password=password)
+
+#         if user is None:
+#             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+#         refresh = RefreshToken.for_user(user)
+#         response_data = {
+#             'refresh': str(refresh),
+#             'access': str(refresh.access_token),
+#         }
+#         return Response(response_data, status=status.HTTP_200_OK)
+
+
+
+#login v01
+
+logger = logging.getLogger(__name__)
 
 class LoginViewSet(viewsets.ViewSet):
 
@@ -105,10 +128,17 @@ class LoginViewSet(viewsets.ViewSet):
     def create(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
+        
+        logger.info(f"Login attempt for username: {username}")  # Log the login attempt
+        
         user = authenticate(username=username, password=password)
 
         if user is None:
+            logger.warning(f"Invalid credentials for username: {username}")  # Log invalid credentials
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        logger.info(f"Successful login for username: {username}")  # Log successful login
+        
         refresh = RefreshToken.for_user(user)
         response_data = {
             'refresh': str(refresh),
@@ -116,16 +146,6 @@ class LoginViewSet(viewsets.ViewSet):
         }
         return Response(response_data, status=status.HTTP_200_OK)
 
-# class SubdomainMiddleware:
-#     def __init__(self, get_response):
-#         self.get_response = get_response
-
-#     def __call__(self, request):
-#         host = request.get_host()
-#         subdomain = host.split('.')[0] if '.' in host else None
-#         request.subdomain = subdomain
-#         response = self.get_response(request)
-#         return response
 
 
 
@@ -828,21 +848,21 @@ class TransactionViewSet(viewsets.ViewSet):
             }
             return Response(balance, status=status.HTTP_200_OK)
 
-        # balance = w3.eth.getBalance(user_wallet.address)
-        # print(f"Balance: {balance}")
-        # user_wallet.balance=balance
-        # user_wallet.save
-        # balance = {
-        #     'matic_balance': user_wallet.balance,
-        #     'wallet_address' : user_wallet.address
-        #     # Add other balance fields as needed
-        # }
-
+        balance = w3.eth.getBalance(user_wallet.address)
+        print(f"Balance: {balance}")
+        user_wallet.balance=balance
+        user_wallet.save
         balance = {
             'matic_balance': user_wallet.balance,
             'wallet_address' : user_wallet.address
             # Add other balance fields as needed
         }
+
+        # balance = {
+        #     'matic_balance': user_wallet.balance,
+        #     'wallet_address' : user_wallet.address
+        #     # Add other balance fields as needed
+        # }
 
         return Response(balance, status=status.HTTP_200_OK)
 
