@@ -119,7 +119,7 @@ class RegisterViewSet(viewsets.ModelViewSet):
 
 #login v01
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('login_api')
 
 class LoginViewSet(viewsets.ViewSet):
 

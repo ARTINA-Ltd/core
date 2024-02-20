@@ -168,13 +168,19 @@ LOGGING = {
         },
     },
     'handlers': {
+        'file_login': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'login_api.log',  # File for login API logs
+            'formatter': 'verbose',
+        },
+        },
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': 'myapp.log',
             'formatter': 'verbose',
         },
-    },
     'loggers': {
         'django': {
             'handlers': ['file'],
