@@ -126,6 +126,7 @@ class LoginViewSet(viewsets.ViewSet):
     serializer_class = serializers.LoginSerializer
 
     def create(self, request):
+        logger.setLevel(logging.DEBUG)
         username = request.data.get('username')
         password = request.data.get('password')
         
