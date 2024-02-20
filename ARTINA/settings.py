@@ -174,13 +174,13 @@ LOGGING = {
             'filename': 'login_api.log',  # File for login API logs
             'formatter': 'verbose',
         },
-        },
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': 'myapp.log',
             'formatter': 'verbose',
         },
+    },
     'loggers': {
         'django': {
             'handlers': ['file'],
@@ -198,6 +198,7 @@ LOGGING = {
         },
     },
 }
+
 
 # Celery Configuration
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
