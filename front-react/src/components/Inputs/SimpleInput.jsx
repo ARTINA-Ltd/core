@@ -18,7 +18,7 @@ const SimpleInput = ({
   options,
   menuPlacement,
   onKeyPress,
-  maxChars
+  maxChars,
 }) => {
   const [focus, setFocus] = useState(defaultValue === null ? false : true);
   const [value, setValue] = useState("");

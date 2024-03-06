@@ -40,14 +40,16 @@ import NotFound from "./Pages/NotFound";
 import RedirectedPage from "./Pages/RedirectPage";
 import WhitePaper from "./Pages/WhitePaper";
 import PreMint from "./Pages/PreMint";
+import Authentications from "./Pages/Authentications";
+import Authenticate from "./Pages/Authenticate";
 const activeChainId = ChainId.Goerli;
 
 export const UserContext = createContext();
 export const UserChangeContext = createContext();
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
   const [user, setUser] = useState();
-
 
   useEffect(() => {
     axios({
@@ -67,31 +69,25 @@ export default () => {
   const userChange = async () => {
     console.log("called");
     await axios
-      .get(
-        "https://api.artina.org/api/account/user-info/",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-          },
-          mode: "cors",
-        }
-      )
+      .get("https://api.artina.org/api/account/user-info/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+        mode: "cors",
+      })
       .then((data) => {
         setUser(data);
         console.log(data);
       })
       .catch((res) => {
-        setUser(undefined)
-        console.log(res)
+        setUser(undefined);
+        console.log(res);
       });
   };
 
   return (
     <>
-      <ThirdwebProvider
-        activeChain="ethereum"
-        autoConnect={false}
-      >
+      <ThirdwebProvider activeChain="ethereum" autoConnect={false}>
         <UserContext.Provider value={user}>
           <UserChangeContext.Provider value={userChange}>
             <div className="App">
@@ -103,44 +99,98 @@ export default () => {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route exact path="artist-page" element={<ArtistPage />} />
-                <Route exact path="artist-application-form/:id" element={<ArtistApplicationForm />} />
+                <Route
+                  exact
+                  path="artist-application-form/:id"
+                  element={<ArtistApplicationForm />}
+                />
                 <Route exact path="nft-details/:id" element={<NFTDetails />} />
                 <Route exact path="Commission" element={<Commission />} />
                 <Route exact path="login" element={<Login />} />
-                <Route exact path="forget-password" element={<ForgetPassword />} />
+                <Route
+                  exact
+                  path="forget-password"
+                  element={<ForgetPassword />}
+                />
                 <Route exact path="support" element={<Support />} />
                 <Route exact path="register" element={<Register />} />
 
                 <Route exact path="contact" element={<Contact />} />
                 <Route exact path="about-us" element={<AboutUs />} />
-                <Route exact path="privacy-policy" element={<PrivacyPolicy />} />
+                <Route
+                  exact
+                  path="privacy-policy"
+                  element={<PrivacyPolicy />}
+                />
 
                 <Route exact path="help-mint" element={<HelpMint />} />
-                <Route exact path="help-create-exhibition" element={<HelpCreateExhibition />} />
-                <Route exact path="help-create-wallet" element={<HelpCreateWallet />} />
-                <Route exact path="metaverse_explanation" element={<MetaExplanation />} />
-                
-                <Route exact path="exhibition-list" element={<ExhibitionList />} />
-                <Route exact path="open-exhibitions" element={<OpenExhibitions />} />
+                <Route
+                  exact
+                  path="help-create-exhibition"
+                  element={<HelpCreateExhibition />}
+                />
+                <Route
+                  exact
+                  path="help-create-wallet"
+                  element={<HelpCreateWallet />}
+                />
+                <Route
+                  exact
+                  path="metaverse_explanation"
+                  element={<MetaExplanation />}
+                />
+
+                <Route
+                  exact
+                  path="exhibition-list"
+                  element={<ExhibitionList />}
+                />
+                <Route
+                  exact
+                  path="open-exhibitions"
+                  element={<OpenExhibitions />}
+                />
                 <Route exact path="requests-list" element={<RequestsList />} />
                 <Route exact path="show-request" element={<ShowRequests />} />
-                <Route exact path="request-details" element={<RequestDetails />} />
+                <Route
+                  exact
+                  path="request-details"
+                  element={<RequestDetails />}
+                />
                 <Route exact path="upload-page" element={<NFTUploadPage />} />
                 <Route exact path="pre-mint" element={<PreMint />} />
                 <Route exact path="UserDashboard" element={<UserDashboard />} />
                 <Route exact path="dashboard" element={<Dashboard />} />
                 <Route exact path="profile" element={<Profile />} />
                 <Route exact path="exhibitor" element={<Exhibitor />} />
-                <Route exact path="collections/:username" element={<Collections />} />
-                <Route exact path="user-collections" element={<UserCollections />} />
-                <Route exact path="exhibition-collections/:id" element={<ExhibitionCollections />} />
+                <Route
+                  exact
+                  path="collections/:username"
+                  element={<Collections />}
+                />
+                <Route
+                  exact
+                  path="user-collections"
+                  element={<UserCollections />}
+                />
+                <Route
+                  exact
+                  path="exhibition-collections/:id"
+                  element={<ExhibitionCollections />}
+                />
                 <Route exact path="ai" element={<AI />} />
                 <Route exact path="metaverse/:token?" element={<Metaverse />} />
                 <Route exact path="join-artina" element={<GetMail />}></Route>
-                <Route exact path="payment_status" element={<RedirectedPage />} />
+                <Route
+                  exact
+                  path="payment_status"
+                  element={<RedirectedPage />}
+                />
                 <Route exact path="FAQ" element={<HelpQuestions />} />
                 <Route exact path="whitepaper" element={<WhitePaper />} />
                 <Route path="*" element={<NotFound />} />
+                <Route path="authentications" element={<Authentications />} />
+                <Route path="authenticate" element={<Authenticate />} />
                 {/* <Route exact path="request-lists" element={<RequestLists />} /> */}
               </Routes>
             </div>
