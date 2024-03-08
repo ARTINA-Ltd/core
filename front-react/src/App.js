@@ -42,7 +42,7 @@ import WhitePaper from "./Pages/WhitePaper";
 import PreMint from "./Pages/PreMint";
 import Authentications from "./Pages/Authentications";
 import Authenticate from "./Pages/Authenticate";
-const activeChainId = ChainId.Goerli;
+import TicketResponse from "./Pages/TicketResponse";
 
 export const UserContext = createContext();
 export const UserChangeContext = createContext();
@@ -191,6 +191,7 @@ export default () => {
                 <Route path="*" element={<NotFound />} />
                 <Route path="authentications" element={<Authentications />} />
                 <Route path="authenticate" element={<Authenticate />} />
+                <Route path="ticket-response" element={<TicketResponse />} />
                 {/* <Route exact path="request-lists" element={<RequestLists />} /> */}
               </Routes>
             </div>
