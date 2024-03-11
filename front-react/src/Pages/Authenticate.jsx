@@ -32,14 +32,14 @@ const Authenticate = () => {
                       className="shadow-lg"
                       type="text"
                       title="نام"
-                      defaultValue="محمدحسین"
+                      defaultValue="آرتور"
                       disabled={true}
                     />
                     <SimpleInput
                       className="shadow-lg"
                       type="text"
                       title=" نام خانوادگی"
-                      defaultValue="جاهدی فر"
+                      defaultValue="مورگان"
                       disabled={true}
                     />
                   </div>
@@ -57,7 +57,7 @@ const Authenticate = () => {
                   className="shadow-lg"
                   type="number"
                   title="کد ملی"
-                  defaultValue="4271579580"
+                  defaultValue="51311165"
                   disabled={true}
                 />
                 <SimpleInput

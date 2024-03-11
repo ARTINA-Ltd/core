@@ -7,7 +7,7 @@ import Login from "./LoginComponent/login";
 import RequestDetails from "./ExhabitionComponent/src/component/request-artist-detail-page/r-page/request-detail";
 import ShowRequests from "./ExhabitionComponent/src/component/request-artist-detail-page/r-page/show-req";
 import NFTUploadPage from "./Pages/NftUploadPage";
-import { ChainId, ThirdwebProvider } from "@thirdweb-dev/react";
+import { ThirdwebProvider } from "@thirdweb-dev/react";
 import Profile from "./Pages/Profile";
 import UserDashboard from "./Pages/UserDashboard";
 import { ScrollTop } from "primereact/scrolltop";
@@ -43,6 +43,7 @@ import PreMint from "./Pages/PreMint";
 import Authentications from "./Pages/Authentications";
 import Authenticate from "./Pages/Authenticate";
 import TicketResponse from "./Pages/TicketResponse";
+import AdminPanel from "./Pages/AdminPanel";
 
 export const UserContext = createContext();
 export const UserChangeContext = createContext();
@@ -192,6 +193,7 @@ export default () => {
                 <Route path="authentications" element={<Authentications />} />
                 <Route path="authenticate" element={<Authenticate />} />
                 <Route path="ticket-response" element={<TicketResponse />} />
+                <Route path="admin-panel" element={<AdminPanel />} />
                 {/* <Route exact path="request-lists" element={<RequestLists />} /> */}
               </Routes>
             </div>

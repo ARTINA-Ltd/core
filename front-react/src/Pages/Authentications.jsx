@@ -5,7 +5,7 @@ import Footer from "../components/Footer/Footer.jsx";
 
 const Authentications = () => {
   return (
-    <div>
+    <div dir="rtl">
       <Header />
       <div className="bg-slate-200 w-[90vw] mx-auto p-8">
         <AuthPageCard />

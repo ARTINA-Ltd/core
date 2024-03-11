@@ -14,17 +14,17 @@ const Header = ({ rev = false }) => {
     {
       title: " احراز هویت",
       link: "/authentications",
-      icon: <SiAuthy className="w-10 h-6 text-[#4e45d0]" />,
+      icon: <img src="/authentication.png" alt="" className="w-8 h-8" />,
     },
     {
       title: "تیکت ها",
       link: "/tickets",
-      icon: <FaTicket className="w-10 h-6 text-[#4e45d0]" />,
+      icon: <img src="/chat-bubble.png" alt="" className="w-8 h-8" />,
     },
     {
       title: "متاورس",
-      link: "/tickets",
-      icon: <GiVirtualMarker className="w-10 h-6 text-[#4e45d0]" />,
+      link: "/gallery",
+      icon: <img src="/virtual-space.png" alt="" className="w-8 h-8" />,
     },
   ];
 
@@ -40,7 +40,7 @@ const Header = ({ rev = false }) => {
             <div className="flex items-center gap-8 text-sm lg:hidden">
               {NotActiveItems.map((item, index) => (
                 <div
-                  className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200"
+                  className="font-bold cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200"
                   onClick={() => {
                     navigate(item.link);
                   }}
