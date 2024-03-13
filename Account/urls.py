@@ -13,7 +13,7 @@ router.register(r'login', views.LoginViewSet, basename='login')
 router.register(r'ticket', views.TicketViewSet, basename="ticket")
 router.register(r'phone-verification', views.PhoneVerificationViewSet, basename="phone_verification")
 router.register(r'send-verification-code', views.SendVerificationCodeViewSet, basename="send-verification-code")
-router.register(r'email-verification-code', views.Email, basename="email-verification-code")
+router.register(r'email-verification-code', views.EmailMixin, basename="email-verification-code")
 
 
 router.register(r'user-balance', views.UserBalanceViewSet, basename='user-balance')
