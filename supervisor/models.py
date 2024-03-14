@@ -8,8 +8,6 @@ class SupervisorTicket(models.Model):
     ticket = models.ForeignKey(TicketUser, on_delete=models.CASCADE)
     response_message = models.TextField()
 
-    def __str__(self):
-        return f"{self.supervisor.user.username} - {self.ticket.title}"
 
 class RejectionMessage(models.Model):
     message = models.TextField(blank=True, null=True)
@@ -23,7 +21,3 @@ class DocumentApproval(models.Model):
     national_code_approved = models.BooleanField(default=False)
     rejection_message = models.ForeignKey(RejectionMessage,on_delete=models.CASCADE)
     seen = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f"{self.supervisor.user.username} - {self.user_profile.user.username}"
-
