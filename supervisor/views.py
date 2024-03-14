@@ -44,7 +44,7 @@ class SupervisorTicketViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def unresponded_tickets(self, request):
-        unresponded_tickets = SupervisorTicket.objects.filter(response_message="", ticket__subject__neq="metaverse")
+        unresponded_tickets = SupervisorTicket.objects.filter(response_message="")
         serializer = self.get_serializer(unresponded_tickets, many=True)
         return Response(serializer.data)
 
