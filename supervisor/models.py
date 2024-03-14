@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class SupervisorTicket(models.Model):
     supervisor = models.ForeignKey(User, on_delete=models.CASCADE)
     ticket = models.ForeignKey(TicketUser, on_delete=models.CASCADE)
-    response_message = models.TextField()
+    response_message = models.TextField(blank=True, null=True)
 
 
 class RejectionMessage(models.Model):
