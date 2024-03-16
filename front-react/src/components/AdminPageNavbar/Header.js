@@ -75,7 +75,7 @@ const Header = ({ rev = false }) => {
                 className="h-16 sm:h-12 rounded-lg cursor-pointer"
                 src={"/Artina-Logo-1.jpeg"}
                 alt="logo"
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/admin-panel")}
               />
             </div>
           </div>

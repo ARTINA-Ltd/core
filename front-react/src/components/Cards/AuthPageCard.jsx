@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Avatat from "../../assets/images/man.png";
+import BorderButton from "./../Buttons/BorderButton";
 
 const AuthPageCard = () => {
   //   const { avatar, name, description } = props;
@@ -21,9 +22,11 @@ const AuthPageCard = () => {
           متنوع با هدف بهبود ابزارهای کاربردی می باشد.
         </p>
       </div>
-      <Link className="bg-[#609AF8] p-2 w-32 block text-center rounded-lg mx-auto mt-4 text-white text-xl hover:bg-[#6366F1] ease-in-out duration-300 my-4">
-        بررسی
-      </Link>
+      <BorderButton className={"w-1/3 mx-auto my-4"}>
+        <Link to="/authenticate" className="font-bold">
+          بررسی
+        </Link>
+      </BorderButton>
     </div>
   );
 };

@@ -17,7 +17,9 @@ const TicketCard = () => {
           </p>
         </div>
         <BorderButton className="text-right w-24 mr-auto my-2">
-          <Link className=" font-bold">مشاهده</Link>
+          <Link to="/ticket-response" className=" font-bold">
+            مشاهده
+          </Link>
         </BorderButton>
       </div>
     </div>
