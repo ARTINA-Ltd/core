@@ -29,17 +29,19 @@ const Collections = () => {
         console.log(res.data);
       });
 
-      axios
+    axios
       .get(`https://api.artina.org/api/transaction/UsersWithNFTsViewSet/`)
       .then((res) => {
         console.log(res);
-        setUser(res.data.filter((e)=>{return e.username == username})[0]);
+        setUser(
+          res.data.filter((e) => {
+            return e.username == username;
+          })[0]
+        );
       })
       .catch((res) => {
         console.log(res);
       });
-
-
   }, [username]);
 
   const handleClickShow = (e, childIsVisible, tokenid) => {
@@ -57,13 +59,13 @@ const Collections = () => {
         }
       )
       .then((res) => {
-        Notify.success("مجموعه ی شما برای عموم قابل نمایش است")
+        Notify.success("مجموعه ی شما برای عموم قابل نمایش است");
         console.log(res.data);
       });
     childIsVisible(true);
   };
 
-  const handleClickHide = (e, childIsVisible,tokenid) => {
+  const handleClickHide = (e, childIsVisible, tokenid) => {
     axios
       .put(
         `https://api.artina.org/api/transaction/nfts/toggle_visibility/`,
@@ -78,7 +80,7 @@ const Collections = () => {
         }
       )
       .then((res) => {
-        Notify.success("مجموعه ی شما فقط برای شما نمایش داده میشود")
+        Notify.success("مجموعه ی شما فقط برای شما نمایش داده میشود");
 
         console.log(res.data);
       });
@@ -86,20 +88,34 @@ const Collections = () => {
   };
   return (
     <TestLayout>
-      {user && getUser && user.data.username != username &&
-      
-      <>
-      <div className="w-full flex gap-16 items-center p-6 bg-white rounded-xl mb-4 sm:p-3 sm:gap-4 sm:flex-col">
-        <img src={getUser.profile_picture} className="rounded-full object-cover h-52 w-52 flex-shrink-0 sm:w-[120px] sm:h-[120px]" alt="" />
-        <div className="w-full flex flex-col font-b6">
-          <div>هنرمند: <span className="font-b3 px-1">{getUser.name}</span></div>
-          <div>شناسه هنرمند:  <span className="font-b3 px-1">{getUser.username}</span></div>
-          <div>درباره هنرمند:  <span className="font-b3 px-1">{getUser.bio}</span></div>
-          <div>تعداد ان اف تی: <span className="font-b3 px-1">{getUser.nft_count} عدد</span></div>
-        </div>
-      </div>
-      </>
-      }
+      {user && getUser && user.data.username != username && (
+        <>
+          <div className="w-full flex gap-16 items-center p-6 bg-white rounded-xl mb-4 sm:p-3 sm:gap-4 sm:flex-col">
+            <img
+              src={getUser.profile_picture}
+              className="rounded-full object-cover h-52 w-52 flex-shrink-0 sm:w-[120px] sm:h-[120px]"
+              alt=""
+            />
+            <div className="w-full flex flex-col font-b6">
+              <div>
+                هنرمند: <span className="font-b3 px-1">{getUser.name}</span>
+              </div>
+              <div>
+                شناسه هنرمند:{" "}
+                <span className="font-b3 px-1">{getUser.username}</span>
+              </div>
+              <div>
+                درباره هنرمند:{" "}
+                <span className="font-b3 px-1">{getUser.bio}</span>
+              </div>
+              <div>
+                تعداد ان اف تی:{" "}
+                <span className="font-b3 px-1">{getUser.nft_count} عدد</span>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
       {getData && getData.length > 0 ? (
         ""
       ) : (

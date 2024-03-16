@@ -191,7 +191,7 @@ export default () => {
                 <Route exact path="whitepaper" element={<WhitePaper />} />
                 <Route path="*" element={<NotFound />} />
                 <Route path="authentications" element={<Authentications />} />
-                <Route path="authenticate" element={<Authenticate />} />
+                <Route path="authenticate/:id" element={<Authenticate />} />
                 <Route path="ticket-response" element={<TicketResponse />} />
                 <Route path="admin-panel" element={<AdminPanel />} />
                 {/* <Route exact path="request-lists" element={<RequestLists />} /> */}

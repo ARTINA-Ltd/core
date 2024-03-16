@@ -1,13 +1,74 @@
 import Header from "./../components/AdminPageNavbar/Header";
 import Footer from "./../components/Footer/Footer";
 import AuthPageCard from "./../components/Cards/AuthPageCard";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import TicketCard from "../components/Cards/TicketCard.jsx";
 import MetaVerseCard from "../components/Cards/MetaVerseCard.jsx";
+import { useEffect, useState } from "react";
+import axios from "axios";
 const AdminPanel = () => {
+  const [loading, setLoading] = useState(true);
+  const [docApproval, setDocApproval] = useState(null);
+  const [metaTickets, setMetaTickets] = useState(null);
+  const [tckets, setTickets] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(
+        "https://api.artina.org/api/supervisor/supervisor-tickets/metaverse_tickets/",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+        }
+      )
+      .then((e) => {
+        setMetaTickets(e.data);
+      })
+      .catch((err) => {
+        console.log(`there was an error${err}`);
+      });
+
+    axios
+      .get(
+        "https://api.artina.org/api/supervisor/document-approvals/unseen_approvals/",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+        }
+      )
+      .then((e) => {
+        setDocApproval(e.data);
+      })
+      .catch((err) => {
+        console.log(`there was an error ${err}`);
+      });
+
+    axios
+      .get(
+        "https://api.artina.org/api/supervisor/supervisor-tickets/unresponded_tickets/",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+        }
+      )
+      .then((e) => {
+        setTickets(e.data);
+        console.log(e.data);
+      })
+      .catch((err) => {
+        console.log(`there was an error:/ ${err}`);
+      });
+    setLoading(false);
+    console.log(docApproval);
+  }, []);
+
   return (
     <div dir="rtl">
       <Header />
+      {console.log(docApproval)}
       <div
         className={` ${'bg-[#f9f9f9] bg-[length:300px] bg-[url("https://artina.org/12.png")] '} min-h-screen  overflow-hidden pb-8`}
       >
@@ -23,11 +84,23 @@ const AdminPanel = () => {
             </h1>
           </div>
           <div className="w-[70vw] flex mx-auto flex-wrap gap-8 justify-center items-center">
-            <AuthPageCard />
-            <AuthPageCard />
-            <AuthPageCard />
-            <AuthPageCard />
-            <AuthPageCard />
+            {docApproval
+              ? docApproval.map((doc) => {
+                  return (
+                    <AuthPageCard
+                      key={doc.id}
+                      profileImage={doc.user_profile.profile_picture}
+                      name={
+                        doc.user_profile.first_name +
+                        " " +
+                        doc.user_profile.last_name
+                      }
+                      bio={doc.user_profile.bio}
+                      destination={doc.id}
+                    />
+                  );
+                })
+              : null}
           </div>
           <div className="w-36 mr-auto rounded-lg text-white p-4 hover:bg-[#609AF8] ease-in-out duration-200 text-center my-8 bg-[#4e45d0] shadow-md">
             <Link className="hover:pr-4 ease-in-out duration-200  font-bold">
