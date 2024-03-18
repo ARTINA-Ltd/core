@@ -1,9 +1,9 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import DocumentApproval, SupervisorTicket
-from .serializers import DocumentApprovalSerializer, SupervisorTicketSerializer
-from Account.views import EmailMixin  # Import the EmailMixin
+from .models import DocumentApproval, SupervisorTicket , RejectionMessage
+from .serializers import DocumentApprovalSerializer, SupervisorTicketSerializer , RejectionMessageSerializer
+from Account.views import EmailMixin  
 
 class DocumentApprovalViewSet(viewsets.ModelViewSet):
     queryset = DocumentApproval.objects.all()
@@ -63,10 +63,17 @@ class SupervisorTicketViewSet(viewsets.ModelViewSet):
             subject = "Response to your ticket"
             recipient_email = ticket.ticket.user.email  # Assuming user's email is stored in ticket
             message = response_message  # Use response message as email message
-            self.send_email(subject, recipient_email, message)  # Use the send_email method from EmailMixin
+            EmailMixin.send_email(subject, recipient_email, message)  # Use the send_email method from EmailMixin
             # Update ticket response
             ticket.response_message = response_message
             ticket.save()
             return Response({'status': 'Response sent'}, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Response message is required'}, status=status.HTTP_400_BAD_REQUEST)            
+        
+
+
+
+class RejectionMessageViewSet(viewsets.ModelViewSet):
+    queryset = RejectionMessage.objects.all()
+    serializer_class = RejectionMessageSerializer
