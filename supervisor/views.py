@@ -54,25 +54,36 @@ class SupervisorTicketViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(metaverse_tickets, many=True)
         return Response(serializer.data)
 
-    @action(detail=True, methods=['put'])
+    @action(detail=True, methods=['post'])
     def respond(self, request, pk=None):
-        ticket = self.get_object()
+        # Get supervisor ID from request user (assuming it's authenticated)
+        supervisor_id = self.request.user.id
+
+        # Get the ticket
+        ticketS = SupervisorTicket.objects.get(pk=pk)
+
+        # Check if the ticket is assigned to the requesting supervisor
+        if ticketS.supervisor.id != supervisor_id:
+            return Response({'error': 'You are not authorized to respond to this ticket.'}, status=status.HTTP_403_FORBIDDEN)
+
+        # Extract response_message from request data
         response_message = request.data.get('response_message', None)
-        if response_message:
-            # Mail response to the user
-            subject = "Response to your ticket"
-            recipient_email = ticket.ticket.email  # Assuming user's email is stored in ticket
-            message = response_message  # Use response message as email message
-            EmailMixin.send_email(subject, recipient_email, message)  # Use the send_email method from EmailMixin
-            # Update ticket response
-            ticket.response_message = response_message
-            ticket.save()
-            return Response({'status': 'Response sent'}, status=status.HTTP_200_OK)
-        else:
-            return Response({'error': 'Response message is required'}, status=status.HTTP_400_BAD_REQUEST)            
-        
 
+        # Check if response_message exists
+        if not response_message:
+            return Response({'error': 'Response message is required'}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Mail response to the user
+        subject = "Response to your ticket"
+        recipient_email = ticketS.ticket.email
+        message = response_message
+        EmailMixin.send_email(subject, recipient_email, message)
+
+        # Update ticket response
+        ticketS.response_message = response_message
+        ticketS.save()
+
+        return Response({'status': 'Response sent'}, status=status.HTTP_200_OK)
 
 class RejectionMessageViewSet(viewsets.ModelViewSet):
     queryset = RejectionMessage.objects.all()

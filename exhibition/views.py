@@ -251,7 +251,7 @@ class OpenExhibitionListView(viewsets.ModelViewSet):
 
 class NFTByExhibitionViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['get'])
-    def listofnfts(exhibition_id):
+    def listofnfts(self,exhibition_id):
         try:
             exhibition = Exhibition.objects.get(id=exhibition_id)
         except Exhibition.DoesNotExist:
