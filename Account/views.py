@@ -684,7 +684,7 @@ def connect_with_retry():
 class EmailMixin(viewsets.ViewSet):
     queryset = PhoneVerification.objects.all()
     @action(detail=False, methods=['post'])
-    def send_email(self,subject,recipient_email,message):
+    def send_email(subject,recipient_email,message):
         # Email configuration
         smtp_server = 'mailservice9.irandns.com'
         smtp_port = 587 
