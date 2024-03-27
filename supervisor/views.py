@@ -32,6 +32,7 @@ class DocumentApprovalViewSet(viewsets.ModelViewSet):
         rejection_message = request.data.get('rejection_message', None)
         if rejection_message:
             approval.rejection_message = rejection_message
+            print(rejection_message)
             approval.seen = True
             approval.save()
             return Response({'status': 'Rejected'}, status=status.HTTP_200_OK)
