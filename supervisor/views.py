@@ -31,7 +31,7 @@ class DocumentApprovalViewSet(viewsets.ModelViewSet):
         approval = self.get_object()
         rejection_message = request.data.get('rejection_message', None)
         if rejection_message:
-            approval.rejection_message = rejection_message
+            approval.response_message = rejection_message
             approval.save()
 
             print(rejection_message)
