@@ -10,7 +10,7 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
   const [docApproval, setDocApproval] = useState(null);
   const [metaTickets, setMetaTickets] = useState(null);
-  const [tckets, setTickets] = useState(null);
+  const [tickets, setTickets] = useState(null);
 
   useEffect(() => {
     axios
@@ -56,103 +56,133 @@ const AdminPanel = () => {
       )
       .then((e) => {
         setTickets(e.data);
-        console.log(e.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(`there was an error:/ ${err}`);
       });
-    setLoading(false);
-    console.log(docApproval);
   }, []);
 
   return (
     <div dir="rtl">
-      <Header />
-      {console.log(docApproval)}
-      <div
-        className={` ${'bg-[#f9f9f9] bg-[length:300px] bg-[url("https://artina.org/12.png")] '} min-h-screen  overflow-hidden pb-8`}
-      >
-        <div className="w-[90vw] my-4 mx-auto h-1/2 rounded-lg p-4">
-          <div className="bg-[#4e45d0] my-4 flex flex-col relative text-white gap-4 items-center overflow-hidden rounded-xl shadow-md">
-            <img
-              alt=""
-              src="/mand1.png"
-              className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
-            />
-            <h1 className="text-center font-bold text-3xl my-4  p-4 ">
-              احراز هویت
-            </h1>
+      {loading === false ? (
+        <div className="">
+          <Header />
+
+          <div
+            className={` ${'bg-[#f9f9f9] bg-[length:300px] bg-[url("https://artina.org/12.png")] '} min-h-screen  overflow-hidden pb-8`}
+          >
+            <div className="w-[90vw] my-4 mx-auto h-1/2 rounded-lg p-4">
+              <div className="bg-[#4e45d0] my-4 flex flex-col relative text-white gap-4 items-center overflow-hidden rounded-xl shadow-md">
+                <img
+                  alt=""
+                  src="/mand1.png"
+                  className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
+                />
+                <h1 className="text-center font-bold text-3xl my-4  p-4 ">
+                  احراز هویت
+                </h1>
+              </div>
+              <div className="w-[70vw] flex mx-auto flex-wrap gap-8 justify-center items-center">
+                {docApproval
+                  ? docApproval.map((doc) => {
+                      return (
+                        <AuthPageCard
+                          key={doc.id}
+                          profileImage={doc.user_profile.profile_picture}
+                          name={
+                            doc.user_profile.first_name +
+                            " " +
+                            doc.user_profile.last_name
+                          }
+                          bio={doc.user_profile.bio}
+                          destination={doc.id}
+                        />
+                      );
+                    })
+                  : null}
+              </div>
+              <div className="w-36 mr-auto rounded-lg text-white p-4 hover:bg-[#609AF8] ease-in-out duration-200 text-center my-8 bg-[#4e45d0] shadow-md">
+                <Link className="hover:pr-4 ease-in-out duration-200  font-bold">
+                  مشاهده همه
+                </Link>
+              </div>
+            </div>
+            <div className="w-[90vw] my-4 mx-auto h-1/2 rounded-lg p-4">
+              <div className=" mx-auto bg-[#4e45d0] flex flex-col relative text-white gap-4 items-center overflow-hidden rounded-xl shadow-md my-4">
+                <img
+                  alt=""
+                  src="/mand1.png"
+                  className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
+                />
+                <h1 className="text-center font-bold text-3xl my-4 p-4 ">
+                  تیکت ها
+                </h1>
+              </div>
+              <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-1">
+                {tickets
+                  ? tickets.map((ticket) => {
+                      const text = ticket.ticket.text.substring(0, 25);
+                      return (
+                        <TicketCard
+                          key={ticket.id}
+                          id={ticket.id}
+                          subject={ticket.ticket.subject}
+                          text={text + " ..."}
+                        />
+                      );
+                    })
+                  : null}
+              </div>
+              <div className="w-36 mr-auto rounded-lg text-white p-4 text-center my-8 hover:bg-[#609AF8] ease-in-out duration-200 bg-[#4e45d0] shadow-sm ">
+                <Link className="hover:pr-4 ease-in-out duration-200 font-bold">
+                  مشاهده همه
+                </Link>
+              </div>
+            </div>
+            <div className="w-[90vw] my-4 mx-auto h-1/2 rounded-lg p-4">
+              <div className=" mx-auto bg-[#4e45d0] flex flex-col relative text-white gap-4 items-center overflow-hidden rounded-xl shadow-md my-4">
+                <img
+                  alt=""
+                  src="/mand1.png"
+                  className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
+                />
+                <h1 className="text-center font-bold text-3xl my-4 p-4 ">
+                  متاورس
+                </h1>
+              </div>
+              <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-1">
+                {metaTickets
+                  ? metaTickets.map((ticket) => {
+                      return (
+                        <MetaVerseCard
+                          key={ticket.id}
+                          title={ticket.ticket.subject}
+                          count={ticket.ticket.user}
+                          img={ticket.ticket.image_url}
+                        />
+                      );
+                    })
+                  : null}
+              </div>
+              <div className="w-36 mr-auto rounded-lg text-white p-4 text-center my-8 hover:bg-[#609AF8] ease-in-out duration-200 bg-[#4e45d0] shadow-sm ">
+                <Link className="hover:pr-4 ease-in-out duration-200 font-bold">
+                  مشاهده همه
+                </Link>
+              </div>
+            </div>
+            <button
+              onClick={() => {
+                console.log(metaTickets);
+              }}
+            >
+              دیدن
+            </button>
           </div>
-          <div className="w-[70vw] flex mx-auto flex-wrap gap-8 justify-center items-center">
-            {docApproval
-              ? docApproval.map((doc) => {
-                  return (
-                    <AuthPageCard
-                      key={doc.id}
-                      profileImage={doc.user_profile.profile_picture}
-                      name={
-                        doc.user_profile.first_name +
-                        " " +
-                        doc.user_profile.last_name
-                      }
-                      bio={doc.user_profile.bio}
-                      destination={doc.id}
-                    />
-                  );
-                })
-              : null}
-          </div>
-          <div className="w-36 mr-auto rounded-lg text-white p-4 hover:bg-[#609AF8] ease-in-out duration-200 text-center my-8 bg-[#4e45d0] shadow-md">
-            <Link className="hover:pr-4 ease-in-out duration-200  font-bold">
-              مشاهده همه
-            </Link>
-          </div>
+
+          <Footer />
         </div>
-        <div className="w-[90vw] my-4 mx-auto h-1/2 rounded-lg p-4">
-          <div className=" mx-auto bg-[#4e45d0] flex flex-col relative text-white gap-4 items-center overflow-hidden rounded-xl shadow-md my-4">
-            <img
-              alt=""
-              src="/mand1.png"
-              className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
-            />
-            <h1 className="text-center font-bold text-3xl my-4 p-4 ">
-              تیکت ها
-            </h1>
-          </div>
-          <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-1">
-            <TicketCard />
-            <TicketCard />
-            <TicketCard />
-            <TicketCard />
-          </div>
-          <div className="w-36 mr-auto rounded-lg text-white p-4 text-center my-8 hover:bg-[#609AF8] ease-in-out duration-200 bg-[#4e45d0] shadow-sm ">
-            <Link className="hover:pr-4 ease-in-out duration-200 font-bold">
-              مشاهده همه
-            </Link>
-          </div>
-        </div>
-        <div className="w-[90vw] my-4 mx-auto h-1/2 rounded-lg p-4">
-          <div className=" mx-auto bg-[#4e45d0] flex flex-col relative text-white gap-4 items-center overflow-hidden rounded-xl shadow-md my-4">
-            <img
-              alt=""
-              src="/mand1.png"
-              className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
-            />
-            <h1 className="text-center font-bold text-3xl my-4 p-4 ">متاورس</h1>
-          </div>
-          <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-1">
-            <MetaVerseCard />
-            <MetaVerseCard />
-            <MetaVerseCard />
-          </div>
-          <div className="w-36 mr-auto rounded-lg text-white p-4 text-center my-8 hover:bg-[#609AF8] ease-in-out duration-200 bg-[#4e45d0] shadow-sm ">
-            <Link className="hover:pr-4 ease-in-out duration-200 font-bold">
-              مشاهده همه
-            </Link>
-          </div>
-        </div>
-      </div>
-      <Footer />
+      ) : null}
     </div>
   );
 };
