@@ -61,7 +61,7 @@ class SupervisorTicketViewSet(viewsets.ModelViewSet):
         if response_message:
             # Mail response to the user
             subject = "Response to your ticket"
-            recipient_email = ticket.ticket.user.email  # Assuming user's email is stored in ticket
+            recipient_email = ticket.ticket.email  # Assuming user's email is stored in ticket
             message = response_message  # Use response message as email message
             EmailMixin.send_email(subject, recipient_email, message)  # Use the send_email method from EmailMixin
             # Update ticket response
