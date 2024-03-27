@@ -19,5 +19,5 @@ class DocumentApproval(models.Model):
     shaba_number_approved = models.BooleanField(default=False)
     national_card_picture_approved = models.BooleanField(default=False)
     national_code_approved = models.BooleanField(default=False)
-    rejection_message = models.ForeignKey(RejectionMessage,on_delete=models.CASCADE)
+    response_message = models.TextField(blank=True, null=True)
     seen = models.BooleanField(default=False)
