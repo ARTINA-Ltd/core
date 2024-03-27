@@ -249,20 +249,28 @@ class OpenExhibitionListView(viewsets.ModelViewSet):
 
 
 
-class NFTByExhibitionViewSet(viewsets.ViewSet):
-    @action(detail=False, methods=['get'])
-    def listofnfts(self, request, pk=None):
+from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Exhibition, NFT
+from .serializers import ExhibitionSerializer, NFTSerializer
+
+class NFTsByExhibitionViewSet(viewsets.ViewSet):
+    def retrieve(self, request, pk=None):
         try:
             exhibition = Exhibition.objects.get(pk=pk)
         except Exhibition.DoesNotExist:
             return Response({'error': 'Exhibition not found'}, status=status.HTTP_404_NOT_FOUND)
 
-        applications = Application.objects.filter(exhibition=exhibition, status="accepted")
-        nfts = NFT.objects.filter(applications__in=applications).distinct()
+        nfts = NFT.objects.filter(exhibition=pk)
+        exhibition_serializer = ExhibitionSerializer(exhibition)
+        nft_serializer = NFTSerializer(nfts, many=True)
 
-        serializer = NFTSerializer(nfts, many=True)
-        return Response(serializer.data)
-
+        data = {
+            'exhibition': exhibition_serializer.data,
+            'nfts': nft_serializer.data
+        }
+        return Response(data)
 
 from rest_framework import status as drf_status
 
