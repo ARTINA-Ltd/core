@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import { SiAuthy } from "react-icons/si";
-import { FaTicket } from "react-icons/fa6";
-import { GiVirtualMarker } from "react-icons/gi";
 
 import "./Header.css";
 import { useNavigate } from "react-router";
@@ -18,12 +15,12 @@ const Header = ({ rev = false }) => {
     },
     {
       title: "تیکت ها",
-      link: "/tickets",
+      link: "/alltickets",
       icon: <img src="/chat-bubble.png" alt="" className="w-8 h-8" />,
     },
     {
       title: "متاورس",
-      link: "/gallery",
+      link: "/metaversetickets",
       icon: <img src="/virtual-space.png" alt="" className="w-8 h-8" />,
     },
   ];

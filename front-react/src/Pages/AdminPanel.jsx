@@ -23,7 +23,7 @@ const AdminPanel = () => {
         }
       )
       .then((e) => {
-        setMetaTickets(e.data);
+        setMetaTickets(e.data.slice(0, 4));
       })
       .catch((err) => {
         console.log(`there was an error${err}`);
@@ -39,7 +39,7 @@ const AdminPanel = () => {
         }
       )
       .then((e) => {
-        setDocApproval(e.data);
+        setDocApproval(e.data.slice(0, 4));
       })
       .catch((err) => {
         console.log(`there was an error ${err}`);
@@ -55,7 +55,7 @@ const AdminPanel = () => {
         }
       )
       .then((e) => {
-        setTickets(e.data);
+        setTickets(e.data.slice(0, 4));
         setLoading(false);
       })
       .catch((err) => {
@@ -103,7 +103,10 @@ const AdminPanel = () => {
                   : null}
               </div>
               <div className="w-36 mr-auto rounded-lg text-white p-4 hover:bg-[#609AF8] ease-in-out duration-200 text-center my-8 bg-[#4e45d0] shadow-md">
-                <Link className="hover:pr-4 ease-in-out duration-200  font-bold">
+                <Link
+                  to={"/authentications"}
+                  className="hover:pr-4 ease-in-out duration-200  font-bold"
+                >
                   مشاهده همه
                 </Link>
               </div>
@@ -128,14 +131,17 @@ const AdminPanel = () => {
                           key={ticket.id}
                           id={ticket.id}
                           subject={ticket.ticket.subject}
-                          text={text + " ..."}
+                          text={text.length < 25 ? text : text + " ..."}
                         />
                       );
                     })
                   : null}
               </div>
               <div className="w-36 mr-auto rounded-lg text-white p-4 text-center my-8 hover:bg-[#609AF8] ease-in-out duration-200 bg-[#4e45d0] shadow-sm ">
-                <Link className="hover:pr-4 ease-in-out duration-200 font-bold">
+                <Link
+                  to={"/allTickets"}
+                  className="hover:pr-4 ease-in-out duration-200 font-bold"
+                >
                   مشاهده همه
                 </Link>
               </div>
@@ -166,7 +172,10 @@ const AdminPanel = () => {
                   : null}
               </div>
               <div className="w-36 mr-auto rounded-lg text-white p-4 text-center my-8 hover:bg-[#609AF8] ease-in-out duration-200 bg-[#4e45d0] shadow-sm ">
-                <Link className="hover:pr-4 ease-in-out duration-200 font-bold">
+                <Link
+                  to={"/metaversetickets"}
+                  className="hover:pr-4 ease-in-out duration-200 font-bold"
+                >
                   مشاهده همه
                 </Link>
               </div>

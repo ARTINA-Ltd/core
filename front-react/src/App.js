@@ -44,6 +44,8 @@ import Authentications from "./Pages/Authentications";
 import Authenticate from "./Pages/Authenticate";
 import TicketResponse from "./Pages/TicketResponse";
 import AdminPanel from "./Pages/AdminPanel";
+import AllTickets from "./Pages/AllTickets";
+import MetaverseTickets from "./Pages/MetaverseTickets.jsx";
 
 export const UserContext = createContext();
 export const UserChangeContext = createContext();
@@ -190,6 +192,8 @@ export default () => {
                 <Route exact path="FAQ" element={<HelpQuestions />} />
                 <Route exact path="whitepaper" element={<WhitePaper />} />
                 <Route path="*" element={<NotFound />} />
+                <Route path="allTickets" element={<AllTickets />} />
+                <Route path="metaversetickets" element={<MetaverseTickets />} />
                 <Route path="authentications" element={<Authentications />} />
                 <Route path="authenticate/:id" element={<Authenticate />} />
                 <Route

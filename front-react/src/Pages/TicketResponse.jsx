@@ -89,19 +89,19 @@ const TicketResponse = () => {
             className={`bg-white gap-4 rounded-lg p-8 w-[90vw] flex flex-wrap justify-between mx-auto my-10`}
           >
             <div className="user-ticket w-1/2 w-[calc(50%-1rem) md:w-full">
-              <div className="flex w-1/3 lg:w-2/3 md:w-1/2 sm:w-full gap-4 shadow-md p-1 rounded-l-lg items-center border-r-2  border-[#4e45d0]">
+              <div className="flex w-full  gap-4 shadow-md p-1 rounded-l-lg items-center border-r-2  border-[#4e45d0]">
                 <label className="block ml-8 self-center text-[#4e45d0] mr-4">
                   کاربر
                 </label>
-                {ticket.ticket.image_url ? (
-                  <img
-                    src={ticket.ticket.image_url}
-                    alt=""
-                    className="w-12 h-12"
-                  />
-                ) : (
-                  <img src={Avatar} alt="" className="w-12 h-12" />
-                )}
+
+                <img
+                  src={
+                    ticket.ticket.image_url ? ticket.ticket.image_url : Avatar
+                  }
+                  alt=""
+                  className="w-12 h-12 rounded-full"
+                />
+
                 <label className="block text-gray-700  p-4 ">
                   {ticket.ticket.name}
                 </label>
@@ -110,9 +110,9 @@ const TicketResponse = () => {
                 <label className="block text-[#4e45d0] p-4 w-1/3 border-r-2  border-[#4e45d0]">
                   موضوع
                 </label>
-                <label className="block text-gray-700  container p-4 w-2/3 ">
-                  {ticket.ticket.subject}{" "}
-                </label>
+                <p className="block text-gray-700 p-4 w-2/3 ">
+                  {ticket.ticket.subject}
+                </p>
               </div>
               <label className="block text-[#4e45d0] p-4 border-r-2  border-[#4e45d0] mt-4  w-full rounded-l-lg">
                 متن پیام
