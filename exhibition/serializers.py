@@ -1,15 +1,15 @@
 from rest_framework import serializers
-from exhibition import models
-# from Account import serializers
+from exhibition.models import *
 from django.contrib.auth.models import User
+from core.models import NFT 
 
 
-class UserSerializer(serializers.ModelSerializer):
-    # profile = Account.serializers.ProfileSerializer()
+# class UserSerializer(serializers.ModelSerializer):
+#     # profile = Account.serializers.ProfileSerializer()
 
-    class Meta:
-        model = models.User
-        fields = ['id','username']
+#     class Meta:
+#         model = models.User
+#         fields = ['id','username']
 
 
 
@@ -22,9 +22,7 @@ class NumberSerializer(serializers.Serializer):
 
 
 
-from rest_framework import serializers
-from .models import NFT, Exhibition, Application , Category, Ticket
-# CustomUser
+
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -54,7 +52,6 @@ class ExhibitionSerializer(serializers.ModelSerializer):
 
 class ApplicationSerializer(serializers.ModelSerializer):
     exhibition = serializers.PrimaryKeyRelatedField(queryset=Exhibition.objects.all())
-    # artist = serializers.HiddenField(default=serializers.CurrentUserDefault())
     contract_accepted = serializers.BooleanField(required=True)
     nft = serializers.PrimaryKeyRelatedField(queryset=NFT.objects.all(), many=True)
 
@@ -63,13 +60,3 @@ class ApplicationSerializer(serializers.ModelSerializer):
         fields = ['id', 'artist', 'exhibition', 'description', 'nft', 'contract_accepted']
 
 
-
-    # def validate_nft(self, value):
-    #     if value.in_exhibition:
-    #         raise serializers.ValidationError("This NFT is currently part of an exhibition and cannot be used in another application.")
-    #     return value
-
-# class CustomUserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = CustomUser
-#         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'balance']

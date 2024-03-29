@@ -188,30 +188,6 @@ class ApplicationViewSet(viewsets.ModelViewSet):
 
 
 
-
-# class ExhibitorApplicationsViewSet(viewsets.ViewSet):
-#     # permission_classes = [IsAuthenticated]
-
-#     def update(self, request, pk=None):
-#         try:
-#             application = Application.objects.get(id=pk, exhibition__user=request.user)
-#         except Application.DoesNotExist:
-#             return Response({'error': 'Application not found.'}, status=status.HTTP_404_NOT_FOUND)
-
-#         action = request.data.get('action', None)
-#         if action not in ['accept', 'ignored']:
-#             return Response({'error': 'Invalid action.'}, status=status.HTTP_400_BAD_REQUEST)
-
-#         if action == 'accept':
-#             application.status = 'accepted'
-#         elif action == 'ignored':
-#             application.status = 'ignored'
-
-#         application.save()
-#         serialized_data = ApplicationSerializer(application).data
-#         return Response(serialized_data, status=status.HTTP_200_OK)
-
-
 class ExhibitionInfoView(viewsets.ModelViewSet):
     # permission_classes = [IsAuthenticated]
     queryset = Exhibition.objects.all()
@@ -254,12 +230,13 @@ class OpenExhibitionListView(viewsets.ModelViewSet):
 class NFTsByExhibitionViewSet(viewsets.ModelViewSet):
     queryset = Exhibition.objects.all()
     serializer_class = ExhibitionSerializer
+    @action(detail=True, methods=['get'])
 
-    # Custom action to retrieve all NFTs associated with an exhibition
     def get_nfts(self, request, pk=None):
         try:
             exhibition = self.get_object()
-            nfts = NFT.objects.filter(in_exhibition=True, collection__exhibition=exhibition)
+            applications = Application.objects.filter(exhibition=exhibition)
+            nfts = NFT.objects.filter(applications__in=applications)
             serializer = NFTSerializer(nfts, many=True)
             return Response(serializer.data)
         except Exhibition.DoesNotExist:
