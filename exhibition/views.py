@@ -10,8 +10,10 @@ from rest_framework import status
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from .models import NFT, Exhibition, Application , Category , Ticket , Ex_Payment
-from .serializers import NFTSerializer, ExhibitionSerializer, ApplicationSerializer , CategorySerializer ,TicketSerializer
+from .models import Exhibition, Application , Category , Ticket , Ex_Payment
+from .serializers import ExhibitionSerializer, ApplicationSerializer , CategorySerializer ,TicketSerializer
+from core.serializers import NFTSerializer
+from core.models import NFT 
 from django.utils import timezone
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
@@ -249,28 +251,27 @@ class OpenExhibitionListView(viewsets.ModelViewSet):
 
 
 
-from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Exhibition, NFT
-from .serializers import ExhibitionSerializer, NFTSerializer
+class NFTsByExhibitionViewSet(viewsets.ModelViewSet):
+    queryset = Exhibition.objects.all()
+    serializer_class = ExhibitionSerializer
 
-class NFTsByExhibitionViewSet(viewsets.ViewSet):
-    def retrieve(self, request, pk=None):
+    # Custom action to retrieve all NFTs associated with an exhibition
+    def get_nfts(self, request, pk=None):
         try:
-            exhibition = Exhibition.objects.get(pk=pk)
+            exhibition = self.get_object()
+            nfts = NFT.objects.filter(in_exhibition=True, collection__exhibition=exhibition)
+            serializer = NFTSerializer(nfts, many=True)
+            return Response(serializer.data)
         except Exhibition.DoesNotExist:
-            return Response({'error': 'Exhibition not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "Exhibition not found"}, status=404)
 
-        nfts = NFT.objects.filter(exhibition=pk)
-        exhibition_serializer = ExhibitionSerializer(exhibition)
-        nft_serializer = NFTSerializer(nfts, many=True)
-
-        data = {
-            'exhibition': exhibition_serializer.data,
-            'nfts': nft_serializer.data
-        }
-        return Response(data)
+    # # Define allowed actions for the viewset
+    # def get_permissions(self):
+    #     if self.action == 'get_nfts':
+    #         permission_classes = []
+    #     else:
+    #         permission_classes = [IsAuthenticated]  # Add appropriate permissions here
+    #     return [permission() for permission in permission_classes]
 
 from rest_framework import status as drf_status
 
