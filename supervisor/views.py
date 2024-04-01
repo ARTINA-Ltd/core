@@ -51,7 +51,7 @@ class SupervisorTicketViewSet(viewsets.ModelViewSet):
     def notify_response(self, request):
         exhibition_owner = request.data.get("username") 
         text = request.data.get('text', '') 
-        user= User.objects.filter(username=exhibition_owner)
+        user= User.objects.get(username=exhibition_owner)
         NotifyUser.objects.create(user=user,text=text)
         return Response({'message': 'Notification created successfully'}, status=201)
 
