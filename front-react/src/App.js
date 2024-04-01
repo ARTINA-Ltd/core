@@ -46,6 +46,7 @@ import TicketResponse from "./Pages/TicketResponse";
 import AdminPanel from "./Pages/AdminPanel";
 import AllTickets from "./Pages/AllTickets";
 import MetaverseTickets from "./Pages/MetaverseTickets.jsx";
+import ExhibitionApproval from "./Pages/ExhibitionApproval.jsx";
 
 export const UserContext = createContext();
 export const UserChangeContext = createContext();
@@ -196,6 +197,10 @@ export default () => {
                 <Route path="metaversetickets" element={<MetaverseTickets />} />
                 <Route path="authentications" element={<Authentications />} />
                 <Route path="authenticate/:id" element={<Authenticate />} />
+                <Route
+                  path="exhibitionapproval/:id"
+                  element={<ExhibitionApproval />}
+                />
                 <Route
                   path="ticket-response/:id"
                   element={<TicketResponse />}

@@ -166,6 +166,7 @@ const AdminPanel = () => {
                           title={ticket.ticket.subject}
                           count={ticket.ticket.user}
                           img={ticket.ticket.image_url}
+                          id={ticket.id}
                         />
                       );
                     })
