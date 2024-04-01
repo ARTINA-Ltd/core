@@ -7,11 +7,11 @@ class SupervisorTicket(models.Model):
     supervisor = models.ForeignKey(User, on_delete=models.CASCADE)
     ticket = models.ForeignKey(TicketUser, on_delete=models.CASCADE)
     response_message = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class RejectionMessage(models.Model):
     message = models.TextField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
 
 class DocumentApproval(models.Model):
     supervisor = models.ForeignKey(User, on_delete=models.CASCADE)

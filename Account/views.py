@@ -48,6 +48,13 @@ class NotifyUserViewSet(viewsets.ModelViewSet):
     queryset = NotifyUser.objects.all()
     serializer_class = NotifyUserSerializer
     
+    def create(self, request):
+        serializer = NotifyUserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
     def get_queryset(self):
         user = self.request.user
         return NotifyUser.objects.filter(user=user)

@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from .models import DocumentApproval, SupervisorTicket , RejectionMessage
 from .serializers import DocumentApprovalSerializer, SupervisorTicketSerializer , RejectionMessageSerializer
 from Account.views import EmailMixin  
+from django.contrib.auth.models import User
+from Account.models import NotifyUser
 
 class DocumentApprovalViewSet(viewsets.ModelViewSet):
     queryset = DocumentApproval.objects.all()
@@ -44,6 +46,15 @@ class DocumentApprovalViewSet(viewsets.ModelViewSet):
 class SupervisorTicketViewSet(viewsets.ModelViewSet):
     queryset = SupervisorTicket.objects.all()
     serializer_class = SupervisorTicketSerializer
+
+    @action(detail=False, methods=['post'])
+    def notify_response(self, request):
+        exhibition_owner = request.data.get("username") 
+        text = request.data.get('text', '') 
+        user= User.objects.filter(username=exhibition_owner)
+        NotifyUser.objects.create(user=user,text=text)
+        return Response({'message': 'Notification created successfully'}, status=201)
+
 
     @action(detail=False, methods=['get'])
     def unresponded_tickets(self, request):
