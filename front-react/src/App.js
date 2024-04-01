@@ -40,6 +40,7 @@ import NotFound from "./Pages/NotFound";
 import RedirectedPage from "./Pages/RedirectPage";
 import WhitePaper from "./Pages/WhitePaper";
 import PreMint from "./Pages/PreMint";
+import AllCollections from "./Pages/AllCollections";
 const activeChainId = ChainId.Goerli;
 
 export const UserContext = createContext();
@@ -133,6 +134,7 @@ export default () => {
                 <Route exact path="exhibitor" element={<Exhibitor />} />
                 <Route exact path="collections/:username" element={<Collections />} />
                 <Route exact path="user-collections" element={<UserCollections />} />
+                <Route exact path="all-collections" element={<AllCollections />} />
                 <Route exact path="exhibition-collections/:id" element={<ExhibitionCollections />} />
                 <Route exact path="ai" element={<AI />} />
                 <Route exact path="metaverse/:token?" element={<Metaverse />} />
