@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router";
-import { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import ArtistPage from "./Pages/ArtistPage";
 import NFTDetails from "./Pages/NFTDetails";
 import Register from "./LoginComponent/register";
@@ -95,119 +95,140 @@ export default () => {
         <UserContext.Provider value={user}>
           <UserChangeContext.Provider value={userChange}>
             <div className="App">
-              <ScrollTop
-                className="bg-primary animate-bounce scale-75"
-                icon="pi pi-arrow-up"
-              />
-
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route exact path="artist-page" element={<ArtistPage />} />
-                <Route
-                  exact
-                  path="artist-application-form/:id"
-                  element={<ArtistApplicationForm />}
-                />
-                <Route exact path="nft-details/:id" element={<NFTDetails />} />
-                <Route exact path="Commission" element={<Commission />} />
-                <Route exact path="login" element={<Login />} />
-                <Route
-                  exact
-                  path="forget-password"
-                  element={<ForgetPassword />}
-                />
-                <Route exact path="support" element={<Support />} />
-                <Route exact path="register" element={<Register />} />
-
-                <Route exact path="contact" element={<Contact />} />
-                <Route exact path="about-us" element={<AboutUs />} />
-                <Route
-                  exact
-                  path="privacy-policy"
-                  element={<PrivacyPolicy />}
+              <React.Suspense fallback="loading...">
+                <ScrollTop
+                  className="bg-primary animate-bounce scale-75"
+                  icon="pi pi-arrow-up"
                 />
 
-                <Route exact path="help-mint" element={<HelpMint />} />
-                <Route
-                  exact
-                  path="help-create-exhibition"
-                  element={<HelpCreateExhibition />}
-                />
-                <Route
-                  exact
-                  path="help-create-wallet"
-                  element={<HelpCreateWallet />}
-                />
-                <Route
-                  exact
-                  path="metaverse_explanation"
-                  element={<MetaExplanation />}
-                />
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route exact path="artist-page" element={<ArtistPage />} />
+                  <Route
+                    exact
+                    path="artist-application-form/:id"
+                    element={<ArtistApplicationForm />}
+                  />
+                  <Route
+                    exact
+                    path="nft-details/:id"
+                    element={<NFTDetails />}
+                  />
+                  <Route exact path="Commission" element={<Commission />} />
+                  <Route exact path="login" element={<Login />} />
+                  <Route
+                    exact
+                    path="forget-password"
+                    element={<ForgetPassword />}
+                  />
+                  <Route exact path="support" element={<Support />} />
+                  <Route exact path="register" element={<Register />} />
 
-                <Route
-                  exact
-                  path="exhibition-list"
-                  element={<ExhibitionList />}
-                />
-                <Route
-                  exact
-                  path="open-exhibitions"
-                  element={<OpenExhibitions />}
-                />
-                <Route exact path="requests-list" element={<RequestsList />} />
-                <Route exact path="show-request" element={<ShowRequests />} />
-                <Route
-                  exact
-                  path="request-details"
-                  element={<RequestDetails />}
-                />
-                <Route exact path="upload-page" element={<NFTUploadPage />} />
-                <Route exact path="pre-mint" element={<PreMint />} />
-                <Route exact path="UserDashboard" element={<UserDashboard />} />
-                <Route exact path="dashboard" element={<Dashboard />} />
-                <Route exact path="profile" element={<Profile />} />
-                <Route exact path="exhibitor" element={<Exhibitor />} />
-                <Route
-                  exact
-                  path="collections/:username"
-                  element={<Collections />}
-                />
-                <Route
-                  exact
-                  path="user-collections"
-                  element={<UserCollections />}
-                />
-                <Route
-                  exact
-                  path="exhibition-collections/:id"
-                  element={<ExhibitionCollections />}
-                />
-                <Route exact path="ai" element={<AI />} />
-                <Route exact path="metaverse/:token?" element={<Metaverse />} />
-                <Route exact path="join-artina" element={<GetMail />}></Route>
-                <Route
-                  exact
-                  path="payment_status"
-                  element={<RedirectedPage />}
-                />
-                <Route exact path="FAQ" element={<HelpQuestions />} />
-                <Route exact path="whitepaper" element={<WhitePaper />} />
-                <Route path="*" element={<NotFound />} />
-                <Route path="allTickets" element={<AllTickets />} />
-                <Route path="metaversetickets" element={<MetaverseTickets />} />
-                <Route path="authentications" element={<Authentications />} />
-                <Route path="authenticate/:id" element={<Authenticate />} />
-                <Route
-                  path="exhibitionapproval/:id"
-                  element={<ExhibitionApproval />}
-                />
-                <Route
-                  path="ticket-response/:id"
-                  element={<TicketResponse />}
-                />
-                <Route path="admin-panel" element={<AdminPanel />} />
-                {/* <Route exact path="request-lists" element={<RequestLists />} /> */}
-              </Routes>
+                  <Route exact path="contact" element={<Contact />} />
+                  <Route exact path="about-us" element={<AboutUs />} />
+                  <Route
+                    exact
+                    path="privacy-policy"
+                    element={<PrivacyPolicy />}
+                  />
+
+                  <Route exact path="help-mint" element={<HelpMint />} />
+                  <Route
+                    exact
+                    path="help-create-exhibition"
+                    element={<HelpCreateExhibition />}
+                  />
+                  <Route
+                    exact
+                    path="help-create-wallet"
+                    element={<HelpCreateWallet />}
+                  />
+                  <Route
+                    exact
+                    path="metaverse_explanation"
+                    element={<MetaExplanation />}
+                  />
+
+                  <Route
+                    exact
+                    path="exhibition-list"
+                    element={<ExhibitionList />}
+                  />
+                  <Route
+                    exact
+                    path="open-exhibitions"
+                    element={<OpenExhibitions />}
+                  />
+                  <Route
+                    exact
+                    path="requests-list"
+                    element={<RequestsList />}
+                  />
+                  <Route exact path="show-request" element={<ShowRequests />} />
+                  <Route
+                    exact
+                    path="request-details"
+                    element={<RequestDetails />}
+                  />
+                  <Route exact path="upload-page" element={<NFTUploadPage />} />
+                  <Route exact path="pre-mint" element={<PreMint />} />
+                  <Route
+                    exact
+                    path="UserDashboard"
+                    element={<UserDashboard />}
+                  />
+                  <Route exact path="dashboard" element={<Dashboard />} />
+                  <Route exact path="profile" element={<Profile />} />
+                  <Route exact path="exhibitor" element={<Exhibitor />} />
+                  <Route
+                    exact
+                    path="collections/:username"
+                    element={<Collections />}
+                  />
+                  <Route
+                    exact
+                    path="user-collections"
+                    element={<UserCollections />}
+                  />
+                  <Route
+                    exact
+                    path="exhibition-collections/:id"
+                    element={<ExhibitionCollections />}
+                  />
+                  <Route exact path="ai" element={<AI />} />
+                  <Route
+                    exact
+                    path="metaverse/:token?"
+                    element={<Metaverse />}
+                  />
+                  <Route exact path="join-artina" element={<GetMail />}></Route>
+                  <Route
+                    exact
+                    path="payment_status"
+                    element={<RedirectedPage />}
+                  />
+                  <Route exact path="FAQ" element={<HelpQuestions />} />
+                  <Route exact path="whitepaper" element={<WhitePaper />} />
+                  <Route path="*" element={<NotFound />} />
+                  <Route path="allTickets" element={<AllTickets />} />
+                  <Route
+                    path="metaversetickets"
+                    element={<MetaverseTickets />}
+                  />
+                  <Route path="authentications" element={<Authentications />} />
+                  <Route path="authenticate/:id" element={<Authenticate />} />
+                  <Route
+                    path="exhibitionapproval/:id"
+                    element={<ExhibitionApproval />}
+                  />
+                  <Route
+                    path="ticket-response/:id"
+                    element={<TicketResponse />}
+                  />
+                  <Route path="admin-panel" element={<AdminPanel />} />
+                  {/* <Route exact path="request-lists" element={<RequestLists />} /> */}
+                </Routes>
+              </React.Suspense>
             </div>
           </UserChangeContext.Provider>
         </UserContext.Provider>

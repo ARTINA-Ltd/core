@@ -1,16 +1,18 @@
 import Header from "./../components/AdminPageNavbar/Header";
 import Footer from "./../components/Footer/Footer";
 import AuthPageCard from "./../components/Cards/AuthPageCard";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import TicketCard from "../components/Cards/TicketCard.jsx";
 import MetaVerseCard from "../components/Cards/MetaVerseCard.jsx";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
   const [docApproval, setDocApproval] = useState(null);
   const [metaTickets, setMetaTickets] = useState(null);
   const [tickets, setTickets] = useState(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     axios
@@ -80,7 +82,7 @@ const AdminPanel = () => {
                   className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
                 />
                 <h1 className="text-center font-bold text-3xl my-4  p-4 ">
-                  احراز هویت
+                  {t("auth")}
                 </h1>
               </div>
               <div className="w-[70vw] flex mx-auto flex-wrap gap-8 justify-center items-center">
@@ -167,6 +169,7 @@ const AdminPanel = () => {
                           count={ticket.ticket.user}
                           img={ticket.ticket.image_url}
                           id={ticket.id}
+                          exhibition={ticket.ticket.text}
                         />
                       );
                     })
@@ -181,13 +184,6 @@ const AdminPanel = () => {
                 </Link>
               </div>
             </div>
-            <button
-              onClick={() => {
-                console.log(metaTickets);
-              }}
-            >
-              دیدن
-            </button>
           </div>
 
           <Footer />

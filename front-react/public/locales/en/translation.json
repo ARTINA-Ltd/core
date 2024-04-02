@@ -1,0 +1,48 @@
+{
+  "auth": "Euthentications",
+  "sortByPrice": "Most Expensive",
+  "sortByLike": "Most Liked",
+  "creator": "Artist",
+  "likeCount": "Likes",
+  "nameTitle": "Name",
+  "price": "Price",
+  "latestPrice": "Latest Price",
+  "exhibiotionListTitle": "Exhibitions",
+  "showAll": "See All",
+  "aboutUs": "About Us",
+  "aboutUsDescription": "new Marketplace for NFT trading and exhibitions Novel platform for mint, trade and exhibit NFT in metaverse ",
+  "metaverseUsage": "How To Get a Metaverse",
+  "metaverseUsageDecription": "Metaverse is a 3D world that can be used as an exhibition of arts;  In fact, in Artina, you can display your works in a virtual environment to people from all around the world !",
+  "AIGenerator": "AI image generator",
+  "AIGeneratorDescription": "Using Artina AI, you can produce your desired photo and convert it to NFT in Artina without any special knowledge of design or photography and only imagination !",
+  "FAQ": "FAQ",
+  "FAQ1": "Why Artina offers blockchain-based trading?",
+  "FAQ1_1": " Blockchain is a transaction recording system that stores information in interconnected blocks.  This information is stored encrypted and immutable.  Hence, no one can easily change or falsify the information.  Also, any attempt to change the information is very difficult.  This gives more trust to cryptocurrencies and ensures that transactions and ownership are secure.  When you buy or sell cryptocurrencies, the transactions are publicly recorded on the blockchain, which adds more transparency to the transaction process and reduces fraud.",
+  "FAQ2": " How can we see the transactions in the blockchain?",
+  "FAQ2_1": {
+    "line1": "Using Blockchain Explorer:",
+    "line2": " Most blockchains provide explorers that allow you to search for transactions, blocks, and addresses.  For example, if you want to see transactions for Bitcoin, you can visit the website \"Blockchain.info\" or \"Blockchair.com\"."
+  },
+  "FAQ2_2": {
+    "line1": " Using blockchain wallet software:",
+    "line2": " If you have a digital wallet (such as a Bitcoin wallet), you can view your transactions in it.  These wallets often show partial and complete transactions."
+  },
+  "FAQ3": " How can I be sure of the originality of the NFT?",
+  "FAQ3_1": {
+    "line1": " Research on artist communication:",
+    "line2": " If possible, do your research to make sure the artist is real and has verified their effects.  The fact that the artist communicates and confirms his effects on his social networks or official websites can indicate the authenticity of his effects."
+  },
+  "FAQ3_2": {
+    "line1": " Check NFT information:",
+    "line2": " It can help to carefully check the information about the purchased NFT, including the artist name, title of the work, publication number, and description of the work.  Also, checking the transaction history and blockchain information can verify the authenticity of the NFT."
+  },
+  "FAQ4": " Why is using smart contracts the best choice?",
+  "FAQ4_1": {
+    "line1": " More security:",
+    "line2": " AI contracts work on blockchain.  This means that transactions and information are stored in a secure network without the need for intermediaries.  This reduces fraud and immutability of information and provides more trust in transactions."
+  },
+  "FAQ4_2": {
+    "line1": "Transparency:",
+    "line2": " All transactions and actions of artificial intelligence contracts are recorded in the blockchain and are publicly visible.  This creates higher transparency in transactions and allows everyone to check the history of transactions."
+  }
+}

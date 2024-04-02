@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import BorderButton from "./../Buttons/BorderButton";
 
 function MetaVerseCard(props) {
-  const { count, title, img, id } = props;
+  const { count, title, img, id, exhibition } = props;
   const navigate = useNavigate();
   return (
     <div className="bg-white w-full min-h-[12rem] rounded-xl shadow-md hover:shadow-xl ease-in-out duration-200 lg:w-full p-4 overflow-hidden">
@@ -27,7 +27,7 @@ function MetaVerseCard(props) {
       <div className="flex justify-end gap-4">
         <BorderButton
           onClick={() => {
-            navigate(`/exhibitionapproval/${id}`);
+            navigate(`/exhibitionapproval/${exhibition}`);
           }}
           className="font-bold"
         >

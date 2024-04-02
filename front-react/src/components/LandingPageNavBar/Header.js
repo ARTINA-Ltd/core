@@ -8,7 +8,9 @@ import BorderButton from "../Buttons/BorderButton";
 import BalanceDialog from "../Dialog/BalanceDialog/BalanceDialog";
 import { useRef } from "react";
 import axios from "axios";
+import { MdOutlineLanguage } from "react-icons/md";
 import BalanceDialogMatic from "../Dialog/BalanceDialog/BalanceDialogMatic";
+import i18n from "../../i18n";
 
 const Header = ({ connectWallet = false, rev = false }) => {
   const user = useContext(UserContext);
@@ -26,7 +28,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    setClicked(e => !e);
+    setClicked((e) => !e);
   };
 
   const NotActiveItems = [
@@ -416,12 +418,12 @@ const Header = ({ connectWallet = false, rev = false }) => {
           Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
         },
       })
-      .then(d => {
+      .then((d) => {
         setNotifs(d.data);
       });
   }, []);
 
-  const handleClickSeen = notifId => {
+  const handleClickSeen = (notifId) => {
     axios
       .post(
         "https://api.artina.org/api/account/NotifyUserViewSet/seenMsg/",
@@ -434,7 +436,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
           },
         }
       )
-      .then(d => {
+      .then((d) => {
         axios
           .get(
             "https://api.artina.org/api/account/NotifyUserViewSet/notifList/",
@@ -444,18 +446,18 @@ const Header = ({ connectWallet = false, rev = false }) => {
               },
             }
           )
-          .then(d => {
+          .then((d) => {
             setNotifs(d.data);
           });
       });
   };
 
   useEffect(() => {
-    setUsername(e => (user ? user.data.username : e));
+    setUsername((e) => (user ? user.data.username : e));
   }, [user]);
 
   useEffect(() => {
-    const handleClickOutside = event => {
+    const handleClickOutside = (event) => {
       if (ref.current && !ref.current.contains(event.target)) {
         setIsHidden(true);
       }
@@ -469,7 +471,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
   }, [ref]);
 
   useEffect(() => {
-    const handleClickOutside = event => {
+    const handleClickOutside = (event) => {
       if (ref2.current && !ref2.current.contains(event.target)) {
         setIsHidden2(true);
       }
@@ -485,36 +487,37 @@ const Header = ({ connectWallet = false, rev = false }) => {
     <>
       <header>
         <div
-          className={`flex justify-center h-[80px] sm:h-[60px] ${rev ? "" : "from-[#f9f9f9] bg-gradient-to-b"
-            }  font-b3`}
+          className={`flex justify-center h-[80px] sm:h-[60px] ${
+            rev ? "" : "from-[#f9f9f9] bg-gradient-to-b"
+          }  font-b3`}
         >
           <div className="flex items-center justify-between w-[90%] justify-self-center">
             <div className="flex items-center gap-8 text-sm lg:hidden">
               {user
                 ? ActiveItems.map((item, index) => (
-                  <div
-                    key={index}
-                    className="cursor-pointer flex items-center gap-1 hover:text-[#a5a0ee] transition-all duration-200"
-                    onClick={() => {
-                      navigate(item.link);
-                    }}
-                  >
-                    {item.icon}
-                    {item.title}
-                  </div>
-                ))
+                    <div
+                      key={index}
+                      className="cursor-pointer flex items-center gap-1 hover:text-[#a5a0ee] transition-all duration-200"
+                      onClick={() => {
+                        navigate(item.link);
+                      }}
+                    >
+                      {item.icon}
+                      {item.title}
+                    </div>
+                  ))
                 : NotActiveItems.map((item, index) => (
-                  <div
-                    className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200"
-                    onClick={() => {
-                      navigate(item.link);
-                    }}
-                    key={index}
-                  >
-                    {item.icon}
-                    {item.title}
-                  </div>
-                ))}
+                    <div
+                      className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200"
+                      onClick={() => {
+                        navigate(item.link);
+                      }}
+                      key={index}
+                    >
+                      {item.icon}
+                      {item.title}
+                    </div>
+                  ))}
               <div
                 className="bg-[#eee] cursor-pointer text-[#4e45d0] px-3 py-[4px] rounded-full hover:scale-105 transition-all duration-200 border-[#4e45d0] border-[1px]"
                 onClick={() => navigate("/metaverse")}
@@ -559,7 +562,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                   <div ref={ref2}>
                     <div
                       className="cursor-pointer p-2 hover:bg-slate-100 rounded-lg transition-all"
-                      onClick={() => setIsHidden2(prev => !prev)}
+                      onClick={() => setIsHidden2((prev) => !prev)}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -567,7 +570,9 @@ const Header = ({ connectWallet = false, rev = false }) => {
                         viewBox="0 0 24 24"
                         strokeWidth="1.5"
                         stroke="currentColor"
-                        className={`w-6 h-6 ${notifs ? "bg-none rounded-lg" : "bg-none"}`}
+                        className={`w-6 h-6 ${
+                          notifs ? "bg-none rounded-lg" : "bg-none"
+                        }`}
                       >
                         <path
                           strokeLinecap="round"
@@ -577,8 +582,9 @@ const Header = ({ connectWallet = false, rev = false }) => {
                       </svg>
                     </div>
                     <div
-                      className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-[#f9f9f9] min-w-[250px] ${isHidden2 ? "opacity-0 pointer-events-none" : ""
-                        } absolute translate-x-1/3 sm:translate-x-0`}
+                      className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-[#f9f9f9] min-w-[250px] ${
+                        isHidden2 ? "opacity-0 pointer-events-none" : ""
+                      } absolute translate-x-1/3 sm:translate-x-0`}
                     >
                       {notifs &&
                         notifs.map((item, index) => (
@@ -616,12 +622,13 @@ const Header = ({ connectWallet = false, rev = false }) => {
                     <img
                       src={user.data.profile_picture}
                       className="rounded-full w-[46px] h-[46px] object-cover cursor-pointer"
-                      onClick={() => setIsHidden(prev => !prev)}
+                      onClick={() => setIsHidden((prev) => !prev)}
                       alt=""
                     />
                     <div
-                      className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-[#f9f9f9] min-w-[250px] ${isHidden ? "opacity-0 pointer-events-none" : ""
-                        } absolute translate-x-1/3`}
+                      className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-[#f9f9f9] min-w-[250px] ${
+                        isHidden ? "opacity-0 pointer-events-none" : ""
+                      } absolute translate-x-1/3`}
                     >
                       <div className="w-full py-2 px-3 hover:bg-[#0000aa07] flex gap-2 items-center justify-between cursor-pointer">
                         <img
@@ -656,7 +663,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
 
                       <div
                         className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]"
-                        onClick={e => {
+                        onClick={(e) => {
                           navigate("/login");
                           setUsername();
                           localStorage.setItem("authTokens", null);
@@ -685,13 +692,24 @@ const Header = ({ connectWallet = false, rev = false }) => {
                 alt="logo"
                 onClick={() => navigate("/")}
               />
+              <button
+                className="ease-in-out duration-400 transition-all"
+                onClick={() => {
+                  i18n.language === "en"
+                    ? i18n.changeLanguage("fa")
+                    : i18n.changeLanguage("en");
+                }}
+              >
+                <MdOutlineLanguage className="w-8 h-8 text-[#4e45d0] hover:text-black " />
+              </button>
             </div>
           </div>
         </div>
       </header>
       <div
-        className={`fixed w-full h-full z-50 inset-0 bg-[#f9f9f9] ${menuIsVisible ? "" : "translate-x-full"
-          }  transition-all duration-500 ease-out`}
+        className={`fixed w-full h-full z-50 inset-0 bg-[#f9f9f9] ${
+          menuIsVisible ? "" : "translate-x-full"
+        }  transition-all duration-500 ease-out`}
       >
         <div
           className="w-full flex justify-end p-5"
@@ -716,29 +734,29 @@ const Header = ({ connectWallet = false, rev = false }) => {
         <div className="w-full flex flex-col gap-2 justify-center items-center">
           {user
             ? ActiveItems.map((item, index) => (
-              <div
-                key={index}
-                className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200 px-5 py-2 bg-[#f0f0f0] rounded-lg w-[90%]"
-                onClick={() => {
-                  navigate(item.link);
-                }}
-              >
-                {item.icon}
-                {item.title}
-              </div>
-            ))
+                <div
+                  key={index}
+                  className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200 px-5 py-2 bg-[#f0f0f0] rounded-lg w-[90%]"
+                  onClick={() => {
+                    navigate(item.link);
+                  }}
+                >
+                  {item.icon}
+                  {item.title}
+                </div>
+              ))
             : NotActiveItems.map((item, index) => (
-              <div
-                className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200 px-5 py-2 bg-[#f0f0f0] rounded-lg w-[90%]"
-                onClick={() => {
-                  navigate(item.link);
-                }}
-                key={index}
-              >
-                {item.icon}
-                {item.title}
-              </div>
-            ))}
+                <div
+                  className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200 px-5 py-2 bg-[#f0f0f0] rounded-lg w-[90%]"
+                  onClick={() => {
+                    navigate(item.link);
+                  }}
+                  key={index}
+                >
+                  {item.icon}
+                  {item.title}
+                </div>
+              ))}
 
           <div
             className="cursor-pointer flex items-center gap-1 text-white transition-all duration-200 px-5 py-2 bg-[#4e45d0] rounded-lg w-[90%]"

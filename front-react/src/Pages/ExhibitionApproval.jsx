@@ -3,7 +3,6 @@ import Header from "../components/AdminPageNavbar/Header.js";
 import Footer from "../components/Footer/Footer.jsx";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import SimpleSlider from "../components/Slider/Slider.jsx";
 import BorderButton from "./../components/Buttons/BorderButton";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 
@@ -77,19 +76,18 @@ const ExhibitionApproval = () => {
       });
   }, []);
 
-  const handleMetaverse = (id) => {
+  const handleMetaverse = () => {
     axios
       .post(
         "https://api.artina.org/api/account/ticket/",
         {
-          subject: "درخواست متاورس",
-          text: id,
+          subject: "accepted",
+          text: String(id),
         },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
           },
-          mode: "cors",
         }
       )
       .then((res) => {
@@ -98,7 +96,29 @@ const ExhibitionApproval = () => {
           "درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد."
         );
       })
-      .catch((e) => console.log(e));
+      .catch(() => Notify.failure("خطا"));
+  };
+  const handleReject = () => {
+    axios
+      .post(
+        "https://api.artina.org/api/supervisor/supervisor-tickets/notify_response/",
+        {
+          username: exhibition.user,
+          text: "text",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        Notify.success(
+          "درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد."
+        );
+      })
+      .catch(() => Notify.failure("خطا"));
   };
 
   return (
@@ -149,6 +169,13 @@ const ExhibitionApproval = () => {
                               ❯
                             </a>
                           </div>
+                          <p className="-translate-x-[calc(100%+4rem)]">
+                            تصاویر{" "}
+                            <span>
+                              {" "}
+                              {index + 2}/{nfts.length}
+                            </span>
+                          </p>
                         </div>
                       );
                     })
@@ -179,7 +206,10 @@ const ExhibitionApproval = () => {
                 >
                   تایید
                 </BorderButton>
-                <BorderButton className={`font-bold w-32`}>
+                <BorderButton
+                  className={`font-bold w-32`}
+                  onClick={handleReject}
+                >
                   عدم تایید
                 </BorderButton>
               </div>
