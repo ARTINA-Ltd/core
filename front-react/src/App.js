@@ -41,7 +41,12 @@ import RedirectedPage from "./Pages/RedirectPage";
 import WhitePaper from "./Pages/WhitePaper";
 import PreMint from "./Pages/PreMint";
 import AllCollections from "./Pages/AllCollections";
+import { GoftinoSnippet } from '@mohsen007/react-goftino';
+
+
 const activeChainId = ChainId.Goerli;
+const GOFTINO_KEY = 'cD7Gse';
+
 
 export const UserContext = createContext();
 export const UserChangeContext = createContext();
@@ -89,6 +94,12 @@ export default () => {
 
   return (
     <>
+      <GoftinoSnippet
+        goftinoKey={GOFTINO_KEY}
+        onReady={() => {
+          window.Goftino.open();
+        }}
+      />
       <ThirdwebProvider
         activeChain="ethereum"
         autoConnect={false}
@@ -120,7 +131,7 @@ export default () => {
                 <Route exact path="help-create-exhibition" element={<HelpCreateExhibition />} />
                 <Route exact path="help-create-wallet" element={<HelpCreateWallet />} />
                 <Route exact path="metaverse_explanation" element={<MetaExplanation />} />
-                
+
                 <Route exact path="exhibition-list" element={<ExhibitionList />} />
                 <Route exact path="open-exhibitions" element={<OpenExhibitions />} />
                 <Route exact path="requests-list" element={<RequestsList />} />
