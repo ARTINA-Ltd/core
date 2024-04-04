@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import Header from "../components/AdminPageNavbar/Header.js";
 import Footer from "../components/Footer/Footer.jsx";
 import axios from "axios";
@@ -7,12 +7,18 @@ import BorderButton from "./../components/Buttons/BorderButton";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 
 const ExhibitionApproval = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [nfts, setNfts] = useState(null);
   const [exhibition, setExhibition] = useState(null);
   const [startDate, setStartDate] = useState(null);
   const [edndDate, setEndDate] = useState(null);
   const [deadline, setDeadline] = useState(null);
+  const [messages, setMessages] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [ticket, setTicket] = useState(null);
+  const [temp, setTemp] = useState(null);
+  const [option, setOption] = useState(null);
 
   function updateTimeCounter() {
     const now = new Date();
@@ -43,6 +49,39 @@ const ExhibitionApproval = () => {
   }
 
   useEffect(() => {
+    axios
+      .get(
+        "https://api.artina.org/api/supervisor/supervisor-tickets/metaverse_tickets/",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+        }
+      )
+      .then((e) => {
+        setTemp(e.data);
+        setTicket(
+          e.data.filter((e) => {
+            return e.ticket.text == id;
+          })[0]
+        );
+      })
+      .catch((err) => {
+        console.log(`there was an error${err}`);
+      });
+
+    axios
+      .get("https://api.artina.org/api/supervisor/rejection-messages/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+      })
+      .then((e) => {
+        setMessages(e.data);
+      })
+      .catch((err) => {
+        console.log(`there was an error ${err}`);
+      });
     axios
       .get(
         `https://api.artina.org/api/exhibition/nfts-by-exhibition/${id}/get_nfts/`,
@@ -77,6 +116,26 @@ const ExhibitionApproval = () => {
   }, []);
 
   const handleMetaverse = () => {
+    console.log(ticket.id);
+    axios
+      .post(
+        `https://api.artina.org/api/supervisor/supervisor-tickets/${ticket.id}/respond/`,
+        {
+          response_message: "تیکت پاسخ داده شد",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+        }
+      )
+      .then((e) => {
+        console.log("message delivered" + e);
+        navigate("/admin-panel");
+      })
+      .catch((e) => {
+        console.log(`there was an error : ${e}`);
+      });
     axios
       .post(
         "https://api.artina.org/api/account/ticket/",
@@ -95,16 +154,40 @@ const ExhibitionApproval = () => {
         Notify.success(
           "درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد."
         );
+        navigate("/admin-panel");
       })
       .catch(() => Notify.failure("خطا"));
   };
-  const handleReject = () => {
+
+  const handleReject = (e) => {
+    const response = option + "\n" + message;
+    console.log(response);
+    e.preventDefault();
+    axios
+      .post(
+        `https://api.artina.org/api/supervisor/supervisor-tickets/${ticket.id}/respond/`,
+        {
+          response_message: "تیکت پاسخ داده شد",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+        }
+      )
+      .then((e) => {
+        console.log("message delivered" + e);
+        navigate("/admin-panel");
+      })
+      .catch((e) => {
+        console.log(`there was an error : ${e}`);
+      });
     axios
       .post(
         "https://api.artina.org/api/supervisor/supervisor-tickets/notify_response/",
         {
           username: exhibition.user,
-          text: "text",
+          text: response,
         },
         {
           headers: {
@@ -117,6 +200,7 @@ const ExhibitionApproval = () => {
         Notify.success(
           "درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد."
         );
+        navigate("/admin-panel");
       })
       .catch(() => Notify.failure("خطا"));
   };
@@ -208,7 +292,9 @@ const ExhibitionApproval = () => {
                 </BorderButton>
                 <BorderButton
                   className={`font-bold w-32`}
-                  onClick={handleReject}
+                  onClick={() => {
+                    document.getElementById("reject").showModal();
+                  }}
                 >
                   عدم تایید
                 </BorderButton>
@@ -217,7 +303,59 @@ const ExhibitionApproval = () => {
           </div>
         </div>
       ) : null}
+      <dialog id="reject" className="modal">
+        <div className="modal-box">
+          <label className="block text-[#4e45d0]  border-r-2  border-[#4e45d0] pr-4 pb-4">
+            پاسخ
+          </label>
+          {messages ? (
+            <select
+              onChange={(e) => {
+                setOption(e.target.value);
+              }}
+              className="mx-auto block mb-8 select select-info w-full max-w-xs border-[#4e45d0] shadow-md"
+            >
+              <option>پیام مورد نظر را انتخاب کنید</option>
+              {messages.map((msg) => {
+                return (
+                  <option key={msg.id} value={msg.message}>
+                    {msg.message}
+                  </option>
+                );
+              })}
+            </select>
+          ) : null}
 
+          <textarea
+            onChange={(e) => {
+              setMessage(e.target.value);
+            }}
+            className="textarea textarea-bordered border-[#4e45d0] w-full h-[calc(100%-6rem)]"
+            placeholder="اینجا بنویسید..."
+          ></textarea>
+
+          <div className="flex justify-center gap-4">
+            <form method="dialog">
+              <button disabled={!option && !message} className="mx-auto block ">
+                <BorderButton
+                  className="w-full mx-auto font-bold shadow-md"
+                  onClick={handleReject}
+                  disabled={!option && !message}
+                >
+                  ثبت
+                </BorderButton>
+              </button>
+            </form>
+            <form method="dialog">
+              <button className="mx-auto block ">
+                <BorderButton className="w-full mx-auto font-bold shadow-md">
+                  لفو
+                </BorderButton>
+              </button>
+            </form>
+          </div>
+        </div>
+      </dialog>
       <Footer />
     </div>
   );

@@ -44,5 +44,14 @@
   "FAQ4_2": {
     "line1": "Transparency:",
     "line2": " All transactions and actions of artificial intelligence contracts are recorded in the blockchain and are publicly visible.  This creates higher transparency in transactions and allows everyone to check the history of transactions."
-  }
+  },
+  "mainPage": "Home",
+  "contactUs": "Contact Us",
+  "collections": "Collections",
+  "support": "Support",
+  "blog": "Blog",
+  "addArt": "Add Artwork",
+  "activityManagement": "Activity Management",
+  "myCollection": "My Collections",
+  "metaverse": "Metaverse"
 }

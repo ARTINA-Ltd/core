@@ -54,14 +54,15 @@ const TicketResponse = () => {
   }, []);
 
   const responsePost = (e) => {
-    console.log(option);
-    setMessage(option + "\n" + message);
+    const response = option + "\n" + message;
+    console.log(response);
     e.preventDefault();
+
     axios
       .post(
         `https://api.artina.org/api/supervisor/supervisor-tickets/${id}/respond/`,
         {
-          response_message: String(message),
+          response_message: String(response),
         },
         {
           headers: {
@@ -156,11 +157,15 @@ const TicketResponse = () => {
                   className="textarea textarea-bordered border-[#4e45d0] w-full h-[calc(100%-6rem)]"
                   placeholder="اینجا بنویسید..."
                 ></textarea>
-                <BorderButton className={"w-1/3 mr-auto sm:w-full"}>
+                <BorderButton
+                  className={"w-1/3 mr-auto sm:w-full"}
+                  disabled={!message && !option}
+                >
                   <button
                     type="submit"
                     onClick={responsePost}
                     className="text-right font-bold "
+                    disabled={!message && !option}
                   >
                     ثبت پاسخ
                   </button>

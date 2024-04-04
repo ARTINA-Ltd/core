@@ -18,7 +18,7 @@ const AllTickets = () => {
         }
       )
       .then((e) => {
-        setTickets(e.data.slice(0, 4));
+        setTickets(e.data);
       })
       .catch((err) => {
         console.log(`there was an error:/ ${err}`);

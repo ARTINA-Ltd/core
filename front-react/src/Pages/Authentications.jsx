@@ -17,7 +17,7 @@ const Authentications = () => {
         }
       )
       .then((e) => {
-        setDocApproval(e.data.slice(0, 4));
+        setDocApproval(e.data);
       })
       .catch((err) => {
         console.log(`there was an error ${err}`);

@@ -16,7 +16,7 @@ const MetaverseTickets = () => {
         }
       )
       .then((e) => {
-        setMetaTickets(e.data.slice(0, 4));
+        setMetaTickets(e.data);
       })
       .catch((err) => {
         console.log(`there was an error${err}`);
@@ -43,9 +43,11 @@ const MetaverseTickets = () => {
                   return (
                     <MetaVerseCard
                       key={ticket.id}
-                      title={ticket.ticket.subject}
+                      title={ticket.ticket.name}
                       count={ticket.ticket.user}
                       img={ticket.ticket.image_url}
+                      id={ticket.id}
+                      exhibition={ticket.ticket.text}
                     />
                   );
                 })

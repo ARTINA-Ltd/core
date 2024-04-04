@@ -165,7 +165,7 @@ const AdminPanel = () => {
                       return (
                         <MetaVerseCard
                           key={ticket.id}
-                          title={ticket.ticket.subject}
+                          title={ticket.ticket.name}
                           count={ticket.ticket.user}
                           img={ticket.ticket.image_url}
                           id={ticket.id}
