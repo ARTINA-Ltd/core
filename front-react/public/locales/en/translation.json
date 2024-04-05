@@ -53,5 +53,21 @@
   "addArt": "Add Artwork",
   "activityManagement": "Activity Management",
   "myCollection": "My Collections",
-  "metaverse": "Metaverse"
+  "metaverse": "Metaverse",
+  "artName": "Name of Work",
+  "artist": "Artist",
+  "hashBlock": "Hash of Block",
+  "transactionHash": "Hash of Transaction",
+  "blockNo": "Block Number",
+  "collection": "Collection",
+  "description": "Description",
+  "properties": "Properties",
+  "category": "Category",
+  "transactionNo": "Transaction Number",
+  "blockchain": "Blockchain",
+  "offers": "Offers",
+  "offerer": "Offerrer",
+  "offerAmount": "Amount of Offer",
+  "date": "Date",
+  "externalLink": "External Link"
 }

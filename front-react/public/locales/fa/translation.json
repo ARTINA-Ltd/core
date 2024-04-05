@@ -53,5 +53,21 @@
   "addArt": "ضرب اثر",
   "activityManagement": "مدیریت فعالیتها",
   "myCollection": "مجموعه من",
-  "metaverse": "متاورس"
+  "metaverse": "متاورس",
+  "artName": "نام اثر",
+  "artist": "هنرمند",
+  "hashBlock": "هش بلاک",
+  "transitionHash": "هش تراکنش",
+  "blockNo": "شماره بلاک",
+  "collection": "کالکشن",
+  "description": "توضیحات",
+  "properties": "خاصیت ها",
+  "category": "دسته بندی",
+  "transactionNo": "شماره تراکنش",
+  "blockchain": "بلاک‌چین",
+  "offers": "پیشنهادات",
+  "offerer": "پیشنهاد دهنده",
+  "offerAmount": "میزان پیشنهاد",
+  "date": "تاریخ",
+  "externalLink": "لینک خارجی"
 }
