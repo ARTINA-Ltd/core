@@ -27,4 +27,4 @@ class SupervisorTicketSerializer(serializers.ModelSerializer):
 class RejectionMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = RejectionMessage
-        fields = ['id', 'message', 'created_at']
+        fields = '__all__'

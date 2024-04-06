@@ -59,11 +59,13 @@ function Profile() {
   const [showPhoneValidate, setShowPhoneValidate] = useState(false);
   const [showEmailValidate, setShowEmailValidate] = useState(false);
   const [phoneVerificationCode, setPhoneVerificationCode] = useState();
+  const [emailVerificationCode, setEmailVerificationCode] = useState();
 
   const [isPhoneDisabled, setIsPhoneDisabled] = useState(false);
   const [isEmailDisabled, setIsEmailDisabled] = useState(false);
 
   const [isPhoneVerified, setIsPhoneVerified] = useState();
+  const [isEmailVerified, setIsEmailVerified] = useState();
 
   function hanldeClickEmail() {
     setIsEmailDisabled(true);
@@ -92,6 +94,27 @@ function Profile() {
         setIsPhoneVerified(true);
       });
   };
+
+  const handleSendEmailVerificationCode = () => {
+    axios
+      .post(
+        "https://api.artina.org/api/account/email-verification-code/",
+        {
+          email: values.email,
+          verification_code: emailVerificationCode,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+        }
+      )
+      .then(e => {
+        Notify.success("تایید شد");
+        setIsEmailVerified(true);
+      });
+  };
+
   function hanldeClickPhone() {
     if (validation()) {
       setCounter(60);
@@ -184,6 +207,103 @@ function Profile() {
     }
   }
 
+  function handleClickEmail() {
+    if (validation()) {
+      setCounter(60);
+      setCounterPause(false);
+      setIsEmailDisabled(true);
+      setShowEmailValidate(true);
+      setTimeout(e => {
+        setIsEmailDisabled(false);
+        setCounterPause(true);
+      }, 60000);
+      var b_date;
+
+      if (typeof values.birthdate !== "string") {
+        b_date = values.birthdate;
+      } else {
+        b_date =
+          values.birthdate != "" && values.birthdate != null
+            ? new Date(
+              values.birthdate.split("/")[2],
+              values.birthdate.split("/")[1] - 1,
+              values.birthdate.split("/")[0]
+            )
+            : "";
+      }
+
+      axios
+        .put(
+          // "https://api.artina.org/api/account/profile/",
+          `https://api.artina.org/api/account/profile/${user ? user.data.id : ""
+          }/`,
+          {
+            user: user ? user.data.id : "",
+            first_name: values.first_name,
+            last_name: values.last_name,
+            national_code: values.national_code,
+            birthdate:
+              b_date != ""
+                ? Intl.DateTimeFormat("en-UK", {
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                }).format(b_date)
+                : null,
+            phone_number: values.phone_number,
+            cell_number: values.cell_number,
+            address: values.address,
+            bio: values.bio,
+            postal_code: values.postal_code,
+            national_card_picture: nationalCardImageUrl
+              ? nationalCardImageUrl
+              : user.data.national_card_picture,
+            profile_picture: profileImageUrl
+              ? profileImageUrl
+              : user.data.profile_picture,
+            shaba_number: shabaNumber,
+            email: values.email,
+
+            // role: user ? user.data.role : ""
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            },
+          }
+        )
+        .then(res => {
+          Notify.success("اطلاعات با موفقیت به روز رسانی شد");
+          axios
+            .post(
+              "https://api.artina.org/api/account/email-verification-code/email_verification/",
+              {
+                email: values.email,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+                },
+              }
+            )
+            .then(e => {
+              userChange();
+
+              Notify.success("ارسال شد");
+            })
+            .catch(() => {
+              Notify.failure("ایمیل تکراری میباشد");
+              setIsEmailDisabled(false);
+              setShowEmailValidate(false);
+              setCounterPause(true);
+            });
+        })
+        .catch(e => {
+          Notify.failure("خطا");
+        });
+    }
+  }
+
   function validation() {
     if (shabaNumber !== null) {
       if (shabaNumber.length === 24) {
@@ -201,7 +321,11 @@ function Profile() {
       var b_date;
       if (typeof values.birthdate !== "string") {
         b_date = values.birthdate;
+        console.log("IF", values.birthdate);
+
       } else {
+        console.log("ELSE", values.birthdate);
+
         b_date =
           values.birthdate != "" && values.birthdate != null
             ? new Date(
@@ -287,6 +411,9 @@ function Profile() {
         setShabaNumber(user ? user.data.shaba_number : null);
         setIsPhoneVerified(
           user ? user.data.phone_number_verified == true : null
+        );
+        setIsEmailVerified(
+          user ? user.data.email_verified == true : null
         );
       }
     }
@@ -625,7 +752,7 @@ function Profile() {
             </div>
           </div>
 
-          <div className="flex gap-4">
+          {/* <div className="flex gap-4">
             <div className=" w-full">
               <SimpleInput
                 type="text"
@@ -643,7 +770,71 @@ function Profile() {
                 disabled={user != null ? user.data.email != null : null}
               />
             </div>
+          </div> */}
+          <div className="flex gap-4">
+            <SimpleInput
+              type="text"
+              title="ایمیل"
+              placeholder="mail@domain.com"
+              isValid={ValidateEmail(values.email)}
+              validationError="نمی‌تواند خالی باشد"
+              onChange={e => {
+                setValues(prev => ({
+                  ...prev,
+                  email: e.target.value,
+                }));
+                setValidate(prev => ({
+                  ...prev,
+                  email:
+                    e.target.value !== null
+                      ? e.target.value.length == 11
+                      : false,
+                }));
+              }}
+              defaultValue={user != null ? user.data.email : null}
+              disabled={isEmailVerified}
+              maxChars={30}
+            />
+            <div
+              className={`${showEmailValidate && !isEmailVerified ? "" : "hidden"
+                }`}
+            >
+              <SimpleInput
+                type="number"
+                title="کد "
+                placeholder="1234"
+                onChange={
+                  e => setEmailVerificationCode(e.target.value) // isValid={}
+                }
+                defaultValue={null}
+              />
+            </div>
+            <div
+              className={`transition-all w-1/2 shrink-0 ${isEmailVerified ? "hidden" : "flex gap-4 "
+                }`}
+            >
+              <div
+                className={`w-1/3 ${!showEmailValidate
+                    ? "hidden"
+                    : "bg-sky-400 cursor-pointer hover:bg-sky-500 w-full text-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center"
+                  } `}
+                onClick={handleSendEmailVerificationCode}
+              >
+                ثبت
+              </div>
+              <div
+                className={`w-1/3  ${isEmailDisabled
+                    ? "bg-[#4e45d0] cursor-not-allowed hover:bg-[#372fac]"
+                    : "bg-[#372fac] cursor-pointer"
+                  } w-full text-nowrap flex-nowrap whitespace-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center`}
+                onClick={() => (!isEmailDisabled ? handleClickEmail() : "")}
+              >
+                {isEmailDisabled ? `ارسال مجدد کد (${counter})` : "ارسال کد"}
+              </div>
+            </div>
           </div>
+
+
           <div className="flex justify-end">
             <BorderButton onClick={() => UpdateInfo()}>ثبت</BorderButton>
           </div>

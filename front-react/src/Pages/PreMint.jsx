@@ -35,19 +35,40 @@ const PreMint = () => {
     const handleAddNewCollectionProperty = async () => {
         console.log("Wallet: ", wallet);
 
+        // try {
+        //     console.log("Starting:");
+        //     const sdk = ThirdwebSDK.fromPrivateKey(PRIVATE_KEY, "sepolia", {
+        //         client_Id: '806917a5b8cc53296dde7ca4688a1038',
+        //     });
+        //     const address = await sdk.deployer.deployBuiltInContract("nft-collection", {
+        //         name: newCollectionName,
+        //         primary_sale_recipient: "0x2293221D7c357FB04De9c7D0dEeBcA427407429D",
+        //     });
+        //     console.log("Deployed at", address);
+        // } catch (err) {
+        //     setError(err.message);
+        // }
+
+
         try {
-            console.log("Starting:");
-            const sdk = ThirdwebSDK.fromPrivateKey(PRIVATE_KEY, "polygon", {
-                secretKey: SECRET_KEY,
+            console.log("Starting 2:");
+            const sdk = await ThirdwebSDK.fromPrivateKey(PRIVATE_KEY, "polygon", {
+                secretKey: '806917a5b8cc53296dde7ca4688a1038',
             });
-            const address = await sdk.deployer.deployBuiltInContract("nft-collection", {
-                name: newCollectionName,
+            // const sdk = await ThirdwebSDK.fromWallet("0x2293221D7c357FB04De9c7D0dEeBcA427407429D", "polygon");
+            console.log("sdk", sdk);
+
+            const contractAddress = await sdk.deployer.deployNFTCollection({
+                name: "My Collection",
                 primary_sale_recipient: "0x2293221D7c357FB04De9c7D0dEeBcA427407429D",
             });
-            console.log("Deployed at", address);
+            console.log("Deployed at", contractAddress);
+
+
         } catch (err) {
             setError(err.message);
         }
+
     };
 
     return (
