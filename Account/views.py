@@ -243,6 +243,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
         profile.delete()
         return Response(status=204)
 
+# {"subject" :"jdfskhj" , "text":"skjdfkzs","email":"me@artina.org"}
+from rest_framework.exceptions import PermissionDenied
 
 class TicketViewSet(viewsets.ViewSet):
 
@@ -276,6 +278,7 @@ class TicketViewSet(viewsets.ViewSet):
         ticket_count = TicketUser.objects.filter(user=user).count()
         if ticket_count >= 5:
             raise PermissionDenied("You have reached the maximum number of tickets.")
+
         unique_id = random.randint(100000, 999999)
         TicketUser.objects.create(user=user, email=email, subject=subject, text=text, ticket_id=unique_id)
 
