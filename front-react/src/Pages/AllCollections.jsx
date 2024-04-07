@@ -1,134 +1,162 @@
 import axios from "axios";
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import ImageCard from "../components/Cards/UserDashboardCards/ImageCard";
-import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import TestLayout from "../Layouts/TestLayout";
 import { Link, useNavigate } from "react-router-dom";
-import { useParams } from "react-router";
-import { useContext } from "react";
-import { UserContext } from "../App";
-import { Notify } from "notiflix";
+import SimpleInput from "../components/Inputs/SimpleInput";
+import BorderButton from "../components/Buttons/BorderButton";
+import { Button } from "primereact/button";
 
 const AllCollections = () => {
-  const [getData, setData] = useState();
-  const [getUser, setUser] = useState();
-  const user = useContext(UserContext);
-
+  const [getData, setData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterBy, setFilterBy] = useState(null);
+  const [filterByBool, setFilterByBool] = useState(null);
+  const [sortPrice, setSortPrice] = useState(null);
+  const [sortDate, setSortDate] = useState(null);
   const navigate = useNavigate();
-  const { username } = useParams();
 
   useEffect(() => {
     axios
-      .get(
-        `https://api.artina.org/api/transaction/collection/${username}/nfts/`,
-        {}
-      )
+      .get(`https://api.artina.org/api/transaction/nfts/get_all/`)
       .then((res) => {
         setData(res.data);
         console.log(res.data);
       });
+  }, []);
 
-      axios
-      .get(`https://api.artina.org/api/transaction/UsersWithNFTsViewSet/`)
-      .then((res) => {
-        console.log(res);
-        setUser(res.data.filter((e)=>{return e.username == username})[0]);
-      })
-      .catch((res) => {
-        console.log(res);
-      });
-
-
-  }, [username]);
-
-  const handleClickShow = (e, childIsVisible, tokenid) => {
-    axios
-      .put(
-        `https://api.artina.org/api/transaction/nfts/toggle_visibility/`,
-        {
-          token_id: tokenid,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-          },
-          mode: "cors",
-        }
-      )
-      .then((res) => {
-        Notify.success("مجموعه ی شما برای عموم قابل نمایش است")
-        console.log(res.data);
-      });
-    childIsVisible(true);
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
   };
 
-  const handleClickHide = (e, childIsVisible,tokenid) => {
-    axios
-      .put(
-        `https://api.artina.org/api/transaction/nfts/toggle_visibility/`,
-        {
-          token_id: tokenid,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-          },
-          mode: "cors",
-        }
-      )
-      .then((res) => {
-        Notify.success("مجموعه ی شما فقط برای شما نمایش داده میشود")
-
-        console.log(res.data);
-      });
-    childIsVisible(false);
+  const handleBoolFilter = (attribute) => {
+    setFilterByBool(filterByBool === attribute ? null : attribute); // Toggle filter on/off
   };
+
+  const handleSortPrice = (option) => {
+    if (sortPrice === option) {
+      setSortPrice(null); // Remove sorting if already selected
+    } else {
+      setSortPrice(option);
+    }
+  };
+
+  const handleSortDate = (option) => {
+    if (sortDate === option) {
+      setSortDate(null); // Remove sorting if already selected
+    } else {
+      setSortDate(option);
+    }
+  };
+
   return (
     <TestLayout>
-      {user && getUser && user.data.username != username &&
-      
-      <>
-      <div className="w-full flex gap-16 items-center p-6 bg-white rounded-xl mb-4 sm:p-3 sm:gap-4 sm:flex-col">
-        <img src={getUser.profile_picture} className="rounded-full object-cover h-52 w-52 flex-shrink-0 sm:w-[120px] sm:h-[120px]" alt="" />
-        <div className="w-full flex flex-col font-b6">
-          <div>هنرمند: <span className="font-b3 px-1">{getUser.name}</span></div>
-          <div>شناسه هنرمند:  <span className="font-b3 px-1">{getUser.username}</span></div>
-          <div>درباره هنرمند:  <span className="font-b3 px-1">{getUser.bio}</span></div>
-          <div>تعداد ان اف تی: <span className="font-b3 px-1">{getUser.nft_count} عدد</span></div>
+      {/* Search input */}
+      <div className="flex justify-center">
+        <input
+          type="text"
+          placeholder="جستجو بر اساس نام یا ایجاد کننده"
+          className="w-1/2 h-12 rounded-lg border-2 border-indigo-400 text-center sm:w-10/12"
+          onChange={handleSearch}
+        />
+      </div>
+      {/* Filter buttons */}
+      <div className="flex gap-y-2 justify-center my-5 sm:text-xs sm:flex-col">
+        <button
+          className={`mx-2 p-2 rounded-lg ${filterByBool === "has_physical" ? "bg-indigo-500 text-white" : "bg-indigo-100 text-gray-700"}`}
+          onClick={() => handleBoolFilter("has_physical")}
+        >
+          نمایش فقط NFT های فیزیکی
+        </button>
+        <button
+          className={`mx-2 p-2 rounded-lg ${filterByBool === "in_exhibition" ? "bg-indigo-500 text-white" : "bg-indigo-100 text-gray-700"}`}
+          onClick={() => handleBoolFilter("in_exhibition")}
+        >
+          نمایش فقط NFT های در نمایشگاه
+        </button>
+        <button
+          className={`mx-2 p-2 rounded-lg ${filterByBool === "is_for_sale" ? "bg-indigo-500 text-white" : "bg-indigo-100 text-gray-700"}`}
+          onClick={() => handleBoolFilter("is_for_sale")}
+        >
+          نمایش فقط NFT های قابل فروش
+        </button>
+        {/* Add more buttons for other attributes */}
+      </div>
+      {/* Sort buttons */}
+      <div className="flex text-center my-5 sm:text-xs">
+        <div className="flex-col w-full">
+          <div className="font-b6 mb-2 text-center">مرتب سازی بر اساس قیمت</div>
+          <button
+            className={`mx-2 my-1 p-1 border-r-2 border-indigo-500 ${sortPrice === "low_to_high" ? "bg-indigo-500 text-white" : "bg-indigo-50 text-gray-700"}`}
+            onClick={() => handleSortPrice("low_to_high")}
+          >
+            کم به زیاد
+          </button>
+          <button
+            className={`mx-2 my-1 p-1 border-r-2 border-indigo-500 ${sortPrice === "high_to_low" ? "bg-indigo-500 text-white" : "bg-indigo-50 text-gray-700"}`}
+            onClick={() => handleSortPrice("high_to_low")}
+          >
+            زیاد به کم
+          </button>
+        </div>
+        <div className="flex-col w-full">
+          <div className="font-b6 mb-2 text-center">مرتب سازی بر اساس تاریخ</div>
+          <button
+            className={`mx-2 my-1 p-1 border-r-2 border-indigo-500 ${sortDate === "newest_to_oldest" ? "bg-indigo-500 text-white" : "bg-indigo-50 text-gray-700"}`}
+            onClick={() => handleSortDate("newest_to_oldest")}
+          >
+            جدیدترین به قدیمی‌ترین
+          </button>
+          <button
+            className={`mx-2 my-1 p-1 border-r-2 border-indigo-500 ${sortDate === "oldest_to_newest" ? "bg-indigo-500 text-white" : "bg-indigo-50 text-gray-700"}`}
+            onClick={() => handleSortDate("oldest_to_newest")}
+          >
+            قدیمی‌ترین به جدیدترین
+          </button>
         </div>
       </div>
-      </>
-      }
-      {getData && getData.length > 0 ? (
-        ""
-      ) : (
-        <div className="w-full flex items-center justify-center  text-lg font-b3">
-          <div className="hover:bg-red-100 bg-red-50 border-[1px] border-red-500 text-red-500 transition-all rounded-2xl py-1 px-5">
-            هنوز مجموعه ای ندارید!
-          </div>
-        </div>
-      )}
+      {/* Render filtered and sorted data */}
       <div className="grid grid-cols-4 gap-5 w-full items-center lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
         {getData
-          ? getData.map((item, index) => (
-              <div className="col-span-1" key={index}>
-                <ImageCard
-                  className="bg-white"
-                  src={item.image_url}
-                  price={item.last_price}
-                  onClick={() => navigate(`/nft-details/${item.token_id}`)}
-                  tokenId={item.token_id}
-                  showSell={user ? user.data.username === username : false}
-                  visible={item.is_visible}
-                  onClickShow={(e, x) => handleClickShow(e, x, item.token_id)}
-                  onClickHide={(e, x) => handleClickHide(e, x, item.token_id)}
-                >
-                  {item.name}
-                </ImageCard>
-              </div>
-            ))
-          : ""}
+          .filter((item) => {
+            if (!searchQuery) return true;
+            return item.name.toLowerCase().includes(searchQuery.toLowerCase()) || item.creator.toLowerCase().includes(searchQuery.toLowerCase());
+          })
+          .filter((item) => {
+            if (!filterByBool) return true;
+            return item[filterByBool];
+          })
+          .sort((a, b) => {
+            if (sortPrice === "low_to_high") {
+              return a.last_price - b.last_price;
+            } else if (sortPrice === "high_to_low") {
+              return b.last_price - a.last_price;
+            } else if (sortDate === "newest_to_oldest") {
+              return new Date(b.date) - new Date(a.date);
+            } else if (sortDate === "oldest_to_newest") {
+              return new Date(a.date) - new Date(b.date);
+            } else {
+              return 0;
+            }
+          })
+          .map((item, index) => (
+            <div className="col-span-1" key={index}>
+              <ImageCard
+                className="bg-white"
+                src={item.image_url}
+                price={item.last_price}
+                onClick={() => navigate(`/nft-details/${item.token_id}`)}
+                tokenId={item.token_id}
+                creator={item.creator}
+                has_creator={true}
+              >
+                <div className="flex-col">
+                  <div className="font-b5 py-1">{item.name}</div>
+                  <div className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 py-1">{item.creator}</div>
+                </div>
+              </ImageCard>
+            </div>
+          ))}
       </div>
     </TestLayout>
   );
