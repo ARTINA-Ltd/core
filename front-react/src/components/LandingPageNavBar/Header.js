@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, Fragment } from "react";
 import "./Header.css";
 import { useNavigate } from "react-router";
 import { UserContext } from "../../App";
@@ -175,9 +175,8 @@ const Header = ({ connectWallet = false, rev = false }) => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [ref2]);
-
   return (
-    <>
+    <div>
       <header>
         <div
           className={`flex justify-center h-[80px] sm:h-[60px] ${
@@ -262,7 +261,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                 <MdOutlineLanguage className="w-8 h-8 text-[#6860db] hover:text-[#4e45d0] ease-in-out duration-300 transition-all" />
               </button>
               {user ? (
-                <>
+                <Fragment>
                   <div ref={ref2}>
                     <div
                       className="cursor-pointer p-2 hover:bg-slate-100 rounded-lg transition-all"
@@ -306,7 +305,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                                 </div>
                               </div>
                               {item.message_seen ? (
-                                <></>
+                                <div></div>
                               ) : (
                                 <div
                                   className="px-2 bg-green-100 hover:bg-green-200 rounded-lg py-1 text-sm"
@@ -316,7 +315,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                                 </div>
                               )}
                             </div>
-                            {index == notifs.length - 1 ? <></> : <hr />}
+                            {index == notifs.length - 1 ? <div></div> : <hr />}
                           </span>
                         ))}
                     </div>
@@ -378,7 +377,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                       </div>
                     </div>
                   </div>
-                </>
+                </Fragment>
               ) : (
                 <BorderButton
                   onClick={() => {
@@ -472,7 +471,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
           ""
         )}
       </div>
-    </>
+    </div>
   );
 };
 

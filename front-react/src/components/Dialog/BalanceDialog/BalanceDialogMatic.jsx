@@ -22,16 +22,16 @@ const BalanceDialogMatic = () => {
         mode: "cors",
       })
       .then((res) => {
-        console.log("Test")
-        console.log(res)
-        console.log("Test")
+        console.log("Test");
+        console.log(res);
+        console.log("Test");
         setData(res.data);
-        console.log(res.data.matic_balance)
+        console.log(res.data.matic_balance);
         if (res.data && res.data.wallet_address) {
           setAddress(res.data.wallet_address);
         }
       })
-      .catch((e) => { });
+      .catch((e) => {});
   }, []);
 
   const createWallet = () => {
@@ -51,9 +51,8 @@ const BalanceDialogMatic = () => {
         if (res.status === 201) {
           const createdAddress = res.data.address;
           setAddress(createdAddress);
-          Notify.success("کیف پول شما با موفقیت ساخته شد")
+          Notify.success("کیف پول شما با موفقیت ساخته شد");
         }
-
       })
       .catch((error) => {
         console.log(error);
@@ -61,46 +60,29 @@ const BalanceDialogMatic = () => {
       });
   };
 
-
-  const updateMatic = () => {
-    axios.post(
-      "https://api.artina.org/api/account/payment/",
-      { amount: amount },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-        },
-        mode: "cors",
-      }
-    ).then((res) => {
-      window.open(res.data.url)
-    }).catch(console.log);
-  }
-
-
-
   const updateBalance = (act) => {
     if (act === "deposit") {
-      axios.post(
-        "https://api.artina.org/api/account/Transaction/",
-        { matic_amount: amount },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-          },
-          mode: "cors",
-        }
-      ).then((res) => {
-        if (res.status === 200) {
-          Notify.success("کیف پول شما با موفقیت شارژ شد")
-        }
-        else if (res.status === 400) {
-          Notify.failure("موجودی شما برای انجام تراکنش کافی نمی‌باشد")
-        }
-        // window.open(res.data.url) 
-      }).catch(console.log);
+      axios
+        .post(
+          "https://api.artina.org/api/account/Transaction/",
+          { matic_amount: amount },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            },
+            mode: "cors",
+          }
+        )
+        .then((res) => {
+          if (res.status === 200) {
+            Notify.success("کیف پول شما با موفقیت شارژ شد");
+          } else if (res.status === 400) {
+            Notify.failure("موجودی شما برای انجام تراکنش کافی نمی‌باشد");
+          }
+          // window.open(res.data.url)
+        })
+        .catch(console.log);
     } else {
-
       axios
         .post(
           "https://api.artina.org/api/account/user-balance/updating_balance/",
@@ -160,7 +142,7 @@ const BalanceDialogMatic = () => {
   const footer = () => {
     if (isCharge === false) {
       return (
-        <>
+        <div>
           {address && (
             <div className="text-lg lg:text-sm sm:text-xs">
               آدرس کیف پول: {address}
@@ -204,7 +186,7 @@ const BalanceDialogMatic = () => {
               شارژ کیف پول
             </div>
           </div>
-        </>
+        </div>
       );
     } else if (action === "deposit") {
       return (
@@ -266,6 +248,7 @@ const BalanceDialogMatic = () => {
           <div className="w-full flex gap-4 font-b4">
             <div className="bg-[#4e45d0] rounded-xl w-full py-20 flex flex-col items-start justify-center text-white gap-4 relative group overflow-hidden sm:py-5">
               <img
+                alt=""
                 src="/mand1.png"
                 className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all  duration-700"
               />

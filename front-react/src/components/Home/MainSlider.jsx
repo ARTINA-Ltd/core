@@ -1,21 +1,22 @@
 import React from "react";
-
-import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import 'swiper/css/navigation';
-import { Navigation } from 'swiper/modules';
+import "swiper/css/navigation";
+import { Navigation } from "swiper/modules";
 
 const MainSlider = () => {
   require("./MainSlider.css");
 
-
   return (
-    <>
-      <div
-        className="w-full"
-      >
-        <Swiper navigation={true} loop={true} modules={[Navigation]} slidesPerView={1} spaceBetween={0}>
+    <div>
+      <div className="w-full">
+        <Swiper
+          navigation={true}
+          loop={true}
+          modules={[Navigation]}
+          slidesPerView={1}
+          spaceBetween={0}
+        >
           <SwiperSlide>
             <img src="/2 - Copy.jpg" className="object-cover w-full" alt="" />
           </SwiperSlide>
@@ -24,7 +25,7 @@ const MainSlider = () => {
           </SwiperSlide>
         </Swiper>
       </div>
-    </>
+    </div>
   );
 };
 

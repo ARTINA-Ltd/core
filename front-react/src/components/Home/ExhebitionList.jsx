@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useLayoutEffect } from "react";
-import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import SimpleCard from "../Cards/UserDashboardCards/SimpleCard";
 import { useNavigate } from "react-router";

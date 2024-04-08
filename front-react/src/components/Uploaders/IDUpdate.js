@@ -1,12 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { Fragment, useRef, useState } from "react";
 import { Toast } from "primereact/toast";
 import { FileUpload } from "primereact/fileupload";
 import { ProgressBar } from "primereact/progressbar";
 import { Button } from "primereact/button";
 import { Tooltip } from "primereact/tooltip";
 import { Tag } from "primereact/tag";
-  import { Image } from 'primereact/image';
- 
+import { Image } from "primereact/image";
 
 // ./ProductPageComponent/images/image_2022-08-15_19-57-46.png
 export default function IDUpdate() {
@@ -124,7 +123,7 @@ export default function IDUpdate() {
 
   const emptyTemplate = () => {
     return (
-      <>
+      <Fragment>
         {UserData.national_card_picture === null ? (
           <div className="flex align-items-center flex-column">
             {/* <i className="pi pi-image mt-3 p-5" style={{ fontSize: '5em', borderRadius: '50%', backgroundColor: 'var(--surface-b)', color: 'var(--surface-d)' }}></i>
@@ -152,10 +151,9 @@ export default function IDUpdate() {
             </p>
 
             <Image src={imageUrl} alt="Image" width="250" />
-
           </div>
         )}
-      </>
+      </Fragment>
     );
   };
 

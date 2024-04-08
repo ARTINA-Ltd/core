@@ -1,11 +1,7 @@
 import "./footer-component_style.css";
-import SocialMedia5 from "../mehdizade_project/starter_file/calligraphy/src/images/footer/social-media5.png";
-import SocialMedia1 from "../mehdizade_project/starter_file/calligraphy/src/images/footer/social-media1.png";
-import SocialMedia2 from "../mehdizade_project/starter_file/calligraphy/src/images/footer/social-media2.png";
-import SocialMedia3 from "../mehdizade_project/starter_file/calligraphy/src/images/footer/social-media4.png";
-import Logo from "../mehdizade_project/starter_file/calligraphy/src/images/footer/logo.png"
+
 // import { images } from "../images/footer";
-import {Link} from "react-router-dom";
+
 // function importAll(r) {
 //   let images = {};
 //   r.keys().forEach((item, index) => {
@@ -22,7 +18,7 @@ const link_content = [
     link_2: "کالکشن ها",
     link_3: "ایجاد یک آیتم",
   },
- 
+
   {
     link_2: "ارتباط با ما",
     link_4: "سوالات",
@@ -86,7 +82,9 @@ const Footer = () => {
           </div>
         </div>
       </div> */}
-      <div className="copyright">Copyright @ 2020 by Artina-All rights reserved</div>
+      <div className="copyright">
+        Copyright @ 2020 by Artina-All rights reserved
+      </div>
     </div>
   );
 };

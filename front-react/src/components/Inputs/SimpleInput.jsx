@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
-import { faL } from "@fortawesome/free-solid-svg-icons";
 import { DatePicker, TimePicker } from "zaman";
 import Select from "react-select";
 
