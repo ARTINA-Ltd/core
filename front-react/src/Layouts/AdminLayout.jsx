@@ -1,11 +1,11 @@
 import React from "react";
-import Header from "../components/LandingPageNavBar/Header";
+import Header from "../components/AdminPageNavbar/Header";
 import Footer from "../components/Footer/Footer";
 import i18next from "../../src/i18n";
-const TestLayout = ({
+const AdminLayout = ({
   children,
-  connectWallet,
   className,
+  connectWallet,
   wfull = false,
   rev = false,
 }) => {
@@ -37,4 +37,4 @@ const TestLayout = ({
   );
 };
 
-export default TestLayout;
+export default AdminLayout;

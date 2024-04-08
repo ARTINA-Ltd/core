@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { useNavigate } from "react-router";
-
+import { useTranslation } from "react-i18next";
 
 export default function AllNftDialog({ likedNfts }) {
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
-
+  const { t } = useTranslation(["dashboard"]);
 
   const footerContent = (
     <div>
       <Button
-        label="لغو"
+        label={t("cancel")}
         icon="pi pi-times"
         onClick={() => setVisible(false)}
         className="p-button-text"
@@ -22,7 +22,7 @@ export default function AllNftDialog({ likedNfts }) {
 
   const Header = (
     <div>
-      <p className="font-b7">nft های پسندیده شده</p>
+      <p className="font-b7">{t("likednfts")}</p>
     </div>
   );
 
@@ -32,7 +32,7 @@ export default function AllNftDialog({ likedNfts }) {
         className="w-full bg-slate-50 cursor-pointer mt-3 py-1 group rounded-lg text-center flex items-center justify-center gap-4"
         onClick={() => setVisible(true)}
       >
-        مشاهده همه
+        {t("showAll")}{" "}
         <div className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -62,9 +62,9 @@ export default function AllNftDialog({ likedNfts }) {
         <table className="dashboard-table w-full text-center">
           <thead>
             <tr>
-              <th className="text-md font-b4">عکس nft</th>
-              <th className="text-md font-b4">نام</th>
-              <th className="text-md font-b4">قیمت</th>
+              <th className="text-md font-b4">{t("nftPhoto")}</th>
+              <th className="text-md font-b4">{t("name")}</th>
+              <th className="text-md font-b4">{t("price")}</th>
               <th />
             </tr>
           </thead>

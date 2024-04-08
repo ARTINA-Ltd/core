@@ -5,8 +5,10 @@ import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import AddExhibitionDialog from "../components/Dialog/AddExhibitionDialog/AddExhibitionDialog";
 import TestLayout from "../Layouts/TestLayout";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
+import { useTranslation } from "react-i18next";
 
 const Exhibitor = () => {
+  const { t } = useTranslation(["exhibitor"]);
   const [artistOpenExhibitions, setArtistOpenExhibitions] = useState();
   const [artistClosedExhibitions, setArtistClosedExhibitions] = useState();
   const [openRegistrationExhibitions, setOpenRegistrationExhibitions] =
@@ -57,10 +59,8 @@ const Exhibitor = () => {
   const handleButton = (id, has_metaverse) => {
     if (has_metaverse) {
       navigate(`/metaverse/${id}`);
-    }
-    else
-      handleMetaverse(id);
-  }
+    } else handleMetaverse(id);
+  };
 
   const handleMetaverse = (id) => {
     axios
@@ -91,11 +91,12 @@ const Exhibitor = () => {
       <TestLayout wfull={true}>
         <SimpleCard className="bg-[#4e45d0] flex flex-col relative gap-4 items-center justify-center overflow-hidden w-[90%] h-96 mx-auto mb-5 md:h-72 sm:h-52">
           <img
+            alt=""
             src="/mand1.png"
             className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
           />
           <div className="text-white text-6xl mb-4 z-10 font-b7 sm:text-3xl">
-            مدیریت فعالیت ها
+            {t("pageTitle")}
           </div>
         </SimpleCard>
 
@@ -103,42 +104,46 @@ const Exhibitor = () => {
           className={"bg-white mx-auto w-[90%] z-10 relative text-center"}
         >
           <div className="font-b6 text-2xl mb-4 mx-auto md:mb-4 sm:text-xl">
-            نمایشگاه های در حال برگزاری شما
+            {t("firstSection")}
           </div>
 
           <div className="grid grid-cols-5 gap-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-1">
             <AddExhibitionDialog />
             {artistOpenExhibitions
               ? artistOpenExhibitions.map((item, index) => (
-                <div>
-                  <SimpleCard
-                    key={index}
-                    className="h-[420px] w-full bg-[#0000aa05] hover:bg-[#0000aa08] transition-all p-0 relative group cursor-pointer md:h-[300px] sm:h-[250px]"
-                    noPadding={true}
-                  >
-                    <img
-                      src={item.image}
-                      className="h-full w-full object-cover rounded-2xl"
-                      alt=""
-                      onClick={() =>
-                        navigate(`/artist-application-form/${item.id}`)
-                      }
-                    />
-                    <div className="absolute h-full w-full top-0 rounded-2xl bg-gradient-to-t text-lg font-b4 group-hover:text-xl gap-3 from-black flex items-end justify-center pb-4 text-white group-hover:pb-6 transition-all">
-                      <div className="flex flex-col items-center justify-center w-full">
-                        {item.marketName}
+                  <div>
+                    <SimpleCard
+                      key={index}
+                      className="h-[420px] w-full bg-[#0000aa05] hover:bg-[#0000aa08] transition-all p-0 relative group cursor-pointer md:h-[300px] sm:h-[250px]"
+                      noPadding={true}
+                    >
+                      <img
+                        src={item.image}
+                        className="h-full w-full object-cover rounded-2xl"
+                        alt=""
+                        onClick={() =>
+                          navigate(`/artist-application-form/${item.id}`)
+                        }
+                      />
+                      <div className="absolute h-full w-full top-0 rounded-2xl bg-gradient-to-t text-lg font-b4 group-hover:text-xl gap-3 from-black flex items-end justify-center pb-4 text-white group-hover:pb-6 transition-all">
+                        <div className="flex flex-col items-center justify-center w-full">
+                          {item.marketName}
 
-                        <div
-                          className="bg-white/20  w-full hover:bg-white/30 py-2 text-sm backdrop-blur-md"
-                          onClick={() => handleButton(item.id, item.has_metaverse)}
-                        >
-                          {item.has_metaverse ? "ورود به متاورس" : "درخواست برای متاورس"}
+                          <div
+                            className="bg-white/20  w-full hover:bg-white/30 py-2 text-sm backdrop-blur-md"
+                            onClick={() =>
+                              handleButton(item.id, item.has_metaverse)
+                            }
+                          >
+                            {item.has_metaverse
+                              ? "ورود به متاورس"
+                              : "درخواست برای متاورس"}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </SimpleCard>
-                </div>
-              ))
+                    </SimpleCard>
+                  </div>
+                ))
               : ""}
           </div>
         </SimpleCard>
@@ -163,7 +168,7 @@ const Exhibitor = () => {
               />
             </svg>
           </div>
-            مشاهده لیست درخواست ها
+          مشاهده لیست درخواست ها
         </div>
 
         <SimpleCard className={"bg-white mx-auto w-[90%] mt-5 text-center"}>
@@ -182,7 +187,7 @@ const Exhibitor = () => {
             </div>
           </div>
           {openRegistrationExhibitions &&
-            openRegistrationExhibitions.length > 0 ? (
+          openRegistrationExhibitions.length > 0 ? (
             <div>
               <div className="grid grid-cols-5 gap-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-1">
                 {openRegistrationExhibitions.map((item, index) => (

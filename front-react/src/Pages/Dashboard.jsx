@@ -8,9 +8,9 @@ import { useState } from "react";
 import AllTurnOversDialog from "../components/Dialog/AllTurnOversDialog/AllTurnOversDialog";
 import AllNftDialog from "../components/Dialog/AllNftLikedDialog/AllNftDialog";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 const Dashboard = () => {
-  const [getData, setData] = useState();
   const [getLikedNfts, setLikedNfts] = useState();
   const [tickets, setTickets] = useState();
   const [profit, setProfit] = useState();
@@ -18,15 +18,13 @@ const Dashboard = () => {
   const [getOrders, setOrders] = useState();
   const [artistOpenExhibitions, setArtistOpenExhibitions] = useState();
   const [reqData, setReqData] = useState();
-  const [commission, setCommission] = useState();
+  const { t } = useTranslation(["dashboard"]);
 
   const [getLastMonthTurnover, setLastMonthTurnover] = useState();
   const [getAllTurnovers, setAllTurnovers] = useState();
 
   const navigate = useNavigate();
 
-
-  //https://api.artina.org/api/transaction/orders/get_user_order
   useEffect(() => {
     axios
       .get("https://api.artina.org/api/exhibition/Ticket/get_user_tickets/", {
@@ -37,17 +35,10 @@ const Dashboard = () => {
       })
       .then((res) => {
         console.log("_____Tickets_____");
-        // console.log("get_user_tickets");
         console.log(res.data);
-        // console.log("---------------");
         setTickets(res.data);
       })
-      .catch((res) => {
-        // console.log("------err------");
-        // console.log("get_user_tickets");
-        // console.log(res);
-        // console.log("---------------");
-      });
+      .catch((res) => {});
   }, []);
 
   useEffect(() => {
@@ -62,18 +53,9 @@ const Dashboard = () => {
         }
       )
       .then((res) => {
-        // console.log("------succ-----");
-        // console.log("calculate_user_revenue");
-        // console.log(res);
-        // console.log("---------------");
         setProfit(res.data);
       })
-      .catch((res) => {
-        // console.log("------err------");
-        // console.log("calculate_user_revenue");
-        // console.log(res);
-        // console.log("---------------");
-      });
+      .catch((res) => {});
 
     axios
       .get("https://api.artina.org/api/transaction/nft_ratings/user_likes/", {
@@ -85,7 +67,7 @@ const Dashboard = () => {
       .then((res) => {
         setLikedNfts(res.data);
       })
-      .catch((res) => { });
+      .catch((res) => {});
   }, []);
 
   useEffect(() => {
@@ -105,13 +87,7 @@ const Dashboard = () => {
         setAllTurnovers(res.data.all_turnovers);
         console.log("---------");
       })
-      .catch((res) => {
-        // console.log("------err------");
-        // console.log("111111111111111");
-        // console.log(res);
-        // console.log("---------------");
-        // setData(res.data);
-      });
+      .catch((res) => {});
   }, []);
 
   useEffect(() => {
@@ -124,20 +100,8 @@ const Dashboard = () => {
           },
         }
       )
-      .then((res) => {
-        // console.log("------succ-----");
-        // console.log("222222222222222");
-        // console.log(res);
-        // console.log("---------------");
-        // setData(res.data);
-      })
-      .catch((res) => {
-        // console.log("------err------");
-        // console.log("222222222222222");
-        // console.log(res);
-        // console.log("---------------");
-        // setData(res.data);
-      });
+      .then((res) => {})
+      .catch((res) => {});
   }, []);
 
   useEffect(() => {
@@ -147,20 +111,8 @@ const Dashboard = () => {
           Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
         },
       })
-      .then((res) => {
-        // console.log("------succ-----");
-        // console.log("333333333333333");
-        // console.log(res);
-        // console.log("---------------");
-        // setData(res.data);
-      })
-      .catch((res) => {
-        // console.log("------err------");
-        // console.log("333333333333333");
-        // console.log(res);
-        // console.log("---------------");
-        // setData(res.data);
-      });
+      .then((res) => {})
+      .catch((res) => {});
   }, []);
 
   useEffect(() => {
@@ -175,7 +127,7 @@ const Dashboard = () => {
         setBalance(res.data);
         console.log("____Balance____", res.data);
       })
-      .catch((e) => { });
+      .catch((e) => {});
   }, []);
 
   useEffect(() => {
@@ -218,7 +170,7 @@ const Dashboard = () => {
         console.log(res.data);
         setOrders(res.data);
       })
-      .catch((res) => { });
+      .catch((res) => {});
   }, []);
 
   const [lightOptions] = useState({
@@ -232,7 +184,7 @@ const Dashboard = () => {
   });
 
   const [chartData, setChartData] = useState({
-    labels: ["اتریوم", "تومان"],
+    labels: [t("ethereum"), t("tooman")],
     datasets: [
       {
         data: [300, 50],
@@ -242,7 +194,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     setChartData({
-      labels: ["اتریوم(بر حسب تومان)", "تومان"],
+      labels: [t("ethereumToTooman"), t("tooman")],
       datasets: [
         {
           data: [
@@ -261,26 +213,26 @@ const Dashboard = () => {
           <div className="flex flex-col gap-3 w-2/3 sm:w-full">
             <SimpleCard className="bg-white w-full h-full flex-col items-center justify-start">
               <div className="text-xl font-b6 px-4 mx-auto py-1 transition-all rounded-2xl mb-2 text-center">
-                گزارش مالی
+                {t("financialReport")}{" "}
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div
                   id="rials"
                   className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4"
                 >
-                  <div className="font-b6">تومان</div>
+                  <div className="font-b6">{t("tooman")}</div>
                   <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
-                    مانده قابل معامله:
+                    {t("negotiablebalance")}{" "}
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
                       {getBalance ? getBalance.rial_available_balance : ""}
-                      تومان
+                      {t("tooman")}
                     </div>
                   </div>
                   <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
-                    مانده غیر قابل معامله:
+                    {t("nonNegotiableBalance")}{" "}
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
                       {getBalance ? getBalance.rial_unavailable_balance : ""}
-                      تومان
+                      {t("tooman")}
                     </div>
                   </div>
                 </div>
@@ -289,18 +241,18 @@ const Dashboard = () => {
                   id="ethrs"
                   className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4"
                 >
-                  <div className="font-b6">اتریوم</div>
+                  <div className="font-b6">{t("ethereum")}</div>
                   <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
-                    مانده قابل معامله:
+                    {t("negotiablebalance")}{" "}
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
-                      {getBalance ? getBalance.eth_balance : ""} اتریوم
+                      {getBalance ? getBalance.eth_balance : ""} {t("ethereum")}
                     </div>
                   </div>
                   <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
-                    مانده غیر قابل معامله:
+                    {t("nonNegotiableBalance")}{" "}
                     <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
                       {getBalance ? getBalance.eth_unavailable_balance : ""}
-                      اتریوم
+                      {t("ethereum")}{" "}
                     </div>
                   </div>
                 </div>
@@ -311,9 +263,9 @@ const Dashboard = () => {
                   id=""
                   className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4 sm:flex-col"
                 >
-                  <div className="font-b6">سود حاصل از بلیت نمایشگاه</div>
+                  <div className="font-b6">{t("ProfitsTickets")} </div>
                   <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
-                    {profit ? profit.revenue : ""} تومان
+                    {profit ? profit.revenue : ""} {t("tooman")}
                   </div>
                 </div>
               </div>
@@ -323,9 +275,10 @@ const Dashboard = () => {
                   id=""
                   className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4 sm:flex-col"
                 >
-                  <div className="font-b6">مجموع حجم تراکنش های ماهانه</div>
+                  <div className="font-b6">{t("monthlyTransactions")}</div>
                   <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
-                    {getLastMonthTurnover ? getLastMonthTurnover : ""} تومان
+                    {getLastMonthTurnover ? getLastMonthTurnover : ""}{" "}
+                    {t("tooman")}
                   </div>
                 </div>
               </div>
@@ -340,15 +293,15 @@ const Dashboard = () => {
             </SimpleCard>
             <SimpleCard className="bg-white w-full h-full flex-col items-center justify-start sm:p-3">
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center sm:px-1">
-                گردش حساب
+                {t("turnover")}{" "}
               </div>
 
               <table className="dashboard-table w-full text-center sm:text-xs">
                 <thead>
                   <tr>
-                    <th>واحد ارز</th>
-                    <th>نوع تراکنش </th>
-                    <th>مقدار(تومان) </th>
+                    <th>{t("currencyUnit")}</th>
+                    <th>{t("transactionType")} </th>
+                    <th>{t("amount")} </th>
                     <th />
                   </tr>
                 </thead>
@@ -356,19 +309,23 @@ const Dashboard = () => {
                 <tbody>
                   {getAllTurnovers ? (
                     getAllTurnovers.map((item, index) => (
-                      <>
+                      <div>
                         {index < 5 ? (
                           <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
                             <td>
                               {item.transaction_currency == 1
-                                ? "تومان"
-                                : "اتریوم"}
+                                ? t("tooman")
+                                : t("ethereum")}
                             </td>
                             <td>
-                              {item.transaction_type == 2 ? "برداشت" : "واریز"}
+                              {item.transaction_type == 2
+                                ? t("Withdrawal")
+                                : t("deposit")}
                             </td>
 
-                            <td>{item.transaction_value} تومان</td>
+                            <td>
+                              {item.transaction_value} {t("tooman")}
+                            </td>
 
                             <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
                               <svg
@@ -388,12 +345,12 @@ const Dashboard = () => {
                             </td>
                           </tr>
                         ) : (
-                          <></>
+                          <div></div>
                         )}
-                      </>
+                      </div>
                     ))
                   ) : (
-                    <></>
+                    <div></div>
                   )}
                 </tbody>
               </table>
@@ -403,16 +360,16 @@ const Dashboard = () => {
           <div className="flex flex-col w-full gap-5">
             <SimpleCard className="bg-white  w-full h-full sm:p-2">
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
-                نمایشگاه ها
+                {t("exhibitions")}{" "}
               </div>
               <table className="dashboard-table w-full text-center sm:text-[12px]">
                 <thead>
                   <tr>
-                    <th className="sm:hidden">عکس</th>
-                    <th>نام نمایشگاه</th>
-                    <th>کمیسیون</th>
-                    <th>سود حاصل</th>
-                    <th>تاریخ پایان</th>
+                    <th className="sm:hidden">{t("picture")}</th>
+                    <th>{t("nameOfEx")}</th>
+                    <th>{t("commission")}</th>
+                    <th>{t("profit")}</th>
+                    <th>{t("endDate")}</th>
                     <th />
                   </tr>
                 </thead>
@@ -474,7 +431,7 @@ const Dashboard = () => {
                       </tr>
                     ))
                   ) : (
-                    <></>
+                    <div></div>
                   )}
                 </tbody>
               </table>
@@ -482,14 +439,14 @@ const Dashboard = () => {
 
             <SimpleCard className="bg-white  w-full h-full">
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
-                سفارشات باز شما
+                {t("openOrders")}{" "}
               </div>
               <table className="dashboard-table w-full text-cente sm:text-xs">
                 <thead>
                   <tr>
-                    <th>نام nft</th>
-                    <th>تاریخ </th>
-                    <th>مقدار(تومان) </th>
+                    <th>{t("nfNname")}</th>
+                    <th>{t("date")} </th>
+                    <th>{t("amount")} </th>
                     <th />
                   </tr>
                 </thead>
@@ -499,7 +456,9 @@ const Dashboard = () => {
                     getOrders.map((item, index) => (
                       <tr
                         className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all"
-                        onClick={() => navigate(`/nft-details/${item.token_id}`)}
+                        onClick={() =>
+                          navigate(`/nft-details/${item.token_id}`)
+                        }
                       >
                         <td>{item.nft}</td>
                         <td>
@@ -509,7 +468,9 @@ const Dashboard = () => {
                             day: "numeric",
                           }).format(new Date(item.date))}
                         </td>
-                        <td>{item.fee} تومان</td>
+                        <td>
+                          {item.fee} {t("tooman")}
+                        </td>
 
                         <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
                           <svg
@@ -530,7 +491,7 @@ const Dashboard = () => {
                       </tr>
                     ))
                   ) : (
-                    <></>
+                    <div></div>
                   )}
                 </tbody>
               </table>
@@ -538,15 +499,15 @@ const Dashboard = () => {
 
             <SimpleCard className="bg-white  w-full h-full sm:p-3">
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
-                بلیت ها
+                {t("tickets")}{" "}
               </div>
               <table className="dashboard-table w-full text-center sm:text-xs">
                 <thead>
                   <tr>
-                    <th>شماره بلیت</th>
-                    <th>آیدی نمایشگاه</th>
-                    <th>قیمت</th>
-                    <th>تاریخ انقضا</th>
+                    <th>{t("ticketNo")}</th>
+                    <th>{t("exhibitionID")}</th>
+                    <th>{t("price")}</th>
+                    <th>{t("expireDate")}</th>
                     {/* <th /> */}
                   </tr>
                 </thead>
@@ -594,25 +555,27 @@ const Dashboard = () => {
 
             <SimpleCard className="bg-white  w-full h-full sm:p-3">
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
-                nft هایی که پسندیده اید
+                {t("likedNFTs")}{" "}
               </div>
               <table className="dashboard-table w-full text-center sm:text-xs">
                 <thead>
                   <tr>
-                    <th>عکس nft</th>
-                    <th>نام</th>
-                    <th>قیمت</th>
+                    <th>{t("nftPhoto")}</th>
+                    <th>{t("name")}</th>
+                    <th>{t("price")}</th>
                     <th />
                   </tr>
                 </thead>
                 <tbody>
                   {getLikedNfts ? (
                     getLikedNfts.map((item, index) => (
-                      <>
+                      <div>
                         {index < 5 ? (
                           <tr
                             className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all"
-                            onClick={() => navigate(`/nft-details/${item.token_id}`)}
+                            onClick={() =>
+                              navigate(`/nft-details/${item.token_id}`)
+                            }
                             key={index}
                           >
                             <td>
@@ -644,12 +607,12 @@ const Dashboard = () => {
                             </td>
                           </tr>
                         ) : (
-                          <></>
+                          <div></div>
                         )}
-                      </>
+                      </div>
                     ))
-                    ) : (
-                    <></>
+                  ) : (
+                    <div></div>
                   )}
                 </tbody>
               </table>
@@ -657,8 +620,8 @@ const Dashboard = () => {
             </SimpleCard>
           </div>
         </div>
-      </TestLayout >
-    </div >
+      </TestLayout>
+    </div>
   );
 };
 

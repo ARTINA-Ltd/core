@@ -175,6 +175,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [ref2]);
+
   return (
     <>
       <header>
@@ -255,6 +256,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                   i18n.language === "en"
                     ? i18n.changeLanguage("fa")
                     : i18n.changeLanguage("en");
+                  window.location.reload();
                 }}
               >
                 <MdOutlineLanguage className="w-8 h-8 text-[#6860db] hover:text-[#4e45d0] ease-in-out duration-300 transition-all" />
@@ -352,7 +354,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                         className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]"
                         onClick={() => navigate("/dashboard")}
                       >
-                        داشبورد
+                        {t("dashboard")}
                       </div>
                       <BalanceDialog />
                       <BalanceDialogMatic />
@@ -360,7 +362,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                         className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]"
                         onClick={() => navigate("/profile")}
                       >
-                        پروفایل
+                        {t("profile")}
                       </div>
 
                       <div
@@ -372,7 +374,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                           userChange(e);
                         }}
                       >
-                        خروج
+                        {t("logout")}
                       </div>
                     </div>
                   </div>
@@ -384,7 +386,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                     navigate("/login");
                   }}
                 >
-                  ورود
+                  {t("login")}
                 </BorderButton>
               )}
 

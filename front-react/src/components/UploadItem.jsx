@@ -1,34 +1,23 @@
-import React, {
-  useState,
-  useCallback,
-  useEffect,
-  useContext,
-  useRef,
-} from "react";
-import Dropzone from "./Dropzone";
+import React, { useState, useEffect, useRef } from "react";
 import "./UploadItem.css";
 import axios from "axios";
-import NFTupload from "./Uploaders/NFTupload";
 import { useAddress } from "@thirdweb-dev/react";
-import UploadCard from "./Cards/UserDashboardCards/UploadCard";
 import SimpleCard from "./Cards/UserDashboardCards/SimpleCard";
-import { Button } from "@mui/material";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
-import { UserContext } from "../App";
 import SimpleInput from "./Inputs/SimpleInput";
 import BorderButton from "./Buttons/BorderButton";
 import { Block } from "notiflix";
 import { Dialog } from "primereact/dialog";
+import { useTranslation } from "react-i18next";
 
 const UploadItem = () => {
-  const user = useContext(UserContext);
+  const { t } = useTranslation();
   const inputFile = useRef(null);
   const [image, setImage] = useState();
   const [imageUrl, setImageUrl] = useState();
   const [selectedCategory, setSelectedCategory] = useState();
   const [selectedCollection, setSelectedCollection] = useState();
   const [visible, setVisible] = useState(false);
-
 
   const [isLoading, setIsLoading] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
@@ -45,8 +34,11 @@ const UploadItem = () => {
     if (categories != undefined) {
       setCategoryOptions([]);
 
-      categories.forEach(element => {
-        setCategoryOptions(e => [...e, { value: element.id, label: element.name }]);
+      categories.forEach((element) => {
+        setCategoryOptions((e) => [
+          ...e,
+          { value: element.id, label: element.name },
+        ]);
       });
     }
   }, [categories]);
@@ -55,8 +47,11 @@ const UploadItem = () => {
     if (collections != undefined) {
       setCollectionOptions([]);
 
-      collections.forEach(element => {
-        setCollectionOptions(e => [...e, { value: element.id, label: element.name }]);
+      collections.forEach((element) => {
+        setCollectionOptions((e) => [
+          ...e,
+          { value: element.id, label: element.name },
+        ]);
       });
     }
   }, [collections]);
@@ -68,7 +63,7 @@ const UploadItem = () => {
           Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
         },
       })
-      .then(res => {
+      .then((res) => {
         console.log("_____________________");
         console.log("Categories");
         console.log(res.data);
@@ -84,7 +79,7 @@ const UploadItem = () => {
           Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
         },
       })
-      .then(res => {
+      .then((res) => {
         console.log("_____________________");
         console.log("Collection");
         console.log(res.data);
@@ -92,7 +87,6 @@ const UploadItem = () => {
         setCollections(res.data);
       });
   }, []);
-
 
   const address = useAddress();
 
@@ -105,15 +99,15 @@ const UploadItem = () => {
     last_price: "",
   });
 
-  const handleCategoryChange = e => {
+  const handleCategoryChange = (e) => {
     setSelectedCategory(e.value);
   };
 
-  const handleCollectionChange = e => {
+  const handleCollectionChange = (e) => {
     setSelectedCollection(e.value);
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (address) {
       setIsLoading(true);
@@ -134,7 +128,7 @@ const UploadItem = () => {
             category: selectedCategory,
             has_internal_wallet: hasInternalWallet,
             data: uploadObj.properties,
-            collection: selectedCollection
+            collection: selectedCollection,
           },
           {
             headers: {
@@ -143,17 +137,17 @@ const UploadItem = () => {
             mode: "cors",
           }
         )
-        .then(res => {
+        .then((res) => {
           setTokenId(res.data);
           Notify.success("درخواست شما با موفقیت ثبت شد");
           setIsLoading(false);
           setIsUploaded(true);
           console.log(res);
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
-          console.log("Category:", selectedCategory)
-          console.log("Has Physical:", hasPhysical)
+          console.log("Category:", selectedCategory);
+          console.log("Has Physical:", hasPhysical);
 
           if (e.response.data.error === "your money is not enough") {
             Notify.failure(
@@ -178,12 +172,12 @@ const UploadItem = () => {
             image_nft: imageUrl,
             description_nft: upladObj.description,
             external_link: upladObj.external_link,
-            author_address: '',
+            author_address: "",
             has_physical: hasPhysical,
             category: selectedCategory,
             has_internal_wallet: hasInternalWallet,
             data: uploadObj.properties,
-            collection: selectedCollection
+            collection: selectedCollection,
           },
           {
             headers: {
@@ -192,17 +186,17 @@ const UploadItem = () => {
             mode: "cors",
           }
         )
-        .then(res => {
+        .then((res) => {
           setTokenId(res.data);
           Notify.success("درخواست شما با موفقیت ثبت شد");
           setIsLoading(false);
           setIsUploaded(true);
           console.log(res);
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
-          console.log("Category:", selectedCategory)
-          console.log("Has Physical:", hasPhysical)
+          console.log("Category:", selectedCategory);
+          console.log("Has Physical:", hasPhysical);
 
           if (e.response.data.error === "your money is not enough") {
             Notify.failure(
@@ -213,8 +207,7 @@ const UploadItem = () => {
           }
           setIsLoading(false);
         });
-    }
-    else {
+    } else {
       Notify.failure("به کانکت والت متصل شوید");
     }
   };
@@ -231,7 +224,7 @@ const UploadItem = () => {
       formData.append("image", image, image.name);
       axios
         .post("https://api.artina.org/api/transaction/images/", formData)
-        .then(res => {
+        .then((res) => {
           Notify.success("با موفقیت آپلود شد");
           setImageUrl(res.data.image);
           Block.remove("#nftImage", 3000);
@@ -243,29 +236,28 @@ const UploadItem = () => {
     }
   }, [image]);
 
-
   const [uploadObj, setUploadObj] = useState({
-    properties: [] // {name: '', type: ''}
+    properties: [], // {name: '', type: ''}
   });
   const [newProperty, setNewProperty] = useState({
-    name: '',
-    type: ''
+    name: "",
+    type: "",
   });
 
   const handleInputChange = (property, value) => {
     setNewProperty({
       ...newProperty,
-      [property]: value
+      [property]: value,
     });
   };
 
   const handleAddProperty = () => {
     setUploadObj({
       ...uploadObj,
-      properties: [...uploadObj.properties, newProperty]
+      properties: [...uploadObj.properties, newProperty],
     });
     // Clear the form after adding a new property
-    setNewProperty({ name: '', type: '' });
+    setNewProperty({ name: "", type: "" });
     setVisible(false);
   };
 
@@ -274,7 +266,7 @@ const UploadItem = () => {
     updatedProperties.splice(index, 1);
     setUploadObj({
       ...uploadObj,
-      properties: updatedProperties
+      properties: updatedProperties,
     });
   };
 
@@ -322,7 +314,7 @@ const UploadItem = () => {
               hidden
               accept="image/*"
               type="file"
-              onChange={e => {
+              onChange={(e) => {
                 setImage(() => e.target.files[0]);
               }}
               ref={inputFile}
@@ -330,13 +322,13 @@ const UploadItem = () => {
           </div>
         </SimpleCard>
         <SimpleCard className={"flex flex-col gap-12 bg-white w-full sm:gap-4"}>
-          <div className="text-[24px]">ضرب اثر</div>
+          <div className="text-[24px]">{t("addArt")}</div>
           <div className="flex gap-4 sm:flex-col">
             <SimpleInput
               type="text"
-              title="نام اثر"
+              title={t("artName")}
               placeholder="مثلا: تابلو نقاشی"
-              onChange={e =>
+              onChange={(e) =>
                 setOploadObj(
                   // isValid={formValues.first_name != ""}
                   { ...upladObj, item_name: e.target.value }
@@ -346,9 +338,9 @@ const UploadItem = () => {
             />
             <SimpleInput
               type="text"
-              title="نام هنرمند"
+              title={t("artist")}
               placeholder="مثلا: علیرضا موسوی"
-              onChange={e =>
+              onChange={(e) =>
                 setOploadObj(
                   // isValid={formValues.first_name != ""}
                   { ...upladObj, creator: e.target.value }
@@ -362,17 +354,17 @@ const UploadItem = () => {
               <SimpleInput
                 options={categoryOptions}
                 type="dropdown"
-                placeholder={"انتخاب دسته بندی"}
+                placeholder={t("selectCategory")}
                 onChange={handleCategoryChange}
-                title="دسته بندی"
+                title={t("category")}
               />
             </div>
             <div className="w-full">
               <SimpleInput
                 type="number"
-                title="قیمت پایه(اتریوم)"
+                title={t("basePrice(ethereum)")}
                 placeholder="مثلا: 1.4"
-                onChange={e =>
+                onChange={(e) =>
                   setOploadObj(
                     // isValid={formValues.first_name != ""}
                     { ...upladObj, last_price: e.target.value }
@@ -387,21 +379,31 @@ const UploadItem = () => {
               <SimpleInput
                 options={collectionsOptions}
                 type="dropdown"
-                placeholder={"انتخاب دسته بندی"}
+                placeholder={t("selectCategory")}
                 onChange={handleCollectionChange}
-                title="کالکشن"
+                title={t("collection")}
               />
             </div>
             <div className="w-full">
-              <p className="text-[14px] cursor-pointer pt-2 border-r-2 pb-2 pr-3 border-indigo-600 font-b5" onClick={() => setVisible(true)}>
-                خاصیت ها را انتخاب کنید
+              <p
+                className="text-[14px] cursor-pointer pt-2 border-r-2 pb-2 pr-3 border-indigo-600 font-b5"
+                onClick={() => setVisible(true)}
+              >
+                {t("chooseProperties")}{" "}
               </p>
               {uploadObj.properties.map((property, index) => (
-                <div key={index} className="flex mt-4 items-center justify-between">
+                <div
+                  key={index}
+                  className="flex mt-4 items-center justify-between"
+                >
                   {/* <p className="">{index + 1}-</p> */}
                   <p className="">نام: {property.name}</p>
                   <p className="">نوع: {property.type}</p>
-                  <BorderButton className="block" size="sm" onClick={() => handleRemoveProperty(index)}>
+                  <BorderButton
+                    className="block"
+                    size="sm"
+                    onClick={() => handleRemoveProperty(index)}
+                  >
                     حذف
                   </BorderButton>
                 </div>
@@ -419,7 +421,9 @@ const UploadItem = () => {
                       type="text"
                       title="اسم"
                       placeholder="مثلا: جنس"
-                      onChange={(e) => handleInputChange('name', e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("name", e.target.value)
+                      }
                       value={newProperty.name}
                       defaultValue={null}
                     />
@@ -427,13 +431,19 @@ const UploadItem = () => {
                       type="text"
                       title="نوع"
                       placeholder="مثلا: طلا"
-                      onChange={(e) => handleInputChange('type', e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("type", e.target.value)
+                      }
                       value={newProperty.type}
                       defaultValue={null}
                     />
                   </div>
                   <div className="flex justify-between">
-                    <BorderButton className="text-lg" size="sm" onClick={handleAddProperty}>
+                    <BorderButton
+                      className="text-lg"
+                      size="sm"
+                      onClick={handleAddProperty}
+                    >
                       ثبت
                     </BorderButton>
                   </div>
@@ -442,32 +452,34 @@ const UploadItem = () => {
             </div>
           </div>
           <div className="w-full flex gap-3 items-center">
-            <div className="">اثر نسخه فیزیکی دارد؟</div>
+            <div className="">{t("isPhysicalVersion")}</div>
             <div
-              className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${hasPhysical
-                ? "bg-green-100 text-green-400"
-                : "bg-gray-100 text-gray-400"
-                } transition-all`}
+              className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${
+                hasPhysical
+                  ? "bg-green-100 text-green-400"
+                  : "bg-gray-100 text-gray-400"
+              } transition-all`}
               onClick={() => setHasPhysical(true)}
             >
-              بله
+              {t("yes")}
             </div>
             <div
-              className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${!hasPhysical
-                ? "bg-red-100 text-red-400"
-                : "bg-gray-100 text-gray-400"
-                } transition-all`}
+              className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${
+                !hasPhysical
+                  ? "bg-red-100 text-red-400"
+                  : "bg-gray-100 text-gray-400"
+              } transition-all`}
               onClick={() => setHasPhysical(false)}
             >
-              خیر
+              {t("no")}
             </div>
           </div>
           <div className="w-full">
             <SimpleInput
               type="text"
-              title="توضیحات"
+              title={t("description")}
               placeholder=""
-              onChange={e =>
+              onChange={(e) =>
                 setOploadObj(
                   // isValid={formValues.first_name != ""}
                   { ...upladObj, description: e.target.value }
@@ -481,9 +493,9 @@ const UploadItem = () => {
             <SimpleInput
               ltr={true}
               type="text"
-              title="لینک خارجی"
+              title={t("externalLink")}
               placeholder="مثلا:https://www.artina.org"
-              onChange={e =>
+              onChange={(e) =>
                 setOploadObj(
                   // isValid={formValues.first_name != ""}
                   { ...upladObj, external_link: e.target.value }
@@ -493,36 +505,37 @@ const UploadItem = () => {
             />
           </div>
 
-
           <div className="w-full flex gap-3 items-center">
-            <div className="">ضرب اثر با کیف پول داخل سایت؟</div>
+            <div className="">{t("isAddWithWallet")}</div>
             <div
-              className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${hasInternalWallet
-                ? "bg-green-100 text-green-400"
-                : "bg-gray-100 text-gray-400"
-                } transition-all`}
+              className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${
+                hasInternalWallet
+                  ? "bg-green-100 text-green-400"
+                  : "bg-gray-100 text-gray-400"
+              } transition-all`}
               onClick={() => setHasInternalWallet(true)}
             >
-              بله
+              {t("yes")}
             </div>
             <div
-              className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${!hasInternalWallet
-                ? "bg-red-100 text-red-400"
-                : "bg-gray-100 text-gray-400"
-                } transition-all`}
+              className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${
+                !hasInternalWallet
+                  ? "bg-red-100 text-red-400"
+                  : "bg-gray-100 text-gray-400"
+              } transition-all`}
               onClick={() => setHasInternalWallet(false)}
             >
-              خیر
+              {t("no")}
             </div>
           </div>
 
           <div className="flex justify-between">
             <div className="text-[14px] text-gray-400 pt-2">
-              هزینه پایه ضرب اثر ۱۰,۰۰۰ تومان است.
+              {t("basicCost")}
             </div>
             {!isLoading ? (
               <BorderButton className="" size="lg" onClick={handleSubmit}>
-                ضرب اثر
+                {t("addArt")}{" "}
               </BorderButton>
             ) : (
               <BorderButton className=" text-[14px] bg-[#302c66] py-5 px-[6rem] rounded-lg cursor-not-allowed transition-all flex items-center gap-3">
@@ -566,12 +579,13 @@ const UploadItem = () => {
           </div>
           <div className="text-right leading-[40px]">
             <div className="text-[20px] text-green-600">
-              اثر شما با موفقیت تبدیل به ان اف تی شد؛ حال می‌تونید آن را در کیف پول خود اضافه کنید.
+              اثر شما با موفقیت تبدیل به ان اف تی شد؛ حال می‌تونید آن را در کیف
+              پول خود اضافه کنید.
             </div>
             <div className="text-[16px] text-green-900">
-              وارد کیف پول خود شوید و روی بخش nft بر روی import کلیک نمایید. در قسمت contract
-              کد زیر را کپی کرده و در قسمت TokenId عدد {tokenId} را وارد کنید و
-              بر روی ثبت کلیک نمایید.
+              وارد کیف پول خود شوید و روی بخش nft بر روی import کلیک نمایید. در
+              قسمت contract کد زیر را کپی کرده و در قسمت TokenId عدد {tokenId}{" "}
+              را وارد کنید و بر روی ثبت کلیک نمایید.
             </div>
             <div
               className="text-[16px] text-green-900 bg-green-100 rounded-full w-min whitespace-nowrap px-7 cursor-pointer flex gap-12 items-center"

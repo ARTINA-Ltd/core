@@ -9,11 +9,13 @@ import { useParams } from "react-router";
 import { useContext } from "react";
 import { UserContext } from "../App";
 import { Notify } from "notiflix";
+import { useTranslation } from "react-i18next";
 
 const Collections = () => {
   const [getData, setData] = useState();
   const [getUser, setUser] = useState();
   const user = useContext(UserContext);
+  const { t } = useTranslation("collections");
 
   const navigate = useNavigate();
   const { username } = useParams();
@@ -89,7 +91,7 @@ const Collections = () => {
   return (
     <TestLayout>
       {user && getUser && user.data.username != username && (
-        <>
+        <div>
           <div className="w-full flex gap-16 items-center p-6 bg-white rounded-xl mb-4 sm:p-3 sm:gap-4 sm:flex-col">
             <img
               src={getUser.profile_picture}
@@ -98,30 +100,30 @@ const Collections = () => {
             />
             <div className="w-full flex flex-col font-b6">
               <div>
-                هنرمند: <span className="font-b3 px-1">{getUser.name}</span>
+                {t("artist")}{" "}
+                <span className="font-b3 px-1">{getUser.name}</span>
               </div>
               <div>
-                شناسه هنرمند:{" "}
+                {t("ID")}{" "}
                 <span className="font-b3 px-1">{getUser.username}</span>
               </div>
               <div>
-                درباره هنرمند:{" "}
-                <span className="font-b3 px-1">{getUser.bio}</span>
+                {t("about")} <span className="font-b3 px-1">{getUser.bio}</span>
               </div>
               <div>
-                تعداد ان اف تی:{" "}
-                <span className="font-b3 px-1">{getUser.nft_count} عدد</span>
+                {t("count")}{" "}
+                <span className="font-b3 px-1">{getUser.nft_count}</span>
               </div>
             </div>
           </div>
-        </>
+        </div>
       )}
       {getData && getData.length > 0 ? (
         ""
       ) : (
         <div className="w-full flex items-center justify-center  text-lg font-b3">
           <div className="hover:bg-red-100 bg-red-50 border-[1px] border-red-500 text-red-500 transition-all rounded-2xl py-1 px-5">
-            هنوز مجموعه ای ندارید!
+            {t("nothingYet")}{" "}
           </div>
         </div>
       )}

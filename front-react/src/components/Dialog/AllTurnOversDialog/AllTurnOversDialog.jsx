@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
+import { useTranslation } from "react-i18next";
 
 export default function AllTurnOversDialog({ turnovers }) {
   const [visible, setVisible] = useState(false);
+  const { t } = useTranslation(["dashboard"]);
 
   const footerContent = (
     <div>
       <Button
-        label="لغو"
+        label={t("cancel")}
         icon="pi pi-times"
         onClick={() => setVisible(false)}
         className="p-button-text"
@@ -18,7 +20,7 @@ export default function AllTurnOversDialog({ turnovers }) {
 
   const Header = (
     <div>
-      <p className="font-b7">فروش nft</p>
+      <p className="font-b7">{t("sellNFT")}</p>
     </div>
   );
 
@@ -28,7 +30,7 @@ export default function AllTurnOversDialog({ turnovers }) {
         className="w-full bg-slate-50 cursor-pointer mt-3 py-1 group rounded-lg text-center flex items-center justify-center gap-4"
         onClick={() => setVisible(true)}
       >
-        مشاهده همه
+        {t("showAll")}{" "}
         <div className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -58,9 +60,9 @@ export default function AllTurnOversDialog({ turnovers }) {
         <table className="dashboard-table w-full text-center">
           <thead>
             <tr>
-              <th className="text-md font-b4">واحد ارز</th>
-              <th className="text-md font-b4">نوع تراکنش </th>
-              <th className="text-md font-b4">مقدار(تومان) </th>
+              <th className="text-md font-b4">{t("currencyUnit")}</th>
+              <th className="text-md font-b4">{t("transactionType")} </th>
+              <th className="text-md font-b4">{t("amount")} </th>
               <th />
             </tr>
           </thead>
@@ -69,7 +71,9 @@ export default function AllTurnOversDialog({ turnovers }) {
             {turnovers ? (
               turnovers.map((item, index) => (
                 <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all font-b4 sm:text-xs">
-                  <td>{item.transaction_currency === 1 ? "تومان" : "اتریوم"}</td>
+                  <td>
+                    {item.transaction_currency === 1 ? "تومان" : "اتریوم"}
+                  </td>
                   <td>{item.transaction_type === 2 ? "برداشت" : "واریز"}</td>
 
                   <td>{item.transaction_value} تومان</td>
