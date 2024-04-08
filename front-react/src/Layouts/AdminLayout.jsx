@@ -1,0 +1,40 @@
+import React from "react";
+import Header from "../components/AdminPageNavbar/Header";
+import Footer from "../components/Footer/Footer";
+import i18next from "../../src/i18n";
+const AdminLayout = ({
+  children,
+  className,
+  connectWallet,
+  wfull = false,
+  rev = false,
+}) => {
+  return (
+    <div
+      style={{ direction: i18next.dir() }}
+      className={`${
+        rev
+          ? 'bg-[#f9f9f9] bg-cover bg-[url("https://artina.org/6.jpg")] '
+          : 'bg-[#f9f9f9] bg-[length:300px] bg-[url("https://artina.org/12.png")] '
+      }   overflow-hidden`}
+    >
+      <Header connectWallet={connectWallet} rev={rev} />
+      <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta httpEquiv="Content-Language" content="fa" />
+      <div>
+        {/* <div className={``}> */}
+        <div
+          className={` m-auto my-0 pt-1 pb-5 min-h-[92vh] ${className} ${
+            wfull ? "w-full" : "w-[90%]"
+          }`}
+        >
+          {children}
+        </div>
+      </div>
+
+      <Footer />
+    </div>
+  );
+};
+
+export default AdminLayout;

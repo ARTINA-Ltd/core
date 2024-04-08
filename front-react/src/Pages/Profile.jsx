@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState, useContext, useRef } from "react";
 import axios from "axios";
 
@@ -12,8 +13,6 @@ import { Block, Notify } from "notiflix";
 import BorderButton from "../components/Buttons/BorderButton";
 
 function Profile() {
-
-
   const user = useContext(UserContext);
   const userChange = useContext(UserChangeContext);
 
@@ -89,7 +88,7 @@ function Profile() {
           },
         }
       )
-      .then(e => {
+      .then((e) => {
         Notify.success("تایید شد");
         setIsPhoneVerified(true);
       });
@@ -121,7 +120,7 @@ function Profile() {
       setCounterPause(false);
       setIsPhoneDisabled(true);
       setShowPhoneValidate(true);
-      setTimeout(e => {
+      setTimeout((e) => {
         setIsPhoneDisabled(false);
         setCounterPause(true);
       }, 60000);
@@ -133,17 +132,18 @@ function Profile() {
         b_date =
           values.birthdate != "" && values.birthdate != null
             ? new Date(
-              values.birthdate.split("/")[2],
-              values.birthdate.split("/")[1] - 1,
-              values.birthdate.split("/")[0]
-            )
+                values.birthdate.split("/")[2],
+                values.birthdate.split("/")[1] - 1,
+                values.birthdate.split("/")[0]
+              )
             : "";
       }
 
       axios
         .put(
           // "https://api.artina.org/api/account/profile/",
-          `https://api.artina.org/api/account/profile/${user ? user.data.id : ""
+          `https://api.artina.org/api/account/profile/${
+            user ? user.data.id : ""
           }/`,
           {
             user: user ? user.data.id : "",
@@ -153,10 +153,10 @@ function Profile() {
             birthdate:
               b_date != ""
                 ? Intl.DateTimeFormat("en-UK", {
-                  year: "numeric",
-                  month: "numeric",
-                  day: "numeric",
-                }).format(b_date)
+                    year: "numeric",
+                    month: "numeric",
+                    day: "numeric",
+                  }).format(b_date)
                 : null,
             phone_number: values.phone_number,
             cell_number: values.cell_number,
@@ -179,7 +179,7 @@ function Profile() {
             },
           }
         )
-        .then(res => {
+        .then((res) => {
           Notify.success("اطلاعات با موفقیت به روز رسانی شد");
           axios
             .post(
@@ -189,7 +189,7 @@ function Profile() {
                 username: user.data.username,
               }
             )
-            .then(e => {
+            .then((e) => {
               userChange();
 
               Notify.success("ارسال شد");
@@ -201,7 +201,7 @@ function Profile() {
               setCounterPause(true);
             });
         })
-        .catch(e => {
+        .catch((e) => {
           Notify.failure("خطا");
         });
     }
@@ -329,16 +329,17 @@ function Profile() {
         b_date =
           values.birthdate != "" && values.birthdate != null
             ? new Date(
-              values.birthdate.split("/")[2],
-              values.birthdate.split("/")[1] - 1,
-              values.birthdate.split("/")[0]
-            )
+                values.birthdate.split("/")[2],
+                values.birthdate.split("/")[1] - 1,
+                values.birthdate.split("/")[0]
+              )
             : "";
       }
       axios
         .put(
           // "https://api.artina.org/api/account/profile/",
-          `https://api.artina.org/api/account/profile/${user ? user.data.id : ""
+          `https://api.artina.org/api/account/profile/${
+            user ? user.data.id : ""
           }/`,
           {
             user: user ? user.data.id : "",
@@ -348,10 +349,10 @@ function Profile() {
             birthdate:
               b_date != ""
                 ? Intl.DateTimeFormat("en-UK", {
-                  year: "numeric",
-                  month: "numeric",
-                  day: "numeric",
-                }).format(b_date)
+                    year: "numeric",
+                    month: "numeric",
+                    day: "numeric",
+                  }).format(b_date)
                 : null,
             phone_number: values.phone_number,
             cell_number: values.cell_number,
@@ -374,11 +375,11 @@ function Profile() {
             },
           }
         )
-        .then(res => {
+        .then((res) => {
           Notify.success("اطلاعات با موفقیت به روز رسانی شد");
           userChange();
         })
-        .catch(e => {
+        .catch((e) => {
           Notify.failure("خطا");
         });
     }
@@ -394,7 +395,7 @@ function Profile() {
   useEffect(() => {
     console.log(user);
     if (user && user.data) {
-      setValues(prev => ({
+      setValues((prev) => ({
         ...prev,
         first_name: user ? user.data.first_name : "",
         last_name: user ? user.data.last_name : "",
@@ -428,7 +429,7 @@ function Profile() {
       formData.append("image", nationalCardImage, nationalCardImage.name);
       axios
         .post("https://api.artina.org/api/transaction/images/", formData)
-        .then(res => {
+        .then((res) => {
           Block.remove("#nationalCardImage", 3000);
 
           Notify.success("با موفقیت آپلود شد");
@@ -450,7 +451,7 @@ function Profile() {
       formData.append("image", profileImage, profileImage.name);
       axios
         .post("https://api.artina.org/api/transaction/images/", formData)
-        .then(res => {
+        .then((res) => {
           Notify.success("با موفقیت آپلود شد");
           setProfileImageUrl(res.data.image);
           Block.remove("#profileImage", 3000);
@@ -469,7 +470,6 @@ function Profile() {
     }
   }, [counter]);
 
-
   return (
     <TestLayout connectWallet={false}>
       <div className="flex gap-5 items-start sm:flex-col">
@@ -485,15 +485,19 @@ function Profile() {
           )}
           <div className="text-[24px] font-b9">اطلاعات شخصی</div>
           <div className="flex gap-4 items-center">
-            <div className="flex-shrink-0 relative group rounded-full" id="profileImage">
+            <div
+              className="flex-shrink-0 relative group rounded-full"
+              id="profileImage"
+            >
               <img
                 src={
                   profileImageUrl
                     ? profileImageUrl
-                    : `${user
-                      ? user.data.profile_picture
-                      : "https://i.pinimg.com/originals/66/b8/58/66b858099df3127e83cb1f1168f7a2c6.jpg"
-                    }`
+                    : `${
+                        user
+                          ? user.data.profile_picture
+                          : "https://i.pinimg.com/originals/66/b8/58/66b858099df3127e83cb1f1168f7a2c6.jpg"
+                      }`
                 }
                 className="pointer-events-none rounded-full overflow-hidden object-cover w-[200px] h-[200px] flex-shrink-0 sm:w-[120px] sm:h-[120px]"
               />
@@ -526,7 +530,7 @@ function Profile() {
                 hidden
                 accept="image/*"
                 type="file"
-                onChange={e => {
+                onChange={(e) => {
                   setProfileImage(() => e.target.files[0]);
                 }}
                 ref={inputFile}
@@ -541,18 +545,20 @@ function Profile() {
                     placeholder="مثلا: علیرضا"
                     isValid={validate.first_name}
                     validationError="نمی‌تواند خالی باشد"
-                    onChange={e => {
-                      setValues(prev => ({
+                    onChange={(e) => {
+                      setValues((prev) => ({
                         ...prev,
                         first_name: e.target.value,
                       }));
-                      setValidate(prev => ({
+                      setValidate((prev) => ({
                         ...prev,
                         first_name: e.target.value != "",
                       }));
                     }}
                     defaultValue={user != null ? user.data.first_name : null}
-                    disabled={user != null ? user.data.first_name != null : null}
+                    disabled={
+                      user != null ? user.data.first_name != null : null
+                    }
                   />
                   <SimpleInput
                     type="text"
@@ -560,9 +566,12 @@ function Profile() {
                     placeholder="مثلا: موسوی"
                     isValid={validate.last_name}
                     validationError="نمی‌تواند خالی باشد"
-                    onChange={e => {
-                      setValues(prev => ({ ...prev, last_name: e.target.value }));
-                      setValidate(prev => ({
+                    onChange={(e) => {
+                      setValues((prev) => ({
+                        ...prev,
+                        last_name: e.target.value,
+                      }));
+                      setValidate((prev) => ({
                         ...prev,
                         last_name: e.target.value != "",
                       }));
@@ -578,9 +587,9 @@ function Profile() {
                   title="درباره من"
                   isValid={validate.bio}
                   validationError="نمی‌تواند خالی باشد"
-                  onChange={e => {
-                    setValues(prev => ({ ...prev, bio: e.target.value }));
-                    setValidate(prev => ({
+                  onChange={(e) => {
+                    setValues((prev) => ({ ...prev, bio: e.target.value }));
+                    setValidate((prev) => ({
                       ...prev,
                       bio: e.target.value != "",
                     }));
@@ -599,12 +608,12 @@ function Profile() {
               placeholder="مثلا: 1234567890"
               validationError="کدملی بایستی 10 رقمی باشد"
               isValid={validate.national_code}
-              onChange={e => {
-                setValues(prev => ({
+              onChange={(e) => {
+                setValues((prev) => ({
                   ...prev,
                   national_code: e.target.value,
                 }));
-                setValidate(prev => ({
+                setValidate((prev) => ({
                   ...prev,
                   national_code:
                     e.target.value !== null
@@ -622,8 +631,8 @@ function Profile() {
               placeholder="مثلا: 1375/06/11"
               validationError="نمی‌تواند خالی باشد"
               isValid={validate.birthdate}
-              onChange={e => {
-                setValues(prev => ({ ...prev, birthdate: e.value }));
+              onChange={(e) => {
+                setValues((prev) => ({ ...prev, birthdate: e.value }));
               }}
               defaultValue={user != null ? user.data.birthdate : null}
               disabled={user != null ? user.data.birthdate != null : null}
@@ -637,9 +646,9 @@ function Profile() {
               placeholder="مثلا: تهران ..."
               isValid={validate.address}
               validationError="نمی‌تواند خالی باشد"
-              onChange={e => {
-                setValues(prev => ({ ...prev, address: e.target.value }));
-                setValidate(prev => ({
+              onChange={(e) => {
+                setValues((prev) => ({ ...prev, address: e.target.value }));
+                setValidate((prev) => ({
                   ...prev,
                   address: e.target.value != "",
                 }));
@@ -652,9 +661,9 @@ function Profile() {
               ltr={true}
               title="کد پستی"
               placeholder="مثلا: تهران ..."
-              onChange={e => {
-                setValues(prev => ({ ...prev, postal_code: e.target.value }));
-                setValidate(prev => ({
+              onChange={(e) => {
+                setValues((prev) => ({ ...prev, postal_code: e.target.value }));
+                setValidate((prev) => ({
                   ...prev,
                   postal_code: e.target.value != "",
                 }));
@@ -671,9 +680,9 @@ function Profile() {
               placeholder="02112345678"
               isValid={validate.cell_number}
               validationError="نمی‌تواند خالی باشد"
-              onChange={e => {
-                setValues(prev => ({ ...prev, cell_number: e.target.value }));
-                setValidate(prev => ({
+              onChange={(e) => {
+                setValues((prev) => ({ ...prev, cell_number: e.target.value }));
+                setValidate((prev) => ({
                   ...prev,
                   cell_number:
                     e.target.value !== null
@@ -696,12 +705,12 @@ function Profile() {
               placeholder="09123456789"
               isValid={validate.phone_number}
               validationError="نمی‌تواند خالی باشد"
-              onChange={e => {
-                setValues(prev => ({
+              onChange={(e) => {
+                setValues((prev) => ({
                   ...prev,
                   phone_number: e.target.value,
                 }));
-                setValidate(prev => ({
+                setValidate((prev) => ({
                   ...prev,
                   phone_number:
                     e.target.value !== null
@@ -714,37 +723,41 @@ function Profile() {
               maxChars={11}
             />
             <div
-              className={`${showPhoneValidate && !isPhoneVerified ? "" : "hidden"
-                }`}
+              className={`${
+                showPhoneValidate && !isPhoneVerified ? "" : "hidden"
+              }`}
             >
               <SimpleInput
                 type="number"
                 title="کد "
                 placeholder="1234"
                 onChange={
-                  e => setPhoneVerificationCode(e.target.value) // isValid={}
+                  (e) => setPhoneVerificationCode(e.target.value) // isValid={}
                 }
                 defaultValue={null}
               />
             </div>
             <div
-              className={`transition-all w-1/2 shrink-0 ${isPhoneVerified ? "hidden" : "flex gap-4 "
-                }`}
+              className={`transition-all w-1/2 shrink-0 ${
+                isPhoneVerified ? "hidden" : "flex gap-4 "
+              }`}
             >
               <div
-                className={`w-1/3 ${!showPhoneValidate
+                className={`w-1/3 ${
+                  !showPhoneValidate
                     ? "hidden"
                     : "bg-sky-400 cursor-pointer hover:bg-sky-500 w-full text-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center"
-                  } `}
+                } `}
                 onClick={handleSendPhoneVerificationCode}
               >
                 ثبت
               </div>
               <div
-                className={`w-1/3  ${isPhoneDisabled
+                className={`w-1/3  ${
+                  isPhoneDisabled
                     ? "bg-[#4e45d0] cursor-not-allowed hover:bg-[#372fac]"
                     : "bg-[#372fac] cursor-pointer"
-                  } w-full text-nowrap flex-nowrap whitespace-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center`}
+                } w-full text-nowrap flex-nowrap whitespace-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center`}
                 onClick={() => (!isPhoneDisabled ? hanldeClickPhone() : "")}
               >
                 {isPhoneDisabled ? `ارسال مجدد کد (${counter})` : "ارسال کد"}
@@ -760,8 +773,8 @@ function Profile() {
                 placeholder="09123456789"
                 isValid={ValidateEmail(values.email)}
                 validationError="نمی‌تواند خالی باشد"
-                onChange={e =>
-                  setValues(prev => ({
+                onChange={(e) =>
+                  setValues((prev) => ({
                     ...prev,
                     email: e.target.value,
                   }))
@@ -851,7 +864,9 @@ function Profile() {
             <BorderButton
               className={"text-white border-white"}
               onClick={() =>
-                window.open("http://api.artina.org/static/pdfs/Form-new-version.pdf")
+                window.open(
+                  "http://api.artina.org/static/pdfs/Form-new-version.pdf"
+                )
               }
             >
               متن احراز هویت
@@ -897,7 +912,7 @@ function Profile() {
                 hidden
                 accept="image/*"
                 type="file"
-                onChange={e => setNationalCardImage(() => e.target.files[0])}
+                onChange={(e) => setNationalCardImage(() => e.target.files[0])}
                 ref={inputFileNC}
               />
             </div>
@@ -924,7 +939,7 @@ function Profile() {
                 }
                 title={"اینجا بنویسید"}
                 type="number"
-                onChange={e => setShabaNumber(e.target.value)}
+                onChange={(e) => setShabaNumber(e.target.value)}
                 className="border-none text-white"
                 maxChars={24}
               />

@@ -9,15 +9,20 @@ import { useParams } from "react-router";
 import { useContext } from "react";
 import { UserContext } from "../App";
 import { Notify } from "notiflix";
+
+// HEAD ADMIN_PANEL BRANCH
+import { useTranslation } from "react-i18next";
+
+// HEAD MAIN BRANCH
 import { Dialog } from "primereact/dialog";
 import BorderButton from "../components/Buttons/BorderButton";
 import SimpleInput from "../components/Inputs/SimpleInput";
-
 
 const Collections = () => {
   const [getData, setData] = useState();
   const [getUser, setUser] = useState();
   const user = useContext(UserContext);
+  const { t } = useTranslation("collections");
 
   const [visible, setVisible] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
@@ -40,13 +45,15 @@ const Collections = () => {
       .get(`https://api.artina.org/api/transaction/UsersWithNFTsViewSet/`)
       .then((res) => {
         console.log(res);
-        setUser(res.data.filter((e) => { return e.username == username })[0]);
+        setUser(
+          res.data.filter((e) => {
+            return e.username == username;
+          })[0]
+        );
       })
       .catch((res) => {
         console.log(res);
       });
-
-
   }, [username]);
 
   const handleClickShow = (e, childIsVisible, tokenid) => {
@@ -64,7 +71,7 @@ const Collections = () => {
         }
       )
       .then((res) => {
-        Notify.success("مجموعه ی شما برای عموم قابل نمایش است")
+        Notify.success("مجموعه ی شما برای عموم قابل نمایش است");
         console.log(res.data);
       });
     childIsVisible(true);
@@ -85,7 +92,7 @@ const Collections = () => {
         }
       )
       .then((res) => {
-        Notify.success("مجموعه ی شما فقط برای شما نمایش داده میشود")
+        Notify.success("مجموعه ی شما فقط برای شما نمایش داده میشود");
 
         console.log(res.data);
       });
@@ -125,25 +132,41 @@ const Collections = () => {
 
   return (
     <TestLayout>
-      {user && getUser && user.data.username != username &&
-        <>
+      {user && getUser && user.data.username != username && (
+        <div>
           <div className="w-full flex gap-16 items-center p-6 bg-white rounded-xl mb-4 sm:p-3 sm:gap-4 sm:flex-col">
-            <img src={getUser.profile_picture} className="rounded-full object-cover h-52 w-52 flex-shrink-0 sm:w-[120px] sm:h-[120px]" alt="" />
+            <img
+              src={getUser.profile_picture}
+              className="rounded-full object-cover h-52 w-52 flex-shrink-0 sm:w-[120px] sm:h-[120px]"
+              alt=""
+            />
             <div className="w-full flex flex-col font-b6">
-              <div>هنرمند: <span className="font-b3 px-1">{getUser.name}</span></div>
-              <div>شناسه هنرمند:  <span className="font-b3 px-1">{getUser.username}</span></div>
-              <div>درباره هنرمند:  <span className="font-b3 px-1">{getUser.bio}</span></div>
-              <div>تعداد ان اف تی: <span className="font-b3 px-1">{getUser.nft_count} عدد</span></div>
+              <div>
+                {t("artist")}{" "}
+                <span className="font-b3 px-1">{getUser.name}</span>
+              </div>
+              <div>
+                {t("ID")}{" "}
+                <span className="font-b3 px-1">{getUser.username}</span>
+              </div>
+              <div>
+                {t("about")} <span className="font-b3 px-1">{getUser.bio}</span>
+              </div>
+              <div>
+                {t("count")}{" "}
+                <span className="font-b3 px-1">{getUser.nft_count}</span>
+              </div>
             </div>
           </div>
-        </>
-      }
+        </div>
+      )}
+
       {getData && getData.length > 0 ? (
         ""
       ) : (
         <div className="w-full flex items-center justify-center  text-lg font-b3">
           <div className="hover:bg-red-100 bg-red-50 border-[1px] border-red-500 text-red-500 transition-all rounded-2xl py-1 px-5">
-            هنوز مجموعه ای ندارید!
+            {t("nothingYet")}{" "}
           </div>
         </div>
       )}

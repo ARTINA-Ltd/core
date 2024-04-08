@@ -42,8 +42,14 @@ const ImageCard = ({
               }`}
           />
 
-          <img src={src} className="w-full h-[300px] rounded-lg object-cover" />
+          <img
+            src={src}
+            className="w-full h-[300px] rounded-lg object-cover"
+            alt=""
+          />
         </div>
+        
+        
         {has_creator ? ( // Conditionally render the div based on has_creator prop
           <div id="100" className="flex justify-between"> {/* Render the div if has_creator is true */}
             <div className="text-[18px] mt-2 cursor-pointer" onClick={onClick}>
@@ -142,6 +148,8 @@ const ImageCard = ({
                   <path fill="#393939" d="m124 259l132-60v138" />
                 </svg>
               </div>
+              
+              
               {showSell ? (
                 <>
                   <div className="flex items-center gap-2">

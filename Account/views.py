@@ -243,6 +243,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
         profile.delete()
         return Response(status=204)
 
+# {"subject" :"jdfskhj" , "text":"skjdfkzs","email":"me@artina.org"}
+from rest_framework.exceptions import PermissionDenied
 
 class TicketViewSet(viewsets.ViewSet):
 
@@ -256,6 +258,7 @@ class TicketViewSet(viewsets.ViewSet):
         phone_number = request.data.get('phone_number')
         image_url = request.data.get('image_url')
         text = request.data.get('text')
+        
         if is_authenticated:
             if not email:
                 if hasattr(user, 'profile') and user.profile.email:
@@ -273,14 +276,20 @@ class TicketViewSet(viewsets.ViewSet):
                 return Response({'error': 'email is required.'}, status=status.HTTP_400_BAD_REQUEST)
             user = None
 
-        ticket_count = TicketUser.objects.filter(user=user).count()
-        if ticket_count >= 5:
-            raise PermissionDenied("You have reached the maximum number of tickets.")
+        # Check if the user is exempt from the ticket limit
+        exempt_users = [44]  # Example: List of user IDs exempt from the ticket limit
+        if user.id in exempt_users:
+            ticket_count = TicketUser.objects.filter(user=user).count()
+        else:
+            # Apply the regular ticket limit
+            ticket_count = TicketUser.objects.filter(user=user).count()
+            if ticket_count >= 5:
+                raise PermissionDenied("You have reached the maximum number of tickets.")
+
         unique_id = random.randint(100000, 999999)
         TicketUser.objects.create(user=user, email=email, subject=subject, text=text, ticket_id=unique_id)
 
         return Response({'success': 'Ticket created successfully.','token':unique_id}, status=status.HTTP_201_CREATED)
-
 
 class UserPictureViewSet(viewsets.ViewSet):
     serializer_class = UserInfoSerializer
