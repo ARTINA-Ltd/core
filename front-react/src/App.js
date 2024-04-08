@@ -52,7 +52,12 @@ import ExhibitionApproval from "./Pages/ExhibitionApproval.jsx";
 
 // HEAD MAIN BRANCH
 import AllCollections from "./Pages/AllCollections";
+import { GoftinoSnippet } from '@mohsen007/react-goftino';
+
+
 const activeChainId = ChainId.Goerli;
+const GOFTINO_KEY = 'cD7Gse';
+
 
 export const UserContext = createContext();
 export const UserChangeContext = createContext();
@@ -97,6 +102,12 @@ export default () => {
 
   return (
     <>
+      <GoftinoSnippet
+        goftinoKey={GOFTINO_KEY}
+        onReady={() => {
+          window.Goftino.open();
+        }}
+      />
       <ThirdwebProvider activeChain="ethereum" autoConnect={false}>
         <UserContext.Provider value={user}>
           <UserChangeContext.Provider value={userChange}>
@@ -130,13 +141,9 @@ export default () => {
                   <Route exact path="support" element={<Support />} />
                   <Route exact path="register" element={<Register />} />
 
-                  <Route exact path="contact" element={<Contact />} />
-                  <Route exact path="about-us" element={<AboutUs />} />
-                  <Route
-                    exact
-                    path="privacy-policy"
-                    element={<PrivacyPolicy />}
-                  />
+                <Route exact path="contact" element={<Contact />} />
+                <Route exact path="about-us" element={<AboutUs />} />
+                <Route exact path="privacy-policy" element={<PrivacyPolicy />} />
 
                   <Route exact path="help-mint" element={<HelpMint />} />
                   <Route
