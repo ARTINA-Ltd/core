@@ -18,12 +18,11 @@ const ImageCard = ({
   const [isHovered, setHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(visible);
 
-
-  const handleClickShow = e => {
+  const handleClickShow = (e) => {
     onClickShow(e, setIsVisible);
   };
 
-   const handleClickHide = e => {
+  const handleClickHide = (e) => {
     onClickHide(e, setIsVisible);
   };
 
@@ -43,7 +42,11 @@ const ImageCard = ({
             }`}
           />
 
-          <img src={src} className="w-full h-[300px] rounded-lg object-cover" />
+          <img
+            src={src}
+            className="w-full h-[300px] rounded-lg object-cover"
+            alt=""
+          />
         </div>
         <div className="text-[18px] my-4 cursor-pointer" onClick={onClick}>
           {children}
@@ -67,7 +70,7 @@ const ImageCard = ({
             </svg>
           </div>
           {showSell ? (
-            <>
+            <div>
               <div className="flex items-center gap-2">
                 <div
                   className={`transition-all py-2 rounded-lg px-2 hover:bg-slate-100 cursor-pointer duration-75`}
@@ -112,7 +115,7 @@ const ImageCard = ({
                 </div>
                 <CollectionDialog tokenId={tokenId} />
               </div>
-            </>
+            </div>
           ) : (
             ""
           )}

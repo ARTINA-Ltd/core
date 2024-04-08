@@ -1,8 +1,6 @@
-import axios from "axios";
 import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
 import SimpleCard from "./SimpleCard";
+import { useTranslation } from "react-i18next";
 
 const NftRequestsCard = ({
   onClick,
@@ -11,9 +9,9 @@ const NftRequestsCard = ({
   image,
   exhibition,
   nftCount,
-  verified
+  verified,
 }) => {
-  const [data, setData] = useState();
+  const { t } = useTranslation(["collections"]);
 
   return (
     <span onClick={onClick} className="cursor-pointer">
@@ -31,26 +29,23 @@ const NftRequestsCard = ({
             <div>{firstName}</div>
             <div>{lastName}</div>
             {verified && (
-            <img
-              src="/Verified_Status.png"
-              className="w-5 h-5 group-hover:translate-x-4 transition-all duration-300 ease-out"
-            />
-          )}
+              <img
+                alt=""
+                src="/Verified_Status.png"
+                className="w-5 h-5 group-hover:translate-x-4 transition-all duration-300 ease-out"
+              />
+            )}
           </div>
           {exhibition ? (
             <div className="flex gap-1 group-hover:translate-x-4 transition-all duration-300 ease-out">
-              نمایشگاه:{exhibition}
+              {t("exhibition")}:{exhibition}
             </div>
           ) : (
             ""
           )}
           {nftCount ? (
             <div className="flex group-hover:translate-x-4 transition-all duration-300 ease-out items-center gap-1">
-              <div>
-
-              تعداد nft:
-
-              </div>
+              <div>{t("count")}</div>
               {nftCount}
             </div>
           ) : (

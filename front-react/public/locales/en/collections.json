@@ -1,0 +1,12 @@
+{
+  "artist": "Artist: ",
+  "ID": "ID of Artist: ",
+  "about": "About Artist: ",
+  "count": "Number of NFTs: ",
+  "exhibition": "Exhibition",
+  "newCollection": "New Collection",
+  "name": "Name",
+  "submit": "Submit",
+  "example": "Like: Carpet",
+  "nothingYet": "You don't have any collection yet!"
+}
