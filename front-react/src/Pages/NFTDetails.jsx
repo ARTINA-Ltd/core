@@ -11,6 +11,7 @@ import { UserContext } from "../App";
 import { Notify } from "notiflix";
 import BorderButton from "../components/Buttons/BorderButton";
 import CountdownTimer from "../components/CountDown/CountDown";
+import { useTranslation } from "react-i18next";
 
 const NFTDetails = () => {
   const [data, setData] = useState();
@@ -24,7 +25,7 @@ const NFTDetails = () => {
   const [likeColor, setLikeColor] = useState(false);
   const [shareCount, setShareCount] = useState(0);
   const [countdown, setCountdown] = useState(0);
-
+  const { t } = useTranslation();
 
   const icons = {
     heart: (
@@ -129,7 +130,7 @@ const NFTDetails = () => {
           },
         }
       )
-      .then(d => {
+      .then((d) => {
         console.log("view");
         console.log(d);
         setShareCount(shareCount + 1);
@@ -149,14 +150,14 @@ const NFTDetails = () => {
           },
         }
       )
-      .then(res => {
+      .then((res) => {
         console.log("like");
         console.log("status", res.status);
         Notify.success("با موفقیت ثبت شد");
         setLikeColor(true);
         setLikeCount(likeCount + 1);
       })
-      .catch(res => {
+      .catch((res) => {
         Notify.warning("قبلا پسندیده اید");
       });
   };
@@ -166,7 +167,7 @@ const NFTDetails = () => {
       .post("https://api.artina.org/api/transaction/nft-detail/", {
         token_id: id,
       })
-      .then(d => {
+      .then((d) => {
         setData(d.data.nft);
         setLikeCount(d.data.count);
         console.log(d.data);
@@ -178,7 +179,7 @@ const NFTDetails = () => {
       .post("https://api.artina.org/api/transaction/nft_ratings/user_likes/", {
         token_id: id,
       })
-      .then(d => {
+      .then((d) => {
         // setLike(d.data.nft);
         console.log(d.data);
       });
@@ -195,7 +196,7 @@ const NFTDetails = () => {
           },
         }
       )
-      .then(d => {
+      .then((d) => {
         console.log("view");
         console.log(d);
       });
@@ -212,16 +213,14 @@ const NFTDetails = () => {
           },
         }
       )
-      .then(d => {
+      .then((d) => {
         setReqData(d);
-        console.log("_______Orders_______", d)
+        console.log("_______Orders_______", d);
       })
-      .catch(res => console.log(res));
+      .catch((res) => console.log(res));
 
     userHasLiked();
-
-  }, []
-  );
+  }, []);
 
   function userHasLiked() {
     axios
@@ -236,19 +235,16 @@ const NFTDetails = () => {
           },
         }
       )
-      .then(d => {
+      .then((d) => {
         console.log("_Has User Like_");
         console.log(d.data);
         setLike(d.data);
         setLikeColor(d.data.user_has_liked ? true : false);
       })
-      .catch(res => {
-        console.log(res)
+      .catch((res) => {
+        console.log(res);
         console.log("_Has User Like_");
-      }
-      );
-
-
+      });
   }
 
   function addRequest() {
@@ -267,11 +263,11 @@ const NFTDetails = () => {
           mode: "cors",
         }
       )
-      .then(response => {
+      .then((response) => {
         Notify.success("پیشنهاد شما با موفقیت ثبت شد");
         window.location.reload(true);
       })
-      .catch(exception => {
+      .catch((exception) => {
         Notify.failure("خطا");
         console.log(exception);
       });
@@ -279,13 +275,12 @@ const NFTDetails = () => {
 
   function formatString(inputString) {
     const maxLength = 12;
-    const ellipsis = '...';
+    const ellipsis = "...";
 
     // Check if the input string is longer than the desired length
     if (inputString === null) {
       return "_";
-    }
-    else if (inputString.length > maxLength + ellipsis.length * 2) {
+    } else if (inputString.length > maxLength + ellipsis.length * 2) {
       const firstPart = inputString.slice(0, maxLength);
       const lastPart = inputString.slice(-maxLength);
       return `${firstPart}${ellipsis}${lastPart}`;
@@ -334,47 +329,52 @@ const NFTDetails = () => {
                   onClick={handleClickShare}
                 >
                   {icons.share}
-                  <div className="text-white text-[16px]">{data && shareCount}</div>
+                  <div className="text-white text-[16px]">
+                    {data && shareCount}
+                  </div>
                 </div>
               </div>
             </div>
-
           </SimpleCard>
           <SimpleCard
             id="LeftSide"
             className={"flex flex-col gap-8 bg-white w-full sm:gap-2"}
           >
             <div className="flex items-center pt-3 sm:flex-col sm:gap-2">
-              <div className="text-[16px] opacity-40">نام اثر</div>
+              <div className="text-[16px] opacity-40">{t("artName")}</div>
               <div className="text-[32px] mx-auto sm:text-[20px]">
                 {data ? data.name : ""}
               </div>
             </div>
 
             <div className="flex items-center sm:flex-col sm:gap-2">
-              <div className="text-[16px] opacity-40">هنرمند</div>
+              <div className="text-[16px] opacity-40">{t("artist")}</div>
               <div className="text-[16px] mx-auto">
                 {data ? data.creator : ""}
               </div>
             </div>
 
             <div className="flex items-center sm:flex-col sm:gap-2">
-              <div className="text-[16px] opacity-40">هش بلاک</div>
+              <div className="text-[16px] opacity-40">{t("hashBlock")}</div>
               <div className="text-[16px] mx-auto">
                 {data ? formatString(data.blockHash) : ""}
               </div>
             </div>
 
             <div className="flex items-center sm:flex-col sm:gap-2">
-              <div className="text-[16px] opacity-40">هش تراکنش</div>
+              <div className="text-[16px] opacity-40">
+                {t("transactionHash")}
+              </div>
               <div className="text-[16px] mx-auto">
                 {data ? formatString(data.transactionHash) : ""}
               </div>
               <a
-                href={`https://mumbai.polygonscan.com/tx/${data ? data.transactionHash : ""}`}
+                href={`https://mumbai.polygonscan.com/tx/${
+                  data ? data.transactionHash : ""
+                }`}
                 className="bg-[#f1f2f7] hover:bg-[#e5e6eb] transition-all text-gray-600 py-1 text-sm px-3 rounded-md flex gap-1 items-center"
               >
-                بلاک‌چین
+                {t("blockchain")}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -394,16 +394,18 @@ const NFTDetails = () => {
 
             <div className="flex justify-around sm:flex-col sm:gap-2">
               <div className="relative flex w-full">
-                <div className=" text-[16px] opacity-40">شماره بلاک</div>
+                <div className=" text-[16px] opacity-40">{t("blockNo")}</div>
                 <div className="text-[16px] mx-auto">
                   {data ? data.blockNumber : ""}
                 </div>
                 <div>
                   <a
-                    href={`https://mumbai.polygonscan.com/block/${data ? data.blockNumber : ""}`}
+                    href={`https://mumbai.polygonscan.com/block/${
+                      data ? data.blockNumber : ""
+                    }`}
                     className="bg-[#f1f2f7] hover:bg-[#e5e6eb] transition-all text-gray-600 py-1 text-sm px-1 rounded-md flex gap-1 items-center"
                   >
-                    بلاک‌چین
+                    {t("blockchain")}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -425,7 +427,9 @@ const NFTDetails = () => {
 
               {/* <hr className="opacity-10 mx-32"></hr> */}
               <div className="relative flex w-full">
-                <div className="text-[16px] opacity-40 mr-14 sm:mr-0">شماره تراکنش</div>
+                <div className="text-[16px] opacity-40 mr-14 sm:mr-0">
+                  {t("transactionNo")}
+                </div>
                 <div className="text-[16px] mx-auto">
                   {data ? data.transactionIndex : ""}
                 </div>
@@ -440,24 +444,34 @@ const NFTDetails = () => {
             {/* <hr className="opacity-10 mx-32"></hr> */}
 
             <div className="flex justify-between items-center h-full sm:flex-col sm:gap-2 sm:mb-4">
-              <div className="text-[16px] opacity-40">کالکشن</div>
+              <div className="text-[16px] opacity-40">{t("artName")}</div>
               <div className="text-[16px] self-start text-right">
-                {data && data.collection ? data.collection.name : <div className="text-[16px]">ندارد</div>}
+                {data && data.collection ? (
+                  data.collection.name
+                ) : (
+                  <div className="text-[16px]">ندارد</div>
+                )}
               </div>
-              <div className="text-[16px] opacity-40">دسته بندی</div>
+              <div className="text-[16px] opacity-40">{t("category")}</div>
               <div className="text-[16px] self-start text-right">
-                {data && data.category ? data.category.name : <div className="text-[16px]">ندارد</div>}
+                {data && data.category ? (
+                  data.category.name
+                ) : (
+                  <div className="text-[16px]">ندارد</div>
+                )}
               </div>
             </div>
 
             <div className="flex items-center h-full sm:flex-col sm:gap-2 sm:mb-4">
-              <div className="text-[16px] opacity-40">خاصیت‌ها</div>
+              <div className="text-[16px] opacity-40">{t("properties")}</div>
               <div className="text-[16px] mx-auto self-start text-right sm:mr-0">
                 {data && data.traits ? (
                   data.traits.map((item, index) => (
                     <div key={index} className="flex justify-between gap-10">
                       <div className="text-[16px]">{index + 1}-</div>
-                      <div className="text-[16px] opacity-40 text-cyan-900">{item.name}:</div>
+                      <div className="text-[16px] opacity-40 text-cyan-900">
+                        {item.name}:
+                      </div>
                       <div className="text-[16px]">{item.type}</div>
                       {console.log("--->>", item.name, item.type)}
                     </div>
@@ -469,7 +483,7 @@ const NFTDetails = () => {
             </div>
 
             <div className="flex items-center h-full sm:flex-col sm:gap-2 sm:mb-4">
-              <div className="text-[16px] opacity-40">توضیحات</div>
+              <div className="text-[16px] opacity-40">{t("description")}</div>
               <div className="text-[16px] mr-36 self-start text-right sm:mr-0">
                 {data ? data.description : ""}
               </div>
@@ -493,7 +507,7 @@ const NFTDetails = () => {
                 href={data ? data.external_link : ""}
                 className="bg-[#f1f2f7] hover:bg-[#e5e6eb] transition-all text-gray-600 py-1 text-sm px-3 rounded-md flex gap-1 items-center"
               >
-                لینک خارجی
+                {t("externalLink")}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -512,7 +526,7 @@ const NFTDetails = () => {
             </div>
 
             <div className="flex items-center justify-self-end bg-[#f1f2f7] px-10 py-3 rounded-xl">
-              <div className="text-[16px] opacity-50">آخرین قیمت</div>
+              <div className="text-[16px] opacity-50">{t("latestPrice")}</div>
               <div className="text-[22px] mx-auto">
                 {data ? data.last_price : ""} اتریوم
               </div>
@@ -522,7 +536,9 @@ const NFTDetails = () => {
         <div className="flex gap-6 md:flex-col">
           <SimpleCard className="bg-white grow flex flex-col relative gap-3 items-center mt-4">
             <div className="flex items-center pt-3">
-              <div className="text-[32px] mx-auto sm:text-[20px]">پیشنهادات</div>
+              <div className="text-[32px] mx-auto sm:text-[20px]">
+                {t("offers")}
+              </div>
             </div>
             <Properties requests={reqData ? reqData : null} nft={id} />
           </SimpleCard>
@@ -534,7 +550,9 @@ const NFTDetails = () => {
                 className="bg-white w-1/2 flex flex-col relative gap-3 items-center mt-4 md:w-full sm:mt-0"
               >
                 <div className="flex items-center pt-3">
-                  <div className="text-[32px] mx-auto sm:text-[20px]">پیشنهاد های شما</div>
+                  <div className="text-[32px] mx-auto sm:text-[20px]">
+                    پیشنهاد های شما
+                  </div>
                 </div>
                 <Recomendition
                   requests={reqData ? reqData : undefined}
@@ -555,7 +573,7 @@ const NFTDetails = () => {
                           className={"rounded-lg "}
                           placeholder={"مثلا: 3"}
                           title="قیمت پیشنهادی شما به اتریوم"
-                          onChange={e => {
+                          onChange={(e) => {
                             setPrice(e.target.value * 104759811);
                             setEthereum(e.target.value);
                           }}

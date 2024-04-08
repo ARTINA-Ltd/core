@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const AboutUs = ({ className }) => {
+  const { t } = useTranslation();
   return (
     <div
       className={`${className}  w-full flex justify-center bg-[#4e45d0] text-white py-16 relative overflow-hidden`}
@@ -11,13 +13,10 @@ const AboutUs = ({ className }) => {
       />
       <div className={`w-2/3 flex flex-col items-center sm:w-4/5`}>
         <div className="font-b9 text-[40px] mb-4 sm:text-[30px]">
-          درباره ما
+          {t("aboutUs")}
         </div>
         <div className="font-b2 text-[22px] text-center sm:text-[17px]">
-          آرتینا یک پلتفرم خرید و فروش آثار هنری در قالب NFT با رویکرد توانمند
-          سازی هنرمندان در بنمایش گذاشتن و خرید و فروش آثارشان است و برای
-          نمایشگاه دار ها و هنرمندان امکان ایجاد نمایشگاه های مجازی و خرید و
-          فروش با رمز ارز را فراهم کرده است.
+          {t("aboutUsDescription")}
         </div>
       </div>
     </div>

@@ -1,8 +1,7 @@
 import React from "react";
 import Header from "../components/LandingPageNavBar/Header";
 import Footer from "../components/Footer/Footer";
-import config from "../config.json";
-
+import i18next from "../../src/i18n";
 const TestLayout = ({
   children,
   connectWallet,
@@ -12,7 +11,7 @@ const TestLayout = ({
 }) => {
   return (
     <div
-      style={{ direction: "rtl" }}
+      style={{ direction: i18next.dir() }}
       className={`${
         rev
           ? 'bg-[#f9f9f9] bg-cover bg-[url("https://artina.org/6.jpg")] '

@@ -1,25 +1,22 @@
 import React from "react";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import TestLayout from "../Layouts/TestLayout";
+import { useTranslation } from "react-i18next";
 
 const Contact = () => {
+  const { t } = useTranslation(["contactus"]);
   return (
     <TestLayout>
       <div className="w-[55%] m-auto lg:w-4/5 md:w-11/12">
-        <SimpleCard className={'text-center bg-white leading-[40px]'}>
-          <div className="text-[32px] mb-5">ارتباط با ما</div>
+        <SimpleCard className={"text-center bg-white leading-[40px]"}>
+          <div className="text-[32px] mb-5">{t("contactus")}</div>
           <div className="mt-6 text-[18px] text-justify px-6 mb-6 sm:px-3 sm:text-[14px]">
-            آرتینا یک پلتفرم خرید و فروش آثار هنری در قالب nft با رویکرد
-            توانمند سازی هنرمندان در بنمایش گذاشتن و خرید و فروش آثارشان است و
-            برای نمایشگاه دار ها و هنرمندان امکان ایجاد نمایشگاه های مجازی و
-            خرید و فروش با رمز ارز را فراهم کرده است.
+            {t("firstParagraph")}
           </div>
-          <div className="text-[18px] sm:text-[14px]">ایمیل: support@artina.org</div>
-          <div className="text-[18px] sm:text-[14px]">همراه: 09391242565</div>
-          <div className="text-[18px] sm:text-[14px]">تلفن ثابت: 02433052676</div>
-          <div className="text-[18px] sm:text-[14px]">
-            آدرس: دانشگاه زنجان، مرکز رشد دانشگاه زنجان-شرکت دانش‌بنیان آرمان ارتباطات ویرا
-          </div>
+          <div className="text-[18px] sm:text-[14px]">{t("email")} </div>
+          <div className="text-[18px] sm:text-[14px]">{t("cellphone")}</div>
+          <div className="text-[18px] sm:text-[14px]">{t("phone")} </div>
+          <div className="text-[18px] sm:text-[14px]">{t("address")} </div>
         </SimpleCard>
       </div>
     </TestLayout>

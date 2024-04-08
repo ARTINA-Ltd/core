@@ -1,17 +1,9 @@
-import { Block } from "notiflix";
 import React from "react";
-import { useState } from "react";
 import SimpleCard from "./SimpleCard";
 
-const SelectNftCard = ({
-  isSelected,
-  name,
-  price,
-  image,
-  onClick,
-}) => {
+const SelectNftCard = ({ isSelected, name, price, image, onClick }) => {
   return (
-    <>
+    <div>
       <span
         id={`selectNftCard${name}`}
         onClick={onClick}
@@ -37,7 +29,7 @@ const SelectNftCard = ({
           </div>
         </SimpleCard>
       </span>
-    </>
+    </div>
   );
 };
 
