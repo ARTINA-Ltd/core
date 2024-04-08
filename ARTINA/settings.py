@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'exhibition',
     'core',
     'AI',    
+    'supervisor',    
     'rest_framework',
     'corsheaders',
     'allauth',
@@ -174,31 +175,37 @@ LOGGING = {
             'filename': 'login_api.log',  # File for login API logs
             'formatter': 'verbose',
         },
+        'file_register': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'file_register.log',  # File for registration API logs
+            'formatter': 'verbose',
+            'delay': True,
+        },
+        },
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': 'myapp.log',
             'formatter': 'verbose',
         },
-    },
     'loggers': {
         'django': {
-            'handlers': ['file'],
+            'handlers': [],
             'level': 'DEBUG',
             'propagate': True,
         },
         'django.request': {
-            'handlers': ['file'],
+            'handlers': ['file_login','file_register'],
             'level': 'DEBUG',
             'propagate': False,
         },
         'myapp': {
-            'handlers': ['file'],
+            'handlers': ['file_login','file_register'],
             'level': 'DEBUG',
         },
     },
 }
-
 
 # Celery Configuration
 CELERY_BROKER_URL = 'redis://localhost:6379/0'

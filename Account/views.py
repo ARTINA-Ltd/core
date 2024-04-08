@@ -48,6 +48,13 @@ class NotifyUserViewSet(viewsets.ModelViewSet):
     queryset = NotifyUser.objects.all()
     serializer_class = NotifyUserSerializer
     
+    def create(self, request):
+        serializer = NotifyUserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
     def get_queryset(self):
         user = self.request.user
         return NotifyUser.objects.filter(user=user)
@@ -73,6 +80,8 @@ class NotifyUserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
+logger = logging.getLogger('file_register')
+
 class RegisterViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = serializers.RegisterSerializer
@@ -83,10 +92,14 @@ class RegisterViewSet(viewsets.ModelViewSet):
         phone_number = request.data.get('phone_number')
         email = request.data.get('email')
 
+        logger.info(f"Register attempt for username: {username}, email: {email}, phone_number: {phone_number}")  # Log the registration attempt
+
         if User.objects.filter(username=username).exists():
+            logger.warning(f"Username {username} already exists")  # Log if the username already exists
             return Response({'error': 'This username is already taken.'}, status=status.HTTP_400_BAD_REQUEST)
 
         if User.objects.filter(email=email).exists():
+            logger.warning(f"Email {email} is already registered")  # Log if the email already exists
             return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Create the user if the username, phone_number, and email are all unique
@@ -94,39 +107,21 @@ class RegisterViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
+        
+        logger.info(f"User registered successfully: {username}, email: {email}, phone_number: {phone_number}")  # Log successful registration
+        
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-#login v0
-# class LoginViewSet(viewsets.ViewSet):
-
-#     serializer_class = serializers.LoginSerializer
-
-#     def create(self, request):
-#         username = request.data.get('username')
-#         password = request.data.get('password')
-#         user = authenticate(username=username, password=password)
-
-#         if user is None:
-#             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-#         refresh = RefreshToken.for_user(user)
-#         response_data = {
-#             'refresh': str(refresh),
-#             'access': str(refresh.access_token),
-#         }
-#         return Response(response_data, status=status.HTTP_200_OK)
 
 
-
-#login v01
-
-logger = logging.getLogger('login_api')
+logger = logging.getLogger('file_login')
 
 class LoginViewSet(viewsets.ViewSet):
 
     serializer_class = serializers.LoginSerializer
 
     def create(self, request):
-        logger.setLevel(logging.DEBUG)
+        # logger.setLevel(logging.DEBUG)
         username = request.data.get('username')
         password = request.data.get('password')
         
@@ -248,6 +243,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
         profile.delete()
         return Response(status=204)
 
+# {"subject" :"jdfskhj" , "text":"skjdfkzs","email":"me@artina.org"}
+from rest_framework.exceptions import PermissionDenied
 
 class TicketViewSet(viewsets.ViewSet):
 
@@ -261,6 +258,7 @@ class TicketViewSet(viewsets.ViewSet):
         phone_number = request.data.get('phone_number')
         image_url = request.data.get('image_url')
         text = request.data.get('text')
+        
         if is_authenticated:
             if not email:
                 if hasattr(user, 'profile') and user.profile.email:
@@ -278,14 +276,20 @@ class TicketViewSet(viewsets.ViewSet):
                 return Response({'error': 'email is required.'}, status=status.HTTP_400_BAD_REQUEST)
             user = None
 
-        ticket_count = TicketUser.objects.filter(user=user).count()
-        if ticket_count >= 5:
-            raise PermissionDenied("You have reached the maximum number of tickets.")
+        # Check if the user is exempt from the ticket limit
+        exempt_users = [44]  # Example: List of user IDs exempt from the ticket limit
+        if user.id in exempt_users:
+            ticket_count = TicketUser.objects.filter(user=user).count()
+        else:
+            # Apply the regular ticket limit
+            ticket_count = TicketUser.objects.filter(user=user).count()
+            if ticket_count >= 5:
+                raise PermissionDenied("You have reached the maximum number of tickets.")
+
         unique_id = random.randint(100000, 999999)
         TicketUser.objects.create(user=user, email=email, subject=subject, text=text, ticket_id=unique_id)
 
         return Response({'success': 'Ticket created successfully.','token':unique_id}, status=status.HTTP_201_CREATED)
-
 
 class UserPictureViewSet(viewsets.ViewSet):
     serializer_class = UserInfoSerializer
@@ -693,10 +697,10 @@ def connect_with_retry():
     
     raise Exception("Failed to connect to the Matic network.")
 
-class Email(viewsets.ViewSet):
+class EmailMixin(viewsets.ViewSet):
     queryset = PhoneVerification.objects.all()
     @action(detail=False, methods=['post'])
-    def send_email(self,subject,recipient_email,message):
+    def send_email(subject,recipient_email,message):
         # Email configuration
         smtp_server = 'mailservice9.irandns.com'
         smtp_port = 587 

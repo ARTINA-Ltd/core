@@ -84,8 +84,8 @@ class TicketUser(models.Model):
     text = models.TextField(max_length=200,null=True,blank=False)
     ticket_id = models.CharField(max_length=6, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    def __str__(self):
-        return f"{self.user.username} - {self.subject}"
+    # def __str__(self):
+    #     return f"{self.user.username} - {self.subject}"
 
 class Msg(models.Model):
     name = models.CharField(max_length=25,null=True,blank=False)

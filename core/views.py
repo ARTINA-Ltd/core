@@ -129,10 +129,10 @@ class NFTFilter(filters.FilterSet):
         
 class NftViewSet(viewsets.ModelViewSet):
     queryset = NFT.objects.all()
-    filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter)
-    filterset_class = NFTFilter
+    # filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter)
+    # filterset_class = NFTFilter
     serializer_class = serializers.NFTSerializer
-
+    ordering_fields = '__all__'
 
     def list(self, *args):
         queryset = NFT.objects.filter(id=id)
@@ -205,7 +205,13 @@ class NftViewSet(viewsets.ModelViewSet):
         nft.save()
         serializer = self.get_serializer(nft)
         return Response(serializer.data)
-  
+   
+    @action(detail=False, methods=['get'])
+    def get_all(self, request):
+        nfts = NFT.objects.filter(in_exhibition=False, is_visible=True)
+        serializer = serializers.NFTSerializer(nfts, many=True)
+        return Response(serializer.data)
+
 
 class NFTRatingViewSet(viewsets.ModelViewSet):
     queryset = NFTRating.objects.all()

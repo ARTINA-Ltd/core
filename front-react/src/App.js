@@ -40,6 +40,8 @@ import NotFound from "./Pages/NotFound";
 import RedirectedPage from "./Pages/RedirectPage";
 import WhitePaper from "./Pages/WhitePaper";
 import PreMint from "./Pages/PreMint";
+
+// HEAD ADMIN_PANEL BRANCH
 import Authentications from "./Pages/Authentications";
 import Authenticate from "./Pages/Authenticate";
 import TicketResponse from "./Pages/TicketResponse";
@@ -47,6 +49,10 @@ import AdminPanel from "./Pages/AdminPanel";
 import AllTickets from "./Pages/AllTickets";
 import MetaverseTickets from "./Pages/MetaverseTickets.jsx";
 import ExhibitionApproval from "./Pages/ExhibitionApproval.jsx";
+
+// HEAD MAIN BRANCH
+import AllCollections from "./Pages/AllCollections";
+const activeChainId = ChainId.Goerli;
 
 export const UserContext = createContext();
 export const UserChangeContext = createContext();
@@ -148,7 +154,6 @@ export default () => {
                     path="metaverse_explanation"
                     element={<MetaExplanation />}
                   />
-
                   <Route
                     exact
                     path="exhibition-list"

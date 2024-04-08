@@ -9,13 +9,23 @@ import { useParams } from "react-router";
 import { useContext } from "react";
 import { UserContext } from "../App";
 import { Notify } from "notiflix";
+
+// HEAD ADMIN_PANEL BRANCH
 import { useTranslation } from "react-i18next";
+
+// HEAD MAIN BRANCH
+import { Dialog } from "primereact/dialog";
+import BorderButton from "../components/Buttons/BorderButton";
+import SimpleInput from "../components/Inputs/SimpleInput";
 
 const Collections = () => {
   const [getData, setData] = useState();
   const [getUser, setUser] = useState();
   const user = useContext(UserContext);
   const { t } = useTranslation("collections");
+
+  const [visible, setVisible] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
 
   const navigate = useNavigate();
   const { username } = useParams();
@@ -88,8 +98,41 @@ const Collections = () => {
       });
     childIsVisible(false);
   };
+
+  const handleSubmit = () => {
+    setIsChecked(true);
+    setVisible(false);
+  }
+
+
+  const Footer = (
+    <div className="flex gap-5 justify-end">
+      <BorderButton
+        onClick={() => setVisible(false)}
+        className="font-b4 text-center"
+      >
+        لغو
+      </BorderButton>
+      <BorderButton
+        onClick={() => handleSubmit()}
+        className="font-b4 text-center"
+        disabled={!isChecked}
+      >
+        ثبت
+      </BorderButton>
+    </div>
+  );
+
+  const Header = (
+    <div>
+      <p className="font-b9">افزودن ان اف تی خارج از آرتینا</p>
+    </div>
+  );
+
+
   return (
     <TestLayout>
+// HEAD ADMIN_PANEL
       {user && getUser && user.data.username != username && (
         <div>
           <div className="w-full flex gap-16 items-center p-6 bg-white rounded-xl mb-4 sm:p-3 sm:gap-4 sm:flex-col">
@@ -118,6 +161,21 @@ const Collections = () => {
           </div>
         </div>
       )}
+// MAIN BRANCH FROM HERE
+//       {user && getUser && user.data.username != username &&
+//         <>
+//           <div className="w-full flex gap-16 items-center p-6 bg-white rounded-xl mb-4 sm:p-3 sm:gap-4 sm:flex-col">
+//             <img src={getUser.profile_picture} className="rounded-full object-cover h-52 w-52 flex-shrink-0 sm:w-[120px] sm:h-[120px]" alt="" />
+//             <div className="w-full flex flex-col font-b6">
+//               <div>هنرمند: <span className="font-b3 px-1">{getUser.name}</span></div>
+//               <div>شناسه هنرمند:  <span className="font-b3 px-1">{getUser.username}</span></div>
+//               <div>درباره هنرمند:  <span className="font-b3 px-1">{getUser.bio}</span></div>
+//               <div>تعداد ان اف تی: <span className="font-b3 px-1">{getUser.nft_count} عدد</span></div>
+//             </div>
+//           </div>
+//         </>
+//       }
+// MAIN BRANCH TO HERE
       {getData && getData.length > 0 ? (
         ""
       ) : (
@@ -128,8 +186,64 @@ const Collections = () => {
         </div>
       )}
       <div className="grid grid-cols-4 gap-5 w-full items-center lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
-        {getData
-          ? getData.map((item, index) => (
+        {getData ? (
+          <>
+            <div className="col-span-1 h-full">
+              <div
+                className="h-full w-full bg-[#0000aa05] hover:bg-[#0000aa08] rounded-2xl group flex items-center justify-center cursor-pointer  transition-all md:h-[300px] sm:h-[250px]"
+                onClick={() => setVisible(true)}
+              >
+
+                <div className="text-[#000022] opacity-20 group-hover:opacity-40 transition-all group-hover:scale-105 ease-out duration-150 flex flex-col items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="0.6"
+                    stroke="currentColor"
+                    width={"4em"}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <div className="font-b6">افزودن ان اف تی های خارج از آرتینا</div>
+                </div>
+              </div>
+            </div>
+            <Dialog
+              header={Header}
+              visible={visible}
+              style={{ direction: "rtl" }}
+              onHide={() => setVisible(false)}
+              footer={Footer}
+              className="w-[35%] lg:w-[70%] sm:w-[85%]"
+            >
+              <div className="flex flex-col gap-5 items-center mt-5">
+                <SimpleInput
+                  title="آدرس کانترکت"
+                  placeholder="0x..."
+                  className="w-full"
+                  type="text"
+                  validationError="نمی‌تواند خالی باشد"
+                  onChange={(e) => {
+                    console.log(e.target.value);
+
+                  }
+                  }
+                />
+                <SimpleInput
+                  title="توکن ایدی"
+                  placeholder="1234..."
+                  className="w-full"
+                  type="text"
+                  validationError="نمی‌تواند خالی باشد"
+                />
+              </div>
+            </Dialog>
+            {getData.map((item, index) => (
               <div className="col-span-1" key={index}>
                 <ImageCard
                   className="bg-white"
@@ -145,8 +259,11 @@ const Collections = () => {
                   {item.name}
                 </ImageCard>
               </div>
-            ))
-          : ""}
+            ))}
+          </>
+        ) : (
+          ""
+        )}
       </div>
     </TestLayout>
   );

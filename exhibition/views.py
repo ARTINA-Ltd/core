@@ -10,8 +10,10 @@ from rest_framework import status
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from .models import NFT, Exhibition, Application , Category , Ticket , Ex_Payment
-from .serializers import NFTSerializer, ExhibitionSerializer, ApplicationSerializer , CategorySerializer ,TicketSerializer
+from .models import Exhibition, Application , Category , Ticket , Ex_Payment
+from .serializers import ExhibitionSerializer, ApplicationSerializer , CategorySerializer ,TicketSerializer
+from core.serializers import NFTSerializer
+from core.models import NFT 
 from django.utils import timezone
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
@@ -186,30 +188,6 @@ class ApplicationViewSet(viewsets.ModelViewSet):
 
 
 
-
-# class ExhibitorApplicationsViewSet(viewsets.ViewSet):
-#     # permission_classes = [IsAuthenticated]
-
-#     def update(self, request, pk=None):
-#         try:
-#             application = Application.objects.get(id=pk, exhibition__user=request.user)
-#         except Application.DoesNotExist:
-#             return Response({'error': 'Application not found.'}, status=status.HTTP_404_NOT_FOUND)
-
-#         action = request.data.get('action', None)
-#         if action not in ['accept', 'ignored']:
-#             return Response({'error': 'Invalid action.'}, status=status.HTTP_400_BAD_REQUEST)
-
-#         if action == 'accept':
-#             application.status = 'accepted'
-#         elif action == 'ignored':
-#             application.status = 'ignored'
-
-#         application.save()
-#         serialized_data = ApplicationSerializer(application).data
-#         return Response(serialized_data, status=status.HTTP_200_OK)
-
-
 class ExhibitionInfoView(viewsets.ModelViewSet):
     # permission_classes = [IsAuthenticated]
     queryset = Exhibition.objects.all()
@@ -249,20 +227,28 @@ class OpenExhibitionListView(viewsets.ModelViewSet):
 
 
 
-class NFTByExhibitionViewSet(viewsets.ViewSet):
-    def list(self, request, exhibition_id):
+class NFTsByExhibitionViewSet(viewsets.ModelViewSet):
+    queryset = Exhibition.objects.all()
+    serializer_class = ExhibitionSerializer
+    @action(detail=True, methods=['get'])
+
+    def get_nfts(self, request, pk=None):
         try:
-            exhibition = Exhibition.objects.get(id=exhibition_id)
+            exhibition = self.get_object()
+            applications = Application.objects.filter(exhibition=exhibition)
+            nfts = NFT.objects.filter(applications__in=applications)
+            serializer = NFTSerializer(nfts, many=True)
+            return Response(serializer.data)
         except Exhibition.DoesNotExist:
-            return Response({'error': 'Exhibition not found'}, status=404)
+            return Response({"error": "Exhibition not found"}, status=404)
 
-        applications = Application.objects.filter(exhibition=exhibition, status="accepted")
-        nfts = NFT.objects.filter(applications__in=applications).distinct()
-
-        serializer = NFTSerializer(nfts, many=True)
-        return Response(serializer.data)
-
-
+    # # Define allowed actions for the viewset
+    # def get_permissions(self):
+    #     if self.action == 'get_nfts':
+    #         permission_classes = []
+    #     else:
+    #         permission_classes = [IsAuthenticated]  # Add appropriate permissions here
+    #     return [permission() for permission in permission_classes]
 
 from rest_framework import status as drf_status
 
