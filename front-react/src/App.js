@@ -1,11 +1,8 @@
 import { Route, Routes } from "react-router";
 import React, { createContext, useEffect, useState } from "react";
-import ArtistPage from "./Pages/ArtistPage";
 import NFTDetails from "./Pages/NFTDetails";
 import Register from "./LoginComponent/register";
 import Login from "./LoginComponent/login";
-import RequestDetails from "./ExhabitionComponent/src/component/request-artist-detail-page/r-page/request-detail";
-import ShowRequests from "./ExhabitionComponent/src/component/request-artist-detail-page/r-page/show-req";
 import NFTUploadPage from "./Pages/NftUploadPage";
 import { ThirdwebProvider } from "@thirdweb-dev/react";
 import Profile from "./Pages/Profile";
@@ -119,7 +116,6 @@ export default () => {
 
                 <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route exact path="artist-page" element={<ArtistPage />} />
                   <Route exact path="artist-application-form/:id" element={<ArtistApplicationForm />} />
                   <Route exact path="nft-details/:id" element={<NFTDetails />} />
                   <Route exact path="Commission" element={<Commission />} />
@@ -140,8 +136,8 @@ export default () => {
                   <Route exact path="exhibition-list" element={<ExhibitionList />} />
                   <Route exact path="open-exhibitions" element={<OpenExhibitions />} />
                   <Route exact path="requests-list" element={<RequestsList />} />
-                  <Route exact path="show-request" element={<ShowRequests />} />
-                  <Route exact path="request-details" element={<RequestDetails />} />
+
+
                   <Route exact path="upload-page" element={<NFTUploadPage />} />
                   <Route exact path="pre-mint" element={<PreMint />} />
                   <Route exact path="UserDashboard" element={<UserDashboard />} />
