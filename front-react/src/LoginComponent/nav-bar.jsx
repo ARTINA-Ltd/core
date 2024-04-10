@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { images } from "./../../src/ExhabitionComponent/src/component/images";
 import React, { useState } from "react";
-import Logo from "../mehdizade_project/starter_file/calligraphy/src/images/footer/logo.png"
+import Logo from "../mehdizade_project/starter_file/calligraphy/src/images/footer/logo.png";
 const menu = ["خانه ", "در باره ما", "پروفایل من"];
 
 const Navbar = () => {
@@ -13,41 +13,43 @@ const Navbar = () => {
 
   return (
     <Fragment>
-    <div className="container1">
-      <img
-        className="menu-icon"
-        src={images["menue-icon.png"]}
-        onClick={showSidebar}
-      />
-      <div className={sidebar ? "navbar-section ac " : "navbar-section dl"}>
+      <div className="container1">
         <img
-          className="close-navbar"
-          src={images["close-icon.png"]}
+          alt=""
+          className="menu-icon"
+          src={images["menue-icon.png"]}
           onClick={showSidebar}
         />
-        <div className="menu">
-          <Link to="/" className="menu-item">
-            خانه
-          </Link>
-    
-          <Link to="/loginpage" className="menu-item">
-            ورود
-          </Link>
-          <Link to="/requests" className="menu-item">
-            درخواست ها
-          </Link>
-        </div>
-        <div className="inner-addon">
-        <Link to={"/"} > <button className="walletconnect">اتصال به کیف پول</button></Link>
-    //                           <img className="logo" src={Logo} alt="" />
+        <div className={sidebar ? "navbar-section ac " : "navbar-section dl"}>
+          <img
+            alt=""
+            className="close-navbar"
+            src={images["close-icon.png"]}
+            onClick={showSidebar}
+          />
+          <div className="menu">
+            <Link to="/" className="menu-item">
+              خانه
+            </Link>
+
+            <Link to="/loginpage" className="menu-item">
+              ورود
+            </Link>
+            <Link to="/requests" className="menu-item">
+              درخواست ها
+            </Link>
+          </div>
+          <div className="inner-addon">
+            <Link to={"/"}>
+              {" "}
+              <button className="walletconnect">اتصال به کیف پول</button>
+            </Link>
+            <img className="logo" src={Logo} alt="" />
+          </div>
         </div>
       </div>
-    </div>
-    <Outlet />
+      <Outlet />
     </Fragment>
-    
-    
-    
   );
 };
 

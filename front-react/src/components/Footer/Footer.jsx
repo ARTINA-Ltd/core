@@ -112,9 +112,7 @@ const Footer = () => {
             </a>
           </div>
           <div className="w-full flex flex-col gap-2 mb-4">
-            <a href="" className="font-b8">
-              {t("guide")}
-            </a>
+            <div className="font-b8">{t("guide")}</div>
             <a href="help-create-wallet" className="mr-2 font-b3">
               {t("makeWallet")}
             </a>
@@ -156,6 +154,7 @@ const Footer = () => {
               referrerPolicy="origin"
               target="_blank"
               href="https://trustseal.enamad.ir/?id=339851&amp;Code=F4HSRl9q4dYEext5JuBT"
+              rel="noreferrer"
             >
               <img
                 width="110"

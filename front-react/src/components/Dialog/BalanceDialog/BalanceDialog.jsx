@@ -13,7 +13,8 @@ const BalanceDialog = () => {
   const [action, setAction] = useState();
   // const [address, setAddress] = useState("");
 
-  const isOnlyNumbers = /^\d+$/.test(amount) || /^[\u06F0-\u06F9]+$/.test(amount);
+  const isOnlyNumbers =
+    /^\d+$/.test(amount) || /^[\u06F0-\u06F9]+$/.test(amount);
 
   useEffect(() => {
     axios
@@ -26,9 +27,8 @@ const BalanceDialog = () => {
       .then((res) => {
         setData(res.data);
       })
-      .catch((e) => { });
+      .catch((e) => {});
   }, []);
-
 
   const updateBalance = (act) => {
     if (amount === "" || amount === undefined || isOnlyNumbers === false) {
@@ -42,16 +42,21 @@ const BalanceDialog = () => {
       return;
     }
     if (act === "deposit") {
-      axios.post(
-        "https://api.artina.org/api/account/payment/",
-        { amount: amount * 10 },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-          },
-          mode: "cors",
-        }
-      ).then((res) => { window.open(res.data.url) }).catch(console.log);
+      axios
+        .post(
+          "https://api.artina.org/api/account/payment/",
+          { amount: amount * 10 },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            },
+            mode: "cors",
+          }
+        )
+        .then((res) => {
+          window.open(res.data.url);
+        })
+        .catch(console.log);
     } else {
       axios
         .post(
@@ -112,7 +117,7 @@ const BalanceDialog = () => {
   const footer = () => {
     if (isCharge === false) {
       return (
-        <>
+        <div>
           <div
             className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all sm:text-xs sm:px-4"
             onClick={() => {
@@ -139,7 +144,7 @@ const BalanceDialog = () => {
           >
             شارژ کیف پول
           </div>
-        </>
+        </div>
       );
     } else if (action === "deposit") {
       return (
@@ -201,6 +206,7 @@ const BalanceDialog = () => {
           <div className="w-full flex gap-4 font-b4 sm:flex-col">
             <div className="bg-[#4e45d0] rounded-xl w-full py-20 flex flex-col items-start justify-center text-white gap-4 relative group overflow-hidden sm:py-4">
               <img
+                alt=""
                 src="/mand1.png"
                 className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all  duration-700 sm:text-sm"
               />
@@ -213,6 +219,7 @@ const BalanceDialog = () => {
             </div>
             <div className="bg-[#4e45d0] rounded-xl w-full py-20 flex flex-col items-start justify-center text-white gap-4 relative group overflow-hidden sm:py-4">
               <img
+                alt=""
                 src="/mand1.png"
                 className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all duration-700"
               />
@@ -231,6 +238,7 @@ const BalanceDialog = () => {
                 type="number"
                 title="مقدار(تومان)"
                 placeholder="مثلا: 100000"
+                // eslint-disable-next-line eqeqeq
                 isValid={amount != ""}
                 validationError="نمی‌تواند خالی باشد"
                 onChange={(e) => setAmount(e.target.value)}

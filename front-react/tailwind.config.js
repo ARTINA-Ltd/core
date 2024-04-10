@@ -49,5 +49,10 @@ module.exports = {
     },
   },
 
-  plugins: [require("tailwindcss-bg-patterns"), require("daisyui")],
+  plugins: [require("tailwindcss-bg-patterns"), require("daisyui"), require("@tailwindcss/typography")],
+
+  daisyui: {
+    themes: [],
+  },
+
 };

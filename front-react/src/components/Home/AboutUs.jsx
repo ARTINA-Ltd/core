@@ -8,6 +8,7 @@ const AboutUs = ({ className }) => {
       className={`${className}  w-full flex justify-center bg-[#4e45d0] text-white py-16 relative overflow-hidden`}
     >
       <img
+        alt=""
         src="/mand1.png"
         className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
       />
