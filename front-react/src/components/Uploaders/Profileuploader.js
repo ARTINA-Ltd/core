@@ -5,7 +5,7 @@ import { ProgressBar } from "primereact/progressbar";
 import { Button } from "primereact/button";
 import { Tooltip } from "primereact/tooltip";
 import { Tag } from "primereact/tag";
-import { Image } from 'primereact/image';
+import { Image } from "primereact/image";
 
 export default function Profileuploader() {
   const toast = useRef(null);
@@ -51,7 +51,6 @@ export default function Profileuploader() {
   };
   const imageUrl = "/static/PicturesOfProfile/default.png"; // replace with your image URL
 
-
   const headerTemplate = (options) => {
     const { className, chooseButton, uploadButton, cancelButton } = options;
     const value = totalSize / 100000;
@@ -73,9 +72,7 @@ export default function Profileuploader() {
             {uploadButton}
             {cancelButton}
           </div>
-          <div
-            className="flex align-items-center  gap-3"
-          >
+          <div className="flex align-items-center  gap-3">
             <span>{formatedValue} / 10 MB</span>
             <ProgressBar
               value={value}
@@ -93,7 +90,6 @@ export default function Profileuploader() {
   };
 
   const itemTemplate = (file, props) => {
-
     return (
       <div
         className="flex align-items-center flex-wrap"
@@ -128,10 +124,9 @@ export default function Profileuploader() {
 
   const emptyTemplate = () => {
     return (
-      <>
+      <Fragment>
         {UserData === null ? (
           <div className="flex align-items-center flex-column">
-
             <p className="font text-3xl">
               لطفا عکس پروفایل خود را اینجا بارگذاری بکنید
             </p>
@@ -158,10 +153,9 @@ export default function Profileuploader() {
             <Image src={imageUrl} alt="Image" width="250" />
 
             {UserData.profile_picture}
-
           </div>
         )}
-      </>
+      </Fragment>
     );
   };
 

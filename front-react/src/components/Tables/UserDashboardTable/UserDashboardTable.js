@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
- import "./UserDashboardTable.css";
- import "primereact/resources/themes/lara-light-indigo/theme.css"; //theme
+import "./UserDashboardTable.css";
+import "primereact/resources/themes/lara-light-indigo/theme.css"; //theme
 import "primereact/resources/primereact.min.css"; //core css
 import "primeicons/primeicons.css"; //icons
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
- 
-   
-function UserDashboardTable() {
-  
 
+function UserDashboardTable() {
   const [loading, setLoading] = useState(false);
   const [totalRecords, setTotalRecords] = useState(10);
 
@@ -68,10 +65,8 @@ function UserDashboardTable() {
     setTimeout(() => {
       setLoading(false);
     }, Math.random() * 1000 + 250);
- 
-    
   }, [lazyParams]);
-   // -------------------------------- Table Logics--------------------------------
+  // -------------------------------- Table Logics--------------------------------
   const loadLazyData = () => {
     setLoading(true);
 
@@ -92,13 +87,15 @@ function UserDashboardTable() {
     event["first"] = 0;
     setLazyParams(event);
   };
-  
-   // -------------------------------- Table Columns--------------------------------
+
+  // -------------------------------- Table Columns--------------------------------
 
   const ProductSum = (TableData) => {
     return (
       <React.Fragment>
-        <span className="image-text text-4xl text-5xl">{TableData.ProductSum} </span>
+        <span className="image-text text-4xl text-5xl">
+          {TableData.ProductSum}{" "}
+        </span>
       </React.Fragment>
     );
   };
@@ -114,6 +111,7 @@ function UserDashboardTable() {
     return (
       <div>
         <img
+          alt=""
           src=""
           onError={(e) =>
             (e.target.src =
@@ -140,7 +138,7 @@ function UserDashboardTable() {
   const CommissionPercentage = (TableData) => {
     return (
       <div className="text-4xl">
-        <> {TableData.CommissionPercentage}</>
+        <div> {TableData.CommissionPercentage}</div>
       </div>
     );
   };
@@ -148,116 +146,107 @@ function UserDashboardTable() {
   const Exhibitionname = (TableData) => {
     return (
       <div style={{ fontFamily: "IRANSansWeb" }}>
-        <span className="image-text text-4xl">
-          
-          {TableData.Exhibitionname}
-        </span>
+        <span className="image-text text-4xl">{TableData.Exhibitionname}</span>
       </div>
     );
   };
 
-     // -------------------------------- card Title Section--------------------------------
- 
-   
+  // -------------------------------- card Title Section--------------------------------
 
-     // --------------------------------    --------------------------------
+  // --------------------------------    --------------------------------
 
   return (
-   
-           
-              <DataTable
-                value={TableData}
-                scrollable
-                scrollHeight="400px"
-                lazy
-                // paginator
-                filterDisplay="row"
-                responsiveLayout="scroll"
-                dataKey="id"
-                first={lazyParams.first}
-                rows={10}
-                totalRecords={totalRecords}
-                onPage={onPage}
-                onSort={onSort}
-                sortField={lazyParams.sortField}
-                sortOrder={lazyParams.sortOrder}
-                onFilter={onFilter}
-                filters={lazyParams.filters}
-                loading={loading}
-                style={{color:'#424874'}}
-              >
-                <Column
-                  field=" نام نمایشگاه"
-                  header=" عکس"
-                  sortable
-                  body={ExhibitionImage}
-                />
+    <DataTable
+      value={TableData}
+      scrollable
+      scrollHeight="400px"
+      lazy
+      // paginator
+      filterDisplay="row"
+      responsiveLayout="scroll"
+      dataKey="id"
+      first={lazyParams.first}
+      rows={10}
+      totalRecords={totalRecords}
+      onPage={onPage}
+      onSort={onSort}
+      sortField={lazyParams.sortField}
+      sortOrder={lazyParams.sortOrder}
+      onFilter={onFilter}
+      filters={lazyParams.filters}
+      loading={loading}
+      style={{ color: "#424874" }}
+    >
+      <Column
+        field=" نام نمایشگاه"
+        header=" عکس"
+        sortable
+        body={ExhibitionImage}
+      />
 
-                <Column
-                  field="name"
-                  header=" نام نمایشگاه  "
-                  sortable
-                  filter
-                  filterPlaceholder="Search by name"
-                  body={Exhibitionname}
-                  //  filterPlaceholder="Search by name"
-                />
+      <Column
+        field="name"
+        header=" نام نمایشگاه  "
+        sortable
+        filter
+        filterPlaceholder="Search by name"
+        body={Exhibitionname}
+        //  filterPlaceholder="Search by name"
+      />
 
-                <Column
-                  field="country.name"
-                  header="  درصد کمیسیون "
-                  filterField="country.name"
-                  body={CommissionPercentage}
-                  sortable
-                  className=""
-                  //  filter
-                  //  filterPlaceholder="Search by country"
-                />
+      <Column
+        field="country.name"
+        header="  درصد کمیسیون "
+        filterField="country.name"
+        body={CommissionPercentage}
+        sortable
+        className=""
+        //  filter
+        //  filterPlaceholder="Search by country"
+      />
 
-                <Column
-                  field="company"
-                  sortable
-                  body={ProductSum}
-                  // filter
-                  header=" تعداد آثار  "
-                  // filterPlaceholder="Search by company"
-                />
-                <Column
-                  field="company"
-                  sortable
-                  body={Benefit}
-                  // filter
-                  header="سود حاصل   "
-                  // filterPlaceholder="Search by company"
-                />
-                <Column
-                  style={{ fontFamily: "IRANSansWeb" }}
-                  field="representative.name"
-                  header="  حجم فروش به اتر "
-                  sortable
-                  body={EthersaleVolume}
-                  // filter
-                  // filterPlaceholder="Search by representative"
-                />
-                <Column
-                  field="representative.name"
-                  header=" حجم فروش "
-                  sortable
-                  body={saleVolume}
+      <Column
+        field="company"
+        sortable
+        body={ProductSum}
+        // filter
+        header=" تعداد آثار  "
+        // filterPlaceholder="Search by company"
+      />
+      <Column
+        field="company"
+        sortable
+        body={Benefit}
+        // filter
+        header="سود حاصل   "
+        // filterPlaceholder="Search by company"
+      />
+      <Column
+        style={{ fontFamily: "IRANSansWeb" }}
+        field="representative.name"
+        header="  حجم فروش به اتر "
+        sortable
+        body={EthersaleVolume}
+        // filter
+        // filterPlaceholder="Search by representative"
+      />
+      <Column
+        field="representative.name"
+        header=" حجم فروش "
+        sortable
+        body={saleVolume}
 
-                  // filterPlaceholder="Search by representative"
-                />
-                <Column
-                  field=""
-                  sortable
-                  style={{ fontFamily: "IRANSansWeb" }}
-                  header="تاریخ پایان"
-                  // filterPlaceholder="Search by company"
-                  body={TerminationDate}
-                />
-              </DataTable>
-            
-   
+        // filterPlaceholder="Search by representative"
+      />
+      <Column
+        field=""
+        sortable
+        style={{ fontFamily: "IRANSansWeb" }}
+        header="تاریخ پایان"
+        // filterPlaceholder="Search by company"
+        body={TerminationDate}
+      />
+    </DataTable>
   );
 }
 

@@ -16,17 +16,10 @@ const ApplicationReqDialog = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [getData, setData] = useState();
-  const [getExhebition, setExhebition] = useState();
   const [nftDetails, setNftDetails] = useState([]);
-  const [isCharge, setIsCharge] = useState(false);
-  const [amount, setAmount] = useState();
-  const [tokens, setTokens] = useState();
   const [exhibitionName, setExhebitionName] = useState();
   var temp = 0;
-  //'accept', 'ignored'
-  //{
-  //   action: 'accept'
-  // }
+
   const navigate = useNavigate();
   var q = 0;
   const btnClick = (action) => {
@@ -47,7 +40,7 @@ const ApplicationReqDialog = ({
         setData(res.data);
         setVisible(false);
         Notify.success("عملیات با موفقیت انجام شد");
-        window.location.reload(true)
+        window.location.reload(true);
       })
       .catch(() => {});
   };
@@ -93,18 +86,6 @@ const ApplicationReqDialog = ({
   }, []);
   useEffect(() => {
     console.log(nftDetails);
-    // axios
-    //   .get("https://api.artina.org/api/account/user-balance/get_balance/", {
-    //     headers: {
-    //       Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-    //     },
-    //     mode: "cors",
-    //   })
-    //   .then((res) => {
-    //     setData(res.data);
-    //   })
-    //   .catch((e) => {
-    //   });
   }, [nftDetails]);
 
   const Footer = (
@@ -133,13 +114,6 @@ const ApplicationReqDialog = ({
       >
         تایید
       </BorderButton>
-
-      {/* <BorderButton
-        className={"w-full font-b4 text-center"}
-       
-      >
-        شارژ کیف پول
-      </BorderButton> */}
     </div>
   );
 
@@ -162,12 +136,14 @@ const ApplicationReqDialog = ({
       <Dialog
         header={Header}
         visible={visible}
-        style={{direction: "rtl" }}
+        style={{ direction: "rtl" }}
         onHide={() => setVisible(false)}
         footer={Footer}
         className="font-b4 w-[35vw] sm:w-[90%]"
       >
-        <div className={`flex flex-col w-full gap-4 font-b4 items-center sm:gap-2`}>
+        <div
+          className={`flex flex-col w-full gap-4 font-b4 items-center sm:gap-2`}
+        >
           <img
             src={getData ? getData.profile_picture : ""}
             className="h-[250px] w-[250px] shrink-0 object-cover rounded-full sm:h-[120px] sm:w-[120px]"

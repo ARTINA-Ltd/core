@@ -1,11 +1,7 @@
 import { useState, useCallback } from "react";
 import axios from "axios";
 import "./register-styles.css";
-import FormInput from "./formInput";
-import GoogleButton from "react-google-button";
 import { Link, useNavigate } from "react-router-dom";
-import Header from "../components/LandingPageNavBar/Header";
-import Footer from "../components/Footer/Footer";
 import TestLayout from "../Layouts/TestLayout";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import BorderButton from "../components/Buttons/BorderButton";
@@ -18,14 +14,14 @@ const Register = () => {
     username: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
   const [isChecekd, setIsChecekd] = useState(false);
   const [captchaRes, setCaptchaRes] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleCaptchaChange = e => {
+  const handleCaptchaChange = (e) => {
     if (e.length != 0) {
       setCaptchaRes(true);
     } else {
@@ -33,7 +29,7 @@ const Register = () => {
     }
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (isChecekd == true) {
@@ -41,13 +37,13 @@ const Register = () => {
         .post("https://api.artina.org/api/account/register/", {
           username: values.username,
           email: values.email,
-          password: values.password
+          password: values.password,
         })
-        .then(response => {
+        .then((response) => {
           Notiflix.Notify.success("ثبت نام با موفقیت انجام شد");
           navigate("/login");
         })
-        .catch(response => {
+        .catch((response) => {
           if (
             response.response.data.error == "This username is already taken."
           ) {
@@ -66,36 +62,12 @@ const Register = () => {
     }
   };
 
-  const onChange = e => {
+  const onChange = (e) => {
     setValues({
       ...values,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
-
-  const openGoogleLoginPage = useCallback(() => {
-    const googleAuthUrl = "https://accounts.google.com/o/oauth2/v2/auth";
-    const redirectUri = "api/v1/auth/login/google/";
-
-    const scope = [
-      "https://www.googleapis.com/auth/userinfo.email",
-      "https://www.googleapis.com/auth/userinfo.profile"
-    ].join(" ");
-
-    const params = {
-      response_type: "code",
-      client_id:
-        "512823683871-adr9e9dcfqiqii5o2480u5fhbtu4uj1g.apps.googleusercontent.com",
-      redirect_uri: `http://localhost:8000/api/v1/auth/login/google/`,
-      prompt: "select_account",
-      access_type: "offline",
-      scope
-    };
-
-    const urlParams = new URLSearchParams(params).toString();
-
-    window.location = `${googleAuthUrl}?${urlParams}`;
-  }, []);
 
   return (
     <TestLayout className="flex items-center justify-center form-input w-full">
@@ -108,11 +80,12 @@ const Register = () => {
           placeholder="مثلا: alireza"
           isValid={values.username != ""}
           validationError="نمی‌تواند خالی باشد"
-          onChange={e =>
-            setValues(prev => ({
+          onChange={(e) =>
+            setValues((prev) => ({
               ...prev,
-              username: e.target.value
-            }))}
+              username: e.target.value,
+            }))
+          }
           defaultValue={""}
         />
         <SimpleInput
@@ -122,11 +95,12 @@ const Register = () => {
           placeholder="مثلا: example@gmail.com"
           isValid={values.email != ""}
           validationError="نمی‌تواند خالی باشد"
-          onChange={e =>
-            setValues(prev => ({
+          onChange={(e) =>
+            setValues((prev) => ({
               ...prev,
-              email: e.target.value
-            }))}
+              email: e.target.value,
+            }))
+          }
           defaultValue={""}
         />
         <SimpleInput
@@ -136,11 +110,12 @@ const Register = () => {
           placeholder=""
           isValid={values.password != ""}
           validationError="نمی‌تواند خالی باشد"
-          onChange={e =>
-            setValues(prev => ({
+          onChange={(e) =>
+            setValues((prev) => ({
               ...prev,
-              password: e.target.value
-            }))}
+              password: e.target.value,
+            }))
+          }
           defaultValue={""}
         />
         <SimpleInput
@@ -150,11 +125,12 @@ const Register = () => {
           placeholder=""
           isValid={values.confirmPassword != ""}
           validationError="نمی‌تواند خالی باشد"
-          onChange={e =>
-            setValues(prev => ({
+          onChange={(e) =>
+            setValues((prev) => ({
               ...prev,
-              confirmPassword: e.target.value
-            }))}
+              confirmPassword: e.target.value,
+            }))
+          }
           defaultValue={""}
         />
         <div className="w-full flex justify-center items-center mt-5">
@@ -171,15 +147,19 @@ const Register = () => {
             مشاهده قوانین
           </a>
           <div
-            className={`cursor-pointer rounded-full flex items-center gap-3 ${!isChecekd
-              ? "hover:bg-rose-50  hover:scale-105 transition-all border-[1px] border-rose-400 text-rose-400"
-              : "hover:bg-green-50 hover:scale-105 transition-all text-green-600 border-[1px] border-green-600"} transition-all px-3 py-2`}
-            onClick={() => setIsChecekd(prev => !prev)}
+            className={`cursor-pointer rounded-full flex items-center gap-3 ${
+              !isChecekd
+                ? "hover:bg-rose-50  hover:scale-105 transition-all border-[1px] border-rose-400 text-rose-400"
+                : "hover:bg-green-50 hover:scale-105 transition-all text-green-600 border-[1px] border-green-600"
+            } transition-all px-3 py-2`}
+            onClick={() => setIsChecekd((prev) => !prev)}
           >
             <div
-              className={`h-4 w-4 ${isChecekd
-                ? "bg-green-600"
-                : "bg-rose-50 border-[1px] border-rose-400"} rounded-full`}
+              className={`h-4 w-4 ${
+                isChecekd
+                  ? "bg-green-600"
+                  : "bg-rose-50 border-[1px] border-rose-400"
+              } rounded-full`}
             />
             <div> با قوانین موافقم</div>
           </div>

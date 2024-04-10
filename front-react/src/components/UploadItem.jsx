@@ -276,6 +276,7 @@ const UploadItem = () => {
         <SimpleCard className="bg-[#4e45d0] w-[45%] flex flex-col relative gap-5 items-center overflow-hidden lg:w-[55%] md:w-[65%] sm:w-[80%]">
           <div className="relative group w-full rounded-2xl" id="nftImage">
             <img
+              alt=""
               className="w-full h-auto max-h-[800px] rounded-2xl"
               src={
                 imageUrl
