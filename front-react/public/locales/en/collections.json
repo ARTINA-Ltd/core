@@ -8,5 +8,10 @@
   "name": "Name",
   "submit": "Submit",
   "example": "Like: Carpet",
-  "nothingYet": "You don't have any collection yet!"
+  "nothingYet": "You don't have any collection yet!",
+  "addArt": "Add Artwork",
+  "addSingleArt": "Add Single Artwork",
+  "addSingleArtDescription": "Click here if you want to add one Artwork",
+  "addCollection": "Add Collection",
+  "addCollectionDescription": "Click here if you wand to ad multiple Artworks as an Collection"
 }

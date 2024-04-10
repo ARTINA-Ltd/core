@@ -8,5 +8,10 @@
   "name": "نام",
   "submit": "ثبت",
   "example": "مثلا فرش",
-  "nothingYet": "هنوز مجموعه ای ندارید!"
+  "nothingYet": "هنوز مجموعه ای ندارید!",
+  "addSingleArt": "ضرب تک اثر",
+  "addSingleArtDescription": "چنانچه می‌خواهید یک اثر ضرب کنید کلیک کنید.",
+  "addCollection": "ضرب کالکشن",
+  "addCollectionDescription": "چنانچه می‌خواهید چند اثر در قالب کالکشن ضرب کنید کلیک کنید.",
+  "addArt": "ضرب اثر"
 }
