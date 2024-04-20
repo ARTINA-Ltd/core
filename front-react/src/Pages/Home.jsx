@@ -1,7 +1,6 @@
 import React from "react";
 import AboutUs from "../components/Home/AboutUs";
 import ExhebitionList from "../components/Home/ExhebitionList";
-import Features from "../components/Home/Features";
 import MainSlider from "../components/Home/MainSlider";
 import NFTList from "../components/Home/NFTList";
 import TestLayout from "../Layouts/TestLayout";

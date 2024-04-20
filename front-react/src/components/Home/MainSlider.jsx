@@ -10,13 +10,7 @@ const MainSlider = () => {
   return (
     <div>
       <div className="w-full">
-        <Swiper
-          navigation={true}
-          loop={true}
-          modules={[Navigation]}
-          slidesPerView={1}
-          spaceBetween={0}
-        >
+        <Swiper navigation={true} loop={true} modules={[Navigation]} slidesPerView={1} spaceBetween={0}>
           <SwiperSlide>
             <img src="/2 - Copy.jpg" className="object-cover w-full" alt="" />
           </SwiperSlide>

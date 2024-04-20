@@ -36,7 +36,7 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
   });
 
   const inputFile = useRef(null);
-  const handleCategoryChange = e => {
+  const handleCategoryChange = (e) => {
     setSelectedCategory(e.value);
   };
   const [profileImage, setProfileImage] = useState();
@@ -46,8 +46,8 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
     if (categories != undefined) {
       setOptions([]);
 
-      categories.forEach(element => {
-        setOptions(e => [...e, { value: element.id, label: element.name }]);
+      categories.forEach((element) => {
+        setOptions((e) => [...e, { value: element.id, label: element.name }]);
       });
     }
   }, [categories]);
@@ -74,7 +74,7 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
           },
         }
       )
-      .then(res => {
+      .then((res) => {
         setVisible(false);
         Notify.success("نمایشگاه با موفقت افزوده شد");
         window.location.reload(true);
@@ -91,7 +91,7 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
           Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
         },
       })
-      .then(res => {
+      .then((res) => {
         console.log("_____________________");
         console.log("categories");
         console.log(res.data);
@@ -108,12 +108,12 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
       formData.append("image", profileImage, profileImage.name);
       axios
         .post("https://api.artina.org/api/transaction/images/", formData)
-        .then(res => {
+        .then((res) => {
           Notify.success("با موفقیت آپلود شد");
           setProfileImageUrl(res.data.image);
           Block.remove("#exhibitionImage", 3000);
         })
-        .catch(res => {
+        .catch((res) => {
           Notify.failure("خطا در آپلود");
           console.log(res);
           Block.remove("#exhibitionImage", 3000);
@@ -123,17 +123,10 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
 
   const Footer = (
     <div className="flex gap-5 justify-end">
-      <BorderButton
-        onClick={() => setVisible(false)}
-        className="font-b4 text-center"
-      >
+      <BorderButton onClick={() => setVisible(false)} className="font-b4 text-center">
         لغو
       </BorderButton>
-      <BorderButton
-        onClick={() => handleSubmit()}
-        className="font-b4 text-center"
-        disabled={!isChecekd}
-      >
+      <BorderButton onClick={() => handleSubmit()} className="font-b4 text-center" disabled={!isChecekd}>
         ثبت
       </BorderButton>
       {/* <BorderButton
@@ -153,80 +146,22 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
 
   return (
     <div className="card flex justify-content-center">
-      <div
-        className="h-[420px] w-full bg-[#0000aa05] hover:bg-[#0000aa08] rounded-2xl group flex items-center justify-center cursor-pointer  transition-all md:h-[300px] sm:h-[250px]"
-        onClick={() => setVisible(true)}
-      >
-        <div className="text-[#000022] opacity-20 group-hover:opacity-40 transition-all group-hover:scale-105 ease-out duration-150 flex flex-col items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="0.6"
-            stroke="currentColor"
-            width={"4em"}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <div className="font-b6">افزودن نمایشگاه</div>
-        </div>
-      </div>
-      <Dialog
-        header={Header}
-        visible={visible}
-        style={{ direction: "rtl" }}
-        onHide={() => setVisible(false)}
-        footer={Footer}
-        className="w-[35%] lg:w-[70%] sm:w-[85%]"
-      >
+      <Dialog header={Header} visible={visible} style={{ direction: "rtl" }} onHide={() => setVisible(false)} footer={Footer} className="w-[35%] lg:w-[70%] sm:w-[85%]">
         <div className="font-b4">
           <div className="w-full flex items-center justify-center">
-            <div
-              className="relative group items-center flex justify-center w-1/2"
-              id="exhibitionImage"
-            >
-              <img
-                src={
-                  profileImageUrl
-                    ? profileImageUrl
-                    : `${"https://api.artina.org/static/images/No_Image_Available.jpg"}`
-                }
-                className="pointer-events-none rounded-2xl overflow-hidden object-cover h-auto flex-shrink-0 w-full"
-              />
-              <div
-                className="group-hover:opacity-80 opacity-0 cursor-pointer duration-300 bg-black transition-all w-full h-full absolute inset-0 m-auto items-center justify-center flex rounded-2xl"
-                onClick={() => inputFile.current.click()}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="0.5"
-                  stroke="currentColor"
-                  className="text-white "
-                  width="3em"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z"
-                  />
+            <div className="relative group items-center flex justify-center w-1/2" id="exhibitionImage">
+              <img alt="" src={profileImageUrl ? profileImageUrl : `${"https://api.artina.org/static/images/No_Image_Available.jpg"}`} className="pointer-events-none rounded-2xl overflow-hidden object-cover h-auto flex-shrink-0 w-full" />
+              <div className="group-hover:opacity-80 opacity-0 cursor-pointer duration-300 bg-black transition-all w-full h-full absolute inset-0 m-auto items-center justify-center flex rounded-2xl" onClick={() => inputFile.current.click()}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="0.5" stroke="currentColor" className="text-white " width="3em">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
                 </svg>
               </div>
               <input
                 hidden
                 accept="image/*"
                 type="file"
-                onChange={e => {
+                onChange={(e) => {
                   setProfileImage(() => e.target.files[0]);
                 }}
                 ref={inputFile}
@@ -240,9 +175,9 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
               placeholder="مثلا: نمایشگاه تست"
               isValid={validate.marketName}
               validationError="نمی‌تواند خالی باشد"
-              onChange={e => {
-                setValues(prev => ({ ...prev, marketName: e.target.value }));
-                setValidate(prev => ({
+              onChange={(e) => {
+                setValues((prev) => ({ ...prev, marketName: e.target.value }));
+                setValidate((prev) => ({
                   ...prev,
                   marketName: e.target.value != "",
                 }));
@@ -257,9 +192,9 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
               placeholder="مثلا: نمایشگاه تست"
               isValid={validate.description}
               validationError="نمی‌تواند خالی باشد"
-              onChange={e => {
-                setValues(prev => ({ ...prev, description: e.target.value }));
-                setValidate(prev => ({
+              onChange={(e) => {
+                setValues((prev) => ({ ...prev, description: e.target.value }));
+                setValidate((prev) => ({
                   ...prev,
                   description: e.target.value != "",
                 }));
@@ -270,11 +205,7 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
 
             <div className="flex flex-wrap gap-2">
               <div className="w-full">
-                <SimpleInput
-                  options={options}
-                  type="dropdown"
-                  onChange={handleCategoryChange}
-                />
+                <SimpleInput options={options} type="dropdown" onChange={handleCategoryChange} />
               </div>
             </div>
 
@@ -283,9 +214,9 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
               title="تاریخ شروع"
               isValid={validate.start_date}
               validationError="نمی‌تواند خالی باشد"
-              onChange={e => {
-                setValues(prev => ({ ...prev, start_date: e.value }));
-                setValidate(prev => ({ ...prev, start_date: e.value != "" }));
+              onChange={(e) => {
+                setValues((prev) => ({ ...prev, start_date: e.value }));
+                setValidate((prev) => ({ ...prev, start_date: e.value != "" }));
               }}
               defaultValue={null}
               disabled={false}
@@ -296,9 +227,9 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
               title="تاریخ پایان"
               isValid={validate.end_date}
               validationError="نمی‌تواند خالی باشد"
-              onChange={e => {
-                setValues(prev => ({ ...prev, end_date: e.value }));
-                setValidate(prev => ({ ...prev, end_date: e.value != "" }));
+              onChange={(e) => {
+                setValues((prev) => ({ ...prev, end_date: e.value }));
+                setValidate((prev) => ({ ...prev, end_date: e.value != "" }));
               }}
               defaultValue={null}
               disabled={false}
@@ -309,12 +240,12 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
               title=" آخرین مهلت ثبت نام"
               isValid={validate.application_deadline}
               validationError="نمی‌تواند خالی باشد"
-              onChange={e => {
-                setValues(prev => ({
+              onChange={(e) => {
+                setValues((prev) => ({
                   ...prev,
                   application_deadline: e.value,
                 }));
-                setValidate(prev => ({
+                setValidate((prev) => ({
                   ...prev,
                   application_deadline: e.value != "",
                 }));
@@ -323,14 +254,7 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
               disabled={false}
             />
 
-            <div
-              className={`border-[1px] rounded-full px-3 py-1 cursor-pointer text-center transition-all ${
-                ticket
-                  ? "border-green-500 text-green-600 bg-green-50"
-                  : "border-red-600 text-red-700 bg-red-50"
-              }`}
-              onClick={() => setTicket(prev => !prev)}
-            >
+            <div className={`border-[1px] rounded-full px-3 py-1 cursor-pointer text-center transition-all ${ticket ? "border-green-500 text-green-600 bg-green-50" : "border-red-600 text-red-700 bg-red-50"}`} onClick={() => setTicket((prev) => !prev)}>
               {ticket ? "تیکت دارد" : "تیکت ندارد"}
             </div>
             {ticket ? (
@@ -339,7 +263,7 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
                 title=" قیمت تیکت"
                 isValid={ticketPrice !== ""}
                 validationError="نمی‌تواند خالی باشد"
-                onChange={e => {
+                onChange={(e) => {
                   setTicketPrice(e.target.value);
                 }}
                 defaultValue={null}
@@ -349,30 +273,12 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
               ""
             )}
 
-            
-
             <div className="w-full flex justify-end items-center gap-4">
-              <a
-                href="/privacy-policy"
-                className="text-gray-400 hover:text-gray-500 hover:bg-gray-50 px-2 py-1 transition-all duration-100 font-b2 rounded-md"
-              >
+              <a href="/privacy-policy" className="text-gray-400 hover:text-gray-500 hover:bg-gray-50 px-2 py-1 transition-all duration-100 font-b2 rounded-md">
                 مشاهده قوانین
               </a>
-              <div
-                className={`cursor-pointer rounded-full flex items-center gap-3 ${
-                  !isChecekd
-                    ? "hover:bg-rose-50  hover:scale-105 transition-all border-[1px] border-rose-400 text-rose-400"
-                    : "hover:bg-green-50 hover:scale-105 transition-all text-green-600 border-[1px] border-green-600"
-                } transition-all px-3 py-2`}
-                onClick={() => setIsChecekd(prev => !prev)}
-              >
-                <div
-                  className={`h-4 w-4 ${
-                    isChecekd
-                      ? "bg-green-600"
-                      : "bg-rose-50 border-[1px] border-rose-400"
-                  } rounded-full`}
-                />
+              <div className={`cursor-pointer rounded-full flex items-center gap-3 ${!isChecekd ? "hover:bg-rose-50  hover:scale-105 transition-all border-[1px] border-rose-400 text-rose-400" : "hover:bg-green-50 hover:scale-105 transition-all text-green-600 border-[1px] border-green-600"} transition-all px-3 py-2`} onClick={() => setIsChecekd((prev) => !prev)}>
+                <div className={`h-4 w-4 ${isChecekd ? "bg-green-600" : "bg-rose-50 border-[1px] border-rose-400"} rounded-full`} />
                 <div> با قوانین موافقم</div>
               </div>
             </div>

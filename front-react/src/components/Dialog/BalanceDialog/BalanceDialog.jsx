@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import SimpleInput from "../../Inputs/SimpleInput";
 import { Notify } from "notiflix";
+import { useTranslation } from "react-i18next";
 
 const BalanceDialog = () => {
   const [visible, setVisible] = useState(false);
@@ -11,10 +12,10 @@ const BalanceDialog = () => {
   const [isCharge, setIsCharge] = useState(false);
   const [amount, setAmount] = useState();
   const [action, setAction] = useState();
+  const { t } = useTranslation();
   // const [address, setAddress] = useState("");
 
-  const isOnlyNumbers =
-    /^\d+$/.test(amount) || /^[\u06F0-\u06F9]+$/.test(amount);
+  const isOnlyNumbers = /^\d+$/.test(amount) || /^[\u06F0-\u06F9]+$/.test(amount);
 
   useEffect(() => {
     axios
@@ -91,19 +92,8 @@ const BalanceDialog = () => {
     <div className="flex gap-4">
       {isCharge ? (
         <div className="cursor-pointer" onClick={() => setIsCharge(false)}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-            />
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
           </svg>
         </div>
       ) : (
@@ -189,7 +179,7 @@ const BalanceDialog = () => {
           setIsCharge(false);
         }}
       >
-        کیف پول
+        {t("wallet")}
       </div>
 
       <Dialog
@@ -205,30 +195,14 @@ const BalanceDialog = () => {
         {!isCharge ? (
           <div className="w-full flex gap-4 font-b4 sm:flex-col">
             <div className="bg-[#4e45d0] rounded-xl w-full py-20 flex flex-col items-start justify-center text-white gap-4 relative group overflow-hidden sm:py-4">
-              <img
-                alt=""
-                src="/mand1.png"
-                className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all  duration-700 sm:text-sm"
-              />
-              <div className="text-2xl font-b6 px-10 sm:text-xs">
-                موجودی قابل معامله
-              </div>
-              <div className="text-lg text-yellow-300 px-10 self-end">
-                {getData ? getData.rial_available_balance : ""} تومان
-              </div>
+              <img alt="" src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all  duration-700 sm:text-sm" />
+              <div className="text-2xl font-b6 px-10 sm:text-xs">موجودی قابل معامله</div>
+              <div className="text-lg text-yellow-300 px-10 self-end">{getData ? getData.rial_available_balance : ""} تومان</div>
             </div>
             <div className="bg-[#4e45d0] rounded-xl w-full py-20 flex flex-col items-start justify-center text-white gap-4 relative group overflow-hidden sm:py-4">
-              <img
-                alt=""
-                src="/mand1.png"
-                className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all duration-700"
-              />
-              <div className="text-2xl font-b6 px-10 sm:text-xs">
-                موجودی غیر قابل معامله
-              </div>
-              <div className="text-lg text-yellow-300 px-10 self-end">
-                {getData ? getData.rial_unavailable_balance : ""} تومان
-              </div>
+              <img alt="" src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all duration-700" />
+              <div className="text-2xl font-b6 px-10 sm:text-xs">موجودی غیر قابل معامله</div>
+              <div className="text-lg text-yellow-300 px-10 self-end">{getData ? getData.rial_unavailable_balance : ""} تومان</div>
             </div>
           </div>
         ) : (
@@ -246,9 +220,7 @@ const BalanceDialog = () => {
             </div>
           </div>
         )}
-        <div className="font-b4 w-full flex justify-end items-center mt-7 gap-3">
-          {footer()}
-        </div>
+        <div className="font-b4 w-full flex justify-end items-center mt-7 gap-3">{footer()}</div>
       </Dialog>
     </div>
   );
