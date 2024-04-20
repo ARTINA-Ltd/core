@@ -120,11 +120,9 @@ export default () => {
                   <Route exact path="support" element={<Support />} />
                   <Route exact path="register" element={<Register />} />
                   <Route exact path="add-exhibition" element={<AddExhibition />} />
-
                   <Route exact path="contact" element={<Contact />} />
                   <Route exact path="about-us" element={<AboutUs />} />
                   <Route exact path="privacy-policy" element={<PrivacyPolicy />} />
-
                   <Route exact path="help-mint" element={<HelpMint />} />
                   <Route exact path="help-create-exhibition" element={<HelpCreateExhibition />} />
                   <Route exact path="help-create-wallet" element={<HelpCreateWallet />} />

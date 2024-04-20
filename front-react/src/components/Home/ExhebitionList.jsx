@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "keen-slider/keen-slider.min.css";
 import SimpleCard from "../Cards/UserDashboardCards/SimpleCard";
 import { useNavigate } from "react-router";
@@ -24,7 +24,7 @@ const ExhebitionList = ({ className }) => {
     return (
       <div className={`w-full flex flex-col items-center relative bg-[#f9f9f9] bg-[url('https://artina.org/5.png')] bg-center bg-no-repeat py-10 ${className}`}>
         <div className="font-b9 text-[40px] mb-2 sm:text-[30px]">{t("exhibiotionListTitle")}</div>
-        <div className="font-b5 text-lg mb-4 cursor-pointer opacity-40" onClick={() => navigate(`/exhibition-list`)}>
+        <div className="font-b5 text-lg mb-4 cursor-pointer opacity-40" onClick={() => (localStorage.getItem("authTokens") != null ? navigate(`/exhibition-list`) : navigate(`/login`))}>
           {t("showAll")}
         </div>
         <div className="w-4/5 lg:w-10/12">
@@ -57,7 +57,7 @@ const ExhebitionList = ({ className }) => {
                   <SwiperSlide key={index}>
                     <SimpleCard className={"bg-white w-full lg:p-5"}>
                       <img src={item.image} className="w-full h-96 object-cover rounded-2xl" alt="" />
-                      <div className="mt-3 font-b4 text-[24px] text-center cursor-pointer" onClick={() => navigate(`/exhibition-collections/${item.id}`)}>
+                      <div className="mt-3 font-b4 text-[24px] text-center cursor-pointer" onClick={() => (localStorage.getItem("authTokens") != null ? navigate(`/exhibition-collections/${item.id}`) : navigate(`/login`))}>
                         {item.marketName}
                       </div>
                     </SimpleCard>

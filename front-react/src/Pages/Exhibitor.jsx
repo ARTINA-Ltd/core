@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
-import AddExhibitionDialog from "../components/Dialog/AddExhibitionDialog/AddExhibitionDialog";
 import TestLayout from "../Layouts/TestLayout";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 import { useTranslation } from "react-i18next";
@@ -13,7 +12,9 @@ const Exhibitor = () => {
   const [artistClosedExhibitions, setArtistClosedExhibitions] = useState();
   const [openRegistrationExhibitions, setOpenRegistrationExhibitions] = useState();
   const navigate = useNavigate();
-
+  useEffect(() => {
+    localStorage.getItem("authTokens") === null && navigate("/login");
+  });
   useEffect(() => {
     axios
       .get(`https://api.artina.org/api/exhibition/artist-user-past-exhibitions/`, {

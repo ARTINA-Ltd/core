@@ -7,7 +7,7 @@ import TestLayout from "../Layouts/TestLayout.jsx";
 const ExhibitionList = () => {
   const [getData, setData] = useState();
   useEffect(() => {
-    if (localStorage.getItem("authTokens") !== "null") {
+    if (localStorage.getItem("authTokens") != "null") {
       axios
         .get("https://api.artina.org/api/exhibition/ExTicketViewSet/", {
           headers: {

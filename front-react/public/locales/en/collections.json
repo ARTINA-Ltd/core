@@ -9,9 +9,9 @@
   "submit": "Submit",
   "example": "Like: Carpet",
   "nothingYet": "You don't have any collection yet!",
-  "addArt": "Add Artwork",
-  "addSingleArt": "Add Single Artwork",
+  "addArt": "Mint Artwork",
+  "addSingleArt": "Mint Single Artwork",
   "addSingleArtDescription": "Click here if you want to add one Artwork",
-  "addCollection": "Add Collection",
+  "addCollection": "Mint Collection",
   "addCollectionDescription": "Click here if you wand to ad multiple Artworks as an Collection"
 }

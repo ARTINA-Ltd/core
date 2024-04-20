@@ -56,7 +56,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
     },
     {
       title: t("blog"),
-      link: "//blog.artina.org",
+      link: "https://artina-blog.ir/",
       icon: <FaBlogger className="w-6 h-6 ml-1 text-[#6860db]" />,
     },
   ];
@@ -74,9 +74,28 @@ const Header = ({ connectWallet = false, rev = false }) => {
       icon: <FaPhoneAlt className="w-5 h-5 ml-1 text-[#6860db]" />,
     },
     {
-      title: t("collections"),
-      link: "/user-collections",
-      icon: <MdOutlineCollections className="w-6 h-6 ml-1 text-[#6860db]" />,
+      title: "",
+      link: "",
+      icon: (
+        <div className="dropdown">
+          <div tabIndex={0} role="button" className="flex m-0 font-normal  p-0 shadow-none">
+            <MdOutlineCollections className="w-6 h-6 ml-1 text-[#6860db]" />
+            {t("collections")}
+          </div>
+          <ul className="p-2 shadow menu dropdown-content hover:text-black z-[10] bg-white rounded-box w-52">
+            <li>
+              <a className="hover:text-[#6860db]" href="/user-collections">
+                {t("artists")}
+              </a>
+            </li>
+            <li>
+              <a href="/all-collections" className="hover:text-[#6860db]">
+                {t("nfts")}
+              </a>
+            </li>
+          </ul>
+        </div>
+      ),
     },
 
     {
@@ -326,7 +345,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                         onClick={(e) => {
                           navigate("/login");
                           setUsername();
-                          localStorage.setItem("authTokens", null);
+                          localStorage.removeItem("authTokens");
                           userChange(e);
                         }}
                       >
