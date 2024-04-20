@@ -6,7 +6,6 @@ import SimpleInput from "../../Inputs/SimpleInput";
 import axios from "axios";
 import { Notify } from "notiflix";
 import BorderButton from "../../Buttons/BorderButton";
-import { DatePicker, TimePicker } from "zaman";
 
 export default function CollectionDialog(tokenId) {
   const [visible, setVisible] = useState(false);

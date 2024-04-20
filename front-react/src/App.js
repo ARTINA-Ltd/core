@@ -49,11 +49,10 @@ import ExhibitionApproval from "./Pages/ExhibitionApproval.jsx";
 
 // HEAD MAIN BRANCH
 import AllCollections from "./Pages/AllCollections";
-import { GoftinoSnippet } from '@mohsen007/react-goftino';
+import { GoftinoSnippet } from "@mohsen007/react-goftino";
+import AddExhibition from "./Pages/AddExhibition.jsx";
 
-
-const GOFTINO_KEY = 'cD7Gse';
-
+const GOFTINO_KEY = "cD7Gse";
 
 export const UserContext = createContext();
 export const UserChangeContext = createContext();
@@ -109,10 +108,7 @@ export default () => {
           <UserChangeContext.Provider value={userChange}>
             <div className="App">
               <React.Suspense fallback="loading...">
-                <ScrollTop
-                  className="bg-primary animate-bounce scale-75"
-                  icon="pi pi-arrow-up"
-                />
+                <ScrollTop className="bg-primary animate-bounce scale-75" icon="pi pi-arrow-up" />
 
                 <Routes>
                   <Route path="/" element={<Home />} />
@@ -123,6 +119,7 @@ export default () => {
                   <Route exact path="forget-password" element={<ForgetPassword />} />
                   <Route exact path="support" element={<Support />} />
                   <Route exact path="register" element={<Register />} />
+                  <Route exact path="add-exhibition" element={<AddExhibition />} />
 
                   <Route exact path="contact" element={<Contact />} />
                   <Route exact path="about-us" element={<AboutUs />} />
@@ -136,7 +133,6 @@ export default () => {
                   <Route exact path="exhibition-list" element={<ExhibitionList />} />
                   <Route exact path="open-exhibitions" element={<OpenExhibitions />} />
                   <Route exact path="requests-list" element={<RequestsList />} />
-
 
                   <Route exact path="upload-page" element={<NFTUploadPage />} />
                   <Route exact path="pre-mint" element={<PreMint />} />

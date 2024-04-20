@@ -9,15 +9,14 @@ import BalanceDialog from "../Dialog/BalanceDialog/BalanceDialog";
 import { useRef } from "react";
 import axios from "axios";
 import { MdOutlineCollections, MdOutlineCollectionsBookmark, MdSupportAgent } from "react-icons/md";
-import { IoLanguage } from "react-icons/io5";
 import { GoBell } from "react-icons/go";
-
 import { RiNftFill } from "react-icons/ri";
 import { TbActivity } from "react-icons/tb";
 import { FaHome, FaPhoneAlt, FaQuestionCircle, FaBlogger } from "react-icons/fa";
 import BalanceDialogMatic from "../Dialog/BalanceDialog/BalanceDialogMatic";
 import i18n from "../../i18n";
 import { useTranslation } from "react-i18next";
+import LanguageSelector from "./../LanguageSelector/LanguageSelector";
 const Header = ({ connectWallet = false, rev = false }) => {
   const user = useContext(UserContext);
   const userChange = useContext(UserChangeContext);
@@ -170,9 +169,9 @@ const Header = ({ connectWallet = false, rev = false }) => {
     };
   }, [ref2]);
   return (
-    <div>
+    <Fragment>
       <header>
-        <div className={`flex justify-center h-[80px] sm:h-[60px] ${rev ? "" : "from-[#f9f9f9] bg-gradient-to-b"}  font-b3`}>
+        <div className={`flex bg-white justify-center h-[80px] sm:h-[60px] ${rev ? "" : "from-[#f9f9f9] bg-gradient-to-b"}  font-b3`}>
           <div className="flex items-center justify-between w-[90%] justify-self-center">
             <div className="flex items-center gap-4 text-sm lg:hidden">
               {user
@@ -217,15 +216,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
               </svg>
             </div>
             <div className="flex gap-2 items-center ">
-              <button
-                className=""
-                onClick={() => {
-                  i18n.language === "en" ? i18n.changeLanguage("fa") : i18n.changeLanguage("en");
-                  window.location.reload();
-                }}
-              >
-                <IoLanguage className="w-8 h-8 text-[#6860db] hover:text-[#4e45d0] ease-in-out duration-300 transition-all" />
-              </button>
+              <LanguageSelector />
               {user ? (
                 <Fragment>
                   <div ref={ref2}>
@@ -406,7 +397,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
           ""
         )}
       </div>
-    </div>
+    </Fragment>
   );
 };
 

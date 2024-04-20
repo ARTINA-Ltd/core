@@ -1,22 +1,18 @@
 import axios from "axios";
-import React from "react";
+import React, { Fragment } from "react";
 import { useState, useEffect } from "react";
 import ImageCard from "../components/Cards/UserDashboardCards/ImageCard";
-import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import TestLayout from "../Layouts/TestLayout";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router";
 import { useContext } from "react";
 import { UserContext } from "../App";
 import { Notify } from "notiflix";
-
-// HEAD ADMIN_PANEL BRANCH
 import { useTranslation } from "react-i18next";
-
-// HEAD MAIN BRANCH
 import { Dialog } from "primereact/dialog";
 import BorderButton from "../components/Buttons/BorderButton";
 import SimpleInput from "../components/Inputs/SimpleInput";
+import SellArea from "../components/SellArea/SellArea";
 
 const Collections = () => {
   const [getData, setData] = useState();
@@ -149,7 +145,7 @@ const Collections = () => {
       )}
       <div className="grid grid-cols-4 gap-5 w-full items-center lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
         {getData ? (
-          <>
+          <Fragment>
             <div className="col-span-1 h-full">
               <div className="h-full w-full bg-[#0000aa05] hover:bg-[#0000aa08] rounded-2xl group flex items-center justify-center cursor-pointer  transition-all md:h-[300px] sm:h-[250px]" onClick={() => setVisible(true)}>
                 <div className="text-[#000022] opacity-20 group-hover:opacity-40 transition-all group-hover:scale-105 ease-out duration-150 flex flex-col items-center">
@@ -177,12 +173,12 @@ const Collections = () => {
             </Dialog>
             {getData.map((item, index) => (
               <div className="col-span-1" key={index}>
-                <ImageCard className="bg-white" src={item.image_url} price={item.last_price} onClick={() => navigate(`/nft-details/${item.token_id}`)} tokenId={item.token_id} showSell={user ? user.data.username === username : false} visible={item.is_visible} onClickShow={(e, x) => handleClickShow(e, x, item.token_id)} onClickHide={(e, x) => handleClickHide(e, x, item.token_id)}>
+                <ImageCard className="bg-white max-h-[420px] " src={item.image_url} price={item.last_price} onClick={() => navigate(`/nft-details/${item.token_id}`)} tokenId={item.token_id} showSell={user ? user.data.username === username : false} visible={item.is_visible} onClickShow={(e, x) => handleClickShow(e, x, item.token_id)} onClickHide={(e, x) => handleClickHide(e, x, item.token_id)}>
                   {item.name}
                 </ImageCard>
               </div>
             ))}
-          </>
+          </Fragment>
         ) : (
           ""
         )}

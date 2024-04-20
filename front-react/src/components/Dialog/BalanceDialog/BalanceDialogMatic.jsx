@@ -24,11 +24,7 @@ const BalanceDialogMatic = () => {
         mode: "cors",
       })
       .then((res) => {
-        console.log("Test");
-        console.log(res);
-        console.log("Test");
         setData(res.data);
-        console.log(res.data.matic_balance);
         if (res.data && res.data.wallet_address) {
           setAddress(res.data.wallet_address);
         }
