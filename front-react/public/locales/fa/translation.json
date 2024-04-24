@@ -1,4 +1,6 @@
 {
+  "farsi": "فارسی",
+  "english": "انگلیسی",
   "auth": "احراز هویت",
   "sortByPrice": "گرانترین",
   "sortByLike": "محبوبترین",
@@ -101,5 +103,7 @@
   "addSingleArtDescription": "چنانچه می‌خواهید یک اثر ضرب کنید کلیک کنید.",
   "addCollection": "ضرب کالکشن",
   "addCollectionDescription": "چنانچه می‌خواهید چند اثر در قالب کالکشن ضرب کنید کلیک کنید.",
-  "artistsList": "لیست هنرمندان"
+  "artistsList": "لیست هنرمندان",
+  "artists": "هنرمندان",
+  "nfts": "ان اف تی ها"
 }

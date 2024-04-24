@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 
 const Dashboard = () => {
   const [getLikedNfts, setLikedNfts] = useState();
+  const [firtsFiveLinkedNfts, setFirtsFiveLinkedNfts] = useState();
   const [tickets, setTickets] = useState();
   const [profit, setProfit] = useState();
   const [getBalance, setBalance] = useState();
@@ -22,9 +23,12 @@ const Dashboard = () => {
 
   const [getLastMonthTurnover, setLastMonthTurnover] = useState();
   const [getAllTurnovers, setAllTurnovers] = useState();
+  const [firstFiveTurnovers, setFirstFiveTurnovers] = useState();
 
   const navigate = useNavigate();
-
+  useEffect(() => {
+    localStorage.getItem("authTokens") === null && navigate("/login");
+  });
   useEffect(() => {
     axios
       .get("https://api.artina.org/api/exhibition/Ticket/get_user_tickets/", {
@@ -43,15 +47,12 @@ const Dashboard = () => {
 
   useEffect(() => {
     axios
-      .get(
-        "https://api.artina.org/api/exhibition/Ticket/calculate_user_revenue/",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-          },
-          mode: "cors",
-        }
-      )
+      .get("https://api.artina.org/api/exhibition/Ticket/calculate_user_revenue/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+        mode: "cors",
+      })
       .then((res) => {
         setProfit(res.data);
       })
@@ -66,25 +67,24 @@ const Dashboard = () => {
       })
       .then((res) => {
         setLikedNfts(res.data);
+        setFirtsFiveLinkedNfts(res.data.slice(0, 5));
       })
       .catch((res) => {});
   }, []);
 
   useEffect(() => {
     axios
-      .get(
-        `https://api.artina.org/api/account/user-turnover/turnover_in_month/`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-          },
-        }
-      )
+      .get(`https://api.artina.org/api/account/user-turnover/turnover_in_month/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+      })
       .then((res) => {
         console.log("-----monthturnovers-----");
         console.log(res.data);
         setLastMonthTurnover(res.data.last_month_turnover);
         setAllTurnovers(res.data.all_turnovers);
+        setFirstFiveTurnovers(res.data.all_turnovers.slice(0, 5));
         console.log("---------");
       })
       .catch((res) => {});
@@ -92,14 +92,11 @@ const Dashboard = () => {
 
   useEffect(() => {
     axios
-      .get(
-        `https://api.artina.org/api/account/user-turnover/turnover_in_month/`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-          },
-        }
-      )
+      .get(`https://api.artina.org/api/account/user-turnover/turnover_in_month/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+      })
       .then((res) => {})
       .catch((res) => {});
   }, []);
@@ -197,10 +194,7 @@ const Dashboard = () => {
       labels: [t("ethereumToTooman"), t("tooman")],
       datasets: [
         {
-          data: [
-            getBalance ? getBalance.eth_balance * 104759811 : 0,
-            getBalance ? getBalance.rial_available_balance : 0,
-          ],
+          data: [getBalance ? getBalance.eth_balance * 104759811 : 0, getBalance ? getBalance.rial_available_balance : 0],
         },
       ],
     });
@@ -212,14 +206,9 @@ const Dashboard = () => {
         <div className="flex gap-3 items-star sm:flex-col">
           <div className="flex flex-col gap-3 w-2/3 sm:w-full">
             <SimpleCard className="bg-white w-full h-full flex-col items-center justify-start">
-              <div className="text-xl font-b6 px-4 mx-auto py-1 transition-all rounded-2xl mb-2 text-center">
-                {t("financialReport")}{" "}
-              </div>
+              <div className="text-xl font-b6 px-4 mx-auto py-1 transition-all rounded-2xl mb-2 text-center">{t("financialReport")} </div>
               <div className="grid grid-cols-2 gap-2">
-                <div
-                  id="rials"
-                  className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4"
-                >
+                <div id="rials" className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4">
                   <div className="font-b6">{t("tooman")}</div>
                   <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
                     {t("negotiablebalance")}{" "}
@@ -237,10 +226,7 @@ const Dashboard = () => {
                   </div>
                 </div>
 
-                <div
-                  id="ethrs"
-                  className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4"
-                >
+                <div id="ethrs" className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4">
                   <div className="font-b6">{t("ethereum")}</div>
                   <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
                     {t("negotiablebalance")}{" "}
@@ -259,10 +245,7 @@ const Dashboard = () => {
               </div>
 
               <div className="my-3">
-                <div
-                  id=""
-                  className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4 sm:flex-col"
-                >
+                <div id="" className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4 sm:flex-col">
                   <div className="font-b6">{t("ProfitsTickets")} </div>
                   <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
                     {profit ? profit.revenue : ""} {t("tooman")}
@@ -271,32 +254,21 @@ const Dashboard = () => {
               </div>
 
               <div className="my-3">
-                <div
-                  id=""
-                  className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4 sm:flex-col"
-                >
+                <div id="" className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4 sm:flex-col">
                   <div className="font-b6">{t("monthlyTransactions")}</div>
                   <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
-                    {getLastMonthTurnover ? getLastMonthTurnover : ""}{" "}
-                    {t("tooman")}
+                    {getLastMonthTurnover ? getLastMonthTurnover : ""} {t("tooman")}
                   </div>
                 </div>
               </div>
               <div className="flex justify-center">
-                <Chart
-                  type="pie"
-                  data={chartData}
-                  options={lightOptions}
-                  style={{ position: "relative", width: "50%" }}
-                />
+                <Chart type="pie" data={chartData} options={lightOptions} style={{ position: "relative", width: "50%" }} />
               </div>
             </SimpleCard>
             <SimpleCard className="bg-white w-full h-full flex-col items-center justify-start sm:p-3">
-              <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center sm:px-1">
-                {t("turnover")}{" "}
-              </div>
+              <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center sm:px-1">{t("turnover")} </div>
 
-              <table className="dashboard-table w-full text-center sm:text-xs">
+              <table className="dashboard-table w-full text-center  sm:text-xs">
                 <thead>
                   <tr>
                     <th>{t("currencyUnit")}</th>
@@ -307,47 +279,22 @@ const Dashboard = () => {
                 </thead>
 
                 <tbody>
-                  {getAllTurnovers ? (
-                    getAllTurnovers.map((item, index) => (
-                      <div>
-                        {index < 5 ? (
-                          <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
-                            <td>
-                              {item.transaction_currency == 1
-                                ? t("tooman")
-                                : t("ethereum")}
-                            </td>
-                            <td>
-                              {item.transaction_type == 2
-                                ? t("Withdrawal")
-                                : t("deposit")}
-                            </td>
+                  {firstFiveTurnovers ? (
+                    firstFiveTurnovers.map((item, index) => (
+                      <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
+                        <td>{item.transaction_currency == 1 ? t("tooman") : t("ethereum")}</td>
+                        <td>{item.transaction_type == 2 ? t("Withdrawal") : t("deposit")}</td>
 
-                            <td>
-                              {item.transaction_value} {t("tooman")}
-                            </td>
+                        <td>
+                          {item.transaction_value} {t("tooman")}
+                        </td>
 
-                            <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="1.3"
-                                stroke="currentColor"
-                                width={"1em"}
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M15.75 19.5L8.25 12l7.5-7.5"
-                                />
-                              </svg>
-                            </td>
-                          </tr>
-                        ) : (
-                          <div></div>
-                        )}
-                      </div>
+                        <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.3" stroke="currentColor" width={"1em"}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                          </svg>
+                        </td>
+                      </tr>
                     ))
                   ) : (
                     <div></div>
@@ -359,9 +306,7 @@ const Dashboard = () => {
           </div>
           <div className="flex flex-col w-full gap-5">
             <SimpleCard className="bg-white  w-full h-full sm:p-2">
-              <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
-                {t("exhibitions")}{" "}
-              </div>
+              <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">{t("exhibitions")} </div>
               <table className="dashboard-table w-full text-center sm:text-[12px]">
                 <thead>
                   <tr>
@@ -376,25 +321,16 @@ const Dashboard = () => {
                 <tbody>
                   {artistOpenExhibitions ? (
                     artistOpenExhibitions.map((item, index) => (
-                      <tr
-                        className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all"
-                        key={index}
-                      >
+                      <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all" key={index}>
                         <td className="sm:hidden">
                           <div className="flex justify-center w-full">
-                            <img
-                              src={item.image}
-                              alt=""
-                              className="w-[42px] h-[42px] rounded-xl"
-                            />
+                            <img src={item.image} alt="" className="w-[42px] h-[42px] rounded-xl" />
                           </div>
                         </td>
                         <td>{item.marketName}</td>
                         <td className="items-center justify-center">
                           <div className="flex justify-center w-full">
-                            <div className="px-2 py-1 text-sm bg-green-100 text-green-500 rounded-md">
-                              {item.commision}%
-                            </div>
+                            <div className="px-2 py-1 text-sm bg-green-100 text-green-500 rounded-md">{item.commision}%</div>
                           </div>
                         </td>
                         <td>???</td>
@@ -413,19 +349,8 @@ const Dashboard = () => {
                           </div>
                         </td>
                         <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200 sm:pl-2">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.3"
-                            stroke="currentColor"
-                            width={"1em"}
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M15.75 19.5L8.25 12l7.5-7.5"
-                            />
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.3" stroke="currentColor" width={"1em"}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                           </svg>
                         </td>
                       </tr>
@@ -438,9 +363,7 @@ const Dashboard = () => {
             </SimpleCard>
 
             <SimpleCard className="bg-white  w-full h-full">
-              <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
-                {t("openOrders")}{" "}
-              </div>
+              <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">{t("openOrders")} </div>
               <table className="dashboard-table w-full text-cente sm:text-xs">
                 <thead>
                   <tr>
@@ -454,12 +377,7 @@ const Dashboard = () => {
                 <tbody>
                   {getOrders ? (
                     getOrders.map((item, index) => (
-                      <tr
-                        className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all"
-                        onClick={() =>
-                          navigate(`/nft-details/${item.token_id}`)
-                        }
-                      >
+                      <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all" onClick={() => navigate(`/nft-details/${item.token_id}`)}>
                         <td>{item.nft}</td>
                         <td>
                           {Intl.DateTimeFormat("fa", {
@@ -473,19 +391,8 @@ const Dashboard = () => {
                         </td>
 
                         <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.3"
-                            stroke="currentColor"
-                            width={"1em"}
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M15.75 19.5L8.25 12l7.5-7.5"
-                            />
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.3" stroke="currentColor" width={"1em"}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                           </svg>
                         </td>
                       </tr>
@@ -498,9 +405,7 @@ const Dashboard = () => {
             </SimpleCard>
 
             <SimpleCard className="bg-white  w-full h-full sm:p-3">
-              <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
-                {t("tickets")}{" "}
-              </div>
+              <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">{t("tickets")} </div>
               <table className="dashboard-table w-full text-center sm:text-xs">
                 <thead>
                   <tr>
@@ -514,10 +419,7 @@ const Dashboard = () => {
                 <tbody>
                   {tickets &&
                     tickets.map((item, index) => (
-                      <tr
-                        className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all"
-                        key={index}
-                      >
+                      <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all" key={index}>
                         <td>{item.ticket_id}</td>
                         <td>{item.exhibition}</td>
                         <td>{item.price}</td>
@@ -532,19 +434,8 @@ const Dashboard = () => {
                         </td>
 
                         <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.3"
-                            stroke="currentColor"
-                            width={"1em"}
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M15.75 19.5L8.25 12l7.5-7.5"
-                            />
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.3" stroke="currentColor" width={"1em"}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                           </svg>
                         </td>
                       </tr>
@@ -554,10 +445,8 @@ const Dashboard = () => {
             </SimpleCard>
 
             <SimpleCard className="bg-white  w-full h-full sm:p-3">
-              <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">
-                {t("likedNFTs")}{" "}
-              </div>
-              <table className="dashboard-table w-full text-center sm:text-xs">
+              <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">{t("likedNFTs")} </div>
+              <table className="dashboard-table w-full text-cente sm:text-xs">
                 <thead>
                   <tr>
                     <th>{t("nftPhoto")}</th>
@@ -566,56 +455,27 @@ const Dashboard = () => {
                     <th />
                   </tr>
                 </thead>
-                <tbody>
-                  {getLikedNfts ? (
-                    getLikedNfts.map((item, index) => (
-                      <div>
-                        {index < 5 ? (
-                          <tr
-                            className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all"
-                            onClick={() =>
-                              navigate(`/nft-details/${item.token_id}`)
-                            }
-                            key={index}
-                          >
-                            <td>
-                              <div className="flex justify-center w-full">
-                                <img
-                                  src={item.image_url}
-                                  alt=""
-                                  className="w-[42px] h-[42px] rounded-xl"
-                                />
-                              </div>
-                            </td>
-                            <td>{item.name}</td>
-                            <td>{item.last_price}</td>
-                            <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="1.3"
-                                stroke="currentColor"
-                                width={"1em"}
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M15.75 19.5L8.25 12l7.5-7.5"
-                                />
-                              </svg>
-                            </td>
-                          </tr>
-                        ) : (
-                          <div></div>
-                        )}
-                      </div>
-                    ))
-                  ) : (
-                    <div></div>
-                  )}
+                <tbody className="w-full">
+                  {firtsFiveLinkedNfts &&
+                    firtsFiveLinkedNfts.map((item, index) => (
+                      <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all" onClick={() => navigate(`/nft-details/${item.token_id}`)} key={index}>
+                        <td>
+                          <div className="flex justify-center w-full">
+                            <img src={item.image_url} alt="" className="w-[42px] h-[42px] rounded-xl" />
+                          </div>
+                        </td>
+                        <td>{item.name}</td>
+                        <td>{item.last_price}</td>
+                        <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.3" stroke="currentColor" width={"1em"}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                          </svg>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
+
               <AllNftDialog likedNfts={getLikedNfts} />
             </SimpleCard>
           </div>

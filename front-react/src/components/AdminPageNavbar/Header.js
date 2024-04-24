@@ -5,11 +5,12 @@ import { UserContext } from "../../App";
 import { UserChangeContext } from "../../App";
 import BalanceDialog from "../Dialog/BalanceDialog/BalanceDialog";
 import BalanceDialogMatic from "../Dialog/BalanceDialog/BalanceDialogMatic";
-import { MdOutlineLanguage } from "react-icons/md";
 import { useRef } from "react";
 import axios from "axios";
+import { GoBell } from "react-icons/go";
 import i18n from "../../i18n";
 import { useTranslation } from "react-i18next";
+import LanguageSelector from "./../LanguageSelector/LanguageSelector";
 
 const Header = ({ rev = false }) => {
   const [menuIsVisible, setMenuVisible] = useState(false);
@@ -78,14 +79,11 @@ const Header = ({ rev = false }) => {
       )
       .then((d) => {
         axios
-          .get(
-            "https://api.artina.org/api/account/NotifyUserViewSet/notifList/",
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-              },
-            }
-          )
+          .get("https://api.artina.org/api/account/NotifyUserViewSet/notifList/", {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            },
+          })
           .then((d) => {
             setNotifs(d.data);
           });
@@ -113,11 +111,7 @@ const Header = ({ rev = false }) => {
   return (
     <div>
       <header>
-        <div
-          className={`flex justify-center h-[80px] sm:h-[60px] ${
-            rev ? "" : "from-[#f9f9f9] bg-gradient-to-b"
-          }  font-b3`}
-        >
+        <div className={`flex justify-center h-[80px] sm:h-[60px] ${rev ? "" : "from-[#f9f9f9] bg-gradient-to-b"}  font-b3`}>
           <div className="flex items-center justify-between w-[90%] justify-self-center">
             <div className="flex items-center gap-8 text-sm lg:hidden">
               {NotActiveItems.map((item, index) => (
@@ -133,64 +127,21 @@ const Header = ({ rev = false }) => {
                 </div>
               ))}
             </div>
-            <div
-              className="lg:flex hidden cursor-pointer"
-              onClick={() => setMenuVisible(true)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"
-                />
+            <div className="lg:flex hidden cursor-pointer" onClick={() => setMenuVisible(true)}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25" />
               </svg>
             </div>
             <div className="flex gap-8 items-center">
-              <button
-                className=""
-                onClick={() => {
-                  i18n.language === "en"
-                    ? i18n.changeLanguage("fa")
-                    : i18n.changeLanguage("en");
-                  window.location.reload();
-                }}
-              >
-                <MdOutlineLanguage className="w-8 h-8 text-[#6860db] hover:text-[#4e45d0] ease-in-out duration-300 transition-all" />
-              </button>
+              <div className="-mx-6">
+                <LanguageSelector />
+              </div>
               <div ref={ref2}>
-                <div
-                  className="cursor-pointer p-2 hover:bg-slate-100 rounded-lg transition-all"
-                  onClick={() => setIsHidden2((prev) => !prev)}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className={`w-6 h-6 ${
-                      notifs ? "bg-none rounded-lg" : "bg-none"
-                    }`}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
-                    />
-                  </svg>
+                <div className="cursor-pointer p-2 w-8 hover:bg-slate-100 rounded-lg transition-all" onClick={() => setIsHidden2((prev) => !prev)}>
+                  {notifs.length > 1 && <span className="absolute translate-x-1 -translate-y-[40%] bg-red-400 w-4 h-4 text-sm text-center rounded-full font-bold">{notifs.length}</span>}
+                  <GoBell className="text-2xl font-bold " />
                 </div>
-                <div
-                  className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-[#f9f9f9] min-w-[250px] ${
-                    isHidden2 ? "opacity-0 pointer-events-none" : ""
-                  } absolute translate-x-1/3 sm:translate-x-0`}
-                >
+                <div className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-[#f9f9f9] min-w-[250px] ${isHidden2 ? "opacity-0 pointer-events-none" : ""} absolute  ${i18n.dir() === "rtl" ? "translate-x-1/3" : "-translate-x-1/3"}`}>
                   {notifs &&
                     notifs.map((item, index) => (
                       <span key={index}>
@@ -207,10 +158,7 @@ const Header = ({ rev = false }) => {
                             </div>
                           </div>
                           {item.message_seen ? null : (
-                            <div
-                              className="px-2 bg-green-100 hover:bg-green-200 rounded-lg py-1 text-sm"
-                              onClick={() => handleClickSeen(item.id)}
-                            >
+                            <div className="px-2 bg-green-100 hover:bg-green-200 rounded-lg py-1 text-sm" onClick={() => handleClickSeen(item.id)}>
                               مشاهده کردم
                             </div>
                           )}
@@ -222,49 +170,24 @@ const Header = ({ rev = false }) => {
               </div>
               {user ? (
                 <div ref={ref}>
-                  <img
-                    src={
-                      user.data.profile_picture
-                        ? user.data.profile_picture
-                        : null
-                    }
-                    className="rounded-full w-[46px] h-[46px] object-cover cursor-pointer"
-                    onClick={() => setIsHidden((prev) => !prev)}
-                    alt=""
-                  />
-                  <div
-                    className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-[#f9f9f9] min-w-[250px] ${
-                      isHidden ? "opacity-0 pointer-events-none" : ""
-                    } absolute translate-x-1/3`}
-                  >
+                  <img src={user.data.profile_picture ? user.data.profile_picture : null} className="rounded-full w-[46px] h-[46px] object-cover cursor-pointer" onClick={() => setIsHidden((prev) => !prev)} alt="" />
+                  <div className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-[#f9f9f9] min-w-[250px] ${isHidden ? "opacity-0 pointer-events-none" : ""} absolute ${i18n.dir() === "rtl" ? "translate-x-2/3" : "-translate-x-2/3"}`}>
                     <div className="w-full py-2 px-3 hover:bg-[#0000aa07] flex gap-2 items-center justify-between cursor-pointer">
-                      <img
-                        src={user.data.profile_picture}
-                        className="rounded-full  w-[55px] h-[55px] object-cover  shrink-0"
-                        alt=""
-                      />
+                      <img src={user.data.profile_picture} className="rounded-full  w-[55px] h-[55px] object-cover  shrink-0" alt="" />
                       <div>
                         <div className="text-left text-sm font-b5 ">
                           {user.data.first_name} {user.data.last_name}
                         </div>
-                        <div className="text-left font-b2 text-sm">
-                          {user.data.username}
-                        </div>
+                        <div className="text-left font-b2 text-sm">{user.data.username}</div>
                       </div>
                     </div>
                     <hr />
-                    <div
-                      className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]"
-                      onClick={() => navigate("/dashboard")}
-                    >
+                    <div className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]" onClick={() => navigate("/dashboard")}>
                       {t("dashboard")}
                     </div>
                     <BalanceDialog />
                     <BalanceDialogMatic />
-                    <div
-                      className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]"
-                      onClick={() => navigate("/profile")}
-                    >
+                    <div className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]" onClick={() => navigate("/profile")}>
                       {t("profile")}
                     </div>
 
@@ -282,39 +205,16 @@ const Header = ({ rev = false }) => {
                 </div>
               ) : null}
               <div>
-                <img
-                  className="h-16 sm:h-12 rounded-lg cursor-pointer"
-                  src={"/Artina-Logo-1.jpeg"}
-                  alt="logo"
-                  onClick={() => navigate("/admin-panel")}
-                />
+                <img className="h-16 sm:h-12 rounded-lg cursor-pointer" src={"/Artina-Logo-1.jpeg"} alt="logo" onClick={() => navigate("/admin-panel")} />
               </div>
             </div>
           </div>
         </div>
       </header>
-      <div
-        className={`fixed w-full h-full z-50 inset-0 bg-[#f9f9f9] ${
-          menuIsVisible ? "" : "translate-x-full"
-        }  transition-all duration-500 ease-out`}
-      >
-        <div
-          className="w-full flex justify-end p-5"
-          onClick={() => setMenuVisible(false)}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-            />
+      <div className={`fixed w-full h-full z-50 inset-0 bg-[#f9f9f9] ${menuIsVisible ? "" : "translate-x-full"}  transition-all duration-500 ease-out`}>
+        <div className="w-full flex justify-end p-5" onClick={() => setMenuVisible(false)}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
           </svg>
         </div>
 

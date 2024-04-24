@@ -1,11 +1,8 @@
 import { Route, Routes } from "react-router";
 import React, { createContext, useEffect, useState } from "react";
-import ArtistPage from "./Pages/ArtistPage";
 import NFTDetails from "./Pages/NFTDetails";
 import Register from "./LoginComponent/register";
 import Login from "./LoginComponent/login";
-import RequestDetails from "./ExhabitionComponent/src/component/request-artist-detail-page/r-page/request-detail";
-import ShowRequests from "./ExhabitionComponent/src/component/request-artist-detail-page/r-page/show-req";
 import NFTUploadPage from "./Pages/NftUploadPage";
 import { ThirdwebProvider } from "@thirdweb-dev/react";
 import Profile from "./Pages/Profile";
@@ -52,11 +49,10 @@ import ExhibitionApproval from "./Pages/ExhibitionApproval.jsx";
 
 // HEAD MAIN BRANCH
 import AllCollections from "./Pages/AllCollections";
-import { GoftinoSnippet } from '@mohsen007/react-goftino';
+import { GoftinoSnippet } from "@mohsen007/react-goftino";
+import AddExhibition from "./Pages/AddExhibition.jsx";
 
-
-const GOFTINO_KEY = 'cD7Gse';
-
+const GOFTINO_KEY = "cD7Gse";
 
 export const UserContext = createContext();
 export const UserChangeContext = createContext();
@@ -112,14 +108,10 @@ export default () => {
           <UserChangeContext.Provider value={userChange}>
             <div className="App">
               <React.Suspense fallback="loading...">
-                <ScrollTop
-                  className="bg-primary animate-bounce scale-75"
-                  icon="pi pi-arrow-up"
-                />
+                <ScrollTop className="bg-primary animate-bounce scale-75" icon="pi pi-arrow-up" />
 
                 <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route exact path="artist-page" element={<ArtistPage />} />
                   <Route exact path="artist-application-form/:id" element={<ArtistApplicationForm />} />
                   <Route exact path="nft-details/:id" element={<NFTDetails />} />
                   <Route exact path="Commission" element={<Commission />} />
@@ -127,11 +119,10 @@ export default () => {
                   <Route exact path="forget-password" element={<ForgetPassword />} />
                   <Route exact path="support" element={<Support />} />
                   <Route exact path="register" element={<Register />} />
-
+                  <Route exact path="add-exhibition" element={<AddExhibition />} />
                   <Route exact path="contact" element={<Contact />} />
                   <Route exact path="about-us" element={<AboutUs />} />
                   <Route exact path="privacy-policy" element={<PrivacyPolicy />} />
-
                   <Route exact path="help-mint" element={<HelpMint />} />
                   <Route exact path="help-create-exhibition" element={<HelpCreateExhibition />} />
                   <Route exact path="help-create-wallet" element={<HelpCreateWallet />} />
@@ -140,8 +131,7 @@ export default () => {
                   <Route exact path="exhibition-list" element={<ExhibitionList />} />
                   <Route exact path="open-exhibitions" element={<OpenExhibitions />} />
                   <Route exact path="requests-list" element={<RequestsList />} />
-                  <Route exact path="show-request" element={<ShowRequests />} />
-                  <Route exact path="request-details" element={<RequestDetails />} />
+
                   <Route exact path="upload-page" element={<NFTUploadPage />} />
                   <Route exact path="pre-mint" element={<PreMint />} />
                   <Route exact path="UserDashboard" element={<UserDashboard />} />

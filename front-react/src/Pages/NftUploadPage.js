@@ -1,16 +1,18 @@
+import { useEffect } from "react";
 import UploadItem from "../components/UploadItem";
-import { FileUpload } from 'primereact/fileupload';
-import NFTupload from "../components/Uploaders/NFTupload";
-import Header from "../components/LandingPageNavBar/Header";
-import Footer from "../components/Footer/Footer";
 import TestLayout from "../Layouts/TestLayout";
+import { useNavigate } from "react-router-dom";
 
 function NFTUploadPage() {
-    return (
-       <TestLayout connectWallet={true}>
-            <UploadItem />
-       </TestLayout>
-    );
+  const navigate = useNavigate();
+  useEffect(() => {
+    localStorage.getItem("authTokens") === null && navigate("/login");
+  });
+  return (
+    <TestLayout connectWallet={true}>
+      <UploadItem />
+    </TestLayout>
+  );
 }
 
 export default NFTUploadPage;

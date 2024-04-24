@@ -1,11 +1,11 @@
 {
-  "pageTitle": "activity management",
-  "firstSection": "my current exhibitions",
-  "metaverseReq": "metaverse request",
+  "pageTitle": "Activity Management",
+  "firstSection": "My Current Exhibitions",
+  "metaverseReq": "Metaverse Request",
   "metaverseNotif": "Your request was successfully submitted. We will respond to your ticket as soon as possible.",
-  "secondSection": " my exhibition Requests list",
-  "thirdSection": "Registrable exhibitions",
-  "seeAll": "see all",
-  "fourthSection": "your past exhibitions",
-  "noExhibition": " no exhibition available"
+  "secondSection": " mM Exhibition Requests List",
+  "thirdSection": "Registrable Exhibitions",
+  "seeAll": "See All",
+  "fourthSection": "your Past Exhibitions",
+  "noExhibition": " No Exhibition Available"
 }
