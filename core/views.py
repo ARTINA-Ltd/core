@@ -592,6 +592,53 @@ class CollectionViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_201_CREATED)  
 
 
+def transfer_nft(private_key, sender_address, recipient_address, token_id,nft_contract_address):
+    nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
+    #contract
+    # nft_contract_address = "0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a"
+    abi_filename = os.path.join(settings.BASE_DIR, "Account", "ABI.json")
+   
+    # Read ABI from JSON file
+
+    with open(abi_filename, "r") as abi_file:
+        nft_contract_abi = json.load(abi_file)
+
+    nft_contract = w3.eth.contract(address=nft_contract_address, abi=nft_contract_abi)
+    
+    tx_hash = nft_contract.functions.safeTransferFrom(sender_address, recipient_address, token_id).buildTransaction({
+        'chainId': 137,  # Chain ID for Polygon (Matic) mainnet
+        'gas': 2000000,  # gas value
+        'gasPrice': w3.toWei('5', 'gwei'),  # gas price
+        'nonce': nonce,
+    })
+    signed_txn = w3.eth.account.signTransaction(tx_hash, private_key)
+    print(f"signed_txn is : {signed_txn}")
+    tx_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)
+    print(f"tx_hash is : {tx_hash}")
+    return tx_hash
+
+
+def transferNFT(token_id,sender,recipient):
+   
+    #sender
+    sender_address = sender.wallet.address
+    sender_private_key = sender.wallet.private_key
+        
+    #recipient
+    recipient_address=recipient.wallet.address
+        
+    tx_hash = transfer_nft(sender_private_key, sender_address, recipient_address, token_id)
+    print(f"Transaction hash: {tx_hash.hex()}")
+    nft=NFT.objects.filter(token_id=token_id).first()
+    nft.owner=recipient
+    nft.save()
+    response_data = {
+        "message": f"Transaction initiated. Transaction hash: {tx_hash.hex()}"
+    }
+        
+    return Response(response_data, status=status.HTTP_200_OK)
+
+
 
 def get_winner(token_id):
     nft = NFT.objects.get(token_id=token_id)
@@ -604,7 +651,9 @@ def get_winner(token_id):
     for bid in orders:
         if (highest_bid is None or bid.fee > highest_bid.fee):
             highest_bid = bid
-
+    nft.is_for_sale=False
+    nft.in_exhibition=False
+    nft.save()
     if highest_bid is None:
         return Response({"error": "No bids found for this NFT."}, status=status.HTTP_400_BAD_REQUEST)
     highest_bid.report=1

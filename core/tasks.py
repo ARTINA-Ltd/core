@@ -38,7 +38,7 @@ from datetime import timedelta
 from celery import shared_task
 from django.utils import timezone
 from .models import NFT
-from .views import get_winner
+from core.views import get_winner
 
 @shared_task
 
