@@ -1,7 +1,7 @@
 from core import models
 from Account import models
 from core.models import NFT , Order , MyImage , NFTRating , Category , CollectionNFT
-from Account.views import transferNFT
+# from Account.views import transferNFT
 from core import serializers
 from eth_account import Account
 from thirdweb.types.nft import NFTMetadataInput 
