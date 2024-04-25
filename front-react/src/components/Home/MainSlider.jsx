@@ -1,25 +1,23 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 
 const MainSlider = () => {
-  require("./MainSlider.css");
+  require("./styles.css");
 
   return (
-    <div>
-      <div className="w-full">
-        <Swiper navigation={true} loop={true} modules={[Navigation]} slidesPerView={1} spaceBetween={0}>
-          <SwiperSlide>
-            <img src="/2 - Copy.jpg" className="object-cover w-full" alt="" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src="/4.jpg" className="object-cover w-full" alt="" />
-          </SwiperSlide>
-        </Swiper>
-      </div>
-    </div>
+    <Fragment>
+      <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
+        <SwiperSlide className="min-w-full min-h-full">
+          <img src="/2 - Copy.jpg" className="object-cover w-full h-full  overflow-visible" alt="" />
+        </SwiperSlide>
+        <SwiperSlide className="min-w-full min-h-full">
+          <img src="/4.jpg" className="object-cover w-full min-h-full overflow-visible" alt="" />
+        </SwiperSlide>
+      </Swiper>
+    </Fragment>
   );
 };
 

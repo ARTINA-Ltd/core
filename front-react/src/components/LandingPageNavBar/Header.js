@@ -17,6 +17,7 @@ import BalanceDialogMatic from "../Dialog/BalanceDialog/BalanceDialogMatic";
 import i18n from "../../i18n";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "./../LanguageSelector/LanguageSelector";
+import { Link } from "react-router-dom";
 const Header = ({ connectWallet = false, rev = false }) => {
   const user = useContext(UserContext);
   const userChange = useContext(UserChangeContext);
@@ -207,16 +208,10 @@ const Header = ({ connectWallet = false, rev = false }) => {
                     </div>
                   ))
                 : NotActiveItems.map((item, index) => (
-                    <div
-                      className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200"
-                      onClick={() => {
-                        navigate(item.link);
-                      }}
-                      key={index}
-                    >
+                    <a href={item.link} className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200" key={index}>
                       {item.icon}
                       {item.title}
-                    </div>
+                    </a>
                   ))}
               <div className="bg-[#eee] cursor-pointer text-[#4e45d0] px-3 py-[4px] rounded-full hover:scale-105 transition-all duration-200 border-[#4e45d0] border-[1px]" onClick={() => navigate("/metaverse")}>
                 {t("metaverse")}{" "}
@@ -392,16 +387,10 @@ const Header = ({ connectWallet = false, rev = false }) => {
                 </div>
               ))
             : NotActiveItems.map((item, index) => (
-                <div
-                  className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200 px-5 py-2 bg-[#f0f0f0] rounded-lg w-[90%]"
-                  onClick={() => {
-                    navigate(item.link);
-                  }}
-                  key={index}
-                >
+                <a href={item.link} className="cursor-pointer flex items-center gap-1 hover:text-[#4e45d0] transition-all duration-200 px-5 py-2 bg-[#f0f0f0] rounded-lg w-[90%]" key={index}>
                   {item.icon}
                   {item.title}
-                </div>
+                </a>
               ))}
 
           <div className="cursor-pointer flex items-center gap-1 text-white transition-all duration-200 px-5 py-2 bg-[#4e45d0] rounded-lg w-[90%]" onClick={() => navigate("/metaverse")}>

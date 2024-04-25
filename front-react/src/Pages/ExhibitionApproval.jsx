@@ -1,11 +1,12 @@
 import { useParams, useNavigate } from "react-router";
 import Header from "../components/AdminPageNavbar/Header.js";
-import Footer from "../components/Footer/Footer.jsx";
+
 import axios from "axios";
 import { useEffect, useState } from "react";
 import BorderButton from "./../components/Buttons/BorderButton";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 import AdminLayout from "../Layouts/AdminLayout.jsx";
+import CountdownTimer from "./../components/CountdownTimer";
 
 const ExhibitionApproval = () => {
   const navigate = useNavigate();
@@ -20,20 +21,7 @@ const ExhibitionApproval = () => {
   const [ticket, setTicket] = useState(null);
   const [temp, setTemp] = useState(null);
   const [option, setOption] = useState(null);
-
-  function updateTimeCounter() {
-    const now = new Date();
-
-    const startDate = new Date("2023-07-07T00:39:43+03:30");
-    const elapsedTime = now.getTime() - startDate.getTime();
-
-    const hours = Math.floor(elapsedTime / (1000 * 60 * 60));
-    const minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
-
-    setDeadline(`${hours} ساعت ${minutes} دقیقه ${seconds} ثانیه`);
-  }
-  setInterval(updateTimeCounter, 1000);
+  const [application_deadline, setApplication_deadline] = useState(null);
 
   function separateDate(dateTimeString) {
     const date = new Date(dateTimeString);
@@ -51,14 +39,11 @@ const ExhibitionApproval = () => {
 
   useEffect(() => {
     axios
-      .get(
-        "https://api.artina.org/api/supervisor/supervisor-tickets/metaverse_tickets/",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-          },
-        }
-      )
+      .get("https://api.artina.org/api/supervisor/supervisor-tickets/metaverse_tickets/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+      })
       .then((e) => {
         setTemp(e.data);
         setTicket(
@@ -84,16 +69,12 @@ const ExhibitionApproval = () => {
         console.log(`there was an error ${err}`);
       });
     axios
-      .get(
-        `https://api.artina.org/api/exhibition/nfts-by-exhibition/${id}/get_nfts/`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-          },
-        }
-      )
+      .get(`https://api.artina.org/api/exhibition/nfts-by-exhibition/${id}/get_nfts/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+      })
       .then((e) => {
-        console.log(e.data);
         setNfts(e.data);
       })
       .catch((e) => {
@@ -106,8 +87,8 @@ const ExhibitionApproval = () => {
         },
       })
       .then((e) => {
-        console.log(e.data);
         setExhibition(e.data);
+        setApplication_deadline(e.data.application_deadline);
         setStartDate(e.data.start_date);
         setEndDate(e.data.end_date);
       })
@@ -152,9 +133,7 @@ const ExhibitionApproval = () => {
       )
       .then((res) => {
         console.log(res);
-        Notify.success(
-          "درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد."
-        );
+        Notify.success("درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد.");
         navigate("/admin-panel");
       })
       .catch((e) => Notify.failure("خطا"));
@@ -197,9 +176,7 @@ const ExhibitionApproval = () => {
       )
       .then((res) => {
         console.log(res);
-        Notify.success(
-          "درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد."
-        );
+        Notify.success("درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد.");
         navigate("/admin-panel");
       })
       .catch(() => Notify.failure("خطا"));
@@ -209,49 +186,23 @@ const ExhibitionApproval = () => {
     <AdminLayout>
       <div>
         {exhibition ? (
-          <div
-            className={` ${'bg-[#f9f9f9] bg-[length:300px] bg-[url("https://artina.org/12.png")] '} min-h-full overflow-hidden pb-8`}
-          >
+          <div className={` ${'bg-[#f9f9f9] bg-[length:300px] bg-[url("https://artina.org/12.png")] '} min-h-full overflow-hidden pb-8`}>
             <div className="w-[90vw] mx-auto bg-white my-4 py-4 rounded-lg shadow-md">
-              <h3 className="mr-8 text-3xl font-bold">
-                {exhibition.marketName}
-              </h3>
+              <h3 className="mr-8 text-3xl font-bold">{exhibition.marketName}</h3>
               <div className="my-4 w-full mx-auto">
                 <div className="carousel w-full">
                   {nfts
                     ? nfts.map((nft, index) => {
                         return (
-                          <div
-                            key={index}
-                            id={`s${index}`}
-                            className="py-4 carousel-item relative w-full"
-                          >
+                          <div key={index} id={`s${index}`} className="py-4 carousel-item relative w-full">
                             <div className="container mx-auto w-full h-full ">
-                              <img
-                                src={nft.image_url}
-                                alt={nft.name}
-                                className="max-h-[50vh] rounded-md border-4 border-[#4e45d0] border-b-8 block  object-cover mx-auto "
-                              />
+                              <img src={nft.image_url} alt={nft.name} className="max-h-[50vh] rounded-md border-4 border-[#4e45d0] border-b-8 block  object-cover mx-auto " />
                             </div>
                             <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-                              <a
-                                href={
-                                  index === nfts.length - 1
-                                    ? `#s0`
-                                    : `#s${index + 1}`
-                                }
-                                className="btn btn-circle"
-                              >
+                              <a href={index === nfts.length - 1 ? `#s0` : `#s${index + 1}`} className="btn btn-circle">
                                 ❮
                               </a>
-                              <a
-                                href={
-                                  index === 0
-                                    ? `#s${nfts.length - 1}`
-                                    : `#s${index - 1}`
-                                }
-                                className="btn btn-circle"
-                              >
+                              <a href={index === 0 ? `#s${nfts.length - 1}` : `#s${index - 1}`} className="btn btn-circle">
                                 ❯
                               </a>
                             </div>
@@ -275,17 +226,11 @@ const ExhibitionApproval = () => {
               </div>
               <div className="bg-white lg:w-[90vw] w-1/2 p-8 shadow-md my-4 rounded-lg">
                 <h2 className="text-lg font-bold">تاریخ شروع</h2>
-                <h2 className="text-lg mr-4">{`${
-                  separateDate(startDate).year
-                }/${separateDate(startDate).month}/${
-                  separateDate(startDate).day
-                }`}</h2>
+                <h2 className="text-lg mr-4">{`${separateDate(startDate).year}/${separateDate(startDate).month}/${separateDate(startDate).day}`}</h2>
                 <h2 className="text-lg font-bold">تاریخ پایان</h2>
-                <h2 className="text-lg mr-4">{`${separateDate(edndDate).year}/${
-                  separateDate(edndDate).month
-                }/${separateDate(edndDate).day}`}</h2>
+                <h2 className="text-lg mr-4">{`${separateDate(edndDate).year}/${separateDate(edndDate).month}/${separateDate(edndDate).day}`}</h2>
                 <h2 className="text-lg font-bold">فروش بلیط تا</h2>
-                <h2 className="text-lg mr-4">{deadline}</h2>
+                <CountdownTimer targetDate={application_deadline} />
                 <div className="flex gap-4 justify-end">
                   <BorderButton
                     onClick={() => {
@@ -313,19 +258,14 @@ const ExhibitionApproval = () => {
             <div className="flex justify-center gap-4">
               <form method="dialog">
                 <button className="mx-auto block ">
-                  <BorderButton
-                    className="w-full mx-auto font-bold shadow-md"
-                    onClick={handleMetaverse}
-                  >
+                  <BorderButton className="w-full mx-auto font-bold shadow-md" onClick={handleMetaverse}>
                     ثبت
                   </BorderButton>
                 </button>
               </form>
               <form method="dialog">
                 <button className="mx-auto block ">
-                  <BorderButton className="w-full mx-auto font-bold shadow-md">
-                    لفو
-                  </BorderButton>
+                  <BorderButton className="w-full mx-auto font-bold shadow-md">لفو</BorderButton>
                 </button>
               </form>
             </div>
@@ -333,9 +273,7 @@ const ExhibitionApproval = () => {
         </dialog>
         <dialog id="reject" className="modal">
           <div className="modal-box">
-            <label className="block text-[#4e45d0]  border-r-2  border-[#4e45d0] pr-4 pb-4">
-              پاسخ
-            </label>
+            <label className="block text-[#4e45d0]  border-r-2  border-[#4e45d0] pr-4 pb-4">پاسخ</label>
             {messages ? (
               <select
                 onChange={(e) => {
@@ -364,24 +302,15 @@ const ExhibitionApproval = () => {
 
             <div className="flex justify-center gap-4">
               <form method="dialog">
-                <button
-                  disabled={!option && !message}
-                  className="mx-auto block "
-                >
-                  <BorderButton
-                    className="w-full mx-auto font-bold shadow-md"
-                    onClick={handleReject}
-                    disabled={!option && !message}
-                  >
+                <button disabled={!option && !message} className="mx-auto block ">
+                  <BorderButton className="w-full mx-auto font-bold shadow-md" onClick={handleReject} disabled={!option && !message}>
                     ثبت
                   </BorderButton>
                 </button>
               </form>
               <form method="dialog">
                 <button className="mx-auto block ">
-                  <BorderButton className="w-full mx-auto font-bold shadow-md">
-                    لفو
-                  </BorderButton>
+                  <BorderButton className="w-full mx-auto font-bold shadow-md">لفو</BorderButton>
                 </button>
               </form>
             </div>
