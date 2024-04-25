@@ -39,14 +39,14 @@ function CountdownTimer({ targetDate }) {
   return (
     <div>
       {days !== -1 ? (
-        <div className="countdown-display">
+        <div className="countdown-display lg:text-base">
           <span>{formatTime(days)}روز و </span>
           <span>{formatTime(hours)}ساعت و </span>
           <span>{formatTime(minutes)}دقیقه و </span>
           <span>{formatTime(seconds)} ثانیه</span>
         </div>
       ) : (
-        <p className="text-red-700">فرصت خرید بلیت به پایان رسیده است!</p>
+        <p className="text-red-700 lg:text-base">فرصت خرید بلیت به پایان رسیده است!</p>
       )}
     </div>
   );
