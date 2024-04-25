@@ -884,7 +884,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/otc/orders'
         headers = {
             'Content-Type': 'application/json',
-            'x-API-key': '8744|sZvI1Sl9ydI49yCZfb14FgUhtdgIPQGp59S7HxsY',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '8744|sZvI1Sl9ydI49yCZfb14FgUhtdgIPQGp59S7HxsY',  # Replace 'your_api_key' with your actual API key
         }
         data = {
             'symbol': 'SHIBTMN',  # You mentioned MATIC, but the example is for BTCUSDT. Please adjust accordingly.
@@ -905,7 +905,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/otc/price'
         headers = {
             'Content-Type': 'application/json',
-            'x-API-key': '8744|sZvI1Sl9ydI49yCZfb14FgUhtdgIPQGp59S7HxsY',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '8744|sZvI1Sl9ydI49yCZfb14FgUhtdgIPQGp59S7HxsY',  # Replace 'your_api_key' with your actual API key
         }
         params = {
             'symbol': 'SHIBTMN',  # Assuming the symbol is passed as the primary key
@@ -926,7 +926,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/crypto-withdrawal'
         headers = {
             'Content-Type': 'application/json',
-            'x-API-key': '8744|sZvI1Sl9ydI49yCZfb14FgUhtdgIPQGp59S7HxsY',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '8744|sZvI1Sl9ydI49yCZfb14FgUhtdgIPQGp59S7HxsY',  # Replace 'your_api_key' with your actual API key
         }
         data = {
             'coin': request.data.get('coin'),
@@ -948,7 +948,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/orders'
         headers = {
             'Content-Type': 'application/json',
-            'x-API-key': '8744|sZvI1Sl9ydI49yCZfb14FgUhtdgIPQGp59S7HxsY',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '8744|sZvI1Sl9ydI49yCZfb14FgUhtdgIPQGp59S7HxsY',  # Replace 'your_api_key' with your actual API key
         }
         data = {
             'symbol': request.data.get('symbol'),
@@ -971,7 +971,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/balances'
         headers = {
             'Content-Type': 'application/json',
-            'x-API-key': '8744|sZvI1Sl9ydI49yCZfb14FgUhtdgIPQGp59S7HxsY',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '8744|sZvI1Sl9ydI49yCZfb14FgUhtdgIPQGp59S7HxsY',  # Replace 'your_api_key' with your actual API key
         }
         response = requests.get(url, headers=headers)
         
