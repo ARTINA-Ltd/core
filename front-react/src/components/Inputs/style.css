@@ -1,16 +1,10 @@
 .simple-input {
   background-color: #0000aa02;
-  border-radius: 6px 0px 0px 6px;
   outline: none;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
   padding-top: 0.75rem;
   padding-bottom: 0.25rem;
-  border: 0px;
-  border-right: 2px;
-  border-bottom: 0px;
-  border-color: #4e45d0;
-  border-style: solid;
   transition: all;
   transition-duration: 200ms;
 }
@@ -23,20 +17,17 @@
 
 .simple-input2 {
   background-color: #0000aa02;
-  border-radius: 6px 0px 0px 6px;
   outline: none;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
   border: 0px;
-  border-right: 2px;
-  border-bottom: 0px;
-  border-color: #4e45d0;
+
   border-style: solid;
   transition: all;
   transition-duration: 200ms;
 }
 
-.css-100ebu3-menu{
+.css-100ebu3-menu {
   background-color: white;
   padding-top: 4px;
   padding-bottom: 4px;
