@@ -454,14 +454,14 @@ const InternationalProfile = () => {
   return (
     <TestLayout connectWallet={false}>
       {user && (
-        <div className="flex gap-5 items-start sm:flex-col">
+        <div className="flex gap-5 items-start md:flex-col">
           <SimpleCard className={"flex flex-col gap-4 bg-white w-full"}>
             {user && user.data.role == "user_zero" ? <div className="w-full bg-red-50 text-red-500 py-2 text-center rounded-lg">مشخصات شما هنوز احراز نشده است!</div> : <div className="w-full bg-green-50 text-green-600 py-2 text-center rounded-lg">سطح کاربری شما {user ? user.data.role : ""} میباشد.</div>}
-            <div className="text-[24px] font-b9">{t("personalInfo")}</div>
-            <div className="flex gap-4 items-center">
-              <div className="flex-shrink-0 relative group rounded-full" id="profileImage">
-                <img src={profileImageUrl ? profileImageUrl : `${user ? user.data.profile_picture : "https://i.pinimg.com/originals/66/b8/58/66b858099df3127e83cb1f1168f7a2c6.jpg"}`} className="pointer-events-none rounded-full overflow-hidden object-cover w-[200px] h-[200px] flex-shrink-0 sm:w-[120px] sm:h-[120px]" />
-                <div className="group-hover:visible opacity-70 invisible cursor-pointer bg-gradient-to-b from-black to-[#00000050] w-[200px] h-[200px] absolute inset-0  items-center justify-center flex rounded-full" onClick={() => inputFile.current.click()}>
+            <div className="text-[24px] font-b9 ml-4">{t("personalInfo")}</div>
+            <div className="flex gap-4 items-center md:flex-col">
+              <div className="flex-shrink-0 relative group mx-4 rounded-full justify-self-center  " id="profileImage">
+                <img src={profileImageUrl ? profileImageUrl : `${user ? user.data.profile_picture : "https://i.pinimg.com/originals/66/b8/58/66b858099df3127e83cb1f1168f7a2c6.jpg"}`} className="pointer-events-none rounded-full overflow-hidden object-cover w-[250px] h-[250px] flex-shrink-0 sm:w-[300px] sm:h-[300px] mx-auto md:w-full" />
+                <div className="group-hover:visible opacity-70 invisible cursor-pointer bg-gradient-to-b from-black to-[#00000050] w-[250px] h-[250px] flex-shrink-0 sm:w-[300px] sm:h-[300px] mx-auto md:w-full absolute inset-0  items-center justify-center flex rounded-full" onClick={() => inputFile.current.click()}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="0.5" stroke="currentColor" className="text-white " width="3em">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
@@ -477,7 +477,7 @@ const InternationalProfile = () => {
                   ref={inputFile}
                 />
               </div>
-              <div className="flex w-full gap-4">
+              <div className="flex w-full gap-4 ">
                 <div className="w-full flex flex-col gap-4">
                   <div className="flex w-full gap-4 sm:flex-col">
                     <SimpleInput
@@ -540,7 +540,7 @@ const InternationalProfile = () => {
               </div>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-4 px-24 md:px-0 mt-8">
               <SimpleInput
                 className={"col-span-3 sm:col-span-2"}
                 type="text"
@@ -572,31 +572,36 @@ const InternationalProfile = () => {
                 disabled={user != null ? user.data.birthdate != null : null}
               />
             </div>
-            <div className="flex gap-4 my-4">
-              <SimpleInput
-                type="number"
-                title={t("idNumber")}
-                placeholder="مثلا: 1234567890"
-                validationError="کدملی بایستی 10 رقمی باشد"
-                isValid={validate.national_code}
-                onChange={(e) => {
-                  setValues((prev) => ({
-                    ...prev,
-                    national_code: e.target.value,
-                  }));
-                  setValidate((prev) => ({
-                    ...prev,
-                    national_code: e.target.value !== null ? e.target.value.length == 10 : false,
-                  }));
-                }}
-                defaultValue={user != null ? user.data.national_code : null}
-                disabled={user != null ? user.data.national_code != null : false}
-                maxChars={10}
-              />
-              <IdSelector />
-              <CountrySelector />
+            <div className="flex gap-4 my-4 px-24 md:px-0 md:flex-col">
+              <div className="w-1/3">
+                {" "}
+                <IdSelector />
+              </div>
+              <div className="flex gap-4 w-2/3 md:w-full">
+                <SimpleInput
+                  type="number"
+                  title={t("idNumber")}
+                  placeholder="مثلا: 1234567890"
+                  validationError="کدملی بایستی 10 رقمی باشد"
+                  isValid={validate.national_code}
+                  onChange={(e) => {
+                    setValues((prev) => ({
+                      ...prev,
+                      national_code: e.target.value,
+                    }));
+                    setValidate((prev) => ({
+                      ...prev,
+                      national_code: e.target.value !== null ? e.target.value.length == 10 : false,
+                    }));
+                  }}
+                  defaultValue={user != null ? user.data.national_code : null}
+                  disabled={user != null ? user.data.national_code != null : false}
+                  maxChars={10}
+                />
+                <CountrySelector />
+              </div>
             </div>
-            <div className="grid grid-cols-4 sm:grid-cols-3">
+            <div className="grid grid-cols-4 sm:grid-cols-3 md:px-0  px-24">
               <SimpleInput
                 className={"col-span-3 sm:col-span-2"}
                 type="text"
@@ -631,7 +636,7 @@ const InternationalProfile = () => {
                 maxChars={10}
               />
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-4 px-24 md:px-0">
               <SimpleInput
                 type="text"
                 title={t("phone")}
@@ -652,8 +657,8 @@ const InternationalProfile = () => {
             </div>
 
             <hr className="opacity-[5%] mt-5" />
-            <div className="text-[24px] font-b9">{t("auth")}</div>
-            <div className="flex gap-4">
+            <div className="text-[24px] font-b9 px-24 md:px-0">{t("auth")}</div>
+            <div className="flex gap-4 px-24 md:px-0">
               <SimpleInput
                 type="number"
                 title={t("phoneNumber")}
@@ -696,7 +701,7 @@ const InternationalProfile = () => {
                 </div>
               )}
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-4 px-24 md:px-0">
               <SimpleInput
                 type="text"
                 title={t("email")}
@@ -739,27 +744,28 @@ const InternationalProfile = () => {
                 </div>
               )}
             </div>
-
-            <div className="text-[24px] font-b9">payment</div>
-            <div className="grid grid-cols-2 gap-4 lg:grid-cols-1">
-              <SimpleInput type="number" title={t("cardNumber")} placeholder="" isValid={true} validationError="نمی‌تواند خالی باشد" onChange={(e) => {}} defaultValue={null} disabled={false} maxChars={30} />
-              <div className="flex gap-4">
-                <SimpleInput type="number" title={t("expireyy")} placeholder="" isValid={true} validationError="نمی‌تواند خالی باشد" onChange={(e) => {}} defaultValue={null} disabled={false} maxChars={2} />
-                <SimpleInput type="number" title={t("expiremm")} placeholder="" isValid={true} validationError="نمی‌تواند خالی باشد" onChange={(e) => {}} defaultValue={null} disabled={false} maxChars={2} />
-                <SimpleInput type="number" title={t("cvv")} placeholder="" isValid={true} validationError="نمی‌تواند خالی باشد" onChange={(e) => {}} defaultValue={null} disabled={false} maxChars={2} />
-              </div>
+            <div className="flex gap-4  items-center">
+              <div className="text-[24px] font-b9 px-24 md:px-0">{t("payment")}</div>
               <div className="flex gap-4 flex-wrap">
                 <img src="/mastercard.png" alt="" className="w-12 h-24 object-contain" />
                 <img src="/visa.png" alt="" className="w-12 h-24 object-contain" />
                 <img src="/paypal.png" alt="" className="w-12 h-24 object-contain" />
               </div>
             </div>
-            <div className="flex justify-end">
+            <div className="grid grid-cols-2 gap-4 px-24 md:px-0 lg:grid-cols-1">
+              <SimpleInput type="number" title={t("cardNumber")} placeholder="" isValid={true} validationError="نمی‌تواند خالی باشد" onChange={(e) => {}} defaultValue={null} disabled={false} maxChars={30} />
+              <div className="flex gap-4">
+                <SimpleInput type="number" title={t("expireyy")} placeholder="" isValid={true} validationError="نمی‌تواند خالی باشد" onChange={(e) => {}} defaultValue={null} disabled={false} maxChars={2} />
+                <SimpleInput type="number" title={t("expiremm")} placeholder="" isValid={true} validationError="نمی‌تواند خالی باشد" onChange={(e) => {}} defaultValue={null} disabled={false} maxChars={2} />
+                <SimpleInput type="number" title={t("cvv")} placeholder="" isValid={true} validationError="نمی‌تواند خالی باشد" onChange={(e) => {}} defaultValue={null} disabled={false} maxChars={2} />
+              </div>
+            </div>
+            <div className="flex justify-end px-24 md:px-0">
               <BorderButton onClick={() => UpdateInfo()}> {t("submit")}</BorderButton>
             </div>
           </SimpleCard>
-          <div className="flex flex-col gap-4 items-center self-center justify-center w-[35%] relative sm:w-full">
-            <SimpleCard className="bg-[#4e45d0] flex flex-col relative gap-4 items-center overflow-hidden w-full">
+          <div className="flex flex-col gap-4 items-center  justify-center w-[35%] relative md:w-full">
+            <SimpleCard className="bg-[#4e45d0] flex flex-col relative gap-4 items-start overflow-hidden w-full">
               <img src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
               <div className="text-white text-[27px] text-center mb-2 z-10 font-b9 sm:text-[20px]"> {t("uploadIDParagraph")}</div>
               <BorderButton className={"text-white border-white text-center"} onClick={() => window.open("http://api.artina.org/static/pdfs/Form-new-version.pdf")}>
