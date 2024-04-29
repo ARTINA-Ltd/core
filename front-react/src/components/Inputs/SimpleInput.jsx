@@ -50,11 +50,11 @@ const SimpleInput = ({ onChange, title, placeholder, type, isValid, validationEr
 
   const input = () => {
     if (type === "date" && disabled == false && defaultVal) {
-      return <DatePicker accentColor="#4e45d0" onChange={onChange} inputClass={`simple-input  w-full`} defaultValue={defaultVal} className={`z-[3102] border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-[#4e45d0]" : "border-l-[#4e45d0]"}`} dir={i18n.dir()} />;
+      return <DatePicker accentColor="#4e45d0" onChange={onChange} inputClass={`simple-input  w-full`} defaultValue={defaultVal} className={`z-[3102] border-x-2 w-full border-x-transparent ${i18n.dir() === "rtl" ? "border-r-[#4e45d0]" : "border-l-[#4e45d0]"}`} dir={i18n.dir()} />;
     } else if (type === "date" && disabled == false && !defaultValue) {
-      return <DatePicker accentColor="#4e45d0" position="center" round="x4" onChange={onChange} inputClass={`simple-input w-full`} className={`relative border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-[#4e45d0]" : "border-l-[#4e45d0]"}`} dir={i18n.dir()} />;
+      return <DatePicker accentColor="#4e45d0" position="center" round="x4" onChange={onChange} inputClass={`simple-input w-full`} className={`relative border-x-2 w-full border-x-transparent ${i18n.dir() === "rtl" ? "border-r-[#4e45d0]" : "border-l-[#4e45d0]"}`} dir={i18n.dir()} />;
     } else if (type === "date" && disabled == false) {
-      return <DatePicker accentColor="#4e45d0" onChange={onChange} inputClass={`simple-input w-full`} className={`z-[3102] border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-[#4e45d0]" : "border-l-[#4e45d0]"}`} dir={i18n.dir()} />;
+      return <DatePicker accentColor="#4e45d0" onChange={onChange} inputClass={`simple-input w-full`} className={`z-[3102] w-full border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-[#4e45d0]" : "border-l-[#4e45d0]"}`} dir={i18n.dir()} />;
     } else if (type === "date" && disabled == true) {
       return <input disabled={disabled} onKeyUp={onChange} type="text" className={`simple-input w-full border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-[#4e45d0]" : "border-l-[#4e45d0]"}`} placeholder={!focus ? "" : placeholder} defaultValue={new Intl.DateTimeFormat("fa").format(defaultVal)} onFocus={() => setFocus(true)} onBlur={(e) => (e.target.value === "" ? setFocus(false) : setFocus(true))} dir={i18n.dir()} />;
     } else if (type == "number" && (defaultValue == null || defaultValue == undefined)) {
