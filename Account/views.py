@@ -983,7 +983,7 @@ class CryptoViewSet(viewsets.ViewSet):
             return Response({'error': 'Failed to retrieve account balances'}, status=response.status_code)
     @action(detail=False, methods=['get'])
 
-    def AccountBalance(self, request):
+    def tests(self, request):
         url = '            https://api.wallex.ir/v1/markets'
         headers = {
             'Content-Type': 'application/json',
