@@ -14,7 +14,7 @@ const Exhibitor = () => {
   const navigate = useNavigate();
   useEffect(() => {
     localStorage.getItem("authTokens") === null && navigate("/login");
-  });
+  }, []);
   useEffect(() => {
     axios
       .get(`https://api.artina.org/api/exhibition/artist-user-past-exhibitions/`, {

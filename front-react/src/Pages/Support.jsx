@@ -9,6 +9,7 @@ import { Block, Notify } from "notiflix";
 import BorderButton from "../components/Buttons/BorderButton";
 import { useRef } from "react";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const Support = () => {
   const [values, setValues] = useState({
@@ -23,7 +24,7 @@ const Support = () => {
   const [image, setImage] = useState();
   const [imageUrl, setImageUrl] = useState();
   const inputFile = useRef(null);
-
+  const { t } = useTranslation(["support"]);
   const handleSubmit = () => {
     if (user) {
       axios
@@ -45,11 +46,9 @@ const Support = () => {
             mode: "cors",
           }
         )
-        .then(res => {
+        .then((res) => {
           console.log(res);
-          Notify.success(
-            "درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد."
-          );
+          Notify.success("درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد.");
         })
         .catch(() => Notify.failure("خطا"));
     } else {
@@ -63,11 +62,9 @@ const Support = () => {
           phone_number: values.phone_number,
           image_url: imageUrl,
         })
-        .then(res => {
+        .then((res) => {
           console.log(res);
-          Notify.success(
-            "درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد."
-          );
+          Notify.success("درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد.");
         })
         .catch(() => Notify.failure("خطا"));
     }
@@ -82,7 +79,7 @@ const Support = () => {
       formData.append("image", image, image.name);
       axios
         .post("https://api.artina.org/api/transaction/images/", formData)
-        .then(res => {
+        .then((res) => {
           Notify.success("با موفقیت آپلود شد");
           setImageUrl(res.data.image);
           Block.remove("#uploadImage", 3000);
@@ -96,17 +93,17 @@ const Support = () => {
   return (
     <TestLayout className="flex items-center justify-center gap-5">
       <SimpleCard className={"bg-[#ffffff] w-1/2 lg:w-4/5 sm:w-[90%]"}>
-        <div className="text-[24px]">پشتیبانی</div>
+        <div className="text-[24px]">{t("support")}</div>
 
         <div className="flex gap-5 lg:flex-col">
           <SimpleInput
             className={"mt-6"}
             type="text"
-            title="نام"
-            validationError={"نمی‌تواند خالی باشد"}
+            title={t("name")}
+            validationError={t("required")}
             isValid={values.name !== ""}
-            onChange={e =>
-              setValues(prev => ({
+            onChange={(e) =>
+              setValues((prev) => ({
                 ...prev,
                 name: e.target.value,
               }))
@@ -117,11 +114,11 @@ const Support = () => {
           <SimpleInput
             className={"mt-6 lg:mt-2"}
             type="text"
-            title="نام خانوادگی"
-            validationError={"نمی‌تواند خالی باشد"}
+            title={t("lastName")}
+            validationError={t("required")}
             isValid={values.last_name !== ""}
-            onChange={e =>
-              setValues(prev => ({
+            onChange={(e) =>
+              setValues((prev) => ({
                 ...prev,
                 last_name: e.target.value,
               }))
@@ -133,11 +130,11 @@ const Support = () => {
         <SimpleInput
           className={"mt-6"}
           type="text"
-          title="موضوع"
-          validationError={"نمی‌تواند خالی باشد"}
+          title={t("subject")}
+          validationError={t("required")}
           isValid={values.subject !== ""}
-          onChange={e =>
-            setValues(prev => ({
+          onChange={(e) =>
+            setValues((prev) => ({
               ...prev,
               subject: e.target.value,
             }))
@@ -149,11 +146,11 @@ const Support = () => {
           <SimpleInput
             className={"mt-6"}
             type="text"
-            title="ایمیل"
-            validationError={"نمی‌تواند خالی باشد"}
+            title={t("email")}
+            validationError={t("required")}
             isValid={values.email !== ""}
-            onChange={e =>
-              setValues(prev => ({
+            onChange={(e) =>
+              setValues((prev) => ({
                 ...prev,
                 email: e.target.value,
               }))
@@ -164,11 +161,11 @@ const Support = () => {
           <SimpleInput
             className={"mt-6 lg:mt-2"}
             type="text"
-            validationError={"بایستی 11 رقم باشد"}
-            title="شماره تلفن"
+            validationError={t("atleast11")}
+            title={t("phoneNumber")}
             isValid={values.phone_number && values.phone_number.length !== 11}
-            onChange={e =>
-              setValues(prev => ({
+            onChange={(e) =>
+              setValues((prev) => ({
                 ...prev,
                 phone_number: e.target.value,
               }))
@@ -176,29 +173,27 @@ const Support = () => {
             defaultValue={null}
           />
         </div>
-        <div className="mt-5 mb-2">آپلود عکس</div>
+        <div className="mt-5 mb-2">{t("upload")}</div>
         <div className="w-full flex justify-center" id="uploadImage">
           <div className="relative group w-full">
             <input
               accept="image/*"
               type="file"
-              onChange={e => {
+              onChange={(e) => {
                 setImage(() => e.target.files[0]);
               }}
               ref={inputFile}
             />
           </div>
         </div>
-        <div className="mt-3">متن درخواست</div>
+        <div className="mt-3">{t("subject")}</div>
         <textarea
-          className={
-            "w-full border-[1px] border-indigo-600 outline-none mt-1 min-h-[190px] p-5 rounded-xl text-lg font-b2 leading-loose"
-          }
+          className={"w-full border-[1px] border-indigo-600 outline-none mt-1 min-h-[190px] p-5 rounded-xl text-lg font-b2 leading-loose"}
           type="text"
           title=""
           isValid={values.text !== ""}
-          onChange={e =>
-            setValues(prev => ({
+          onChange={(e) =>
+            setValues((prev) => ({
               ...prev,
               text: e.target.value,
             }))
@@ -207,7 +202,7 @@ const Support = () => {
         />
 
         <div className="flex justify-center mt-5">
-          <BorderButton onClick={handleSubmit}>ارسال</BorderButton>
+          <BorderButton onClick={handleSubmit}>{t("send")}</BorderButton>
         </div>
       </SimpleCard>
     </TestLayout>

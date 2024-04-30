@@ -107,7 +107,6 @@ const Header = ({ rev = false }) => {
       icon: <img src="/virtual-space.png" alt="" className="w-8 h-8" />,
     },
   ];
-  console.log(user);
   return (
     <div>
       <header>

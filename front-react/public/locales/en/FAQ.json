@@ -1,0 +1,21 @@
+{
+  "FAQ": "Frequently Asked Questions",
+  "whatsArtina": "What's Artina?",
+  "firstParagraph": "• Artina is a nft trading and display market in the Metaverse space.",
+  "authRequirement": "What is the authentication requirement for?",
+  "secondParagraph": {
+    "beforeLink": "• According to the existing laws in the financial markets of the world and Iran, customer authentication is required to prevent any possible abuse. See the",
+    "link": "NFT multiplication guide.",
+    "afterLink": " "
+  },
+  "requiredData": "What information is required for authentication?",
+  "thirdParagraph": "• It is possible to start registration using a valid email, and according to the required user level, the user must complete his profile information. At the basic level, the user is required to provide a mobile phone number, verification form, bank account number, address in the user's own name.",
+  "howToBuy": "How to Buy nfts?",
+  "fourthParagraph": "• Register first and refer to the purchase guide.",
+  "howToSell": "How to Sell nfts?",
+  "fifthParagraph": "• First, register and refer to the sales guide.",
+  "network&currency": "What is the network and currency used?",
+  "sixthParagraph": "• Polygan network and Matic currency.",
+  "walletRequirement": "Is there a requirement to have a wallet?",
+  "seventhParagraph": "• You can create your personal wallet in Artina."
+}
