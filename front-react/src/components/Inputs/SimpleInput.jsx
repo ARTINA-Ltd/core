@@ -97,7 +97,7 @@ const SimpleInput = ({ onChange, title, placeholder, type, isValid, validationEr
       <div
         dir={i18n.dir()}
         className={`absolute 
-      ${i18n.dir() === "rtl" ? "" : "left-full text-center -translate-x-full"} left-2 top-1/2 -translate-y-1/2 text-sm bg-red-50 text-red-600 px-2 rounded-full font-b2 my-auto ${isValid ? "opacity-[0%]" : "opacity-[90%]"} transition-all`}
+      ${i18n.dir() === "rtl" ? "left-2 top-1/2 -translate-y-1/2" : "text-center right-0 translate-y-1/2"}   text-sm bg-red-50 text-red-600 px-2 rounded-full font-b2 my-auto ${isValid ? "opacity-[0%]" : "opacity-[90%]"} transition-all`}
       >
         {validationError}
       </div>
