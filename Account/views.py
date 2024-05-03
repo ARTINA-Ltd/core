@@ -781,6 +781,11 @@ class EmailMixin(viewsets.ViewSet):
                             status.HTTP_400_BAD_REQUEST)
 
 
+# Assuming you have already set up Django Rest Framework and configured your project
+
+from rest_framework import viewsets
+from rest_framework.response import Response
+import requests
 
 
 class TransactionViewSet(viewsets.ViewSet):
@@ -872,56 +877,125 @@ class TransactionViewSet(viewsets.ViewSet):
         return Response(balance, status=status.HTTP_200_OK)
 
 
+class CryptoViewSet(viewsets.ViewSet):
+    @action(detail=False, methods=['post'])
 
-
-def transfer_nft(private_key, sender_address, recipient_address, token_id,nft_contract_address):
-    nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
-    #contract
-    # nft_contract_address = "0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a"
-    abi_filename = os.path.join(settings.BASE_DIR, "Account", "ABI.json")
-   
-    # Read ABI from JSON file
-
-    with open(abi_filename, "r") as abi_file:
-        nft_contract_abi = json.load(abi_file)
-
-    nft_contract = w3.eth.contract(address=nft_contract_address, abi=nft_contract_abi)
-    
-    tx_hash = nft_contract.functions.safeTransferFrom(sender_address, recipient_address, token_id).buildTransaction({
-        'chainId': 137,  # Chain ID for Polygon (Matic) mainnet
-        'gas': 2000000,  # gas value
-        'gasPrice': w3.toWei('5', 'gwei'),  # gas price
-        'nonce': nonce,
-    })
-    signed_txn = w3.eth.account.signTransaction(tx_hash, private_key)
-    print(f"signed_txn is : {signed_txn}")
-    tx_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)
-    print(f"tx_hash is : {tx_hash}")
-    return tx_hash
-
-
-from core.models import NFT
-
-def transferNFT(token_id,sender,recipient):
-   
-    #sender
-    sender_address = sender.wallet.address
-    sender_private_key = sender.wallet.private_key
+    def BuyMATIC(self, request):
+        url = 'https://api.wallex.ir/v1/account/otc/orders'
+        headers = {
+            'Content-Type': 'application/json',
+            'X-API-Key': '8744|sZvI1Sl9ydI49yCZfb14FgUhtdgIPQGp59S7HxsY',  # Replace 'your_api_key' with your actual API key
+        }
+        data = {
+            'symbol': 'SHIBTMN',  # You mentioned MATIC, but the example is for BTCUSDT. Please adjust accordingly.
+            'side': 'BUY',
+            'amount': 200000,  # Adjust the amount you want to buy
+        }
+        response = requests.post(url, headers=headers, json=data)
         
-    #recipient
-    recipient_address=recipient.wallet.address
-        
-    tx_hash = transfer_nft(sender_private_key, sender_address, recipient_address, token_id)
-    print(f"Transaction hash: {tx_hash.hex()}")
-    nft=NFT.objects.filter(token_id=token_id).first()
-    nft.owner=recipient
-    nft.save()
-    response_data = {
-        "message": f"Transaction initiated. Transaction hash: {tx_hash.hex()}"
-    }
-        
-    return Response(response_data, status=status.HTTP_200_OK)
+        # Check if the request was successful
+        if response.status_code == 200:
+            return Response({'message': 'Purchase successful'}, status=response.status_code)
+        else:
+            return Response({'error': 'Purchase failed'}, status=response.status_code)
 
+    @action(detail=False, methods=['get'])
 
+    def CryptoPrice(self, request, pk=None):
+        url = 'https://api.wallex.ir/v1/account/otc/price'
+        headers = {
+            'Content-Type': 'application/json',
+            'X-API-Key': '8777|XedUHicmAa4ghJXbKnpgt8LoxPbxyg9ebxo10nkU',  # Replace 'your_api_key' with your actual API key
+        }
+        params = {
+            'symbol': 'SHIBTMN',  # Assuming the symbol is passed as the primary key
+            'side': 'BUY',
+        }
+        response = requests.get(url, headers=headers, params=params)
+        
+        # Check if the request was successful
+        if response.status_code == 200:
+            data = response.json()
+            return Response(data, status=response.status_code)
+        else:
+            return Response({'error': 'Failed to retrieve price'}, status=response.status_code)
             
+    @action(detail=False, methods=['post'])
+
+    def CryptoWithdrawal(self, request):
+        url = 'https://api.wallex.ir/v1/account/crypto-withdrawal'
+        headers = {
+            'Content-Type': 'application/json',
+            'X-API-Key': '8777|XedUHicmAa4ghJXbKnpgt8LoxPbxyg9ebxo10nkU',  # Replace 'your_api_key' with your actual API key
+        }
+        data = {
+            'coin': request.data.get('coin'),
+            'network': request.data.get('network'),
+            'value': request.data.get('value'),
+            'wallet_address': request.data.get('wallet_address'),
+        }
+        response = requests.post(url, headers=headers, json=data)
+        
+        # Check if the request was successful
+        if response.status_code == 200:
+            return Response({'message': 'Withdrawal successful'}, status=response.status_code)
+        else:
+            return Response({'error': 'Withdrawal failed'}, status=response.status_code)
+
+    @action(detail=False, methods=['post'])
+
+    def CryptoSell(self, request):
+        url = 'https://api.wallex.ir/v1/account/orders'
+        headers = {
+            'Content-Type': 'application/json',
+            'X-API-Key': '8777|XedUHicmAa4ghJXbKnpgt8LoxPbxyg9ebxo10nkU',  # Replace 'your_api_key' with your actual API key
+        }
+        data = {
+            'symbol': request.data.get('symbol'),
+            'type': request.data.get('type'),
+            'side': 'SELL',
+            'price': request.data.get('price'),
+            'quantity': request.data.get('quantity'),
+        }
+        response = requests.post(url, headers=headers, json=data)
+        
+        # Check if the request was successful
+        if response.status_code == 200:
+            return Response({'message': 'Sell order placed successfully'}, status=response.status_code)
+        else:
+            return Response({'error': 'Failed to place sell order'}, status=response.status_code)
+        
+    @action(detail=False, methods=['get'])
+
+    def AccountBalance(self, request):
+        url = 'https://api.wallex.ir/v1/account/balances'
+        headers = {
+            'Content-Type': 'application/json',
+            'X-API-Key': '8777|XedUHicmAa4ghJXbKnpgt8LoxPbxyg9ebxo10nkU',  # Replace 'your_api_key' with your actual API key
+        }
+        response = requests.get(url, headers=headers)
+        
+        # Check if the request was successful
+        if response.status_code == 200:
+            data = response.json()
+            return Response(data, status=response.status_code)
+        else:
+            return Response({'error': 'Failed to retrieve account balances'}, status=response.status_code)
+    
+    @action(detail=False, methods=['get'])
+
+    def tests(self, request):
+        url = 'https://api.wallex.ir/v1/markets'
+        headers = {
+            'Content-Type': 'application/json',
+            # 'X-API-Key': '8777|XedUHicmAa4ghJXbKnpgt8LoxPbxyg9ebxo10nkU',  # Replace 'your_api_key' with your actual API key
+        }
+        response = requests.get(url, headers=headers)
+        
+        # Check if the request was successful
+        if response.status_code == 200:
+            data = response.json()
+            return Response(data, status=response.status_code)
+        else:
+            return Response({'error': 'Failed to retrieve account balances'}, status=response.status_code)
 
