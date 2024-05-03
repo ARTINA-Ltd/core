@@ -105,5 +105,6 @@
   "addCollectionDescription": "Click here if you wand to ad multiple Artworks as an Collection",
   "artistsList": "Artists List",
   "artists": "َArTists",
-  "nfts": "Nfts"
+  "nfts": "Nfts",
+  "bannerParaghraph": { "before": "In", "artina": "ARTINA", "after": "You Can Have 3D Exhibition" }
 }
