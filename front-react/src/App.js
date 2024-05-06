@@ -51,6 +51,7 @@ import ExhibitionApproval from "./Pages/ExhibitionApproval.jsx";
 import AllCollections from "./Pages/AllCollections";
 import { GoftinoSnippet } from "@mohsen007/react-goftino";
 import AddExhibition from "./Pages/AddExhibition.jsx";
+import InternationalProfile from "./Pages/InternationalProfile.jsx";
 
 const GOFTINO_KEY = "cD7Gse";
 
@@ -137,6 +138,7 @@ export default () => {
                   <Route exact path="UserDashboard" element={<UserDashboard />} />
                   <Route exact path="dashboard" element={<Dashboard />} />
                   <Route exact path="profile" element={<Profile />} />
+                  <Route exact path="inter-profile" element={<InternationalProfile />} />
                   <Route exact path="exhibitor" element={<Exhibitor />} />
                   <Route exact path="collections/:username" element={<Collections />} />
                   <Route exact path="user-collections" element={<UserCollections />} />

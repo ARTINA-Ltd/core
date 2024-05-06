@@ -1,7 +1,6 @@
 import React from "react";
 import AboutUs from "../components/Home/AboutUs";
 import ExhebitionList from "../components/Home/ExhebitionList";
-import MainSlider from "../components/Home/MainSlider";
 import NFTList from "../components/Home/NFTList";
 import TestLayout from "../Layouts/TestLayout";
 import AboutMetaverse from "../components/Home/AboutMetaverse";
@@ -9,12 +8,13 @@ import AboutAI from "../components/Home/AboutAI";
 import Innovations from "../components/Home/Innovations";
 import MostFrequentQuestions from "../components/Home/MostFreQuestions";
 import GasPrice from "../components/Home/GasPrice";
+import HeroBanner from "../components/HeroBanner/HeroBanner.jsx";
 
 const Home = () => {
   return (
     <TestLayout wfull={true}>
-      <MainSlider />
-      <NFTList className={"-mt-96 z-10 relative lg:mt-0 "} />
+      <HeroBanner />
+      <NFTList className={"my-12"} />
       <ExhebitionList className="mt-12" />
       <AboutUs className={"mt-20"} />
       <AboutMetaverse className="" />

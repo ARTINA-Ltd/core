@@ -46,19 +46,20 @@ const ExhibitionCollections = () => {
       )
       .then((res) => {});
   }, []);
+  // email nameoncard country cardnumber exprdate cvc postcode address1 adderess2
   return (
     <TestLayout>
       {exhibition && banner && (
-        <div className="w-full flex flex-wrap justify-between p-4 md:block  min-h-[calc(100vh-80px)]">
-          <div className={`relative w-1/2 md:w-full mx-auto bg-transparent rounded-2xl flex flex-col`}>
+        <div className="w-full flex flex-wrap  justify-between p-4 lg:block gap-4 min-h-[calc(100vh-80px)]">
+          <div className={`relative w-[calc(50%-0.5rem)] lg:w-full mx-auto bg-transparent rounded-2xl flex flex-col`}>
             <img src={banner} alt="" className="absolute w-full h-full z-0 object-cover blur-md opacity-70" />
             <img src={banner} className={`bg-transparent p-0 z-10 my-auto object-contain max-h-[80vh] w-full rounded-2xl`} alt="" />
             <div className="flex w-full flex-wrap justify-between my-4 md:mt-4 mt-auto"></div>
           </div>
-          <div className="bg-white rounded-xl w-full mt-4 mx-auto shadow-md md:max-w-full flex flex-col gap-12 p-8 md:w-full container mx-8 lg:w-1/3 md:w-fulls">
-            <h4 className="text-5xl font-bold text-gray-800">{exhibition.marketName}</h4>
-            <p className="text-gray-600 text-2xl my-4 ">{exhibition.description}</p>
-            <h4 className="text-gray-600 text-2xl">
+          <div className="bg-white rounded-xl w-[calc(50%-0.5rem)] mt-4 mx-auto shadow-md md:max-w-full flex flex-col gap-8 p-8 md:gap-4 container lg:w-full lg:mb-12">
+            <h4 className="text-5xl md:text-3xl  font-bold text-gray-800">{exhibition.marketName}</h4>
+            <p className="text-gray-600 text-2xl md:text-xl my-4 ">{exhibition.description}</p>
+            <h4 className="text-gray-600 text-2xl md:text-xl">
               تاریخ شروع:{" "}
               {Intl.DateTimeFormat("fa", {
                 year: "numeric",
@@ -66,7 +67,7 @@ const ExhibitionCollections = () => {
                 day: "numeric",
               }).format(new Date(exhibition.start_date))}
             </h4>
-            <h4 className="text-gray-600 text-2xl">
+            <h4 className="text-gray-600 text-2xl md:text-xl">
               تاریخ پایان:{" "}
               {Intl.DateTimeFormat("fa", {
                 year: "numeric",
@@ -74,7 +75,7 @@ const ExhibitionCollections = () => {
                 day: "numeric",
               }).format(new Date(exhibition.end_date))}
             </h4>
-            <h4 className="text-gray-600 text-2xl">
+            <h4 className="text-gray-600 text-2xl md:text-xl">
               پایان ثبت نام:{" "}
               {Intl.DateTimeFormat("fa", {
                 year: "numeric",
@@ -92,11 +93,11 @@ const ExhibitionCollections = () => {
             </h4>
             {exhibition.has_ticket && (
               <div>
-                <button className="btn glass bg-[#4e45d0] hover:shadow-md">خرید بلیت به قیمت {exhibition.price}</button>
+                <button className="btn glass bg-[#4e45d0] hover:shadow-md md:text-xl">خرید بلیت به قیمت {exhibition.price}</button>
               </div>
             )}
           </div>
-          <NftsSwiper items={nfts}></NftsSwiper>
+          {nfts && <NftsSwiper items={nfts}></NftsSwiper>}
         </div>
       )}
     </TestLayout>

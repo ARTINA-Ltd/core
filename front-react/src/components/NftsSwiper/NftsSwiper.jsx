@@ -5,8 +5,7 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "./styles.css";
 import { useNavigate } from "react-router";
-import { BorderBottom } from "@mui/icons-material";
-import BorderButton from "../Buttons/BorderButton.jsx";
+
 
 const NftsSwiper = (props) => {
   const items = props;
