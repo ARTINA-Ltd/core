@@ -139,6 +139,7 @@ class LoginViewSet(viewsets.ViewSet):
         response_data = {
             'refresh': str(refresh),
             'access': str(refresh.access_token),
+            'role': str(profile.role),
         }
         return Response(response_data, status=status.HTTP_200_OK)
 
