@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
+import i18n from "../../i18n.js";
 
 const NFTList = ({ className }) => {
   const [data, setData] = useState();
@@ -32,8 +33,9 @@ const NFTList = ({ className }) => {
           {t("sortByLike")}
         </div>
       </div>
+
       {selected ? (
-        <table className="w-2/3 text-right font-b3 bg-white rounded-2xl  shadow-lg shadow-[#0000f006] sm:w-full sm:rounded-none overflow-hidden lg:w-4/5">
+        <table className={`w-2/3 ${i18n.dir() === "rtl" ? "text-right" : "text-left"} font-b3 bg-white rounded-2xl  shadow-lg shadow-[#0000f006] sm:w-full sm:rounded-none overflow-hidden lg:w-4/5`}>
           <thead className="font-b7">
             <tr>
               <th scope="col" className="px-10 py-3 sm:pr-5 sm:pl-3">
@@ -87,7 +89,7 @@ const NFTList = ({ className }) => {
           </tbody>
         </table>
       ) : (
-        <table className="w-2/3 text-right font-b3 bg-white rounded-2xl  shadow-lg shadow-[#0000f006] sm:w-full sm:rounded-none overflow-hidden lg:w-4/5">
+        <table className={`w-2/3 ${i18n.dir() === "rtl" ? "textright" : "text-left"} font-b3 bg-white rounded-2xl  shadow-lg shadow-[#0000f006] sm:w-full sm:rounded-none overflow-hidden lg:w-4/5`}>
           <thead className="font-b7">
             <tr>
               <th scope="col" className="px-10 py-3 sm:pr-5 sm:pl-3">
