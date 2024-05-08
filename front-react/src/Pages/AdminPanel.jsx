@@ -62,12 +62,12 @@ const AdminPanel = () => {
         {loading === false ? (
           <Fragment>
             <div className={` ${'bg-[#f9f9f9] bg-[length:300px] bg-[url("https://artina.org/12.png")] '} min-h-screen  overflow-hidden pb-8`}>
-              {docApproval.length !== 0 && (
+              <div className="bg-[#4e45d0] my-4 flex flex-col relative text-white gap-4 items-center overflow-hidden rounded-xl shadow-md">
+                <img alt="" src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
+                <h1 className="text-center font-bold text-3xl my-4  p-4 ">{t("auth")}</h1>
+              </div>
+              {docApproval.length !== 0 ? (
                 <div className="w-[90vw] my-4 mx-auto h-1/2 rounded-lg p-4">
-                  <div className="bg-[#4e45d0] my-4 flex flex-col relative text-white gap-4 items-center overflow-hidden rounded-xl shadow-md">
-                    <img alt="" src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
-                    <h1 className="text-center font-bold text-3xl my-4  p-4 ">{t("auth")}</h1>
-                  </div>
                   <div className="w-[70vw] flex mx-auto flex-wrap gap-8 justify-center items-center">
                     {docApproval.map((doc) => {
                       return <AuthPageCard key={doc.id} profileImage={doc.user_profile.profile_picture} name={doc.user_profile.first_name + " " + doc.user_profile.last_name} bio={doc.user_profile.bio} destination={doc.id} />;
@@ -79,13 +79,15 @@ const AdminPanel = () => {
                     </Link>
                   </div>
                 </div>
+              ) : (
+                <div className="bg-white p-8 rounded-xl shadow-md text-lg text-center">مورد جدیدی وجود ندارد</div>
               )}
-              {tickets.length !== 0 && (
+              <div className=" mx-auto bg-[#4e45d0] flex flex-col relative text-white gap-4 items-center overflow-hidden rounded-xl shadow-md my-4">
+                <img alt="" src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
+                <h1 className="text-center font-bold text-3xl my-4 p-4 ">تیکت ها</h1>
+              </div>
+              {tickets.length !== 0 ? (
                 <div className="w-[90vw] my-4 mx-auto h-1/2 rounded-lg p-4">
-                  <div className=" mx-auto bg-[#4e45d0] flex flex-col relative text-white gap-4 items-center overflow-hidden rounded-xl shadow-md my-4">
-                    <img alt="" src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
-                    <h1 className="text-center font-bold text-3xl my-4 p-4 ">تیکت ها</h1>
-                  </div>
                   <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-1">
                     {tickets.map((ticket) => {
                       const text = ticket.ticket.text.substring(0, 25);
@@ -98,13 +100,15 @@ const AdminPanel = () => {
                     </Link>
                   </div>
                 </div>
+              ) : (
+                <div className="bg-white p-8 rounded-xl shadow-md text-lg text-center">مورد جدیدی وجود ندارد</div>
               )}
-              {metaTickets.length !== 0 && (
+              <div className=" mx-auto bg-[#4e45d0] flex flex-col relative text-white gap-4 items-center overflow-hidden rounded-xl shadow-md my-4">
+                <img alt="" src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
+                <h1 className="text-center font-bold text-3xl my-4 p-4 ">متاورس</h1>
+              </div>
+              {metaTickets.length !== 0 ? (
                 <div className="w-[90vw] my-4 mx-auto h-1/2 rounded-lg p-4">
-                  <div className=" mx-auto bg-[#4e45d0] flex flex-col relative text-white gap-4 items-center overflow-hidden rounded-xl shadow-md my-4">
-                    <img alt="" src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
-                    <h1 className="text-center font-bold text-3xl my-4 p-4 ">متاورس</h1>
-                  </div>
                   <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-1">
                     {metaTickets.map((ticket) => {
                       return <MetaVerseCard key={ticket.id} title={ticket.ticket.name} count={ticket.ticket.user} img={ticket.ticket.image_url} id={ticket.id} exhibition={ticket.ticket.text} />;
@@ -116,6 +120,8 @@ const AdminPanel = () => {
                     </Link>
                   </div>
                 </div>
+              ) : (
+                <div className="bg-white p-8 rounded-xl shadow-md text-lg text-center">مورد جدیدی وجود ندارد</div>
               )}
             </div>
           </Fragment>

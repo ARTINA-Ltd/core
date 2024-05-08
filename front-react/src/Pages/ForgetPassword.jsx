@@ -6,25 +6,27 @@ import BorderButton from "../components/Buttons/BorderButton";
 import axios from "axios";
 import { Notify } from "notiflix";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 const ForgetPassword = () => {
-  const [values, setValues] = useState({ phone_number: "", code: "", password:"" });
+  const [values, setValues] = useState({ phone_number: "", code: "", password: "" });
   const [isClicked, setIsClicked] = useState(false);
   const navigate = useNavigate();
-
+  const { t } = useTranslation(["login"]);
   const handleSubmit = () => {
     axios
       .post("https://api.artina.org/api/account/user-PasswordReset/", {
         phone_number: values.phone_number,
         token: values.code,
-        password: values.password
+        password: values.password,
       })
       .then((e) => {
-        Notify.success("رمز عبور شما با موفقیت تغییر یافت");
-        navigate('/login');
+        Notify.success(t("passwordChanged"));
+        navigate("/login");
       })
-      .catch((res) => {Notify.failure("خطا");
-    });
+      .catch((res) => {
+        Notify.failure(t("error"));
+      });
   };
 
   const handleSend = () => {
@@ -33,23 +35,23 @@ const ForgetPassword = () => {
         phone_number: values.phone_number,
       })
       .then((e) => {
-        Notify.success("ارسال شد");
+        Notify.success(t("sent"));
         setIsClicked(true);
       })
-      .catch(() => Notify.failure("کاربری با این شماره موبایل وجود ندارد"));
+      .catch(() => Notify.failure(t("noUser")));
   };
   return (
     <TestLayout className="flex items-center justify-center form-input w-[100%]">
       <SimpleCard className={"bg-[#ffffff] w-[450px]"}>
-        <div className="text-center text-[24px]">بازیابی رمز عبور</div>
+        <div className="text-center text-[24px]">{t("recovery")}</div>
         <div>
           <SimpleInput
             className={"mt-6"}
             type="text"
-            title="شماره موبایل"
-            placeholder="مثلا: 09121234567"
+            title={t("phone")}
+            placeholder="09121234567"
             isValid={values.phone_number != ""}
-            validationError="نمی‌تواند خالی باشد"
+            validationError={t("required")}
             onChange={(e) =>
               setValues((prev) => ({
                 ...prev,
@@ -60,23 +62,22 @@ const ForgetPassword = () => {
             // disabled={isClicked}
           />
 
-          <div className={`justify-end mt-3 ${!isClicked ? 'flex' : 'hidden'}`}>
-            <BorderButton onClick={handleSend}
-              size="lg"
-              >ارسال کد</BorderButton>
+          <div className={`justify-end mt-3 ${!isClicked ? "flex" : "hidden"}`}>
+            <BorderButton onClick={handleSend} size="lg">
+              {t("sendCode")}
+            </BorderButton>
           </div>
         </div>
-
 
         {isClicked ? (
           <div>
             <SimpleInput
               className={"mt-6"}
               type="text"
-              title="کد"
-              placeholder="مثلا: 12345"
+              title={t("code")}
+              placeholder="12345"
               isValid={values.code != ""}
-              validationError="نمی‌تواند خالی باشد"
+              validationError={t("required")}
               onChange={(e) =>
                 setValues((prev) => ({
                   ...prev,
@@ -88,10 +89,10 @@ const ForgetPassword = () => {
             <SimpleInput
               className={"mt-6"}
               type="password"
-              title="رمز عبور جدید"
-              placeholder="مثلا: 12345"
+              title={t("newPass")}
+              placeholder="12345"
               isValid={values.password != ""}
-              validationError="نمی‌تواند خالی باشد"
+              validationError={t("required")}
               onChange={(e) =>
                 setValues((prev) => ({
                   ...prev,
@@ -101,11 +102,7 @@ const ForgetPassword = () => {
               defaultValue={null}
             />
             <div className="flex justify-end mt-3 mb-5">
-              <BorderButton
-                onClick={handleSubmit}
-              >
-                ثبت
-              </BorderButton>
+              <BorderButton onClick={handleSubmit}>ثبت</BorderButton>
             </div>
           </div>
         ) : (

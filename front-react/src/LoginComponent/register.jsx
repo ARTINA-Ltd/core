@@ -43,19 +43,19 @@ const Register = () => {
           password: values.password,
         })
         .then((response) => {
-          Notiflix.Notify.success("ثبت نام با موفقیت انجام شد");
+          Notiflix.Notify.success(t("successSign"));
           navigate("/login");
         })
         .catch((response) => {
           if (response.response.data.error == "This username is already taken.") {
-            Notiflix.Notify.failure("نام کاربری تکراری میباشد.");
+            Notiflix.Notify.failure(t("duplicate"));
           }
           if (response.response.data.error == "This email is already registered.") {
-            Notiflix.Notify.failure("ایمیل وارد شده تکراری میباشد.");
+            Notiflix.Notify.failure(t("emailDuplicate"));
           }
         });
     } else {
-      Notiflix.Notify.failure("برای ثبت درخواست ابتدا میبایست قراردار را بپذیرید");
+      Notiflix.Notify.failure(t("agreeRequried"));
     }
   };
 
@@ -74,7 +74,7 @@ const Register = () => {
           className={"mt-6"}
           type="text"
           title={t("username")}
-          placeholder="مثلا: alireza"
+          placeholder={t("example")}
           isValid={values.username != ""}
           validationError={t("required")}
           onChange={(e) =>
@@ -89,7 +89,7 @@ const Register = () => {
           className={"mt-6"}
           type="text"
           title={t("email")}
-          placeholder="مثلا: example@gmail.com"
+          placeholder={t("emailExample")}
           isValid={values.email != ""}
           validationError={t("required")}
           onChange={(e) =>

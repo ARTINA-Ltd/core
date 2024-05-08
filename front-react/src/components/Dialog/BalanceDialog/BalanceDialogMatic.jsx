@@ -13,7 +13,7 @@ const BalanceDialogMatic = () => {
   const [amount, setAmount] = useState();
   const [action, setAction] = useState();
   const [address, setAddress] = useState("");
-  const { t } = useTranslation();
+  const { t } = useTranslation(["wallets"]);
 
   useEffect(() => {
     axios
@@ -129,8 +129,13 @@ const BalanceDialogMatic = () => {
   const footer = () => {
     if (isCharge === false) {
       return (
-        <div>
-          {address && <div className="text-lg lg:text-sm sm:text-xs">آدرس کیف پول: {address}</div>}
+        <div className="w-full flex flex-col justify-center items-center gap-4">
+          {address && (
+            <div className="text-lg lg:text-sm sm:text-xs">
+              {t("walletAddress")}
+              {address}
+            </div>
+          )}
           {!address && (
             <div
               className="border-[1px] cursor-pointer border-indigo-500 bg-indigo-100 text-indigo-500 rounded-xl py-2 px-3 hover:scale-105 transition-all"
@@ -141,9 +146,9 @@ const BalanceDialogMatic = () => {
               ساخت کیف پول
             </div>
           )}
-          <div className="flex gap-2 w-[25%] justify-between lg:w-[60%] sm:w-[90%] items-center">
+          <div className="flex gap-2  lg:w-[60%] sm:w-[90%] items-center">
             <div
-              className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-3 hover:scale-105 transition-all sm:px-2 sm:text-xs sm:w-32 sm:flex sm:justify-center"
+              className="border-[1px] cursor-pointer w-48 text-center border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-3 hover:scale-105 transition-all sm:px-2 sm:text-xs sm:w-32 sm:flex sm:justify-center"
               onClick={() => {
                 if (isCharge === true) {
                   updateBalance("withraw");
@@ -153,10 +158,10 @@ const BalanceDialogMatic = () => {
                 setAction("withraw");
               }}
             >
-              برداشت
+              {t("withdraw")}
             </div>
             <div
-              className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-3 hover:scale-105 transition-all sm:px-2 sm:text-xs sm:w-32 sm:flex sm:justify-center"
+              className="border-[1px] cursor-pointer w-48 text-center border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all sm:text-xs sm:px-4"
               onClick={() => {
                 if (isCharge === true) {
                   updateBalance("deposit");
@@ -166,7 +171,7 @@ const BalanceDialogMatic = () => {
                 setAction("deposit");
               }}
             >
-              شارژ کیف پول
+              {t("recharge")}
             </div>
           </div>
         </div>
@@ -174,7 +179,7 @@ const BalanceDialogMatic = () => {
     } else if (action === "deposit") {
       return (
         <div
-          className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all"
+          className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all sm:text-xs sm:px-4"
           onClick={() => {
             if (isCharge === true) {
               updateBalance("deposit");
@@ -184,13 +189,13 @@ const BalanceDialogMatic = () => {
             setAction("deposit");
           }}
         >
-          شارژ کیف پول
+          {t("recharge")}
         </div>
       );
     } else {
       return (
         <div
-          className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all"
+          className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all sm:text-xs sm:px-4"
           onClick={() => {
             if (isCharge === true) {
               updateBalance("withraw");
@@ -200,7 +205,7 @@ const BalanceDialogMatic = () => {
             setAction("withraw");
           }}
         >
-          برداشت
+          {t("withdraw")}
         </div>
       );
     }
@@ -231,7 +236,7 @@ const BalanceDialogMatic = () => {
           <div className="w-full flex gap-4 font-b4">
             <div className="bg-[#4e45d0] rounded-xl w-full py-20 flex flex-col items-start justify-center text-white gap-4 relative group overflow-hidden sm:py-5">
               <img alt="" src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all  duration-700" />
-              <div className="text-2xl font-b6 px-10 sm:text-sm">موجودی Matic</div>
+              <div className="text-2xl font-b6 px-10 sm:text-sm"> {t("maticInventory")}</div>
               <div className="text-lg text-yellow-300 px-10 self-end lg:text-md sm:px-2 sm:text-sm">{getData ? getData.matic_balance : ""} Matic</div>
             </div>
           </div>
