@@ -49,7 +49,12 @@ const Login = () => {
           localStorage.setItem("authTokens", res.data.access);
           userChange(res);
           Notify.success(t("success"));
-          navigate("/dashboard");
+          console.log(res.data.role);
+          if (res.data.role === "admin") {
+            navigate("/admin-panel");
+          } else {
+            navigate("/dashboard");
+          }
         }
       })
       .catch((res) => {
