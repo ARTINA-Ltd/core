@@ -149,7 +149,7 @@ const Authenticate = () => {
             </div>
 
             <dialog id="my_modal_1" className="modal">
-              <div className="modal-box">
+              <div className="modal-box bg-white">
                 <form method="dialog">
                   <button className="p-2 mb-2 ease-in-out duration-200 hover:bg-red-500 rounded-full mr-auto block">
                     <MdClose />
@@ -160,7 +160,7 @@ const Authenticate = () => {
               </div>
             </dialog>
             <dialog id="submit" className="modal">
-              <div className="modal-box">
+              <div className="modal-box bg-white">
                 <div className="flex justify-center gap-4">
                   <form method="dialog">
                     <button className="mx-auto block ">
@@ -178,7 +178,7 @@ const Authenticate = () => {
               </div>
             </dialog>
             <dialog id="reject" className="modal">
-              <div className="modal-box">
+              <div className="modal-box bg-white">
                 {messages ? (
                   <select
                     onChange={(e) => {

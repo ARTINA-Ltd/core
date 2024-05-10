@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
+import i18n from "../../i18n.js";
 
 const NFTList = ({ className }) => {
   const [data, setData] = useState();
@@ -32,11 +33,12 @@ const NFTList = ({ className }) => {
           {t("sortByLike")}
         </div>
       </div>
+
       {selected ? (
-        <table className="w-2/3 text-right font-b3 bg-white rounded-2xl  shadow-lg shadow-[#0000f006] sm:w-full sm:rounded-none overflow-hidden lg:w-4/5">
+        <table className={`w-2/3 ${i18n.dir() === "rtl" ? "text-right" : "text-left"} font-b3 bg-white rounded-2xl  shadow-lg shadow-[#0000f006] sm:w-full sm:rounded-none overflow-hidden lg:w-4/5`}>
           <thead className="font-b7">
             <tr>
-              <th scope="col" className="pr-10 py-3 sm:pr-5 sm:pl-3">
+              <th scope="col" className="px-10 py-3 sm:pr-5 sm:pl-3">
                 #
               </th>
               <th scope="col" className="text-center py-3 sm:px-1">
@@ -58,7 +60,7 @@ const NFTList = ({ className }) => {
               ? data.map((item, index) => (
                   <tr className="border-t group cursor-pointer transition duration-75 ease-out items-center justify-center  hover:bg-[#0000ff08]" key={index} onClick={() => navigate(`/nft-details/${item.token_id}`)}>
                     <td className="whitespace-nowrap pr-6 font-medium sm:pl-2 sm:pr-3">
-                      <img src={item.image_url} className="rounded-lg h-[90px] w-[90px] mr-4 object-cover my-1 sm:h-[90px] sm:w-[90px]" alt="" />
+                      <img src={item.image_url} className="rounded-lg h-[90px] w-[90px] mx-4 object-cover my-1 sm:h-[90px] sm:w-[90px]" alt="" />
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 sm:px-1 sm:w-2/5 sm:whitespace-normal">{item.name}</td>
                     <td className="whitespace-nowrap px-6 py-4 sm:px-1">
@@ -87,10 +89,10 @@ const NFTList = ({ className }) => {
           </tbody>
         </table>
       ) : (
-        <table className="w-2/3 text-right font-b3 bg-white rounded-2xl  shadow-lg shadow-[#0000f006] sm:w-full sm:rounded-none overflow-hidden lg:w-4/5">
+        <table className={`w-2/3 ${i18n.dir() === "rtl" ? "textright" : "text-left"} font-b3 bg-white rounded-2xl  shadow-lg shadow-[#0000f006] sm:w-full sm:rounded-none overflow-hidden lg:w-4/5`}>
           <thead className="font-b7">
             <tr>
-              <th scope="col" className="pr-10 py-3 sm:pr-5 sm:pl-3">
+              <th scope="col" className="px-10 py-3 sm:pr-5 sm:pl-3">
                 #
               </th>
               <th scope="col" className="text-center py-3 sm:px-1">
@@ -112,7 +114,7 @@ const NFTList = ({ className }) => {
               ? dataLiked.map((item, index) => (
                   <tr className="border-t group cursor-pointer transition duration-75 ease-out items-center justify-center  hover:bg-[#0000ff08]" key={index} onClick={() => navigate(`/nft-details/${item.token_id}`)}>
                     <td className="whitespace-nowrap pr-6 font-medium sm:pl-2 sm:pr-3">
-                      <img src={item.image_url} className="rounded-lg h-[90px] w-[90px] mr-4 object-cover my-1 sm:h-[90px] sm:w-[90px]" alt="" />
+                      <img src={item.image_url} className="rounded-lg h-[90px] w-[90px] mx-4 object-cover my-1 sm:h-[90px] sm:w-[90px]" alt="" />
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 sm:px-1 sm:w-2/5 sm:whitespace-normal">{item.name}</td>
                     <td className="whitespace-nowrap px-6 py-4 sm:px-1">

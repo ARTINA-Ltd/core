@@ -17,7 +17,6 @@ import BalanceDialogMatic from "../Dialog/BalanceDialog/BalanceDialogMatic";
 import i18n from "../../i18n";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "./../LanguageSelector/LanguageSelector";
-import { Link } from "react-router-dom";
 const Header = ({ connectWallet = false, rev = false }) => {
   const user = useContext(UserContext);
   const userChange = useContext(UserChangeContext);
@@ -216,13 +215,6 @@ const Header = ({ connectWallet = false, rev = false }) => {
               <div className="bg-[#eee] cursor-pointer text-[#4e45d0] px-3 py-[4px] rounded-full hover:scale-105 transition-all duration-200 border-[#4e45d0] border-[1px]" onClick={() => navigate("/metaverse")}>
                 {t("metaverse")}{" "}
               </div>
-              {connectWallet === true ? (
-                <div>
-                  <ConnectWallet btnTitle="اتصال کیف پول" colorMode="dark" accentColor="#ffffff40" className="m-0 p-0 scale-75 border-none text-white hover:bg-indigo-400 transition-all" />
-                </div>
-              ) : (
-                ""
-              )}
             </div>
             <div className="lg:flex hidden cursor-pointer " onClick={() => setMenuVisible(true)}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
@@ -230,7 +222,9 @@ const Header = ({ connectWallet = false, rev = false }) => {
               </svg>
             </div>
             <div className="flex gap-2 items-center ">
+              {connectWallet === true ? <ConnectWallet btnTitle={t("linkWallet")} colorMode="dark" accentColor="#4e45d0" className=" scale-75 border-none text-white hover:bg-indigo-400 transition-all w-full " /> : ""}
               <LanguageSelector />
+
               {user ? (
                 <Fragment>
                   <div ref={ref2}>
@@ -246,7 +240,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                               <div className="flex flex-col">
                                 <div>{item.text}</div>
                                 <div className="text-sm opacity-50">
-                                  <span className="px-1">در تاریخ</span>
+                                  <span className="px-1">{t("inDate")}</span>
                                   {Intl.DateTimeFormat("fa", {
                                     year: "numeric",
                                     month: "numeric",
@@ -258,7 +252,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                                 <div></div>
                               ) : (
                                 <div className="px-2 bg-green-100 hover:bg-green-200 rounded-lg py-1 text-sm" onClick={() => handleClickSeen(item.id)}>
-                                  مشاهده کردم
+                                  {t("seen")}{" "}
                                 </div>
                               )}
                             </div>
@@ -272,7 +266,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                             setIsExpanded(true);
                           }}
                         >
-                          مشاهده همه
+                          {t("showAll")}{" "}
                         </button>
                       )}
                       <div className={`${isExpanded ? "visible" : "hidden"}`}>
@@ -282,7 +276,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                               <div className="flex flex-col">
                                 <div>{item.text}</div>
                                 <div className="text-sm opacity-50">
-                                  <span className="px-1">در تاریخ</span>
+                                  <span className="px-1">{t("inDate")}</span>
                                   {Intl.DateTimeFormat("fa", {
                                     year: "numeric",
                                     month: "numeric",
@@ -294,7 +288,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                                 <div></div>
                               ) : (
                                 <div className="px-2 bg-green-100 hover:bg-green-200 rounded-lg py-1 text-sm" onClick={() => handleClickSeen(item.id)}>
-                                  مشاهده کردم
+                                  {t("seen")}{" "}
                                 </div>
                               )}
                             </div>
@@ -367,7 +361,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
       </header>
       <div className={`fixed w-full h-full z-50 inset-0 bg-[#f9f9f9] ${menuIsVisible ? "" : "translate-x-full"}  transition-all duration-500 ease-out`}>
         <div className="w-full flex justify-end p-5" onClick={() => setMenuVisible(false)}>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 bgred">
             <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
           </svg>
         </div>
@@ -397,13 +391,6 @@ const Header = ({ connectWallet = false, rev = false }) => {
             {t("metaverse")}
           </div>
         </div>
-        {connectWallet === true ? (
-          <div className="w-full fixed bottom-10">
-            <ConnectWallet btnTitle="اتصال کیف پول" colorMode="dark" accentColor="#4e45d0" className="m-0 p-0 scale-75 border-none text-white hover:bg-indigo-400 transition-all w-full" />
-          </div>
-        ) : (
-          ""
-        )}
       </div>
     </Fragment>
   );
