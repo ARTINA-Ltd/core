@@ -63,6 +63,9 @@
 
   background: #4e45d0;
 }
+text {
+  text-transform: capitalize;
+}
 
 .css-15c7cx9 {
   z-index: 99989;
@@ -100,6 +103,3 @@ td {
 .arrow--disabled {
   fill: rgba(255, 255, 255, 0.5);
 }
-
-
-

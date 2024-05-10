@@ -1,25 +1,20 @@
 import TestLayout from "../Layouts/TestLayout";
-import { UserContext } from "../App";
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
-import NftRequestsCard from "./../components/Cards/UserDashboardCards/NftRequestsCard";
 import ApplicationReqDialog from "../components/Dialog/ApplicationReqDialog/ApplicationReqDialog";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const RequestsList = () => {
-  const user = useContext(UserContext);
   const [getData, setData] = useState();
-
+  const { t } = useTranslation(["exhibitor"]);
   useEffect(() => {
     axios
-      .get(
-        `https://api.artina.org/api/exhibition/applications/exhibitor_applications/`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-          },
-        }
-      )
+      .get(`https://api.artina.org/api/exhibition/applications/exhibitor_applications/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+      })
       .then((res) => {
         console.log(res);
         setData(res.data);
@@ -50,28 +45,17 @@ const RequestsList = () => {
             </div>
           </SimpleCard> */}
           <div className="flex w-full justify-center items-center gap-4">
-            <img
-              src={"/2.jpg"}
-              className="w-full max-h-[500px] object-cover rounded-2xl"
-              alt=""
-            />
+            <img src={"/2.jpg"} className="w-full max-h-[500px] object-cover rounded-2xl" alt="" />
           </div>
         </div>
 
         <SimpleCard className={"bg-white flex flex-col items-center mt-8"}>
-          <div className="text-4xl font-b9 mb-6 sm:text-lg sm:font-b5">لیست درخواست ها</div>
+          <div className="text-4xl font-b9 mb-6 sm:text-lg sm:font-b5">{t("requestList")}</div>
           <div className="grid gap-4 grid-cols-4 sm:grid-cols-1">
             {getData
               ? getData.map((item, index) => (
                   <>
-                    <ApplicationReqDialog
-                      key={index}
-                      user={item.artist}
-                      nfts={item.nft}
-                      description={item.description}
-                      exhibition={item.exhibition}
-                      application={item.id}
-                    />
+                    <ApplicationReqDialog key={index} user={item.artist} nfts={item.nft} description={item.description} exhibition={item.exhibition} application={item.id} />
                   </>
                 ))
               : ""}

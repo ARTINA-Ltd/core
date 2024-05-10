@@ -7,8 +7,10 @@ import BorderButton from "../components/Buttons/BorderButton.jsx";
 import SimpleInput from "../components/Inputs/SimpleInput.jsx";
 import TestLayout from "../Layouts/TestLayout.jsx";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 const AddExhibition = () => {
+  const { t } = useTranslation("exhibitor");
   const navigate = useNavigate();
   const [ticket, setTicket] = useState(false);
   const [ticketPrice, setTicketPrice] = useState(false);
@@ -76,12 +78,12 @@ const AddExhibition = () => {
         }
       )
       .then((res) => {
-        Notify.success("نمایشگاه با موفقت افزوده شد");
+        Notify.success(t("addSuccessful"));
         console.log(res);
         navigate("/exhibitor");
       })
       .catch((e) => {
-        Notify.failure("خطا");
+        Notify.failure(t("error"));
         console.log(e);
       });
   };
@@ -105,18 +107,18 @@ const AddExhibition = () => {
     if (profileImage) {
       Block.circle("#exhibitionImage");
 
-      Notify.info("در حال آپلود عکس");
+      Notify.info(t("uploadPhoto"));
       const formData = new FormData();
       formData.append("image", profileImage, profileImage.name);
       axios
         .post("https://api.artina.org/api/transaction/images/", formData)
         .then((res) => {
-          Notify.success("با موفقیت آپلود شد");
+          Notify.success(t("uploadSuccess"));
           setProfileImageUrl(res.data.image);
           Block.remove("#exhibitionImage", 3000);
         })
         .catch((res) => {
-          Notify.failure("خطا در آپلود");
+          Notify.failure(t("uploadError"));
           console.log(res);
           Block.remove("#exhibitionImage", 3000);
         });
@@ -128,7 +130,7 @@ const AddExhibition = () => {
       <div className="card mxau flex justify-content-center">
         <div className="w-[80%] lg:w-[80%] mx-auto sm:w-[85%] bg-white p-8 rounded-xl">
           <div>
-            <p className="font-b9 mb-4">افزودن نمایشگاه</p>
+            <p className="font-b9 mb-4">{t("addEx")}</p>
           </div>
           <div className="font-b4">
             <div className="w-full flex items-center justify-center sm:flex-col gap-4 ">
@@ -153,10 +155,10 @@ const AddExhibition = () => {
               <div className="flex flex-col shadow-sm shadow-[#4e45d0] p-4 rounded-md gap-4 w-full mx-4">
                 <SimpleInput
                   type="text"
-                  title="نام نمایشگاه"
-                  placeholder="مثلا: نمایشگاه تست"
+                  title={t("name")}
+                  placeholder={t("nameExample")}
                   isValid={validate.marketName}
-                  validationError="نمی‌تواند خالی باشد"
+                  validationError={t("required")}
                   onChange={(e) => {
                     setValues((prev) => ({ ...prev, marketName: e.target.value }));
                     setValidate((prev) => ({
@@ -169,10 +171,10 @@ const AddExhibition = () => {
                 />
                 <SimpleInput
                   type="text"
-                  title="توضیحات نمایشگاه"
-                  placeholder="مثلا: نمایشگاه تست"
+                  title={t("description")}
+                  placeholder={t("descriptionExample")}
                   isValid={validate.description}
-                  validationError="نمی‌تواند خالی باشد"
+                  validationError={t("required")}
                   onChange={(e) => {
                     setValues((prev) => ({ ...prev, description: e.target.value }));
                     setValidate((prev) => ({
@@ -191,9 +193,9 @@ const AddExhibition = () => {
               <div className="flex gap-4 md:flex-col ">
                 <SimpleInput
                   type="date"
-                  title="تاریخ شروع"
+                  title={t("startDate")}
                   isValid={validate.start_date}
-                  validationError="نمی‌تواند خالی باشد"
+                  validationError={t("required")}
                   onChange={(e) => {
                     setValues((prev) => ({ ...prev, start_date: e.value }));
                     setValidate((prev) => ({ ...prev, start_date: e.value != "" }));
@@ -204,9 +206,9 @@ const AddExhibition = () => {
 
                 <SimpleInput
                   type="date"
-                  title="تاریخ پایان"
+                  title={t("endDate")}
                   isValid={validate.end_date}
-                  validationError="نمی‌تواند خالی باشد"
+                  validationError={t("required")}
                   onChange={(e) => {
                     setValues((prev) => ({ ...prev, end_date: e.value }));
                     setValidate((prev) => ({ ...prev, end_date: e.value != "" }));
@@ -218,9 +220,9 @@ const AddExhibition = () => {
               <div className="w-1/2 mx-auto md:w-full">
                 <SimpleInput
                   type="date"
-                  title=" آخرین مهلت ثبت نام"
+                  title={t("deadLine")}
                   isValid={validate.application_deadline}
-                  validationError="نمی‌تواند خالی باشد"
+                  validationError={t("required")}
                   onChange={(e) => {
                     setValues((prev) => ({
                       ...prev,
@@ -238,14 +240,14 @@ const AddExhibition = () => {
             </div>
             <div className="flex flex-col gap-4 shadow-sm shadow-[#4e45d0] p-4 rounded-md">
               <div className={`border-[1px] w-1/2 mx-auto rounded-full px-3 py-1 cursor-pointer text-center transition-all ${ticket ? "border-green-500 text-green-600 bg-green-50" : "border-red-600 text-red-700 bg-red-50"}`} onClick={() => setTicket((prev) => !prev)}>
-                {ticket ? "تیکت دارد" : "تیکت ندارد"}
+                {ticket ? t("hasTicket") : t("noTicket")}
               </div>
               {ticket ? (
                 <SimpleInput
                   type="number"
-                  title=" قیمت تیکت"
+                  title={t("ticketPrice")}
                   isValid={ticketPrice !== ""}
-                  validationError="نمی‌تواند خالی باشد"
+                  validationError={t("required")}
                   onChange={(e) => {
                     setTicketPrice(e.target.value);
                   }}
@@ -258,14 +260,14 @@ const AddExhibition = () => {
 
               <div className="w-full flex sm:flex-col justify-end items-center gap-4">
                 <a href="/privacy-policy" className="text-gray-400 hover:text-gray-500 hover:bg-gray-50 px-2 py-1 transition-all duration-100 font-b2 rounded-md">
-                  مشاهده قوانین
+                  {t("policy")}
                 </a>
                 <div className={`cursor-pointer rounded-full flex items-center gap-3 ${!isChecekd ? "hover:bg-rose-50  hover:scale-105 transition-all border-[1px] border-rose-400 text-rose-400" : "hover:bg-green-50 hover:scale-105 transition-all text-green-600 border-[1px] border-green-600"} transition-all px-3 py-2`} onClick={() => setIsChecekd((prev) => !prev)}>
                   <div className={`h-4 w-4 ${isChecekd ? "bg-green-600" : "bg-rose-50 border-[1px] border-rose-400"} rounded-full`} />
-                  <div> با قوانین موافقم</div>
+                  <div> {t("agreed")}</div>
                   <div className="flex gap-5 justify-end">
                     <BorderButton onClick={() => handleSubmit()} className="font-b4 text-center" disabled={!isChecekd}>
-                      ثبت
+                      {t("submit")}
                     </BorderButton>
                   </div>
                 </div>

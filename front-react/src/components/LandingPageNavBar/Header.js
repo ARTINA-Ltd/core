@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { UserContext } from "../../App";
 import { UserChangeContext } from "../../App";
 import { ConnectWallet } from "@thirdweb-dev/react";
+import { Notify } from "notiflix/build/notiflix-notify-aio";
 import BorderButton from "../Buttons/BorderButton";
 import BalanceDialog from "../Dialog/BalanceDialog/BalanceDialog";
 import { useRef } from "react";
@@ -82,7 +83,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
             <MdOutlineCollections className="w-6 h-6 ml-1 text-[#6860db]" />
             {t("collections")}
           </div>
-          <ul className="p-2 shadow menu dropdown-content hover:text-black z-[10] bg-white rounded-box w-52">
+          <ul className="p-2 shadow menu dropdown-content hover:text-black z-[20] bg-white rounded-box w-52">
             <li>
               <a className="hover:text-[#6860db]" href="/user-collections">
                 {t("artists")}
@@ -100,12 +101,12 @@ const Header = ({ connectWallet = false, rev = false }) => {
 
     {
       title: t("addArt"),
-      link: "/pre-mint",
+      link: user?.data?.role === "user_zero" ? null : "/pre-mint",
       icon: <RiNftFill className="w-6 h-6 ml-1 text-[#6860db]" />,
     },
     {
       title: t("activityManagement"),
-      link: "/exhibitor",
+      link: user?.data?.role === "user_zero" ? null : "/exhibitor",
       icon: <TbActivity className="w-6 h-6 ml-1 text-[#6860db]" />,
     },
     {
@@ -187,6 +188,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [ref2]);
+  console.log(user);
   return (
     <Fragment>
       <header>
@@ -199,7 +201,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                       key={index}
                       className="cursor-pointer flex items-center gap-1  hover:text-[#a5a0ee] transition-all duration-200"
                       onClick={() => {
-                        navigate(item.link);
+                        item.link === null ? Notify.failure("ابتدا باید در صفحه ی پروفایل، هویت خود را احزار کنید") : navigate(item.link);
                       }}
                     >
                       {item.icon}

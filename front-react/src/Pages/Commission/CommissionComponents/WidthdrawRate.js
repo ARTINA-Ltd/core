@@ -1,28 +1,29 @@
-import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function WidthdrawRate() {
+  const { t } = useTranslation("wage");
   return (
     <div>
       <div className="m-8 sm:m-2 sm:text-[10px]">
         <table className="w-full">
           <thead>
             <tr>
-              <th className="py-2 px-4 bg-indigo-700 text-white">کارمزد برداشت</th>
-              <th className="py-2 px-4 bg-indigo-700 text-white">میزان برداشت تومان</th>
+              <th className="py-2 px-4 bg-indigo-700 text-white">{t("table3.h1")}</th>
+              <th className="py-2 px-4 bg-indigo-700 text-white">{t("table3.h2")}</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td className="py-2 px-4 bg-indigo-300">یک درصد میزان برداشت</td>
-              <td className="py-2 px-4">کمتر از 400 هزار تومان</td>
+              <td className="py-2 px-4 bg-indigo-300">{t("table3.r1")}</td>
+              <td className="py-2 px-4">{t("table3.c1")}</td>
             </tr>
             <tr>
-              <td className="py-2 px-4 bg-indigo-300">4000 تومان</td>
-              <td className="py-2 px-4">400 تا 50 میلیون تومان</td>
+              <td className="py-2 px-4 bg-indigo-300">{t("table3.r2")}</td>
+              <td className="py-2 px-4">{t("table3.c2")}</td>
             </tr>
             <tr>
-              <td className="py-2 px-4 bg-indigo-300">4000هزار تومان به ازای هر 50 میلیون تومان</td>
-              <td className="py-2 px-4">بیشتر از 50 میلیون تومان</td>
+              <td className="py-2 px-4 bg-indigo-300">{t("table3.r3")}</td>
+              <td className="py-2 px-4">{t("table3.c3")}</td>
             </tr>
           </tbody>
         </table>
