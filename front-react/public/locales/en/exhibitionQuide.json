@@ -1,0 +1,10 @@
+{
+  "header": "Guide to creating an exhibition",
+  "step1": "1- First, log in to your account.",
+  "step2": { "before": "2- Then Mint your works in Artina. If you have not Minted a work yet, you can see the ", "link": "NFT Mint guide.", "after": "" },
+  "step3": "3- Enter the \"Activities Management\" section from the top bar of the site; Then click on add exhibition from the \"Exhibitions you are holding\" section.",
+  "step4": "4- Complete the required information according to your work; It should be noted that it is mandatory to fill in all the values on the exhibition creation page.",
+  "example": "✔️ The image below shows an example of creating an exhibition.",
+  "step5": "5- After agreeing to the rules of the exhibition, click on the registration button.",
+  "step6": "6- Finally, you can view your exhibition in the main activity management section. 🎉"
+}

@@ -1,0 +1,24 @@
+{
+  "header": "Transaction fees",
+  "firstParagraph": "The transaction fee in the Artina system is a percentage of the total amount of the transaction and its calculation is based on the following considerations. It should be explained that deducting fees from transactions will prevent the registration of formal and repeated transactions and create more favorable conditions in the market for all users.",
+  "secoundHeader": "✔️ Fees are charged from both sides of the transaction.",
+  "secondParagraph": "The fee is calculated as a percentage of the amount of requested property. For example, if, as a seller, you want to receive Tomans against Ethereum, the fee will be charged as a percentage of Tomans, and vice versa, if you, as a buyer, want to buy Ethereum, the fee will be charged as a percentage of Ethereum.",
+  "thirdParagraph": "When registering transactions through the Artina system, the exact amount of the fee for that transaction will be displayed to you. Depending on the volume of the user's transactions, the transaction fee is calculated according to the table below",
+  "table1": { "h1": "The volume of transactions in the last 30 days", "h2": " Equations Fee", "r1": "Less than 10 million tomans", "r2": "Between 10 and 50 million tomans", "r3": "Between 50 and 100 million tomans", "r4": "More than 100 million tomans" },
+  "table2": {
+    "h1": "Digital asset",
+    "h2": "Depositable minimum",
+    "h3": "Deposit fee",
+    "h4": "Withdrawable Minimum",
+    "h5": "Withdrawablefee",
+    "r1": "Ethereum network",
+    "r2": "Tron network",
+    "r1-c4": "Variable depending on the Tether network"
+  },
+  "thirdHeader": "Toman deposit and withdrawal",
+  "fourthparaGraph": "✔️ Toman deposit fee is zero.",
+  "fifthParagraph": "✔️ Fees are charged from both sides of the transaction.",
+  "sixthParagraph": "Toman withdrawal fee is as follows due to bank fees and bank portal for settlement:",
+  "seventhParagraph": "When registering transactions through the Artina system, the exact amount of the fee for that transaction will be displayed to you. Depending on the volume of the user's transactions, the transaction fee is calculated according to the table below.",
+  "table3": { "h1": "withdrawal fee", "h2": "Withdrawal amount of Tomans", "r1": "One percent withdrawal amount", "r2": "4000 tomans", "r3": "4000 thousand tomans for every 50 million tomans", "c1": "Less than 400 thousand tomans", "c2": "400 thousand tomans to 50 million tomans", "c3": "More than 50 million tomans" }
+}

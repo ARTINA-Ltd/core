@@ -72,7 +72,7 @@ const Exhibitor = () => {
       )
       .then((res) => {
         console.log(res);
-        Notify.success("درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد.");
+        Notify.success(t("requestSuccess"));
       })
       .catch((e) => console.log(e));
   };
@@ -94,7 +94,7 @@ const Exhibitor = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="0.6" stroke="currentColor" width={"4em"}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <div className="font-b6">افزودن نمایشگاه</div>
+                <div className="font-b6">{t("addNew")}</div>
               </div>
             </div>{" "}
             {artistOpenExhibitions
@@ -107,7 +107,7 @@ const Exhibitor = () => {
                           {item.marketName}
 
                           <div className="bg-white/20  w-full hover:bg-white/30 py-2 text-sm backdrop-blur-md" onClick={() => handleButton(item.id, item.has_metaverse)}>
-                            {item.has_metaverse ? "ورود به متاورس" : "درخواست برای متاورس"}
+                            {item.has_metaverse ? t("enterMetaverse") : t("requestMetaverse")}
                           </div>
                         </div>
                       </div>
@@ -124,16 +124,16 @@ const Exhibitor = () => {
               <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
             </svg>
           </div>
-          مشاهده لیست درخواست ها
+          {t("showReq")}
         </div>
 
         <SimpleCard className={"bg-white mx-auto w-[90%] mt-5 text-center"}>
-          <div className="font-b6 text-2xl mb-4 mx-auto md:mb-4 sm:text-xl">نمایشگاه های قابل ثبت نام</div>
+          <div className="font-b6 text-2xl mb-4 mx-auto md:mb-4 sm:text-xl">{t("exhibitionRegister")}</div>
 
           <div className="h-full shrink-0 rounded-2xl group flex items-center justify-center cursor-pointer  transition-all whitespace-nowrap mx-5">
             <div className="text-[#000022] opacity-20 group-hover:opacity-40 transition-all h-full group-hover:scale-105 ease-out duration-150 flex flex-col items-center">
               <div className="font-b6 md:mb-4" onClick={() => navigate(`/open-exhibitions`)}>
-                مشاهده لیست همه نمایشگاه ها
+                {t("showEx")}
               </div>
             </div>
           </div>
@@ -152,13 +152,13 @@ const Exhibitor = () => {
             </div>
           ) : (
             <div>
-              <div className="flex w-full justify-center opacity-30">نمایشگاهی موجود نمیباشد</div>
+              <div className="flex w-full justify-center opacity-30">{t("previousExhibitions")}</div>
             </div>
           )}
         </SimpleCard>
 
         <SimpleCard className={"bg-white mx-auto w-[90%] mt-5 text-center"}>
-          <div className="font-b6 text-2xl mb-4 mx-auto md:mb-4 sm:text-xl">نمایشگاه های قبلی شما</div>
+          <div className="font-b6 text-2xl mb-4 mx-auto md:mb-4 sm:text-xl">{t("previousExhibitions")}</div>
 
           {artistClosedExhibitions && artistClosedExhibitions.length > 0 ? (
             <div>
@@ -175,7 +175,7 @@ const Exhibitor = () => {
             </div>
           ) : (
             <div>
-              <div className="flex w-full justify-center opacity-30">نمایشگاهی موجود نمیباشد</div>
+              <div className="flex w-full justify-center opacity-30">{t("noExhibitions")}</div>
             </div>
           )}
         </SimpleCard>

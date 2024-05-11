@@ -1,18 +1,26 @@
 import AuthPageCard from "./../components/Cards/AuthPageCard";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TicketCard from "../components/Cards/TicketCard.jsx";
 import MetaVerseCard from "../components/Cards/MetaVerseCard.jsx";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import AdminLayout from "../Layouts/AdminLayout.jsx";
 import { Fragment } from "react";
+import { UserContext } from "../App.js";
 const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
   const [docApproval, setDocApproval] = useState(null);
   const [metaTickets, setMetaTickets] = useState(null);
   const [tickets, setTickets] = useState(null);
   const { t } = useTranslation();
+  const user = useContext(UserContext);
+
+  const navigate = useNavigate();
+
+  if (user?.data?.role !== "admin") {
+    navigate("/");
+  }
 
   useEffect(() => {
     axios
