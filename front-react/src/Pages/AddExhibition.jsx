@@ -133,7 +133,7 @@ const AddExhibition = () => {
             <p className="font-b9 mb-4">{t("addEx")}</p>
           </div>
           <div className="font-b4">
-            <div className="w-full flex items-center justify-center sm:flex-col gap-4 ">
+            <div className="w-full flex items-center justify-center md:flex-col gap-4 ">
               <div className="relative group items-center flex justify-center w-1/2" id="exhibitionImage">
                 <img alt="" src={profileImageUrl ? profileImageUrl : `${"https://api.artina.org/static/images/No_Image_Available.jpg"}`} className="pointer-events-none rounded-2xl max-w-md overflow-hidden object-cover h-auto flex-shrink-0 w-full" />
                 <div className="group-hover:opacity-80 opacity-0 cursor-pointer duration-300 bg-black transition-all w-full h-full absolute inset-0 m-auto items-center justify-center flex rounded-2xl" onClick={() => inputFile.current.click()}>
