@@ -8,7 +8,6 @@ import { UserChangeContext } from "../App";
 
 import TestLayout from "../Layouts/TestLayout";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
-import { Button } from "@mui/material";
 import { Block, Notify } from "notiflix";
 import BorderButton from "../components/Buttons/BorderButton";
 
@@ -427,7 +426,7 @@ function Profile() {
   return (
     <TestLayout connectWallet={false}>
       {user && (
-        <div className="flex gap-5 items-start sm:flex-col">
+        <div style={{ direction: "rtl" }} className="flex gap-5 items-start sm:flex-col">
           <SimpleCard className={"flex flex-col gap-4 bg-white w-full"}>
             {user && user.data.role == "user_zero" ? <div className="w-full bg-red-50 text-red-500 py-2 text-center rounded-lg">مشخصات شما هنوز احراز نشده است!</div> : <div className="w-full bg-green-50 text-green-600 py-2 text-center rounded-lg">سطح کاربری شما {user ? user.data.role : ""} میباشد.</div>}
             <div className="text-[24px] font-b9">اطلاعات شخصی</div>

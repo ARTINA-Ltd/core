@@ -1,6 +1,6 @@
 {
   "farsi": "فارسی",
-  "english": "انگلیسی",
+  "english": "English",
   "auth": "احراز هویت",
   "sortByPrice": "گرانترین",
   "sortByLike": "محبوبترین",
@@ -132,5 +132,8 @@
   "successfullyMinted": "اثر شما با موفقیت تبدیل به ان اف تی شد؛ حال می‌تونید آن را در کیف پول خود اضافه کنید.",
   "mintLastParagraph": "وارد کیف پول خود شوید و روی بخش nft بر روی import کلیک نمایید. در قسمت contract کد زیر را کپی کرده و در قسمت TokenId عدد {tokenId} را وارد کنید و بر روی ثبت کلیک نمایید.",
   "code": "کد",
-  "submit": "ثبت"
+  "submit": "ثبت",
+  "addNftFromUot": "فزودن ان اف تی های خارج از آرتینا",
+  "sell": "فروش",
+  "collapse": "بستن"
 }

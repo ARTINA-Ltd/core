@@ -13,5 +13,8 @@
   "addSingleArtDescription": "چنانچه می‌خواهید یک اثر ضرب کنید کلیک کنید.",
   "addCollection": "ضرب کالکشن",
   "addCollectionDescription": "چنانچه می‌خواهید چند اثر در قالب کالکشن ضرب کنید کلیک کنید.",
-  "addArt": "ضرب اثر"
+  "addArt": "ضرب اثر",
+  "addNftFromOut": "فزودن ان اف تی های خارج از آرتینا",
+  "addingLater": ".این فیچر در آینده اضافه خواهد شد",
+  "backHome": "بازگشت به صفحه اصلی"
 }

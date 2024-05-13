@@ -133,7 +133,7 @@ const AddExhibition = () => {
             <p className="font-b9 mb-4">{t("addEx")}</p>
           </div>
           <div className="font-b4">
-            <div className="w-full flex items-center justify-center sm:flex-col gap-4 ">
+            <div className="w-full flex items-center justify-center md:flex-col gap-4 ">
               <div className="relative group items-center flex justify-center w-1/2" id="exhibitionImage">
                 <img alt="" src={profileImageUrl ? profileImageUrl : `${"https://api.artina.org/static/images/No_Image_Available.jpg"}`} className="pointer-events-none rounded-2xl max-w-md overflow-hidden object-cover h-auto flex-shrink-0 w-full" />
                 <div className="group-hover:opacity-80 opacity-0 cursor-pointer duration-300 bg-black transition-all w-full h-full absolute inset-0 m-auto items-center justify-center flex rounded-2xl" onClick={() => inputFile.current.click()}>
@@ -152,8 +152,9 @@ const AddExhibition = () => {
                   ref={inputFile}
                 />
               </div>
-              <div className="flex flex-col shadow-sm shadow-[#4e45d0] p-4 rounded-md gap-4 w-full mx-4">
+              <div className="flex flex-col shadow-sm shadow-[#4e45d0] p-4 rounded-md gap-8 w-full mx-4">
                 <SimpleInput
+                  className={"shadow-md rounded-md"}
                   type="text"
                   title={t("name")}
                   placeholder={t("nameExample")}
@@ -170,6 +171,7 @@ const AddExhibition = () => {
                   disabled={false}
                 />
                 <SimpleInput
+                  className={"shadow-md rounded-md"}
                   type="text"
                   title={t("description")}
                   placeholder={t("descriptionExample")}
@@ -185,13 +187,14 @@ const AddExhibition = () => {
                   defaultValue={null}
                   disabled={false}
                 />
-                <SimpleInput options={options} type="dropdown" onChange={handleCategoryChange} />
+                <SimpleInput className={"shadow-md rounded-md"} options={options} type="dropdown" onChange={handleCategoryChange} />
               </div>
             </div>
 
             <div className="flex flex-col gap-8 mt-8 shadow-sm shadow-[#4e45d0] p-4 rounded-md my-4">
               <div className="flex gap-4 md:flex-col ">
                 <SimpleInput
+                  className={"shadow-md rounded-md"}
                   type="date"
                   title={t("startDate")}
                   isValid={validate.start_date}
@@ -205,6 +208,7 @@ const AddExhibition = () => {
                 />
 
                 <SimpleInput
+                  className={"shadow-md rounded-md"}
                   type="date"
                   title={t("endDate")}
                   isValid={validate.end_date}
@@ -219,6 +223,7 @@ const AddExhibition = () => {
               </div>
               <div className="w-1/2 mx-auto md:w-full">
                 <SimpleInput
+                  className={"shadow-md rounded-md"}
                   type="date"
                   title={t("deadLine")}
                   isValid={validate.application_deadline}
@@ -244,6 +249,7 @@ const AddExhibition = () => {
               </div>
               {ticket ? (
                 <SimpleInput
+                  className={"shadow-md rounded-md"}
                   type="number"
                   title={t("ticketPrice")}
                   isValid={ticketPrice !== ""}
@@ -265,12 +271,11 @@ const AddExhibition = () => {
                 <div className={`cursor-pointer rounded-full flex items-center gap-3 ${!isChecekd ? "hover:bg-rose-50  hover:scale-105 transition-all border-[1px] border-rose-400 text-rose-400" : "hover:bg-green-50 hover:scale-105 transition-all text-green-600 border-[1px] border-green-600"} transition-all px-3 py-2`} onClick={() => setIsChecekd((prev) => !prev)}>
                   <div className={`h-4 w-4 ${isChecekd ? "bg-green-600" : "bg-rose-50 border-[1px] border-rose-400"} rounded-full`} />
                   <div> {t("agreed")}</div>
-                  <div className="flex gap-5 justify-end">
-                    <BorderButton onClick={() => handleSubmit()} className="font-b4 text-center" disabled={!isChecekd}>
-                      {t("submit")}
-                    </BorderButton>
-                  </div>
                 </div>
+                <BorderButton onClick={() => handleSubmit()} className="font-b4 text-center" disabled={!isChecekd || values.marketName == false || values.start_date == false || values.end_date == false || values.description == false || values.application_deadline == false || profileImage == null}>
+                  {}
+                  {t("submit")}
+                </BorderButton>
               </div>
             </div>
           </div>

@@ -37,5 +37,20 @@
   "error": "Error",
   "requestSuccess": "Your request has been successfully registered. Our support will respond to your ticket as soon as possible.",
   "enterMetaverse": "Entering the Metaverse",
-  "requestMetaverse": "Request for Metaverse"
+  "requestMetaverse": "Request for Metaverse",
+
+  "success": "Registered successfully",
+  "failNotif": "To register the application, you must first accept the contract",
+  "time": "o'clock",
+  "artistMessage": "Artist's Message",
+  "chooseNfts": "Choose your NFTs",
+  "maximumAmount": "You have reached the maximum possible number",
+  "messageText": "Message Text",
+
+  "successfulOperation": "Operation was Successful",
+  "cancel": "Cancel",
+  "reject": "Reject",
+  "confirm": "Confirm",
+  "requests": "Requests",
+  "ehereum": "Ehereum"
 }

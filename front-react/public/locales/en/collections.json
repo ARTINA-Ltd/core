@@ -13,5 +13,9 @@
   "addSingleArt": "Mint Single Artwork",
   "addSingleArtDescription": "Click here if you want to add one Artwork",
   "addCollection": "Mint Collection",
-  "addCollectionDescription": "Click here if you wand to ad multiple Artworks as an Collection"
+  "addCollectionDescription": "Click here if you wand to ad multiple Artworks as an Collection",
+  "addNftFromOut": "Adding NFTs outside of Artina",
+  "greetings": "Greetings",
+  "addingLater": "This feature will be added in the future.",
+  "backHome": "Return to main page"
 }
