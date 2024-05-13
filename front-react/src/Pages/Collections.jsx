@@ -150,28 +150,12 @@ const Collections = () => {
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="0.6" stroke="currentColor" width={"4em"}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <div className="font-b6">افزودن ان اف تی های خارج از آرتینا</div>
+                    <div className="font-b6">{t("addNftFromOut")}</div>
                   </div>
                 </div>
               </div>
             ) : null}
-            {
-              // <Dialog header={Header} visible={visible} style={{ direction: "rtl" }} onHide={() => setVisible(false)} footer={Footer} className="w-[35%] lg:w-[70%] sm:w-[85%]">
-              //   <div className="flex flex-col gap-5 items-center mt-5">
-              //     <SimpleInput
-              //       title="آدرس کانترکت"
-              //       placeholder="0x..."
-              //       className="w-full"
-              //       type="text"
-              //       validationError="نمی‌تواند خالی باشد"
-              //       onChange={(e) => {
-              //         console.log(e.target.value);
-              //       }}
-              //     />
-              //     <SimpleInput title="توکن ایدی" placeholder="1234..." className="w-full" type="text" validationError="نمی‌تواند خالی باشد" />
-              //   </div>
-              // </Dialog>
-            }
+
             {getData.map((item, index) => (
               <div className="col-span-1" key={index}>
                 <ImageCard className="bg-white max-h-[420px] " src={item.image_url} price={item.last_price} onClick={() => navigate(`/nft-details/${item.token_id}`)} tokenId={item.token_id} showSell={user ? user.data.username === username : false} visible={item.is_visible} onClickShow={(e, x) => handleClickShow(e, x, item.token_id)} onClickHide={(e, x) => handleClickHide(e, x, item.token_id)}>
@@ -185,16 +169,16 @@ const Collections = () => {
         )}
       </div>
       <dialog id="AddNftPopup" className="modal relative p-0 m-0">
-        <div className="modal-box p-0 m-0 bg-transparent">
+        <div className="modal-box p-0 m-0 bg-black">
           <img src="/4.jpg" className="absolute object-cover w-full h-full opacity-80 -z-10" alt="" />
           <form method="dialog">
             <button className="btn  btn-sm btn-circle btn-ghost hover:bg-red-500 right-2 my-4 mx-4 text-gray-200 mb-4">✕</button>
           </form>
-          <h3 className="font-bold text-lg mx-8 z-10 text-gray-200">درود</h3>
-          <p className="py-4 text-gray-200 z-10 mx-8">این فیچر در آینده اضافه خواهد شد</p>
+          <h3 className="font-bold text-lg mx-8 z-10 text-gray-200">{t("greetings")}</h3>
+          <p className="py-4 text-gray-200 z-10 mx-8">{t("addingLater")}</p>
           <div className="mx-auto container max-w-[50%] flex">
             <a href="/" className={"btn glass text-gray-200 mx-auto self-center my-4"}>
-              بازگشت به صفحه اصلی
+              {t("backHome")}
             </a>
           </div>
         </div>

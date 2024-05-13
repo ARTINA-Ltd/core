@@ -4,12 +4,13 @@ import CollectionDialog from "../../Dialog/CollectionDialog/CollectionDialog";
 import SimpleCard from "./SimpleCard";
 import BorderButton from "./../../Buttons/BorderButton";
 import SellArea from "./../../SellArea/SellArea";
+import { useTranslation } from "react-i18next";
 
 const ImageCard = ({ className = "", children, src, price, onClick, tokenId, showSell = false, onClickShow, onClickHide, has_creator }) => {
   const [isHovered, setHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isExpanded, setIsexpanded] = useState(false);
-
+  const { t } = useTranslation();
   const handleClickShow = (e) => {
     onClickShow(e, setIsVisible);
   };
@@ -23,9 +24,9 @@ const ImageCard = ({ className = "", children, src, price, onClick, tokenId, sho
   };
 
   return (
-    <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+    <div className="max-w-sm min-w-min" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
       <SimpleCard className={className}>
-        <div className="relative transition-all  cursor-pointer" onClick={onClick}>
+        <div className="relative transition-all cursor-pointer" onClick={onClick}>
           <div className={`pt-3 absolute w-full h-[300px] rounded-lg bg-gradient-to-b from-[#00000060] transition-all ${isHovered ? "flex justify-center" : "hidden"}`} />
           <img src={src} className="w-full h-[300px] rounded-lg object-cover" alt="" />
         </div>
@@ -101,7 +102,7 @@ const ImageCard = ({ className = "", children, src, price, onClick, tokenId, sho
                       )}
                     </div>
                     <BorderButton className={"font-bold"} onClick={() => setIsexpanded(!isExpanded)}>
-                      {isExpanded ? "بستن" : "فروش"}
+                      {isExpanded ? t("collapse") : t("sell")}
                     </BorderButton>
                   </div>
                 </Fragment>

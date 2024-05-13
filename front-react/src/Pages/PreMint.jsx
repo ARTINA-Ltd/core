@@ -142,11 +142,11 @@ const PreMint = () => {
             <form method="dialog">
               <button className="btn  btn-sm btn-circle btn-ghost hover:bg-red-500 right-2 my-4 mx-4 text-gray-200 mb-4">✕</button>
             </form>
-            <h3 className="font-bold text-lg mx-8 z-10 text-gray-200">درود</h3>
-            <p className="py-4 text-gray-200 z-10 mx-8">این فیچر در آینده اضافه خواهد شد</p>
+            <h3 className="font-bold text-lg mx-8 z-10 text-gray-200">{t("greetings")}</h3>
+            <p className="py-4 text-gray-200 z-10 mx-8">{t("addingLater")}</p>
             <div className="mx-auto container max-w-[50%] flex">
               <a href="/" className={"btn glass text-gray-200 mx-auto self-center my-4"}>
-                بازگشت به صفحه اصلی
+                {t("backHome")}{" "}
               </a>
             </div>
           </div>

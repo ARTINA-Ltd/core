@@ -2,6 +2,7 @@ import React from "react";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import TestLayout from "../Layouts/TestLayout";
 import { useTranslation } from "react-i18next";
+import i18n from "../i18n.js";
 
 const HelpCreateWallet = () => {
   const { t } = useTranslation("walletQuide");
@@ -9,9 +10,9 @@ const HelpCreateWallet = () => {
     <TestLayout>
       <div className="w-[55%] m-auto lg:w-4/5 md:w-11/12">
         <SimpleCard className={"text-center bg-white leading-[40px]"}>
-          <div className="text-[32px] mb-5 sm:text-[25px]">{t("header")}</div>
+          <div className={`text-[32px] ${i18n.dir() === "rtl" ? "text-right" : "text-left"}  mb-5 sm:text-[25px]`}>{t("header")}</div>
           <div className="text-[18px] mb-7 text-center sm:px-3 sm:text-[14px]">{t("firstparagraph")}</div>
-          <div className="text-[25px] mb-2 text-right mr-5">{t("secondHeader")}</div>
+          <div className={`text-[25px] mb-2 mr-5 ${i18n.dir() === "rtl" ? "text-right" : "text-left"}`}>{t("secondHeader")}</div>
           <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">
             {t("step1.before")}
             <a className="text-[18px] mb-4 text-justify text-purple-700" href="https://metamask.io/download/">
@@ -43,14 +44,6 @@ const HelpCreateWallet = () => {
             Block Explorer URL: https://mumbai.polygonscan.com
           </div>
           <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">{t("step7")}</div>
-
-          {/* <div className="text-[25px] mb-2 text-right mr-5">کیف پول تراست ولت</div>
-                    <div className="text-[18px] mb-4 text-justify px-6">
-                        ۱- وارد این لینک شوید.
-                    </div>
-                    <div className="text-[18px] mb-4 text-justify px-6">
-                        ۲- یک زمر 12 تا 24 کلمه ای تولید می شود و باید با دقت آن ها را نگهداری کنید.
-                    </div> */}
         </SimpleCard>
       </div>
     </TestLayout>

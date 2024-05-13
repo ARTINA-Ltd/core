@@ -37,5 +37,20 @@
   "error": "خطا",
   "requestSuccess": "درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد.",
   "enterMetaverse": "ورود به متاورس",
-  "requestMetaverse": "درخواست برای متاورس"
+  "requestMetaverse": "درخواست برای متاورس",
+
+  "success": "با موفقیت ثبت شد",
+  "failNotif": "برای ثبت درخواست ابتدا میبایست قراردار را بپذیرید",
+  "time": "ساعت",
+  "artistMessage": "پیام هنرمند",
+  "chooseNfts": "ان اف تی های خود را انتخاب کنید",
+  "maximumAmount": "به سقف تعداد ممکن رسیده اید",
+  "messageText": "متن پیام",
+
+  "successfulOperation": "عملیات با موفقیت انجام شد",
+  "cancel": "لغو",
+  "reject": "رد",
+  "confirm": "تایید",
+  "requests": "درخواست‌ها",
+  "ehereum": "اتریوم"
 }
