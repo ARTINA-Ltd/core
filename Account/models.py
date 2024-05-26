@@ -55,7 +55,7 @@ class Profile(models.Model):
     postal_code =models.CharField(max_length=10, verbose_name="postal_code", null=True, blank=True) 
     bio = models.TextField(max_length=500, verbose_name="biography", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-
+    is_foreigner = models.BooleanField(default=False)
   
     def __str__(self):
         return f"{self.user.username} - {self.first_name} {self.last_name}"

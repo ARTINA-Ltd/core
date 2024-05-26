@@ -91,7 +91,7 @@ class RegisterViewSet(viewsets.ModelViewSet):
         username = request.data.get('username')
         phone_number = request.data.get('phone_number')
         email = request.data.get('email')
-
+        is_foreigner = request.data.get('is_foreigner')
         logger.info(f"Register attempt for username: {username}, email: {email}, phone_number: {phone_number}")  # Log the registration attempt
 
         if User.objects.filter(username=username).exists():
