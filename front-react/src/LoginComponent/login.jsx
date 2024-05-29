@@ -50,7 +50,7 @@ const Login = () => {
           userChange(res);
           Notify.success(t("success"));
           console.log(res.data.role);
-          if (res.data.role === "supervisor") {
+          if (res.data.role === "admin") {
             navigate("/admin-panel");
           } else {
             navigate("/dashboard");
