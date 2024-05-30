@@ -137,6 +137,10 @@ class ApplicationViewSet(viewsets.ModelViewSet):
             application = serializer.save(artist=self.request.user)
             application.nft.set(nft_objs)
 
+            # Set in_exhibition to True for all NFTs in this application
+            for nft in nft_objs:
+                nft.in_exhibition = True
+                nft.save()
             # Serialize the new application object and return it in the response
             serializer = ApplicationSerializer(instance=application)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -181,7 +185,10 @@ class ApplicationViewSet(viewsets.ModelViewSet):
             application.status = 'accepted'
         elif action == 'ignored':
             application.status = 'ignored'
-
+            nfts = application.nft.all()
+            for nft in nfts:
+                nft.in_exhibition = False
+                nft.save()
         application.save()
         serialized_data = ApplicationSerializer(application).data
         return Response(serialized_data, status=status.HTTP_200_OK)
