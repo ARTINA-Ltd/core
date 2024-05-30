@@ -16,9 +16,11 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    foreigner : false,
   });
   const [isChecekd, setIsChecekd] = useState(false);
   const [captchaRes, setCaptchaRes] = useState(false);
+  const [foreigner, setForeigner] = useState(false);
 
   const { t } = useTranslation(["login"]);
 
@@ -41,6 +43,7 @@ const Register = () => {
           username: values.username,
           email: values.email,
           password: values.password,
+          isforeigner: foreigner,
         })
         .then((response) => {
           Notiflix.Notify.success(t("successSign"));
@@ -130,6 +133,12 @@ const Register = () => {
           }
           defaultValue={""}
         />
+        {/* make a boolean checkbox if the user is foreigner */}
+        <div className="flex mt-6 justify-center">
+          <input className="m-2" type="checkbox" id="foreigner" name="foreigner" value="foreigner" onChange={(e) => setForeigner(e.target.checked)}
+          />
+          <label for="foreigner">{t("فرد غیر ایرانی")}</label>
+        </div>
         <div className="w-full flex justify-center items-center mt-5">
           <ReCAPTCHA sitekey={"6LecwBMnAAAAAItOWnJM8T17TlvnA1ewPIUGDuj_"} onChange={handleCaptchaChange} />
         </div>
@@ -141,7 +150,7 @@ const Register = () => {
             <div className={`h-4 w-4 ${isChecekd ? "bg-green-600" : "bg-rose-50 border-[1px] border-rose-400"} rounded-full`} />
             <div> {t("agree")}</div>
           </div>
-          <BorderButton className={"px-6 py-3"} size="lg" onClick={!captchaRes ? () => {} : handleSubmit} disabled={!captchaRes}>
+          <BorderButton className={"px-6 py-3"} size="lg" onClick={!captchaRes ? () => { } : handleSubmit} disabled={!captchaRes}>
             {t("signUp")}
           </BorderButton>
         </div>
