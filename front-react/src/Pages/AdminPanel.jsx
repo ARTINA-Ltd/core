@@ -21,7 +21,7 @@ const AdminPanel = () => {
   if (user?.data?.role !== "supervisor") {
     navigate("/");
   }
-
+  //sup
   useEffect(() => {
     axios
       .get("https://api.artina.org/api/supervisor/supervisor-tickets/metaverse_tickets/", {
@@ -74,7 +74,7 @@ const AdminPanel = () => {
                 <img alt="" src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
                 <h1 className="text-center font-bold text-3xl my-4  p-4 ">{t("auth")}</h1>
               </div>
-              {docApproval.length !== 0 ? (
+              {docApproval && docApproval.length !== 0 ? (
                 <div className="w-[90vw] my-4 mx-auto h-1/2 rounded-lg p-4">
                   <div className="w-[70vw] flex mx-auto flex-wrap gap-8 justify-center items-center">
                     {docApproval.map((doc) => {
@@ -94,7 +94,7 @@ const AdminPanel = () => {
                 <img alt="" src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
                 <h1 className="text-center font-bold text-3xl my-4 p-4 ">تیکت ها</h1>
               </div>
-              {tickets.length !== 0 ? (
+              {tickets && tickets.length !== 0 ? (
                 <div className="w-[90vw] my-4 mx-auto h-1/2 rounded-lg p-4">
                   <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-1">
                     {tickets.map((ticket) => {
@@ -115,7 +115,7 @@ const AdminPanel = () => {
                 <img alt="" src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
                 <h1 className="text-center font-bold text-3xl my-4 p-4 ">متاورس</h1>
               </div>
-              {metaTickets.length !== 0 ? (
+              {metaTickets && metaTickets.length !== 0 ? (
                 <div className="w-[90vw] my-4 mx-auto h-1/2 rounded-lg p-4">
                   <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-1">
                     {metaTickets.map((ticket) => {

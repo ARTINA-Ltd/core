@@ -5,9 +5,9 @@ import BorderButton from "./../../Buttons/BorderButton";
 import SellArea from "./../../SellArea/SellArea";
 import { useTranslation } from "react-i18next";
 
-const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell = false, onClickShow, onClickHide, has_creator }) => {
+const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell = false, onClickShow, onClickHide, has_creator, visible }) => {
   const [isHovered, setHovered] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(visible);
   const [isExpanded, setIsexpanded] = useState(false);
   const { t } = useTranslation();
   const handleClickShow = (e) => {
