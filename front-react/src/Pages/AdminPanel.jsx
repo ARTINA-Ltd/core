@@ -21,7 +21,7 @@ const AdminPanel = () => {
   if (user?.data?.role !== "supervisor") {
     navigate("/");
   }
-
+  //sup
   useEffect(() => {
     axios
       .get("https://api.artina.org/api/supervisor/supervisor-tickets/metaverse_tickets/", {
