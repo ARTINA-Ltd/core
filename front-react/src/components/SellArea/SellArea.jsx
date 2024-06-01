@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Button } from "primereact/button";
 import axios from "axios";
 import { Notify } from "notiflix";
 import SimpleInput from "../Inputs/SimpleInput.jsx";

@@ -9,16 +9,12 @@ import { useContext } from "react";
 import { UserContext } from "../App";
 import { Notify } from "notiflix";
 import { useTranslation } from "react-i18next";
-import BorderButton from "../components/Buttons/BorderButton";
 
 const Collections = () => {
   const [getData, setData] = useState();
   const [getUser, setUser] = useState();
   const user = useContext(UserContext);
   const { t } = useTranslation("collections");
-
-  const [visible, setVisible] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
 
   const navigate = useNavigate();
   const { username } = useParams();
@@ -87,31 +83,9 @@ const Collections = () => {
     childIsVisible(false);
   };
 
-  const handleSubmit = () => {
-    setIsChecked(true);
-    setVisible(false);
-  };
-
-  const Footer = (
-    <div className="flex gap-5 justify-end">
-      <BorderButton onClick={() => setVisible(false)} className="font-b4 text-center">
-        لغو
-      </BorderButton>
-      <BorderButton onClick={() => handleSubmit()} className="font-b4 text-center" disabled={!isChecked}>
-        ثبت
-      </BorderButton>
-    </div>
-  );
-
-  const Header = (
-    <div>
-      <p className="font-b9">افزودن ان اف تی خارج از آرتینا</p>
-    </div>
-  );
-
   return (
     <TestLayout>
-      {user && getUser && user.data.username != username && (
+      {user && getUser && user.data.username !== username && (
         <div>
           <div className="w-full flex gap-16 items-center p-6 bg-white rounded-xl mb-4 sm:p-3 sm:gap-4 sm:flex-col">
             <img src={getUser.profile_picture} className="rounded-full object-cover h-52 w-52 flex-shrink-0 sm:w-[120px] sm:h-[120px]" alt="" />
@@ -140,34 +114,26 @@ const Collections = () => {
           <div className="hover:bg-red-100 bg-red-50 border-[1px] border-red-500 text-red-500 transition-all rounded-2xl py-1 px-5">{t("nothingYet")} </div>
         </div>
       )}
-      <div className="grid grid-cols-4 gap-5 w-full items-center lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
-        {getData ? (
-          <Fragment>
-            {user.data.username === username ? (
-              <div className="col-span-1 h-full">
-                <div className="h-full w-full bg-[#0000aa05] hover:bg-[#0000aa08] rounded-2xl group flex items-center justify-center cursor-pointer  transition-all md:h-[300px] sm:h-[250px]" onClick={() => document.getElementById("AddNftPopup").showModal()}>
-                  <div className="text-[#000022] opacity-20 group-hover:opacity-40 transition-all group-hover:scale-105 ease-out duration-150 flex flex-col items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="0.6" stroke="currentColor" width={"4em"}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <div className="font-b6">{t("addNftFromOut")}</div>
-                  </div>
-                </div>
+      {getData && (
+        <div className="flex flex-wrap grow gap-8 w-full mx-auto my-4 items-center sm:mx-auto">
+          {user.data.username === username ? (
+            <div className="min-h-[480px] w-80 px-4 sm:w-full sm:mx-auto shadow-md max-w-[25rem] hover:shadow-xl ease-in-out duration-300 grow p-4 bg-[#0000aa05] hover:bg-[#0000aa08] rounded-2xl group flex items-center justify-center cursor-pointer  transition-all md:h-[300px] sm:h-[250px] sm:wf" onClick={() => document.getElementById("AddNftPopup").showModal()}>
+              <div className="text-[#000022] opacity-20 group-hover:opacity-40 transition-all group-hover:scale-105 ease-out duration-150 flex flex-col items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="0.6" stroke="currentColor" width={"4em"}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div className="font-b6">{t("addNftFromOut")}</div>
               </div>
-            ) : null}
+            </div>
+          ) : null}
 
-            {getData.map((item, index) => (
-              <div className="col-span-1" key={index}>
-                <ImageCard className="bg-white max-h-[420px] " src={item.image_url} price={item.last_price} onClick={() => navigate(`/nft-details/${item.token_id}`)} tokenId={item.token_id} showSell={user ? user.data.username === username : false} visible={item.is_visible} onClickShow={(e, x) => handleClickShow(e, x, item.token_id)} onClickHide={(e, x) => handleClickHide(e, x, item.token_id)}>
-                  {item.name}
-                </ImageCard>
-              </div>
-            ))}
-          </Fragment>
-        ) : (
-          ""
-        )}
-      </div>
+          {getData.map((item, index) => (
+            <ImageCard key={index} className="bg-white max-h-[480px] min-h-[26rem] w-80 sm:w-full my-auto shadow-md max-w-[25rem] p-6 hover:shadow-xl ease-in-out duration-300 grow sm:mx-auto rounded-xl" src={item.image_url} price={item.last_price} onClick={() => navigate(`/nft-details/${item.token_id}`)} tokenId={item.token_id} showSell={user ? user.data.username === username : false} visible={item.is_visible} onClickShow={(e, x) => handleClickShow(e, x, item.token_id)} onClickHide={(e, x) => handleClickHide(e, x, item.token_id)}>
+              {item.name}
+            </ImageCard>
+          ))}
+        </div>
+      )}
       <dialog id="AddNftPopup" className="modal relative p-0 m-0">
         <div className="modal-box p-0 m-0 bg-black">
           <img src="/4.jpg" className="absolute object-cover w-full h-full opacity-80 -z-10" alt="" />

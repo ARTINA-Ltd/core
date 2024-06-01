@@ -1,12 +1,11 @@
 import React, { Fragment } from "react";
 import { useState } from "react";
 import CollectionDialog from "../../Dialog/CollectionDialog/CollectionDialog";
-import SimpleCard from "./SimpleCard";
 import BorderButton from "./../../Buttons/BorderButton";
 import SellArea from "./../../SellArea/SellArea";
 import { useTranslation } from "react-i18next";
 
-const ImageCard = ({ className = "", children, src, price, onClick, tokenId, showSell = false, onClickShow, onClickHide, has_creator }) => {
+const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell = false, onClickShow, onClickHide, has_creator }) => {
   const [isHovered, setHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isExpanded, setIsexpanded] = useState(false);
@@ -24,11 +23,11 @@ const ImageCard = ({ className = "", children, src, price, onClick, tokenId, sho
   };
 
   return (
-    <div className="max-w-sm min-w-min" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
-      <SimpleCard className={className}>
+    <div className={className} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+      <Fragment>
         <div className="relative transition-all cursor-pointer" onClick={onClick}>
-          <div className={`pt-3 absolute w-full h-[300px] rounded-lg bg-gradient-to-b from-[#00000060] transition-all ${isHovered ? "flex justify-center" : "hidden"}`} />
-          <img src={src} className="w-full h-[300px] rounded-lg object-cover" alt="" />
+          <div className={`pt-3 absolute w-full rounded-lg bg-gradient-to-b from-[#00000060] transition-all ${isHovered ? "flex justify-center" : "hidden"}`} />
+          <img src={src} className="w-full rounded-lg object-cover" alt="" />
         </div>
         {has_creator ? (
           <div id="100" className="flex justify-between">
@@ -70,7 +69,7 @@ const ImageCard = ({ className = "", children, src, price, onClick, tokenId, sho
           </div>
         ) : (
           <Fragment>
-            <div className="text-[18px] mt-2 cursor-pointer" onClick={onClick}>
+            <div className="text-[18px] mt-2 cursor-pointer " onClick={onClick}>
               {children}
             </div>
             <div className="flex justify-between pb-8 items-center">
@@ -88,7 +87,7 @@ const ImageCard = ({ className = "", children, src, price, onClick, tokenId, sho
 
               {showSell ? (
                 <Fragment>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-end gap-2">
                     <div className={`transition-all py-2 rounded-lg px-2 hover:bg-slate-100 cursor-pointer duration-75`} onClick={isVisible ? handleClickHide : handleClickShow}>
                       {isVisible ? (
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.1" stroke="currentColor" className="w-6 h-6">
@@ -108,12 +107,12 @@ const ImageCard = ({ className = "", children, src, price, onClick, tokenId, sho
                 </Fragment>
               ) : null}
             </div>
-            <div className={`relative w-full mx-auto bg-white ease-out outline-[1.5rem] sm:outline-[.8rem] outline outline-white duration-300 ${isExpanded ? "z-10" : "-translate-y-full  -z-10"} overflow-hidden shadow-2xl`}>
+            <div className={`relative w-full mx-auto rounded-2xl bg-white ease-out outline-[1.5rem] sm:outline-[.8rem] outline outline-white duration-300 ${isExpanded ? "z-10" : "-translate-y-full  -z-10"} overflow-hidden shadow-2xl`}>
               <SellArea tokenId={tokenId} cancel={handleExpand} />
             </div>
           </Fragment>
         )}
-      </SimpleCard>
+      </Fragment>
     </div>
   );
 };
