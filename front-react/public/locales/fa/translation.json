@@ -122,6 +122,7 @@
   "mintNameExample": "مثلا: تابلو نقاشی",
   "mintArtistExample": "مثلا: علیرضا موسوی",
   "mintPriceExample": "مثلا: 1.4",
+  "name": "نام",
   "type": "نوع",
   "delete": "حذف",
   "mintProperties": "خاصیت ها",

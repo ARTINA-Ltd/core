@@ -122,6 +122,7 @@
   "mintNameExample": "For example: painting",
   "mintArtistExample": "For example: Arthur Matthews",
   "mintPriceExample": "For example: 1.4",
+  "name": "Name",
   "type": "Type",
   "delete": "Delete",
   "mintProperties": "Properties",

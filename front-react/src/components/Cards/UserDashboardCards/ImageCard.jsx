@@ -24,11 +24,10 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell
 
   return (
     <div className={className} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
-      <Fragment>
-        <div className="relative transition-all cursor-pointer" onClick={onClick}>
-          <div className={`pt-3 absolute w-full rounded-lg bg-gradient-to-b from-[#00000060] transition-all ${isHovered ? "flex justify-center" : "hidden"}`} />
-          <img src={src} className="w-full rounded-lg object-cover" alt="" />
-        </div>
+      <div className="relative transition-all cursor-pointer h-3/4 mb-10" onClick={onClick}>
+        <img src={src} className="w-full rounded-lg object-cover h-full" alt="" />
+      </div>
+      <div className="">
         {has_creator ? (
           <div id="100" className="flex justify-between">
             <div className="text-[18px] mt-2 cursor-pointer" onClick={onClick}>
@@ -112,7 +111,7 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell
             </div>
           </Fragment>
         )}
-      </Fragment>
+      </div>
     </div>
   );
 };
