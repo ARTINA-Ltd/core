@@ -18,7 +18,7 @@ const AdminPanel = () => {
 
   const navigate = useNavigate();
 
-  if (user?.data?.role !== "supervisor" || user?.data?.role !== "admin") {
+  if (user?.data?.role !== "supervisor") {
     navigate("/");
   }
 
