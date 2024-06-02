@@ -131,7 +131,7 @@
   "externalLinkExample": "For example: https://www.artina.org",
   "minting": " Mint in Process...",
   "successfullyMinted": "Your token has been successfully converted to NFT; now you can add it to your wallet.",
-  "mintLastParagraph": "Enter your wallet and click import on the nft section. Copy the following code in the contract section and enter {tokenId} in the TokenId section and click on registration.",
+  "mintLastParagraph": { "beforeToken": "Enter your wallet and click import on the nft section. Copy the following code in the contract section and enter ", "afterToken": " in the TokenId section and click on registration." },
   "code": "code",
   "submit": "Submit",
   "sell": "Sell",

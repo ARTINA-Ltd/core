@@ -452,7 +452,10 @@ const UploadItem = () => {
           </div>
           <div className="leading-[40px]">
             <div className="text-[20px] text-green-600">{t("successfullyMinted")}</div>
-            <div className="text-[16px] text-green-900">{t("mintLastParagraph")}</div>
+            <div className="text-[16px] text-green-900">
+              {t("mintLastParagraph.beforeToken")} {tokenId}
+              {t("mintLastParagraph.afterToken")}
+            </div>
             <div
               className="text-[16px] text-green-900 bg-green-100 rounded-full w-min whitespace-nimport { i18n } from 'i18next';
 owrap px-7 cursor-pointer flex gap-12 items-center"
