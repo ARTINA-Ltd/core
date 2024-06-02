@@ -103,7 +103,7 @@ const Exhibitor = () => {
                     <img src={item.image} className="h-full w-full object-cover rounded-2xl" alt="" />
                     <div className="absolute h-full w-full top-0 rounded-2xl bg-gradient-to-t text-lg font-b4 group-hover:text-xl gap-3 from-black flex items-end justify-center pb-4 text-white group-hover:pb-6 transition-all">
                       <div className="flex flex-col  items-center justify-center w-full">
-                        <h2 className="ease-in-out duration-200 hover:text-[#4e45d0]" onClick={() => navigate(`/artist-application-form/${item.id}`)}>
+                        <h2 className="ease-in-out duration-200 hover:text-[#4e45d0]" onClick={() => navigate(`/exhibition-collections/${item.id}`)}>
                           {item.marketName}
                         </h2>
 
