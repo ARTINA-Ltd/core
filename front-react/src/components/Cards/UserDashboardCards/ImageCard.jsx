@@ -24,13 +24,13 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell
 
   return (
     <div className={className} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
-      <div className="relative transition-all cursor-pointer h-3/4 mb-10" onClick={onClick}>
+      <div className="relative transition-all cursor-pointer h-3/4 mb-10 " onClick={onClick}>
         <img src={src} className="w-full rounded-lg object-cover h-full" alt="" />
       </div>
       <div className="">
         {has_creator ? (
-          <div id="100" className="flex justify-between">
-            <div className="text-[18px] mt-2 cursor-pointer" onClick={onClick}>
+          <div id="100" className="flex justify-between px-4 -mt-6">
+            <div className="text-[18px] cursor-pointer" onClick={onClick}>
               {children}
             </div>
             <div className="flex justify-between items-center">

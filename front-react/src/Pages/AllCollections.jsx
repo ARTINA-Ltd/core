@@ -85,7 +85,7 @@ const AllCollections = () => {
         </div>
       </div>
       {/* Render filtered and sorted data */}
-      <div className="grid grid-cols-4 gap-5 w-full items-center lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
+      <div className="grid grid-cols-4  gap-5 w-full items-center lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
         {getData
           .filter((item) => {
             if (!searchQuery) return true;
@@ -109,8 +109,8 @@ const AllCollections = () => {
             }
           })
           .map((item, index) => (
-            <div className="col-span-1" key={index}>
-              <ImageCard className="bg-white" src={item.image_url} price={item.last_price} onClick={() => navigate(`/nft-details/${item.token_id}`)} tokenId={item.token_id} creator={item.creator} has_creator={true}>
+            <div className="col-span-1 " key={index}>
+              <ImageCard className="bg-white rounded-lg shadow-md h-[410px]" src={item.image_url} price={item.last_price} onClick={() => navigate(`/nft-details/${item.token_id}`)} tokenId={item.token_id} creator={item.creator} has_creator={true}>
                 <div className="flex-col">
                   <div className="font-b5 py-1">{item.name}</div>
                   <div className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 py-1">{item.creator}</div>

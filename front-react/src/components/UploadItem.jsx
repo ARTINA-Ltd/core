@@ -337,9 +337,11 @@ const UploadItem = () => {
             </div>
           </div>
           <div className="w-full flex gap-4 sm:flex-col">
-            <div className="w-full">
-              <SimpleInput options={collectionsOptions} type="dropdown" placeholder={t("selectCategory")} onChange={handleCollectionChange} title={t("collection")} />
-            </div>
+            {
+              // <div className="w-full">
+              //    <SimpleInput options={collectionsOptions} type="dropdown" placeholder={t("selectCategory")} onChange={handleCollectionChange} title={t("collection")} />
+              //    </div>
+            }
             <div className="w-full">
               <p className="text-[14px] cursor-pointer pt-2 border-r-2 pb-2 pr-3 border-indigo-600 font-b5" onClick={() => setVisible(true)}>
                 {t("chooseProperties")}{" "}
