@@ -783,7 +783,7 @@ class EmailMixin(viewsets.ViewSet):
 
 
 # Assuming you have already set up Django Rest Framework and configured your project
-
+# 9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf
 from rest_framework import viewsets
 from rest_framework.response import Response
 import requests
@@ -906,7 +906,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/otc/price'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '8777|XedUHicmAa4ghJXbKnpgt8LoxPbxyg9ebxo10nkU',  # Replace 'your_api_key' with your actual API key
+            # 'X-API-Key': '8777|XedUHicmAa4ghJXbKnpgt8LoxPbxyg9ebxo10nkU',  # Replace 'your_api_key' with your actual API key
         }
         params = {
             'symbol': 'SHIBTMN',  # Assuming the symbol is passed as the primary key
@@ -919,15 +919,15 @@ class CryptoViewSet(viewsets.ViewSet):
             data = response.json()
             return Response(data, status=response.status_code)
         else:
-            return Response({'error': 'Failed to retrieve price'}, status=response.status_code)
+            return Response({'error': 'Failed to retrieve price','response':response}, status=response.status_code)
             
-    @action(detail=False, methods=['post'])
 
+    @action(detail=False, methods=['post'])
     def CryptoWithdrawal(self, request):
         url = 'https://api.wallex.ir/v1/account/crypto-withdrawal'
         headers = {
-            'Content-Type': 'application/json',
-            'X-API-Key': '8777|XedUHicmAa4ghJXbKnpgt8LoxPbxyg9ebxo10nkU',  # Replace 'your_api_key' with your actual API key
+        'Content-Type': 'application/json',
+        'X-API-Key': '8777|XedUHicmAa4ghJXbKnpgt8LoxPbxyg9ebxo10nkU',  # Replace 'your_api_key' with your actual API key
         }
         data = {
             'coin': request.data.get('coin'),
@@ -935,13 +935,20 @@ class CryptoViewSet(viewsets.ViewSet):
             'value': request.data.get('value'),
             'wallet_address': request.data.get('wallet_address'),
         }
-        response = requests.post(url, headers=headers, json=data)
-        
-        # Check if the request was successful
-        if response.status_code == 200:
-            return Response({'message': 'Withdrawal successful'}, status=response.status_code)
-        else:
-            return Response({'error': 'Withdrawal failed'}, status=response.status_code)
+
+        try:
+            response = requests.post(url, headers=headers, json=data)
+            response.raise_for_status()  # This will raise an HTTPError if the HTTP request returned an unsuccessful status code
+
+            if response.status_code == 200:
+                return Response({'message': 'Withdrawal successful'}, status=response.status_code)
+            else:
+                return Response({'error': 'Withdrawal failed', 'details': response.json()}, status=response.status_code)
+
+        except requests.exceptions.HTTPError as http_err:
+            return Response({'error': 'HTTP error occurred', 'details': str(http_err)}, status=response.status_code)
+        except Exception as err:
+            return Response({'error': 'An error occurred', 'details': str(err)}, status=500)
 
     @action(detail=False, methods=['post'])
 
@@ -972,7 +979,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/balances'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '8777|XedUHicmAa4ghJXbKnpgt8LoxPbxyg9ebxo10nkU',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
         }
         response = requests.get(url, headers=headers)
         
@@ -989,7 +996,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/markets'
         headers = {
             'Content-Type': 'application/json',
-            # 'X-API-Key': '8777|XedUHicmAa4ghJXbKnpgt8LoxPbxyg9ebxo10nkU',  # Replace 'your_api_key' with your actual API key
+            # 'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
         }
         response = requests.get(url, headers=headers)
         
