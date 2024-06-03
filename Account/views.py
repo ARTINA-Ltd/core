@@ -885,7 +885,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/otc/orders'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '8744|sZvI1Sl9ydI49yCZfb14FgUhtdgIPQGp59S7HxsY',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '8744|sZvI1Sl9ydI49yCZfb14FgUhtdgIPQGp59S7HxsY',  # Replace 'api_key' 
         }
         data = {
             'symbol': 'SHIBTMN',  # You mentioned MATIC, but the example is for BTCUSDT. Please adjust accordingly.
@@ -981,7 +981,7 @@ class CryptoViewSet(viewsets.ViewSet):
             data = response.json()
             return Response(data, status=response.status_code)
         else:
-            return Response({'error': 'Failed to retrieve account balances'}, status=response.status_code)
+            return Response({'error': 'Failed to retrieve account balances','response':response}, status=response.status_code)
     
     @action(detail=False, methods=['get'])
 

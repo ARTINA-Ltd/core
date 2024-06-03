@@ -129,8 +129,6 @@ class NFTFilter(filters.FilterSet):
         
 class NftViewSet(viewsets.ModelViewSet):
     queryset = NFT.objects.all()
-    # filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter)
-    # filterset_class = NFTFilter
     serializer_class = serializers.NFTSerializer
     ordering_fields = '__all__'
 
