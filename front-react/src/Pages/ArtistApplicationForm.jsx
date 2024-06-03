@@ -9,7 +9,7 @@ import { useContext } from "react";
 import { UserContext } from "../App";
 import axios from "axios";
 import { useEffect } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useTranslation } from "react-i18next";
 
 const ArtistApplicationForm = () => {
@@ -21,6 +21,7 @@ const ArtistApplicationForm = () => {
   const { id } = useParams();
   const [getExhibitions, setExhibitions] = useState();
   const { t } = useTranslation(["exhibitor"]);
+  const navigate = useNavigate();
   const formatDate = (inputDate) => {
     return Intl.DateTimeFormat("fa", {
       year: "numeric",
@@ -64,7 +65,10 @@ const ArtistApplicationForm = () => {
               },
             }
           )
-          .then(() => Notify.success(t("success")))
+          .then(() => {
+            Notify.success(t("success"));
+            navigate("/exhibitor");
+          })
           .catch((res) => {
             Notify.failure(t("error"));
             console.log(res);

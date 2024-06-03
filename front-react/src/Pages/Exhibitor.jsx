@@ -99,20 +99,20 @@ const Exhibitor = () => {
             </div>{" "}
             {artistOpenExhibitions
               ? artistOpenExhibitions.map((item, index) => (
-                  <div>
-                    <SimpleCard key={index} className="h-[420px] w-full bg-[#0000aa05] hover:bg-[#0000aa08] transition-all p-0 relative group cursor-pointer md:h-[300px] sm:h-[250px]" noPadding={true}>
-                      <img src={item.image} className="h-full w-full object-cover rounded-2xl" alt="" onClick={() => navigate(`/artist-application-form/${item.id}`)} />
-                      <div className="absolute h-full w-full top-0 rounded-2xl bg-gradient-to-t text-lg font-b4 group-hover:text-xl gap-3 from-black flex items-end justify-center pb-4 text-white group-hover:pb-6 transition-all">
-                        <div className="flex flex-col items-center justify-center w-full">
+                  <SimpleCard key={index} className="h-[420px] w-full bg-[#0000aa05] hover:bg-[#0000aa08] transition-all p-0 relative group cursor-pointer md:h-[300px] sm:h-[250px]" noPadding={true}>
+                    <img src={item.image} className="h-full w-full object-cover rounded-2xl" alt="" />
+                    <div className="absolute h-full w-full top-0 rounded-2xl bg-gradient-to-t text-lg font-b4 group-hover:text-xl gap-3 from-black flex items-end justify-center pb-4 text-white group-hover:pb-6 transition-all">
+                      <div className="flex flex-col  items-center justify-center w-full">
+                        <h2 className="ease-in-out duration-200 hover:text-[#4e45d0]" onClick={() => navigate(`/exhibition-collections/${item.id}`)}>
                           {item.marketName}
+                        </h2>
 
-                          <div className="bg-white/20  w-full hover:bg-white/30 py-2 text-sm backdrop-blur-md" onClick={() => handleButton(item.id, item.has_metaverse)}>
-                            {item.has_metaverse ? t("enterMetaverse") : t("requestMetaverse")}
-                          </div>
+                        <div className="bg-white/20 ease-in-out duration-200 hover:text-[#afafaf] w-full hover:bg-white/30 py-2 text-sm backdrop-blur-md">
+                          <h2 onClick={() => handleButton(item.id, item.has_metaverse)}>{item.has_metaverse ? t("enterMetaverse") : t("requestMetaverse")}</h2>
                         </div>
                       </div>
-                    </SimpleCard>
-                  </div>
+                    </div>
+                  </SimpleCard>
                 ))
               : ""}
           </div>

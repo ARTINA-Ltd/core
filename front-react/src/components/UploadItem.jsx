@@ -141,6 +141,7 @@ const UploadItem = () => {
           console.log(res);
         })
         .catch((e) => {
+          setIsLoading(false);
           console.log(e);
           console.log("Category:", selectedCategory);
           console.log("Has Physical:", hasPhysical);
@@ -188,6 +189,7 @@ const UploadItem = () => {
           console.log(res);
         })
         .catch((e) => {
+          setIsLoading(false);
           console.log(e);
           console.log("Category:", selectedCategory);
           console.log("Has Physical:", hasPhysical);
@@ -335,9 +337,11 @@ const UploadItem = () => {
             </div>
           </div>
           <div className="w-full flex gap-4 sm:flex-col">
-            <div className="w-full">
-              <SimpleInput options={collectionsOptions} type="dropdown" placeholder={t("selectCategory")} onChange={handleCollectionChange} title={t("collection")} />
-            </div>
+            {
+              // <div className="w-full">
+              //    <SimpleInput options={collectionsOptions} type="dropdown" placeholder={t("selectCategory")} onChange={handleCollectionChange} title={t("collection")} />
+              //    </div>
+            }
             <div className="w-full">
               <p className="text-[14px] cursor-pointer pt-2 border-r-2 pb-2 pr-3 border-indigo-600 font-b5" onClick={() => setVisible(true)}>
                 {t("chooseProperties")}{" "}
@@ -429,7 +433,7 @@ const UploadItem = () => {
                 {t("addArt")}
               </BorderButton>
             ) : (
-              <BorderButton className=" text-[14px] bg-[#302c66] py-5 px-[6rem] rounded-lg cursor-not-allowed transition-all flex items-center gap-3">
+              <BorderButton className=" text-[14px] bg-[#DCFCE7] py-5 px-[6rem] rounded-lg cursor-not-allowed transition-all flex items-center gap-3">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4 animate-bounce">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
                 </svg>

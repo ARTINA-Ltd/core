@@ -568,7 +568,7 @@ function Profile() {
                 type="number"
                 ltr={true}
                 title="کد پستی"
-                placeholder="مثلا: تهران ..."
+                placeholder="مثلا: 3521 ..."
                 onChange={(e) => {
                   setValues((prev) => ({ ...prev, postal_code: e.target.value }));
                   setValidate((prev) => ({
@@ -583,7 +583,7 @@ function Profile() {
             </div>
             <div className="flex gap-4">
               <SimpleInput
-                type="text"
+                type="number"
                 title="شماره ثابت"
                 placeholder="02112345678"
                 isValid={validate.cell_number}
