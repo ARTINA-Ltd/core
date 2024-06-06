@@ -5,9 +5,8 @@ import { useTranslation } from "react-i18next";
 const MostFrequentQuestions = ({ className = "" }) => {
   const { t } = useTranslation();
   return (
-    <div className={`${className} flex justify-center bg-primary lg:my-10`}>
-      <div className={`${className}  w-full flex justify-center bg-primary text-primary-content relative overflow-hidden`}>
-        <img alt="" src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
+    <div className={`${className} flex w-[80vw] mx-auto justify-center rounded-xl bg-primary lg:my-10`}>
+      <div className={`${className}  w-full flex justify-center bg-primary rounded-xl text-primary-content relative overflow-hidden`}>
         <div className="w-11/12 flex flex-col items-center text-primary-content">
           <div className="font-b9 text-[40px]  mt-10 sm:text-[30px]">{t("FAQ")}</div>
 
