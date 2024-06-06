@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 const AboutAI = ({ className }) => {
   const { t } = useTranslation();
   return (
-    <div className={`${className}  w-full flex justify-center bg-[#4e45d0] text-white py-16 relative overflow-hidden sm:py-4`}>
+    <div className={`${className}  w-full flex justify-center bg-primary text-primary-content py-16 relative overflow-hidden sm:py-4`}>
       <img alt="" src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden z-10" />
       <div className={`w-10/12 flex items-center sm:w-4/5 md:flex-col lg:items-center lg:w-[75%]`}>
         <div className="text-[18px] mb-4 text-justify pl-16 z-20 lg:pl-0">
