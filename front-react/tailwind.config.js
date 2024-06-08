@@ -52,7 +52,33 @@ module.exports = {
   plugins: [require("tailwindcss-bg-patterns"), require("daisyui"), require("@tailwindcss/typography")],
 
   daisyui: {
-    themes: [],
-  },
+    themes: [
+      "night",
 
+      {
+        mytheme: {
+          primary: "#4E45D0",
+          "primary-content": "#FFFFFF",
+          secondary: "#3ABEF9",
+          "secondary-content": "#FFFFFF",
+          accent: "#818CF8",
+          "accent-content": "#FFFFFF",
+          neutral: "#D2649A",
+          "neutral-content": "#000000",
+          "base-100": "#D1D5DB",
+          "base-200": "#F9FAFB",
+          "base-300": "#ffffff",
+          "base-content": "#161616",
+          info: "#00B5FF",
+          "	info-content": "#000000",
+          success: "#00A96E",
+          "success-content": "#000000",
+          warning: "#FFBE00",
+          "warning-content": "#000000",
+          error: "#FF5861",
+          "error-content": "#000000",
+        },
+      },
+    ],
+  },
 };

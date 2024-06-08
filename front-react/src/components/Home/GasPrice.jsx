@@ -39,10 +39,8 @@ const GasPrice = ({ className = "" }) => {
 
   return (
     <div className={`${className} flex justify-center lg:my-10`}>
-      <div className="w-full flex flex-col items-center text-black">
-        <div className="font-b9 text-[40px] sm:text-[30px]">
-          {t("gasFeeCalculation")}
-        </div>
+      <div className="w-full flex flex-col items-center text-base-content">
+        <div className="font-b9 text-[40px] sm:text-[30px]">{t("gasFeeCalculation")}</div>
 
         <div className="flex-col w-full justify-center items-center">
           <div className="mt-8 font-b5 text-[25px] text-center mb-5 sm:text-[15px]">
