@@ -136,7 +136,7 @@ class CryptoSymbol(models.Model):
 
 class UserCryptoBalance(models.Model):
     symbol = models.ForeignKey(CryptoSymbol, default="MATICTMN",on_delete=models.SET_NULL)
-    amount = models.FloatField(max_digits=20, decimal_places=6)
+    amount = models.FloatField(default=0)
 
 
 class UserBalance(models.Model):
