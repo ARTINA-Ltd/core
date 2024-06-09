@@ -912,7 +912,7 @@ class CryptoViewSet(viewsets.ViewSet):
             'symbol': 'ETHTMN',  # Assuming the symbol is passed as the primary key
             'side': 'BUY',
         }
-        response = requests.get(url, headers=headers, params=params)
+        response_eth = requests.get(url, headers=headers, params=params)
         
         url = 'https://api.wallex.ir/v1/account/otc/price'
         headers = {
@@ -926,9 +926,14 @@ class CryptoViewSet(viewsets.ViewSet):
         response_matic = requests.get(url, headers=headers, params=params)
         
         # Check if the request was successful
-        if response.status_code == 200:
-            data = response.json()
-            return Response(data, status=response.status_code)
+        if response_matic.status_code == 200:
+            data = {
+                "ETH_price" : response_eth.result.price ,
+                "MATIC_price" : response_matic.result.price
+            }
+            
+            
+            return Response(data, status=response_matic.status_code)
         else:
             return Response({'error': 'Failed to retrieve price','response':response}, status=response.status_code)
     @action(detail=False, methods=['get'])
