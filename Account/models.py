@@ -129,21 +129,20 @@ class TransactionCurrency(models.Model):
     def __str__(self):
         return f"{self.name}"
 
-class CryptoSymbol(models.Model):
-    name = models.CharField(max_length=10, null=True, blank=False, default="MATICTMN")
-    def __str__(self):
-        return f"{self.name}"
-
-class UserCryptoBalance(models.Model):
-    symbol = models.ForeignKey(CryptoSymbol, default="MATICTMN",on_delete=models.SET_NULL)
-    amount = models.FloatField(default=0)
+# class CryptoSymbol(models.Model):
+#     name = models.CharField(max_length=10, null=True, blank=False, default="MATICTMN")
+#     def __str__(self):
+#         return f"{self.name}"
 
 
 class UserBalance(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rial_available_balance = models.IntegerField(default=100000,verbose_name="mojudi")
     rial_untradable_balance = models.IntegerField(default=0,verbose_name="unavailable mojudi")
-
+    matic_balance = models.FloatField(default=0)
+    matic_untradable_balance = models.FloatField(default=0)
+    eth_balance = models.FloatField(default=0)
+    eth_untradable_balance = models.FloatField(default=0)
     def __str__(self):
         return f"{self.user.username}"
 
@@ -179,22 +178,22 @@ class Wallet(models.Model):
         return f"{self.user.username}"
 
    
-class Transaction(models.Model):
-    STATUS_CHOICES = (
-        ('pending', 'Pending'),
-        ('completed', 'Completed'),
-        ('failed', 'Failed'),
-    )
-    SIDE_CHOICES = (
-        ('SELL','SELL'),
-        ('BUY','BUY'),
-    )
-    user = models.ForeignKey(User, on_delete=models.SET_NULL)
-    symbol = models.ForeignKey(CryptoSymbol, default="MATICTMN",on_delete=models.SET_NULL)
-    amount = models.FloatField(default=0)
-    side = models.CharField(max_length=10, choices=SIDE_CHOICES, default='BUY')
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
-    created_at = models.DateTimeField(auto_now_add=True)
+# class Transaction(models.Model):
+#     STATUS_CHOICES = (
+#         ('pending', 'Pending'),
+#         ('completed', 'Completed'),
+#         ('failed', 'Failed'),
+#     )
+#     SIDE_CHOICES = (
+#         ('SELL','SELL'),
+#         ('BUY','BUY'),
+#     )
+#     user = models.ForeignKey(User, on_delete=models.SET_NULL)
+#     symbol = models.ForeignKey(CryptoSymbol, default="MATICTMN",on_delete=models.SET_NULL)
+#     amount = models.FloatField(default=0)
+#     side = models.CharField(max_length=10, choices=SIDE_CHOICES, default='BUY')
+#     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+#     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"{self.user.username} - {self.matic_amount} Matic ({self.status})"
+#     def __str__(self):
+#         return f"{self.user.username} - {self.matic_amount} Matic ({self.status})"
