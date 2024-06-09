@@ -906,14 +906,46 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/otc/price'
         headers = {
             'Content-Type': 'application/json',
-            # 'X-API-Key': '8777|XedUHicmAa4ghJXbKnpgt8LoxPbxyg9ebxo10nkU',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
         }
         params = {
-            'symbol': 'SHIBTMN',  # Assuming the symbol is passed as the primary key
+            'symbol': 'ETHTMN',  # Assuming the symbol is passed as the primary key
             'side': 'BUY',
         }
         response = requests.get(url, headers=headers, params=params)
         
+        url = 'https://api.wallex.ir/v1/account/otc/price'
+        headers = {
+            'Content-Type': 'application/json',
+            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
+        }
+        params = {
+            'symbol': 'MATICTMN',  # Assuming the symbol is passed as the primary key
+            'side': 'BUY',
+        }
+        response_matic = requests.get(url, headers=headers, params=params)
+        
+        # Check if the request was successful
+        if response.status_code == 200:
+            data = response.json()
+            return Response(data, status=response.status_code)
+        else:
+            return Response({'error': 'Failed to retrieve price','response':response}, status=response.status_code)
+    @action(detail=False, methods=['get'])
+
+    def CryptoPrice2(self, request, pk=None):
+        url = 'https://api.wallex.ir/v1/account/otc/price'
+        headers = {
+            'Content-Type': 'application/json',
+            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
+        }
+        params = {
+            'symbol': 'ETHTMN',  # Assuming the symbol is passed as the primary key
+            'side': 'BUY',
+        }
+        response = requests.get(url, headers=headers, params=params)
+        
+
         # Check if the request was successful
         if response.status_code == 200:
             data = response.json()
@@ -956,14 +988,12 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/orders'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '8777|XedUHicmAa4ghJXbKnpgt8LoxPbxyg9ebxo10nkU',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
         }
         data = {
             'symbol': request.data.get('symbol'),
-            'type': request.data.get('type'),
             'side': 'SELL',
-            'price': request.data.get('price'),
-            'quantity': request.data.get('quantity'),
+            'amount': request.data.get('amount'),
         }
         response = requests.post(url, headers=headers, json=data)
         
@@ -992,18 +1022,16 @@ class CryptoViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['get'])
 
-    def tests(self, request):
+    def Market(self, request):
         url = 'https://api.wallex.ir/v1/markets'
         headers = {
             'Content-Type': 'application/json',
-            # 'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
         }
         response = requests.get(url, headers=headers)
         
-        # Check if the request was successful
         if response.status_code == 200:
             data = response.json()
             return Response(data, status=response.status_code)
         else:
-            return Response({'error': 'Failed to retrieve account balances'}, status=response.status_code)
+            return Response({'error': 'Failed to retrieve Market'}, status=response.status_code)
 

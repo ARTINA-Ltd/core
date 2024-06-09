@@ -94,7 +94,7 @@ class Msg(models.Model):
         return f"{self.name}"
 
 class NotifyUser(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     text = models.TextField(max_length=200,null=True,blank=False)
     message_seen = models.BooleanField(default=False)
@@ -128,14 +128,22 @@ class TransactionCurrency(models.Model):
     name = models.CharField(max_length=10, null=True, blank=False, default="rial")
     def __str__(self):
         return f"{self.name}"
-    
+
+class CryptoSymbol(models.Model):
+    name = models.CharField(max_length=10, null=True, blank=False, default="MATICTMN")
+    def __str__(self):
+        return f"{self.name}"
+
+class UserCryptoBalance(models.Model):
+    symbol = models.ForeignKey(CryptoSymbol, default="MATICTMN",on_delete=models.SET_NULL)
+    amount = models.FloatField(max_digits=20, decimal_places=6)
+
 
 class UserBalance(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rial_available_balance = models.IntegerField(default=100000,verbose_name="mojudi")
     rial_untradable_balance = models.IntegerField(default=0,verbose_name="unavailable mojudi")
-    eth_balance = models.IntegerField(default=0,verbose_name="mojudi etherium")
-    eth_unavailable_balance = models.FloatField(default=0 , verbose_name="eth_unavailable_balance")    
+
     def __str__(self):
         return f"{self.user.username}"
 
@@ -170,16 +178,21 @@ class Wallet(models.Model):
     def __str__(self):
         return f"{self.user.username}"
 
-
+   
 class Transaction(models.Model):
     STATUS_CHOICES = (
         ('pending', 'Pending'),
         ('completed', 'Completed'),
         ('failed', 'Failed'),
     )
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    matic_amount = models.DecimalField(max_digits=20, decimal_places=6)
+    SIDE_CHOICES = (
+        ('SELL','SELL'),
+        ('BUY','BUY'),
+    )
+    user = models.ForeignKey(User, on_delete=models.SET_NULL)
+    symbol = models.ForeignKey(CryptoSymbol, default="MATICTMN",on_delete=models.SET_NULL)
+    amount = models.FloatField(max_digits=20, decimal_places=6)
+    side = models.CharField(max_length=10, choices=SIDE_CHOICES, default='BUY')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
 
