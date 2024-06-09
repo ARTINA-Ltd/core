@@ -11,7 +11,6 @@ const BalanceDialogMatic = () => {
   const [getData, setData] = useState();
   const [isCharge, setIsCharge] = useState(false);
   const [amount, setAmount] = useState();
-  const [action, setAction] = useState();
   const [address, setAddress] = useState("");
   const { t } = useTranslation(["wallets"]);
 
@@ -57,7 +56,10 @@ const BalanceDialogMatic = () => {
         Notify.failure("خطا در ساخت کیف پول");
       });
   };
-
+  const handleCopy = () => {
+    navigator.clipboard.writeText(address);
+    Notify.success("آدرس در کلیپ بورد کپی شد.");
+  };
   const updateBalance = (act) => {
     if (act === "deposit") {
       axios
@@ -79,7 +81,12 @@ const BalanceDialogMatic = () => {
           }
           // window.open(res.data.url)
         })
-        .catch(console.log);
+        .catch((res) => {
+          if (res.status === 400) {
+            Notify.failure("موجودی شما برای انجام تراکنش کافی نمی‌باشد");
+          }
+          Notify.failure("عملیات ناموفق بود لطفا بعدا دوباره تلاش کنید.");
+        });
     } else {
       axios
         .post(
@@ -97,15 +104,11 @@ const BalanceDialogMatic = () => {
           }
         )
         .then((res) => {
-          if (act === "deposit") {
-            Notify.success("با موفقیت شارژ شد");
-          } else {
-            Notify.failure("با موفقیت برداشت شد");
-          }
+          Notify.success("با موفقیت برداشت شد");
         })
         .catch((res) => {
-          console.log(res);
           Notify.failure("خطا");
+          console.log(res);
         });
     }
   };
@@ -131,8 +134,8 @@ const BalanceDialogMatic = () => {
       return (
         <div className="w-full flex flex-col justify-center items-center gap-4">
           {address && (
-            <div className="text-lg lg:text-sm sm:text-xs">
-              {t("walletAddress")}
+            <div className="text-sm sm:text-xs cursor-pointer" onClick={handleCopy}>
+              {t("walletAddress")} <span> </span>
               {address}
             </div>
           )}
@@ -146,66 +149,6 @@ const BalanceDialogMatic = () => {
               ساخت کیف پول
             </div>
           )}
-          <div className="flex gap-2  lg:w-[60%] sm:w-[90%] items-center">
-            <div
-              className="border-[1px] cursor-pointer w-48 text-center border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-3 hover:scale-105 transition-all sm:px-2 sm:text-xs sm:w-32 sm:flex sm:justify-center"
-              onClick={() => {
-                if (isCharge === true) {
-                  updateBalance("withraw");
-                } else {
-                  setIsCharge(true);
-                }
-                setAction("withraw");
-              }}
-            >
-              {t("withdraw")}
-            </div>
-            <div
-              className="border-[1px] cursor-pointer w-48 text-center border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all sm:text-xs sm:px-4"
-              onClick={() => {
-                if (isCharge === true) {
-                  updateBalance("deposit");
-                } else {
-                  setIsCharge(true);
-                }
-                setAction("deposit");
-              }}
-            >
-              {t("recharge")}
-            </div>
-          </div>
-        </div>
-      );
-    } else if (action === "deposit") {
-      return (
-        <div
-          className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all sm:text-xs sm:px-4"
-          onClick={() => {
-            if (isCharge === true) {
-              updateBalance("deposit");
-            } else {
-              setIsCharge(true);
-            }
-            setAction("deposit");
-          }}
-        >
-          {t("recharge")}
-        </div>
-      );
-    } else {
-      return (
-        <div
-          className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all sm:text-xs sm:px-4"
-          onClick={() => {
-            if (isCharge === true) {
-              updateBalance("withraw");
-            } else {
-              setIsCharge(true);
-            }
-            setAction("withraw");
-          }}
-        >
-          {t("withdraw")}
         </div>
       );
     }
@@ -230,23 +173,42 @@ const BalanceDialogMatic = () => {
           setVisible(false);
           setIsCharge(false);
         }}
-        className="w-[70vw] font-b4 sm:w-[90%]"
+        className="w-[30rem] font-b4 sm:w-[90%]"
       >
-        {!isCharge ? (
-          <div className="w-full flex gap-4 font-b4">
-            <div className="bg-[#4e45d0] rounded-xl w-full py-20 flex flex-col items-start justify-center text-white gap-4 relative group overflow-hidden sm:py-5">
-              <img alt="" src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all  duration-700" />
-              <div className="text-2xl font-b6 px-10 sm:text-sm"> {t("maticInventory")}</div>
-              <div className="text-lg text-yellow-300 px-10 self-end lg:text-md sm:px-2 sm:text-sm">{getData ? getData.matic_balance : ""} Matic</div>
-            </div>
+        <div className="w-full gap-4 font-b4">
+          <div className=" rounded-xl w-full py-8 flex items-start justify-between  gap-4 relative group overflow-hidden sm:py-5">
+            <div className="text-2xl font-b6 px-4 sm:text-sm"> {t("maticInventory")}</div>
+            <div className="text-lg px-10 self-end lg:text-md sm:px-2 sm:text-sm">{getData ? getData.matic_balance : ""} Matic</div>
           </div>
-        ) : (
-          <div>
+          <div className="w-full flex flex-col gap-8  my-4  shadow-md bg-slate-50 p-4 rounded-md">
             <div className="w-full flex gap-4 flex-col items-center font-b4 mt-4">
-              <SimpleInput type="number" title="مقدار(Matic)" placeholder="مثلا: 100" isValid={amount != ""} validationError="نمی‌تواند خالی باشد" onChange={(e) => setAmount(e.target.value)} />
+              <p className="self-start font-bold mb-4">شارژ کیف پول</p>
+              <SimpleInput type="number" title="مقدار شارژ (Matic)" placeholder="مثلا: 100" isValid={amount != ""} validationError="نمی‌تواند خالی باشد" onChange={(e) => setAmount(e.target.value)} />
+              <div
+                className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all sm:text-xs sm:px-4 self-start"
+                onClick={() => {
+                  updateBalance("deposit");
+                }}
+              >
+                {t("recharge")}
+              </div>
+            </div>
+
+            <div className="w-full flex gap-4 flex-col items-center font-b4 border-t-2 border-t-[#4e45d0] border-opacity-60 pt-4">
+              <p className="self-start font-bold mb-4">برداشت از کیف پول</p>
+              <SimpleInput type="number" title="مقدار برداشت (Matic)" placeholder=" مثلا: 100" isValid={amount != ""} validationError="نمی‌تواند خالی باشد" onChange={(e) => setAmount(e.target.value)} />
+              <div
+                className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all sm:text-xs sm:px-4 self-start"
+                onClick={() => {
+                  updateBalance("withraw");
+                }}
+              >
+                {t("withdraw")}
+              </div>
             </div>
           </div>
-        )}
+        </div>
+
         <div className="font-b4 w-full flex justify-end items-center mt-7 gap-3 lg:flex-col">{footer()}</div>
       </Dialog>
     </div>

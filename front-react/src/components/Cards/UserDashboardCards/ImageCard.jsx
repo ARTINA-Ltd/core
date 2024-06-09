@@ -25,7 +25,7 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell
   return (
     <div className={className} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
       <div className="relative transition-all cursor-pointer h-3/4 mb-10 " onClick={onClick}>
-        <img src={src} className="w-full rounded-lg object-cover h-full" alt="" />
+        <img src={src} className="w-full rounded-lg object-cover p-2 h-full" alt="" />
       </div>
       <div className="">
         {has_creator ? (

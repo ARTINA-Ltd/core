@@ -22,9 +22,9 @@ const ExhebitionList = ({ className }) => {
 
   if (data) {
     return (
-      <div className={`w-full flex flex-col items-center relative bg-[#f9f9f9] bg-[url('https://artina.org/5.png')] bg-center bg-no-repeat py-10 ${className}`}>
-        <div className="font-b9 text-[40px] mb-2 sm:text-[30px]">{t("exhibiotionListTitle")}</div>
-        <div className="font-b5 text-lg mb-4 cursor-pointer opacity-40" onClick={() => (localStorage.getItem("authTokens") != null ? navigate(`/exhibition-list`) : navigate(`/login`))}>
+      <div className={`w-full flex flex-col items-center relative bg-base-300 bg-[url('https://artina.org/5.png')] bg-center bg-no-repeat py-10 ${className}`}>
+        <div className="font-b9 text-[40px] text-base-content mb-2 sm:text-[30px]">{t("exhibiotionListTitle")}</div>
+        <div className="font-b5 text-lg  mb-4 cursor-pointer hover:text-accent ease-in-out duration-200 opacity-60" onClick={() => (localStorage.getItem("authTokens") != null ? navigate(`/exhibition-list`) : navigate(`/login`))}>
           {t("showAll")}
         </div>
         <div className="w-4/5 lg:w-10/12">
@@ -55,7 +55,7 @@ const ExhebitionList = ({ className }) => {
             {data
               ? data.map((item, index) => (
                   <SwiperSlide key={index}>
-                    <SimpleCard className={"bg-white w-full lg:p-5"}>
+                    <SimpleCard className={"bg-neutral w-full lg:p-5"}>
                       <img src={item.image} className="w-full h-96 object-cover rounded-2xl" alt="" />
                       <div className="mt-3 font-b4 text-[24px] text-center cursor-pointer" onClick={() => (localStorage.getItem("authTokens") != null ? navigate(`/exhibition-collections/${item.id}`) : navigate(`/login`))}>
                         {item.marketName}

@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
+import { FaEthereum } from "react-icons/fa";
 import i18n from "../../i18n.js";
 
 const NFTList = ({ className }) => {
@@ -25,17 +26,17 @@ const NFTList = ({ className }) => {
 
   return (
     <div className={`${className} flex flex-col w-full justify-center items-center`}>
-      <div className="flex gap-6 bg-white rounded-t-xl px-3 pt-1">
-        <div className={`cursor-pointer rounded-t-xl py-2 px-6 mt-2 ${selected ? "bg-gradient-to-b from-slate-200" : ""}`} onClick={() => setSelected(true)}>
+      <div className="flex gap-6 bg-base-300 rounded-t-xl px-3 pt-1">
+        <div className={`cursor-pointer rounded-t-xl py-2 px-6 mt-2 ${selected ? "bg-gradient-to-b from-base-100" : ""}`} onClick={() => setSelected(true)}>
           {t("sortByPrice")}
         </div>
-        <div className={`cursor-pointer rounded-t-xl py-2 px-6 mt-2 ${selected ? "" : "bg-gradient-to-b from-slate-200"}`} onClick={() => setSelected(false)}>
+        <div className={`cursor-pointer rounded-t-xl py-2 px-6 mt-2 ${selected ? "" : "bg-gradient-to-b from-base-100"}`} onClick={() => setSelected(false)}>
           {t("sortByLike")}
         </div>
       </div>
 
       {selected ? (
-        <table className={`w-2/3 ${i18n.dir() === "rtl" ? "text-right" : "text-left"} font-b3 bg-white rounded-2xl  shadow-lg shadow-[#0000f006] sm:w-full sm:rounded-none overflow-hidden lg:w-4/5`}>
+        <table className={`w-2/3 ${i18n.dir() === "rtl" ? "text-right" : "text-left"} font-b3 bg-base-300 rounded-2xl  shadow-sm shadow-base-content sm:w-full sm:rounded-none overflow-hidden lg:w-4/5`}>
           <thead className="font-b7">
             <tr>
               <th scope="col" className="px-10 py-3 sm:pr-5 sm:pl-3">
@@ -65,16 +66,7 @@ const NFTList = ({ className }) => {
                     <td className="whitespace-nowrap px-6 py-4 sm:px-1 sm:w-2/5 sm:whitespace-normal">{item.name}</td>
                     <td className="whitespace-nowrap px-6 py-4 sm:px-1">
                       <div className="flex w-full justify-center">
-                        {item.last_price}
-
-                        <svg xmlns="http://www.w3.org/2000/svg" aria-label="Ethereum" role="img" viewBox="0 0 512 512" width={"1.5em"}>
-                          <rect width="512" height="512" rx="15%" fill="#ffffff" />
-                          <path fill="#3C3C3B" d="m256 362v107l131-185z" />
-                          <path fill="#343434" d="m256 41l131 218-131 78-132-78" />
-                          <path fill="#8C8C8C" d="m256 41v158l-132 60m0 25l132 78v107" />
-                          <path fill="#141414" d="m256 199v138l131-78" />
-                          <path fill="#393939" d="m124 259l132-60v138" />
-                        </svg>
+                        {` ${item.last_price} `} <FaEthereum className=" mx-2 text-xl" />
                       </div>
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 lg:hidden">{item.creator}</td>
@@ -89,7 +81,7 @@ const NFTList = ({ className }) => {
           </tbody>
         </table>
       ) : (
-        <table className={`w-2/3 ${i18n.dir() === "rtl" ? "textright" : "text-left"} font-b3 bg-white rounded-2xl  shadow-lg shadow-[#0000f006] sm:w-full sm:rounded-none overflow-hidden lg:w-4/5`}>
+        <table className={`w-2/3 ${i18n.dir() === "rtl" ? "textright" : "text-left"} font-b3 bg-base-300 rounded-2xl  shadow-sm shadow-base-content sm:w-full sm:rounded-none overflow-hidden lg:w-4/5`}>
           <thead className="font-b7">
             <tr>
               <th scope="col" className="px-10 py-3 sm:pr-5 sm:pl-3">
