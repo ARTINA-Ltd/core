@@ -68,7 +68,7 @@ const Login = () => {
 
   return (
     <TestLayout className="flex items-center justify-center form-input w-full">
-      <SimpleCard className={"bg-[#ffffff] w-[450px] sm:m-4"}>
+      <SimpleCard className={"bg-base-100 w-[450px] sm:m-4"}>
         <div className="text-[24px] text-center">{t("signToSite")}</div>
         <SimpleInput
           className={"mt-6"}
@@ -108,12 +108,12 @@ const Login = () => {
             {t("enter")}
           </BorderButton>
         </div>
-        <div className=" mt-3 opacity-40 cursor-pointer text-center" onClick={() => navigate("/forget-password")}>
+        <div className=" mt-3 text-base-content opacity-40 cursor-pointer text-center" onClick={() => navigate("/forget-password")}>
           {t("forgot")}{" "}
         </div>
         <div className="flex mt-5 items-center justify-center text-[16px] gap-4">
           {t("dontHave")}{" "}
-          <div className=" text-[14px] bg-[#0000aa08] py-2 px-[4rem] sm:px-[3rem] rounded-lg cursor-pointer transition-all hover:bg-[#0000aa11]" onClick={() => navigate("/register")}>
+          <div className=" text-[14px] bg-accent text-accent-content py-2 px-[4rem] sm:px-[3rem] rounded-lg cursor-pointer transition-all hover:bg-[#0000aa11]" onClick={() => navigate("/register")}>
             {t("signUp")}{" "}
           </div>
         </div>

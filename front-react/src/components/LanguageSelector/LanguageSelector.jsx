@@ -7,17 +7,17 @@ const LanguageSelector = () => {
   const { t } = useTranslation();
   return (
     <Fragment>
-      <div className="dropdown z-20 dropdown-hover ease-in-out duration-300 transition-all">
-        <div tabIndex={0} role="button" className="btn border-none shadow-none">
-          <IoLanguage className="w-8 h-8 text-[#6860db] hover:text-[#4e45d0] ease-in-out " />
+      <div className="dropdown z-20 dropdown-hover  ease-in-out duration-300 transition-all">
+        <div tabIndex={0} role="button" className="btn bg-transparent hover:bg-base-200 border-none shadow-none">
+          <IoLanguage className="w-8 h-8 text-primary hover:text-secondary ease-in-out " />
         </div>
-        <ul tabIndex={0} className="dropdown-content z-[10] menu p-2  bg-white rounded-box w-52 border-none">
+        <ul tabIndex={0} className="dropdown-content z-[10] menu p-2  bg-base-100 rounded-box w-52 border-none">
           <li
             onClick={() => {
               i18n.changeLanguage("fa");
               window.location.reload();
             }}
-            className="p-4 cursor-pointer font-bold  hover:text-[#4e45d0]"
+            className="p-4 cursor-pointer font-bold  hover:text-primary"
           >
             {t("farsi")}
           </li>
@@ -26,7 +26,7 @@ const LanguageSelector = () => {
               i18n.changeLanguage("en");
               window.location.reload();
             }}
-            className="p-4 cursor-pointer font-bold  hover:text-[#4e45d0]"
+            className="p-4 cursor-pointer font-bold  hover:text-primary"
           >
             {t("english")}
           </li>
