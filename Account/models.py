@@ -191,7 +191,7 @@ class Transaction(models.Model):
     )
     user = models.ForeignKey(User, on_delete=models.SET_NULL)
     symbol = models.ForeignKey(CryptoSymbol, default="MATICTMN",on_delete=models.SET_NULL)
-    amount = models.FloatField(max_digits=20, decimal_places=6)
+    amount = models.FloatField(default=0)
     side = models.CharField(max_length=10, choices=SIDE_CHOICES, default='BUY')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
