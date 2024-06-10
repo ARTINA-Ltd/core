@@ -907,40 +907,52 @@ class CryptoViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=['get'])
 
+
     def CryptoPrice(self, request, pk=None):
-        url = 'https://api.wallex.ir/v1/account/otc/price'
         headers = {
             'Content-Type': 'application/json',
             'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
         }
+    
+        # Get ETH price
+        url = 'https://api.wallex.ir/v1/account/otc/price'
         params = {
-            'symbol': 'ETHTMN',  # Assuming the symbol is passed as the primary key
+            'symbol': 'ETHTMN',
             'side': 'BUY',
         }
         response_eth = requests.get(url, headers=headers, params=params)
-        
-        url = 'https://api.wallex.ir/v1/account/otc/price'
-        headers = {
-            'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
-        }
-        params = {
-            'symbol': 'MATICTMN',  # Assuming the symbol is passed as the primary key
-            'side': 'BUY',
-        }
+    
+        # Get MATIC price
+        params['symbol'] = 'MATICTMN'
         response_matic = requests.get(url, headers=headers, params=params)
+    
+        # Check if both requests were successful
+        if response_eth.status_code == 200 and response_matic.status_code == 200:
+            # Parse JSON responses
+            eth_data = response_eth.json()
+            matic_data = response_matic.json()
         
-        # Check if the request was successful
-        if response_matic.status_code == 200:
+            # Extract prices
+            eth_price = eth_data['result']['price']
+            matic_price = matic_data['result']['price']
+        
+            # Create response data
             data = {
-                "ETH_price" : response_eth.receipt.result.price ,
-                "MATIC_price" : response_matic.receipt.result.price
+                "ETH_price": eth_price,
+                "MATIC_price": matic_price
             }
-            
-            
-            return Response(data, status=response_matic.status_code)
+        
+            return Response(data, status=200)
         else:
-            return Response({'error': 'Failed to retrieve price','response':response}, status=response.status_code)
+            # Handle errors
+            error_message = {
+                'error': 'Failed to retrieve price',
+                'ETH_response': response_eth.text,
+                'MATIC_response': response_matic.text
+            }
+            status_code = response_eth.status_code if response_eth.status_code != 200 else response_matic.status_code
+            return Response(error_message, status=status_code)
+
     @action(detail=False, methods=['get'])
 
     def CryptoPrice2(self, request, pk=None):
