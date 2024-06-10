@@ -168,6 +168,14 @@ class Payment(models.Model):
     def __str__(self):
         return f'{self.user} - {self.amount}'
 
+class withdrawal_list(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    shaba_number = models.CharField(max_length=24, verbose_name="shaba_number", null=True, blank=True)
+    amount = models.PositiveIntegerField()
+    reference_number= models.PositiveIntegerField()
+    origin= models.CharField(max_length=24, verbose_name="shaba_number", null=True, blank=True)
+    is_paid = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class Wallet(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
