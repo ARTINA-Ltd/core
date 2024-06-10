@@ -53,17 +53,15 @@ module.exports = {
 
   daisyui: {
     themes: [
-      "night",
-
       {
         mytheme: {
           primary: "#4E45D0",
           "primary-content": "#FFFFFF",
           secondary: "#3ABEF9",
           "secondary-content": "#FFFFFF",
-          accent: "#818CF8",
+          accent: "#E71F44",
           "accent-content": "#FFFFFF",
-          neutral: "#D2649A",
+          neutral: "#D1D5DB",
           "neutral-content": "#000000",
           "base-100": "#F9FAFB",
           "base-200": "#D1D5DB",
@@ -79,6 +77,7 @@ module.exports = {
           "error-content": "#000000",
         },
       },
+      "night",
     ],
   },
 };

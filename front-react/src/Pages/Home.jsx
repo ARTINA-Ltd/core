@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import AboutUs from "../components/Home/AboutUs";
 import ExhebitionList from "../components/Home/ExhebitionList";
 import NFTList from "../components/Home/NFTList";
@@ -8,12 +8,14 @@ import AboutAI from "../components/Home/AboutAI";
 import Innovations from "../components/Home/Innovations";
 import MostFrequentQuestions from "../components/Home/MostFreQuestions";
 import GasPrice from "../components/Home/GasPrice";
-import HeroBanner from "../components/HeroBanner/HeroBanner.jsx";
+const HeroBanner = lazy(() => import("../components/HeroBanner/HeroBanner.jsx"));
 
 const Home = () => {
   return (
     <TestLayout wfull={true}>
-      <HeroBanner />
+      <Suspense fallback={<span className="loading loading-spinner loading-lg"></span>}>
+        <HeroBanner />
+      </Suspense>
       <NFTList className={"my-12"} />
       <ExhebitionList className="mt-12" />
       <AboutUs className={"mt-20"} />

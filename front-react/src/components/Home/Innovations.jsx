@@ -13,6 +13,7 @@ const Innovations = ({ className = "" }) => {
           <div className="flex justify-around">
             <div className="flex sm:flex-col">
               <div className="mx-16 my-5 lg:mx-6 sm:mx-2">
+                <img src="/3.png" className="w-[150px] h-[150px] lg:w-[100px] lg:h-[100px] sm:w-[60px] sm:h-[60px] object-cover rounded-full m-auto" alt="" />
                 <div className="mt-3 font-b5 text-[20px] text-center lg:text-sm">{t("connectWithCw")}</div>
               </div>
               <div className="mx-16 my-5 lg:mx-6 sm:mx-2">

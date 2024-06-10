@@ -108,7 +108,13 @@ export default () => {
         <UserContext.Provider value={user}>
           <UserChangeContext.Provider value={userChange}>
             <div className="App">
-              <React.Suspense fallback="loading...">
+              <React.Suspense
+                fallback={
+                  <div className="w-[100vw] h-[100vh] flex justify-center items-center">
+                    <span className="loading loading-spinner loading-lg "></span>
+                  </div>
+                }
+              >
                 <ScrollTop className="bg-primary animate-bounce scale-75" icon="pi pi-arrow-up" />
 
                 <Routes>

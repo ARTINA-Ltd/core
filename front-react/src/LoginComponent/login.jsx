@@ -108,12 +108,12 @@ const Login = () => {
             {t("enter")}
           </BorderButton>
         </div>
-        <div className=" mt-3 text-base-content opacity-40 cursor-pointer text-center" onClick={() => navigate("/forget-password")}>
+        <div className=" mt-3 text-base-content opacity-80 cursor-pointer text-center" onClick={() => navigate("/forget-password")}>
           {t("forgot")}{" "}
         </div>
         <div className="flex mt-5 items-center justify-center text-[16px] gap-4">
           {t("dontHave")}{" "}
-          <div className=" text-[14px] bg-accent text-accent-content py-2 px-[4rem] sm:px-[3rem] rounded-lg cursor-pointer transition-all hover:bg-[#0000aa11]" onClick={() => navigate("/register")}>
+          <div className=" text-[14px] bg-accent text-accent-content py-2 px-[4rem] sm:px-[3rem] rounded-lg cursor-pointer transition-all hover:bg-primary" onClick={() => navigate("/register")}>
             {t("signUp")}{" "}
           </div>
         </div>

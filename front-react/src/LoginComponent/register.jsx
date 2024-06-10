@@ -16,7 +16,7 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    foreigner : false,
+    foreigner: false,
   });
   const [isChecekd, setIsChecekd] = useState(false);
   const [captchaRes, setCaptchaRes] = useState(false);
@@ -71,7 +71,7 @@ const Register = () => {
 
   return (
     <TestLayout className="flex items-center justify-center form-input w-full">
-      <SimpleCard className={"bg-[#ffffff] w-[550px] sm:m-4"}>
+      <SimpleCard className={"bg-base-100 w-[550px] sm:m-4"}>
         <div className="text-[24px] text-center">{t("signForm")}</div>
         <SimpleInput
           className={"mt-6"}
@@ -135,27 +135,26 @@ const Register = () => {
         />
         {/* make a boolean checkbox if the user is foreigner */}
         <div className="flex mt-6 justify-center">
-          <input className="m-2" type="checkbox" id="foreigner" name="foreigner" value="foreigner" onChange={(e) => setForeigner(e.target.checked)}
-          />
+          <input className="m-2" type="checkbox" id="foreigner" name="foreigner" value="foreigner" onChange={(e) => setForeigner(e.target.checked)} />
           <label for="foreigner">{t("فرد غیر ایرانی")}</label>
         </div>
         <div className="w-full flex justify-center items-center mt-5">
           <ReCAPTCHA sitekey={"6LecwBMnAAAAAItOWnJM8T17TlvnA1ewPIUGDuj_"} onChange={handleCaptchaChange} />
         </div>
         <div className="w-full mt-5 flex justify-between items-center gap-4">
-          <a href="/privacy-policy" className="text-gray-400 hover:text-gray-500 hover:bg-gray-50 px-2 py-1 transition-all duration-100 font-b2 rounded-md">
+          <a href="/privacy-policy" className="hover:text-neutral-content hover:bg-neutral px-2 py-1 transition-all duration-100 font-b2 rounded-md">
             {t("policy")}{" "}
           </a>
           <div className={`cursor-pointer rounded-full flex items-center gap-3 ${!isChecekd ? "hover:bg-rose-50  hover:scale-105 transition-all border-[1px] border-rose-400 text-rose-400" : "hover:bg-green-50 hover:scale-105 transition-all text-green-600 border-[1px] border-green-600"} transition-all px-3 py-2`} onClick={() => setIsChecekd((prev) => !prev)}>
             <div className={`h-4 w-4 ${isChecekd ? "bg-green-600" : "bg-rose-50 border-[1px] border-rose-400"} rounded-full`} />
             <div> {t("agree")}</div>
           </div>
-          <BorderButton className={"px-6 py-3"} size="lg" onClick={!captchaRes ? () => { } : handleSubmit} disabled={!captchaRes}>
+          <BorderButton className={"px-6 py-3"} size="lg" onClick={!captchaRes ? () => {} : handleSubmit} disabled={!captchaRes}>
             {t("signUp")}
           </BorderButton>
         </div>
-        <div className="bg-[#0000aa10] px-5 py-3 rounded-2xl mt-5 text-center">
-          <Link to="/Login" className="text-indigo-900">
+        <div className="bg-accent px-5 py-3 rounded-2xl mt-5 text-center hover:bg-primary ease-in-out duration-200">
+          <Link to="/Login" className="text-accent-content hover:text-primary-content">
             {t("already")}{" "}
           </Link>
         </div>
