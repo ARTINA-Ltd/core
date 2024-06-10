@@ -878,6 +878,11 @@ class TransactionViewSet(viewsets.ViewSet):
         return Response(balance, status=status.HTTP_200_OK)
 
 
+    def withrawl_req():
+        User
+        amount
+        shaba
+
 class CryptoViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
 
@@ -928,8 +933,8 @@ class CryptoViewSet(viewsets.ViewSet):
         # Check if the request was successful
         if response_matic.status_code == 200:
             data = {
-                "ETH_price" : response_eth.result.price ,
-                "MATIC_price" : response_matic.result.price
+                "ETH_price" : response_eth.receipt.result.price ,
+                "MATIC_price" : response_matic.receipt.result.price
             }
             
             
