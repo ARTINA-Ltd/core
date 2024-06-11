@@ -205,38 +205,38 @@ const Dashboard = () => {
       <TestLayout>
         <div className="flex gap-3 items-star sm:flex-col">
           <div className="flex flex-col gap-3 w-2/3 sm:w-full">
-            <SimpleCard className="bg-white w-full h-full flex-col items-center justify-start">
+            <SimpleCard className="bg-base-100 w-full h-full flex-col items-center justify-start">
               <div className="text-xl font-b6 px-4 mx-auto py-1 transition-all rounded-2xl mb-2 text-center">{t("financialReport")} </div>
               <div className="grid grid-cols-2 gap-2">
-                <div id="rials" className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4">
+                <div id="rials" className="w-full h-auto text-center rounded-2xl bg-base-100 flex flex-col gap-3 py-2 px-4">
                   <div className="font-b6">{t("tooman")}</div>
                   <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
                     {t("negotiablebalance")}{" "}
-                    <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
+                    <div className="px-2 py-1 text-sm bg-neutral text-neutral-content rounded-md">
                       {getBalance ? getBalance.rial_available_balance : ""}
                       {t("tooman")}
                     </div>
                   </div>
                   <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
                     {t("nonNegotiableBalance")}{" "}
-                    <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
+                    <div className="px-2 py-1 text-sm bg-neutral text-neutral-content rounded-md">
                       {getBalance ? getBalance.rial_unavailable_balance : ""}
                       {t("tooman")}
                     </div>
                   </div>
                 </div>
 
-                <div id="ethrs" className="w-full h-auto text-center rounded-2xl bg-slate-50 flex flex-col gap-3 py-2 px-4">
+                <div id="ethrs" className="w-full h-auto text-center rounded-2xl bg-base-100 flex flex-col gap-3 py-2 px-4">
                   <div className="font-b6">{t("ethereum")}</div>
                   <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
                     {t("negotiablebalance")}{" "}
-                    <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
+                    <div className="px-2 py-1 text-sm bg-neutral text-neutral-content rounded-md">
                       {getBalance ? getBalance.eth_balance : ""} {t("ethereum")}
                     </div>
                   </div>
                   <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
                     {t("nonNegotiableBalance")}{" "}
-                    <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
+                    <div className="px-2 py-1 text-sm bg-neutral text-neutral-content rounded-md">
                       {getBalance ? getBalance.eth_unavailable_balance : ""}
                       {t("ethereum")}{" "}
                     </div>
@@ -245,18 +245,18 @@ const Dashboard = () => {
               </div>
 
               <div className="my-3">
-                <div id="" className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4 sm:flex-col">
+                <div id="" className="w-full h-auto text-center rounded-2xl bg-base-100 flex justify-between gap-3 py-2 px-4 sm:flex-col">
                   <div className="font-b6">{t("ProfitsTickets")} </div>
-                  <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
+                  <div className="px-2 py-1 text-sm bg-neutral text-neutral-content rounded-md">
                     {profit ? profit.revenue : ""} {t("tooman")}
                   </div>
                 </div>
               </div>
 
               <div className="my-3">
-                <div id="" className="w-full h-auto text-center rounded-2xl bg-slate-50 flex justify-between gap-3 py-2 px-4 sm:flex-col">
+                <div id="" className="w-full h-auto text-center rounded-2xl bg-base-100 flex justify-between gap-3 py-2 px-4 sm:flex-col">
                   <div className="font-b6">{t("monthlyTransactions")}</div>
-                  <div className="px-2 py-1 text-sm bg-indigo-100 text-indigo-500 rounded-md">
+                  <div className="px-2 py-1 text-sm bg-neutral text-neutral-content rounded-md">
                     {getLastMonthTurnover ? getLastMonthTurnover : ""} {t("tooman")}
                   </div>
                 </div>
@@ -265,7 +265,7 @@ const Dashboard = () => {
                 <Chart type="pie" data={chartData} options={lightOptions} style={{ position: "relative", width: "50%" }} />
               </div>
             </SimpleCard>
-            <SimpleCard className="bg-white w-full h-full flex-col items-center justify-start sm:p-3">
+            <SimpleCard className="bg-base-100 w-full h-full flex-col items-center justify-start sm:p-3">
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center sm:px-1">{t("turnover")} </div>
 
               <table className="dashboard-table w-full text-center  sm:text-xs">
@@ -281,7 +281,7 @@ const Dashboard = () => {
                 <tbody>
                   {firstFiveTurnovers ? (
                     firstFiveTurnovers.map((item, index) => (
-                      <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all">
+                      <tr className="group cursor-pointer hover:bg-base-100 rounded-xl transition-all">
                         <td>{item.transaction_currency == 1 ? t("tooman") : t("ethereum")}</td>
                         <td>{item.transaction_type == 2 ? t("Withdrawal") : t("deposit")}</td>
 
@@ -305,7 +305,7 @@ const Dashboard = () => {
             </SimpleCard>
           </div>
           <div className="flex flex-col w-full gap-5">
-            <SimpleCard className="bg-white  w-full h-full sm:p-2">
+            <SimpleCard className="bg-base-100  w-full h-full sm:p-2">
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">{t("exhibitions")} </div>
               <table className="dashboard-table w-full text-center sm:text-[12px]">
                 <thead>
@@ -321,7 +321,7 @@ const Dashboard = () => {
                 <tbody>
                   {artistOpenExhibitions ? (
                     artistOpenExhibitions.map((item, index) => (
-                      <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all" key={index}>
+                      <tr className="group cursor-pointer hover:bg-base-100 rounded-xl transition-all" key={index}>
                         <td className="sm:hidden">
                           <div className="flex justify-center w-full">
                             <img src={item.image} alt="" className="w-[42px] h-[42px] rounded-xl" />
@@ -340,7 +340,7 @@ const Dashboard = () => {
                             month: "numeric",
                             day: "numeric",
                           }).format(new Date(item.end_date))}
-                          <div className="text-sm bg-slate-100 px-1 rounded-md sm:text-xs">
+                          <div className="text-sm bg-base-100 px-1 rounded-md sm:text-xs">
                             ساعت: &nbsp;
                             {Intl.DateTimeFormat("fa", {
                               minute: "numeric",
@@ -362,7 +362,7 @@ const Dashboard = () => {
               </table>
             </SimpleCard>
 
-            <SimpleCard className="bg-white  w-full h-full">
+            <SimpleCard className="bg-base-100  w-full h-full">
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">{t("openOrders")} </div>
               <table className="dashboard-table w-full text-cente sm:text-xs">
                 <thead>
@@ -377,7 +377,7 @@ const Dashboard = () => {
                 <tbody>
                   {getOrders ? (
                     getOrders.map((item, index) => (
-                      <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all" onClick={() => navigate(`/nft-details/${item.token_id}`)}>
+                      <tr className="group cursor-pointer hover:bg-base-100 rounded-xl transition-all" onClick={() => navigate(`/nft-details/${item.token_id}`)}>
                         <td>{item.nft}</td>
                         <td>
                           {Intl.DateTimeFormat("fa", {
@@ -404,7 +404,7 @@ const Dashboard = () => {
               </table>
             </SimpleCard>
 
-            <SimpleCard className="bg-white  w-full h-full sm:p-3">
+            <SimpleCard className="bg-base-100  w-full h-full sm:p-3">
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">{t("tickets")} </div>
               <table className="dashboard-table w-full text-center sm:text-xs">
                 <thead>
@@ -419,7 +419,7 @@ const Dashboard = () => {
                 <tbody>
                   {tickets &&
                     tickets.map((item, index) => (
-                      <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all" key={index}>
+                      <tr className="group cursor-pointer hover:bg-base-100 rounded-xl transition-all" key={index}>
                         <td>{item.ticket_id}</td>
                         <td>{item.exhibition}</td>
                         <td>{item.price}</td>
@@ -444,7 +444,7 @@ const Dashboard = () => {
               </table>
             </SimpleCard>
 
-            <SimpleCard className="bg-white  w-full h-full sm:p-3">
+            <SimpleCard className="bg-base-100  w-full h-full sm:p-3">
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">{t("likedNFTs")} </div>
               <table className="dashboard-table w-full text-cente sm:text-xs">
                 <thead>
@@ -458,7 +458,7 @@ const Dashboard = () => {
                 <tbody className="w-full">
                   {firtsFiveLinkedNfts &&
                     firtsFiveLinkedNfts.map((item, index) => (
-                      <tr className="group cursor-pointer hover:bg-slate-50 rounded-xl transition-all" onClick={() => navigate(`/nft-details/${item.token_id}`)} key={index}>
+                      <tr className="group cursor-pointer hover:bg-base-100 rounded-xl transition-all" onClick={() => navigate(`/nft-details/${item.token_id}`)} key={index}>
                         <td>
                           <div className="flex justify-center w-full">
                             <img src={item.image_url} alt="" className="w-[42px] h-[42px] rounded-xl" />
