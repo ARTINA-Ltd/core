@@ -878,10 +878,10 @@ class TransactionViewSet(viewsets.ViewSet):
         return Response(balance, status=status.HTTP_200_OK)
 
 
-    def withrawl_req():
-        User
-        amount
-        shaba
+    # def withrawl_req():
+    #     User
+    #     amount
+    #     shaba
 
 class CryptoViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
@@ -898,13 +898,12 @@ class CryptoViewSet(viewsets.ViewSet):
             'amount': 2.5,  # Adjust the amount you want to buy
         }
         response = requests.post(url, headers=headers, json=data)
-        
+        datam = response.jason()
         # Check if the request was successful
         if response.status_code == 200:
             return Response({'message': 'Purchase successful'}, status=response.status_code)
         else:
-            return Response({'error': 'Purchase failed'}, status=response.status_code)
-
+            return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
     @action(detail=False, methods=['get'])
 
 
