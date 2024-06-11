@@ -896,6 +896,7 @@ class CryptoViewSet(viewsets.ViewSet):
             'symbol': 'MATICTMN',  # You mentioned MATIC, but the example is for BTCUSDT. Please adjust accordingly.
             'side': 'BUY',
             'amount': request.data.get('amount'),
+            'price': request.data.get('price'),
         }
         response = requests.post(url, headers=headers, json=data)
         datam = response.json()
