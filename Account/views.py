@@ -971,7 +971,7 @@ class CryptoViewSet(viewsets.ViewSet):
             }
             status_code = response_BUY.status_code if response_BUY.status_code != 200 else response_SELL.status_code
             return Response(error_message, status=status_code)
-
+    @action(detail=False, methods=['get'])
     def CryptoPrice_MATIC(self, request, pk=None):
         headers = {
             'Content-Type': 'application/json',
