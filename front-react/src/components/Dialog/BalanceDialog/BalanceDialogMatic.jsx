@@ -5,7 +5,7 @@ import axios from "axios";
 import SimpleInput from "../../Inputs/SimpleInput";
 import { Notify } from "notiflix";
 import { useTranslation } from "react-i18next";
-
+import i18n from "../../../i18n.js";
 const BalanceDialogMatic = () => {
   const [visible, setVisible] = useState(false);
   const [getData, setData] = useState();
@@ -13,6 +13,7 @@ const BalanceDialogMatic = () => {
   const [amount, setAmount] = useState();
   const [address, setAddress] = useState("");
   const { t } = useTranslation(["wallets"]);
+  const [currentTab, setCurrentTab] = useState(1);
 
   useEffect(() => {
     axios
@@ -168,19 +169,39 @@ const BalanceDialogMatic = () => {
       <Dialog
         header={Header}
         visible={visible}
-        style={{ direction: "rtl" }}
+        style={{ backgroundColor: "black", direction: i18n.dir() === "rtl" && "rtl" }}
         onHide={() => {
           setVisible(false);
           setIsCharge(false);
         }}
-        className="w-[30rem] font-b4 sm:w-[90%]"
+        className="w-[30rem] font-b4 sm:w-[90%] background"
       >
+        <div role="tablist" className="tabs tabs-boxed">
+          <div
+            role="tab"
+            onClick={() => {
+              setCurrentTab(1);
+            }}
+            className={`tab ${currentTab === 1 && "tab-active"}`}
+          >
+            Tab 1
+          </div>
+          <div
+            role="tab"
+            onClick={() => {
+              setCurrentTab(2);
+            }}
+            className={`tab ${currentTab === 2 && "tab-active"}`}
+          >
+            Tab 2
+          </div>
+        </div>
         <div className="w-full gap-4 font-b4">
           <div className=" rounded-xl w-full py-8 flex items-start justify-between  gap-4 relative group overflow-hidden sm:py-5">
             <div className="text-2xl font-b6 px-4 sm:text-sm"> {t("maticInventory")}</div>
             <div className="text-lg px-10 self-end lg:text-md sm:px-2 sm:text-sm">{getData ? getData.matic_balance : ""} Matic</div>
           </div>
-          <div className="w-full flex flex-col gap-8  my-4  shadow-md bg-slate-50 p-4 rounded-md">
+          <div className="w-full flex flex-col gap-8  my-4  shadow-md bg-base-100 p-4 rounded-md">
             <div className="w-full flex gap-4 flex-col items-center font-b4 mt-4">
               <p className="self-start font-bold mb-4">شارژ کیف پول</p>
               <SimpleInput type="number" title="مقدار شارژ (Matic)" placeholder="مثلا: 100" isValid={amount != ""} validationError="نمی‌تواند خالی باشد" onChange={(e) => setAmount(e.target.value)} />
