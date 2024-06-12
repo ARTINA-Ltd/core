@@ -119,20 +119,12 @@ class EmailVerification(models.Model):
     def __str__(self):
         return f"{self.user.username}"
 
-class TransactionType(models.Model):
-    name = models.CharField(max_length=10, null=True, blank=False, default="deposit")
-    def __str__(self):
-        return f"{self.name}"
+
  
 class TransactionCurrency(models.Model):
     name = models.CharField(max_length=10, null=True, blank=False, default="rial")
     def __str__(self):
         return f"{self.name}"
-
-# class CryptoSymbol(models.Model):
-#     name = models.CharField(max_length=10, null=True, blank=False, default="MATICTMN")
-#     def __str__(self):
-#         return f"{self.name}"
 
 
 class UserBalance(models.Model):
@@ -145,17 +137,6 @@ class UserBalance(models.Model):
     eth_untradable_balance = models.FloatField(default=0)
     def __str__(self):
         return f"{self.user.username}"
-
-class UserTurnover(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    transaction_type = models.ForeignKey(TransactionType, default="deposit",on_delete=models.CASCADE)
-    transaction_currency=models.ForeignKey(TransactionCurrency, default="rial",on_delete=models.CASCADE)
-    transaction_value=models.IntegerField(default=0,verbose_name="volume")
-    date = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{self.user.username} - {self.date}"
-
 
 
 class Payment(models.Model):
@@ -181,20 +162,23 @@ class Wallet(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     address = models.CharField(max_length=42, unique=True)  # Ethereum/Matic address
     private_key= models.CharField(max_length=200, unique=True, default=0)
-    balance = models.DecimalField(max_digits=20, decimal_places=6, default=0)  # Matic balance
+    MATIC_balance = models.DecimalField(max_digits=20, decimal_places=6, default=0)  # Matic balance
+    ETH_balance= models.DecimalField(max_digits=20, decimal_places=6, default=0)
     def __str__(self):
         return f"{self.user.username}"
 
    
 class Transaction(models.Model):
     STATUS_CHOICES = (
-        ('pending', 'Pending'),
-        ('completed', 'Completed'),
-        ('failed', 'Failed'),
+        ('pending', 'pending'),
+        ('completed', 'completed'),
+        ('failed', 'failed'),
     )
     SIDE_CHOICES = (
         ('SELL','SELL'),
         ('BUY','BUY'),
+        ('withdrawal','withdrawal'),
+        ('deposit','deposit')
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     transaction_currency=models.ForeignKey(TransactionCurrency, default="rial",on_delete=models.CASCADE)

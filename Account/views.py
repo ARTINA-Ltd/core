@@ -887,28 +887,42 @@ class CryptoViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
 
     def BuyMATIC(self, request):
+        user = self.request.user
+        symbol= request.data.get('symbol') 
+        side= request.data.get('side')
+        amount= request.data.get('amount')
+        price= request.data.get('price')        
+        transactionCurrency=TransactionCurrency.objects.filter(name=symbol).first()
+        transactionINS=Transaction.objects.create(user=user, transaction_currency=transactionCurrency,amount=amount,side=side,status='Pending')
+            
         url = 'https://api.wallex.ir/v1/account/otc/orders'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'api_key' 
+            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  
         }
         data = {
-            'symbol': 'MATICTMN',  # You mentioned MATIC, but the example is for BTCUSDT. Please adjust accordingly.
-            'side': 'BUY',
-            'amount': request.data.get('amount'),
-            'price': request.data.get('price'),
+            'symbol': symbol, 
+            'side': side,
+            'amount': amount,
+            'price': price,
         }
         response = requests.post(url, headers=headers, json=data)
         datam = response.json()
         # Check if the request was successful
-        if response.status_code == 200:
+        if response.status_code == 201:
+            transactionINS.status='completed'
+            transactionINS.save()
             return Response({'message': 'Purchase successful'}, status=response.status_code)
+        
         else:
+            transactionINS.status='failed'
+            transactionINS.save()
             return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
+
+
+    
     @action(detail=False, methods=['get'])
-
-
-    def CryptoPrice(self, request, pk=None):
+    def CryptoPrice_ETH(self, request, pk=None):
         headers = {
             'Content-Type': 'application/json',
             'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
@@ -920,26 +934,29 @@ class CryptoViewSet(viewsets.ViewSet):
             'symbol': 'ETHTMN',
             'side': 'BUY',
         }
-        response_eth = requests.get(url, headers=headers, params=params)
+        response_BUY = requests.get(url, headers=headers, params=params)
     
         # Get MATIC price
-        params['symbol'] = 'MATICTMN'
-        response_matic = requests.get(url, headers=headers, params=params)
+        params = {
+            'symbol': 'ETHTMN',
+            'side': 'SELL',
+        }
+        response_SELL = requests.get(url, headers=headers, params=params)
     
         # Check if both requests were successful
-        if response_eth.status_code == 200 and response_matic.status_code == 200:
+        if response_BUY.status_code == 200 and response_SELL.status_code == 200:
             # Parse JSON responses
-            eth_data = response_eth.json()
-            matic_data = response_matic.json()
+            buy_data = response_BUY.json()
+            sell_data = response_SELL.json()
         
             # Extract prices
-            eth_price = eth_data['result']['price']
-            matic_price = matic_data['result']['price']
+            buy_price = buy_data['result']['price']
+            sell_price = sell_data['result']['price']
         
             # Create response data
             data = {
-                "ETH_price": eth_price,
-                "MATIC_price": matic_price
+                "ETH_buy_price": buy_price,
+                "ETH_sell_price": sell_price
             }
         
             return Response(data, status=200)
@@ -947,14 +964,62 @@ class CryptoViewSet(viewsets.ViewSet):
             # Handle errors
             error_message = {
                 'error': 'Failed to retrieve price',
-                'ETH_response': response_eth.text,
-                'MATIC_response': response_matic.text
+                'ETH_buy_response': response_BUY.text,
+                'ETH_sell_response': response_SELL.text
             }
-            status_code = response_eth.status_code if response_eth.status_code != 200 else response_matic.status_code
+            status_code = response_BUY.status_code if response_BUY.status_code != 200 else response_SELL.status_code
             return Response(error_message, status=status_code)
 
-    @action(detail=False, methods=['get'])
+    def CryptoPrice_MATIC(self, request, pk=None):
+        headers = {
+            'Content-Type': 'application/json',
+            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
+        }
+    
+        # Get ETH price
+        url = 'https://api.wallex.ir/v1/account/otc/price'
+        params = {
+            'symbol': 'MATICTMN',
+            'side': 'BUY',
+        }
+        response_BUY = requests.get(url, headers=headers, params=params)
+    
+        # Get MATIC price
+        params = {
+            'symbol': 'MATICTMN',
+            'side': 'SELL',
+        }
+        response_SELL = requests.get(url, headers=headers, params=params)
+    
+        # Check if both requests were successful
+        if response_BUY.status_code == 200 and response_SELL.status_code == 200:
+            # Parse JSON responses
+            buy_data = response_BUY.json()
+            sell_data = response_SELL.json()
+        
+            # Extract prices
+            buy_price = buy_data['result']['price']
+            sell_price = sell_data['result']['price']
+        
+            # Create response data
+            data = {
+                "MATIC_buy_price": buy_price,
+                "MATIC_sell_price": sell_price
+            }
+        
+            return Response(data, status=200)
+        else:
+            # Handle errors
+            error_message = {
+                'error': 'Failed to retrieve price',
+                'MATIC_buy_response': response_BUY.text,
+                'MATIC_sell_response': response_SELL.text
+            }
+            status_code = response_BUY.status_code if response_BUY.status_code != 200 else response_SELL.status_code
+            return Response(error_message, status=status_code)
 
+
+    @action(detail=False, methods=['get'])
     def CryptoPrice2(self, request, pk=None):
         url = 'https://api.wallex.ir/v1/account/otc/price'
         headers = {
@@ -1003,29 +1068,6 @@ class CryptoViewSet(viewsets.ViewSet):
             return Response({'error': 'HTTP error occurred', 'details': str(http_err)}, status=response.status_code)
         except Exception as err:
             return Response({'error': 'An error occurred', 'details': str(err)}, status=500)
-
-    @action(detail=False, methods=['post'])
-
-    def CryptoSell(self, request):
-        url = 'https://api.wallex.ir/v1/account/orders'
-        headers = {
-            'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
-        }
-        data = {
-            # 'symbol': request.data.get('symbol'),
-            'symbol': 'MATICTMN', 
-            'side': 'SELL',
-            'amount': 2.5,
-            # 'amount': request.data.get('amount'),
-        }
-        response = requests.post(url, headers=headers, json=data)
-        
-        # Check if the request was successful
-        if response.status_code == 200:
-            return Response({'message': 'Sell order placed successfully'}, status=response.status_code)
-        else:
-            return Response({'error': 'Failed to place sell order'}, status=response.status_code)
         
     @action(detail=False, methods=['get'])
 
