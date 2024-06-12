@@ -181,7 +181,7 @@ class Transaction(models.Model):
         ('deposit','deposit')
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    transaction_currency=models.ForeignKey(TransactionCurrency, default="rial",on_delete=models.CASCADE)
+    transaction_currency=models.ForeignKey(TransactionCurrency,default=0,on_delete=models.CASCADE)
     amount = models.FloatField(default=0)
     side = models.CharField(max_length=10, choices=SIDE_CHOICES, default='BUY')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
