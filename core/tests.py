@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from thirdweb.types import NFTMetadataInput
 
 from .models import NFT ,MyImage# Adjust the import path according to your structure
-from Account.models import UserBalance, UserTurnover  # Adjust the import path according to your structure
+from Account.models import UserBalance, Transaction  # Adjust the import path according to your structure
 from core.views import NFTViewSet  # Adjust the import path according to your structure
 
 class NFTViewSetTest(TestCase):
