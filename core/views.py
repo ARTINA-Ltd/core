@@ -34,7 +34,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.conf import settings
 import os
-from Account.models import Msg, Wallet , NotifyUser,UserBalance, UserTurnover,TransactionType,TransactionCurrency,Profile
+from Account.models import Msg, Wallet , NotifyUser,UserBalance,TransactionCurrency,Profile,Transaction
 from http import HTTPStatus
 from django.db.models import Count, Q
 from .serializers import CategorySerializer, CollectionNFTSerializer, NFTRatingSerializer, OwnerWithLikesSerializer
@@ -401,10 +401,9 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
                 transactionHash=transaction_hash, blockHash=block_hash,transactionIndex=transaction_index,
                 description=description_nft,image_url=image_nft,creator=creator,external_link=external_link,
                 last_price=last_price,token_id=token_id,owner=user,has_physical=has_physical,category=category,traits=data,collection=collection)
-            transactiontype=TransactionType.objects.filter(name="withraw").first()
             transactionCurrency=TransactionCurrency.objects.filter(name="rial").first()
-            UserTurnover.objects.create(user=user, transaction_type=transactiontype, 
-                                    transaction_currency=transactionCurrency, transaction_value=10000)
+            Transaction.objects.create(user=user, side='withdrawal', 
+                                    transaction_currency=transactionCurrency, transaction_value=10000,status='completed')
 
             return Response(
               nft.token_id,
@@ -581,10 +580,9 @@ class CollectionViewSet(viewsets.ModelViewSet):
             n=n-10000
             user_balance.rial_available_balance=n
             user_balance.save()        
-        transactiontype=TransactionType.objects.filter(name="withraw").first()
         transactionCurrency=TransactionCurrency.objects.filter(name="rial").first()
-        UserTurnover.objects.create(user=user, transaction_type=transactiontype, 
-                            transaction_currency=transactionCurrency, transaction_value=10000)
+        Transaction.objects.create(user=user, side='withdrawal', 
+                            transaction_currency=transactionCurrency, amount=10000,status='completed')
 
 
         return Response(status=status.HTTP_201_CREATED)  

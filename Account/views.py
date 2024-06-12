@@ -18,7 +18,7 @@ from django.contrib.auth.views import PasswordResetView
 from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from .serializers import UserBalanceSerializer , NotifyUserSerializer,UserInfoSerializer
+from .serializers import UserBalanceSerializer , NotifyUserSerializer,UserInfoSerializer,withdrawal_listSerializer
 from django.utils import timezone
 import random
 from django.core.exceptions import PermissionDenied
@@ -371,9 +371,9 @@ class SendVerificationCodeViewSet(viewsets.ViewSet):
             # Handle error response
             return Response({'status': 'failed'})
 
-class UserTurnoverViewSet(viewsets.ModelViewSet):
-    queryset = UserTurnover.objects.all()
-    serializer_class = serializers.UserTurnoverSerializer
+class TransactionViewSet(viewsets.ModelViewSet):
+    queryset = Transaction.objects.all()
+    serializer_class = serializers.TransactionSerializer
     # permission_classes = (IsAuthenticated,)
 
     def create(self, request, *args, **kwargs):
@@ -384,14 +384,14 @@ class UserTurnoverViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def turnover_in_month(self, request):
         user = self.request.user
-        turnovers = UserTurnover.objects.filter(user=user)
+        turnovers = Transaction.objects.filter(user=user)
         
         # Calculate turnover for the last month
         today = datetime.now().date()
         last_month = today - timedelta(days=30)
         last_month_turnover = turnovers.filter(
             Q(date__gte=last_month) & Q(date__lte=today)
-        ).aggregate(Sum('transaction_value'))['transaction_value__sum'] or 0
+        ).aggregate(Sum('amount_value'))['amount__sum'] or 0
 
         data = {
             'last_month_turnover': last_month_turnover,
@@ -439,7 +439,7 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
         user = self.request.user
         currency = request.data.get('currency').lower()
         amount = request.data.get('amount')
-        name=request.data.get('transaction_type')
+        side=request.data.get('transaction_type')
         if not currency or not amount:
             return Response({'error': 'Both currency and amount are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -448,7 +448,6 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
         except ValueError:
             return Response({'error': 'Invalid amount value.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        transaction_type = TransactionType.objects.get(name=name)
         transaction_currency = TransactionCurrency.objects.get(name=currency)
 
         if currency == 'rial':
@@ -459,7 +458,7 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
             return Response({'error': 'Invalid currency.'}, status=status.HTTP_400_BAD_REQUEST)
         user_balance=None
         user_balance = UserBalance.objects.filter(user=user).first()
-        if name=="deposit":
+        if side=="deposit":
             if user_balance :
                 n=user_balance.rial_available_balance 
                 n=n+ amount
@@ -467,7 +466,7 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
                 user_balance.save()
             else :
                 user_balance = UserBalance.objects.create(rial_available_balance=amount,user=user)
-        elif name=="withraw" :
+        elif side=="withraw" :
             if user_balance :
                 n=user_balance.rial_available_balance 
                 n=n- amount
@@ -477,8 +476,8 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
                 return Response({'error': 'you have no money to withdraw.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-        UserTurnover.objects.create(user=user, transaction_type=transaction_type, 
-                                    transaction_currency=transaction_currency, transaction_value=amount)
+        Transaction.objects.create(user=user, side=side, 
+                                    transaction_currency=transaction_currency, amount=amount,status='completed')
 
         return Response({'success': 'Balance changed successfully.'}, status=status.HTTP_200_OK)
 
@@ -556,7 +555,6 @@ class PaymentGateViewSet(viewsets.ViewSet):
             if verification_status == 100:
                 payment.is_paid = True
                 payment.save()                
-                transaction_type = TransactionType.objects.get(name="deposit")
                 transaction_currency = TransactionCurrency.objects.get(name="rial")
                 user_balance=None
                 user_balance = UserBalance.objects.filter(user=user).first()
@@ -569,8 +567,8 @@ class PaymentGateViewSet(viewsets.ViewSet):
                 else :
                     user_balance = UserBalance.objects.create(rial_available_balance=payment.amount,user=user)
                     profile=Profile.objects.get(user=user)
-                    UserTurnover.objects.create(user=user, transaction_type=transaction_type, 
-                                    transaction_currency=transaction_currency, transaction_value=payment.amount)
+                    Transaction.objects.create(user=user, side='deposit', 
+                                    transaction_currency=transaction_currency, transaction_value=payment.amount,status='completed')
                     # Send the SMS via Kavenegar API
                     # The URL IS like : https://api.kavenegar.com/v1/{API-KEY}/verify/lookup.json
                     response = requests.post(
@@ -790,60 +788,61 @@ import requests
 
 
 class TransactionViewSet(viewsets.ViewSet):
-    def create(self, request):
-        user = request.user
-        matic_amount = request.data.get('matic_amount')
-        matic_price = 27216
-        matic_amount = Decimal(str(matic_amount))
-        # matic_amount = float(request.data.get('matic_amount'))
-        print(f"maticamount:{matic_amount}")
-        needed_balance = matic_amount * matic_price
 
-        balance = UserBalance.objects.filter(user=user).first()
-        userbalance = balance.rial_available_balance
-        print(userbalance)
-        # Check if user has sufficient balance
-        if userbalance < needed_balance:
-            return Response({'message': 'Insufficient balance.'}, status=status.HTTP_400_BAD_REQUEST)
-        balance.rial_available_balance=balance.rial_available_balance - needed_balance
-        balance.save()
+    # def create(self, request):
+    #     user = request.user
+    #     matic_amount = request.data.get('matic_amount')
+    #     matic_price = 27216
+    #     matic_amount = Decimal(str(matic_amount))
+    #     # matic_amount = float(request.data.get('matic_amount'))
+    #     print(f"maticamount:{matic_amount}")
+    #     needed_balance = matic_amount * matic_price
 
-        # use connect_with_retry() to get a connected Web3 instance
-        # w3 = connect_with_retry()
-        user_wallet=Wallet.objects.filter(user=user).first()
-        recipient_address = user_wallet.address
-        print(f"ad:{recipient_address}")
-        private_key = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
-        gas_price = w3.toWei('5', 'gwei')  # Example gas price
-        gas_limit = 21000  # Example gas limit
+    #     balance = UserBalance.objects.filter(user=user).first()
+    #     userbalance = balance.rial_available_balance
+    #     print(userbalance)
+    #     # Check if user has sufficient balance
+    #     if userbalance < needed_balance:
+    #         return Response({'message': 'Insufficient balance.'}, status=status.HTTP_400_BAD_REQUEST)
+    #     balance.rial_available_balance=balance.rial_available_balance - needed_balance
+    #     balance.save()
+
+    #     # use connect_with_retry() to get a connected Web3 instance
+    #     # w3 = connect_with_retry()
+    #     user_wallet=Wallet.objects.filter(user=user).first()
+    #     recipient_address = user_wallet.address
+    #     print(f"ad:{recipient_address}")
+    #     private_key = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
+    #     gas_price = w3.toWei('5', 'gwei')  # Example gas price
+    #     gas_limit = 21000  # Example gas limit
         
-        nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
-        transaction_data = {
-            'to': recipient_address,
-            'value': w3.toWei(matic_amount, 'matic'),
-            'gas': gas_limit,
-            'gasPrice': gas_price,
-            'nonce': nonce,
-            'chainId': 137
-        }
+    #     nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
+    #     transaction_data = {
+    #         'to': recipient_address,
+    #         'value': w3.toWei(matic_amount, 'matic'),
+    #         'gas': gas_limit,
+    #         'gasPrice': gas_price,
+    #         'nonce': nonce,
+    #         'chainId': 137
+    #     }
         
-        signed_txn = w3.eth.account.signTransaction(transaction_data, private_key)
-        print(signed_txn)
-        tx_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)
-        print(tx_hash)
-        tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
-        print(tx_receipt)
-        if tx_receipt.status == 1:
-            transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='completed')
-            print(f"transaction:{transaction}")
-            user_wallet.balance = matic_amount+ user_wallet.balance
-            user_wallet.save()
-            print(f"user_wallet is: {user_wallet}")
-            print(f"the real balance is:{user_wallet.balance}")
-            return Response({'message': 'Purchase successful.'}, status=status.HTTP_200_OK)
-        else:
-            transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='failed')
-            return Response({'message': 'Transaction failed.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    #     signed_txn = w3.eth.account.signTransaction(transaction_data, private_key)
+    #     print(signed_txn)
+    #     tx_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)
+    #     print(tx_hash)
+    #     tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+    #     print(tx_receipt)
+    #     if tx_receipt.status == 1:
+    #         transaction = Transaction.objects.create(user=user, amount=amount, status='completed')
+    #         print(f"transaction:{transaction}")
+    #         user_wallet.balance = matic_amount+ user_wallet.balance
+    #         user_wallet.save()
+    #         print(f"user_wallet is: {user_wallet}")
+    #         print(f"the real balance is:{user_wallet.balance}")
+    #         return Response({'message': 'Purchase successful.'}, status=status.HTTP_200_OK)
+    #     else:
+    #         transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='failed')
+    #         return Response({'message': 'Transaction failed.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
     @action(detail=False, methods=['get'])
@@ -882,6 +881,9 @@ class TransactionViewSet(viewsets.ViewSet):
     #     User
     #     amount
     #     shaba
+class WithdrawalViewSet(viewsets.ModelViewSet):
+    queryset = withdrawal_list.objects.all()
+    serializer_class = withdrawal_listSerializer
 
 class CryptoViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'])

@@ -93,10 +93,10 @@ class UserBalanceSerializer(serializers.ModelSerializer):
         model = UserBalance
         fields = ('id', 'user', 'rial_available_balance', 'rial_untradable_balance', 'eth_balance')
 
-class UserTurnoverSerializer(serializers.ModelSerializer):
+class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserTurnover
-        fields = ('id', 'user', 'transaction_type', 'transaction_currency', 'transaction_value')
+        model = Transaction
+        fields = ('id', 'user', 'side', 'transaction_currency', 'amount','status','created_at')
 
 
 from .models import Payment
@@ -105,4 +105,9 @@ from .models import Payment
 class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
+        fields = '__all__'
+
+class withdrawal_listSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = withdrawal_list
         fields = '__all__'
