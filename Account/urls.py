@@ -17,13 +17,13 @@ router.register(r'email-verification-code', views.EmailMixin, basename="email-ve
 
 
 router.register(r'user-balance', views.UserBalanceViewSet, basename='user-balance')
-router.register(r'user-turnover', views.UserTurnoverViewSet, basename='user-turnover')
+router.register(r'user-turnover', views.TransactionViewSet, basename='user-turnover')
 router.register(r'user-PasswordReset', views.PasswordResetByPhoneViewSet, basename='PasswordRese')
 router.register(r'userpicture', views.UserPictureViewSet, basename='Userpicture')
 router.register(r'payment', views.PaymentGateViewSet, basename='payment')
 router.register(r'NotifyUserViewSet', views.NotifyUserViewSet, basename='NotifyUserViewSet')
 router.register(r'wallet', views.WalletViewSet, basename='wallet')
-router.register(r'Transaction', views.TransactionViewSet, basename='Transaction')
+# router.register(r'Transaction', views.TransactionViewSet, basename='Transaction')
 router.register(r'CryptoViewSet', views.CryptoViewSet, basename='CryptoViewSet')
 # router.register(r'TransactionNFT', views.TransactionNFTViewSet, basename='TransactionNFT')
 
