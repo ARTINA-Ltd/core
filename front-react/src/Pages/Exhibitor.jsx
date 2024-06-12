@@ -80,12 +80,11 @@ const Exhibitor = () => {
   return (
     <div>
       <TestLayout wfull={true}>
-        <SimpleCard className="bg-[#4e45d0] flex flex-col relative gap-4 items-center justify-center overflow-hidden w-[90%] h-96 mx-auto mb-5 md:h-72 sm:h-52">
-          <img alt="" src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
-          <div className="text-white text-6xl mb-4 z-10 font-b7 sm:text-3xl">{t("pageTitle")}</div>
+        <SimpleCard className="bg-primary flex flex-col relative gap-4 items-center justify-center overflow-hidden w-[90%] h-60 mx-auto mb-5 md:h-72 sm:h-52">
+          <div className="text-primary-content text-6xl mb-4 z-10 font-b7 sm:text-3xl">{t("pageTitle")}</div>
         </SimpleCard>
 
-        <SimpleCard className={"bg-white mx-auto w-[90%] z-10 relative text-center"}>
+        <SimpleCard className={"bg-base-100 mx-auto w-[90%] z-10 relative text-center"}>
           <div className="font-b6 text-2xl mb-4 mx-auto md:mb-4 sm:text-xl">{t("firstSection")}</div>
 
           <div className="grid grid-cols-5 gap-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-1">
@@ -103,7 +102,7 @@ const Exhibitor = () => {
                     <img src={item.image} className="h-full w-full object-cover rounded-2xl" alt="" />
                     <div className="absolute h-full w-full top-0 rounded-2xl bg-gradient-to-t text-lg font-b4 group-hover:text-xl gap-3 from-black flex items-end justify-center pb-4 text-white group-hover:pb-6 transition-all">
                       <div className="flex flex-col  items-center justify-center w-full">
-                        <h2 className="ease-in-out duration-200 hover:text-[#4e45d0]" onClick={() => navigate(`/exhibition-collections/${item.id}`)}>
+                        <h2 className="ease-in-out duration-200 hover:text-primary" onClick={() => navigate(`/exhibition-collections/${item.id}`)}>
                           {item.marketName}
                         </h2>
 
@@ -118,7 +117,7 @@ const Exhibitor = () => {
           </div>
         </SimpleCard>
 
-        <div className="w-[90%] bg-[#4e45d0] rounded-xl justify-center gap-5 flex py-12 mb-9 mt-2 text-center text-white text-xl font-b5 cursor-pointer mx-auto hover:text-[22px] transition-all sm:text-lg sm:font-b4 sm:py-4 sm:mt-9" onClick={() => navigate(`/requests-list`)}>
+        <div className="w-[90%] bg-primary rounded-xl justify-center gap-5 flex py-12 mb-9 mt-2 text-center text-primary-content text-xl font-b5 cursor-pointer mx-auto hover:text-[22px] transition-all sm:text-lg sm:font-b4 sm:py-4 sm:mt-9" onClick={() => navigate(`/requests-list`)}>
           <div className="animate-pulse">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
@@ -127,11 +126,11 @@ const Exhibitor = () => {
           {t("showReq")}
         </div>
 
-        <SimpleCard className={"bg-white mx-auto w-[90%] mt-5 text-center"}>
+        <SimpleCard className={"bg-base-100 mx-auto w-[90%] mt-5 text-center"}>
           <div className="font-b6 text-2xl mb-4 mx-auto md:mb-4 sm:text-xl">{t("exhibitionRegister")}</div>
 
           <div className="h-full shrink-0 rounded-2xl group flex items-center justify-center cursor-pointer  transition-all whitespace-nowrap mx-5">
-            <div className="text-[#000022] opacity-20 group-hover:opacity-40 transition-all h-full group-hover:scale-105 ease-out duration-150 flex flex-col items-center">
+            <div className="text-base-content opacity-60 group-hover:opacity-40 transition-all h-full group-hover:scale-105 ease-out duration-150 flex flex-col items-center">
               <div className="font-b6 md:mb-4" onClick={() => navigate(`/open-exhibitions`)}>
                 {t("showEx")}
               </div>
@@ -157,7 +156,7 @@ const Exhibitor = () => {
           )}
         </SimpleCard>
 
-        <SimpleCard className={"bg-white mx-auto w-[90%] mt-5 text-center"}>
+        <SimpleCard className={"bg-accent text-accent-content mx-auto w-[90%] mt-5 text-center"}>
           <div className="font-b6 text-2xl mb-4 mx-auto md:mb-4 sm:text-xl">{t("previousExhibitions")}</div>
 
           {artistClosedExhibitions && artistClosedExhibitions.length > 0 ? (

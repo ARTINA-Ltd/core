@@ -29,74 +29,20 @@ const PreMint = () => {
       });
   }, []);
 
-  const handleAddNewCollectionProperty = async () => {
-    console.log("Wallet: ", wallet);
-
-    // ADMIN_PANEL BRANCH FROM HERE
-    try {
-      console.log("Starting:");
-      const sdk = ThirdwebSDK.fromPrivateKey(PRIVATE_KEY, "polygon", {
-        secretKey: SECRET_KEY,
-      });
-      const address = await sdk.deployer.deployBuiltInContract("nft-collection", {
-        name: newCollectionName,
-        primary_sale_recipient: "0x2293221D7c357FB04De9c7D0dEeBcA427407429D",
-      });
-      console.log("Deployed at", address);
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-  // MAIN BRANCH FROM HERE
-  // try {
-  //     console.log("Starting:");
-  //     const sdk = ThirdwebSDK.fromPrivateKey(PRIVATE_KEY, "sepolia", {
-  //         client_Id: '806917a5b8cc53296dde7ca4688a1038',
-  //     });
-  //     const address = await sdk.deployer.deployBuiltInContract("nft-collection", {
-  //         name: newCollectionName,
-  //         primary_sale_recipient: "0x2293221D7c357FB04De9c7D0dEeBcA427407429D",
-  //     });
-  //     console.log("Deployed at", address);
-  // } catch (err) {
-  //     setError(err.message);
-  // }
-
-  //         try {
-  //             console.log("Starting 2:");
-  //             const sdk = await ThirdwebSDK.fromPrivateKey(PRIVATE_KEY, "polygon", {
-  //                 secretKey: '806917a5b8cc53296dde7ca4688a1038',
-  //             });
-  //             // const sdk = await ThirdwebSDK.fromWallet("0x2293221D7c357FB04De9c7D0dEeBcA427407429D", "polygon");
-  //             console.log("sdk", sdk);
-
-  //             const contractAddress = await sdk.deployer.deployNFTCollection({
-  //                 name: "My Collection",
-  //                 primary_sale_recipient: "0x2293221D7c357FB04De9c7D0dEeBcA427407429D",
-  //             });
-  //             console.log("Deployed at", contractAddress);
-
-  //         } catch (err) {
-  //             setError(err.message);
-  //         }
-
-  //     };
-  // MAIN BRANCH TO HERE
-
   return (
     <div>
       <TestLayout className="">
-        <div className="flex gap-5 items-start lg:flex-col lg:items-center">
+        <div className="flex gap-5 bg-base-100 items-start lg:flex-col lg:items-center">
           <SimpleCard className="w-full flex relative gap-5 items-center overflow-hidden h-auto lg:flex-col-reverse">
             <div className="w-1/2 h-full flex-col items-center justify-center lg:w-full">
-              <div className="flex items-center">
+              <div className="flex items-center ">
                 <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="#6c63ff" class="bi bi-opencollective" viewBox="0 0 16 16">
                   <path fill-opacity=".4" d="M12.995 8.195c0 .937-.312 1.912-.78 2.693l1.99 1.99c.976-1.327 1.6-2.966 1.6-4.683 0-1.795-.624-3.434-1.561-4.76l-2.068 2.028c.468.781.78 1.679.78 2.732z" />
                   <path d="M8 13.151a4.995 4.995 0 1 1 0-9.99c1.015 0 1.951.273 2.732.82l1.95-2.03a7.805 7.805 0 1 0 .04 12.449l-1.951-2.03a5.07 5.07 0 0 1-2.732.781z" />
                 </svg>
-                <div className="text-5xl font-b6 justify-center text-right rounded-lg p-3 mb-4 text-indigo-600 md:text-3xl md:mb-0">{t("addArt")}</div>
+                <div className="text-5xl font-b6 justify-center text-right rounded-lg p-3 mb-4 text-primary md:text-3xl md:mb-0">{t("addArt")}</div>
               </div>
-              <div className="bg-indigo-400 flex rounded-2xl p-3 mb-3 justify-between" onClick={() => navigate("/upload-page")}>
+              <div className="bg-secondary text-secondary-content flex rounded-2xl p-3 mb-3 justify-between" onClick={() => navigate("/upload-page")}>
                 <div className="cursor-pointer">
                   <div className="flex items-center p-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
@@ -112,7 +58,7 @@ const PreMint = () => {
                   </svg>
                 </div>
               </div>
-              <div className="bg-indigo-400 flex rounded-2xl p-3 mb-3 justify-between">
+              <div className="bg-secondary text-secondary-content flex rounded-2xl p-3 mb-3 justify-between">
                 <div className="cursor-pointer" onClick={() => document.getElementById("AddNftPopup").showModal()}>
                   <div className="flex items-center p-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-boxes" viewBox="0 0 16 16">

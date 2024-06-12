@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 const AboutUs = ({ className }) => {
   const { t } = useTranslation();
   return (
-    <div className={`${className}  w-[40vw] lg:w-[80vw] lg:mx-auto rounded-xl mx-[10rem] flex justify-center bg-primary text-primary-content py-16 relative overflow-hidden`}>
+    <div className={`${className}  w-[80vw] mx-auto rounded-xl flex justify-center bg-primary text-primary-content py-16 relative overflow-hidden`}>
       <div className={`w-2/3 flex flex-col items-center sm:w-4/5`}>
         <div className="font-b9 text-[40px] mb-4 sm:text-[30px]">{t("aboutUs")}</div>
         <div

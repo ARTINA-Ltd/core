@@ -97,10 +97,6 @@ const UploadItem = () => {
     setSelectedCategory(e.value);
   };
 
-  const handleCollectionChange = (e) => {
-    setSelectedCollection(e.value);
-  };
-
   const handleSubmit = (e) => {
     setDisabled(true);
     setTimeout(() => setDisabled(false), 30000);
@@ -267,7 +263,7 @@ const UploadItem = () => {
   return (
     <div>
       <div className="flex gap-5 items-start lg:flex-col lg:items-center">
-        <SimpleCard className="bg-[#4e45d0] w-[45%] flex flex-col relative gap-5 items-center overflow-hidden lg:w-[55%] md:w-[65%] sm:w-[80%]">
+        <SimpleCard className="bg-primary w-[45%] flex flex-col relative gap-5 items-center overflow-hidden lg:w-[55%] md:w-[65%] sm:w-[80%]">
           <div className="relative group w-full rounded-2xl" id="nftImage">
             <img alt="" className="w-full h-auto max-h-[800px] rounded-2xl" src={imageUrl ? imageUrl : "https://api.artina.org/static/images/No_Image_Available.jpg"} />
 
@@ -289,7 +285,7 @@ const UploadItem = () => {
             />
           </div>
         </SimpleCard>
-        <SimpleCard className={"flex flex-col gap-12 bg-white w-full sm:gap-4"}>
+        <SimpleCard className={"flex flex-col gap-12 bg-base-100 w-full sm:gap-4"}>
           <div className="text-[24px]">{t("addArt")}</div>
           <div className="flex gap-4 sm:flex-col">
             <SimpleInput
@@ -337,13 +333,9 @@ const UploadItem = () => {
             </div>
           </div>
           <div className="w-full flex gap-4 sm:flex-col">
-            {
-              // <div className="w-full">
-              //    <SimpleInput options={collectionsOptions} type="dropdown" placeholder={t("selectCategory")} onChange={handleCollectionChange} title={t("collection")} />
-              //    </div>
-            }
+            {}
             <div className="w-full">
-              <p className="text-[14px] cursor-pointer pt-2 border-r-2 pb-2 pr-3 border-indigo-600 font-b5" onClick={() => setVisible(true)}>
+              <p className="text-[14px] cursor-pointer pt-2 border-r-2 pb-2 pr-3 border-primary font-b5" onClick={() => setVisible(true)}>
                 {t("chooseProperties")}{" "}
               </p>
               {uploadObj.properties.map((property, index) => (
@@ -378,10 +370,10 @@ const UploadItem = () => {
           </div>
           <div className="w-full flex gap-3 items-center">
             <div className="">{t("isPhysicalVersion")}</div>
-            <div className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${hasPhysical ? "bg-green-100 text-green-400" : "bg-gray-100 text-gray-400"} transition-all`} onClick={() => setHasPhysical(true)}>
+            <div className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${hasPhysical ? "bg-green-100 text-green-400" : "bg-neutral text-neutral-content"} transition-all`} onClick={() => setHasPhysical(true)}>
               {t("yes")}
             </div>
-            <div className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${!hasPhysical ? "bg-red-100 text-red-400" : "bg-gray-100 text-gray-400"} transition-all`} onClick={() => setHasPhysical(false)}>
+            <div className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${!hasPhysical ? "bg-red-100 text-red-400" : "bg-neutral text-neutral-content"} transition-all`} onClick={() => setHasPhysical(false)}>
               {t("no")}
             </div>
           </div>
@@ -418,10 +410,10 @@ const UploadItem = () => {
 
           <div className="w-full flex gap-3 items-center">
             <div className="">{t("isAddWithWallet")}</div>
-            <div className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${hasInternalWallet ? "bg-green-100 text-green-400" : "bg-gray-100 text-gray-400"} transition-all`} onClick={() => setHasInternalWallet(true)}>
+            <div className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${hasInternalWallet ? "bg-green-100 text-green-400" : "bg-neutral text-neutral-content"} transition-all`} onClick={() => setHasInternalWallet(true)}>
               {t("yes")}
             </div>
-            <div className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${!hasInternalWallet ? "bg-red-100 text-red-400" : "bg-gray-100 text-gray-400"} transition-all`} onClick={() => setHasInternalWallet(false)}>
+            <div className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${!hasInternalWallet ? "bg-red-100 text-red-400" : "bg-neutral text-neutral-content"} transition-all`} onClick={() => setHasInternalWallet(false)}>
               {t("no")}
             </div>
           </div>

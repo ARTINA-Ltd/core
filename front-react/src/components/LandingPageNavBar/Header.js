@@ -13,6 +13,7 @@ import { MdOutlineCollections, MdOutlineCollectionsBookmark, MdSupportAgent } fr
 import { GoBell } from "react-icons/go";
 import { RiNftFill } from "react-icons/ri";
 import { TbActivity } from "react-icons/tb";
+
 import { FaHome, FaPhoneAlt, FaQuestionCircle, FaBlogger } from "react-icons/fa";
 import BalanceDialogMatic from "../Dialog/BalanceDialog/BalanceDialogMatic";
 import i18n from "../../i18n";
