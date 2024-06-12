@@ -888,7 +888,7 @@ class WithdrawalViewSet(viewsets.ModelViewSet):
 class CryptoViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
 
-    def BuyMATIC(self, request):
+    def BuyCrypto(self, request):
         user = self.request.user
         symbol= request.data.get('symbol') 
         side= request.data.get('side')
