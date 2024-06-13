@@ -741,7 +741,7 @@ function Profile() {
               <div className="flex items-center gap-5 w-full py-2 px-2" dir="ltr">
                 <div className="pt-2">IR </div>
 
-                <SimpleInput defaultValue={user && user.data ? user.data.shaba_number : null} disabled={user && user.data != null ? user.data.shaba_number != null : false} title={"اینجا بنویسید"} type="number" onChange={(e) => setShabaNumber(e.target.value)} className="border-none text-white" maxChars={24} />
+                <SimpleInput defaultValue={user && user.data ? user.data.shaba_number : null} disabled={user && user.data != null ? user.data.shaba_number != null : false} title={""} type="number" onChange={(e) => setShabaNumber(e.target.value)} className="border-none text-white" maxChars={24} />
               </div>
             </SimpleCard>
           </div>

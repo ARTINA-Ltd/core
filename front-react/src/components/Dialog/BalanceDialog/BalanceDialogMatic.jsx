@@ -1,21 +1,23 @@
-import { Dialog } from "primereact/dialog";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import SimpleInput from "../../Inputs/SimpleInput";
-import { Notify } from "notiflix";
+import { MdOutlineClose } from "react-icons/md";
 import { useTranslation } from "react-i18next";
-import i18n from "../../../i18n.js";
+import { Notify } from "notiflix/build/notiflix-notify-aio";
 const BalanceDialogMatic = () => {
-  const [visible, setVisible] = useState(false);
   const [getData, setData] = useState();
   const [isCharge, setIsCharge] = useState(false);
-  const [amount, setAmount] = useState();
+  const [buyAmount, setBuyAmount] = useState();
+  const [sellAmount, setSellAmount] = useState();
   const [address, setAddress] = useState("");
+  const [ethPrice, setEthPrice] = useState({});
+  const [maticPrice, setMaticPrice] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation(["wallets"]);
-  const [currentTab, setCurrentTab] = useState(1);
+  const [currentTab, setCurrentTab] = useState("Ethereum");
 
-  useEffect(() => {
+  const getBalance = async () => {
     axios
       .get("https://api.artina.org/api/account/Transaction/get_balance/", {
         headers: {
@@ -30,7 +32,77 @@ const BalanceDialogMatic = () => {
         }
       })
       .catch((e) => {});
-  }, []);
+    console.log(getData);
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get("https://api.artina.org/api/account/CryptoViewSet/CryptoPrice_ETH/", {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            },
+            mode: "cors",
+          });
+          setEthPrice(response.data);
+        } catch (error) {
+          console.error("Error fetching data: ", error);
+        }
+        try {
+          const response = await axios.get("https://api.artina.org/api/account/CryptoViewSet/CryptoPrice_MATIC/", {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            },
+            mode: "cors",
+          });
+          setMaticPrice(response.data);
+        } catch (error) {
+          console.error("Error fetching data: ", error);
+        }
+      };
+
+      fetchData();
+
+      const intervalId = setInterval(fetchData, 15000);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    const handleEsc = (event) => {
+      if (event.keyCode === 27) setIsOpen(false);
+    };
+    window.addEventListener("keydown", handleEsc);
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [setIsOpen]);
+
+  const cryptoTransaction = async (symbol, side, amount, price) => {
+    try {
+      axios
+        .post(
+          "https://api.artina.org/api/account/CryptoViewSet/BuyCrypto/",
+          { symbol: symbol, side: side, amount: amount, price: price },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            },
+          }
+        )
+        .then(() => {
+          Notify.success("your request has been successfull.");
+          console.log();
+        })
+        .catch((err) => {
+          Notify.failure("there was an error!");
+          console.log(err);
+        });
+    } catch {}
+  };
 
   const createWallet = () => {
     axios
@@ -61,74 +133,6 @@ const BalanceDialogMatic = () => {
     navigator.clipboard.writeText(address);
     Notify.success("آدرس در کلیپ بورد کپی شد.");
   };
-  const updateBalance = (act) => {
-    if (act === "deposit") {
-      axios
-        .post(
-          "https://api.artina.org/api/account/Transaction/",
-          { matic_amount: amount },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-            },
-            mode: "cors",
-          }
-        )
-        .then((res) => {
-          if (res.status === 200) {
-            Notify.success("کیف پول شما با موفقیت شارژ شد");
-          } else if (res.status === 400) {
-            Notify.failure("موجودی شما برای انجام تراکنش کافی نمی‌باشد");
-          }
-          // window.open(res.data.url)
-        })
-        .catch((res) => {
-          if (res.status === 400) {
-            Notify.failure("موجودی شما برای انجام تراکنش کافی نمی‌باشد");
-          }
-          Notify.failure("عملیات ناموفق بود لطفا بعدا دوباره تلاش کنید.");
-        });
-    } else {
-      axios
-        .post(
-          "https://api.artina.org/api/account/user-balance/updating_balance/",
-          {
-            currency: "rial",
-            transaction_type: act, //withraw
-            amount: amount,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-            },
-            mode: "cors",
-          }
-        )
-        .then((res) => {
-          Notify.success("با موفقیت برداشت شد");
-        })
-        .catch((res) => {
-          Notify.failure("خطا");
-          console.log(res);
-        });
-    }
-  };
-
-  const Header = (
-    <div className="flex gap-4">
-      {isCharge ? (
-        <div className="cursor-pointer" onClick={() => setIsCharge(false)}>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-          </svg>
-        </div>
-      ) : (
-        ""
-      )}
-
-      <p className="font-b9">{t("wallet")}</p>
-    </div>
-  );
 
   const footer = () => {
     if (isCharge === false) {
@@ -147,91 +151,115 @@ const BalanceDialogMatic = () => {
                 createWallet();
               }}
             >
-              ساخت کیف پول
+              {t("createWallet")}
             </div>
           )}
         </div>
       );
     }
   };
+
   return (
     <div className="card flex justify-content-center">
       <div
         className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]"
         onClick={() => {
-          setVisible(true);
+          document.getElementById("crypto-wallet").showModal();
+          getBalance();
           setIsCharge(false);
+          setIsOpen(true);
         }}
       >
         {t("maticWallet")}{" "}
       </div>
-
-      <Dialog
-        header={Header}
-        visible={visible}
-        style={{ backgroundColor: "black", direction: i18n.dir() === "rtl" && "rtl" }}
+      <dialog
         onHide={() => {
-          setVisible(false);
           setIsCharge(false);
         }}
-        className="w-[30rem] font-b4 sm:w-[90%] background"
+        id="crypto-wallet"
+        className="modal w-[30rem] font-b4 sm:w-[90%] mx-auto"
       >
-        <div role="tablist" className="tabs tabs-boxed">
-          <div
-            role="tab"
-            onClick={() => {
-              setCurrentTab(1);
-            }}
-            className={`tab ${currentTab === 1 && "tab-active"}`}
-          >
-            Tab 1
-          </div>
-          <div
-            role="tab"
-            onClick={() => {
-              setCurrentTab(2);
-            }}
-            className={`tab ${currentTab === 2 && "tab-active"}`}
-          >
-            Tab 2
-          </div>
-        </div>
-        <div className="w-full gap-4 font-b4">
-          <div className=" rounded-xl w-full py-8 flex items-start justify-between  gap-4 relative group overflow-hidden sm:py-5">
-            <div className="text-2xl font-b6 px-4 sm:text-sm"> {t("maticInventory")}</div>
-            <div className="text-lg px-10 self-end lg:text-md sm:px-2 sm:text-sm">{getData ? getData.matic_balance : ""} Matic</div>
-          </div>
-          <div className="w-full flex flex-col gap-8  my-4  shadow-md bg-base-100 p-4 rounded-md">
-            <div className="w-full flex gap-4 flex-col items-center font-b4 mt-4">
-              <p className="self-start font-bold mb-4">شارژ کیف پول</p>
-              <SimpleInput type="number" title="مقدار شارژ (Matic)" placeholder="مثلا: 100" isValid={amount != ""} validationError="نمی‌تواند خالی باشد" onChange={(e) => setAmount(e.target.value)} />
-              <div
-                className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all sm:text-xs sm:px-4 self-start"
-                onClick={() => {
-                  updateBalance("deposit");
-                }}
-              >
-                {t("recharge")}
+        <div className="modal-box">
+          <form method="dialog">
+            <button onClick={() => setIsOpen(false)} className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-xl hover:bg-red-500 hover:text-black">
+              <MdOutlineClose />
+            </button>
+          </form>
+          <div className="flex gap-4 mr-auto my-4 mt-6">
+            {isCharge ? (
+              <div className="cursor-pointer" onClick={() => setIsCharge(false)}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
               </div>
-            </div>
+            ) : (
+              ""
+            )}
 
-            <div className="w-full flex gap-4 flex-col items-center font-b4 border-t-2 border-t-[#4e45d0] border-opacity-60 pt-4">
-              <p className="self-start font-bold mb-4">برداشت از کیف پول</p>
-              <SimpleInput type="number" title="مقدار برداشت (Matic)" placeholder=" مثلا: 100" isValid={amount != ""} validationError="نمی‌تواند خالی باشد" onChange={(e) => setAmount(e.target.value)} />
-              <div
-                className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all sm:text-xs sm:px-4 self-start"
-                onClick={() => {
-                  updateBalance("withraw");
-                }}
-              >
-                {t("withdraw")}
-              </div>
+            <p className="font-b9">{t("wallet")}</p>
+          </div>
+          <div role="tablist" className="tabs tabs-boxed">
+            <div
+              role="tab"
+              onClick={() => {
+                setCurrentTab("Ethereum");
+              }}
+              className={`tab ${currentTab === "Ethereum" && "tab-active"}`}
+            >
+              Ethereum
+            </div>
+            <div
+              role="tab"
+              onClick={() => {
+                setCurrentTab("Matic");
+              }}
+              className={`tab ${currentTab === "Matic" && "tab-active"}`}
+            >
+              Matic
             </div>
           </div>
-        </div>
+          <div className="w-full gap-4 font-b4 bg-base-200 rounded-xl">
+            <div className=" rounded-xl w-full py-8 flex items-start justify-between  gap-4 relative group overflow-hidden sm:py-5">
+              <div className="text-lg px-4 lg:text-md sm:px-2 sm:text-sm">
+                {currentTab === "Ethereum" ? t("yourETH") : t("yourMatic")} {getData ? getData.matic_balance : "0"}
+              </div>
+            </div>
+            <div className="px-4">
+              <p>Buy Price: {currentTab === "Ethereum" ? ethPrice.ETH_buy_price : maticPrice.MATIC_buy_price}</p>
+              <p>Sell Price: {currentTab === "Ethereum" ? ethPrice.ETH_sell_price : maticPrice.MATIC_sell_price}</p>
+            </div>
+            <div className="w-full flex flex-col gap-8  my-4  shadow-md  p-4 rounded-md">
+              <div className="w-full flex gap-4 flex-col items-center font-b4 mt-4">
+                <p className="self-start font-bold mb-4">{t("buy")}</p>
+                <SimpleInput type="number" title={`${t("amount")} ( ${currentTab === "Ethereum" ? "Ethereum" : "Matic"})`} placeholder={t("example")} isValid={buyAmount != false} validationError={t("required")} onChange={(e) => setBuyAmount(e.target.value)} />
+                <div
+                  className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all sm:text-xs sm:px-4 self-start"
+                  onClick={() => {
+                    cryptoTransaction(currentTab === "Ethereum" ? "ETHTMN" : "MATICTMN", "BUY", buyAmount, currentTab === "Ethereum" ? ethPrice.ETH_buy_price : maticPrice.MATIC_buy_price);
+                  }}
+                >
+                  {t("buy")}
+                </div>
+              </div>
 
-        <div className="font-b4 w-full flex justify-end items-center mt-7 gap-3 lg:flex-col">{footer()}</div>
-      </Dialog>
+              <div className="w-full flex gap-4 flex-col items-center font-b4 border-t-2 border-t-primary border-opacity-60 pt-4">
+                <p className="self-start font-bold mb-4">{t("sell")}</p>
+                <SimpleInput type="number" title={`${t("amount")}  (${currentTab === "Ethereum" ? "Ethereum" : "Matic"})`} placeholder={t("example")} isValid={sellAmount != false} validationError={t("required")} onChange={(e) => setSellAmount(e.target.value)} />
+                <div
+                  className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all sm:text-xs sm:px-4 self-start"
+                  onClick={() => {
+                    cryptoTransaction(currentTab === "Ethereum" ? "ETHTMN" : "MATICTMN", "SELL", sellAmount, currentTab === "Ethereum" ? ethPrice.ETH_sell_price : maticPrice.MATIC_sell_price);
+                  }}
+                >
+                  {t("sell")}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="font-b4 w-full  flex justify-end items-center mt-7 gap-3 lg:flex-col">{footer()}</div>
+        </div>
+      </dialog>
     </div>
   );
 };

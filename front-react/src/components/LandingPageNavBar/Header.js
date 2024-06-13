@@ -119,19 +119,20 @@ const Header = ({ connectWallet = false, rev = false }) => {
   ];
 
   useEffect(() => {
-    axios
-      .get("https://api.artina.org/api/account/NotifyUserViewSet/notifList/", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-        },
-      })
-      .then((d) => {
-        setNotifs(d.data);
-        setFirstFiveNotifs(d.data.slice(0, 5));
-        setNotifsToShow(d.data.slice(5));
-      });
+    if (user) {
+      axios
+        .get("https://api.artina.org/api/account/NotifyUserViewSet/notifList/", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+        })
+        .then((d) => {
+          setNotifs(d.data);
+          setFirstFiveNotifs(d.data.slice(0, 5));
+          setNotifsToShow(d.data.slice(5));
+        });
+    }
   }, []);
-
   const handleClickSeen = (notifId) => {
     axios
       .post(
@@ -190,7 +191,6 @@ const Header = ({ connectWallet = false, rev = false }) => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [ref2]);
-  console.log(user);
   return (
     <Fragment>
       <header>
