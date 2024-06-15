@@ -25,6 +25,7 @@ router.register(r'NotifyUserViewSet', views.NotifyUserViewSet, basename='NotifyU
 router.register(r'wallet', views.WalletViewSet, basename='wallet')
 # router.register(r'Transaction', views.TransactionViewSet, basename='Transaction')
 router.register(r'CryptoViewSet', views.CryptoViewSet, basename='CryptoViewSet')
+router.register(r'WithdrawalViewSet', views.WithdrawalViewSet, basename='WithdrawalViewSet')
 # router.register(r'TransactionNFT', views.TransactionNFTViewSet, basename='TransactionNFT')
 
 

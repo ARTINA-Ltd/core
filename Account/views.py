@@ -30,6 +30,8 @@ from decimal import Decimal, getcontext
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from django.http import JsonResponse
+from rest_framework import status
 
 #web3 exchange
 from rest_framework import viewsets, status
@@ -388,13 +390,9 @@ class TransactionViewSet(viewsets.ModelViewSet):
         
         # Calculate turnover for the last month
         today = datetime.now().date()
-        last_month = today - timedelta(days=30)
-        last_month_turnover = turnovers.filter(
-            Q(date__gte=last_month) & Q(date__lte=today)
-        ).aggregate(Sum('amount_value'))['amount__sum'] or 0
+
 
         data = {
-            'last_month_turnover': last_month_turnover,
             'all_turnovers': serializers.TransactionSerializer(turnovers, many=True).data,
         }
 
@@ -412,6 +410,31 @@ class TransactionViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+    @action(detail=False, methods=['get'])
+    def get_balance(self, request):
+        user = self.request.user
+        user_wallet = Wallet.objects.filter(user=user).first()
+        print(f"user_wallet is: {user_wallet}")
+        if not user_wallet:
+            balance = {
+            'matic_balance': 0,
+            'eth_balance':0,
+            'wallet_address' : ""
+            # Add other balance fields as needed
+            }
+            return Response(balance, status=status.HTTP_200_OK)
+
+        balance = w3.eth.getBalance(user_wallet.address)
+        print(f"Balance: {balance}")
+        user_wallet.balance=balance
+        user_wallet.save
+        balance = {
+            'matic_balance': user_wallet.balance,
+            'wallet_address' : user_wallet.address
+            # Add other balance fields as needed
+        }
+
+        return Response(balance, status=status.HTTP_200_OK)
 
 class UserBalanceViewSet(viewsets.ModelViewSet):
     queryset = UserBalance.objects.all()
@@ -429,57 +452,54 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
             'rial_available_balance': user_balance.rial_available_balance,
             'rial_unavailable_balance': user_balance.rial_untradable_balance,
             'eth_balance': user_balance.eth_balance,
-            'eth_unavailable_balance' : user_balance.eth_unavailable_balance,
+            'eth_unavailable_balance' : user_balance.eth_untradable_balance,
+            'matic_balance': user_balance.  matic_balance,
+            'matic_unavailable_balance' : user_balance. matic_untradable_balance,
         }
 
         return Response(balance, status=status.HTTP_200_OK)
 
-    @action(detail=False, methods=['post'])
-    def updating_balance(self, request):
-        user = self.request.user
-        currency = request.data.get('currency').lower()
-        amount = request.data.get('amount')
-        side=request.data.get('transaction_type')
-        if not currency or not amount:
-            return Response({'error': 'Both currency and amount are required.'}, status=status.HTTP_400_BAD_REQUEST)
+def updating_balance(user_id, currency, amount, side):
+    # Fetch the user and user balance
+    user = User.objects.filter(id=user_id).first()
+    if not user:
+        return JsonResponse({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-        try:
-            amount = int(amount)
-        except ValueError:
-            return Response({'error': 'Invalid amount value.'}, status=status.HTTP_400_BAD_REQUEST)
+    user_balance = UserBalance.objects.filter(user=user).first()
+    if not user_balance:
+        return JsonResponse({'error': 'User balance not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-        transaction_currency = TransactionCurrency.objects.get(name=currency)
+    # Mapping currency to the respective balance fields
+    balance_fields = {
+        'rial': 'rial_available_balance',
+        'matic': 'matic_balance',
+        'eth': 'eth_balance'
+    }
 
-        if currency == 'rial':
-            user_balance_field = 'rial_available_balance'
-        elif currency == 'eth':
-            user_balance_field = 'eth_balance'
-        else:
-            return Response({'error': 'Invalid currency.'}, status=status.HTTP_400_BAD_REQUEST)
-        user_balance=None
-        user_balance = UserBalance.objects.filter(user=user).first()
-        if side=="deposit":
-            if user_balance :
-                n=user_balance.rial_available_balance 
-                n=n+ amount
-                user_balance.rial_available_balance =n
-                user_balance.save()
-            else :
-                user_balance = UserBalance.objects.create(rial_available_balance=amount,user=user)
-        elif side=="withraw" :
-            if user_balance :
-                n=user_balance.rial_available_balance 
-                n=n- amount
-                user_balance.rial_available_balance =n
-                user_balance.save()
-            else :
-                return Response({'error': 'you have no money to withdraw.'}, status=status.HTTP_400_BAD_REQUEST)
+    # Check if the currency is valid
+    if currency not in balance_fields:
+        return JsonResponse({'error': 'Invalid currency.'}, status=status.HTTP_400_BAD_REQUEST)
 
+    # Get the appropriate balance field
+    balance_field = balance_fields[currency]
 
-        Transaction.objects.create(user=user, side=side, 
-                                    transaction_currency=transaction_currency, amount=amount,status='completed')
+    # Handle withdrawal
+    if side == 'withdrawal':
+        if getattr(user_balance, balance_field) < amount:
+            return JsonResponse({'error': 'Insufficient balance.'}, status=status.HTTP_400_BAD_REQUEST)
+        setattr(user_balance, balance_field, getattr(user_balance, balance_field) - amount)
+    
+    # Handle deposit
+    elif side == 'deposit':
+        setattr(user_balance, balance_field, getattr(user_balance, balance_field) + amount)
+    
+    else:
+        return JsonResponse({'error': 'Invalid side. Use "deposit" or "withdrawal".'}, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response({'success': 'Balance changed successfully.'}, status=status.HTTP_200_OK)
+    # Save the updated balance
+    user_balance.save()
+    return JsonResponse({'success': 'Balance updated successfully.'}, status=status.HTTP_200_OK)
+
 
 
 
@@ -630,7 +650,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
 
 
 w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
-# w3 = Web3(Web3.HTTPProvider("https://mumbai.rpc.thirdweb.com"))
+#test net w3 = Web3(Web3.HTTPProvider("https://mumbai.rpc.thirdweb.com"))
 
 class WalletViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
@@ -787,7 +807,7 @@ from rest_framework.response import Response
 import requests
 
 
-class TransactionViewSet(viewsets.ViewSet):
+# class TransactionViewSet(viewsets.ViewSet):
 
     # def create(self, request):
     #     user = request.user
@@ -845,42 +865,9 @@ class TransactionViewSet(viewsets.ViewSet):
     #         return Response({'message': 'Transaction failed.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-    @action(detail=False, methods=['get'])
-    def get_balance(self, request):
-        user = self.request.user
-        user_wallet = Wallet.objects.filter(user=user).first()
-        print(f"user_wallet is: {user_wallet}")
-        if not user_wallet:
-            balance = {
-            'matic_balance': 0,
-            'wallet_address' : ""
-            # Add other balance fields as needed
-            }
-            return Response(balance, status=status.HTTP_200_OK)
-
-        balance = w3.eth.getBalance(user_wallet.address)
-        print(f"Balance: {balance}")
-        user_wallet.balance=balance
-        user_wallet.save
-        balance = {
-            'matic_balance': user_wallet.balance,
-            'wallet_address' : user_wallet.address
-            # Add other balance fields as needed
-        }
-
-        # balance = {
-        #     'matic_balance': user_wallet.balance,
-        #     'wallet_address' : user_wallet.address
-        #     # Add other balance fields as needed
-        # }
-
-        return Response(balance, status=status.HTTP_200_OK)
 
 
-    # def withrawl_req():
-    #     User
-    #     amount
-    #     shaba
+
 class WithdrawalViewSet(viewsets.ModelViewSet):
     queryset = withdrawal_list.objects.all()
     serializer_class = withdrawal_listSerializer
@@ -914,6 +901,8 @@ class CryptoViewSet(viewsets.ViewSet):
         if response.status_code == 201:
             transactionINS.status='completed'
             transactionINS.save()
+            updating_balance(user_id=user.id, currency=symbol, amount=amount, side=side)
+            print("updating balance done")
             return Response({'message': 'Purchase successful'}, status=response.status_code)
         
         else:
