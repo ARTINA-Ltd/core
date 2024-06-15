@@ -19,7 +19,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.decorators import action
 from django.shortcuts import redirect                  
-
+from Account.views import updating_balance
 
 class UserExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.ExhibitionSerializer
@@ -324,6 +324,7 @@ class TicketViewSet(viewsets.ViewSet):
                 print(f">>>>>{payment_info}")
                 authority = payment_info['data']['authority']
                 payment = Ex_Payment.objects.create(user=user, amount=amount, authority=authority,exhibition=exhibition)
+                
                 redirect_url = self.get_redirect_url(payment)
 
                 return Response({'url': redirect_url}, status=status.HTTP_200_OK)
@@ -357,6 +358,7 @@ class TicketViewSet(viewsets.ViewSet):
                 ticket=Ticket.objects.create(user=user, exhibition=exhibition)
                 # Send the SMS via Kavenegar API
                 # The URL IS like : https://api.kavenegar.com/v1/{API-KEY}/verify/lookup.json
+                updating_balance(user_id=user.id, currency='rial', amount=pri, side=side)
                 response = requests.post(
                         f"https://api.kavenegar.com/v1/"
                         f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"

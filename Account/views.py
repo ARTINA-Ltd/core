@@ -429,8 +429,10 @@ class TransactionViewSet(viewsets.ModelViewSet):
         user_wallet.balance=balance
         user_wallet.save
         balance = {
-            'matic_balance': user_wallet.balance,
-            'wallet_address' : user_wallet.address
+            'matic_balance': user_wallet.MATIC_balance,
+            'wallet_address' : user_wallet.address,
+            'eth_balance':user_wallet.ETH_balance
+
             # Add other balance fields as needed
         }
 
@@ -458,6 +460,13 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
         }
 
         return Response(balance, status=status.HTTP_200_OK)
+def check_balance(amount,user_id):
+    user=User.objects.filter(id=user_id).first()
+    balance=UserBalance.objects.filter(user=user).first()
+    if(amount>balance.rial_available_balance):
+        return JsonResponse({'error': 'you do not have enough money.'}, status=status.HTTP_403_BAD_REQUEST)
+    else :
+        JsonResponse({'error': 'you can use your balance.'}, status=status.HTTP_200_OK)
 
 def updating_balance(user_id, currency, amount, side):
     # Fetch the user and user balance
