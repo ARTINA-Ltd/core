@@ -156,7 +156,7 @@ const Exhibitor = () => {
           )}
         </SimpleCard>
 
-        <SimpleCard className={"bg-accent text-accent-content mx-auto w-[90%] mt-5 text-center"}>
+        <SimpleCard className={"bg-primary text-primary-content mx-auto w-[90%] mt-5 text-center"}>
           <div className="font-b6 text-2xl mb-4 mx-auto md:mb-4 sm:text-xl">{t("previousExhibitions")}</div>
 
           {artistClosedExhibitions && artistClosedExhibitions.length > 0 ? (

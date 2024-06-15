@@ -427,8 +427,8 @@ function Profile() {
     <TestLayout connectWallet={false}>
       {user && (
         <div style={{ direction: "rtl" }} className="flex gap-5 items-start sm:flex-col">
-          <SimpleCard className={"flex flex-col gap-4 bg-white w-full"}>
-            {user && user.data.role == "user_zero" ? <div className="w-full bg-red-50 text-red-500 py-2 text-center rounded-lg">مشخصات شما هنوز احراز نشده است!</div> : <div className="w-full bg-green-50 text-green-600 py-2 text-center rounded-lg">سطح کاربری شما {user ? user.data.role : ""} میباشد.</div>}
+          <SimpleCard className={"flex flex-col gap-4 bg-base-100 w-full"}>
+            {user && user.data.role == "user_zero" ? <div className=" bg-red-50 text-red-500 py-2 text-center rounded-lg container">مشخصات شما هنوز احراز نشده است!</div> : <div className=" bg-success container text-success-content py-2 text-center rounded-lg">سطح کاربری شما {user ? user.data.role : ""} میباشد.</div>}
             <div className="text-[24px] font-b9">اطلاعات شخصی</div>
             <div className="flex gap-4 items-center">
               <div className="flex-shrink-0 relative group rounded-full" id="profileImage">
@@ -640,7 +640,7 @@ function Profile() {
                   <div className={`w-1/3 ${!showPhoneValidate ? "hidden" : "bg-sky-400 cursor-pointer hover:bg-sky-500 w-full text-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center"} `} onClick={handleSendPhoneVerificationCode}>
                     ثبت
                   </div>
-                  <div className={`w-1/3  ${isPhoneDisabled ? "bg-[#4e45d0] cursor-not-allowed hover:bg-[#372fac]" : "bg-[#372fac] cursor-pointer"} w-full text-nowrap flex-nowrap whitespace-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center`} onClick={() => (!isPhoneDisabled ? hanldeClickPhone() : "")}>
+                  <div className={`w-1/3  ${isPhoneDisabled ? "bg-primary cursor-not-allowed hover:bg-[#372fac]" : "bg-[#372fac] cursor-pointer"} w-full text-nowrap flex-nowrap whitespace-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center`} onClick={() => (!isPhoneDisabled ? hanldeClickPhone() : "")}>
                     {isPhoneDisabled ? `ارسال مجدد کد (${counter})` : "ارسال کد"}
                   </div>
                 </div>
@@ -704,7 +704,7 @@ function Profile() {
                   <div className={`w-1/3 ${!showEmailValidate ? "hidden" : "bg-sky-400 cursor-pointer hover:bg-sky-500 w-full text-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center"} `} onClick={handleSendEmailVerificationCode}>
                     ثبت
                   </div>
-                  <div className={`w-1/3  ${isEmailDisabled ? "bg-[#4e45d0] cursor-not-allowed hover:bg-[#372fac]" : "bg-[#372fac] cursor-pointer"} w-full text-nowrap flex-nowrap whitespace-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center`} onClick={() => (!isEmailDisabled ? handleClickEmail() : "")}>
+                  <div className={`w-1/3  ${isEmailDisabled ? "bg-primary cursor-not-allowed hover:bg-[#372fac]" : "bg-[#372fac] cursor-pointer"} w-full text-nowrap flex-nowrap whitespace-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center`} onClick={() => (!isEmailDisabled ? handleClickEmail() : "")}>
                     {isEmailDisabled ? `ارسال مجدد کد (${counter})` : "ارسال کد"}
                   </div>
                 </div>
@@ -716,8 +716,7 @@ function Profile() {
             </div>
           </SimpleCard>
           <div className="flex flex-col gap-4 items-center justify-center w-[35%] relative sm:w-full">
-            <SimpleCard className="bg-[#4e45d0] flex flex-col relative gap-4 items-center overflow-hidden w-full">
-              <img src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
+            <SimpleCard className="bg-primary flex flex-col relative gap-4 items-center overflow-hidden w-full">
               <div className="text-white text-[27px] mb-2 z-10 font-b9 sm:text-[20px]">آپلود فرم احراز هویت</div>
               <BorderButton className={"text-white border-white"} onClick={() => window.open("http://api.artina.org/static/pdfs/Form-new-version.pdf")}>
                 متن احراز هویت
@@ -734,8 +733,7 @@ function Profile() {
               </div>
             </SimpleCard>
 
-            <SimpleCard className="bg-[#4e45d0] flex flex-col relative text-white gap-4 items-center overflow-hidden w-full">
-              <img src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
+            <SimpleCard className="bg-primary flex flex-col relative text-white gap-4 items-center overflow-hidden w-full">
               <div className="text-white text-[27px] mb-2 z-10 font-b9">اطلاعات کارت بانکی</div>
               <div className="font-b3">شماره شبا</div>
               <div className="flex items-center gap-5 w-full py-2 px-2" dir="ltr">

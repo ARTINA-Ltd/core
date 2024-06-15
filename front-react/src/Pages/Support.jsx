@@ -92,7 +92,7 @@ const Support = () => {
   }, [image]);
   return (
     <TestLayout className="flex items-center justify-center gap-5">
-      <SimpleCard className={"bg-[#ffffff] w-1/2 lg:w-4/5 sm:w-[90%]"}>
+      <SimpleCard className={"bg-base-100 w-1/2 lg:w-4/5 sm:w-[90%]"}>
         <div className="text-[24px]">{t("support")}</div>
 
         <div className="flex gap-5 lg:flex-col">
@@ -188,7 +188,7 @@ const Support = () => {
         </div>
         <div className="mt-3">{t("subject")}</div>
         <textarea
-          className={"w-full border-[1px] border-indigo-600 outline-none mt-1 min-h-[190px] p-5 rounded-xl text-lg font-b2 leading-loose"}
+          className={"w-full border-[1px] border-primary bg-base-100 outline-none mt-1 min-h-[190px] p-5 rounded-xl text-lg font-b2 leading-loose"}
           type="text"
           title=""
           isValid={values.text !== ""}

@@ -19,7 +19,7 @@ const BalanceDialogMatic = () => {
 
   const getBalance = async () => {
     axios
-      .get("https://api.artina.org/api/account/Transaction/get_balance/", {
+      .get("https://api.artina.org/api/account/user-turnover/get_balance/", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
         },
@@ -27,12 +27,12 @@ const BalanceDialogMatic = () => {
       })
       .then((res) => {
         setData(res.data);
+        console.log(res.data);
         if (res.data && res.data.wallet_address) {
           setAddress(res.data.wallet_address);
         }
       })
       .catch((e) => {});
-    console.log(getData);
   };
 
   useEffect(() => {
@@ -64,7 +64,7 @@ const BalanceDialogMatic = () => {
 
       fetchData();
 
-      const intervalId = setInterval(fetchData, 15000);
+      const intervalId = setInterval(fetchData, 8000);
 
       return () => clearInterval(intervalId);
     }
@@ -102,6 +102,7 @@ const BalanceDialogMatic = () => {
           console.log(err);
         });
     } catch {}
+    getBalance();
   };
 
   const createWallet = () => {
@@ -220,9 +221,7 @@ const BalanceDialogMatic = () => {
           </div>
           <div className="w-full gap-4 font-b4 bg-base-200 rounded-xl">
             <div className=" rounded-xl w-full py-8 flex items-start justify-between  gap-4 relative group overflow-hidden sm:py-5">
-              <div className="text-lg px-4 lg:text-md sm:px-2 sm:text-sm">
-                {currentTab === "Ethereum" ? t("yourETH") : t("yourMatic")} {getData ? getData.matic_balance : "0"}
-              </div>
+              <div className="text-lg px-4 lg:text-md sm:px-2 sm:text-sm">{currentTab === "Ethereum" ? `${t("yourETH")} ${getData ? getData.eth_balance : "0"}` : `${t("yourMatic")} ${getData ? getData.matic_balance : "0"}`} </div>
             </div>
             <div className="px-4">
               <p>Buy Price: {currentTab === "Ethereum" ? ethPrice.ETH_buy_price : maticPrice.MATIC_buy_price}</p>
@@ -231,7 +230,10 @@ const BalanceDialogMatic = () => {
             <div className="w-full flex flex-col gap-8  my-4  shadow-md  p-4 rounded-md">
               <div className="w-full flex gap-4 flex-col items-center font-b4 mt-4">
                 <p className="self-start font-bold mb-4">{t("buy")}</p>
-                <SimpleInput type="number" title={`${t("amount")} ( ${currentTab === "Ethereum" ? "Ethereum" : "Matic"})`} placeholder={t("example")} isValid={buyAmount != false} validationError={t("required")} onChange={(e) => setBuyAmount(e.target.value)} />
+                <div className="w-full flex">
+                  <SimpleInput type="number" title={`${t("amount")} ( ${currentTab === "Ethereum" ? "Ethereum" : "Matic"})`} placeholder={t("example")} isValid={buyAmount != false} validationError={t("required")} onChange={(e) => setBuyAmount(e.target.value)} />
+                  <p>{buyAmount ? ` قیمت تمام شده ${currentTab === "Ethereum" ? ethPrice.ETH_buy_price * buyAmount : maticPrice.MATIC_buy_price * buyAmount}` : ""}</p>
+                </div>
                 <div
                   className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all sm:text-xs sm:px-4 self-start"
                   onClick={() => {
@@ -245,6 +247,7 @@ const BalanceDialogMatic = () => {
               <div className="w-full flex gap-4 flex-col items-center font-b4 border-t-2 border-t-primary border-opacity-60 pt-4">
                 <p className="self-start font-bold mb-4">{t("sell")}</p>
                 <SimpleInput type="number" title={`${t("amount")}  (${currentTab === "Ethereum" ? "Ethereum" : "Matic"})`} placeholder={t("example")} isValid={sellAmount != false} validationError={t("required")} onChange={(e) => setSellAmount(e.target.value)} />
+                <p>{sellAmount ? ` قیمت تمام شده ${currentTab === "Ethereum" ? ethPrice.ETH_sell_price * sellAmount : maticPrice.MATIC_sell_price * sellAmount}` : ""}</p>
                 <div
                   className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all sm:text-xs sm:px-4 self-start"
                   onClick={() => {
