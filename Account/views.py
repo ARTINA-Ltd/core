@@ -481,8 +481,8 @@ def updating_balance(user_id, currency, amount, side):
     # Mapping currency to the respective balance fields
     balance_fields = {
         'rial': 'rial_available_balance',
-        'matic': 'matic_balance',
-        'eth': 'eth_balance'
+        'MATICTMN': 'matic_balance',
+        'ETHTMN': 'eth_balance'
     }
 
     # Check if the currency is valid
@@ -607,7 +607,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
                         data={
                         "receptor": profile.phone_number,
                         "token": user.username,
-                        "token2": payment.amount,
+                        "token2": payment.amount, 
                         "template": "AccountChargeVerification"
                         }
                         )
@@ -910,7 +910,8 @@ class CryptoViewSet(viewsets.ViewSet):
         if response.status_code == 201:
             transactionINS.status='completed'
             transactionINS.save()
-            updating_balance(user_id=user.id, currency=symbol, amount=amount, side=side)
+            line=updating_balance(user_id=user.id, currency=symbol, amount=amount, side=side)
+            print(line)
             print("updating balance done")
             return Response({'message': 'Purchase successful'}, status=response.status_code)
         
