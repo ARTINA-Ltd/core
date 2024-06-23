@@ -195,14 +195,12 @@ const BalanceDialog = () => {
         {!isCharge ? (
           <div className="w-full flex gap-4 font-b4 sm:flex-col">
             <div className="bg-[#4e45d0] rounded-xl w-full py-20 flex flex-col items-start justify-center text-white gap-4 relative group overflow-hidden sm:py-4">
-              <img alt="" src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all  duration-700 sm:text-sm" />
               <div className="text-2xl font-b6 px-10 sm:text-xs"> {t("negotiable")}</div>
               <div className="text-lg text-yellow-300 px-10 self-end">
                 {getData ? getData.rial_available_balance : ""} {t("tooman")}
               </div>
             </div>
             <div className="bg-[#4e45d0] rounded-xl w-full py-20 flex flex-col items-start justify-center text-white gap-4 relative group overflow-hidden sm:py-4">
-              <img alt="" src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden group-hover:scale-110 transition-all duration-700" />
               <div className="text-2xl font-b6 px-10 sm:text-xs">{t("unNegotiable")}</div>
               <div className="text-lg text-yellow-300 px-10 self-end">
                 {getData ? getData.rial_unavailable_balance : ""} {t("tooman")}

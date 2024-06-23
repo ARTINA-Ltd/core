@@ -22,22 +22,18 @@ const Collections = () => {
   useEffect(() => {
     axios.get(`https://api.artina.org/api/transaction/collection/${username}/nfts/`, {}).then((res) => {
       setData(res.data);
-      console.log(res.data);
     });
 
     axios
       .get(`https://api.artina.org/api/transaction/UsersWithNFTsViewSet/`)
       .then((res) => {
-        console.log(res);
         setUser(
           res.data.filter((e) => {
             return e.username == username;
           })[0]
         );
       })
-      .catch((res) => {
-        console.log(res);
-      });
+      .catch((res) => {});
   }, [username]);
 
   const handleClickShow = (e, childIsVisible, tokenid) => {
@@ -56,7 +52,6 @@ const Collections = () => {
       )
       .then((res) => {
         Notify.success("مجموعه ی شما برای عموم قابل نمایش است");
-        console.log(res.data);
       });
     childIsVisible(true);
   };
@@ -77,8 +72,6 @@ const Collections = () => {
       )
       .then((res) => {
         Notify.success("مجموعه ی شما فقط برای شما نمایش داده میشود");
-
-        console.log(res.data);
       });
     childIsVisible(false);
   };

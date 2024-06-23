@@ -14,7 +14,7 @@ export default function Commission() {
     <>
       <TestLayout>
         <div className="w-[55%] m-auto lg:w-4/5 md:w-11/12">
-          <SimpleCard className={"text-center bg-white leading-[40px]"}>
+          <SimpleCard className={"text-center bg-base-100 leading-[40px]"}>
             <div className=" mt-4">
               <p className="text-[32px] mb-5 sm:text-[25px]">{t("header")}</p>
               <p className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">{t("firstParagraph")}</p>
@@ -23,14 +23,14 @@ export default function Commission() {
               <p className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">{t("thirdParagraph")}</p>
             </div>
           </SimpleCard>
-          <SimpleCard className={"bg-white mt-7"}>
+          <SimpleCard className={"bg-base-100 mt-7"}>
             <TradeRate />
           </SimpleCard>
 
-          <SimpleCard className={"bg-white mt-7"}>
+          <SimpleCard className={"bg-base-100 mt-7"}>
             <Commissionmax />
           </SimpleCard>
-          <SimpleCard className={"bg-white mt-7"}>
+          <SimpleCard className={"bg-base-100 mt-7"}>
             <div>
               <p className="text-[32px] mb-5 text-center">{t("thirdHeader")}</p>
               <p className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">{t("fourthparaGraph")}</p>
@@ -39,7 +39,7 @@ export default function Commission() {
               <p className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">{t("seventhParagraph")}</p>
             </div>
           </SimpleCard>
-          <SimpleCard className={"bg-white mt-7"}>
+          <SimpleCard className={"bg-base-100 mt-7"}>
             <WidthdrawRate />
           </SimpleCard>
         </div>

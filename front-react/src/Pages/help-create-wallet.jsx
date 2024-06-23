@@ -9,7 +9,7 @@ const HelpCreateWallet = () => {
   return (
     <TestLayout>
       <div className="w-[55%] m-auto lg:w-4/5 md:w-11/12">
-        <SimpleCard className={"text-center bg-white leading-[40px]"}>
+        <SimpleCard className={"text-center bg-base-100 leading-[40px]"}>
           <div className={`text-[32px] ${i18n.dir() === "rtl" ? "text-right" : "text-left"}  mb-5 sm:text-[25px]`}>{t("header")}</div>
           <div className="text-[18px] mb-7 text-center sm:px-3 sm:text-[14px]">{t("firstparagraph")}</div>
           <div className={`text-[25px] mb-2 mr-5 ${i18n.dir() === "rtl" ? "text-right" : "text-left"}`}>{t("secondHeader")}</div>

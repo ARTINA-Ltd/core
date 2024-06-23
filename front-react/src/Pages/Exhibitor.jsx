@@ -88,8 +88,8 @@ const Exhibitor = () => {
           <div className="font-b6 text-2xl mb-4 mx-auto md:mb-4 sm:text-xl">{t("firstSection")}</div>
 
           <div className="grid grid-cols-5 gap-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-1">
-            <div className="h-[420px] w-full bg-[#0000aa05] hover:bg-[#0000aa08] rounded-2xl group flex items-center justify-center cursor-pointer  transition-all md:h-[300px] sm:h-[250px]" onClick={() => navigate("/add-exhibition")}>
-              <div className="text-[#000022] opacity-20 group-hover:opacity-40 transition-all group-hover:scale-105 ease-out duration-150 flex flex-col items-center">
+            <div className="h-[420px] w-full bg-neutral text-neutral-content hover:bg-gray-500 hover:bg-opacity-40 rounded-2xl group flex items-center justify-center cursor-pointer  transition-all md:h-[300px] sm:h-[250px]" onClick={() => navigate("/add-exhibition")}>
+              <div className="opacity-50 group-hover:opacity-60 transition-all group-hover:scale-105 ease-out duration-150 flex flex-col items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="0.6" stroke="currentColor" width={"4em"}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -156,7 +156,7 @@ const Exhibitor = () => {
           )}
         </SimpleCard>
 
-        <SimpleCard className={"bg-accent text-accent-content mx-auto w-[90%] mt-5 text-center"}>
+        <SimpleCard className={"bg-primary text-primary-content mx-auto w-[90%] mt-5 text-center"}>
           <div className="font-b6 text-2xl mb-4 mx-auto md:mb-4 sm:text-xl">{t("previousExhibitions")}</div>
 
           {artistClosedExhibitions && artistClosedExhibitions.length > 0 ? (

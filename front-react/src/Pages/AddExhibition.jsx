@@ -128,7 +128,7 @@ const AddExhibition = () => {
   return (
     <TestLayout>
       <div className="card mxau flex justify-content-center">
-        <div className="w-[80%] lg:w-[80%] mx-auto sm:w-[85%] bg-white p-8 rounded-xl">
+        <div className="w-[80%] lg:w-[80%] mx-auto sm:w-[85%] bg-base-100 p-8 rounded-xl">
           <div>
             <p className="font-b9 mb-4">{t("addEx")}</p>
           </div>
@@ -152,7 +152,7 @@ const AddExhibition = () => {
                   ref={inputFile}
                 />
               </div>
-              <div className="flex flex-col shadow-sm shadow-[#4e45d0] p-4 rounded-md gap-8 w-full mx-4">
+              <div className="flex flex-col shadow-sm shadow-primary p-4 rounded-md gap-8 w-full mx-4">
                 <SimpleInput
                   className={"shadow-md rounded-md"}
                   type="text"
@@ -191,7 +191,7 @@ const AddExhibition = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-8 mt-8 shadow-sm shadow-[#4e45d0] p-4 rounded-md my-4">
+            <div className="flex flex-col gap-8 mt-8 shadow-sm shadow-primary p-4 rounded-md my-4">
               <div className="flex gap-4 md:flex-col ">
                 <SimpleInput
                   className={"shadow-md rounded-md"}
@@ -243,7 +243,7 @@ const AddExhibition = () => {
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-4 shadow-sm shadow-[#4e45d0] p-4 rounded-md">
+            <div className="flex flex-col gap-4 shadow-sm shadow-primary p-4 rounded-md">
               <div className={`border-[1px] w-1/2 mx-auto rounded-full px-3 py-1 cursor-pointer text-center transition-all ${ticket ? "border-green-500 text-green-600 bg-green-50" : "border-red-600 text-red-700 bg-red-50"}`} onClick={() => setTicket((prev) => !prev)}>
                 {ticket ? t("hasTicket") : t("noTicket")}
               </div>

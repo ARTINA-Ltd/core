@@ -8,7 +8,7 @@ const HelpCreateExhibition = () => {
   return (
     <TestLayout>
       <div className="w-[55%] m-auto lg:w-4/5 md:w-11/12">
-        <SimpleCard className={"text-center bg-white leading-[40px]"}>
+        <SimpleCard className={"text-center bg-base-100 leading-[40px]"}>
           <div className="text-[32px] mb-5 sm:text-[25px]">{t("header")}</div>
           <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">{t("step1")}</div>
           <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">

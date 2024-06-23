@@ -25,7 +25,7 @@
     "keen-slider": "^6.8.5",
     "notiflix": "^3.2.6",
     "primeicons": "^6.0.1",
-    "primereact": "^9.0.0-beta.1",
+    "primereact": "^9.6.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
@@ -42,7 +42,7 @@
     "tailwind": "^4.0.0",
     "tw-elements": "^1.0.0-alpha12",
     "web-vitals": "^2.1.4",
-    "zaman": "^2.0.7"
+    "zaman": "^2.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
