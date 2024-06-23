@@ -38,8 +38,6 @@ const Dashboard = () => {
         mode: "cors",
       })
       .then((res) => {
-        console.log("_____Tickets_____");
-        console.log(res.data);
         setTickets(res.data);
       })
       .catch((res) => {});
@@ -80,12 +78,9 @@ const Dashboard = () => {
         },
       })
       .then((res) => {
-        console.log("-----monthturnovers-----");
-        console.log(res.data);
         setLastMonthTurnover(res.data.last_month_turnover);
         setAllTurnovers(res.data.all_turnovers);
         setFirstFiveTurnovers(res.data.all_turnovers.slice(0, 5));
-        console.log("---------");
       })
       .catch((res) => {});
   }, []);
@@ -122,7 +117,6 @@ const Dashboard = () => {
       })
       .then((res) => {
         setBalance(res.data);
-        console.log("____Balance____", res.data);
       })
       .catch((e) => {});
   }, []);
@@ -136,7 +130,6 @@ const Dashboard = () => {
       })
       .then((res) => {
         setArtistOpenExhibitions(res.data);
-        console.log("____Exhibitions____", res.data);
       });
   }, []);
 
@@ -148,7 +141,6 @@ const Dashboard = () => {
         },
       })
       .then((d) => {
-        console.log(d.data);
         setReqData(d);
       })
       .catch((res) => console.log(res));
@@ -163,8 +155,6 @@ const Dashboard = () => {
         mode: "cors",
       })
       .then((res) => {
-        console.log("orderssssssss");
-        console.log(res.data);
         setOrders(res.data);
       })
       .catch((res) => {});

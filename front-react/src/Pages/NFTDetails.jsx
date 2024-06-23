@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, Fragment } from "react";
 import React from "react";
 import Properties from "../ProductPageComponent/Properties";
 import Recomendition from "../ProductPageComponent/Recomendition";
@@ -39,18 +39,18 @@ const NFTDetails = () => {
       </svg>
     ),
     eye: (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.7" stroke="currentColor" className="text-white h-[40%]">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.7" stroke="currentColor" className="text-primary-content h-[40%]">
         <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
         <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
       </svg>
     ),
     share: (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.6" stroke="currentColor" className="text-white h-[40%]">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.6" stroke="currentColor" className="text-primary-content h-[40%]">
         <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
       </svg>
     ),
     x_mark: (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="text-white h-[40%]">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="text-primary-content h-[40%]">
         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
       </svg>
     ),
@@ -235,33 +235,33 @@ const NFTDetails = () => {
     <TestLayout>
       <div>
         <div className="flex gap-4 items-start lg:flex-col">
-          <SimpleCard id="RightSide" className="bg-[#4e45d0] w-full flex flex-col relative gap-6 items-center ">
+          <SimpleCard id="RightSide" className="bg-primary w-full flex flex-col relative gap-6 items-center ">
             <div className="relative w-full">
-              <img src={data ? data.image_url : ""} className="rounded-xl h-auto w-full object-cover" />
-              <div className="absolute top-0 w-full h-[50px] flex justify-center items-center bg-white bg-opacity-50 rounded-xl text-[20px]">
+              <img src={data ? data.image_url : ""} alt="" className="rounded-xl h-auto w-full object-cover" />
+              <div className="absolute top-0 w-full h-[50px] flex justify-center items-center bg-base-100 bg-opacity-50 rounded-xl text-[20px]">
                 <CountdownTimer end_date={data && countdown} className="" />
               </div>
             </div>
             <div className="flex flex-col gap-5 w-full">
               <div className="flex gap-3 w-full">
-                <div className={`w-full h-16 bg-[#7168f3] rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda] sm:px-2 sm:h-10 sm:justify-around`} onClick={handleClickLike}>
+                <div className={`w-full h-16 bg-secondary rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda] sm:px-2 sm:h-10 sm:justify-around`} onClick={handleClickLike}>
                   {data && likeColor ? icons.red_heart : icons.heart}
                   {console.log("like ->>>>", like.user_has_liked)}
                   {console.log("likeColor ->>>>", likeColor)}
-                  <div className="text-white text-[16px]">{likeCount}</div>
+                  <div className="text-primary-content text-[16px]">{likeCount}</div>
                 </div>
-                <div className="bg-[#7168f3] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda] sm:px-2 sm:h-10 sm:justify-around">
+                <div className="bg-secondary w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda] sm:px-2 sm:h-10 sm:justify-around">
                   {icons.eye}
-                  <div className="text-white text-[16px]">{data && data.view_count + 1}</div>
+                  <div className="text-primary-content text-[16px]">{data && data.view_count + 1}</div>
                 </div>
-                <div className="bg-[#7168f3] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda] sm:px-2 sm:h-10 sm:justify-around" onClick={handleClickShare}>
+                <div className="bg-secondary w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda] sm:px-2 sm:h-10 sm:justify-around" onClick={handleClickShare}>
                   {icons.share}
-                  <div className="text-white text-[16px]">{data && shareCount}</div>
+                  <div className="text-primary-content text-[16px]">{data && shareCount}</div>
                 </div>
               </div>
             </div>
           </SimpleCard>
-          <SimpleCard id="LeftSide" className={"flex flex-col gap-8 bg-white w-full sm:gap-2"}>
+          <SimpleCard id="LeftSide" className={"flex flex-col gap-8 bg-base-100 w-full sm:gap-2"}>
             <div className="flex items-center pt-3 sm:flex-col sm:gap-2">
               <div className="text-[16px] opacity-40">{t("artName")}</div>
               <div className="text-[32px] mx-auto sm:text-[20px]">{data ? data.name : ""}</div>
@@ -280,7 +280,7 @@ const NFTDetails = () => {
             <div className="flex items-center sm:flex-col sm:gap-2">
               <div className="text-[16px] opacity-40">{t("transactionHash")}</div>
               <div className="text-[16px] mx-auto">{data ? formatString(data.transactionHash) : ""}</div>
-              <a href={`https://polygonscan.com/tx/${data ? data.transactionHash : ""}`} className="bg-[#f1f2f7] hover:bg-[#e5e6eb] transition-all text-gray-600 py-1 text-sm px-3 rounded-md flex gap-1 items-center">
+              <a href={`https://polygonscan.com/tx/${data ? data.transactionHash : ""}`} className="bg-neutral text-neutral-content hover:bg-[#e5e6eb] hover:text-gray-600 transition-all  py-1 text-sm px-3 rounded-md flex gap-1 items-center">
                 {t("blockchain")}
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
@@ -293,7 +293,11 @@ const NFTDetails = () => {
                 <div className=" text-[16px] opacity-40">{t("blockNo")}</div>
                 <div className="text-[16px] mx-auto">{data ? data.blockNumber : ""}</div>
                 <div>
-                  <a href={`https://polygonscan.com/block/${data ? data.blockNumber : ""}`} className="bg-[#f1f2f7] hover:bg-[#e5e6eb] transition-all text-gray-600 py-1 text-sm px-1 rounded-md flex gap-1 items-center">
+                  <a
+                    href={`https://polygonscan.com/block/${data ? data.blockNumber : ""}`}
+                    className="bg-neutral hover:bg-[#e5e6eb] transition-all text-neutral-content hover:text-gray-600
+                   py-1 text-sm px-1 rounded-md flex gap-1 items-center"
+                  >
                     {t("blockchain")}
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
                       {/* make blockchain svg path */}
@@ -348,16 +352,16 @@ const NFTDetails = () => {
             </div>
             <div className="w-full flex justify-between items-center">
               {data && data.has_physical ? (
-                <>
+                <Fragment>
                   <div className="bg-green-50 text-green-400  py-1 text-sm px-3 rounded-md">اثر نسخه فیزیکی دارد</div>
-                </>
+                </Fragment>
               ) : (
-                <>
+                <Fragment>
                   <div className="bg-red-50 text-red-400 py-1 text-sm px-3 rounded-md">اثر نسخه فیزیکی ندارد</div>
-                </>
+                </Fragment>
               )}
 
-              <a href={data ? data.external_link : ""} className="bg-[#f1f2f7] hover:bg-[#e5e6eb] transition-all text-gray-600 py-1 text-sm px-3 rounded-md flex gap-1 items-center">
+              <a href={data ? data.external_link : ""} className="bg-neutral hover:bg-[#e5e6eb] transition-all text-neutral-content hover:text-gray-600 py-1 text-sm px-3 rounded-md flex gap-1 items-center">
                 {t("externalLink")}
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
@@ -365,14 +369,14 @@ const NFTDetails = () => {
               </a>
             </div>
 
-            <div className="flex items-center justify-self-end bg-[#f1f2f7] px-10 py-3 rounded-xl">
+            <div className="flex items-center justify-self-end bg-accent text-accent-content px-10 py-3 rounded-xl">
               <div className="text-[16px] opacity-50">{t("latestPrice")}</div>
               <div className="text-[22px] mx-auto">{data ? data.last_price : ""} اتریوم</div>
             </div>
           </SimpleCard>
         </div>
         <div className="flex gap-6 md:flex-col">
-          <SimpleCard className="bg-white grow flex flex-col relative gap-3 items-center mt-4">
+          <SimpleCard className="bg-base-100  grow flex flex-col relative gap-3 items-center mt-4">
             <div className="flex items-center pt-3">
               <div className="text-[32px] mx-auto sm:text-[20px]">{t("offers")}</div>
             </div>
@@ -380,7 +384,7 @@ const NFTDetails = () => {
           </SimpleCard>
 
           {user && (data ? data.is_for_sale : true) ? (
-            <>
+            <Fragment>
               <SimpleCard id="UserRequests" className="bg-white w-1/2 flex flex-col relative gap-3 items-center mt-4 md:w-full sm:mt-0">
                 <div className="flex items-center pt-3">
                   <div className="text-[32px] mx-auto sm:text-[20px]">پیشنهاد های شما</div>
@@ -417,7 +421,7 @@ const NFTDetails = () => {
                   </div>
                 </div>
               </SimpleCard>
-            </>
+            </Fragment>
           ) : (
             ""
           )}

@@ -506,7 +506,6 @@ function Profile() {
                       }));
                     }}
                     defaultValue={user != null ? user.data.bio : null}
-                    disabled={user != null ? user.data.bio != null : null}
                   />
                 </div>
               </div>
@@ -646,26 +645,6 @@ function Profile() {
                 </div>
               )}
             </div>
-
-            {/* <div className="flex gap-4">
-            <div className=" w-full">
-              <SimpleInput
-                type="text"
-                title="ایمیل "
-                placeholder="09123456789"
-                isValid={ValidateEmail(values.email)}
-                validationError="نمی‌تواند خالی باشد"
-                onChange={(e) =>
-                  setValues((prev) => ({
-                    ...prev,
-                    email: e.target.value,
-                  }))
-                }
-                defaultValue={user != null ? user.data.email : null}
-                disabled={user != null ? user.data.email != null : null}
-              />
-            </div>
-          </div> */}
 
             <div className="flex gap-4">
               <SimpleInput

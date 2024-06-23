@@ -47,7 +47,6 @@ const Support = () => {
           }
         )
         .then((res) => {
-          console.log(res);
           Notify.success("درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد.");
         })
         .catch(() => Notify.failure("خطا"));
@@ -63,7 +62,6 @@ const Support = () => {
           image_url: imageUrl,
         })
         .then((res) => {
-          console.log(res);
           Notify.success("درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد.");
         })
         .catch(() => Notify.failure("خطا"));
