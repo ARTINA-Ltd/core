@@ -428,7 +428,7 @@ function Profile() {
       {user && (
         <div style={{ direction: "rtl" }} className="flex gap-5 items-start sm:flex-col">
           <SimpleCard className={"flex flex-col gap-4 bg-base-100 w-full"}>
-            {user && user.data.role == "user_zero" ? <div className=" bg-red-50 text-red-500 py-2 text-center rounded-lg container">مشخصات شما هنوز احراز نشده است!</div> : <div className=" bg-success container text-success-content py-2 text-center rounded-lg">سطح کاربری شما {user ? user.data.role : ""} میباشد.</div>}
+            {user && user.data.role == "user_zero" ? <div className=" bg-red-50 text-red-500 py-2 text-center rounded-lg w-full">مشخصات شما هنوز احراز نشده است!</div> : <div className=" bg-success w-full text-success-content py-2 text-center rounded-lg">حساب کاربری شما احراز شده است .</div>}
             <div className="text-[24px] font-b9">اطلاعات شخصی</div>
             <div className="flex gap-4 items-center">
               <div className="flex-shrink-0 relative group rounded-full" id="profileImage">
