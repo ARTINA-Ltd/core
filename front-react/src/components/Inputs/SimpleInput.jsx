@@ -49,7 +49,7 @@ const SimpleInput = ({ onChange, title, placeholder, type, isValid, validationEr
         if (disabled) {
           return (
             <div className={`simple-input w-full border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={i18n.dir()}>
-              {defaultVal.getFullYear() > 1500 ? new Intl.DateTimeFormat("fa").format(defaultVal) : new Intl.DateTimeFormat("en").format(defaultVal)}
+              {defaultVal?.getFullYear() > 1500 ? new Intl.DateTimeFormat("fa").format(defaultVal) : new Intl.DateTimeFormat("en").format(defaultVal)}
             </div>
           );
         }
