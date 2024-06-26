@@ -32,16 +32,16 @@ function Profile() {
   });
 
   const [validate, setValidate] = useState({
-    first_name: true,
-    last_name: true,
-    national_code: true,
-    birthdate: true,
-    cell_number: true,
-    phone_number: true,
-    email: true,
-    address: true,
-    bio: true,
-    postal_code: true,
+    first_name: false,
+    last_name: false,
+    national_code: false,
+    birthdate: false,
+    cell_number: false,
+    phone_number: false,
+    email: false,
+    address: false,
+    bio: false,
+    postal_code: false,
   });
 
   const [counter, setCounter] = useState(10);
@@ -352,8 +352,8 @@ function Profile() {
   useEffect(() => {
     console.log(user);
     if (user && user.data) {
-      setValues((prev) => ({
-        ...prev,
+      setValues({
+        ...values,
         first_name: user ? user.data.first_name : "",
         last_name: user ? user.data.last_name : "",
         national_code: user ? user.data.national_code : "",
@@ -364,7 +364,7 @@ function Profile() {
         cell_number: user ? user.data.cell_number : "",
         phone_number: user ? user.data.phone_number : "",
         email: user ? user.data.email : "",
-      }));
+      });
       if (user) {
         setShabaNumber(user ? user.data.shaba_number : null);
         setIsPhoneVerified(user ? user.data.phone_number_verified == true : null);
@@ -459,14 +459,8 @@ function Profile() {
                       isValid={validate.first_name}
                       validationError="نمی‌تواند خالی باشد"
                       onChange={(e) => {
-                        setValues((prev) => ({
-                          ...prev,
-                          first_name: e.target.value,
-                        }));
-                        setValidate((prev) => ({
-                          ...prev,
-                          first_name: e.target.value != "",
-                        }));
+                        setValues({ ...values, first_name: e.target.value });
+                        setValidate({ ...validate, first_name: e.target.value != "" });
                       }}
                       defaultValue={user != null ? user.data.first_name : null}
                       disabled={user != null ? user.data.first_name != null : null}
@@ -478,14 +472,14 @@ function Profile() {
                       isValid={validate.last_name}
                       validationError="نمی‌تواند خالی باشد"
                       onChange={(e) => {
-                        setValues((prev) => ({
-                          ...prev,
+                        setValues({
+                          ...values,
                           last_name: e.target.value,
-                        }));
-                        setValidate((prev) => ({
-                          ...prev,
+                        });
+                        setValidate({
+                          ...validate,
                           last_name: e.target.value != "",
-                        }));
+                        });
                       }}
                       defaultValue={user != null ? user.data.last_name : null}
                       disabled={user != null ? user.data.last_name != null : null}
@@ -499,11 +493,8 @@ function Profile() {
                     isValid={validate.bio}
                     validationError="نمی‌تواند خالی باشد"
                     onChange={(e) => {
-                      setValues((prev) => ({ ...prev, bio: e.target.value }));
-                      setValidate((prev) => ({
-                        ...prev,
-                        bio: e.target.value != "",
-                      }));
+                      setValues({ ...values, bio: e.target.value });
+                      setValidate({ validate, bio: e.target.value != "" });
                     }}
                     defaultValue={user != null ? user.data.bio : null}
                   />
@@ -519,14 +510,15 @@ function Profile() {
                 validationError="کدملی بایستی 10 رقمی باشد"
                 isValid={validate.national_code}
                 onChange={(e) => {
-                  setValues((prev) => ({
-                    ...prev,
+                  console.log(values);
+                  setValues({
+                    ...values,
                     national_code: e.target.value,
-                  }));
-                  setValidate((prev) => ({
-                    ...prev,
+                  });
+                  setValidate({
+                    ...validate,
                     national_code: e.target.value !== null ? e.target.value.length == 10 : false,
-                  }));
+                  });
                 }}
                 defaultValue={user != null ? user.data.national_code : null}
                 disabled={user != null ? user.data.national_code != null : false}
@@ -539,7 +531,7 @@ function Profile() {
                 validationError="نمی‌تواند خالی باشد"
                 isValid={validate.birthdate}
                 onChange={(e) => {
-                  setValues((prev) => ({ ...prev, birthdate: e.value }));
+                  setValues({ ...values, birthdate: e.value });
                 }}
                 defaultValue={user != null ? user.data.birthdate : null}
                 disabled={user != null ? user.data.birthdate != null : null}
@@ -554,11 +546,11 @@ function Profile() {
                 isValid={validate.address}
                 validationError="نمی‌تواند خالی باشد"
                 onChange={(e) => {
-                  setValues((prev) => ({ ...prev, address: e.target.value }));
-                  setValidate((prev) => ({
-                    ...prev,
+                  setValues({ ...values, address: e.target.value });
+                  setValidate({
+                    ...validate,
                     address: e.target.value != "",
-                  }));
+                  });
                 }}
                 defaultValue={user != null ? user.data.address : null}
                 disabled={user != null ? user.data.address != null : null}
@@ -569,11 +561,8 @@ function Profile() {
                 title="کد پستی"
                 placeholder="مثلا: 3521 ..."
                 onChange={(e) => {
-                  setValues((prev) => ({ ...prev, postal_code: e.target.value }));
-                  setValidate((prev) => ({
-                    ...prev,
-                    postal_code: e.target.value != "",
-                  }));
+                  setValues({ ...values, postal_code: e.target.value });
+                  setValidate({ ...validate, postal_code: e.target.value != "" });
                 }}
                 defaultValue={user != null ? user.data.postal_code : null}
                 disabled={user != null ? user.data.postal_code != null : null}
@@ -588,11 +577,8 @@ function Profile() {
                 isValid={validate.cell_number}
                 validationError="نمی‌تواند خالی باشد"
                 onChange={(e) => {
-                  setValues((prev) => ({ ...prev, cell_number: e.target.value }));
-                  setValidate((prev) => ({
-                    ...prev,
-                    cell_number: e.target.value !== null ? e.target.value.length == 11 : false,
-                  }));
+                  setValues({ ...values, cell_number: e.target.value });
+                  setValidate({ ...validate, cell_number: e.target.value !== null ? e.target.value.length == 11 : false });
                 }}
                 defaultValue={user != null ? user.data.cell_number : null}
                 disabled={user != null ? user.data.cell_number != null : null}
@@ -610,14 +596,8 @@ function Profile() {
                 isValid={validate.phone_number}
                 validationError="نمی‌تواند خالی باشد"
                 onChange={(e) => {
-                  setValues((prev) => ({
-                    ...prev,
-                    phone_number: e.target.value,
-                  }));
-                  setValidate((prev) => ({
-                    ...prev,
-                    phone_number: e.target.value !== null ? e.target.value.length == 11 : false,
-                  }));
+                  setValues({ ...values, phone_number: e.target.value });
+                  setValidate({ ...validate, phone_number: e.target.value !== null ? e.target.value.length == 11 : false });
                 }}
                 defaultValue={user != null ? user.data.phone_number : null}
                 disabled={user.data.phone_number != null}
@@ -654,14 +634,8 @@ function Profile() {
                 isValid={ValidateEmail(values.email)}
                 validationError="نمی‌تواند خالی باشد"
                 onChange={(e) => {
-                  setValues((prev) => ({
-                    ...prev,
-                    email: e.target.value,
-                  }));
-                  setValidate((prev) => ({
-                    ...prev,
-                    email: e.target.value !== null ? e.target.value.length == 11 : false,
-                  }));
+                  setValues({ ...values, email: e.target.value });
+                  setValidate({ ...validate, email: e.target.value !== null ? e.target.value.length == 11 : false });
                 }}
                 defaultValue={user != null ? user.data.email : null}
                 disabled={user.data.email != null}
@@ -724,6 +698,12 @@ function Profile() {
           </div>
         </div>
       )}
+      <SimpleInput
+        type="date"
+        onChange={(e) => {
+          console.log(new Date(e.value));
+        }}
+      />
     </TestLayout>
   );
 }
