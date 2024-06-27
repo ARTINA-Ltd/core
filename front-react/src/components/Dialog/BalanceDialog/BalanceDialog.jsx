@@ -1,7 +1,7 @@
-import { Dialog } from "primereact/dialog";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
+import { MdOutlineClose } from "react-icons/md";
 import SimpleInput from "../../Inputs/SimpleInput";
 import { Notify } from "notiflix";
 import { useTranslation } from "react-i18next";
@@ -88,22 +88,6 @@ const BalanceDialog = () => {
     }
   };
 
-  const Header = (
-    <div className="flex gap-4">
-      {isCharge ? (
-        <div className="cursor-pointer" onClick={() => setIsCharge(false)}>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-          </svg>
-        </div>
-      ) : (
-        ""
-      )}
-
-      <p className="font-b9">{t("wallet")}</p>
-    </div>
-  );
-
   const footer = () => {
     if (isCharge === false) {
       return (
@@ -176,54 +160,73 @@ const BalanceDialog = () => {
         className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]"
         onClick={() => {
           setVisible(true);
+          document.getElementById("wallet").showModal();
+
           setIsCharge(false);
         }}
       >
         {t("wallet")}
       </div>
 
-      <Dialog
-        header={Header}
-        visible={visible}
-        style={{ direction: "rtl" }}
+      <dialog
         onHide={() => {
-          setVisible(false);
           setIsCharge(false);
         }}
-        className="w-[70vw] font-b4 sm:w-[90%]"
+        id="wallet"
+        className="modal w-[60rem] font-b4 sm:w-[90%] mx-auto"
       >
-        {!isCharge ? (
-          <div className="w-full flex gap-4 font-b4 sm:flex-col">
-            <div className="bg-[#4e45d0] rounded-xl w-full py-20 flex flex-col items-start justify-center text-white gap-4 relative group overflow-hidden sm:py-4">
-              <div className="text-2xl font-b6 px-10 sm:text-xs"> {t("negotiable")}</div>
-              <div className="text-lg text-yellow-300 px-10 self-end">
-                {getData ? getData.rial_available_balance : ""} {t("tooman")}
+        <div className="modal-box">
+          <form method="dialog" className="my-8">
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-xl hover:bg-red-500 hover:text-black">
+              <MdOutlineClose />
+            </button>
+          </form>
+          <div className="flex gap-4">
+            {isCharge ? (
+              <div className="cursor-pointer" onClick={() => setIsCharge(false)}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </div>
+            ) : (
+              ""
+            )}
+
+            <p className="font-b9">{t("wallet")}</p>
+          </div>
+          {!isCharge ? (
+            <div className="w-full gap-12 font-b4 flex flex-col my-8">
+              <div className="flex w-full pb-4 justify-between items-start gap-4 relative group overflow-hidden sm:py-4 border-b-2 border-b-primary">
+                <div className="text-xl font-b6  sm:text-xs"> {t("negotiable")}</div>
+                <div className="text-lg text-accent px-10 self-end">
+                  {getData ? getData.rial_available_balance : ""} {t("tooman")}
+                </div>
+              </div>
+              <div className="flex w-full items-start justify-between gap-4 relative group overflow-hidden sm:py-4">
+                <div className="text-xl font-b6  sm:text-xs">{t("unNegotiable")}</div>
+                <div className="text-lg text-accent px-10 self-end">
+                  {getData ? getData.rial_unavailable_balance : ""} {t("tooman")}
+                </div>
               </div>
             </div>
-            <div className="bg-[#4e45d0] rounded-xl w-full py-20 flex flex-col items-start justify-center text-white gap-4 relative group overflow-hidden sm:py-4">
-              <div className="text-2xl font-b6 px-10 sm:text-xs">{t("unNegotiable")}</div>
-              <div className="text-lg text-yellow-300 px-10 self-end">
-                {getData ? getData.rial_unavailable_balance : ""} {t("tooman")}
+          ) : (
+            <div>
+              <div className="w-full flex gap-4 flex-col items-center font-b4 mt-4">
+                <SimpleInput
+                  type="number"
+                  title="مقدار(تومان)"
+                  placeholder="مثلا: 100000"
+                  // eslint-disable-next-line eqeqeq
+                  isValid={amount != ""}
+                  validationError="نمی‌تواند خالی باشد"
+                  onChange={(e) => setAmount(e.target.value)}
+                />
               </div>
             </div>
-          </div>
-        ) : (
-          <div>
-            <div className="w-full flex gap-4 flex-col items-center font-b4 mt-4">
-              <SimpleInput
-                type="number"
-                title="مقدار(تومان)"
-                placeholder="مثلا: 100000"
-                // eslint-disable-next-line eqeqeq
-                isValid={amount != ""}
-                validationError="نمی‌تواند خالی باشد"
-                onChange={(e) => setAmount(e.target.value)}
-              />
-            </div>
-          </div>
-        )}
-        <div className="font-b4 w-full flex justify-end items-center mt-7 gap-3">{footer()}</div>
-      </Dialog>
+          )}
+          <div className="font-b4 w-full flex justify-end items-center mt-7 gap-3">{footer()}</div>
+        </div>
+      </dialog>
     </div>
   );
 };
