@@ -365,6 +365,7 @@ function Profile() {
         phone_number: user ? user.data.phone_number : "",
         email: user ? user.data.email : "",
       });
+      setValidate(values);
       if (user) {
         setShabaNumber(user ? user.data.shaba_number : null);
         setIsPhoneVerified(user ? user.data.phone_number_verified == true : null);
