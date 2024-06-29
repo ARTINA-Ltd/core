@@ -760,7 +760,7 @@ class EmailMixin(viewsets.ViewSet):
 
     @action(detail=False, methods=['post'])
     def email_verification(self, request):
-        email = request.data.get('email')
+        recipient_email = request.data.get('email')
         user = self.request.user
         user = User.objects.get(profile__email=email)
         if not email:
@@ -781,7 +781,7 @@ class EmailMixin(viewsets.ViewSet):
             print(f"Verification code for {email}: {verification_code}")
         subject="verify email from ARTINA"
         message = f"your verfication code is : {verification_code}"
-        self.send_email(subject,email, message)
+        self.send_email(subject,recipient_email, message)
         return Response({'success': 'email sent.'}, status.HTTP_200_OK)
 
 
