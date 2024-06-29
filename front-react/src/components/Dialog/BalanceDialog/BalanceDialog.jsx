@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { MdOutlineClose } from "react-icons/md";
@@ -7,15 +7,11 @@ import { Notify } from "notiflix";
 import { useTranslation } from "react-i18next";
 
 const BalanceDialog = () => {
-  const [visible, setVisible] = useState(false);
   const [getData, setData] = useState();
   const [isCharge, setIsCharge] = useState(false);
-  const [amount, setAmount] = useState();
-  const [action, setAction] = useState();
+  const [depoAmount, setDepoAmount] = useState();
+  const [widthdeawAmount, setWidthdeawAmount] = useState();
   const { t } = useTranslation(["wallets"]);
-  // const [address, setAddress] = useState("");
-
-  const isOnlyNumbers = /^\d+$/.test(amount) || /^[\u06F0-\u06F9]+$/.test(amount);
 
   useEffect(() => {
     axios
@@ -32,13 +28,11 @@ const BalanceDialog = () => {
   }, []);
 
   const updateBalance = (act) => {
-    if (amount === "" || amount === undefined || isOnlyNumbers === false) {
-      // console.log(amount);
-      // console.log(typeof amount);
+    if (depoAmount === "" || depoAmount === undefined || widthdeawAmount === "" || widthdeawAmount === undefined) {
       Notify.failure("مقدار عددی را وارد کنید");
       return;
     }
-    if (amount < 10000) {
+    if (widthdeawAmount < 10000 && depoAmount < 10000) {
       Notify.failure("مقدار وارد شده باید بیشتر از 10000 تومان باشد");
       return;
     }
@@ -46,7 +40,7 @@ const BalanceDialog = () => {
       axios
         .post(
           "https://api.artina.org/api/account/payment/",
-          { amount: amount * 10 },
+          { amount: depoAmount * 10 },
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
@@ -65,7 +59,7 @@ const BalanceDialog = () => {
           {
             currency: "rial",
             transaction_type: act, //withraw
-            amount: amount,
+            amount: widthdeawAmount,
           },
           {
             headers: {
@@ -88,78 +82,11 @@ const BalanceDialog = () => {
     }
   };
 
-  const footer = () => {
-    if (isCharge === false) {
-      return (
-        <div className="flex gap-4">
-          <div
-            className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all sm:text-xs sm:px-4"
-            onClick={() => {
-              if (isCharge === true) {
-                updateBalance("withraw");
-              } else {
-                setIsCharge(true);
-              }
-              setAction("withraw");
-            }}
-          >
-            {t("withdraw")}
-          </div>
-          <div
-            className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all sm:text-xs sm:px-4"
-            onClick={() => {
-              if (isCharge === true) {
-                updateBalance("deposit");
-              } else {
-                setIsCharge(true);
-              }
-              setAction("deposit");
-            }}
-          >
-            {t("recharge")}{" "}
-          </div>
-        </div>
-      );
-    } else if (action === "deposit") {
-      return (
-        <div
-          className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all sm:text-xs sm:px-4"
-          onClick={() => {
-            if (isCharge === true) {
-              updateBalance("deposit");
-            } else {
-              setIsCharge(true);
-            }
-            setAction("deposit");
-          }}
-        >
-          {t("recharge")}{" "}
-        </div>
-      );
-    } else {
-      return (
-        <div
-          className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all sm:text-xs sm:px-4 sm:w-[50%]"
-          onClick={() => {
-            if (isCharge === true) {
-              updateBalance("withraw");
-            } else {
-              setIsCharge(true);
-            }
-            setAction("withraw");
-          }}
-        >
-          {t("withdraw")}
-        </div>
-      );
-    }
-  };
   return (
     <div className="card flex justify-content-center">
       <div
         className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]"
         onClick={() => {
-          setVisible(true);
           document.getElementById("wallet").showModal();
 
           setIsCharge(false);
@@ -194,37 +121,72 @@ const BalanceDialog = () => {
 
             <p className="font-b9">{t("wallet")}</p>
           </div>
-          {!isCharge ? (
-            <div className="w-full gap-12 font-b4 flex flex-col my-8">
-              <div className="flex w-full pb-4 justify-between items-start gap-4 relative group overflow-hidden sm:py-4 border-b-2 border-b-primary">
-                <div className="text-xl font-b6  sm:text-xs"> {t("negotiable")}</div>
-                <div className="text-lg text-accent px-10 self-end">
-                  {getData ? getData.rial_available_balance : ""} {t("tooman")}
-                </div>
-              </div>
-              <div className="flex w-full items-start justify-between gap-4 relative group overflow-hidden sm:py-4">
-                <div className="text-xl font-b6  sm:text-xs">{t("unNegotiable")}</div>
-                <div className="text-lg text-accent px-10 self-end">
-                  {getData ? getData.rial_unavailable_balance : ""} {t("tooman")}
-                </div>
+          <div className="w-full gap-12 font-b4 flex flex-col mt-8 mb-12">
+            <div className="flex w-full pb-4 justify-between items-start gap-4 relative group overflow-hidden sm:py-4 border-b-2 border-b-primary border-opacity-60">
+              <div className="text-xl font-b6  sm:text-xs"> {t("negotiable")}</div>
+              <div className="text-lg text-accent px-10 self-end">
+                {getData ? getData.rial_available_balance : ""} {t("tooman")}
               </div>
             </div>
-          ) : (
+            <div className="flex w-full -mt-8 items-start justify-between gap-4 relative group overflow-hidden sm:py-4">
+              <div className="text-xl font-b6  sm:text-xs">{t("unNegotiable")}</div>
+              <div className="text-lg text-accent px-10 self-end">
+                {getData ? getData.rial_unavailable_balance : ""} {t("tooman")}
+              </div>
+            </div>
+          </div>
+          <div className="pb-8 border-b-2 border-primary border-opacity-60 flex flex-col gap-4">
+            <div className="text-xl font-b6  sm:text-xs">افزایش موجودی</div>
             <div>
-              <div className="w-full flex gap-4 flex-col items-center font-b4 mt-4">
-                <SimpleInput
-                  type="number"
-                  title="مقدار(تومان)"
-                  placeholder="مثلا: 100000"
-                  // eslint-disable-next-line eqeqeq
-                  isValid={amount != ""}
-                  validationError="نمی‌تواند خالی باشد"
-                  onChange={(e) => setAmount(e.target.value)}
-                />
-              </div>
+              <SimpleInput
+                type="number"
+                title="مقدار(تومان)"
+                placeholder="مثلا: 100000"
+                // eslint-disable-next-line eqeqeq
+                isValid={depoAmount != ""}
+                validationError="نمی‌تواند خالی باشد"
+                onChange={(e) => setDepoAmount(e.target.value)}
+              />
             </div>
-          )}
-          <div className="font-b4 w-full flex justify-end items-center mt-7 gap-3">{footer()}</div>
+            <div
+              className="border-[1px] cursor-pointer border-green-500 bg-green-50 w-36 text-center text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all sm:text-xs sm:px-4"
+              onClick={() => {
+                if (isCharge === true) {
+                  updateBalance("deposit");
+                } else {
+                  setIsCharge(true);
+                }
+              }}
+            >
+              {t("recharge")}{" "}
+            </div>
+          </div>
+
+          <div className="py-4 mt-4 flex flex-col gap-4">
+            <div className="text-xl font-b6  sm:text-xs">برداشت از حساب</div>
+
+            <SimpleInput
+              type="number"
+              title="مقدار(تومان)"
+              placeholder="مثلا: 100000"
+              // eslint-disable-next-line eqeqeq
+              isValid={widthdeawAmount != ""}
+              validationError="نمی‌تواند خالی باشد"
+              onChange={(e) => setWidthdeawAmount(e.target.value)}
+            />
+            <div
+              className="border-[1px] cursor-pointer border-red-500 bg-red-50 w-36 text-center text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all sm:text-xs sm:px-4 sm:w-[50%]"
+              onClick={() => {
+                if (isCharge === true) {
+                  updateBalance("withraw");
+                } else {
+                  setIsCharge(true);
+                }
+              }}
+            >
+              {t("withdraw")}
+            </div>
+          </div>
         </div>
       </dialog>
     </div>

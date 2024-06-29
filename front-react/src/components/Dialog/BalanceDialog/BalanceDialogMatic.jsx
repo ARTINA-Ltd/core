@@ -178,7 +178,7 @@ const BalanceDialogMatic = () => {
           setIsCharge(false);
         }}
         id="crypto-wallet"
-        className="modal w-[30rem] font-b4 sm:w-[90%] mx-auto"
+        className="modal w-[60rem] font-b4 sm:w-[90%] mx-auto"
       >
         <div className="modal-box">
           <form method="dialog">
@@ -205,7 +205,7 @@ const BalanceDialogMatic = () => {
               onClick={() => {
                 setCurrentTab("Ethereum");
               }}
-              className={`tab ${currentTab === "Ethereum" && "tab-active"}`}
+              className={`tab bg-base-300 ${currentTab === "Ethereum" && "tab-active"}`}
             >
               Ethereum
             </div>
@@ -214,12 +214,12 @@ const BalanceDialogMatic = () => {
               onClick={() => {
                 setCurrentTab("Matic");
               }}
-              className={`tab ${currentTab === "Matic" && "tab-active"}`}
+              className={`tab bg-base-300 ${currentTab === "Matic" && "tab-active"}`}
             >
               Matic
             </div>
           </div>
-          <div className="w-full gap-4 font-b4 bg-base-200 rounded-xl">
+          <div className="w-full gap-4 font-b4 rounded-b-md">
             <div className=" rounded-xl w-full py-8 flex items-start justify-between  gap-4 relative group overflow-hidden sm:py-5">
               <div className="text-lg px-4 lg:text-md sm:px-2 sm:text-sm">{currentTab === "Ethereum" ? `${t("yourETH")} ${getData ? getData.eth_balance : "0"}` : `${t("yourMatic")} ${getData ? getData.matic_balance : "0"}`} </div>
             </div>
