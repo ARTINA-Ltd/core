@@ -210,7 +210,6 @@ function Profile() {
 
       axios
         .put(
-          // "https://api.artina.org/api/account/profile/",
           `https://api.artina.org/api/account/profile/${user ? user.data.id : ""}/`,
           {
             user: user ? user.data.id : "",
@@ -234,8 +233,6 @@ function Profile() {
             profile_picture: profileImageUrl ? profileImageUrl : user.data.profile_picture,
             shaba_number: shabaNumber,
             email: values.email,
-
-            // role: user ? user.data.role : ""
           },
           {
             headers: {
@@ -365,6 +362,7 @@ function Profile() {
         phone_number: user ? user.data.phone_number : "",
         email: user ? user.data.email : "",
       });
+      setValidate(values);
       if (user) {
         setShabaNumber(user ? user.data.shaba_number : null);
         setIsPhoneVerified(user ? user.data.phone_number_verified == true : null);
