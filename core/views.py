@@ -403,7 +403,7 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
                 last_price=last_price,token_id=token_id,owner=user,has_physical=has_physical,category=category,traits=data,collection=collection)
             transactionCurrency=TransactionCurrency.objects.filter(name="rial").first()
             Transaction.objects.create(user=user, side='withdrawal', 
-                                    transaction_currency=transactionCurrency, transaction_value=10000,status='completed')
+                                    transaction_currency=transactionCurrency, amount=10000,status='completed')
 
             return Response(
               nft.token_id,
