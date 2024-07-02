@@ -9,8 +9,8 @@ import { useTranslation } from "react-i18next";
 const BalanceDialog = () => {
   const [getData, setData] = useState();
   const [isCharge, setIsCharge] = useState(false);
-  const [depoAmount, setDepoAmount] = useState();
-  const [widthdeawAmount, setWidthdeawAmount] = useState();
+  const [depoAmount, setDepoAmount] = useState("");
+  const [widthdeawAmount, setWidthdeawAmount] = useState("");
   const { t } = useTranslation(["wallets"]);
 
   useEffect(() => {
@@ -136,20 +136,20 @@ const BalanceDialog = () => {
             </div>
           </div>
           <div className="pb-8 border-b-2 border-primary border-opacity-60 flex flex-col gap-4">
-            <div className="text-xl font-b6  sm:text-xs">افزایش موجودی</div>
+            <div className="text-xl font-b6  sm:text-xs">{t("recharge")}</div>
             <div>
               <SimpleInput
                 type="number"
-                title="مقدار(تومان)"
-                placeholder="مثلا: 100000"
+                title={t("amount")}
+                placeholder="ex: 100000"
                 // eslint-disable-next-line eqeqeq
                 isValid={depoAmount != ""}
-                validationError="نمی‌تواند خالی باشد"
+                validationError={t("required")}
                 onChange={(e) => setDepoAmount(e.target.value)}
               />
             </div>
             <div
-              className="border-[1px] cursor-pointer border-green-500 bg-green-50 w-36 text-center text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all sm:text-xs sm:px-4"
+              className="border-[1px] cursor-pointer border-green-500 bg-green-50 w-36 text-center text-green-500 rounded-xl py-2 hover:scale-105 transition-all sm:text-xs sm:px-4"
               onClick={() => {
                 if (isCharge === true) {
                   updateBalance("deposit");
@@ -163,19 +163,19 @@ const BalanceDialog = () => {
           </div>
 
           <div className="py-4 mt-4 flex flex-col gap-4">
-            <div className="text-xl font-b6  sm:text-xs">برداشت از حساب</div>
+            <div className="text-xl font-b6  sm:text-xs">{t("withdraw")}</div>
 
             <SimpleInput
               type="number"
-              title="مقدار(تومان)"
-              placeholder="مثلا: 100000"
+              title={t("amount")}
+              placeholder="ex: 100000"
               // eslint-disable-next-line eqeqeq
               isValid={widthdeawAmount != ""}
-              validationError="نمی‌تواند خالی باشد"
+              validationError={t("required")}
               onChange={(e) => setWidthdeawAmount(e.target.value)}
             />
             <div
-              className="border-[1px] cursor-pointer border-red-500 bg-red-50 w-36 text-center text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all sm:text-xs sm:px-4 sm:w-[50%]"
+              className="border-[1px] cursor-pointer border-red-500 bg-red-50 w-36 text-center text-red-500 rounded-xl py-2  hover:scale-105 transition-all sm:text-xs sm:px-4 sm:w-[50%]"
               onClick={() => {
                 if (isCharge === true) {
                   updateBalance("withraw");

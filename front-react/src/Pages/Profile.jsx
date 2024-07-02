@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState, useContext, useRef } from "react";
 import axios from "axios";
-
+import { FaRegEdit } from "react-icons/fa";
 import SimpleInput from "../components/Inputs/SimpleInput";
 import { UserContext } from "../App";
 import { UserChangeContext } from "../App";
@@ -14,7 +14,7 @@ import BorderButton from "../components/Buttons/BorderButton";
 function Profile() {
   const user = useContext(UserContext);
   const userChange = useContext(UserChangeContext);
-
+  const [editBio, setEditBio] = useState();
   const inputFile = useRef(null);
   const inputFileNC = useRef(null);
 
@@ -362,6 +362,7 @@ function Profile() {
         phone_number: user ? user.data.phone_number : "",
         email: user ? user.data.email : "",
       });
+      setEditBio(user?.data.bio === null);
       setValidate(values);
       if (user) {
         setShabaNumber(user ? user.data.shaba_number : null);
@@ -483,19 +484,24 @@ function Profile() {
                       disabled={user != null ? user.data.last_name != null : null}
                     />
                   </div>
-
-                  <SimpleInput
-                    className={"col-span-3"}
-                    type="text"
-                    title="درباره من"
-                    isValid={validate.bio}
-                    validationError="نمی‌تواند خالی باشد"
-                    onChange={(e) => {
-                      setValues({ ...values, bio: e.target.value });
-                      setValidate({ validate, bio: e.target.value != "" });
-                    }}
-                    defaultValue={user != null ? user.data.bio : null}
-                  />
+                  <div className="flex gap-2">
+                    <SimpleInput
+                      className={"col-span-3"}
+                      type="text"
+                      title="درباره من"
+                      isValid={validate.bio}
+                      validationError="نمی‌تواند خالی باشد"
+                      disabled={!editBio}
+                      onChange={(e) => {
+                        setValues({ ...values, bio: e.target.value });
+                        setValidate({ ...validate, bio: e.target.value != "" });
+                      }}
+                      defaultValue={user != null ? user.data.bio : null}
+                    />
+                    <button onClick={() => setEditBio(true)}>
+                      <FaRegEdit className="text-primary text-xl hover:text-secondary ease-in-out duration-200" />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -696,12 +702,6 @@ function Profile() {
           </div>
         </div>
       )}
-      <SimpleInput
-        type="date"
-        onChange={(e) => {
-          console.log(new Date(e.value));
-        }}
-      />
     </TestLayout>
   );
 }
