@@ -12,7 +12,7 @@
   "sendCode": "Send Code",
   "email": "Email",
   "repeat": "Repeat your password",
-  "policy": "Policy",
+  "policy": "View the Privacy Policy",
   "agree": "Agree",
   "already": "Already have an account? Login",
   "signForm": "Signup Form",
@@ -32,5 +32,6 @@
   "successSign": "Registration successful",
   "duplicate": "The username is duplicated.",
   "emailDuplicate": "The entered email is duplicate.",
-  "agreeRequried": "To register the application, you must first accept the contract"
+  "agreeRequried": "To register the application, you must first accept the contract",
+  "nonPersian": "Not an Iranian User"
 }

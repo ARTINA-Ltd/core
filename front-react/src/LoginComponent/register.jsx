@@ -136,7 +136,7 @@ const Register = () => {
         {/* make a boolean checkbox if the user is foreigner */}
         <div className="flex mt-6 justify-center">
           <input className="m-2" type="checkbox" id="foreigner" name="foreigner" value="foreigner" onChange={(e) => setForeigner(e.target.checked)} />
-          <label for="foreigner">{t("فرد غیر ایرانی")}</label>
+          <label for="foreigner">{t("nonPersian")}</label>
         </div>
         <div className="w-full flex justify-center items-center mt-5">
           <ReCAPTCHA sitekey={"6LecwBMnAAAAAItOWnJM8T17TlvnA1ewPIUGDuj_"} onChange={handleCaptchaChange} />

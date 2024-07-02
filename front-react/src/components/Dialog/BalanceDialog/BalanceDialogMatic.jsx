@@ -8,8 +8,8 @@ import { Notify } from "notiflix/build/notiflix-notify-aio";
 const BalanceDialogMatic = () => {
   const [getData, setData] = useState();
   const [isCharge, setIsCharge] = useState(false);
-  const [buyAmount, setBuyAmount] = useState();
-  const [sellAmount, setSellAmount] = useState();
+  const [buyAmount, setBuyAmount] = useState("");
+  const [sellAmount, setSellAmount] = useState("");
   const [address, setAddress] = useState("");
   const [ethPrice, setEthPrice] = useState({});
   const [maticPrice, setMaticPrice] = useState({});
