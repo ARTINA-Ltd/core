@@ -486,7 +486,7 @@ class UserNFTViewSet(viewsets.ViewSet):
     # permission_classes = [permissions.IsAuthenticated]
 
     def list(self, request, username=None):
-        queryset = NFT.objects.filter(owner__username=username,in_exhibition=True)
+        queryset = NFT.objects.filter(owner__username=username,in_exhibition=False)
         serializer = serializers.NFTSerializer(queryset, many=True)
         return Response(serializer.data)
 
