@@ -484,9 +484,9 @@ function Profile() {
                       disabled={user != null ? user.data.last_name != null : null}
                     />
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 w-[50%]">
                     <SimpleInput
-                      className={"col-span-3"}
+                      className={""}
                       type="text"
                       title="درباره من"
                       isValid={validate.bio}
@@ -506,7 +506,7 @@ function Profile() {
               </div>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-[232px] sm:gap-4">
               <SimpleInput
                 type="number"
                 title="کد ملی"
@@ -541,9 +541,8 @@ function Profile() {
                 disabled={user != null ? user.data.birthdate != null : null}
               />
             </div>
-            <div className="grid grid-cols-4 sm:grid-cols-3">
+            <div className="flex gap-[232px] sm:gap-4">
               <SimpleInput
-                className={"col-span-3 sm:col-span-2"}
                 type="text"
                 title="آدرس"
                 placeholder="مثلا: تهران ..."

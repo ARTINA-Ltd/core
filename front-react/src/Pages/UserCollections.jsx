@@ -28,7 +28,7 @@ const UserCollections = () => {
           <img alt="" src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
           <div className="text-white text-6xl mb-2 z-10 font-b7">{t("collections")}</div>
         </SimpleCard>
-        <SimpleCard className={"bg-white flex flex-col items-center mt-8 py-8"}>
+        <SimpleCard className={"bg-base-100 flex flex-col items-center mt-8 py-8"}>
           <div className="text-4xl font-b9 mb-6">{t("artistsList")}</div>
           <div className="grid gap-10 grid-cols-3 lg:grid-cols-2 md:grid-cols-1">
             {getData

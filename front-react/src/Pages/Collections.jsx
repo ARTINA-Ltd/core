@@ -78,7 +78,7 @@ const Collections = () => {
 
   return (
     <TestLayout>
-      {user && getUser && user.data.username !== username && (
+      {user && getUser && getData && user.data.username !== username && (
         <div>
           <div className="w-full flex gap-16 items-center p-6 bg-white rounded-xl mb-4 sm:p-3 sm:gap-4 sm:flex-col">
             <img src={getUser.profile_picture} className="rounded-full object-cover h-52 w-52 flex-shrink-0 sm:w-[120px] sm:h-[120px]" alt="" />
@@ -110,8 +110,8 @@ const Collections = () => {
       {getData && (
         <div className="flex flex-wrap grow gap-8 w-full mx-auto my-4 items-center sm:mx-auto">
           {user.data.username === username ? (
-            <div className="min-h-[480px] w-80 px-4 sm:w-full sm:mx-auto shadow-md max-w-[25rem] hover:shadow-xl ease-in-out duration-300 grow p-4 bg-[#0000aa05] hover:bg-[#0000aa08] rounded-2xl group flex items-center justify-center cursor-pointer  transition-all md:h-[300px] sm:h-[250px] sm:wf" onClick={() => document.getElementById("AddNftPopup").showModal()}>
-              <div className="text-[#000022] opacity-20 group-hover:opacity-40 transition-all group-hover:scale-105 ease-out duration-150 flex flex-col items-center">
+            <div className="min-h-[480px] w-80 px-4 sm:w-full sm:mx-auto shadow-md max-w-[25rem] hover:shadow-xl ease-in-out duration-300 grow p-4 bg-neutral hover:bg-[#0000aa08] rounded-2xl group flex items-center justify-center cursor-pointer  transition-all md:h-[300px] sm:h-[250px] sm:wf" onClick={() => document.getElementById("AddNftPopup").showModal()}>
+              <div className="text-base-content opacity-20 group-hover:opacity-40 transition-all group-hover:scale-105 ease-out duration-150 flex flex-col items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="0.6" stroke="currentColor" width={"4em"}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -121,7 +121,7 @@ const Collections = () => {
           ) : null}
 
           {getData.map((item, index) => (
-            <ImageCard key={index} className="bg-white h-[30rem] min-h-[26rem] w-80 sm:w-full my-auto shadow-md max-w-[25rem] p-6 hover:shadow-xl ease-in-out duration-300 grow sm:mx-auto rounded-xl flex-col" src={item.image_url} price={item.last_price} onClick={() => navigate(`/nft-details/${item.token_id}`)} tokenId={item.token_id} showSell={user ? user.data.username === username : false} visible={item.is_visible} onClickShow={(e, x) => handleClickShow(e, x, item.token_id)} onClickHide={(e, x) => handleClickHide(e, x, item.token_id)}>
+            <ImageCard key={index} className="bg-base-100 h-[30rem] min-h-[26rem] w-80 sm:w-full my-auto shadow-md max-w-[25rem] p-6 hover:shadow-xl ease-in-out duration-300 grow sm:mx-auto rounded-xl flex-col" src={item.image_url} price={item.last_price} onClick={() => navigate(`/nft-details/${item.token_id}`)} tokenId={item.token_id} showSell={user ? user.data.username === username : false} visible={item.is_visible} onClickShow={(e, x) => handleClickShow(e, x, item.token_id)} onClickHide={(e, x) => handleClickHide(e, x, item.token_id)}>
               {item.name}
             </ImageCard>
           ))}

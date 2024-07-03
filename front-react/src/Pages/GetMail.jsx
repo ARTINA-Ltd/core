@@ -27,12 +27,9 @@ const GetMail = () => {
     setIsValidEmail(true); // Reset email validation state
 
     try {
-      const response = await axios.post(
-        "https://api.artina.org/api/AI/WaitListViewSet/get_email/",
-        {
-          email: description,
-        }
-      );
+      const response = await axios.post("https://api.artina.org/api/AI/WaitListViewSet/get_email/", {
+        email: description,
+      });
 
       console.log(response);
       Notify.success("ایمیل شما با موفقیت ثبت شد");
@@ -48,7 +45,6 @@ const GetMail = () => {
     }
   };
 
-
   return (
     // <TestLayout
     //   className={`flex flex-col items-center transition-all ${isClicked ? "mt-10" : "mt-60"
@@ -60,33 +56,11 @@ const GetMail = () => {
       className={`bg-[#f9f9f9] bg-cover bg-[url("https://artina.org/6.jpg")] '
           overflow-hidden`}
     >
-      <div
-        className={` m-auto my-0 pt-1 pb-5 min-h-[92vh] flex flex-col items-center transition-all ${isClicked ? "mt-10" : "mt-60"
-          } gap-5`}
-      >
-
-        <div
-          id="ai-image"
-          className="rounded-2xl w-1/3 xl:w-2/3 md:w-[50%] sm:w-11/12"
-        >
-          <SimpleCard
-            className={
-              "bg-[#ffffff] w-full transition-all bg-white/80 sm:m-0"
-            }
-          >
-            <div className="text-[24px] text-center transition-all">
-              عضویت در خبرنامه آرتینا
-            </div>
-            <SimpleInput
-              className={"mt-6"}
-              type="text"
-              title="ایمیل خود را وارد کنید"
-              placeholder="مثلا: mail@artina.org"
-              isValid={isValidEmail}
-              validationError="لطفاً یک ایمیل معتبر وارد کنید"
-              onChange={(e) => setDescription(e.target.value)}
-              defaultValue={description}
-            />
+      <div className={` m-auto my-0 pt-1 pb-5 min-h-[92vh] flex flex-col items-center transition-all ${isClicked ? "mt-10" : "mt-60"} gap-5`}>
+        <div id="ai-image" className="rounded-2xl w-1/3 xl:w-2/3 md:w-[50%] sm:w-11/12">
+          <SimpleCard className={"bg-[#ffffff] w-full transition-all bg-base-100/80 sm:m-0"}>
+            <div className="text-[24px] text-center transition-all">عضویت در خبرنامه آرتینا</div>
+            <SimpleInput className={"mt-6"} type="text" title="ایمیل خود را وارد کنید" placeholder="مثلا: mail@artina.org" isValid={isValidEmail} validationError="لطفاً یک ایمیل معتبر وارد کنید" onChange={(e) => setDescription(e.target.value)} defaultValue={description} />
 
             <div className="flex justify-center mt-5">
               <BorderButton onClick={handleSubmit}>عضویت</BorderButton>
