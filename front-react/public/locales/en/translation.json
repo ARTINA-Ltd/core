@@ -135,5 +135,6 @@
   "code": "code",
   "submit": "Submit",
   "sell": "Sell",
-  "collapse": "Collapse"
+  "collapse": "Collapse",
+  "collectionName": "Name of Collection"
 }

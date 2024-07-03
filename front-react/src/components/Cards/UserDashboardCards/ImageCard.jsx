@@ -2,7 +2,6 @@ import React, { Fragment } from "react";
 import { useState } from "react";
 import CollectionDialog from "../../Dialog/CollectionDialog/CollectionDialog";
 import BorderButton from "./../../Buttons/BorderButton";
-import SellArea from "./../../SellArea/SellArea";
 import { useTranslation } from "react-i18next";
 
 const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell = false, onClickShow, onClickHide, has_creator, visible }) => {
