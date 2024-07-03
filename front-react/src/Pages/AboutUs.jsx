@@ -3,7 +3,7 @@ import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import TestLayout from "../Layouts/TestLayout";
 import { useTranslation } from "react-i18next";
 
-const Contact = () => {
+const AboutUs = () => {
   const { t } = useTranslation(["aboutUs"]);
   return (
     <TestLayout>
@@ -23,4 +23,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default AboutUs;
