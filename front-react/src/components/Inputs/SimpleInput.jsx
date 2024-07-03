@@ -59,7 +59,7 @@ const SimpleInput = ({ onChange, title, placeholder, type, isValid, validationEr
           </div>
         );
       case "time":
-        return <TimePicker accentColor="primary" onChange={onChange} dir={i18n.dir()} />;
+        return <TimePicker inputClass="bg-transparent" onChange={onChange} dir={i18n.dir()} />;
       case "dropdown":
         return <Select placeholder={placeholder} options={options} onChange={onChange} className={`simple-input2 w-full border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} styles={customStyles} menuPlacement={menuPlacement} dir={i18n.dir()} />;
       case "password":
@@ -78,9 +78,11 @@ const SimpleInput = ({ onChange, title, placeholder, type, isValid, validationEr
       <div dir={i18n.dir()} className={`text-[14px] font-b5 px-2 pointer-events-none absolute translate-y-1/2 transition-all ${focus ? "bottom-[110%] text-[14px] text-accent" : "bottom-[50%]"}`}>
         {title}
       </div>
-      <div dir={i18n.dir()} className={`absolute ${i18n.dir() === "rtl" ? "left-2 top-1/2 -translate-y-1/2" : "text-center right-0 translate-y-1/2"} text-sm bg-base-100 border-2 border-error text-error px-2 rounded-full font-b2 my-auto ${isValid ? "opacity-0" : "opacity-90"} transition-all`}>
-        {validationError}
-      </div>
+      {validationError && (
+        <div dir={i18n.dir()} className={`absolute ${i18n.dir() === "rtl" ? "left-2 top-1/2 -translate-y-1/2" : "text-center right-0 translate-y-1/2"} text-sm bg-base-100 border-2 border-error text-error px-2 rounded-full font-b2 my-auto ${isValid ? "opacity-0" : "opacity-90"} transition-all`}>
+          {validationError}
+        </div>
+      )}
     </div>
   );
 };

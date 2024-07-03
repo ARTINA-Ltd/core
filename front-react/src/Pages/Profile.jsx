@@ -563,7 +563,6 @@ function Profile() {
                 ltr={true}
                 title="کد پستی"
                 placeholder="مثلا: 3521 ..."
-                هس
                 onChange={(e) => {
                   setValues({ ...values, postal_code: e.target.value });
                   setValidate({ ...validate, postal_code: e.target.value != "" });

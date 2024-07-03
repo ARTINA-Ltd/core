@@ -31,7 +31,7 @@ const RequestsList = () => {
           </div>
         </div>
 
-        <SimpleCard className={"bg-white flex flex-col mt-8"}>
+        <SimpleCard className={"bg-base flex flex-col mt-8"}>
           <div className="text-4xl font-b9 mb-6 sm:text-lg sm:font-b5">{t("requestList")}</div>
           <div className="flex flex-wrap gap-4">
             {getData

@@ -187,7 +187,7 @@ const ExhibitionApproval = () => {
       <div>
         {exhibition ? (
           <div className={` ${'bg-[#f9f9f9] bg-[length:300px] bg-[url("https://artina.org/12.png")] '} min-h-full overflow-hidden pb-8`}>
-            <div className="w-[90vw] mx-auto bg-white my-4 py-4 rounded-lg shadow-md">
+            <div className="w-[90vw] mx-auto bg-base-100 my-4 py-4 rounded-lg shadow-md">
               <h3 className="mr-8 text-3xl font-bold">{exhibition.marketName}</h3>
               <div className="my-4 w-full mx-auto">
                 <div className="carousel w-full">
@@ -220,11 +220,11 @@ const ExhibitionApproval = () => {
               </div>
             </div>
             <div className="flex lg:block gap-4 w-[90vw] mx-auto">
-              <div className=" bg-white lg:w-[90vw] w-1/2 p-8 shadow-md my-4  rounded-lg">
+              <div className=" bg-base-100 lg:w-[90vw] w-1/2 p-8 shadow-md my-4  rounded-lg">
                 <p className="-mr-4 text-gray-600 mb-5 font-bold">توضیحات</p>
                 <p className=" text-gray-600">{exhibition.description}</p>
               </div>
-              <div className="bg-white lg:w-[90vw] w-1/2 p-8 shadow-md my-4 rounded-lg">
+              <div className="bg-base-100 lg:w-[90vw] w-1/2 p-8 shadow-md my-4 rounded-lg">
                 <h2 className="text-lg font-bold">تاریخ شروع</h2>
                 <h2 className="text-lg mr-4">{`${separateDate(startDate).year}/${separateDate(startDate).month}/${separateDate(startDate).day}`}</h2>
                 <h2 className="text-lg font-bold">تاریخ پایان</h2>
