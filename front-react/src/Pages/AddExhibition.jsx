@@ -187,7 +187,25 @@ const AddExhibition = () => {
                   defaultValue={null}
                   disabled={false}
                 />
-                <SimpleInput className={"shadow-md rounded-md"} options={options} type="dropdown" onChange={handleCategoryChange} />
+                {options ? (
+                  <select
+                    onChange={(e) => {
+                      setSelectedCategory(e.target.value);
+                    }}
+                    className="select select-bordered w-full max-w-xs mx-4 border-primary"
+                  >
+                    <option disabled selected>
+                      دسته بندی را انتخاب کنید
+                    </option>
+                    {options.map((msg, i) => {
+                      return (
+                        <option key={i} value={i + 1}>
+                          {msg.label}
+                        </option>
+                      );
+                    })}
+                  </select>
+                ) : null}
               </div>
             </div>
 

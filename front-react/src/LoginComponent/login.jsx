@@ -104,7 +104,7 @@ const Login = () => {
         </div>
 
         <div className="flex justify-center mt-5">
-          <BorderButton onClick={!captchaRes ? () => {} : handleSubmit} disabled={!captchaRes}>
+          <BorderButton className={"w-[10rem] h-8"} onClick={!captchaRes ? () => {} : handleSubmit} disabled={!captchaRes}>
             {t("enter")}
           </BorderButton>
         </div>
@@ -113,7 +113,7 @@ const Login = () => {
         </div>
         <div className="flex mt-5 items-center justify-center text-[16px] gap-4">
           {t("dontHave")}{" "}
-          <div className=" text-[14px] bg-accent text-accent-content py-2 px-[4rem] sm:px-[3rem] rounded-lg cursor-pointer transition-all hover:bg-primary" onClick={() => navigate("/register")}>
+          <div className=" text-[14px] text-accent text-lg mx-[4rem] sm:px-[3rem] rounded-lg cursor-pointer transition-all" onClick={() => navigate("/register")}>
             {t("signUp")}{" "}
           </div>
         </div>

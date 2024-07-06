@@ -17,53 +17,64 @@ function Profile() {
   const [editBio, setEditBio] = useState();
   const inputFile = useRef(null);
   const inputFileNC = useRef(null);
+  const [disableInputs, setDisableInputs] = useState(user ? user.data.role === "user_one" : "false");
 
-  const [values, setValues] = useState({
-    first_name: user ? user.data.first_name : "",
-    last_name: user ? user.data.last_name : "",
-    national_code: user ? user.data.national_code : "",
-    birthdate: user ? user.data.birthdate : "",
-    cell_number: user ? user.data.cell_number : "",
-    phone_number: user ? user.data.phone_number : "",
-    email: user ? user.data.email : "",
-    address: user ? user.data.address : "",
-    bio: user ? user.data.bio : "",
-    postal_code: user ? user.data.postal_code : "",
-  });
+  const [values, setValues] = useState(
+    user
+      ? {
+          first_name: user.data.first_name !== null ? user.data.first_name : "",
+          last_name: user.data.last_name !== null ? user.data.last_name : "",
+          national_code: user.data.national_code !== null ? user.data.national_code : "",
+          birthdate: user.data.birthdate !== null ? user.data.birthdate : "",
+          address: user.data.address !== null ? user.data.address : "",
+          bio: user.data.bio !== null ? user.data.bio : "",
+          postal_code: user.data.postal_code !== null ? user.data.postal_code : "",
+          cell_number: user.data.cell_number !== null ? user.data.cell_number : "",
+          phone_number: user.data.phone_number !== null ? user.data.phone_number : "",
+          email: user.data.email !== null ? user.data.email : "",
+        }
+      : {
+          first_name: "",
+          last_name: "",
+          national_code: "",
+          birthdate: "",
+          address: "",
+          bio: "",
+          postal_code: "",
+          cell_number: "",
+          phone_number: "",
+          email: "",
+        }
+  );
 
   const [validate, setValidate] = useState({
-    first_name: false,
-    last_name: false,
-    national_code: false,
-    birthdate: false,
-    cell_number: false,
-    phone_number: false,
-    email: false,
-    address: false,
-    bio: false,
-    postal_code: false,
+    first_name: true,
+    last_name: true,
+    national_code: true,
+    birthdate: true,
+    cell_number: true,
+    phone_number: true,
+    email: true,
+    address: true,
+    bio: true,
+    postal_code: true,
   });
 
   const [counter, setCounter] = useState(10);
   const [counterPause, setCounterPause] = useState(true);
-
-  const [profileImage, setProfileImage] = useState();
-  const [profileImageUrl, setProfileImageUrl] = useState();
-  const [nationalCardImage, setNationalCardImage] = useState();
-  const [nationalCardImageUrl, setNationalCardImageUrl] = useState();
-
-  const [shabaNumber, setShabaNumber] = useState();
-
+  const [profileImage, setProfileImage] = useState("");
+  const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [nationalCardImage, setNationalCardImage] = useState("");
+  const [nationalCardImageUrl, setNationalCardImageUrl] = useState("");
+  const [shabaNumber, setShabaNumber] = useState("");
   const [showPhoneValidate, setShowPhoneValidate] = useState(false);
   const [showEmailValidate, setShowEmailValidate] = useState(false);
-  const [phoneVerificationCode, setPhoneVerificationCode] = useState();
-  const [emailVerificationCode, setEmailVerificationCode] = useState();
-
+  const [phoneVerificationCode, setPhoneVerificationCode] = useState("");
+  const [emailVerificationCode, setEmailVerificationCode] = useState("");
   const [isPhoneDisabled, setIsPhoneDisabled] = useState(false);
   const [isEmailDisabled, setIsEmailDisabled] = useState(false);
-
-  const [isPhoneVerified, setIsPhoneVerified] = useState();
-  const [isEmailVerified, setIsEmailVerified] = useState();
+  const [isPhoneVerified, setIsPhoneVerified] = useState(false);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
 
   function hanldeClickEmail() {
     setIsEmailDisabled(true);
@@ -349,21 +360,35 @@ function Profile() {
   useEffect(() => {
     console.log(user);
     if (user && user.data) {
+      setDisableInputs(user ? user.data.role === "user_one" : "false");
+
       setValues({
         ...values,
-        first_name: user ? user.data.first_name : "",
-        last_name: user ? user.data.last_name : "",
-        national_code: user ? user.data.national_code : "",
-        birthdate: user ? user.data.birthdate : "",
-        address: user ? user.data.address : "",
-        bio: user ? user.data.bio : "",
-        postal_code: user ? user.data.postal_code : "",
-        cell_number: user ? user.data.cell_number : "",
-        phone_number: user ? user.data.phone_number : "",
-        email: user ? user.data.email : "",
+        first_name: user.data.first_name !== null ? user.data.first_name : "",
+        last_name: user.data.last_name !== null ? user.data.last_name : "",
+        national_code: user.data.national_code !== null ? user.data.national_code : "",
+        birthdate: user.data.birthdate !== null ? user.data.birthdate : "",
+        address: user.data.address !== null ? user.data.address : "",
+        bio: user.data.bio !== null ? user.data.bio : "",
+        postal_code: user.data.postal_code !== null ? user.data.postal_code : "",
+        cell_number: user.data.cell_number !== null ? user.data.cell_number : "",
+        phone_number: user.data.phone_number !== null ? user.data.phone_number : "",
+        email: user.data.email !== null ? user.data.email : "",
       });
+      console.log(values);
       setEditBio(user?.data.bio === null);
-      setValidate(values);
+      setValidate({
+        first_name: values.first_name !== "",
+        last_name: values.last_name !== "",
+        national_code: values.national_code.length === 10,
+        birthdate: values.birthdate !== "",
+        address: values.last_name !== "",
+        bio: values.last_name !== "",
+        postal_code: values.postal_code.length === 10,
+        cell_number: values.cell_number.length === 11,
+        phone_number: values.phone_number.length === 11,
+        email: values.email.indexOf("@") > -1,
+      });
       if (user) {
         setShabaNumber(user ? user.data.shaba_number : null);
         setIsPhoneVerified(user ? user.data.phone_number_verified == true : null);
@@ -459,10 +484,10 @@ function Profile() {
                       validationError="نمی‌تواند خالی باشد"
                       onChange={(e) => {
                         setValues({ ...values, first_name: e.target.value });
-                        setValidate({ ...validate, first_name: e.target.value != "" });
+                        setValidate({ ...validate, first_name: e.target.value !== "" });
                       }}
                       defaultValue={user != null ? user.data.first_name : null}
-                      disabled={user != null ? user.data.first_name != null : null}
+                      disabled={disableInputs && user != null ? user.data.first_name != null : null}
                     />
                     <SimpleInput
                       type="text"
@@ -477,11 +502,11 @@ function Profile() {
                         });
                         setValidate({
                           ...validate,
-                          last_name: e.target.value != "",
+                          last_name: e.target.value !== "",
                         });
                       }}
                       defaultValue={user != null ? user.data.last_name : null}
-                      disabled={user != null ? user.data.last_name != null : null}
+                      disabled={disableInputs && user != null ? user.data.last_name != null : null}
                     />
                   </div>
                   <div className="flex gap-2 w-[50%]">
@@ -491,10 +516,10 @@ function Profile() {
                       title="درباره من"
                       isValid={validate.bio}
                       validationError="نمی‌تواند خالی باشد"
-                      disabled={!editBio}
+                      disabled={disableInputs && !editBio}
                       onChange={(e) => {
                         setValues({ ...values, bio: e.target.value });
-                        setValidate({ ...validate, bio: e.target.value != "" });
+                        setValidate({ ...validate, bio: e.target.value !== "" });
                       }}
                       defaultValue={user != null ? user.data.bio : null}
                     />
@@ -521,11 +546,11 @@ function Profile() {
                   });
                   setValidate({
                     ...validate,
-                    national_code: e.target.value !== null ? e.target.value.length == 10 : false,
+                    national_code: e.target.value !== null ? e.target.value.length === 10 : false,
                   });
                 }}
                 defaultValue={user != null ? user.data.national_code : null}
-                disabled={user != null ? user.data.national_code != null : false}
+                disabled={disableInputs && user != null ? user.data.national_code != null : false}
                 maxChars={10}
               />
               <SimpleInput
@@ -536,9 +561,10 @@ function Profile() {
                 isValid={validate.birthdate}
                 onChange={(e) => {
                   setValues({ ...values, birthdate: e.value });
+                  setValidate({ ...validate, birthdate: e.value !== "" });
                 }}
-                defaultValue={user != null ? user.data.birthdate : null}
-                disabled={user != null ? user.data.birthdate != null : null}
+                defaultValue={user ? user.data.birthdate : ""}
+                disabled={disableInputs && user != null ? user.data.birthdate != null : null}
               />
             </div>
             <div className="flex gap-[232px] sm:gap-4">
@@ -552,39 +578,41 @@ function Profile() {
                   setValues({ ...values, address: e.target.value });
                   setValidate({
                     ...validate,
-                    address: e.target.value != "",
+                    address: e.target.value !== "",
                   });
                 }}
                 defaultValue={user != null ? user.data.address : null}
-                disabled={user != null ? user.data.address != null : null}
+                disabled={disableInputs && user != null ? user.data.address != null : null}
               />
               <SimpleInput
                 type="number"
                 ltr={true}
                 title="کد پستی"
                 placeholder="مثلا: 3521 ..."
+                isValid={validate.postal_code}
+                validationError="نمی‌تواند خالی باشد"
                 onChange={(e) => {
                   setValues({ ...values, postal_code: e.target.value });
-                  setValidate({ ...validate, postal_code: e.target.value != "" });
+                  setValidate({ ...validate, postal_code: e.target.value.length === 10 });
                 }}
                 defaultValue={user != null ? user.data.postal_code : null}
-                disabled={user != null ? user.data.postal_code != null : null}
+                disabled={disableInputs && user != null ? user.data.postal_code != null : null}
                 maxChars={10}
               />
             </div>
             <div className="flex gap-4">
               <SimpleInput
                 type="number"
-                title="شماره ثابت"
+                title=" شماره ثابت(به همراه پیش شماره)"
                 placeholder="02112345678"
                 isValid={validate.cell_number}
                 validationError="نمی‌تواند خالی باشد"
                 onChange={(e) => {
                   setValues({ ...values, cell_number: e.target.value });
-                  setValidate({ ...validate, cell_number: e.target.value !== null ? e.target.value.length == 11 : false });
+                  setValidate({ ...validate, cell_number: e.target.value.length === 11 });
                 }}
                 defaultValue={user != null ? user.data.cell_number : null}
-                disabled={user != null ? user.data.cell_number != null : null}
+                disabled={disableInputs && user != null ? user.data.cell_number != null : null}
                 maxChars={11}
               />
             </div>
@@ -600,10 +628,10 @@ function Profile() {
                 validationError="نمی‌تواند خالی باشد"
                 onChange={(e) => {
                   setValues({ ...values, phone_number: e.target.value });
-                  setValidate({ ...validate, phone_number: e.target.value !== null ? e.target.value.length == 11 : false });
+                  setValidate({ ...validate, phone_number: e.target.value.length === 11 });
                 }}
                 defaultValue={user != null ? user.data.phone_number : null}
-                disabled={user.data.phone_number != null}
+                disabled={disableInputs && user.data.phone_number != null}
                 maxChars={11}
               />
               <div className={`${showPhoneValidate && !isPhoneVerified ? "" : "hidden"}`}>
@@ -631,17 +659,17 @@ function Profile() {
 
             <div className="flex gap-4">
               <SimpleInput
-                type="text"
+                type="email"
                 title="ایمیل"
                 placeholder="mail@domain.com"
                 isValid={ValidateEmail(values.email)}
-                validationError="نمی‌تواند خالی باشد"
+                validationError="یک ایمیل معتبر وارد کنید"
                 onChange={(e) => {
                   setValues({ ...values, email: e.target.value });
-                  setValidate({ ...validate, email: e.target.value !== null ? e.target.value.length == 11 : false });
+                  setValidate({ ...validate, email: e.target.value.indexOf("@") > -1 });
                 }}
                 defaultValue={user != null ? user.data.email : null}
-                disabled={user.data.email != null}
+                disabled={disableInputs && user.data.email != null}
                 maxChars={30}
               />
               <div className={`${showEmailValidate && !isEmailVerified ? "" : "hidden"}`}>
@@ -666,7 +694,6 @@ function Profile() {
                 </div>
               )}
             </div>
-
             <div className="flex justify-end">
               <BorderButton onClick={() => UpdateInfo()}>ثبت</BorderButton>
             </div>
@@ -695,7 +722,7 @@ function Profile() {
               <div className="flex items-center gap-5 w-full py-2 px-2" dir="ltr">
                 <div className="pt-2">IR </div>
 
-                <SimpleInput defaultValue={user && user.data ? user.data.shaba_number : null} disabled={user && user.data != null ? user.data.shaba_number != null : false} title={""} type="number" onChange={(e) => setShabaNumber(e.target.value)} className="border-none text-white" maxChars={24} />
+                <SimpleInput defaultValue={user && user.data ? user.data.shaba_number : null} disabled={disableInputs && user && user.data != null ? user.data.shaba_number != null : false} title={""} type="number" onChange={(e) => setShabaNumber(e.target.value)} className="border-black rounded-md border-2 text-white" maxChars={24} />
               </div>
             </SimpleCard>
           </div>

@@ -6,7 +6,6 @@ import SellArea from "./../../SellArea/SellArea";
 import { FaEthereum } from "react-icons/fa";
 
 const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell = false, onClickShow, onClickHide, has_creator, visible }) => {
-  const [isHovered, setHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(visible);
   const [isExpanded, setIsExpanded] = useState(false);
   const { t } = useTranslation();
@@ -30,7 +29,7 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell
   }, []);
 
   return (
-    <div className={className} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+    <div className={className}>
       <div className="relative transition-all cursor-pointer h-3/4 mb-10" onClick={onClick}>
         <img src={src} className="w-full rounded-lg object-cover p-2 h-full" alt="" />
       </div>
@@ -80,14 +79,7 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell
             <div className="flex justify-between pb-8 items-center">
               <div className="text-[19px] flex items-center">
                 <div className="pt-1">{price}</div>
-                <svg xmlns="http://www.w3.org/2000/svg" aria-label="Ethereum" role="img" viewBox="0 0 512 512" width={"2em"}>
-                  <rect width="512" height="512" rx="15%" fill="#ffffff" />
-                  <path fill="#3C3C3B" d="m256 362v107l131-185z" />
-                  <path fill="#343434" d="m256 41l131 218-131 78-132-78" />
-                  <path fill="#8C8C8C" d="m256 41v158l-132 60m0 25l132 78v107" />
-                  <path fill="#141414" d="m256 199v138l131-78" />
-                  <path fill="#393939" d="m124 259l132-60v138" />
-                </svg>
+                <FaEthereum className="text-2xl mx-2" />
               </div>
               {showSell && (
                 <div className="flex items-end gap-2">
@@ -109,7 +101,7 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell
                 </div>
               )}
             </div>
-            <div className={`relative w-full mx-auto rounded-2xl ease-out outline-[1.5rem] sm:outline-[.8rem] outline outline-base-100 duration-300 ${isExpanded ? "z-0" : "-translate-y-full  -z-10"} overflow-hidden shadow-2xl`}>
+            <div className={`relative w-full mx-auto ease-out outline-[1.5rem] sm:outline-[.8rem] outline outline-base-100 duration-300 ${isExpanded ? "z-0" : "-translate-y-full  -z-10"} overflow-hidden shadow-2xl`}>
               <SellArea tokenId={tokenId} cancel={handleExpand} />
             </div>
           </Fragment>

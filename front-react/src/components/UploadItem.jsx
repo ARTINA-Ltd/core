@@ -28,6 +28,7 @@ const UploadItem = () => {
   const [categories, setCategories] = useState();
   const [collections, setCollections] = useState();
   const [categoryOptions, setCategoryOptions] = useState([]);
+  const [option, setOption] = useState("");
   const [collectionsOptions, setCollectionOptions] = useState([]);
 
   useEffect(() => {
@@ -58,10 +59,6 @@ const UploadItem = () => {
         },
       })
       .then((res) => {
-        console.log("_____________________");
-        console.log("Categories");
-        console.log(res.data);
-        console.log("_____________________");
         setCategories(res.data);
       });
   }, []);
@@ -74,10 +71,6 @@ const UploadItem = () => {
         },
       })
       .then((res) => {
-        console.log("_____________________");
-        console.log("Collection");
-        console.log(res.data);
-        console.log("_____________________");
         setCollections(res.data);
       });
   }, []);
@@ -134,7 +127,6 @@ const UploadItem = () => {
           Notify.success(t("mintSuccessNotif"));
           setIsLoading(false);
           setIsUploaded(true);
-          console.log(res);
         })
         .catch((e) => {
           setIsLoading(false);
@@ -182,7 +174,6 @@ const UploadItem = () => {
           Notify.success(t("mintSuccessNotif"));
           setIsLoading(false);
           setIsUploaded(true);
-          console.log(res);
         })
         .catch((e) => {
           setIsLoading(false);
@@ -259,7 +250,6 @@ const UploadItem = () => {
       properties: updatedProperties,
     });
   };
-
   return (
     <div>
       <div className="flex gap-5 items-start lg:flex-col lg:items-center">
@@ -314,8 +304,26 @@ const UploadItem = () => {
             />
           </div>
           <div className="w-full flex gap-4 sm:flex-col">
-            <div className="w-full">
-              <SimpleInput options={categoryOptions} type="dropdown" placeholder={t("selectCategory")} onChange={handleCategoryChange} title={t("category")} />
+            <div className="w-full -mx-4">
+              {categoryOptions ? (
+                <select
+                  onChange={(e) => {
+                    setSelectedCategory(e.target.value);
+                  }}
+                  className="select select-bordered w-full max-w-xs mx-4 border-primary"
+                >
+                  <option disabled selected>
+                    {t("selectCategory")}{" "}
+                  </option>
+                  {categoryOptions.map((msg, i) => {
+                    return (
+                      <option key={i} value={i + 1}>
+                        {msg.label}
+                      </option>
+                    );
+                  })}
+                </select>
+              ) : null}
             </div>
             <div className="w-full">
               <SimpleInput
@@ -425,7 +433,7 @@ const UploadItem = () => {
                 {t("addArt")}
               </BorderButton>
             ) : (
-              <BorderButton className=" text-[14px] bg-[#DCFCE7] py-5 px-[6rem] rounded-lg cursor-not-allowed transition-all flex items-center gap-3">
+              <BorderButton className="text-black text-center text-[14px] text-base bg-[#DCFCE7] py-5 px-[6rem] rounded-lg cursor-not-allowed transition-all flex items-center gap-3">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4 animate-bounce">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
                 </svg>

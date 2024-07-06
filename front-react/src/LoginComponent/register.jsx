@@ -76,6 +76,7 @@ const Register = () => {
         <SimpleInput
           className={"mt-6"}
           type="text"
+          name="username"
           title={t("username")}
           placeholder={t("example")}
           isValid={values.username != ""}
@@ -153,8 +154,8 @@ const Register = () => {
             {t("signUp")}
           </BorderButton>
         </div>
-        <div className="bg-accent px-5 py-3 rounded-2xl mt-5 text-center hover:bg-primary ease-in-out duration-200">
-          <Link to="/Login" className="text-accent-content hover:text-primary-content">
+        <div className=" px-5 py-3 rounded-2xl mt-5 text-center ease-in-out duration-200">
+          <Link to="/Login" className="text-accent">
             {t("already")}{" "}
           </Link>
         </div>

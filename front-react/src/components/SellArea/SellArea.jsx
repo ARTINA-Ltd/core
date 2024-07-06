@@ -6,7 +6,6 @@ import { Fragment } from "react";
 import BorderButton from "./../Buttons/BorderButton";
 
 const SellArea = (tokenId, cancel) => {
-  const [visible, setVisible] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [startTime, setStartTime] = useState({ h: 0, m: 0 });
   const [endDate, setEndDate] = useState("");
@@ -41,14 +40,13 @@ const SellArea = (tokenId, cancel) => {
       )
       .then(() => {
         Notify.success("با موفقیت ثبت شد");
-        setVisible(false);
       })
       .catch();
   };
 
   return (
     <Fragment>
-      <div className="bg-base-100 card flex justify-content-center p-4 rounded-xl w-full">
+      <div className="bg-base-100 card flex justify-content-center p-4 rounded-none w-full">
         <div style={{ direction: "rtl" }} className="w-full">
           <div className="gap-12 pt-5 items-center font-b4 lg:flex-col mb-4">
             <SimpleInput type="date" title="تاریخ آغاز فروش " placeholder="مثلا" validationError={startDate === "" && "نمی‌تواند خالی باشد"} defaultValue={null} onChange={(e) => setStartDate(e.value)} />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const Countdown = ({ end_date }) => {
   const endDate = new Date(end_date);
@@ -8,11 +8,11 @@ const Countdown = ({ end_date }) => {
   useEffect(() => {
     if (end_date) {
       const timer = setInterval(() => {
-        setTimeRemaining(calculateTimeRemaining())
-      }, 1000)
-      return () => clearInterval(timer)
+        setTimeRemaining(calculateTimeRemaining());
+      }, 1000);
+      return () => clearInterval(timer);
     }
-  }, [end_date])
+  }, [end_date]);
 
   function calculateTimeRemaining() {
     const now = new Date();
@@ -31,24 +31,13 @@ const Countdown = ({ end_date }) => {
   }
 
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between ">
       <div className="flex gap-2">
-        <p className="ml-2">
-          زمان باقی مانده تا پایان مزایده:
-        </p>
-        <p className="">
-          {timeRemaining.days}روز
-        </p>
-        <p className="">
-          {timeRemaining.hours}ساعت
-        </p>
-        <p className="">
-
-          {timeRemaining.minutes}دقیقه
-        </p>
-        <p className="">
-          {timeRemaining.seconds}ثانیه
-        </p>
+        <p className="ml-2">زمان باقی مانده تا پایان مزایده:</p>
+        <p className="text-error">{timeRemaining.days}روز</p>
+        <p className="text-error">{timeRemaining.hours}ساعت</p>
+        <p className="text-error">{timeRemaining.minutes}دقیقه</p>
+        <p className="text-error">{timeRemaining.seconds}ثانیه</p>
       </div>
     </div>
   );
