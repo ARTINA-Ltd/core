@@ -113,8 +113,20 @@ class RegisterViewSet(viewsets.ModelViewSet):
         logger.info(f"User registered successfully: {username}, email: {email}, phone_number: {phone_number}")  # Log successful registration
         
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-
+   
+    @action(detail=False, methods=['post'])
+    def check_username (request,username):
+     	username = request.data.get('username')
+        if User.objects.filter(username=username).exists():
+            logger.warning(f"Username {username} already exists")  # Log if the username already exists
+            return Response({'error': 'This username is already taken.'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['post'])
+    def check_email (request,email):
+     	email = request.data.get('email')
+        if User.objects.filter(email=email).exists():
+            logger.warning(f"Email {email} is already registered")  # Log if the email already exists
+            return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
 
 logger = logging.getLogger('file_login')
 
