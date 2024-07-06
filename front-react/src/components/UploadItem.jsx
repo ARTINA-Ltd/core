@@ -314,8 +314,8 @@ const UploadItem = () => {
             />
           </div>
           <div className="w-full flex gap-4 sm:flex-col">
-            <div className="w-full">
-              <SimpleInput options={categoryOptions} type="dropdown" placeholder={t("selectCategory")} onChange={handleCategoryChange} title={t("category")} />
+            <div className="w-full -mx-4">
+              <SimpleInput options={categoryOptions} className={"bg-base-100"} type="dropdown" placeholder={t("selectCategory")} onChange={handleCategoryChange} />
             </div>
             <div className="w-full">
               <SimpleInput

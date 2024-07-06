@@ -85,7 +85,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
             <MdOutlineCollections className="w-6 h-6 ml-1 text-primary" />
             {t("collections")}
           </div>
-          <ul className="p-2 shadow menu dropdown-content hover:text-black z-[20] bg-base-300 rounded-box w-52">
+          <ul className="p-2 shadow menu dropdown-content  z-[20] bg-base-300 rounded-box w-52">
             <li>
               <a className="hover:text-primary" href="/user-collections">
                 {t("artists")}

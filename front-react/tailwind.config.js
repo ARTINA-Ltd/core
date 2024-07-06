@@ -53,6 +53,7 @@ module.exports = {
 
   daisyui: {
     themes: [
+      "night",
       {
         mytheme: {
           primary: "#4E45D0",
@@ -77,7 +78,6 @@ module.exports = {
           "error-content": "#000000",
         },
       },
-      "night",
     ],
   },
 };

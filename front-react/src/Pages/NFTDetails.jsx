@@ -29,7 +29,7 @@ const NFTDetails = () => {
 
   const icons = {
     heart: (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.9" stroke="currentColor" className="text-white h-[40%]">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.9" stroke="currentColor" className="text-primary-content h-[40%]">
         <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
       </svg>
     ),
@@ -209,8 +209,7 @@ const NFTDetails = () => {
         window.location.reload(true);
       })
       .catch((exception) => {
-        Notify.failure("خطا");
-        console.log(exception);
+        Notify.failure(exception.response.data.error);
       });
   }
 
@@ -235,30 +234,30 @@ const NFTDetails = () => {
     <TestLayout>
       <div>
         <div className="flex gap-4 items-start lg:flex-col">
-          <SimpleCard id="RightSide" className="bg-primary w-full flex flex-col relative gap-6 items-center ">
+          <SimpleCard id="RightSide" className="bg-info w-full flex flex-col relative gap-6 items-center ">
             <div className="relative w-full">
               <img src={data ? data.image_url : ""} alt="" className="rounded-xl h-auto w-full object-cover" />
-              <div className="absolute top-0 w-full h-[50px] flex justify-center items-center bg-base-100 bg-opacity-50 rounded-xl text-[20px]">
-                <CountdownTimer end_date={data && countdown} className="" />
-              </div>
             </div>
             <div className="flex flex-col gap-5 w-full">
               <div className="flex gap-3 w-full">
-                <div className={`w-full h-16 bg-secondary rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda] sm:px-2 sm:h-10 sm:justify-around`} onClick={handleClickLike}>
+                <div className={`bg-[#574eda] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-secondary sm:px-2 sm:h-10 sm:justify-around`} onClick={handleClickLike}>
                   {data && likeColor ? icons.red_heart : icons.heart}
                   {console.log("like ->>>>", like.user_has_liked)}
                   {console.log("likeColor ->>>>", likeColor)}
                   <div className="text-primary-content text-[16px]">{likeCount}</div>
                 </div>
-                <div className="bg-secondary w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda] sm:px-2 sm:h-10 sm:justify-around">
+                <div className="bg-[#574eda] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda] sm:px-2 sm:h-10 sm:justify-around">
                   {icons.eye}
                   <div className="text-primary-content text-[16px]">{data && data.view_count + 1}</div>
                 </div>
-                <div className="bg-secondary w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda] sm:px-2 sm:h-10 sm:justify-around" onClick={handleClickShare}>
+                <div className="bg-[#574eda] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda] sm:px-2 sm:h-10 sm:justify-around" onClick={handleClickShare}>
                   {icons.share}
                   <div className="text-primary-content text-[16px]">{data && shareCount}</div>
                 </div>
               </div>
+            </div>
+            <div className="w-full h-[50px] flex justify-center items-center bg-base-100 text-base-content rounded-xl text-[20px]">
+              <CountdownTimer end_date={data && countdown} className="" />
             </div>
           </SimpleCard>
           <SimpleCard id="LeftSide" className={"flex flex-col gap-8 bg-base-100 w-full sm:gap-2"}>
@@ -306,21 +305,11 @@ const NFTDetails = () => {
                   </a>
                 </div>
               </div>
-
-              {/* <hr className="opacity-10 mx-32"></hr> */}
               <div className="relative flex w-full">
                 <div className="text-[16px] opacity-40 mr-14 sm:mr-0">{t("transactionNo")}</div>
                 <div className="text-[16px] mx-auto">{data ? data.transactionIndex : ""}</div>
               </div>
             </div>
-            {/* <div className="relative flex items-center">
-                      <div className="absolute text-[16px] opacity-40">
-                        تاریخ ساخت
-                      </div>
-                      <div className="text-[16px] mx-auto">{item.date}</div>
-                    </div> */}
-            {/* <hr className="opacity-10 mx-32"></hr> */}
-
             <div className="flex justify-between items-center h-full sm:flex-col sm:gap-2 sm:mb-4">
               <div className="text-[16px] opacity-40">{t("collectionName")}</div>
               <div className="text-[16px] self-start text-right">{data && data.collection ? data.collection.name : <div className="text-[16px]">ندارد</div>}</div>
@@ -369,7 +358,7 @@ const NFTDetails = () => {
               </a>
             </div>
 
-            <div className="flex items-center justify-self-end bg-accent text-accent-content px-10 py-3 rounded-xl">
+            <div className="flex items-center justify-self-end bg-[#574eda] text-accent-content px-10 py-3 rounded-xl">
               <div className="text-[16px] opacity-50">{t("latestPrice")}</div>
               <div className="text-[22px] mx-auto">{data ? data.last_price : ""} اتریوم</div>
             </div>
@@ -393,7 +382,7 @@ const NFTDetails = () => {
 
                 {/* <hr className="text-black opacity-50 bg-black" /> */}
 
-                <div className="bg-indigo-100 rounded-xl p-3 w-full">
+                <div className="bg-neutral text-neutral-content rounded-xl p-3 w-full">
                   <div className="w-full text-center font-b6 text-xl sm:mb-8">ثبت پیشنهاد جدید</div>
                   <div className="flex gap-1 w-full flex-col">
                     <div className="flex items-center gap-3 sm:my-2">
@@ -409,7 +398,12 @@ const NFTDetails = () => {
                           }}
                         />
                       </div>
-                      <BorderButton className="w-1/4 text-center" onClick={() => addRequest()}>
+                      <BorderButton
+                        className="w-1/4 text-center"
+                        onClick={() => {
+                          price !== 0 && addRequest();
+                        }}
+                      >
                         ثبت
                       </BorderButton>
                     </div>
