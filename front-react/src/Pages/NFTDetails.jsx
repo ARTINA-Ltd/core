@@ -240,25 +240,28 @@ const NFTDetails = () => {
             </div>
             <div className="flex flex-col gap-5 w-full">
               <div className="flex gap-3 w-full">
-                <div className={`bg-[#574eda] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-secondary sm:px-2 sm:h-10 sm:justify-around`} onClick={handleClickLike}>
+                <div className={`bg-[#574eda] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-secondary hover:cursor-pointer sm:px-2 sm:h-10 sm:justify-around`} onClick={handleClickLike}>
                   {data && likeColor ? icons.red_heart : icons.heart}
                   {console.log("like ->>>>", like.user_has_liked)}
                   {console.log("likeColor ->>>>", likeColor)}
                   <div className="text-primary-content text-[16px]">{likeCount}</div>
                 </div>
-                <div className="bg-[#574eda] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda] sm:px-2 sm:h-10 sm:justify-around">
+                <div className="bg-[#574eda] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-secondary hover:cursor-pointer sm:px-2 sm:h-10 sm:justify-around">
                   {icons.eye}
                   <div className="text-primary-content text-[16px]">{data && data.view_count + 1}</div>
                 </div>
-                <div className="bg-[#574eda] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-[#574eda] sm:px-2 sm:h-10 sm:justify-around" onClick={handleClickShare}>
+                <div className="bg-[#574eda] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-secondary hover:cursor-pointer sm:px-2 sm:h-10 sm:justify-around" onClick={handleClickShare}>
                   {icons.share}
                   <div className="text-primary-content text-[16px]">{data && shareCount}</div>
                 </div>
               </div>
             </div>
-            <div className="w-full h-[50px] flex justify-center items-center bg-base-100 text-base-content rounded-xl text-[20px]">
-              <CountdownTimer end_date={data && countdown} className="" />
-            </div>
+            {data?.end_date && (
+              <div className="w-full h-[50px] flex justify-center items-center bg-base-100 text-base-content rounded-xl text-[20px]">
+                {" "}
+                <CountdownTimer end_date={data && countdown} className="" />
+              </div>
+            )}
           </SimpleCard>
           <SimpleCard id="LeftSide" className={"flex flex-col gap-8 bg-base-100 w-full sm:gap-2"}>
             <div className="flex items-center pt-3 sm:flex-col sm:gap-2">
