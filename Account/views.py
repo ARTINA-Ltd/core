@@ -123,7 +123,7 @@ class RegisterViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['post'])
     def check_email (request,email):
-     	email = request.data.get('email')
+        email = request.data.get('email')
         if User.objects.filter(email=email).exists():
             logger.warning(f"Email {email} is already registered")  # Log if the email already exists
             return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
