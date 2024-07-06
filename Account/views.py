@@ -116,7 +116,7 @@ class RegisterViewSet(viewsets.ModelViewSet):
    
     @action(detail=False, methods=['post'])
     def check_username (request,username):
-     	username = request.data.get('username')
+        username = request.data.get('username')
         if User.objects.filter(username=username).exists():
             logger.warning(f"Username {username} already exists")  # Log if the username already exists
             return Response({'error': 'This username is already taken.'}, status=status.HTTP_400_BAD_REQUEST)
