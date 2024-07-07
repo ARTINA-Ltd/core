@@ -48,9 +48,9 @@ class Profile(models.Model):
     shaba_number = models.CharField(max_length=24, verbose_name="shaba_number", null=True, blank=True)
     card_number = models.CharField(max_length=12, verbose_name="card_number", null=True, blank=True)    
     address = models.TextField(max_length=200, verbose_name="آدرس", null=True, blank=False)
-    national_card_picture = models.TextField(verbose_name="عکس کارت ملی",null=True,blank=False,default="http://api.artina.org/static/images/Fig.png")
+    national_card_picture = models.TextField(verbose_name="عکس کارت ملی",null=True,blank=False,default="")
     profile_picture = models.TextField(verbose_name="عکس پروفایل",
-                                        null=True, blank=False, default="",)
+                                        null=True, blank=False, default="http://api.artina.org/static/images/default_C7876ge.webp",)
     email = models.EmailField(max_length=50, verbose_name="ایمیل", null=True, blank=False)
     email_verified = models.BooleanField(default=False)
     role = models.ForeignKey(Role, on_delete=models.CASCADE, default=1)
