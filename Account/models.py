@@ -46,7 +46,7 @@ class Profile(models.Model):
     cell_number = models.CharField(max_length=11, verbose_name="شماره تلفن ثابت", null=True, blank=False)
     
     shaba_number = models.CharField(max_length=24, verbose_name="shaba_number", null=True, blank=True)
-    card_number = models.CharField(max_length=12, verbose_name="card_number", null=True, blank=True)    
+    card_number = models.CharField(max_length=16, verbose_name="card_number", null=True, blank=True)    
     address = models.TextField(max_length=200, verbose_name="آدرس", null=True, blank=False)
     national_card_picture = models.TextField(verbose_name="عکس کارت ملی",null=True,blank=False,default="")
     profile_picture = models.TextField(verbose_name="عکس پروفایل",
