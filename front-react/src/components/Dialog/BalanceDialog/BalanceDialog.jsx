@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { MdOutlineClose } from "react-icons/md";
@@ -10,7 +10,7 @@ const BalanceDialog = () => {
   const [getData, setData] = useState();
   const [isCharge, setIsCharge] = useState(false);
   const [depoAmount, setDepoAmount] = useState("");
-  const [widthdeawAmount, setWidthdeawAmount] = useState("");
+  const [widthdrawAmount, setWidthdeawAmount] = useState("");
   const { t } = useTranslation(["wallets"]);
 
   useEffect(() => {
@@ -27,61 +27,63 @@ const BalanceDialog = () => {
       .catch((e) => {});
   }, []);
 
-  const updateBalance = (act) => {
-    if (depoAmount === "" || depoAmount === undefined || widthdeawAmount === "" || widthdeawAmount === undefined) {
+  const updateBalanceDepo = () => {
+    if (depoAmount === "" || depoAmount === undefined) {
       Notify.failure("مقدار عددی را وارد کنید");
       return;
     }
-    if (widthdeawAmount < 10000 && depoAmount < 10000) {
+    if (depoAmount < 10000) {
       Notify.failure("مقدار وارد شده باید بیشتر از 10000 تومان باشد");
       return;
     }
-    if (act === "deposit") {
-      axios
-        .post(
-          "https://api.artina.org/api/account/payment/",
-          { amount: depoAmount * 10 },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-            },
-            mode: "cors",
-          }
-        )
-        .then((res) => {
-          window.open(res.data.url);
-        })
-        .catch(console.log);
-    } else {
-      axios
-        .post(
-          "https://api.artina.org/api/account/user-balance/updating_balance/",
-          {
-            currency: "rial",
-            transaction_type: act, //withraw
-            amount: widthdeawAmount,
+    axios
+      .post(
+        "https://api.artina.org/api/account/payment/",
+        { amount: depoAmount * 10 },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-            },
-            mode: "cors",
-          }
-        )
-        .then((res) => {
-          if (act === "deposit") {
-            Notify.success("با موفقیت شارژ شد");
-          } else {
-            Notify.failure("با موفقیت برداشت شد");
-          }
-        })
-        .catch((res) => {
-          console.log(res);
-          Notify.failure("خطا");
-        });
-    }
+          mode: "cors",
+        }
+      )
+      .then((res) => {
+        window.open(res.data.url);
+      })
+      .catch(console.log);
   };
-
+  const updateBalancedthdraw = () => {
+    if (widthdrawAmount === "" || widthdrawAmount === undefined) {
+      Notify.failure("مقدار عددی را وارد کنید");
+      return;
+    }
+    if (widthdrawAmount < 10000) {
+      Notify.failure("مقدار وارد شده باید بیشتر از 10000 تومان باشد");
+      return;
+    }
+    axios
+      .post(
+        "https://api.artina.org/api/account/user-balance/updating_balance/",
+        {
+          currency: "rial",
+          transaction_type: "withraw", //withraw
+          amount: widthdrawAmount,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+          mode: "cors",
+        }
+      )
+      .then((res) => {
+        Notify.failure("با موفقیت برداشت شد");
+      })
+      .catch((res) => {
+        console.log(res);
+        Notify.failure("خطا");
+      });
+  };
   return (
     <div className="card flex justify-content-center">
       <div
@@ -95,13 +97,7 @@ const BalanceDialog = () => {
         {t("wallet")}
       </div>
 
-      <dialog
-        onHide={() => {
-          setIsCharge(false);
-        }}
-        id="wallet"
-        className="modal w-[60rem] font-b4 sm:w-[90%] mx-auto"
-      >
+      <dialog id="wallet" className="modal w-[60rem] font-b4 sm:w-[90%] mx-auto">
         <div className="modal-box">
           <form method="dialog" className="my-8">
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-xl hover:bg-red-500 hover:text-black">
@@ -152,7 +148,7 @@ const BalanceDialog = () => {
               className="border-[1px] cursor-pointer border-green-500 bg-green-50 w-36 text-center text-green-500 rounded-xl py-2 hover:scale-105 transition-all sm:text-xs sm:px-4"
               onClick={() => {
                 if (isCharge === true) {
-                  updateBalance("deposit");
+                  updateBalanceDepo();
                 } else {
                   setIsCharge(true);
                 }
@@ -170,7 +166,7 @@ const BalanceDialog = () => {
               title={t("amount")}
               placeholder="ex: 100000"
               // eslint-disable-next-line eqeqeq
-              isValid={widthdeawAmount != ""}
+              isValid={widthdrawAmount != ""}
               validationError={t("required")}
               onChange={(e) => setWidthdeawAmount(e.target.value)}
             />
@@ -178,7 +174,7 @@ const BalanceDialog = () => {
               className="border-[1px] cursor-pointer border-red-500 bg-red-50 w-36 text-center text-red-500 rounded-xl py-2  hover:scale-105 transition-all sm:text-xs sm:px-4 sm:w-[50%]"
               onClick={() => {
                 if (isCharge === true) {
-                  updateBalance("withraw");
+                  updateBalancedthdraw();
                 } else {
                   setIsCharge(true);
                 }

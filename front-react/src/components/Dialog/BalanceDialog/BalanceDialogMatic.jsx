@@ -173,13 +173,7 @@ const BalanceDialogMatic = () => {
       >
         {t("maticWallet")}{" "}
       </div>
-      <dialog
-        onHide={() => {
-          setIsCharge(false);
-        }}
-        id="crypto-wallet"
-        className="modal w-[60rem] font-b4 sm:w-[90%] mx-auto"
-      >
+      <dialog id="crypto-wallet" className="modal w-[60rem] font-b4 sm:w-[90%] mx-auto">
         <div className="modal-box">
           <form method="dialog">
             <button onClick={() => setIsOpen(false)} className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-xl hover:bg-red-500 hover:text-black">

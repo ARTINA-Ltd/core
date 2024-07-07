@@ -8,7 +8,7 @@ const AboutUs = () => {
   return (
     <TestLayout>
       <div className="w-[55%] m-auto lg:w-4/5 md:w-11/12">
-        <SimpleCard className={"bg-white leading-[40px]"}>
+        <SimpleCard className={"bg-base-100 leading-[40px]"}>
           <div className="text-[32px] mb-5">{t("aboutUs")}</div>
           <div className="text-[18px] mb-7 text-center sm:px-3 sm:text-[14px]">{t("fistParagraph")}</div>
           <div className="text-[25px] mb-2 mr-5">{t("productOfArtina")}</div>

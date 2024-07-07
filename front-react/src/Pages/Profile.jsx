@@ -59,7 +59,7 @@ function Profile() {
     bio: true,
     postal_code: true,
   });
-
+  const [nationalPicture, setNationalPicture] = useState("https://api.artina.org/static/images/Fig.png");
   const [counter, setCounter] = useState(10);
   const [counterPause, setCounterPause] = useState(true);
   const [profileImage, setProfileImage] = useState("");
@@ -107,7 +107,7 @@ function Profile() {
   const handleSendEmailVerificationCode = () => {
     axios
       .post(
-        "https://api.artina.org/api/account/email-verification-code/",
+        "https://api.artina.org/api/account/register/check_email/",
         {
           email: values.email,
           verification_code: emailVerificationCode,
@@ -120,7 +120,26 @@ function Profile() {
       )
       .then((e) => {
         Notify.success("تایید شد");
-        setIsEmailVerified(true);
+        axios
+          .post(
+            "https://api.artina.org/api/account/email-verification-code/",
+            {
+              email: values.email,
+              verification_code: emailVerificationCode,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+              },
+            }
+          )
+          .then((e) => {
+            Notify.success("تایید شد");
+            setIsEmailVerified(true);
+          })
+          .catch(() => {
+            Notify.failure("ایمیل تکراری است");
+          });
       });
   };
 
@@ -144,7 +163,6 @@ function Profile() {
 
       axios
         .put(
-          // "https://api.artina.org/api/account/profile/",
           `https://api.artina.org/api/account/profile/${user ? user.data.id : ""}/`,
           {
             user: user ? user.data.id : "",
@@ -167,8 +185,6 @@ function Profile() {
             national_card_picture: nationalCardImageUrl ? nationalCardImageUrl : user.data.national_card_picture,
             profile_picture: profileImageUrl ? profileImageUrl : user.data.profile_picture,
             shaba_number: shabaNumber,
-
-            // role: user ? user.data.role : ""
           },
           {
             headers: {
@@ -509,7 +525,7 @@ function Profile() {
                       disabled={disableInputs && user != null ? user.data.last_name != null : null}
                     />
                   </div>
-                  <div className="flex gap-2 w-[50%]">
+                  <div className="flex gap-2 w-[50%] lg:w-full">
                     <SimpleInput
                       className={""}
                       type="text"
@@ -705,19 +721,23 @@ function Profile() {
                 متن احراز هویت
               </BorderButton>
               <div className="flex justify-center z-10 group relative w-full h-auto rounded-2xl" id="nationalCardImage">
-                <img src={nationalCardImageUrl ? nationalCardImageUrl : `${user ? user.data.national_card_picture : "/5.png"}`} className="w-auto h-auto rounded-2xl" />
-                <div className="bg-gradient-to-b from-black to-[#00000050] w-full h-full absolute rounded-2xl opacity-70 flex items-center justify-center group-hover:visible invisible cursor-pointer" onClick={() => inputFileNC.current.click()}>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="0.5" stroke="currentColor" className="text-white " width="3em">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
-                  </svg>
-                </div>
-                <input hidden accept="image/*" type="file" onChange={(e) => setNationalCardImage(() => e.target.files[0])} ref={inputFileNC} />
+                {user && user.data.national_card_picture !== "" ? <img src={nationalCardImageUrl ? nationalCardImageUrl : `${user ? user.data.national_card_picture : "/5.png"}`} className="w-auto h-auto rounded-2xl" /> : <img src={nationalCardImageUrl ? nationalCardImageUrl : nationalPicture} className="w-auto h-auto rounded-2xl" />}
+                {!(user.data.national_card_picture !== "" && user.data.role === "user_one") && (
+                  <div className="bg-gradient-to-b from-black to-[#00000050] w-full h-full absolute rounded-2xl opacity-70 flex items-center justify-center group-hover:visible invisible cursor-pointer" onClick={() => inputFileNC.current.click()}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="0.5" stroke="currentColor" className="text-white " width="3em">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
+                    </svg>
+                  </div>
+                )}
+                <input hidden accept="image/*" type="file" disabled={user.data.national_card_picture !== "" && user.data.role === "user_one"} onChange={(e) => setNationalCardImage(() => e.target.files[0])} ref={inputFileNC} />
               </div>
             </SimpleCard>
 
             <SimpleCard className="bg-primary flex flex-col relative text-white gap-4 items-center overflow-hidden w-full">
               <div className="text-white text-[27px] mb-2 z-10 font-b9">اطلاعات کارت بانکی</div>
+              <div className="font-b3">شماره کارت</div>
+              <SimpleInput defaultValue={user && user.data ? user.data.shaba_number : null} disabled={disableInputs && user && user.data != null ? user.data.shaba_number != null : false} title={""} type="number" onChange={(e) => setShabaNumber(e.target.value)} className="border-black rounded-md border-2 text-white" maxChars={24} />
               <div className="font-b3">شماره شبا</div>
               <div className="flex items-center gap-5 w-full py-2 px-2" dir="ltr">
                 <div className="pt-2">IR </div>

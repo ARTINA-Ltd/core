@@ -5,13 +5,12 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import { ThirdwebSDK } from "@thirdweb-dev/sdk";
 import { useTranslation } from "react-i18next";
+import i18n from "../i18n.js";
 
 const PreMint = () => {
   const navigate = useNavigate();
-  const [newCollectionName, setNewCollectionName] = useState("");
   const [wallet, setWallet] = useState("");
   const { t } = useTranslation(["collections"]);
-  const [error, setError] = useState("");
 
   const PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520";
   const SECRET_KEY = "dd0cZsTqYO9v8PJdRO8uuikrKvi6SpZKYbNdIqvn-d2-Df1QXTb9PUXUOJfO4OcJg9EUP3zQbx3jLJR1raQY9w";
@@ -82,16 +81,14 @@ const PreMint = () => {
         </div>
       </TestLayout>
       {
-        <dialog id="AddNftPopup" className="modal relative p-0 m-0">
-          <div className="modal-box p-0 m-0 bg-black">
-            <img src="/4.jpg" className="absolute object-cover w-full h-full opacity-80 -z-10" alt="" />
+        <dialog id="AddNftPopup" className={`${i18n.dir() === "rtl" ? "text-right" : "text-left"} modal relative p-0 m-0 `}>
+          <div className="modal-box p-0 m-0 bg-neutral">
             <form method="dialog">
-              <button className="btn  btn-sm btn-circle btn-ghost hover:bg-red-500 right-2 my-4 mx-4 text-gray-200 mb-4">✕</button>
+              <button className="btn btn-sm btn-circle btn-ghost hover:bg-red-500 right-2 my-4 mx-4 mb-4">✕</button>
             </form>
-            <h3 className="font-bold text-lg mx-8 z-10 text-gray-200">{t("greetings")}</h3>
-            <p className="py-4 text-gray-200 z-10 mx-8">{t("addingLater")}</p>
+            <p className="py-4 z-10 mx-8">{t("addingLater")}</p>
             <div className="mx-auto container max-w-[50%] flex">
-              <a href="/" className={"btn glass text-gray-200 mx-auto self-center my-4"}>
+              <a href="/" className={"btn bg-primary text-primary-content glass mx-auto self-center my-4"}>
                 {t("backHome")}{" "}
               </a>
             </div>

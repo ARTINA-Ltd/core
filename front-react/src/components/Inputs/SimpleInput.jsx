@@ -65,6 +65,7 @@ const SimpleInput = ({ onChange, title, placeholder, type, isValid, validationEr
       case "password":
         return <input disabled={disabled} type="password" className={`simple-input w-full border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} defaultValue={defaultValue} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={i18n.dir()} onKeyUp={onChange} />;
       case "number":
+        return <input disabled={disabled} type="text" className={`simple-input w-full border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} value={value} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={i18n.dir()} onKeyUp={onChange} onChange={handleChange} />;
       case "double":
         return <input disabled={disabled} type="text" className={`simple-input w-full border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} value={value} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={i18n.dir()} onKeyUp={onChange} onChange={handleChange} />;
       default:
