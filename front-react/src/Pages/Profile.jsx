@@ -59,7 +59,7 @@ function Profile() {
     bio: true,
     postal_code: true,
   });
-  const [nationalPicture, setNationalPicture] = useState("https://api.artina.org/static/images/Fig.png");
+  const nationalPicture = "https://api.artina.org/static/images/Fig.png";
   const [counter, setCounter] = useState(10);
   const [counterPause, setCounterPause] = useState(true);
   const [profileImage, setProfileImage] = useState("");
@@ -67,6 +67,7 @@ function Profile() {
   const [nationalCardImage, setNationalCardImage] = useState("");
   const [nationalCardImageUrl, setNationalCardImageUrl] = useState("");
   const [shabaNumber, setShabaNumber] = useState("");
+  const [cardNumber, setCardNumber] = useState("");
   const [showPhoneValidate, setShowPhoneValidate] = useState(false);
   const [showEmailValidate, setShowEmailValidate] = useState(false);
   const [phoneVerificationCode, setPhoneVerificationCode] = useState("");
@@ -185,6 +186,7 @@ function Profile() {
             national_card_picture: nationalCardImageUrl ? nationalCardImageUrl : user.data.national_card_picture,
             profile_picture: profileImageUrl ? profileImageUrl : user.data.profile_picture,
             shaba_number: shabaNumber,
+            card_number: cardNumber,
           },
           {
             headers: {
@@ -259,6 +261,7 @@ function Profile() {
             national_card_picture: nationalCardImageUrl ? nationalCardImageUrl : user.data.national_card_picture,
             profile_picture: profileImageUrl ? profileImageUrl : user.data.profile_picture,
             shaba_number: shabaNumber,
+            card_number: cardNumber,
             email: values.email,
           },
           {
@@ -347,6 +350,7 @@ function Profile() {
             national_card_picture: nationalCardImageUrl ? nationalCardImageUrl : user.data.national_card_picture,
             profile_picture: profileImageUrl ? profileImageUrl : user.data.profile_picture,
             shaba_number: shabaNumber,
+            card_number: cardNumber,
 
             // role: user ? user.data.role : ""
           },
@@ -407,6 +411,7 @@ function Profile() {
       });
       if (user) {
         setShabaNumber(user ? user.data.shaba_number : null);
+        setCardNumber(user ? user.data.card_number : null);
         setIsPhoneVerified(user ? user.data.phone_number_verified == true : null);
         setIsEmailVerified(user ? user.data.email_verified == true : null);
       }
@@ -737,7 +742,7 @@ function Profile() {
             <SimpleCard className="bg-primary flex flex-col relative text-white gap-4 items-center overflow-hidden w-full">
               <div className="text-white text-[27px] mb-2 z-10 font-b9">اطلاعات کارت بانکی</div>
               <div className="font-b3">شماره کارت</div>
-              <SimpleInput defaultValue={user && user.data ? user.data.shaba_number : null} disabled={disableInputs && user && user.data != null ? user.data.shaba_number != null : false} title={""} type="number" onChange={(e) => setShabaNumber(e.target.value)} className="border-black rounded-md border-2 text-white" maxChars={24} />
+              <SimpleInput defaultValue={user && user.data ? user.data.card_number : null} disabled={disableInputs && user && user.data != null ? user.data.card_number != null : false} title={""} type="number" onChange={(e) => setCardNumber(e.target.value)} className="border-black rounded-md border-2 text-white" maxChars={16} />
               <div className="font-b3">شماره شبا</div>
               <div className="flex items-center gap-5 w-full py-2 px-2" dir="ltr">
                 <div className="pt-2">IR </div>
