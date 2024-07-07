@@ -48,17 +48,17 @@ const AllCollections = () => {
     <TestLayout>
       {/* Search input */}
       <div className="flex justify-center">
-        <input type="text" placeholder={t("searchByNameOrArtist")} className="w-1/2 h-12 rounded-lg border-2 border-indigo-400 text-center sm:w-10/12" onChange={handleSearch} />
+        <input type="text" placeholder={t("searchByNameOrArtist")} className="w-1/2 h-12 rounded-lg border-2 border-primary bg-neutral text-neutral-content text-center sm:w-10/12" onChange={handleSearch} />
       </div>
       {/* Filter buttons */}
       <div className="flex gap-y-2 justify-center my-5 sm:text-xs sm:flex-col">
-        <button className={`mx-2 p-2 rounded-lg ${filterByBool === "has_physical" ? "bg-indigo-500 text-white" : "bg-indigo-100 text-gray-700"}`} onClick={() => handleBoolFilter("has_physical")}>
+        <button className={`mx-2 p-2 rounded-lg ${filterByBool === "has_physical" ? "bg-primary text-primary-content" : "bg-neutral text-neutral-content"}`} onClick={() => handleBoolFilter("has_physical")}>
           {t("onlyPysycal")}
         </button>
-        <button className={`mx-2 p-2 rounded-lg ${filterByBool === "in_exhibition" ? "bg-indigo-500 text-white" : "bg-indigo-100 text-gray-700"}`} onClick={() => handleBoolFilter("in_exhibition")}>
+        <button className={`mx-2 p-2 rounded-lg ${filterByBool === "in_exhibition" ? "bg-primary text-primary-content" : "bg-neutral text-neutral-content"}`} onClick={() => handleBoolFilter("in_exhibition")}>
           {t("onlyInExhibition")}
         </button>
-        <button className={`mx-2 p-2 rounded-lg ${filterByBool === "is_for_sale" ? "bg-indigo-500 text-white" : "bg-indigo-100 text-gray-700"}`} onClick={() => handleBoolFilter("is_for_sale")}>
+        <button className={`mx-2 p-2 rounded-lg ${filterByBool === "is_for_sale" ? "bg-primary text-primary-content" : "bg-neutral text-neutral-content"}`} onClick={() => handleBoolFilter("is_for_sale")}>
           {t("onlyTradable")}
         </button>
         {/* Add more buttons for other attributes */}
@@ -67,19 +67,19 @@ const AllCollections = () => {
       <div className="flex text-center my-5 sm:text-xs">
         <div className="flex-col w-full">
           <div className="font-b6 mb-2 text-center">{t("sortByPrice")}</div>
-          <button className={`mx-2 my-1 p-1 border-r-2 border-indigo-500 ${sortPrice === "low_to_high" ? "bg-indigo-500 text-white" : "bg-indigo-50 text-gray-700"}`} onClick={() => handleSortPrice("low_to_high")}>
+          <button className={`mx-2 my-1 p-1 border-r-2 border-primary ${sortPrice === "low_to_high" ? "bg-primary text-primary-content" : "bg-neutral text-neutral-content"}`} onClick={() => handleSortPrice("low_to_high")}>
             {t("lessToHigh")}
           </button>
-          <button className={`mx-2 my-1 p-1 border-r-2 border-indigo-500 ${sortPrice === "high_to_low" ? "bg-indigo-500 text-white" : "bg-indigo-50 text-gray-700"}`} onClick={() => handleSortPrice("high_to_low")}>
+          <button className={`mx-2 my-1 p-1 border-r-2 border-primary ${sortPrice === "high_to_low" ? "bg-primary text-primary-content" : "bg-neutral text-neutral-content"}`} onClick={() => handleSortPrice("high_to_low")}>
             {t("highToLess")}
           </button>
         </div>
         <div className="flex-col w-full">
           <div className="font-b6 mb-2 text-center">{t("sortByDate")}</div>
-          <button className={`mx-2 my-1 p-1 border-r-2 border-indigo-500 ${sortDate === "newest_to_oldest" ? "bg-indigo-500 text-white" : "bg-indigo-50 text-gray-700"}`} onClick={() => handleSortDate("newest_to_oldest")}>
+          <button className={`mx-2 my-1 p-1 border-r-2 border-primary ${sortDate === "newest_to_oldest" ? "bg-primary text-primary-content" : "bg-neutral text-neutral-content"}`} onClick={() => handleSortDate("newest_to_oldest")}>
             {t("newestFirst")}
           </button>
-          <button className={`mx-2 my-1 p-1 border-r-2 border-indigo-500 ${sortDate === "oldest_to_newest" ? "bg-indigo-500 text-white" : "bg-indigo-50 text-gray-700"}`} onClick={() => handleSortDate("oldest_to_newest")}>
+          <button className={`mx-2 my-1 p-1 border-r-2 border-primary ${sortDate === "oldest_to_newest" ? "bg-primary text-primary-content" : "bg-neutral text-neutral-content"}`} onClick={() => handleSortDate("oldest_to_newest")}>
             {t("oldestFirst")}{" "}
           </button>
         </div>

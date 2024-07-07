@@ -7,7 +7,7 @@ import { Notify } from "notiflix/build/notiflix-notify-aio";
 import SimpleInput from "./Inputs/SimpleInput";
 import BorderButton from "./Buttons/BorderButton";
 import { Block } from "notiflix";
-import { Dialog } from "primereact/dialog";
+import i18n from "./../i18n";
 import { useTranslation } from "react-i18next";
 
 const UploadItem = () => {
@@ -17,7 +17,6 @@ const UploadItem = () => {
   const [imageUrl, setImageUrl] = useState();
   const [selectedCategory, setSelectedCategory] = useState();
   const [selectedCollection, setSelectedCollection] = useState(null);
-  const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
   const [disabled, setDisabled] = useState(false);
@@ -237,9 +236,7 @@ const UploadItem = () => {
       ...uploadObj,
       properties: [...uploadObj.properties, newProperty],
     });
-    // Clear the form after adding a new property
     setNewProperty({ name: "", type: "" });
-    setVisible(false);
   };
 
   const handleRemoveProperty = (index) => {
@@ -303,7 +300,7 @@ const UploadItem = () => {
               defaultValue={null}
             />
           </div>
-          <div className="w-full flex gap-4 sm:flex-col">
+          <div className="flex gap-4 sm:flex-col w-full">
             <div className="w-full -mx-4">
               {categoryOptions ? (
                 <select
@@ -326,28 +323,17 @@ const UploadItem = () => {
               ) : null}
             </div>
             <div className="w-full">
-              <SimpleInput
-                type="number"
-                title={t("basePrice(ethereum)")}
-                placeholder={t("mintPriceExample")}
-                onChange={(e) =>
-                  setOploadObj(
-                    // isValid={formValues.first_name != ""}
-                    { ...upladObj, last_price: e.target.value }
-                  )
-                }
-                defaultValue={null}
-              />
+              <SimpleInput type="number" title={t("basePrice(ethereum)")} placeholder={t("mintPriceExample")} onChange={(e) => setOploadObj({ ...upladObj, last_price: e.target.value })} defaultValue={null} />
             </div>
           </div>
           <div className="w-full flex gap-4 sm:flex-col">
             {}
-            <div className="w-full">
-              <p className="text-[14px] cursor-pointer pt-2 border-r-2 pb-2 pr-3 border-primary font-b5" onClick={() => setVisible(true)}>
+            <div className="">
+              <p className={`text-[14px] cursor-pointer pt-2 border-x-2 border-x-transparent p-2 ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"} font-b5`} onClick={() => document.getElementById("AddNftPopup").showModal()}>
                 {t("chooseProperties")}{" "}
               </p>
               {uploadObj.properties.map((property, index) => (
-                <div key={index} className="flex mt-4 items-center justify-between">
+                <div key={index} className="flex gap-12 mt-4 items-center justify-between">
                   {/* <p className="">{index + 1}-</p> */}
                   <p className="">
                     {t("name")}: {property.name}
@@ -360,20 +346,6 @@ const UploadItem = () => {
                   </BorderButton>
                 </div>
               ))}
-
-              <Dialog header={t("mintProperties")} visible={visible} style={{ direction: "rtl" }} className="w-[30rem] h-[15rem]" onHide={() => setVisible(false)}>
-                <div className="flex flex-col gap-4">
-                  <div className="flex gap-3 items-center mt-4">
-                    <SimpleInput type="text" title={t("name")} placeholder={t("propertyNameExample")} onChange={(e) => handleInputChange("name", e.target.value)} value={newProperty.name} defaultValue={null} />
-                    <SimpleInput type="text" title={t("type")} placeholder={t("propertyTypeExample")} onChange={(e) => handleInputChange("type", e.target.value)} value={newProperty.type} defaultValue={null} />
-                  </div>
-                  <div className="flex justify-between">
-                    <BorderButton className="text-lg" size="sm" onClick={handleAddProperty}>
-                      {t("submit")}
-                    </BorderButton>
-                  </div>
-                </div>
-              </Dialog>
             </div>
           </div>
           <div className="w-full flex gap-3 items-center">
@@ -469,6 +441,24 @@ owrap px-7 cursor-pointer flex gap-12 items-center"
       ) : (
         ""
       )}
+      <dialog header={t("mintProperties")} id="AddNftPopup" className={`${i18n.dir() === "rtl" ? "text-right" : "text-left"} modal relative p-0 m-0 `}>
+        <div className="flex flex-col gap-4 rounded-md modal-box m-0 bg-base-100">
+          <form method="dialog">
+            <button className="btn btn-sm btn-circle btn-ghost hover:bg-red-500 right-2 mb-4">✕</button>
+          </form>
+          <div className="flex gap-3 items-center mt-4">
+            <SimpleInput type="text" title={t("name")} placeholder={t("propertyNameExample")} onChange={(e) => handleInputChange("name", e.target.value)} value={newProperty.name} defaultValue={null} />
+            <SimpleInput type="text" title={t("type")} placeholder={t("propertyTypeExample")} onChange={(e) => handleInputChange("type", e.target.value)} value={newProperty.type} defaultValue={null} />
+          </div>
+          <div className="flex justify-between">
+            <form method="dialog">
+              <BorderButton className="text-lg" size="sm" onClick={handleAddProperty}>
+                {t("submit")}
+              </BorderButton>
+            </form>
+          </div>
+        </div>
+      </dialog>
     </div>
   );
 };

@@ -1,1 +1,1 @@
-{ "support": "پشتیبانی", "name": "نام", "lastName": "نام خانوادگی", "subject": "موضوع", "email": "ایمیل", "phoneNumber": "شماره تلفن", "upload": "آپلود عکس", "context": "متن درخواست", "send": "ارسال", "required": "نمیتواند خالی باشد", "atleast11": "بایستی 11 رقم باشد" }
+{ "support": "پشتیبانی", "name": "نام", "lastName": "نام خانوادگی", "subject": "موضوع", "email": "ایمیل", "phoneNumber": "شماره تلفن", "upload": "آپلود عکس", "context": "متن درخواست", "send": "ارسال", "required": "نمی‌تواند خالی باشد", "atleast11": "بایستی 11 رقم باشد" }

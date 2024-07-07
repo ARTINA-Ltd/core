@@ -152,7 +152,7 @@ const AddExhibition = () => {
                   ref={inputFile}
                 />
               </div>
-              <div className="flex flex-col shadow-sm shadow-primary p-4 rounded-md gap-8 w-full mx-4">
+              <div className="flex flex-col p-4 rounded-md gap-8 w-full mx-4">
                 <SimpleInput
                   className={"shadow-md rounded-md"}
                   type="text"
@@ -195,7 +195,7 @@ const AddExhibition = () => {
                     className="select select-bordered w-full max-w-xs mx-4 border-primary"
                   >
                     <option disabled selected>
-                      دسته بندی را انتخاب کنید
+                      {t("chooseCategore")}{" "}
                     </option>
                     {options.map((msg, i) => {
                       return (
@@ -209,7 +209,7 @@ const AddExhibition = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-8 mt-8 shadow-sm shadow-primary p-4 rounded-md my-4">
+            <div className="flex flex-col gap-8 mt-8 p-4 rounded-md my-4">
               <div className="flex gap-4 md:flex-col ">
                 <SimpleInput
                   className={"shadow-md rounded-md"}
@@ -261,7 +261,7 @@ const AddExhibition = () => {
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-4 shadow-sm shadow-primary p-4 rounded-md">
+            <div className="flex flex-col gap-4 p-4 rounded-md">
               <div className={`border-[1px] w-1/2 mx-auto rounded-full px-3 py-1 cursor-pointer text-center transition-all ${ticket ? "border-green-500 text-green-600 bg-green-50" : "border-red-600 text-red-700 bg-red-50"}`} onClick={() => setTicket((prev) => !prev)}>
                 {ticket ? t("hasTicket") : t("noTicket")}
               </div>

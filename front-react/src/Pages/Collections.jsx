@@ -9,6 +9,7 @@ import { useContext } from "react";
 import { UserContext } from "../App";
 import { Notify } from "notiflix";
 import { useTranslation } from "react-i18next";
+import i18n from "./../i18n";
 
 const Collections = () => {
   const [getData, setData] = useState();
@@ -127,17 +128,15 @@ const Collections = () => {
           ))}
         </div>
       )}
-      <dialog id="AddNftPopup" className="modal relative p-0 m-0">
-        <div className="modal-box p-0 m-0 bg-black">
-          <img src="/4.jpg" className="absolute object-cover w-full h-full opacity-80 -z-10" alt="" />
+      <dialog id="AddNftPopup" className={`${i18n.dir() === "rtl" ? "text-right" : "text-left"} modal relative p-0 m-0 `}>
+        <div className="modal-box p-0 m-0 bg-neutral">
           <form method="dialog">
-            <button className="btn  btn-sm btn-circle btn-ghost hover:bg-red-500 right-2 my-4 mx-4 text-gray-200 mb-4">✕</button>
+            <button className="btn btn-sm btn-circle btn-ghost hover:bg-red-500 right-2 my-4 mx-4 mb-4">✕</button>
           </form>
-          <h3 className="font-bold text-lg mx-8 z-10 text-gray-200">{t("greetings")}</h3>
-          <p className="py-4 text-gray-200 z-10 mx-8">{t("addingLater")}</p>
+          <p className="py-4 z-10 mx-8">{t("addingLater")}</p>
           <div className="mx-auto container max-w-[50%] flex">
-            <a href="/" className={"btn glass text-gray-200 mx-auto self-center my-4"}>
-              {t("backHome")}
+            <a href="/" className={"btn bg-primary hover:text-base-content text-primary-content glass mx-auto self-center my-4"}>
+              {t("backHome")}{" "}
             </a>
           </div>
         </div>
