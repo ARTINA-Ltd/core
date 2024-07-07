@@ -142,11 +142,11 @@ class LoginViewSet(viewsets.ViewSet):
         logger.info(f"Login attempt for username: {username}")  # Log the login attempt
         
         user = authenticate(username=username, password=password)
-        profile = Profile.objects.get(user=user)
+        
         if user is None:
             logger.warning(f"Invalid credentials for username: {username}")  # Log invalid credentials
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-        
+        profile = Profile.objects.get(user=user)
         logger.info(f"Successful login for username: {username}")  # Log successful login
         
         refresh = RefreshToken.for_user(user)
