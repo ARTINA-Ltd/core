@@ -554,7 +554,13 @@ class PasswordResetByPhoneViewSet(viewsets.ViewSet):
 
 
 
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from rest_framework.decorators import action
+import requests
+
 class PaymentGateViewSet(viewsets.ViewSet):
+
     def create(self, request, *args, **kwargs):
         user = self.request.user
         amount_str = request.data.get("amount")  
@@ -563,79 +569,84 @@ class PaymentGateViewSet(viewsets.ViewSet):
             amount = int(amount_str)
         except ValueError:
             return Response({"error": "Invalid amount. Please provide a valid integer."}, status=status.HTTP_400_BAD_REQUEST)
-        if amount<1000:
-            return Response({"error": "Invalid amount. Please provide a valid integer."}, status=status.HTTP_400_BAD_REQUEST)
+        if amount < 1000:
+            return Response({"error": "Amount must be at least 1000."}, status=status.HTTP_400_BAD_REQUEST)
 
         response = self.send_payment_request(amount)
         if response.status_code == 200:
             payment_info = response.json()
             print(payment_info)
 
-            # data=payment_info[1].get('data')
-            authority = payment_info['data']['authority']
-            payment = Payment.objects.create(user=user, amount=amount, authority=authority)
-            redirect_url = self.get_redirect_url(payment)
-            return Response({'url': redirect_url}, status=status.HTTP_200_OK)
+            # Assuming payment_info structure is similar to what you provided
+            if 'data' in payment_info:
+                authority = payment_info['data'].get('authority')
+                payment = Payment.objects.create(user=user, amount=amount, authority=authority)
+                redirect_url = self.get_redirect_url(payment)
+                return Response({'url': redirect_url}, status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "Invalid payment response from server."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
             return Response(response.json(), status=response.status_code)
 
     @action(detail=False, methods=['get'])
-
     def verify(self, request):
         authority = request.GET.get('Authority')
-        payment = Payment.objects.get(authority=authority)
+        try:
+            payment = Payment.objects.get(authority=authority)
+        except Payment.DoesNotExist:
+            return Response({"error": "Payment not found."}, status=status.HTTP_404_NOT_FOUND)
+
         failure_url = f'http://artina.org/payment_status/?status=failed&authority={authority}'
-        user=self.request.user
+        user = self.request.user
         response = self.verify_payment(payment.amount, payment.authority)
+
         if response.status_code == 200:
             verification_info = response.json()
             print(verification_info)
-            verification_status = verification_info.get('data', {}).get('code')
-            
-            #verification_status = verification_info['data']['code']
-                # Redirect to your React front-end with payment status
-            success_url = f'http://artina.org/payment_status/?status=success&authority={authority}'
 
-            if verification_status == 100:
-                payment.is_paid = True
-                payment.save()                
-                transaction_currency = TransactionCurrency.objects.get(name="rial")
-                user_balance=None
-                user_balance = UserBalance.objects.filter(user=user).first()
-                if user_balance :
-                    n=user_balance.rial_available_balance 
-                    n=n+ payment.amount
-                    user_balance.rial_available_balance =n
-                    user_balance.save()
+            if 'data' in verification_info:
+                verification_status = verification_info['data'].get('code')
 
-                else :
-                    user_balance = UserBalance.objects.create(rial_available_balance=payment.amount,user=user)
-                    profile=Profile.objects.get(user=user)
-                    Transaction.objects.create(user=user, side='deposit', 
-                                    transaction_currency=transaction_currency, transaction_value=payment.amount,status='completed')
-                    # Send the SMS via Kavenegar API
-                    # The URL IS like : https://api.kavenegar.com/v1/{API-KEY}/verify/lookup.json
+                if verification_status == 100:
+                    payment.is_paid = True
+                    payment.save()
+
+                    transaction_currency = TransactionCurrency.objects.get(name="rial")
+                    user_balance = UserBalance.objects.filter(user=user).first()
+
+                    if user_balance:
+                        user_balance.rial_available_balance += payment.amount
+                        user_balance.save()
+                    else:
+                        user_balance = UserBalance.objects.create(rial_available_balance=payment.amount, user=user)
+
+                    Transaction.objects.create(user=user, side='deposit', transaction_currency=transaction_currency,
+                                               transaction_value=payment.amount, status='completed')
+
+                    profile = Profile.objects.get(user=user)
+                    # Send SMS via Kavenegar API
                     response = requests.post(
                         f"https://api.kavenegar.com/v1/"
                         f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
                         f"/verify/lookup.json",
                         data={
-                        "receptor": profile.phone_number,
-                        "token": user.username,
-                        "token2": payment.amount, 
-                        "template": "AccountChargeVerification"
+                            "receptor": profile.phone_number,
+                            "token": user.username,
+                            "token2": payment.amount,
+                            "template": "AccountChargeVerification"
                         }
-                        )
-                return redirect(success_url)
+                    )
+                    success_url = f'http://artina.org/payment_status/?status=success&authority={authority}'
+                    return Response({'url': success_url}, status=status.HTTP_200_OK)
+                else:
+                    return Response({"error": "Payment verification failed."}, status=status.HTTP_400_BAD_REQUEST)
             else:
-                return redirect(failure_url)
+                return Response({"error": "Invalid verification response from server."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return redirect(failure_url)
+            return Response({"error": "Failed to verify payment."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def send_payment_request(self, amount):
-        user=self.request.user
-        mobile=user.profile.phone_number
-        email=user.profile.email
+        user = self.request.user
         url = 'https://api.zarinpal.com/pg/v4/payment/request.json'
         headers = {
             'accept': 'application/json',
@@ -645,7 +656,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
             'merchant_id': '21ab62e9-e04b-4da5-b8d1-1bd7fca78e41',
             'amount': amount,
             'callback_url': 'http://api.artina.org/api/account/payment/verify/',
-            'description': 'Transaction description.', 
+            'description': 'Transaction description.',
             'metadata': {'mobile': "09387731214", 'email': "zehi.sh@gmail.com"}
         }
         response = requests.post(url, headers=headers, json=data)
@@ -667,6 +678,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
 
     def get_redirect_url(self, payment):
         return f'https://www.zarinpal.com/pg/StartPay/{payment.authority}'
+
 
 
 
