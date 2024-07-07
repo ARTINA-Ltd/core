@@ -553,7 +553,6 @@ class PasswordResetByPhoneViewSet(viewsets.ViewSet):
 
 
 
-
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -604,8 +603,18 @@ class PaymentGateViewSet(viewsets.ViewSet):
             verification_info = response.json()
             print(verification_info)
 
-            if 'data' in verification_info:
-                verification_status = verification_info['data'].get('code')
+            if isinstance(verification_info, dict) and 'data' in verification_info:
+                # Assuming 'data' could be a list or a dictionary
+                if isinstance(verification_info['data'], list):
+                    # Handle list case (if data is empty or multiple entries)
+                    if not verification_info['data']:
+                        return Response({"error": "No verification data found."}, status=status.HTTP_404_NOT_FOUND)
+                    else:
+                        data = verification_info['data'][0]  # Assuming you want the first item
+                else:
+                    data = verification_info['data']  # Handle dictionary case directly
+
+                verification_status = data.get('code')
 
                 if verification_status == 100:
                     payment.is_paid = True
@@ -678,6 +687,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
 
     def get_redirect_url(self, payment):
         return f'https://www.zarinpal.com/pg/StartPay/{payment.authority}'
+
 
 
 
