@@ -185,6 +185,7 @@ class UserInfoViewSet(viewsets.ViewSet):
             'email_verified':profile.email_verified,
             'role': str(profile.role),
             'shaba_number':profile.shaba_number,
+            'card_number':profile.card_number,
             'postal_code':profile.postal_code,
             'bio':profile.bio,
             'user_verified':profile.user_verified
