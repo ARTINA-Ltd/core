@@ -10,7 +10,7 @@ from django.conf import settings
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=10, verbose_name= " دسته بندی  ", null=True, blank=True, default="other")
+    name = models.CharField(max_length=20, verbose_name= " دسته بندی  ", null=True, blank=True, default="other")
 
     def __str__(self):
         return self.name
