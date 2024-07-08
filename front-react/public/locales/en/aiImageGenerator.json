@@ -1,1 +1,5 @@
-{ "header": "Photo generation with artificial intelligence" }
+{ 
+    "Header": "Photo generation with AI",
+    "Props": "Image Props",
+    "button": "Generate"
+}

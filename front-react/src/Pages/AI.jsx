@@ -6,11 +6,13 @@ import AiImagesCard from "../components/Cards/AiImagesCard";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import SimpleInput from "../components/Inputs/SimpleInput";
 import TestLayout from "../Layouts/TestLayout";
+import { useTranslation } from "react-i18next";
 
 const AI = () => {
   const [descriotion, setDescription] = useState();
   const [isClicekd, setIsClicekd] = useState(false);
   const [getImages, setImages] = useState([]);
+  const { t } = useTranslation(["aiImageGenerator"]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,12 +68,12 @@ const AI = () => {
           }
         >
           <div className="text-[24px] text-center transition-all">
-            تولید عکس با هوش مصنوعی
+            {t("aiImageGenerator:Header")}
           </div>
           <SimpleInput
             className={"mt-6"}
             type="text"
-            title="توضیحات عکس"
+            title={t("aiImageGenerator:Props")}
             placeholder="مثلا: گل"
             isValid={descriotion != ""}
             validationError="نمی‌تواند خالی باشد"
@@ -80,7 +82,7 @@ const AI = () => {
           />
 
           <div className="flex justify-center mt-5">
-            <BorderButton onClick={handleSubmit}>تولید</BorderButton>
+            <BorderButton onClick={handleSubmit}>{t("aiImageGenerator:button")}</BorderButton>
           </div>
         </SimpleCard>
       </div>
