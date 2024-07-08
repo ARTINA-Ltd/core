@@ -609,7 +609,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
                 if isinstance(verification_info['data'], list):
                     # Handle list case (if data is empty or multiple entries)
                     if not verification_info['data']:
-                        return Response({'url': failure_url}, status=status.HTTP_404_NOT_FOUND)
+                        return failure_url
                     
                     else:
                         data = verification_info['data'][0]  # Assuming you want the first item
