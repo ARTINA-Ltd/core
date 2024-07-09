@@ -78,8 +78,8 @@ class OrderViewSet(viewsets.ViewSet):
         token_id = request.data.get('token_id')
         status = 1
         nft = NFT.objects.get(token_id=token_id)
-        order=Order.objects.filter(nft=nft,bidder=bidder).first()
-        order.status=status
+        order=Order.objects.filter(nft=nft,bidder=bidder, status=0).first()
+        order.status=1
         order.save()
         return Response({'error': 'your order has been deleted'},status=HTTPStatus.OK)
 
