@@ -34,7 +34,7 @@ function Recomendition({ requests, nft }) {
 
   return (
     <>
-      <div className="flex flex-col lg:mr-[40px] sm:m-2 lg:ml-[40px] w-full">
+      <div className="flex flex-col lg:mr-[40px] sm:m-2 lg:ml-[40px]">
         <div className="overflow-x-auto  lg:mx-8 sm:mx-2">
           <div className="py-2 inline-block min-w-full lg:px-8 sm:px-2 sm:py-0">
             <div className="overflow-hidden">

@@ -8,6 +8,8 @@ import AboutAI from "../components/Home/AboutAI";
 import Innovations from "../components/Home/Innovations";
 import MostFrequentQuestions from "../components/Home/MostFreQuestions";
 import GasPrice from "../components/Home/GasPrice";
+import Milesone from "./../components/Milestones/Milesone";
+
 const HeroBanner = lazy(() => import("../components/HeroBanner/HeroBanner.jsx"));
 
 const Home = () => {
@@ -24,6 +26,7 @@ const Home = () => {
       <Innovations className={"my-10"} />
       <MostFrequentQuestions className={""} />
       <GasPrice className={"mt-10 sm:m-3"} />
+      <Milesone className={"mx-auto container "} />
       {/* <Features className={"my-20"} /> */}
     </TestLayout>
   );

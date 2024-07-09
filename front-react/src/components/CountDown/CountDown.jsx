@@ -31,8 +31,8 @@ const Countdown = ({ end_date }) => {
   }
 
   return (
-    <div className="flex justify-between ">
-      <div className="flex gap-2">
+    <div className="flex items-center justify-center text-center">
+      <div className="flex gap-2 md:text-sm sm:text-xs">
         <p className="ml-2">زمان باقی مانده تا پایان مزایده:</p>
         <p className="text-error">{timeRemaining.days}روز</p>
         <p className="text-error">{timeRemaining.hours}ساعت</p>
