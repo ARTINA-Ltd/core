@@ -589,72 +589,74 @@ class PaymentGateViewSet(viewsets.ViewSet):
             return Response(response.json(), status=response.status_code)
 
     @action(detail=False, methods=['get'])
-    def verify(self, request):
-        authority = request.GET.get('Authority')
-        try:
-            payment = Payment.objects.get(authority=authority)
-        except Payment.DoesNotExist:
-            return Response({"error": "Payment not found."}, status=status.HTTP_404_NOT_FOUND)
-
+@action(detail=False, methods=['get'])
+def verify(self, request):
+    authority = request.GET.get('Authority')
+    try:
+        payment = Payment.objects.get(authority=authority)
+    except Payment.DoesNotExist:
         failure_url = f'http://artina.org/payment_status/?status=failed&authority={authority}'
-        user = self.request.user
-        response = self.verify_payment(payment.amount, payment.authority)
+        return redirect(failure_url)
 
-        if response.status_code == 200:
-            verification_info = response.json()
-            print(verification_info)
+    failure_url = f'http://artina.org/payment_status/?status=failed&authority={authority}'
+    success_url = f'http://artina.org/payment_status/?status=success&authority={authority}'
+    user = self.request.user
+    response = self.verify_payment(payment.amount, payment.authority)
 
-            if isinstance(verification_info, dict) and 'data' in verification_info:
-                # Assuming 'data' could be a list or a dictionary
-                if isinstance(verification_info['data'], list):
-                    # Handle list case (if data is empty or multiple entries)
-                    if not verification_info['data']:
-                        return failure_url
-                    
-                    else:
-                        data = verification_info['data'][0]  # Assuming you want the first item
+    if response.status_code == 200:
+        verification_info = response.json()
+        print(verification_info)
+
+        if isinstance(verification_info, dict) and 'data' in verification_info:
+            # Assuming 'data' could be a list or a dictionary
+            if isinstance(verification_info['data'], list):
+                # Handle list case (if data is empty or multiple entries)
+                if not verification_info['data']:
+                    return redirect(failure_url)
                 else:
-                    data = verification_info['data']  # Handle dictionary case directly
-
-                verification_status = data.get('code')
-
-                if verification_status == 100:
-                    payment.is_paid = True
-                    payment.save()
-
-                    transaction_currency = TransactionCurrency.objects.get(name="rial")
-                    user_balance = UserBalance.objects.filter(user=user).first()
-
-                    if user_balance:
-                        user_balance.rial_available_balance += payment.amount
-                        user_balance.save()
-                    else:
-                        user_balance = UserBalance.objects.create(rial_available_balance=payment.amount, user=user)
-
-                    Transaction.objects.create(user=user, side='deposit', transaction_currency=transaction_currency,
-                                               transaction_value=payment.amount, status='completed')
-
-                    profile = Profile.objects.get(user=user)
-                    # Send SMS via Kavenegar API
-                    response = requests.post(
-                        f"https://api.kavenegar.com/v1/"
-                        f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
-                        f"/verify/lookup.json",
-                        data={
-                            "receptor": profile.phone_number,
-                            "token": user.username,
-                            "token2": payment.amount,
-                            "template": "AccountChargeVerification"
-                        }
-                    )
-                    success_url = f'http://artina.org/payment_status/?status=success&authority={authority}'
-                    return Response({'url': success_url}, status=status.HTTP_200_OK)
-                else:
-                    return Response({"error": "Payment verification failed."}, status=status.HTTP_400_BAD_REQUEST)
+                    data = verification_info['data'][0]  # Assuming you want the first item
             else:
-                return Response({"error": "Invalid verification response from server."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                data = verification_info['data']  # Handle dictionary case directly
+
+            verification_status = data.get('code')
+
+            if verification_status == 100:
+                payment.is_paid = True
+                payment.save()
+
+                transaction_currency = TransactionCurrency.objects.get(name="rial")
+                user_balance = UserBalance.objects.filter(user=user).first()
+
+                if user_balance:
+                    user_balance.rial_available_balance += payment.amount
+                    user_balance.save()
+                else:
+                    user_balance = UserBalance.objects.create(rial_available_balance=payment.amount, user=user)
+
+                Transaction.objects.create(user=user, side='deposit', transaction_currency=transaction_currency,
+                                           transaction_value=payment.amount, status='completed')
+
+                profile = Profile.objects.get(user=user)
+                # Send SMS via Kavenegar API
+                response = requests.post(
+                    f"https://api.kavenegar.com/v1/"
+                    f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
+                    f"/verify/lookup.json",
+                    data={
+                        "receptor": profile.phone_number,
+                        "token": user.username,
+                        "token2": payment.amount,
+                        "template": "AccountChargeVerification"
+                    }
+                )
+                return redirect(success_url)
+            else:
+                return redirect(failure_url)
         else:
-            return Response({"error": "Failed to verify payment."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return redirect(failure_url)
+    else:
+        return redirect(failure_url)
+
 
     def send_payment_request(self, amount):
         user = self.request.user
