@@ -142,17 +142,19 @@ const Register = () => {
         <div className="w-full flex justify-center items-center mt-5">
           <ReCAPTCHA sitekey={"6LecwBMnAAAAAItOWnJM8T17TlvnA1ewPIUGDuj_"} onChange={handleCaptchaChange} />
         </div>
-        <div className="w-full mt-5 flex justify-between items-center gap-4">
+        <div className="w-full mt-5 flex md:flex-col justify-between items-center gap-4">
           <a href="/privacy-policy" className="hover:text-neutral-content hover:bg-neutral px-2 py-1 transition-all duration-100 font-b2 rounded-md">
             {t("policy")}{" "}
           </a>
-          <div className={`cursor-pointer rounded-full flex items-center gap-3 ${!isChecekd ? "hover:bg-rose-50  hover:scale-105 transition-all border-[1px] border-rose-400 text-rose-400" : "hover:bg-green-50 hover:scale-105 transition-all text-green-600 border-[1px] border-green-600"} transition-all px-3 py-2`} onClick={() => setIsChecekd((prev) => !prev)}>
-            <div className={`h-4 w-4 ${isChecekd ? "bg-green-600" : "bg-rose-50 border-[1px] border-rose-400"} rounded-full`} />
-            <div> {t("agree")}</div>
+          <div className="flex gap-4">
+            <div className={`cursor-pointer rounded-full flex items-center gap-3 ${!isChecekd ? "hover:bg-rose-50  hover:scale-105 transition-all border-[1px] border-rose-400 text-rose-400" : "hover:bg-green-50 hover:scale-105 transition-all text-green-600 border-[1px] border-green-600"} transition-all px-3 py-2`} onClick={() => setIsChecekd((prev) => !prev)}>
+              <div className={`h-4 w-4 ${isChecekd ? "bg-green-600" : "bg-rose-50 border-[1px] border-rose-400"} rounded-full`} />
+              <div> {t("agree")}</div>
+            </div>
+            <BorderButton className={"px-6 py-3"} size="lg" onClick={!captchaRes ? () => {} : handleSubmit} disabled={!captchaRes}>
+              {t("signUp")}
+            </BorderButton>
           </div>
-          <BorderButton className={"px-6 py-3"} size="lg" onClick={!captchaRes ? () => {} : handleSubmit} disabled={!captchaRes}>
-            {t("signUp")}
-          </BorderButton>
         </div>
         <div className=" px-5 py-3 rounded-2xl mt-5 text-center ease-in-out duration-200">
           <Link to="/Login" className="text-accent">

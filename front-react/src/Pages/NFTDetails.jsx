@@ -263,61 +263,66 @@ const NFTDetails = () => {
               </div>
             )}
           </SimpleCard>
-          <SimpleCard id="LeftSide" className={"flex flex-col gap-8 bg-base-100 w-full sm:gap-2"}>
-            <div className="flex items-center pt-3 sm:flex-col sm:gap-2">
+          <SimpleCard id="LeftSide" className={"flex flex-col gap-8 bg-base-100 w-full sm:gap-8"}>
+            <div className="flex items-center pt-3 sm:gap-2">
               <div className="text-[16px] opacity-40">{t("artName")}</div>
               <div className="text-[32px] mx-auto sm:text-[20px]">{data ? data.name : ""}</div>
             </div>
 
-            <div className="flex items-center sm:flex-col sm:gap-2">
+            <div className="flex items-center sm:gap-2">
               <div className="text-[16px] opacity-40">{t("artist")}</div>
               <div className="text-[16px] mx-auto">{data ? data.creator : ""}</div>
             </div>
 
-            <div className="flex items-center sm:flex-col sm:gap-2">
+            <div className="flex items-center sm:items-start sm:flex-col sm:gap-2">
               <div className="text-[16px] opacity-40">{t("hashBlock")}</div>
               <div className="text-[16px] mx-auto">{data ? formatString(data.blockHash) : ""}</div>
             </div>
 
-            <div className="flex items-center sm:flex-col sm:gap-2">
-              <div className="text-[16px] opacity-40">{t("transactionHash")}</div>
+            <div className="flex items-center sm:items-start gap-4 sm:flex-col sm:gap-2">
+              <div className="flex gap-4">
+                <div className="text-[16px] w-24 opacity-40">{t("transactionHash")}</div>
+                <a href={`https://polygonscan.com/tx/${data ? data.transactionHash : ""}`} className="bg-neutral text-neutral-content hover:bg-[#e5e6eb] hover:text-gray-600 transition-all  py-1 text-sm px-3 rounded-md flex gap-1 items-center">
+                  {t("blockchain")}
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                  </svg>
+                </a>
+              </div>
               <div className="text-[16px] mx-auto">{data ? formatString(data.transactionHash) : ""}</div>
-              <a href={`https://polygonscan.com/tx/${data ? data.transactionHash : ""}`} className="bg-neutral text-neutral-content hover:bg-[#e5e6eb] hover:text-gray-600 transition-all  py-1 text-sm px-3 rounded-md flex gap-1 items-center">
-                {t("blockchain")}
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
-                </svg>
-              </a>
             </div>
 
             <div className="flex justify-around sm:flex-col sm:gap-2">
-              <div className="relative flex w-full">
-                <div className=" text-[16px] opacity-40">{t("blockNo")}</div>
-                <div className="text-[16px] mx-auto">{data ? data.blockNumber : ""}</div>
-                <div>
-                  <a
-                    href={`https://polygonscan.com/block/${data ? data.blockNumber : ""}`}
-                    className="bg-neutral hover:bg-[#e5e6eb] transition-all text-neutral-content hover:text-gray-600
+              <div className="relative gap-2 flex w-full">
+                <div className=" text-[16px] w-24 opacity-40">{t("blockNo")}</div>
+                <a
+                  href={`https://polygonscan.com/block/${data ? data.blockNumber : ""}`}
+                  className="bg-neutral hover:bg-[#e5e6eb] transition-all text-neutral-content hover:text-gray-600
                    py-1 text-sm px-1 rounded-md flex gap-1 items-center"
-                  >
-                    {t("blockchain")}
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
-                      {/* make blockchain svg path */}
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
-                    </svg>
-                  </a>
-                </div>
+                >
+                  {t("blockchain")}
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
+                    {/* make blockchain svg path */}
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                  </svg>
+                </a>
+                <div className="text-[16px] mx-auto">{data ? data.blockNumber : ""}</div>
               </div>
               <div className="relative flex w-full">
                 <div className="text-[16px] opacity-40 mr-14 sm:mr-0">{t("transactionNo")}</div>
                 <div className="text-[16px] mx-auto">{data ? data.transactionIndex : ""}</div>
               </div>
             </div>
-            <div className="flex justify-between items-center h-full sm:flex-col sm:gap-2 sm:mb-4">
-              <div className="text-[16px] opacity-40">{t("collectionName")}</div>
-              <div className="text-[16px] self-start text-right">{data && data.collection ? data.collection.name : <div className="text-[16px]">ندارد</div>}</div>
-              <div className="text-[16px] opacity-40">{t("category")}</div>
-              <div className="text-[16px] self-start text-right">{data && data.category ? data.category.name : <div className="text-[16px]">ندارد</div>}</div>
+            <div className="flex gap-12 items-center sm:items-start h-full sm:flex-col sm:gap-2 sm:mb-4">
+              <div className="flex justify-between gap-8">
+                <div className="text-[16px] opacity-40">{t("collectionName")}</div>
+                <div className="text-[16px]">{data && data.collection ? data.collection.name : <div className="text-[16px]">ندارد</div>}</div>
+              </div>
+
+              <div className="flex gap-8">
+                <div className="text-[16px] opacity-40">{t("category")}</div>
+                <div className="text-[16px] self-start text-right">{data && data.category ? data.category.name : <div className="text-[16px]">ندارد</div>}</div>
+              </div>
             </div>
 
             <div className="flex items-center h-full sm:flex-col sm:gap-2 sm:mb-4">
@@ -368,7 +373,7 @@ const NFTDetails = () => {
           </SimpleCard>
         </div>
         <div className="flex gap-6 md:flex-col">
-          <SimpleCard className="bg-base-100  grow flex flex-col relative gap-3 items-center mt-4">
+          <SimpleCard className="bg-base-100 md:w-full w-[calc(50%-1.5rem)] grow flex flex-col relative gap-3 items-center mt-4">
             <div className="flex items-center pt-3">
               <div className="text-[32px] mx-auto sm:text-[20px]">{t("offers")}</div>
             </div>
@@ -377,7 +382,7 @@ const NFTDetails = () => {
 
           {user && (data ? data.is_for_sale : true) ? (
             <Fragment>
-              <SimpleCard id="UserRequests" className="bg-base-100 w-1/2 flex flex-col relative gap-3 items-center mt-4 md:w-full sm:mt-0">
+              <SimpleCard id="UserRequests" className="bg-base-100 w-[calc(50%-1.5rem)] flex flex-col relative gap-3 items-center mt-4 md:w-full sm:mt-0">
                 <div className="flex items-center pt-3">
                   <div className="text-[32px] mx-auto sm:text-[20px]">پیشنهاد های شما</div>
                 </div>
