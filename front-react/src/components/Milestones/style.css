@@ -1,0 +1,6 @@
+.react-flow__node {
+  border-radius: 50%;
+  padding: 10px;
+  background-color: #ddd;
+  text-align: center;
+}
