@@ -372,8 +372,8 @@ const NFTDetails = () => {
             </div>
           </SimpleCard>
         </div>
-        <div className="flex gap-6 md:flex-col">
-          <SimpleCard className="bg-base-100 md:w-full w-[calc(50%-1.5rem)] grow flex flex-col relative gap-3 items-center mt-4">
+        <div className="flex gap-6 lg:flex-col">
+          <SimpleCard className="bg-base-100 lg:w-full w-[calc(50%-1.5rem)] grow flex flex-col relative gap-3 items-center mt-4">
             <div className="flex items-center pt-3">
               <div className="text-[32px] mx-auto sm:text-[20px]">{t("offers")}</div>
             </div>
@@ -382,7 +382,7 @@ const NFTDetails = () => {
 
           {user && (data ? data.is_for_sale : true) ? (
             <Fragment>
-              <SimpleCard id="UserRequests" className="bg-base-100 w-[calc(50%-1.5rem)] flex flex-col relative gap-3 items-center mt-4 md:w-full sm:mt-0">
+              <SimpleCard id="UserRequests" className="bg-base-100 w-[calc(50%-1.5rem)] flex flex-col relative gap-3 items-center mt-4 lg:w-full sm:mt-0">
                 <div className="flex items-center pt-3">
                   <div className="text-[32px] mx-auto sm:text-[20px]">پیشنهاد های شما</div>
                 </div>

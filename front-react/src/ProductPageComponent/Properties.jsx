@@ -15,50 +15,64 @@ function Properties({ requests, nft }) {
         <div className="overflow-x-auto">
           <div className="py-2 inline-block w-full">
             <div className="overflow-hidden">
-              <table className="w-full">
-                <thead className="">
-                  <tr>
-                    <th scope="col" className=" -bold text-base-content px-6 py-4 text-center sm:px-2 sm:text-xs">
-                      {t("offerer")}
-                    </th>
-                    <th scope="col" className=" -bold text-base-content px-6 py-4 text-center sm:px-2 sm:text-xs">
-                      {t("price")}
-                    </th>
-                    <th scope="col" className=" -bold text-base-content px-6 py-4 text-center sm:px-2 sm:text-xs">
-                      {t("offerAmount")}
-                    </th>
-                    <th scope="col" className=" -bold text-base-content px-6 py-4 text-center sm:px-2 sm:text-xs">
-                      {t("date")}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {requests
-                    ? requests.data.map((req) => (
-                        <tr className="border-t">
-                          <td className=" text-base-content  px-6 py-4 whitespace-nowrap sm:text-xs">{req.bidder}</td>
-                          <td className=" text-base-content  px-6 py-4 whitespace-nowrap sm:text-xs">{req.fee} تومان</td>
-                          {/* <td className=" text-base-content  px-6 py-4 whitespace-nowrap sm:text-xs">
-                          {req.eth} اتریوم
-                        </td> */}
-                          <td className=" text-base-content  px-6 py-4 whitespace-nowrap sm:text-xs">
-                            <div className="flex w-full justify-center">
-                              {req.eth}
-                              <FaEthereum className="text-xl mx-2" />
-                            </div>
-                          </td>
-                          <td className=" text-base-content  px-6 py-4 whitespace-nowrap sm:text-xs">
-                            {Intl.DateTimeFormat("fa", {
-                              year: "numeric",
-                              month: "numeric",
-                              day: "numeric",
-                            }).format(new Date(req.date))}
-                          </td>
-                        </tr>
-                      ))
-                    : ""}
-                </tbody>
-              </table>
+              <div className="flex md:flex-col">
+                <table className="w-full">
+                  <thead className="">
+                    <tr>
+                      <th scope="col" className=" -bold text-base-content px-6 py-4 text-center sm:px-2 sm:text-xs">
+                        {t("offerer")}
+                      </th>
+                      <th scope="col" className=" -bold text-base-content px-6 py-4 text-center sm:px-2 sm:text-xs">
+                        {t("price")}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {requests
+                      ? requests.data.map((req) => (
+                          <tr className="border-t ">
+                            <td className=" text-base-content  px-6 py-4 whitespace-nowrap sm:text-xs">{req.bidder}</td>
+                            <td className=" text-base-content  px-6 py-4 whitespace-nowrap sm:text-xs">{req.fee} تومان</td>
+                          </tr>
+                        ))
+                      : ""}
+                  </tbody>
+                </table>
+                <table className="w-full">
+                  <thead className="">
+                    <tr>
+                      <th scope="col" className=" -bold text-base-content px-6 py-4 text-center sm:px-2 sm:text-xs">
+                        {t("offerAmount")}
+                      </th>
+                      <th scope="col" className=" -bold text-base-content px-6 py-4 text-center sm:px-2 sm:text-xs">
+                        {t("date")}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {requests
+                      ? requests.data.map((req) => (
+                          <tr className="border-t">
+                            {" "}
+                            <td className=" text-base-content  px-6 py-4 whitespace-nowrap sm:text-xs">
+                              <div className="flex w-full justify-center">
+                                {req.eth}
+                                <FaEthereum className="text-xl mx-2" />
+                              </div>
+                            </td>
+                            <td className=" text-base-content  px-6 py-4 whitespace-nowrap sm:text-xs">
+                              {Intl.DateTimeFormat("fa", {
+                                year: "numeric",
+                                month: "numeric",
+                                day: "numeric",
+                              }).format(new Date(req.date))}
+                            </td>
+                          </tr>
+                        ))
+                      : ""}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
