@@ -1,7 +1,8 @@
-import React, { useCallback } from "react";
+import React, { useState } from "react";
 import ReactFlow, { Controls, Handle } from "reactflow";
-
 import "reactflow/dist/style.css";
+import CustomEdge from "./CustomEdge";
+import "./style.css";
 
 const initialNodes = [
   { id: "1", position: { x: 0, y: 500 }, data: { label: "Whats NFT?" }, type: "circleNode" },
@@ -14,33 +15,30 @@ const initialNodes = [
 ];
 
 const initialEdges = [
-  { type: "bezier", id: "e1-2", source: "1", target: "2" },
-  { id: "e2-3", source: "2", target: "3" },
-  { id: "e3-4", source: "3", target: "4" },
-  { id: "e4-5", source: "4", target: "5" },
-  { id: "e5-6", source: "5", target: "6" },
-  { id: "e6-7", source: "6", target: "7" },
+  { id: "e1-2", source: "1", target: "2", type: "customEdge" },
+  { id: "e2-3", source: "2", target: "3", type: "customEdge" },
+  { id: "e3-4", source: "3", target: "4", type: "customEdge" },
+  { id: "e4-5", source: "4", target: "5", type: "customEdge" },
+  { id: "e5-6", source: "5", target: "6", type: "customEdge" },
+  { id: "e6-7", source: "6", target: "7", type: "customEdge" },
 ];
 
 const CircleNode = ({ id, data }) => (
   <div
-    className="bg-primary text-primary-content hover:cursor-pointer"
+    className="bg-primary text-primary-content rounded-full p-5 text-center relative box"
     style={{
-      borderRadius: "50%",
-      padding: "20px",
-      textAlign: "center",
-      width: "100px",
-      height: "100px",
+      width: "150px",
+      height: "150px",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      border: "1px solid #000",
-      position: "relative",
+      borderRadius: "50%",
     }}
   >
+    {" "}
     {data.label}
-    {id !== "1" && <Handle type="target" position="left" id="left" style={{ width: "0", height: "0" }} />}
-    {id !== "7" && <Handle type="source" position="right" id="right" style={{}} />}
+    {id !== "1" && <Handle type="target" position="left" id="left" className="absolute left-0 top-1/2 transform -translate-y-1/2" style={{ width: "10px", height: "10px", background: "#000" }} />}
+    {id !== "7" && <Handle type="source" position="right" id="right" className="absolute right-0 top-1/2 transform -translate-y-1/2" style={{ width: "10px", height: "10px", background: "#000" }} />}
   </div>
 );
 
@@ -48,14 +46,17 @@ const nodeTypes = {
   circleNode: CircleNode,
 };
 
+const edgeTypes = {
+  customEdge: CustomEdge,
+};
+
 const FlowComponent = () => {
-  const onNodesChange = useCallback(() => {}, []);
-  const onEdgesChange = useCallback(() => {}, []);
-  const onConnect = useCallback(() => {}, []);
+  const [nodes, setNodes] = useState(initialNodes);
+  const [edges, setEdges] = useState(initialEdges);
 
   return (
-    <div style={{ height: 500 }} className="bg-neutral w-[80vw] mx-auto rounded-md p-2 ">
-      <ReactFlow className="hover:cursor-default" nodes={initialNodes} edges={initialEdges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onConnect={onConnect} nodeTypes={nodeTypes} fitView>
+    <div className="bg-neutral w-[80vw] mx-auto" style={{ height: "80vh" }}>
+      <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes} fitView>
         <Controls />
       </ReactFlow>
     </div>
