@@ -81,12 +81,36 @@ const BalanceDialogMatic = () => {
     };
   }, [setIsOpen]);
 
-  const cryptoTransaction = async (symbol, side, amount, price) => {
+  const cryptoBuy = async (symbol, amount, price) => {
     try {
       axios
         .post(
           "https://api.artina.org/api/account/CryptoViewSet/BuyCrypto/",
-          { symbol: symbol, side: side, amount: amount, price: price },
+          { symbol: symbol, amount: amount, price: price },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            },
+          }
+        )
+        .then(() => {
+          Notify.success("your request has been successfull.");
+          console.log();
+        })
+        .catch((err) => {
+          Notify.failure("there was an error!");
+          console.log(err);
+        });
+    } catch {}
+    getBalance();
+  };
+
+  const cryptoSell = async (symbol, amount, price) => {
+    try {
+      axios
+        .post(
+          "https://api.artina.org/api/account/CryptoViewSet/SellCrypto/",
+          { symbol: symbol, amount: amount, price: price },
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
@@ -231,7 +255,7 @@ const BalanceDialogMatic = () => {
                 <div
                   className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all sm:text-xs sm:px-4 self-start"
                   onClick={() => {
-                    cryptoTransaction(currentTab === "Ethereum" ? "ETHTMN" : "MATICTMN", "BUY", buyAmount, currentTab === "Ethereum" ? ethPrice.ETH_buy_price : maticPrice.MATIC_buy_price);
+                    cryptoBuy(currentTab === "Ethereum" ? "ETHTMN" : "MATICTMN", buyAmount, currentTab === "Ethereum" ? ethPrice.ETH_buy_price : maticPrice.MATIC_buy_price);
                   }}
                 >
                   {t("buy")}
@@ -245,7 +269,7 @@ const BalanceDialogMatic = () => {
                 <div
                   className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all sm:text-xs sm:px-4 self-start"
                   onClick={() => {
-                    cryptoTransaction(currentTab === "Ethereum" ? "ETHTMN" : "MATICTMN", "SELL", sellAmount, currentTab === "Ethereum" ? ethPrice.ETH_sell_price : maticPrice.MATIC_sell_price);
+                    cryptoSell(currentTab === "Ethereum" ? "ETHTMN" : "MATICTMN", sellAmount, currentTab === "Ethereum" ? ethPrice.ETH_sell_price : maticPrice.MATIC_sell_price);
                   }}
                 >
                   {t("sell")}
