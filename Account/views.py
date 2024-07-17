@@ -927,11 +927,10 @@ class CryptoViewSet(viewsets.ViewSet):
     def BuyCrypto(self, request):
         user = self.request.user
         symbol= request.data.get('symbol') 
-        side= request.data.get('side')
         amount= request.data.get('amount')
         price= request.data.get('price')        
         transactionCurrency=TransactionCurrency.objects.filter(name=symbol).first()
-        transactionINS=Transaction.objects.create(user=user, transaction_currency=transactionCurrency,amount=amount,side=side,status='Pending')
+        transactionINS=Transaction.objects.create(user=user, transaction_currency=transactionCurrency,amount=amount,side="BUY",status='Pending')
             
         url = 'https://api.wallex.ir/v1/account/otc/orders'
         headers = {
@@ -940,7 +939,7 @@ class CryptoViewSet(viewsets.ViewSet):
         }
         data = {
             'symbol': symbol, 
-            'side': side,
+            'side': "BUY",
             'amount': amount,
             'price': price,
         }
@@ -950,10 +949,71 @@ class CryptoViewSet(viewsets.ViewSet):
         if response.status_code == 201:
             transactionINS.status='completed'
             transactionINS.save()
-            line=updating_balance(user_id=user.id, currency=symbol, amount=amount, side=side)
+            line=updating_balance(user_id=user.id, currency=symbol, amount=amount, side="BUY")
             print(line)
             print("updating balance done")
             return Response({'message': 'Purchase successful'}, status=response.status_code)
+            transaction_currency = TransactionCurrency.objects.get(name="rial")
+            user_balance = UserBalance.objects.filter(user=user).first()
+    
+            if user_balance:
+                user_balance.rial_available_balance -= (amount*price + 10000)
+                user_balance.save()
+                artina=ARTINA_Ballance.objects.get(id=0)
+                artina.artina_rial += 10000
+                artina.save()
+            else:
+                return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
+
+        
+        else:
+            transactionINS.status='failed'
+            transactionINS.save()
+            return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
+
+
+    @action(detail=False, methods=['post'])
+    def SellCrypto(self, request):
+        user = self.request.user
+        symbol= request.data.get('symbol') 
+        amount= request.data.get('amount')
+        price= request.data.get('price')        
+        transactionCurrency=TransactionCurrency.objects.filter(name=symbol).first()
+        transactionINS=Transaction.objects.create(user=user, transaction_currency=transactionCurrency,amount=amount,side="SELL",status='Pending')
+            
+        url = 'https://api.wallex.ir/v1/account/otc/orders'
+        headers = {
+            'Content-Type': 'application/json',
+            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  
+        }
+        data = {
+            'symbol': symbol, 
+            'side': "SELL",
+            'amount': amount,
+            'price': price,
+        }
+        response = requests.post(url, headers=headers, json=data)
+        datam = response.json()
+        # Check if the request was successful
+        if response.status_code == 201:
+            transactionINS.status='completed'
+            transactionINS.save()
+            line=updating_balance(user_id=user.id, currency=symbol, amount=amount, side="Sell")
+            print(line)
+            print("updating balance done")
+            return Response({'message': 'Purchase successful'}, status=response.status_code)
+            transaction_currency = TransactionCurrency.objects.get(name="rial")
+            user_balance = UserBalance.objects.filter(user=user).first()
+    
+            if user_balance:
+                user_balance.rial_available_balance += (amount*price - 10000)
+                user_balance.save()
+                artina=ARTINA_Ballance.objects.get(id=0)
+                artina.artina_rial += 10000
+                artina.save()
+            else:
+                return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
+
         
         else:
             transactionINS.status='failed'
