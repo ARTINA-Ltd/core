@@ -5,13 +5,13 @@ import CustomEdge from "./CustomEdge";
 import "./style.css";
 
 const initialNodes = [
-  { id: "1", position: { x: 0, y: 500 }, data: { label: "Whats NFT?" }, type: "circleNode" },
-  { id: "2", position: { x: 150, y: 150 }, data: { label: "Create an NFT" }, type: "circleNode" },
-  { id: "3", position: { x: 350, y: 200 }, data: { label: "Artina's Nft Minting" }, type: "circleNode" },
-  { id: "4", position: { x: 500, y: 350 }, data: { label: "Monetization with NFT" }, type: "circleNode" },
-  { id: "5", position: { x: 650, y: 600 }, data: { label: "Advertise your NFT" }, type: "circleNode" },
-  { id: "6", position: { x: 850, y: 450 }, data: { label: "Sell NFT" }, type: "circleNode" },
-  { id: "7", position: { x: 1050, y: 650 }, data: { label: "Gain Money" }, type: "circleNode" },
+  { id: "1", position: { x: 0, y: 300 }, data: { label: "Whats NFT?" }, type: "circleNode" },
+  { id: "2", position: { x: 100, y: 50 }, data: { label: "Create an NFT" }, type: "circleNode" },
+  { id: "3", position: { x: 220, y: 75 }, data: { label: "Artina's Nft Minting" }, type: "circleNode" },
+  { id: "4", position: { x: 400, y: 200 }, data: { label: "Monetization with NFT" }, type: "circleNode" },
+  { id: "5", position: { x: 500, y: 400 }, data: { label: "Advertise your NFT" }, type: "circleNode" },
+  { id: "6", position: { x: 600, y: 50 }, data: { label: "Sell NFT" }, type: "circleNode" },
+  { id: "7", position: { x: 700, y: 450 }, data: { label: "Gain Money" }, type: "circleNode" },
 ];
 
 const initialEdges = [
@@ -27,8 +27,9 @@ const CircleNode = ({ id, data }) => (
   <div
     className="bg-primary text-primary-content rounded-full p-5 text-center relative box"
     style={{
-      width: "150px",
-      height: "150px",
+      width: "50px",
+      height: "50px",
+      fontSize: "6px",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -55,8 +56,9 @@ const FlowComponent = () => {
   const [edges, setEdges] = useState(initialEdges);
 
   return (
-    <div className="bg-neutral w-[80vw] mx-auto" style={{ height: "80vh" }}>
-      <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes} fitView>
+    <div className=" w-[80vw] mx-auto my-12" style={{ height: "80vh" }}>
+      <h1 className="mx-auto text-6xl text-center w-full">کاوش</h1>
+      <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes} zoomOnScroll={false} zoomOnPinch={false} zoomOnDoubleClick={false} fitView>
         <Controls />
       </ReactFlow>
     </div>
