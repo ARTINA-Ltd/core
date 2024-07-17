@@ -191,3 +191,24 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.matic_amount} Matic ({self.status})"
+
+
+class ARTINA_Ballance(models.Model):
+    artina_eth=  models.FloatField(default=0)
+    artina_rial=  models.FloatField(default=0)
+    artina_matic= models.FloatField(default=0)
+    artina_unavailable_rial= models.FloatField(default=0)
+    artina_sell_ticket=models.FloatField(default=0)
+    artina_sell_ticket_count=models.IntegerField(default=0)
+    artina_3d_exhivbition=models.FloatField(default=0)
+    artina_3d_exhivbition_count=models.IntegerField(default=0)
+    artina_commision=models.FloatField(default=0)
+    artina_commision_count=models.IntegerField(default=0)
+    artina_mint=models.FloatField(default=0)
+    artina_mint_count=models.IntegerField(default=0)
+    def __str__(self):
+        return f"eth : {self.artina_eth} - matic: {self.artina_matic} - rial: ({self.artina_rial})"
+    
+
+
+
