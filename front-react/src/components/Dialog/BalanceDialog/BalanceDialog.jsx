@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { MdOutlineClose } from "react-icons/md";
 import SimpleInput from "../../Inputs/SimpleInput";
 import { Notify } from "notiflix";
 import { useTranslation } from "react-i18next";
+import { UserContext } from "../../../App.js";
 
 const BalanceDialog = () => {
   const [getData, setData] = useState();
@@ -12,6 +13,7 @@ const BalanceDialog = () => {
   const [depoAmount, setDepoAmount] = useState("");
   const [widthdrawAmount, setWidthdeawAmount] = useState("");
   const { t } = useTranslation(["wallets"]);
+  const user = useContext(UserContext);
 
   useEffect(() => {
     axios
@@ -63,11 +65,12 @@ const BalanceDialog = () => {
     }
     axios
       .post(
-        "https://api.artina.org/api/account/user-balance/updating_balance/",
+        "https://api.artina.org/api/account/WithdrawalViewSet/",
         {
-          currency: "rial",
-          transaction_type: "withraw", //withraw
+          shaba_number: user.data.shaba_number,
           amount: widthdrawAmount,
+          user: user.data.id,
+          reference_number: 0,
         },
         {
           headers: {
@@ -77,7 +80,8 @@ const BalanceDialog = () => {
         }
       )
       .then((res) => {
-        Notify.failure("با موفقیت برداشت شد");
+        Notify.success("با موفقیت برداشت شد");
+        console.log(res);
       })
       .catch((res) => {
         console.log(res);
