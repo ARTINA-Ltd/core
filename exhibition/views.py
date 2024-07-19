@@ -174,7 +174,7 @@ class ApplicationViewSet(viewsets.ModelViewSet):
     def update(self, request, pk=None):
         try:
             application = Application.objects.get(id=pk, exhibition__user=request.user)
-            id= application.exhibition
+            id= application.exhibition.id
             exhibition = Exhibition.objects.get(id=id)
         except Application.DoesNotExist:
             return Response({'error': 'Application not found.'}, status=status.HTTP_404_NOT_FOUND)
