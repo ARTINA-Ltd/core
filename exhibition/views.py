@@ -174,6 +174,8 @@ class ApplicationViewSet(viewsets.ModelViewSet):
     def update(self, request, pk=None):
         try:
             application = Application.objects.get(id=pk, exhibition__user=request.user)
+            id= application.exhibition
+            exhibition = Exhibition.objects.get(id=id)
         except Application.DoesNotExist:
             return Response({'error': 'Application not found.'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -183,11 +185,17 @@ class ApplicationViewSet(viewsets.ModelViewSet):
 
         if action == 'accept':
             application.status = 'accepted'
+            for nft in nfts:
+                nft.in_exhibition = False
+                nft.is_for_sale = True
+                nft.start_date= exhibition.start_date
+                nft.end_date= exhibition.end_date                
+                nft.save()            
         elif action == 'ignored':
             application.status = 'ignored'
             nfts = application.nft.all()
             for nft in nfts:
-                nft.in_exhibition = False
+                nft.in_exhibition = False              
                 nft.save()
         application.save()
         serialized_data = ApplicationSerializer(application).data
