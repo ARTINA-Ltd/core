@@ -931,6 +931,10 @@ class CryptoViewSet(viewsets.ViewSet):
         price= request.data.get('price')        
         transactionCurrency=TransactionCurrency.objects.filter(name=symbol).first()
         transactionINS=Transaction.objects.create(user=user, transaction_currency=transactionCurrency,amount=amount,side="BUY",status='Pending')
+        total=amount*price
+        check=check_balance(amount=total,user_id=user.id)
+        if !check :
+            return Response({'error': 'Purchase failed'}, status=status.HTTP_400_BAD_REQUEST)
             
         url = 'https://api.wallex.ir/v1/account/otc/orders'
         headers = {
@@ -949,19 +953,19 @@ class CryptoViewSet(viewsets.ViewSet):
         if response.status_code == 201:
             transactionINS.status='completed'
             transactionINS.save()
-            line=updating_balance(user_id=user.id, currency=symbol, amount=amount, side="BUY")
+            line=updating_balance(user_id=user.id, currency=symbol, amount=amount, side="deposit")
             print(line)
             print("updating balance done")
-            return Response({'message': 'Purchase successful'}, status=response.status_code)
             transaction_currency = TransactionCurrency.objects.get(name="rial")
             user_balance = UserBalance.objects.filter(user=user).first()
-    
+            
             if user_balance:
                 user_balance.rial_available_balance -= (amount*price + 10000)
                 user_balance.save()
                 artina=ARTINA_Ballance.objects.get(id=0)
                 artina.artina_rial += 10000
                 artina.save()
+                return Response({'message': 'Purchase successful'}, status=response.status_code)
             else:
                 return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
 
@@ -980,7 +984,11 @@ class CryptoViewSet(viewsets.ViewSet):
         price= request.data.get('price')        
         transactionCurrency=TransactionCurrency.objects.filter(name=symbol).first()
         transactionINS=Transaction.objects.create(user=user, transaction_currency=transactionCurrency,amount=amount,side="SELL",status='Pending')
-            
+        total=amount*price
+        check=check_balance(amount=total,user_id=user.id)
+        if !check :
+            return Response({'error': 'Purchase failed'}, status=status.HTTP_400_BAD_REQUEST)
+         
         url = 'https://api.wallex.ir/v1/account/otc/orders'
         headers = {
             'Content-Type': 'application/json',
@@ -998,10 +1006,9 @@ class CryptoViewSet(viewsets.ViewSet):
         if response.status_code == 201:
             transactionINS.status='completed'
             transactionINS.save()
-            line=updating_balance(user_id=user.id, currency=symbol, amount=amount, side="Sell")
+            line=updating_balance(user_id=user.id, currency=symbol, amount=amount, side="withdrawal")
             print(line)
             print("updating balance done")
-            return Response({'message': 'Purchase successful'}, status=response.status_code)
             transaction_currency = TransactionCurrency.objects.get(name="rial")
             user_balance = UserBalance.objects.filter(user=user).first()
     
@@ -1011,6 +1018,7 @@ class CryptoViewSet(viewsets.ViewSet):
                 artina=ARTINA_Ballance.objects.get(id=0)
                 artina.artina_rial += 10000
                 artina.save()
+                return Response({'message': 'Purchase successful'}, status=response.status_code)
             else:
                 return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
 
