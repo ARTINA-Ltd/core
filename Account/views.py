@@ -473,13 +473,15 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
         }
 
         return Response(balance, status=status.HTTP_200_OK)
-def check_balance(amount,user_id):
-    user=User.objects.filter(id=user_id).first()
-    balance=UserBalance.objects.filter(user=user).first()
-    if(amount>balance.rial_available_balance):
-        return JsonResponse({'error': 'you do not have enough money.'}, status=status.HTTP_403_BAD_REQUEST)
-    else :
-        JsonResponse({'error': 'you can use your balance.'}, status=status.HTTP_200_OK)
+def check_balance(amount, user_id):
+    user = User.objects.filter(id=user_id).first()
+    balance = UserBalance.objects.filter(user=user).first()
+    if not user or not balance:
+        return JsonResponse({'error': 'User or balance not found.'}, status=status.HTTP_404_NOT_FOUND)
+    if amount > balance.rial_available_balance:
+        return JsonResponse({'error': 'You do not have enough money.'}, status=status.HTTP_403_BAD_REQUEST)
+    else:
+        return JsonResponse({'message': 'You can use your balance.'}, status=status.HTTP_200_OK)
 
 def updating_balance(user_id, currency, amount, side):
     # Fetch the user and user balance
@@ -534,13 +536,13 @@ class CryptoViewSet(viewsets.ViewSet):
     def BuyCrypto(self, request):
         user = self.request.user
         symbol= request.data.get('symbol') 
-        amount= request.data.get('amount')
-        price= request.data.get('price')        
+        amount = float(request.data.get('amount'))  # Ensure amount is a float
+        price = float(request.data.get('price'))  # Ensure price is a float
         transactionCurrency=TransactionCurrency.objects.filter(name=symbol).first()
         transactionINS=Transaction.objects.create(user=user, transaction_currency=transactionCurrency,amount=amount,side="BUY",status='Pending')
         total=amount*price
-        check=check_balance(amount=total,user_id=user.id)
-        if !check :
+        balance_check = check_balance(amount=total, user_id=user.id)
+        if balance_check.status_code != status.HTTP_200_OK:
             return Response({'error': 'Purchase failed'}, status=status.HTTP_400_BAD_REQUEST)
             
         url = 'https://api.wallex.ir/v1/account/otc/orders'
@@ -560,9 +562,11 @@ class CryptoViewSet(viewsets.ViewSet):
         if response.status_code == 201:
             transactionINS.status='completed'
             transactionINS.save()
-            line=updating_balance(user_id=user.id, currency=symbol, amount=amount, side="deposit")
-            print(line)
-            print("updating balance done")
+            balance_update = updating_balance(user_id=user.id, currency=symbol, amount=amount, side="deposit")
+            if balance_update.status_code != status.HTTP_200_OK:
+                return Response({'error': 'Failed to update balance'}, status=status.HTTP_400_BAD_REQUEST)
+
+  
             transaction_currency = TransactionCurrency.objects.get(name="rial")
             user_balance = UserBalance.objects.filter(user=user).first()
             
@@ -587,13 +591,13 @@ class CryptoViewSet(viewsets.ViewSet):
     def SellCrypto(self, request):
         user = self.request.user
         symbol= request.data.get('symbol') 
-        amount= request.data.get('amount')
-        price= request.data.get('price')        
+        amount = float(request.data.get('amount'))  # Ensure amount is a float
+        price = float(request.data.get('price'))  # Ensure price is a float
         transactionCurrency=TransactionCurrency.objects.filter(name=symbol).first()
         transactionINS=Transaction.objects.create(user=user, transaction_currency=transactionCurrency,amount=amount,side="SELL",status='Pending')
         total=amount*price
-        check=check_balance(amount=total,user_id=user.id)
-        if !check :
+        balance_check = check_balance(amount=total, user_id=user.id)
+        if balance_check.status_code != status.HTTP_200_OK:
             return Response({'error': 'Purchase failed'}, status=status.HTTP_400_BAD_REQUEST)
          
         url = 'https://api.wallex.ir/v1/account/otc/orders'
@@ -613,9 +617,9 @@ class CryptoViewSet(viewsets.ViewSet):
         if response.status_code == 201:
             transactionINS.status='completed'
             transactionINS.save()
-            line=updating_balance(user_id=user.id, currency=symbol, amount=amount, side="withdrawal")
-            print(line)
-            print("updating balance done")
+            balance_update = updating_balance(user_id=user.id, currency=symbol, amount=amount, side="withdrawal")
+            if balance_update.status_code != status.HTTP_200_OK:
+                return Response({'error': 'Failed to update balance'}, status=status.HTTP_400_BAD_REQUEST)
             transaction_currency = TransactionCurrency.objects.get(name="rial")
             user_balance = UserBalance.objects.filter(user=user).first()
     
