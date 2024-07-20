@@ -6,7 +6,6 @@ import "swiper/css/pagination";
 import "./styles.css";
 import { useNavigate } from "react-router";
 
-
 const NftsSwiper = (props) => {
   const items = props;
   const navigate = useNavigate();
@@ -30,10 +29,10 @@ const NftsSwiper = (props) => {
       {items.items.map((item, index) => {
         return (
           <SwiperSlide key={index} className="flex-col gap-8 ralative items-center z-50 justify-center overflow-visible pb-8 my-12">
-            <div className="w-full h-full bg-white absolute   -z-10 blur-md "></div>
+            <div className="w-full h-full bg-base-100 absolute   -z-10 blur-md "></div>
             <img className="background absolute  w-full -z-10 rounded-[10%] h-full blur-md opacity-80 " src={item.image_url} alt="item.name" />
             <img src={item.image_url} alt="item.name" className="translate-y-20 shadow-md rounded-md shadow-black lg:-translate-y-0" />
-            <div className="bg-white bg-opacity-90 z-10 cursor-default gap-2 p-4 self-start rounded-md shadow-md sm:self-center">
+            <div className="bg-base-100 bg-opacity-90 z-10 cursor-default gap-2 p-4 self-start rounded-md shadow-md sm:self-center">
               {item.name && <p className="text-2xl">نام اثر: {item.name}</p>}
               {item.creator && <p className="text-2xl">خالق اثر: {item.creator}</p>}
               {item.description && <p className="text-2xl">توضیحات: {item.description}</p>}
@@ -41,7 +40,7 @@ const NftsSwiper = (props) => {
                 onClick={() => {
                   navigate(`/nft-details/${item.token_id}`);
                 }}
-                className="btn glass mt-2 z-20 self-start text-white hover:text-black bg-[#4e45d0]"
+                className="btn glass mt-2 z-20 self-start text-white hover:text-base-content bg-[#4e45d0]"
               >
                 ثبت پیشنهاد{" "}
               </button>

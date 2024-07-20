@@ -56,10 +56,10 @@ const ExhibitionCollections = () => {
             <img src={banner} className={`bg-transparent p-0 z-10 my-auto object-contain max-h-[80vh] w-full rounded-2xl`} alt="" />
             <div className="flex w-full flex-wrap justify-between my-4 md:mt-4 mt-auto"></div>
           </div>
-          <div className="bg-white rounded-xl w-[calc(50%-0.5rem)] mt-4 mx-auto shadow-md md:max-w-full flex flex-col gap-8 p-8 md:gap-4 container lg:w-full lg:mb-12">
-            <h4 className="text-5xl md:text-3xl  font-bold text-gray-800">{exhibition.marketName}</h4>
-            <p className="text-gray-600 text-2xl md:text-xl my-4 ">{exhibition.description}</p>
-            <h4 className="text-gray-600 text-2xl md:text-xl">
+          <div className="bg-base-100 rounded-xl w-[calc(50%-0.5rem)] mt-4 mx-auto shadow-md md:max-w-full flex flex-col gap-8 p-8 md:gap-4 container lg:w-full lg:mb-12">
+            <h4 className="text-5xl md:text-3xl  font-bold ">{exhibition.marketName}</h4>
+            <p className=" text-2xl md:text-xl my-4 ">{exhibition.description}</p>
+            <h4 className=" text-2xl md:text-xl">
               تاریخ شروع:{" "}
               {Intl.DateTimeFormat("fa", {
                 year: "numeric",
@@ -67,7 +67,7 @@ const ExhibitionCollections = () => {
                 day: "numeric",
               }).format(new Date(exhibition.start_date))}
             </h4>
-            <h4 className="text-gray-600 text-2xl md:text-xl">
+            <h4 className=" text-2xl md:text-xl">
               تاریخ پایان:{" "}
               {Intl.DateTimeFormat("fa", {
                 year: "numeric",
@@ -75,7 +75,7 @@ const ExhibitionCollections = () => {
                 day: "numeric",
               }).format(new Date(exhibition.end_date))}
             </h4>
-            <h4 className="text-gray-600 text-2xl md:text-xl">
+            <h4 className=" text-2xl md:text-xl">
               پایان ثبت نام:{" "}
               {Intl.DateTimeFormat("fa", {
                 year: "numeric",
