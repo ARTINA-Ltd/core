@@ -14,6 +14,8 @@ admin.site.register(models.TransactionCurrency)
 admin.site.register(models.PhoneVerification)
 admin.site.register(models.EmailVerification)
 admin.site.register(models.Wallet)
+admin.site.register(models.ARTINA_Ballance)
+
 admin.site.register(models.Transaction)
 
 
