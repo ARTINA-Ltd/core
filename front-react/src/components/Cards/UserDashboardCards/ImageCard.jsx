@@ -4,10 +4,15 @@ import BorderButton from "./../../Buttons/BorderButton";
 import { useTranslation } from "react-i18next";
 import SellArea from "./../../SellArea/SellArea";
 import { FaEthereum } from "react-icons/fa";
+import axios from "axios";
+import i18n from "./../../../i18n";
+import SimpleInput from "./../../Inputs/SimpleInput";
+import { Notify } from "notiflix";
 
 const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell = false, onClickShow, onClickHide, has_creator, visible }) => {
   const [isVisible, setIsVisible] = useState(visible);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [walletAddress, setWalletAddress] = useState("");
   const { t } = useTranslation();
 
   const handleClickShow = useCallback(
@@ -27,6 +32,26 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell
   const handleExpand = useCallback(() => {
     setIsExpanded((prev) => !prev);
   }, []);
+
+  const handleTransfer = () => {
+    axios
+      .post(
+        `https://api.artina.org/api/transaction/nfts/transferToUserWallet/`,
+        {
+          token_id: tokenId,
+          address: walletAddress,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+          mode: "cors",
+        }
+      )
+      .then((res) => {
+        Notify.success("انتقال موفقیت آمیز بود");
+      });
+  };
 
   return (
     <div className={className}>
@@ -87,6 +112,9 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell
                       </svg>
                     )}
                   </div>
+                  <BorderButton className={"font-bold"} onClick={() => document.getElementById("TransferDialog").showModal()}>
+                    انتقال
+                  </BorderButton>
                   <BorderButton className={"font-bold"} onClick={handleExpand}>
                     {isExpanded ? t("collapse") : t("sell")}
                   </BorderButton>
@@ -99,6 +127,17 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell
           </Fragment>
         )}
       </div>
+      <dialog id="TransferDialog" className={`${i18n.dir() === "rtl" ? "text-right" : "text-left"} modal relative p-0 m-0 `}>
+        <div className="modal-box p-0 m-0 bg-neutral">
+          <form method="dialog">
+            <button className="btn btn-sm btn-circle btn-ghost hover:bg-red-500 right-2 my-4 mx-4 mb-4">✕</button>
+          </form>
+          <div className="p-8">
+            <SimpleInput className={"my-6"} type="text" title={t("walletaddress")} placeholder={t("example")} isValid={walletAddress !== "" && walletAddress.length > 24} validationError={t("required")} onChange={(e) => setWalletAddress(() => e.target.value)} defaultValue={""} />
+            <BorderButton onClick={() => handleTransfer()}>Submit</BorderButton>
+          </div>
+        </div>
+      </dialog>
     </div>
   );
 };
