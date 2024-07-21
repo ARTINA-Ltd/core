@@ -241,7 +241,7 @@ const AddExhibition = () => {
                   disabled={false}
                 />
               </div>
-              <div className="w-1/2 mx-auto md:w-full">
+              <div className="w-full mx-auto flex gap-4 md:w-full">
                 <SimpleInput
                   className={"shadow-md rounded-md"}
                   type="date"

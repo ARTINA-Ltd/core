@@ -9,6 +9,7 @@ import AllTurnOversDialog from "../components/Dialog/AllTurnOversDialog/AllTurnO
 import AllNftDialog from "../components/Dialog/AllNftLikedDialog/AllNftDialog";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
+import { FaEthereum } from "react-icons/fa";
 
 const Dashboard = () => {
   const [getLikedNfts, setLikedNfts] = useState();
@@ -18,7 +19,6 @@ const Dashboard = () => {
   const [getBalance, setBalance] = useState();
   const [getOrders, setOrders] = useState();
   const [artistOpenExhibitions, setArtistOpenExhibitions] = useState();
-  const [reqData, setReqData] = useState();
   const { t } = useTranslation(["dashboard"]);
 
   const [getLastMonthTurnover, setLastMonthTurnover] = useState();
@@ -134,17 +134,6 @@ const Dashboard = () => {
       });
   }, []);
 
-  useEffect(() => {
-    axios
-      .post("https://api.artina.org/api/transaction/orders/", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-        },
-      })
-      .then((d) => {
-        setReqData(d);
-      });
-  }, []);
 
   useEffect(() => {
     axios
@@ -156,6 +145,7 @@ const Dashboard = () => {
       })
       .then((res) => {
         setOrders(res.data);
+        console.log(res.data);
       })
       .catch((res) => {});
   }, []);
@@ -357,9 +347,12 @@ const Dashboard = () => {
               <table className="dashboard-table w-full text-cente sm:text-xs">
                 <thead>
                   <tr>
+                  
+                    <th>{t("nftPhoto")}</th>
                     <th>{t("nfNname")}</th>
                     <th>{t("date")} </th>
                     <th>{t("amount")} </th>
+                    <th>{t("price")} </th>
                     <th />
                   </tr>
                 </thead>
@@ -367,8 +360,9 @@ const Dashboard = () => {
                 <tbody>
                   {getOrders ? (
                     getOrders.map((item, index) => (
-                      <tr className="group cursor-pointer hover:bg-base-100 rounded-xl transition-all" onClick={() => navigate(`/nft-details/${item.token_id}`)}>
-                        <td>{item.nft}</td>
+                      <tr className="group cursor-pointer hover:bg-base-100 rounded-xl transition-all" onClick={() => navigate(`/nft-details/${item.nft.token_id}`)}>
+                        <td><img src={item.nft.image_url} alt="" className="w-[42px] h-[42px] rounded-xl"/></td>
+                        <td>{item.nft.name}</td>
                         <td>
                           {Intl.DateTimeFormat("fa", {
                             year: "numeric",
@@ -378,6 +372,11 @@ const Dashboard = () => {
                         </td>
                         <td>
                           {item.fee} {t("tooman")}
+                        </td>
+                        <td>
+                      
+                        {item.eth} {t("ethereum")}
+                 
                         </td>
 
                         <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
