@@ -1151,65 +1151,104 @@ class EmailMixin(viewsets.ViewSet):
 from rest_framework import viewsets
 from rest_framework.response import Response
 import requests
+def get_balance(user):
+    user_wallet = Wallet.objects.filter(user=user).first()
+    print(f"user_wallet is: {user_wallet}")
+    if not user_wallet:
+            balance = {
+            'matic_balance': 0,
+            'eth_balance':0,
+            'wallet_address' : ""
+            # Add other balance fields as needed
+            }
+        return Response(balance, status=status.HTTP_200_OK)
+
+    balance = w3.eth.getBalance(user_wallet.address)
+    print(f"Balance: {balance}")
+    user_wallet.balance=balance
+    user_wallet.save
+    balance = {
+            'matic_balance': user_wallet.MATIC_balance,
+            'wallet_address' : user_wallet.address,
+            'eth_balance':user_wallet.ETH_balance
+
+            # Add other balance fields as needed
+        }
+
+    return Response(balance, status=status.HTTP_200_OK)
 
 
-# class TransactionViewSet(viewsets.ViewSet):
+class TransactionViewSet(viewsets.ViewSet):
 
-    # def create(self, request):
-    #     user = request.user
-    #     matic_amount = request.data.get('matic_amount')
-    #     matic_price = 27216
-    #     matic_amount = Decimal(str(matic_amount))
-    #     # matic_amount = float(request.data.get('matic_amount'))
-    #     print(f"maticamount:{matic_amount}")
-    #     needed_balance = matic_amount * matic_price
+    def create(self, request):
+        user = request.user
+        wallet= Wallet.objects.get(user=user)
+        res=get_balance(user)
+        ballanceM= res.balance.matic_balance
+        ballanceE= res.balance.eth_balance
+        userbalance = UserBalance.objects.get(user=user)
+        balance.matic_balance+=ballanceM
+        balance.eth_balance+=ballanceE
+        baalance.save()
 
-    #     balance = UserBalance.objects.filter(user=user).first()
-    #     userbalance = balance.rial_available_balance
-    #     print(userbalance)
-    #     # Check if user has sufficient balance
-    #     if userbalance < needed_balance:
-    #         return Response({'message': 'Insufficient balance.'}, status=status.HTTP_400_BAD_REQUEST)
-    #     balance.rial_available_balance=balance.rial_available_balance - needed_balance
-    #     balance.save()
-
-    #     # use connect_with_retry() to get a connected Web3 instance
-    #     # w3 = connect_with_retry()
-    #     user_wallet=Wallet.objects.filter(user=user).first()
-    #     recipient_address = user_wallet.address
-    #     print(f"ad:{recipient_address}")
-    #     private_key = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
-    #     gas_price = w3.toWei('5', 'gwei')  # Example gas price
-    #     gas_limit = 21000  # Example gas limit
+        # use connect_with_retry() to get a connected Web3 instance
+        # w3 = connect_with_retry()
+        print(f"ad:{recipient_address}")
+        private_key = wallet.private_key
+        gas_price = w3.toWei('5', 'gwei')  # Example gas price
+        gas_limit = 21000  # Example gas limit
+        if ballanceM != 0 :
+            value= ballanceM-0.04
+            nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
+            transaction_data = {
+                'to': "0x2293221D7c357FB04De9c7D0dEeBcA427407429D",
+                'value': w3.toWei(value, 'matic'),
+                'gas': gas_limit,
+                'gasPrice': gas_price,
+                'nonce': nonce,
+                'chainId': 137
+            }
         
-    #     nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
-    #     transaction_data = {
-    #         'to': recipient_address,
-    #         'value': w3.toWei(matic_amount, 'matic'),
-    #         'gas': gas_limit,
-    #         'gasPrice': gas_price,
-    #         'nonce': nonce,
-    #         'chainId': 137
-    #     }
+            signed_txn = w3.eth.account.signTransaction(transaction_data, private_key)
+            print(signed_txn)
+            tx_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)
+            print(tx_hash)
+            tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+            print(tx_receipt)
+            if tx_receipt.status == 1:
+                transaction = Transaction.objects.create(user=user, amount=amount, status='completed')
+                print(f"transaction:{transaction}")
+                return Response({'message': 'transfered successfully.'}, status=status.HTTP_200_OK)
+            else:
+                transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='failed')
+                return Response({'message': 'Transaction failed.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        if ballanceE != 0 :
+            value= ballanceE
+            nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
+            transaction_data = {
+                'to': "0x2293221D7c357FB04De9c7D0dEeBcA427407429D",
+                'value': w3.toWei(value, 'ethereum'),
+                'gas': gas_limit,
+                'gasPrice': gas_price,
+                'nonce': nonce,
+                'chainId': 137
+            }
         
-    #     signed_txn = w3.eth.account.signTransaction(transaction_data, private_key)
-    #     print(signed_txn)
-    #     tx_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)
-    #     print(tx_hash)
-    #     tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
-    #     print(tx_receipt)
-    #     if tx_receipt.status == 1:
-    #         transaction = Transaction.objects.create(user=user, amount=amount, status='completed')
-    #         print(f"transaction:{transaction}")
-    #         user_wallet.balance = matic_amount+ user_wallet.balance
-    #         user_wallet.save()
-    #         print(f"user_wallet is: {user_wallet}")
-    #         print(f"the real balance is:{user_wallet.balance}")
-    #         return Response({'message': 'Purchase successful.'}, status=status.HTTP_200_OK)
-    #     else:
-    #         transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='failed')
-    #         return Response({'message': 'Transaction failed.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+            signed_txn = w3.eth.account.signTransaction(transaction_data, private_key)
+            print(signed_txn)
+            tx_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)
+            print(tx_hash)
+            tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+            print(tx_receipt)
+            if tx_receipt.status == 1:
+                transaction = Transaction.objects.create(user=user, amount=amount, status='completed')
+                print(f"transaction:{transaction}")
+                return Response({'message': 'transfered successfully.'}, status=status.HTTP_200_OK)
+            else:
+                transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='failed')
+                return Response({'message': 'Transaction failed.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+                return Response({'message': 'Transaction failed.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 
