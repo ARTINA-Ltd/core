@@ -1161,7 +1161,7 @@ def get_balance(user):
             'wallet_address' : ""
             # Add other balance fields as needed
             }
-        return Response(balance, status=status.HTTP_200_OK)
+    return Response(balance, status=status.HTTP_200_OK)
 
     balance = w3.eth.getBalance(user_wallet.address)
     print(f"Balance: {balance}")
