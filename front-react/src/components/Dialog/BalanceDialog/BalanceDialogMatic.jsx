@@ -12,10 +12,12 @@ const BalanceDialogMatic = () => {
   const [buyAmount, setBuyAmount] = useState("");
   const [sellAmount, setSellAmount] = useState("");
   const [address, setAddress] = useState("");
+  const [turnOver, setTurnOver] = useState("");
   const [ethPrice, setEthPrice] = useState({});
   const [maticPrice, setMaticPrice] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation(["wallets"]);
+
   const [currentTab, setCurrentTab] = useState("Ethereum");
 
   const getBalance = async () => {
@@ -40,6 +42,7 @@ const BalanceDialogMatic = () => {
       .then((res) => {
         if (res.data && res.data.wallet_address) {
           setAddress(res.data.wallet_address);
+          setTurnOver(res.data);
         }
       })
       .catch((e) => {});
@@ -108,7 +111,9 @@ const BalanceDialogMatic = () => {
           console.log();
         })
         .catch((err) => {
-          Notify.failure("there was an error!");
+          if (err.response.status === 403) {
+            Notify.failure("درحال حاضر امکان معامله وجود ندارد");
+          } else Notify.failure("there was an error!");
           console.log(err);
         });
     } catch {}
@@ -175,7 +180,7 @@ const BalanceDialogMatic = () => {
         getData && (
           <div className="w-full flex flex-col gap-4">
             <div className="flex gap-4 justify-center items-center">
-              <p>موجودی والت شخصی: {getData.rial_available_balance} ريال</p>
+              <p>موجودی والت شخصی: {currentTab === "Ethereum" ? turnOver.eth_balance + " اتریوم" : turnOver.matic_balance + " متیک"} </p>
               <BorderButton className="">انتقال به موجودی سایت</BorderButton>
             </div>
             {address && (
@@ -230,8 +235,6 @@ const BalanceDialogMatic = () => {
             ) : (
               ""
             )}
-
-            <p className="font-b9">{t("wallet")}</p>
           </div>
           <div role="tablist" className="tabs tabs-boxed">
             <div
@@ -261,8 +264,8 @@ const BalanceDialogMatic = () => {
               <p>Buy Price: {currentTab === "Ethereum" ? ethPrice.ETH_buy_price : maticPrice.MATIC_buy_price}</p>
               <p>Sell Price: {currentTab === "Ethereum" ? ethPrice.ETH_sell_price : maticPrice.MATIC_sell_price}</p>
             </div>
-            <div className="w-full flex flex-col gap-8  my-4  shadow-md  p-4 rounded-md">
-              <div className="w-full flex gap-4 flex-col items-center font-b4 mt-4">
+            <div className="w-full flex flex-col gap-8  my-2  shadow-md  p-4 rounded-md">
+              <div className="w-full flex gap-4 flex-col items-center font-b4 ">
                 <p className="self-start font-bold mb-4">{t("buy")}</p>
                 <div className="w-full flex">
                   <SimpleInput type="number" title={`${t("amount")} ( ${currentTab === "Ethereum" ? "Ethereum" : "Matic"})`} placeholder={t("example")} isValid={buyAmount != false} validationError={t("required")} onChange={(e) => setBuyAmount(e.target.value)} />

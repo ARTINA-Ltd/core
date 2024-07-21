@@ -55,9 +55,9 @@ const ExhibitionList = () => {
 
   return (
     <TestLayout>
-      <div s className={`bg-[#4e45d0] rounded-3xl `}>
+      <div s className={`bg-primary rounded-3xl `}>
         <Fragment>
-          <div className={`flex gap-8 flex-wrap   p-4 w-full h-full overflow-auto items-stretch `}>
+          <div className={`flex gap-8 flex-wrap  p-4 w-full h-full overflow-auto items-stretch `}>
             {getData
               ? getData.map((item) => {
                   return item.image && <ExhibitionCard key={item.id} name={item.marketName} user={item.user} image={item.image} id={item.id} startDate={item.start_date} endDate={item.end_date} description={item.description} deadLine={item.application_deadline} hasTicket={item.has_ticket} userHasTicket={item.user_has_ticket} price={item.price} handleTicket={handleTicket(item)} />;

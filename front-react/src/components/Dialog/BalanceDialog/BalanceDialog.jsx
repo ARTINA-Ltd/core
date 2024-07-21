@@ -80,7 +80,7 @@ const BalanceDialog = () => {
         }
       )
       .then((res) => {
-        Notify.success("با موفقیت برداشت شد");
+        Notify.success("درخواست شما با موفقیت ثبت شد");
         console.log(res);
       })
       .catch((res) => {

@@ -27,6 +27,7 @@ const AddExhibition = () => {
     end_date: "",
     description: "",
     application_deadline: "",
+    commision: "",
   });
 
   const [validate, setValidate] = useState({
@@ -66,10 +67,11 @@ const AddExhibition = () => {
           start_date: values.start_date,
           end_date: values.end_date,
           description: values.description,
-          ticket: ticket,
-          ticketPrice: ticket ? ticketPrice : 0,
+          has_ticket: ticket,
+          price: ticket ? ticketPrice : 0,
           application_deadline: values.application_deadline,
           category: selectedCategory,
+          commision: values.commision,
         },
         {
           headers: {
@@ -239,7 +241,7 @@ const AddExhibition = () => {
                   disabled={false}
                 />
               </div>
-              <div className="w-1/2 mx-auto md:w-full">
+              <div className="w-full mx-auto flex gap-4 md:w-full">
                 <SimpleInput
                   className={"shadow-md rounded-md"}
                   type="date"
@@ -259,10 +261,30 @@ const AddExhibition = () => {
                   defaultValue={null}
                   disabled={false}
                 />
+                <SimpleInput
+                  className={"shadow-md rounded-md"}
+                  type={"number"}
+                  title={t("commision")}
+                  onChange={(e) => {
+                    console.log(values);
+                    setValues((prev) => ({
+                      ...prev,
+                      commision: e.value,
+                    }));
+                  }}
+                  defaultValue={null}
+                  disabled={false}
+                />
               </div>
             </div>
             <div className="flex flex-col gap-4 p-4 rounded-md">
-              <div className={`border-[1px] w-1/2 mx-auto rounded-full px-3 py-1 cursor-pointer text-center transition-all ${ticket ? "border-green-500 text-green-600 bg-green-50" : "border-red-600 text-red-700 bg-red-50"}`} onClick={() => setTicket((prev) => !prev)}>
+              <div
+                className={`border-[1px] w-1/2 mx-auto rounded-full px-3 py-1 cursor-pointer text-center transition-all ${ticket ? "border-green-500 text-green-600 bg-green-50" : "border-red-600 text-red-700 bg-red-50"}`}
+                onClick={() => {
+                  setTicket((prev) => !prev);
+                  console.log(ticket);
+                }}
+              >
                 {ticket ? t("hasTicket") : t("noTicket")}
               </div>
               {ticket ? (
