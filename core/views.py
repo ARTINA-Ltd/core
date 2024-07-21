@@ -300,7 +300,7 @@ class NftViewSet(viewsets.ModelViewSet):
         serializer = serializers.NFTSerializer(nfts, many=True)
         return Response(serializer.data)
 
-    @action(detail=False, methods=['put'])
+    @action(detail=False, methods=['post'])
     def transferToUserWallet(self, request):
         nft_id = request.data.get('token_id')
         address= request.data.get('address')
