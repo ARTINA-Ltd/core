@@ -99,7 +99,10 @@ const NFTDetails = () => {
         setLikeCount(likeCount + 1);
       })
       .catch((res) => {
-        Notify.warning("قبلا پسندیده اید");
+        if (res.response.data.detail === "Given token not valid for any token type") {
+          Notify.warning("برای لایک کردن لطفا وارد حساب کاربری خود شوید");
+        } else Notify.warning("قبلا پسندیده اید");
+        console.log(res);
       });
   };
 

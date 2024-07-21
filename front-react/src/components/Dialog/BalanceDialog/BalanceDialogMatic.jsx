@@ -5,6 +5,7 @@ import SimpleInput from "../../Inputs/SimpleInput";
 import { MdOutlineClose } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
+import BorderButton from "./../../Buttons/BorderButton";
 const BalanceDialogMatic = () => {
   const [getData, setData] = useState();
   const [isCharge, setIsCharge] = useState(false);
@@ -19,7 +20,7 @@ const BalanceDialogMatic = () => {
 
   const getBalance = async () => {
     axios
-      .get("https://api.artina.org/api/account/user-turnover/get_balance/", {
+      .get("https://api.artina.org/api/account/user-balance/get_balance/", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
         },
@@ -28,6 +29,15 @@ const BalanceDialogMatic = () => {
       .then((res) => {
         setData(res.data);
         console.log(res.data);
+      });
+    axios
+      .get("https://api.artina.org/api/account/user-turnover/get_balance/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+        mode: "cors",
+      })
+      .then((res) => {
         if (res.data && res.data.wallet_address) {
           setAddress(res.data.wallet_address);
         }
@@ -162,24 +172,30 @@ const BalanceDialogMatic = () => {
   const footer = () => {
     if (isCharge === false) {
       return (
-        <div className="w-full flex flex-col justify-center items-center gap-4">
-          {address && (
-            <div className="text-sm sm:text-xs cursor-pointer" onClick={handleCopy}>
-              {t("walletAddress")} <span> </span>
-              {address}
+        getData && (
+          <div className="w-full flex flex-col gap-4">
+            <div className="flex gap-4 justify-center items-center">
+              <p>موجودی والت شخصی: {getData.rial_available_balance} ريال</p>
+              <BorderButton className="">انتقال به موجودی سایت</BorderButton>
             </div>
-          )}
-          {!address && (
-            <div
-              className="border-[1px] cursor-pointer border-indigo-500 bg-indigo-100 text-indigo-500 rounded-xl py-2 px-3 hover:scale-105 transition-all"
-              onClick={() => {
-                createWallet();
-              }}
-            >
-              {t("createWallet")}
-            </div>
-          )}
-        </div>
+            {address && (
+              <div className="text-sm sm:text-xs cursor-pointer border-2 border-primary border-opacity-50 rounded-md p-2" onClick={handleCopy}>
+                {t("walletAddress")} <span> </span>
+                {address}
+              </div>
+            )}
+            {!address && (
+              <div
+                className="border-[1px] cursor-pointer border-indigo-500 bg-indigo-100 text-indigo-500 rounded-xl py-2 px-3 hover:scale-105 transition-all"
+                onClick={() => {
+                  createWallet();
+                }}
+              >
+                {t("createWallet")}
+              </div>
+            )}
+          </div>
+        )
       );
     }
   };
