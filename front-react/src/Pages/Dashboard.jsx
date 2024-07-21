@@ -52,6 +52,7 @@ const Dashboard = () => {
         mode: "cors",
       })
       .then((res) => {
+        console.log(res.data);
         setProfit(res.data);
       })
       .catch((res) => {});
@@ -142,8 +143,7 @@ const Dashboard = () => {
       })
       .then((d) => {
         setReqData(d);
-      })
-      .catch((res) => console.log(res));
+      });
   }, []);
 
   useEffect(() => {

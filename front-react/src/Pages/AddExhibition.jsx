@@ -264,8 +264,9 @@ const AddExhibition = () => {
                 <SimpleInput
                   className={"shadow-md rounded-md"}
                   type={"number"}
-                  title="commision"
+                  title={t("commision")}
                   onChange={(e) => {
+                    console.log(values);
                     setValues((prev) => ({
                       ...prev,
                       commision: e.value,
