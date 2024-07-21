@@ -479,7 +479,7 @@ def check_balance(amount, user_id):
     if not user or not balance:
         return JsonResponse({'error': 'User or balance not found.'}, status=status.HTTP_404_NOT_FOUND)
     if amount > balance.rial_available_balance:
-        return JsonResponse({'error': 'You do not have enough money.'}, status=status.HTTP_403_BAD_REQUEST)
+        return JsonResponse({'error': 'You do not have enough money.'}, status=status.HTTP_400_BAD_REQUEST)
     else:
         return JsonResponse({'message': 'You can use your balance.'}, status=status.HTTP_200_OK)
 
