@@ -7,8 +7,8 @@ const ExhibitionCard = (props) => {
 
   return (
     <Fragment>
-      <div className=" flex flex-col my-8 w-[16rem] shadow-lg hover:shadow-lg transition-all ease-in-out duration-200 cursor-pointer hover:-translate-y-2 hover:shadow-black  bg-white rounded-xl grow max-w-md max-h-[35rem] overflow-hidden">
-        <div className="h-1/2 w-[100%-2rem] mx-4 mt-4 overflow-hidden rounded-md">
+      <div className=" flex flex-col my-8 w-[16rem] shadow-lg hover:shadow-lg transition-all ease-in-out duration-200 cursor-pointer hover:-translate-y-2 hover:shadow-black  bg-base-100 rounded-xl grow max-w-md max-h-[35rem] overflow-hidden">
+        <div className="h-3/4 w-[100%-2rem] mx-4 mt-4 overflow-hidden rounded-md">
           <img src={image} alt="" className="w-full object-cover " />
         </div>
 
@@ -18,11 +18,11 @@ const ExhibitionCard = (props) => {
           }}
           className="p-4 mx-4 w-full h-1/2"
         >
-          <h4 className="text-xl font-bold text-gray-700">{name}</h4>
+          <h4 className="text-xl font-bold ">{name}</h4>
           <div className=" mt-auto">
             <div className="mt-4">
-              <p className="text-gray-600 my-4 text-center">{description}</p>
-              <h4 className="text-gray-600">
+              <p className=" my-4 text-center">{description}</p>
+              <h4 className="">
                 تاریخ شروع:{" "}
                 {Intl.DateTimeFormat("fa", {
                   year: "numeric",
@@ -30,7 +30,7 @@ const ExhibitionCard = (props) => {
                   day: "numeric",
                 }).format(new Date(startDate))}
               </h4>
-              <h4 className="text-gray-600">
+              <h4 className="">
                 تاریخ پایان:{" "}
                 {Intl.DateTimeFormat("fa", {
                   year: "numeric",
@@ -38,7 +38,7 @@ const ExhibitionCard = (props) => {
                   day: "numeric",
                 }).format(new Date(endDate))}
               </h4>
-              <h4 className="text-gray-600">
+              <h4 className="">
                 پایان ثبت نام:{" "}
                 {Intl.DateTimeFormat("fa", {
                   year: "numeric",
@@ -54,7 +54,7 @@ const ExhibitionCard = (props) => {
             </div>
 
             <div className="flex items-center justify-between w-full ">
-              <h4 className="text-gray-600">هنرمند: {user}</h4>
+              <h4 className="">هنرمند: {user}</h4>
             </div>
           </div>
         </div>
