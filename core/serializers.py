@@ -5,21 +5,7 @@ from django.contrib.auth.models import User
 
 from .models import PDF, NFT
 
-class NFTSerializer(serializers.ModelSerializer):
-    category = CategorySerializer()
-    collection = CollectionNFTSerializer()
 
-    class Meta:
-        model = NFT
-        fields = ['token_id', 'name', 'owner', 'creator', 'date', 'last_price', 'image_url', 'start_date', 'end_date', 'is_for_sale', 'description', 'external_link', 'author_address', 'in_exhibition', 'is_visible', 'has_physical', 'view_count', 'share_count', 'blockNumber', 'transactionHash', 'blockHash', 'transactionIndex', 'category', 'collection', 'traits']
-        
-
-class OrderSerializer(serializers.ModelSerializer):
-    nft = NFTSerializer()
-    class Meta:
-        model = models.Order
-        fields = ['nft', 'bidder', 'fee', 'status', 'date', 'eth']
-        read_only_fields = ['date']
 
 
 class CollectionNFTSerializer(serializers.ModelSerializer):
@@ -52,7 +38,21 @@ class MyImageSerializer(serializers.ModelSerializer):
         model = models.MyImage
         fields = ('id', 'image')
 
+class NFTSerializer(serializers.ModelSerializer):
+    category = CategorySerializer()
+    collection = CollectionNFTSerializer()
 
+    class Meta:
+        model = NFT
+        fields = ['token_id', 'name', 'owner', 'creator', 'date', 'last_price', 'image_url', 'start_date', 'end_date', 'is_for_sale', 'description', 'external_link', 'author_address', 'in_exhibition', 'is_visible', 'has_physical', 'view_count', 'share_count', 'blockNumber', 'transactionHash', 'blockHash', 'transactionIndex', 'category', 'collection', 'traits']
+        
+
+class OrderSerializer(serializers.ModelSerializer):
+    nft = NFTSerializer()
+    class Meta:
+        model = models.Order
+        fields = ['nft', 'bidder', 'fee', 'status', 'date', 'eth']
+        read_only_fields = ['date']
 
 
 class PDFSerializer(serializers.ModelSerializer):
