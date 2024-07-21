@@ -29,7 +29,8 @@ class NFTSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = NFT
-        fields = '__all__'
+        fields = ['token_id', 'name', 'owner', 'creator', 'date', 'last_price', 'image_url', 'start_date', 'end_date', 'is_for_sale', 'description', 'external_link', 'author_address', 'in_exhibition', 'is_visible', 'has_physical', 'view_count', 'share_count', 'blockNumber', 'transactionHash', 'blockHash', 'transactionIndex', 'category', 'collection', 'traits']
+
 
 class NFTRatingSerializer(serializers.ModelSerializer):
     class Meta:
