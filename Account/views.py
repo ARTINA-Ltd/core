@@ -1178,7 +1178,7 @@ def get_balance(user):
     return Response(balance, status=status.HTTP_200_OK)
 
 
-class TransactionViewSet(viewsets.ViewSet):
+class TransactionyViewSet(viewsets.ViewSet):
 
     def create(self, request):
         user = request.user
