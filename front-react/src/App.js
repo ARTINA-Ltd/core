@@ -101,7 +101,7 @@ export default () => {
       <GoftinoSnippet
         goftinoKey={GOFTINO_KEY}
         onReady={() => {
-          window.Goftino.open();
+          window.Goftino.close();
         }}
       />
       <ThirdwebProvider activeChain="ethereum" autoConnect={false}>
