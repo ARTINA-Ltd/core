@@ -41,10 +41,10 @@ from .serializers import CategorySerializer, CollectionNFTSerializer, NFTRatingS
 from django_filters import rest_framework as filters
 
 
-def transfer_nft(private_key, sender_address, recipient_address, token_id,nft_contract_address):
+def transfer_nft(private_key, sender_address, recipient_address, token_id):
     nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
     #contract
-    # nft_contract_address = "0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a"
+    nft_contract_address = "0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a"
     abi_filename = os.path.join(settings.BASE_DIR, "Account", "ABI.json")
    
     # Read ABI from JSON file
@@ -127,7 +127,7 @@ def order_Report(token_id):
             n_bid.status=1
             n_bid.report=2
             n_bid.save()
-            NotifyUser.objects.create(user=n_bid.bidder,text=Msg(1).text)    
+            NotifyUser.objects.create(user=n_bid.bidder,text="you lost the bid")    
     print("change report status done")
 
 
