@@ -573,9 +573,15 @@ class CryptoViewSet(viewsets.ViewSet):
             if user_balance:
                 user_balance.rial_available_balance -= (amount*price + 10000)
                 user_balance.save()
+<<<<<<< HEAD
                 artina=ARTINA_Ballance.objects.get(id=1)
                 artina.artina_rial += 10000
                 artina.save()
+=======
+#                artina=ARTINA_Ballance.objects.get(id=0)
+#                artina.artina_rial += 10000
+#                artina.save()
+>>>>>>> e3f4106b (new changes in views.py)
                 return Response({'message': 'Purchase successful'}, status=response.status_code)
             else:
                 return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
@@ -626,9 +632,15 @@ class CryptoViewSet(viewsets.ViewSet):
             if user_balance:
                 user_balance.rial_available_balance += (amount*price - 10000)
                 user_balance.save()
+<<<<<<< HEAD
                 artina=ARTINA_Ballance.objects.get(id=1)
                 artina.artina_rial += 10000
                 artina.save()
+=======
+ #               artina=ARTINA_Ballance.objects.get(id=0)
+ #               artina.artina_rial += 10000
+ #               artina.save()
+>>>>>>> e3f4106b (new changes in views.py)
                 return Response({'message': 'Purchase successful'}, status=response.status_code)
             else:
                 return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
