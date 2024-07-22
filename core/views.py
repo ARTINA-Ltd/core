@@ -302,14 +302,24 @@ class NftViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post'])
     def transferToUserWallet(self, request):
-        nft_id = request.data.get('token_id')
-        address= request.data.get('address')
-        nft=NFT.objects.get(token_id=nft_id)
+        user = self.request.user
+        wallet=Wallet.objects.get(user=user)
+        sender_private_key= wallet.private_key
+        sender_address= wallet.address
+        
+        token_id = request.data.get('token_id')
+        recipient_address = request.data.get('address')
+        nft=NFT.objects.get(token_id=token_id)
         if nft.owner != self.request.user:
             return Response({'error': 'You do not have permission to perform this action.'}, status=403)
-        respond=transferNFT(token_id,sender,recipient) 
+        tx_hash = transfer_nft(sender_private_key, sender_address, recipient_address, token_id)
         nft.delete()
-        return Response ({"message":"NFT had been transfered"}, status=status.HTTP_200_OK)
+        response_data = {
+        "message": f"Transaction initiated. Transaction hash: {tx_hash.hex()}"
+    }
+        
+        return Response(response_data, status=status.HTTP_200_OK)
+        
         
 class NFTRatingViewSet(viewsets.ModelViewSet):
     queryset = NFTRating.objects.all()
