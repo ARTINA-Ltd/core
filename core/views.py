@@ -70,12 +70,14 @@ def transfer_nft(private_key, sender_address, recipient_address, token_id):
 def transferNFT(token_id,sender,recipient):
    
     #sender
-    sender_address = sender.wallet.address
-    sender_private_key = sender.wallet.private_key
-        
+    wallet1= Wallet.objects.get(user=sender)
+    sender_address = wallet1.address
+    sender_private_key = wallet1.private_key
+    print(sender_private_key)    
     #recipient
-    recipient_address=recipient.wallet.address
-        
+    wallet2= Wallet.objects.get(user=recipient)
+    recipient_address= wallet2.address
+    print(recipient_address)    
     tx_hash = transfer_nft(sender_private_key, sender_address, recipient_address, token_id)
     print(f"Transaction hash: {tx_hash.hex()}")
     nft=NFT.objects.filter(token_id=token_id).first()
