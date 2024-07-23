@@ -41,30 +41,41 @@ from .serializers import CategorySerializer, CollectionNFTSerializer, NFTRatingS
 from django_filters import rest_framework as filters
 
 
-def transfer_nft(private_key, sender_address, recipient_address, token_id):
-    nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
-    #contract
+import os
+import json
+from web3 import Web3
+from django.conf import settings
+
+w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
+def transfer_nft(private_key, sender_address, recipient_address, token_id, third_wallet_private_key, third_wallet_address):
+    nonce = w3.eth.getTransactionCount(third_wallet_address)
+    
+    # Contract details
     nft_contract_address = "0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a"
     abi_filename = os.path.join(settings.BASE_DIR, "Account", "ABI.json")
-   
-    # Read ABI from JSON file
 
+    # Read ABI from JSON file
     with open(abi_filename, "r") as abi_file:
         nft_contract_abi = json.load(abi_file)
 
     nft_contract = w3.eth.contract(address=nft_contract_address, abi=nft_contract_abi)
     
-    tx_hash = nft_contract.functions.safeTransferFrom(sender_address, recipient_address, token_id).buildTransaction({
+    tx = nft_contract.functions.safeTransferFrom(sender_address, recipient_address, token_id).buildTransaction({
         'chainId': 137,  # Chain ID for Polygon (Matic) mainnet
         'gas': 2000000,  # gas value
         'gasPrice': w3.toWei('5', 'gwei'),  # gas price
         'nonce': nonce,
+        'from': "0x2293221D7c357FB04De9c7D0dEeBcA427407429D",  # Third wallet address paying for gas
     })
-    signed_txn = w3.eth.account.signTransaction(tx_hash, private_key)
+    third_wallet_private_key="045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
+    signed_txn = w3.eth.account.signTransaction(tx, third_wallet_private_key)
     print(f"signed_txn is : {signed_txn}")
+    
     tx_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)
     print(f"tx_hash is : {tx_hash}")
+    
     return tx_hash
+
 
 
 def transferNFT(token_id,sender,recipient):
@@ -392,7 +403,7 @@ print(f"sdk is :{sdk}")
 # sdk = ThirdwebSDK("mumbai",signer)
 # sdk = ThirdwebSDK("mumbai", options=SDKOptions(secret_key="rEql_yRermO9c4z64ThyVUbo41NE4V2kJXyFuNNYRMX7vST7GHWC2G_tasal5a9MXH90AZ-ymHBN9vJFltO5mw"))
 contract = sdk.get_nft_collection("0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a")
-w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
+
 
 from hexbytes import HexBytes
 
