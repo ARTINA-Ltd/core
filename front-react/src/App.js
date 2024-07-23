@@ -97,7 +97,7 @@ export default () => {
   };
 
   return (
-    <>
+    <div className="text-base-content">
       <GoftinoSnippet
         goftinoKey={GOFTINO_KEY}
         onReady={() => {
@@ -173,6 +173,6 @@ export default () => {
           </UserChangeContext.Provider>
         </UserContext.Provider>
       </ThirdwebProvider>
-    </>
+    </div>
   );
 };
