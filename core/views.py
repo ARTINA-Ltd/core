@@ -47,7 +47,7 @@ from web3 import Web3
 from django.conf import settings
 
 w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
-def transfer_nft(private_key, sender_address, recipient_address, token_id, third_wallet_private_key, third_wallet_address):
+def transfer_nft(private_key, sender_address, recipient_address, token_id):
     nonce = w3.eth.getTransactionCount(third_wallet_address)
     
     # Contract details
