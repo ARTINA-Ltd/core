@@ -48,6 +48,7 @@ from django.conf import settings
 
 w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
 def transfer_nft(private_key, sender_address, recipient_address, token_id):
+    third_wallet_address="0x2293221D7c357FB04De9c7D0dEeBcA427407429D"
     nonce = w3.eth.getTransactionCount(third_wallet_address)
     
     # Contract details
@@ -65,7 +66,7 @@ def transfer_nft(private_key, sender_address, recipient_address, token_id):
         'gas': 2000000,  # gas value
         'gasPrice': w3.toWei('5', 'gwei'),  # gas price
         'nonce': nonce,
-        'from': "0x2293221D7c357FB04De9c7D0dEeBcA427407429D",  # Third wallet address paying for gas
+        'from': third_wallet_address,  # Third wallet address paying for gas
     })
     third_wallet_private_key="045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
     signed_txn = w3.eth.account.signTransaction(tx, third_wallet_private_key)
