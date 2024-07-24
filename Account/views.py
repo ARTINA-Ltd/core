@@ -154,6 +154,7 @@ class LoginViewSet(viewsets.ViewSet):
             'refresh': str(refresh),
             'access': str(refresh.access_token),
             'role': str(profile.role),
+            'nationaloty': str(profile.is_foreigner)
         }
         return Response(response_data, status=status.HTTP_200_OK)
 
@@ -188,7 +189,8 @@ class UserInfoViewSet(viewsets.ViewSet):
             'card_number':profile.card_number,
             'postal_code':profile.postal_code,
             'bio':profile.bio,
-            'user_verified':profile.user_verified
+            'user_verified':profile.user_verified,
+            'is_foreigner':profile.is_foreigner
         }
         return Response(data)
 
