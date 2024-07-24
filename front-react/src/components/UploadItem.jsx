@@ -9,6 +9,7 @@ import BorderButton from "./Buttons/BorderButton";
 import { Block } from "notiflix";
 import i18n from "./../i18n";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
 
 const UploadItem = () => {
   const { t } = useTranslation();
@@ -30,6 +31,8 @@ const UploadItem = () => {
   const [option, setOption] = useState("");
   const [collectionsOptions, setCollectionOptions] = useState([]);
 
+
+  const navigate = useNavigate();
   useEffect(() => {
     if (categories != undefined) {
       setCategoryOptions([]);
@@ -129,12 +132,16 @@ const UploadItem = () => {
         })
         .catch((e) => {
           setIsLoading(false);
-          console.log(e);
           console.log("Category:", selectedCategory);
           console.log("Has Physical:", hasPhysical);
 
           if (e.response.data.error === "your money is not enough") {
             Notify.failure(t("mintLowBalanceNotif"));
+          } 
+          else if (e.response.status ===401){
+            Notify.failure("Please log in to your account");
+            navigate("/")
+          
           } else {
             Notify.failure(t("error"));
           }
@@ -175,11 +182,15 @@ const UploadItem = () => {
           setIsUploaded(true);
         })
         .catch((e) => {
+          if (e.response.status ===401){
+            Notify.failure("Please log in to your account");
+            navigate("/")
+          }else{
           setIsLoading(false);
           console.log(e);
           console.log("Category:", selectedCategory);
           console.log("Has Physical:", hasPhysical);
-
+        }
           if (e.response.data.error === "your money is not enough") {
             Notify.failure(t("mintLowBalanceNotif"));
           } else {
