@@ -298,7 +298,7 @@ class NftViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
       
     @action(detail=False, methods=['put'])
-    def cansel_sell(self, request, pk=None):
+    def cancel_sell(self, request, pk=None):
         nft_id = request.data.get('token_id')
         nft=NFT.objects.filter(token_id=nft_id).first()
         if nft.owner != self.request.user:
