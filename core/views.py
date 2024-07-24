@@ -306,9 +306,10 @@ class NftViewSet(viewsets.ModelViewSet):
 
         nft.is_for_sale = False
         nft.save()
-        order=Order.objects.filter(nft=nft,bidder=bidder, status=0).first()
-        order.status=1
-        order.save()
+        orders=Order.objects.filter(nft=nft, status=0).first()
+        for order in orders:
+        	order.status=1
+        	order.save()
         serializer = self.get_serializer(nft)
         return Response(serializer.data)
 
