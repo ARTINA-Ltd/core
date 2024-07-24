@@ -108,7 +108,18 @@ def transferNFT(token_id,sender,recipient):
         
     return Response(response_data, status=status.HTTP_200_OK)
 
-
+def order_Report(token_id):
+    
+    nft = NFT.objects.get(token_id=token_id)
+    orders = Order.objects.filter(nft=nft)
+    for bid in orders:
+        if (bid.report==0):
+            n_bid = bid
+            n_bid.status=1
+            n_bid.report=2
+            n_bid.save()
+            NotifyUser.objects.create(user=n_bid.bidder,text="you lost the bid")    
+    print("change report status done")
 
 def get_winner(token_id):
     nft = NFT.objects.get(token_id=token_id)
@@ -117,7 +128,7 @@ def get_winner(token_id):
         return Response({"error": "NFT has not expired."}, status=status.HTTP_400_BAD_REQUEST)
         
     highest_bid = None
-    orders = Order.objects.filter(nft=nft)
+    orders = Order.objects.filter(nft=nft,status=0)
     for bid in orders:
         if (highest_bid is None or bid.fee > highest_bid.fee):
             highest_bid = bid
@@ -138,18 +149,7 @@ def get_winner(token_id):
     print(f"result>>>>>{result}")
     return Response({"winner": highest_bid.user, "price": highest_bid.fee,'result':recipient}, status=status.HTTP_200_OK)
  
-def order_Report(token_id):
-    
-    nft = NFT.objects.get(token_id=token_id)
-    orders = Order.objects.filter(nft=nft)
-    for bid in orders:
-        if (bid.report==0):
-            n_bid = bid
-            n_bid.status=1
-            n_bid.report=2
-            n_bid.save()
-            NotifyUser.objects.create(user=n_bid.bidder,text="you lost the bid")    
-    print("change report status done")
+
 
 
 
