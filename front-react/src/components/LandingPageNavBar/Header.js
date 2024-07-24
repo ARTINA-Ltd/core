@@ -36,6 +36,8 @@ const Header = ({ connectWallet = false, rev = false }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+
+  useEffect(()=>{console.log(user);},[user])
   const NotActiveItems = [
     {
       title: t("mainPage"),
@@ -330,7 +332,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                       </div>
                       <BalanceDialog />
                       <BalanceDialogMatic />
-                      <div className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-base-100" onClick={() => navigate("/profile")}>
+                      <div className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-base-100" onClick={() => navigate(user.data.is_foregner?"/inter-profile":"/profile")}>
                         {t("profile")}
                       </div>
 

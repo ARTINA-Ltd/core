@@ -1,10 +1,23 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import BuyTicketDialog from "../components/Dialog/BuyTicketDialog/BuyTicketDialog";
 import ExhibitionCard from "./../components/Cards/ExhibitionCard/ExhibitionCard";
 import TestLayout from "../Layouts/TestLayout.jsx";
+import {  UserContext } from "../App.js";
+import { useNavigate } from "react-router";
+import { Notify } from 'notiflix';
 
 const ExhibitionList = () => {
+  const user = useContext(UserContext)
+  const navigate = useNavigate();
+useEffect(()=>{
+  if (!user){
+Notify.warning("Please Log in to your Account");
+    navigate('/');
+  }
+},[user])
+
+
   const [getData, setData] = useState();
   useEffect(() => {
     if (localStorage.getItem("authTokens") != "null") {

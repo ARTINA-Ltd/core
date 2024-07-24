@@ -401,7 +401,7 @@ const UploadItem = () => {
           <div className="flex justify-between">
             <div className="text-[14px] text-gray-400 pt-2">{t("basicCost")}</div>
             {!isLoading ? (
-              <BorderButton className="" size="lg" onClick={handleSubmit} disabled={upladObj.item_name == false || upladObj.description == false || upladObj.external_link == false || upladObj.creator == false || upladObj.last_price == false || image == null || disabled}>
+              <BorderButton className="" size="lg" onClick={handleSubmit} disabled={upladObj.item_name == false || upladObj.creator == false || upladObj.last_price == false || image == null || disabled}>
                 {t("addArt")}
               </BorderButton>
             ) : (

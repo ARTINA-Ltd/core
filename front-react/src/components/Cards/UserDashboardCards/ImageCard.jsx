@@ -9,7 +9,7 @@ import i18n from "./../../../i18n";
 import SimpleInput from "./../../Inputs/SimpleInput";
 import { Notify } from "notiflix";
 
-const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell = false, onClickShow, onClickHide, has_creator, visible }) => {
+const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell = false, onClickShow, onClickHide, has_creator, visible,isForSale }) => {
   const [isVisible, setIsVisible] = useState(visible);
   const [isExpanded, setIsExpanded] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");
@@ -98,7 +98,7 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell
                 <div className="pt-1">{price}</div>
                 <FaEthereum className="text-2xl mx-2" />
               </div>
-              {showSell && (
+              {showSell ? (
                 <div className="flex items-end gap-2">
                   <div className="transition-all py-2 rounded-lg px-2 hover:bg-neutral cursor-pointer duration-75" onClick={isVisible ? handleClickHide : handleClickShow}>
                     {isVisible ? (
@@ -113,13 +113,13 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell
                     )}
                   </div>
                   <BorderButton className={"font-bold"} onClick={() => document.getElementById("TransferDialog").showModal()}>
-                    انتقال
+                  {t("transfer")}
                   </BorderButton>
                   <BorderButton className={"font-bold"} onClick={handleExpand}>
                     {isExpanded ? t("collapse") : t("sell")}
                   </BorderButton>
                 </div>
-              )}
+              ):<BorderButton>{t("cancelSell")}</BorderButton>}
             </div>
             <div className={`relative w-full mx-auto ease-out outline-[1.5rem] sm:outline-[.8rem] outline outline-base-100 duration-300 ${isExpanded ? "z-0" : "-translate-y-full  -z-10"} overflow-hidden shadow-2xl`}>
               <SellArea tokenId={tokenId} cancel={handleExpand} />
