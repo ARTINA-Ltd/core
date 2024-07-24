@@ -89,7 +89,12 @@ def transferNFT(token_id,sender,recipient):
     sender_private_key = wallet1.private_key
     print(sender_private_key)    
     #recipient
-    wallet2= Wallet.objects.get(user=recipient)
+    if Wallet.objects.filter(user=recipient).exists():
+        wallet2= Wallet.objects.get(user=recipient)
+    else :
+        private_key = Web3.toHex(os.urandom(32))  # Generate a random private key
+        account = w3.eth.account.privateKeyToAccount(private_key)
+        wallet2 = Wallet.objects.create(user=recipient, address=account.address, private_key=private_key)
     recipient_address= wallet2.address
     print(recipient_address)    
     tx_hash = transfer_nft(sender_private_key, sender_address, recipient_address, token_id)
@@ -103,7 +108,18 @@ def transferNFT(token_id,sender,recipient):
         
     return Response(response_data, status=status.HTTP_200_OK)
 
-
+def order_Report(token_id):
+    
+    nft = NFT.objects.get(token_id=token_id)
+    orders = Order.objects.filter(nft=nft)
+    for bid in orders:
+        if (bid.report==0):
+            n_bid = bid
+            n_bid.status=1
+            n_bid.report=2
+            n_bid.save()
+            NotifyUser.objects.create(user=n_bid.bidder,text="you lost the bid")    
+    print("change report status done")
 
 def get_winner(token_id):
     nft = NFT.objects.get(token_id=token_id)
@@ -112,7 +128,7 @@ def get_winner(token_id):
         return Response({"error": "NFT has not expired."}, status=status.HTTP_400_BAD_REQUEST)
         
     highest_bid = None
-    orders = Order.objects.filter(nft=nft)
+    orders = Order.objects.filter(nft=nft,status=0)
     for bid in orders:
         if (highest_bid is None or bid.fee > highest_bid.fee):
             highest_bid = bid
@@ -133,18 +149,7 @@ def get_winner(token_id):
     print(f"result>>>>>{result}")
     return Response({"winner": highest_bid.user, "price": highest_bid.fee,'result':recipient}, status=status.HTTP_200_OK)
  
-def order_Report(token_id):
-    
-    nft = NFT.objects.get(token_id=token_id)
-    orders = Order.objects.filter(nft=nft)
-    for bid in orders:
-        if (bid.report==0):
-            n_bid = bid
-            n_bid.status=1
-            n_bid.report=2
-            n_bid.save()
-            NotifyUser.objects.create(user=n_bid.bidder,text="you lost the bid")    
-    print("change report status done")
+
 
 
 
@@ -174,7 +179,8 @@ class OrderViewSet(viewsets.ViewSet):
 
 
         else:
-
+            user_balance.rial_available_balance -= fee
+            user_balance.rial_untradable_balance +=fee
             Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status,eth=eth)
             return Response(status=HTTPStatus.OK)
     
