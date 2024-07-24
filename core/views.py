@@ -297,7 +297,22 @@ class NftViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(nft)
         return Response(serializer.data)
       
-      
+    @action(detail=False, methods=['put'])
+    def cansel_sell(self, request, pk=None):
+        nft_id = request.data.get('token_id')
+        nft=NFT.objects.filter(token_id=nft_id).first()
+        if nft.owner != self.request.user:
+            return Response({'error': 'You do not have permission to perform this action.'}, status=403)
+
+        nft.is_for_sale = False
+        nft.save()
+        order=Order.objects.filter(nft=nft,bidder=bidder, status=0).first()
+        order.status=1
+        order.save()
+        serializer = self.get_serializer(nft)
+        return Response(serializer.data)
+
+    
     @action(detail=False, methods=['put'])
     def view_NFT(self, request, pk=None):
         nft_id = request.data.get('token_id')
