@@ -89,7 +89,12 @@ def transferNFT(token_id,sender,recipient):
     sender_private_key = wallet1.private_key
     print(sender_private_key)    
     #recipient
-    wallet2= Wallet.objects.get(user=recipient)
+    if Wallet.objects.filter(user=recipient).exists():
+        wallet2= Wallet.objects.get(user=recipient)
+    else :
+        private_key = Web3.toHex(os.urandom(32))  # Generate a random private key
+        account = w3.eth.account.privateKeyToAccount(private_key)
+        wallet2 = Wallet.objects.create(user=recipient, address=account.address, private_key=private_key)
     recipient_address= wallet2.address
     print(recipient_address)    
     tx_hash = transfer_nft(sender_private_key, sender_address, recipient_address, token_id)
