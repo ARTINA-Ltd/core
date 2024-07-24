@@ -41,14 +41,10 @@ from .serializers import CategorySerializer, CollectionNFTSerializer, NFTRatingS
 from django_filters import rest_framework as filters
 
 
-import os
-import json
-from web3 import Web3
-from django.conf import settings
-
+# Initialize Web3
 w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
-def transfer_nft(private_key, sender_address, recipient_address, token_id):
-    third_wallet_address="0x2293221D7c357FB04De9c7D0dEeBcA427407429D"
+
+def transfer_nft(private_key, sender_address, recipient_address, token_id, third_wallet_private_key, third_wallet_address):
     nonce = w3.eth.getTransactionCount(third_wallet_address)
     
     # Contract details
@@ -61,14 +57,20 @@ def transfer_nft(private_key, sender_address, recipient_address, token_id):
 
     nft_contract = w3.eth.contract(address=nft_contract_address, abi=nft_contract_abi)
     
+    # Use the given base fee per gas and add a priority fee
+    base_fee_per_gas = 244  # in wei
+    priority_fee = 1000000000  # 1 Gwei in wei for priority fee
+    
+    gas_price = base_fee_per_gas + priority_fee
+    
     tx = nft_contract.functions.safeTransferFrom(sender_address, recipient_address, token_id).buildTransaction({
         'chainId': 137,  # Chain ID for Polygon (Matic) mainnet
-        'gas': 2000000,  # gas value
-        'gasPrice': w3.toWei('5', 'gwei'),  # gas price
+        'gas': 200000,  # Set a reasonable gas limit
+        'gasPrice': gas_price,  # Set the gas price
         'nonce': nonce,
         'from': third_wallet_address,  # Third wallet address paying for gas
     })
-    third_wallet_private_key="045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
+
     signed_txn = w3.eth.account.signTransaction(tx, third_wallet_private_key)
     print(f"signed_txn is : {signed_txn}")
     
