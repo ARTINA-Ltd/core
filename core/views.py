@@ -181,6 +181,7 @@ class OrderViewSet(viewsets.ViewSet):
         else:
             user_balance.rial_available_balance -= fee
             user_balance.rial_untradable_balance +=fee
+            user_balance.save()
             Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status,eth=eth)
             return Response(status=HTTPStatus.OK)
     
