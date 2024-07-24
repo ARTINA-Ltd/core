@@ -10,6 +10,7 @@ import TestLayout from "../Layouts/TestLayout";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import { Block, Notify } from "notiflix";
 import BorderButton from "../components/Buttons/BorderButton";
+import { useNavigate } from "react-router";
 
 function Profile() {
   const user = useContext(UserContext);
@@ -18,6 +19,14 @@ function Profile() {
   const inputFile = useRef(null);
   const inputFileNC = useRef(null);
   const [disableInputs, setDisableInputs] = useState(user ? user.data.role === "user_one" : "false");
+  const navigate = useNavigate()
+
+useEffect(()=>{
+  if(user?.data.is_foreigner){
+    Notify.warning("You don't have access to this page!")
+    navigate("/")
+  }
+},[user])
 
   const [values, setValues] = useState(
     user
@@ -59,6 +68,7 @@ function Profile() {
     bio: true,
     postal_code: true,
   });
+
   const nationalPicture = "https://api.artina.org/static/images/Fig.png";
   const [counter, setCounter] = useState(10);
   const [counterPause, setCounterPause] = useState(true);
