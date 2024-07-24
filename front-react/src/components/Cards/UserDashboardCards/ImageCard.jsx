@@ -33,6 +33,22 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell
     setIsExpanded((prev) => !prev);
   }, []);
 
+const handleCancel =()=>{
+
+  axios.put("https://api.artina.org/api/transaction/nfts/cancel_sell",{
+    token_id: tokenId,
+  },{
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+    },
+    mode: "cors",
+  }).then((r)=>{
+    Notify.success("فروش برای این اثر لغو شد")
+  }).catch((e)=>{
+    console.log(e);
+  })
+}
+
   const handleTransfer = () => {
     axios
       .post(
@@ -119,7 +135,7 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell
                     {isExpanded ? t("collapse") : t("sell")}
                   </BorderButton>
                 </div>
-              ):<BorderButton>{t("cancelSell")}</BorderButton>}
+              ):<BorderButton onClick={handleCancel()}>{t("cancelSell")}</BorderButton>}
             </div>
             <div className={`relative w-full mx-auto ease-out outline-[1.5rem] sm:outline-[.8rem] outline outline-base-100 duration-300 ${isExpanded ? "z-0" : "-translate-y-full  -z-10"} overflow-hidden shadow-2xl`}>
               <SellArea tokenId={tokenId} cancel={handleExpand} />
