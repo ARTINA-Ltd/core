@@ -354,11 +354,12 @@ class NftViewSet(viewsets.ModelViewSet):
         for order in orders:
         	order.status=1
         	order.save()
-        	user_balance=None
+            user_balance=None
             user_balance = UserBalance.objects.filter(user=order.bidder).first()
-            user_balance.rial_available_balance += order.fee
+            user_balance.rial_available_balance += order.fee    
             user_balance.rial_untradable_balance -=order.fee
             user_balance.save()
+
         serializer = self.get_serializer(nft)
         return Response(serializer.data)
 
