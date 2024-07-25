@@ -44,22 +44,6 @@ from django_filters import rest_framework as filters
 # Initialize Web3
 w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
 
-
-from web3 import Web3
-import os
-import json
-import time
-from django.http import JsonResponse
-from rest_framework import status
-from django.shortcuts import get_object_or_404
-from django.utils import timezone
-from myapp.models import Wallet, NFT, Order, NotifyUser
-from django.conf import settings
-from rest_framework.response import Response
-
-# Initialize Web3
-w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
-
 def transfer_nft(sender_private_key, sender_address, recipient_address, token_id):
     try:
         nonce = w3.eth.getTransactionCount(third_wallet_address)
