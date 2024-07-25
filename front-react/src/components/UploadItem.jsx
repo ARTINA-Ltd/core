@@ -383,10 +383,10 @@ const UploadItem = () => {
             />
           </div>
 
-          <div className="w-full">
+          <div className="w-full" >
             <SimpleInput
-              ltr={true}
               type="text"
+              className={"ltr"}
               title={t("externalLink")}
               placeholder={t("externalLinkExample")}
               onChange={(e) =>

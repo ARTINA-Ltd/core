@@ -263,7 +263,7 @@ const AddExhibition = () => {
                 />
                 <SimpleInput
                   className={"shadow-md rounded-md"}
-                  type={"number"}
+                  type="number"
                   title={t("commision")}
                   onChange={(e) => {
                     console.log(values);
@@ -272,7 +272,6 @@ const AddExhibition = () => {
                       commision: e.value,
                     }));
                   }}
-                  defaultValue={null}
                   disabled={false}
                 />
               </div>

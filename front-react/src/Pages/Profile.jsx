@@ -19,15 +19,12 @@ function Profile() {
   const inputFile = useRef(null);
   const inputFileNC = useRef(null);
   const [disableInputs, setDisableInputs] = useState(user ? user.data.role === "user_one" : "false");
-  const navigate = useNavigate()
 
-useEffect(()=>{
-  if(user?.data.is_foreigner){
-    Notify.warning("You don't have access to this page!")
-    navigate("/")
+  const navigate = useNavigate();
+  if (localStorage.getItem("authTokens") === null) {
+    navigate("/");
+    Notify.warning("Please log in to you account");
   }
-},[user])
-
   const [values, setValues] = useState(
     user
       ? {

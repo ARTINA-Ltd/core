@@ -35,7 +35,7 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell
 
 const handleCancel =()=>{
 
-  axios.put("https://api.artina.org/api/transaction/nfts/cancel_sell",{
+  axios.put("https://api.artina.org/api/transaction/nfts/cancel_sell/",{
     token_id: tokenId,
   },{
     headers: {
@@ -135,7 +135,7 @@ const handleCancel =()=>{
                     {isExpanded ? t("collapse") : t("sell")}
                   </BorderButton>
                 </div>
-              ):<BorderButton onClick={handleCancel()}>{t("cancelSell")}</BorderButton>}
+              ):<BorderButton onClick={handleCancel}>{t("cancelSell")}</BorderButton>}
             </div>
             <div className={`relative w-full mx-auto ease-out outline-[1.5rem] sm:outline-[.8rem] outline outline-base-100 duration-300 ${isExpanded ? "z-0" : "-translate-y-full  -z-10"} overflow-hidden shadow-2xl`}>
               <SellArea tokenId={tokenId} cancel={handleExpand} />
