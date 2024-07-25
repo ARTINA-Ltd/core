@@ -11,6 +11,7 @@ const BalanceDialog = () => {
   const [getData, setData] = useState();
   const [isCharge, setIsCharge] = useState(false);
   const [depoAmount, setDepoAmount] = useState("");
+  const [refresh,setRefresh] = useState(false)
   const [widthdrawAmount, setWidthdeawAmount] = useState("");
   const { t } = useTranslation(["wallets"]);
   const user = useContext(UserContext);
@@ -27,7 +28,7 @@ const BalanceDialog = () => {
         setData(res.data);
       })
       .catch((e) => {});
-  }, []);
+  }, [refresh]);
 
   const updateBalanceDepo = () => {
     if (depoAmount === "" || depoAmount === undefined) {
@@ -51,8 +52,10 @@ const BalanceDialog = () => {
       )
       .then((res) => {
         window.open(res.data.url);
+        setRefresh(!refresh)
       })
       .catch(console.log);
+      setRefresh(!refresh)
   };
   const updateBalancedthdraw = () => {
     if (widthdrawAmount === "" || widthdrawAmount === undefined) {
@@ -81,10 +84,12 @@ const BalanceDialog = () => {
       )
       .then((res) => {
         Notify.success("درخواست شما با موفقیت ثبت شد");
+        setRefresh(!refresh)
         console.log(res);
       })
       .catch((res) => {
         console.log(res);
+        setRefresh(!refresh)
         Notify.failure("خطا");
       });
   };

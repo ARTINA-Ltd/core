@@ -8,6 +8,7 @@ import SimpleInput from "./Inputs/SimpleInput";
 import BorderButton from "./Buttons/BorderButton";
 import { Block } from "notiflix";
 import i18n from "./../i18n";
+import { AiTwotonePlusCircle } from "react-icons/ai";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 
@@ -28,7 +29,6 @@ const UploadItem = () => {
   const [categories, setCategories] = useState();
   const [collections, setCollections] = useState();
   const [categoryOptions, setCategoryOptions] = useState([]);
-  const [option, setOption] = useState("");
   const [collectionsOptions, setCollectionOptions] = useState([]);
 
 
@@ -340,9 +340,12 @@ const UploadItem = () => {
           <div className="w-full flex gap-4 sm:flex-col">
             {}
             <div className="">
-              <p className={`text-[14px] cursor-pointer pt-2 border-x-2 border-x-transparent p-2 ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"} font-b5`} onClick={() => document.getElementById("AddNftPopup").showModal()}>
-                {t("chooseProperties")}{" "}
-              </p>
+             <div className="flex gap-4 items-center text-2xl cursor-pointer" onClick={() => document.getElementById("AddNftPopup").showModal()}>
+                <p className={`text-[14px] pt-2 border-x-2 border-x-transparent p-2 ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"} font-b5`} >
+                  {t("chooseProperties")}{" "}
+                  </p>
+                  <AiTwotonePlusCircle />
+             </div>
               {uploadObj.properties.map((property, index) => (
                 <div key={index} className="flex gap-12 mt-4 items-center justify-between">
                   {/* <p className="">{index + 1}-</p> */}
@@ -385,6 +388,7 @@ const UploadItem = () => {
 
           <div className="w-full" >
             <SimpleInput
+            ltr = {true}
               type="text"
               className={"ltr"}
               title={t("externalLink")}
