@@ -47,9 +47,10 @@ w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
 
 def transfer_nft(sender_private_key, sender_address, recipient_address, token_id):
     try:
-        nonce = w3.eth.getTransactionCount(third_wallet_address)
         third_wallet_private_key = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
-        third_wallet_address = "0x2293221D7c357FB04De9c7D0dEeBcA427407429D"        
+        third_wallet_address = "0x2293221D7c357FB04De9c7D0dEeBcA427407429D"
+        nonce = w3.eth.getTransactionCount(third_wallet_address)
+        
         # Contract details
         nft_contract_address = "0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a"
         abi_filename = os.path.join(settings.BASE_DIR, "Account", "ABI.json")
