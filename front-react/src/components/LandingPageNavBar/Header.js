@@ -228,7 +228,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
               </svg>
             </div>
             <div className="flex gap-2 items-center ">
-              {connectWallet === true ? <ConnectWallet btnTitle={t("linkWallet")} colorMode="dark" accentColor="#4e45d0" className=" scale-75 border-none text-white hover:bg-indigo-400 transition-all w-full " /> : ""}
+              {connectWallet === true ? <BorderButton onClick={() => Notify.warning(t("addingLater"))}>{t("linkWallet")}</BorderButton> : ""}
               <LanguageSelector />
               <ThemeSwitcher />
 
