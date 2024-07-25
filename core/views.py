@@ -352,8 +352,8 @@ class NftViewSet(viewsets.ModelViewSet):
         nft.save()
         orders=Order.objects.filter(nft=nft, status=0)
         for order in orders:
-        	order.status=1
-        	order.save()
+            order.status=1
+            order.save()
             user_balance=None
             user_balance = UserBalance.objects.filter(user=order.bidder).first()
             user_balance.rial_available_balance += order.fee    
