@@ -272,7 +272,28 @@ class NftViewSet(viewsets.ModelViewSet):
     queryset = NFT.objects.all()
     serializer_class = serializers.NFTSerializer
     ordering_fields = '__all__'
+    
+    @action(detail=False, methods=['post'])
+    def get_winner(self, request):
+        token_id = request.data.get('token_id')
+        if not token_id:
+            return JsonResponse({"error": "token_id is required"}, status=400)
+        
+        try:
+            # Call the get_winner function
+            result = get_winner(token_id)
+            # Check if result is a Response object (in case of errors within get_winner)
+            if isinstance(result, Response):
+                return result
+            return JsonResponse(result, status=200)
+        except Exception as e:
+            # Catch and handle unexpected errors
+            error_message = f"An unexpected error occurred: {str(e)}"
+            print(error_message)  # Log error to console for debugging
+            return JsonResponse({"error": error_message}, status=500)
 
+
+    
     def list(self, *args):
         queryset = NFT.objects.filter(id=id)
         serializer_class = serializers.NFTSerializer
