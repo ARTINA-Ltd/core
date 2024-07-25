@@ -174,7 +174,7 @@ def get_winner(token_id):
         result = transferNFT(token_id, sender, recipient)
         print(f"Result: {result}")
 
-        return Response({"winner": highest_bid.user, "price": highest_bid.fee, 'result': recipient}, status=status.HTTP_200_OK)
+        return Response({"winner": highest_bid.bidder, "price": highest_bid.fee, 'result': recipient}, status=status.HTTP_200_OK)
     except Exception as e:
         print(f"Error in get_winner: {e}")
         return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
