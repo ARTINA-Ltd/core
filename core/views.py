@@ -39,17 +39,14 @@ from http import HTTPStatus
 from django.db.models import Count, Q
 from .serializers import CategorySerializer, CollectionNFTSerializer, NFTRatingSerializer, OwnerWithLikesSerializer
 from django_filters import rest_framework as filters
-
+import time
  
 
 # Initialize Web3
 w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
-
 def transfer_nft(sender_private_key, sender_address, recipient_address, token_id):
     try:
-        third_wallet_private_key = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
-        third_wallet_address = "0x2293221D7c357FB04De9c7D0dEeBcA427407429D"
-        nonce = w3.eth.getTransactionCount(third_wallet_address)
+        nonce = w3.eth.getTransactionCount(sender_address)
         
         # Contract details
         nft_contract_address = "0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a"
@@ -61,9 +58,10 @@ def transfer_nft(sender_private_key, sender_address, recipient_address, token_id
 
         nft_contract = w3.eth.contract(address=nft_contract_address, abi=nft_contract_abi)
         
-        # Use the given base fee per gas and add a priority fee
-        base_fee_per_gas = 244  # in wei
-        priority_fee = 1000000000  # 1 Gwei in wei for priority fee
+        # Use a higher priority fee
+        base_fee_per_gas = 244  # in wei (this is very low for current standards)
+        priority_fee = 50000000000  # 50 Gwei in wei for priority fee
+        
         gas_price = base_fee_per_gas + priority_fee
         
         # Build the transaction
@@ -72,14 +70,14 @@ def transfer_nft(sender_private_key, sender_address, recipient_address, token_id
             'gas': 200000,  # Set a reasonable gas limit
             'gasPrice': gas_price,  # Set the gas price
             'nonce': nonce,
-            'from': sender_address,  # This is the third wallet paying for gas
+            'from': sender_address,  # The sender's address
         })
 
         # Sign the transaction with the sender's private key
         signed_txn = w3.eth.account.signTransaction(tx, sender_private_key)
         print(f"Signed transaction by sender: {signed_txn}")
 
-        # Submit the transaction with the third wallet paying for the gas
+        # Send the transaction
         tx_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)
         print(f"Transaction hash: {tx_hash.hex()}")
         
@@ -87,6 +85,8 @@ def transfer_nft(sender_private_key, sender_address, recipient_address, token_id
     except Exception as e:
         print(f"Error in transfer_nft: {e}")
         return None
+
+
 
 def transferNFT(token_id, sender, recipient):
     try:
