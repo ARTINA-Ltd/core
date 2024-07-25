@@ -72,7 +72,7 @@ def transfer_nft(sender_private_key, sender_address, recipient_address, token_id
             'gas': 200000,  # Set a reasonable gas limit
             'gasPrice': gas_price,  # Set the gas price
             'nonce': nonce,
-            'from': third_wallet_address,  # This is the third wallet paying for gas
+            'from': sender_address,  # This is the third wallet paying for gas
         })
 
         # Sign the transaction with the sender's private key
