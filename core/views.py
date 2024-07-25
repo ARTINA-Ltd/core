@@ -172,7 +172,7 @@ def get_winner(token_id):
         highest_bid.report = 1
         highest_bid.status = 1
         highest_bid.save()
-        recipient = highest_bid.user
+        recipient = highest_bid.bidder
 
         order_Report(token_id)
         result = transferNFT(token_id, sender, recipient)
