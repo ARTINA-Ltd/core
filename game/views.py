@@ -19,15 +19,33 @@ class GameViewSet(viewsets.ModelViewSet):
         game = self.get_object()
         cheat_code = game.cheat_code
         user_choice = request.data.get('choice')
-
+        user_cheat = request.data.get('cheat_code')
+        import random
+        choices = ['rock', 'paper', 'scissors']
+        server_choice = random.choice(choices)
+        
         # Example logic to determine game result based on cheat code
-        if cheat_code == user_choice:
+        if cheat_code == user_cheat:
             result = 'win'
             points_earned = 10
+        else :
+            
+            if user_choice == server_choice:
+                result = 'draw'
+            elif (user_choice == 'rock' and server_choice == 'scissors') or \
+                 (user_choice == 'paper' and server_choice == 'rock') or \
+                 (user_choice == 'scissors' and server_choice == 'paper'):
+                result = 'win'
+            else:
+                result = 'lose'
+        
+            # Update points for both users based on result
+        if result == 'win':
+            user_points = 10
+        elif result == 'lose':
+            user_points = 0
         else:
-            result = 'lose'
-            points_earned = 0
-
+            user_points = 5
         # Update user's profile with points earned
         user_profile = UserProfile.objects.get(user=request.user)
         user_profile.points += points_earned
