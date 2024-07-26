@@ -13,7 +13,7 @@ class Game(models.Model):
 
 class GameSession(models.Model):
     game = models.ForeignKey(Game, related_name='sessions', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, related_name='sessions', on_delete=models.CASCADE)
+ #   user = models.ForeignKey(User, related_name='sessions', on_delete=models.CASCADE)
     choice = models.CharField(max_length=10, blank=True, null=True)  # 'rock', 'paper', 'scissors'
     result = models.CharField(max_length=10, blank=True, null=True)  # 'win', 'lose', 'draw'
     points = models.IntegerField(default=0)

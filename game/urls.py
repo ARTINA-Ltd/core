@@ -1,9 +1,9 @@
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from rest_framework import routers
 from .views import GameViewSet, GameSessionViewSet, UserProfileViewSet, LeaderboardViewSet
 
 # Create a router and register our viewsets with it.
-router = DefaultRouter()
+router = routers.DefaultRouter()
 router.register(r'games', GameViewSet, basename='game')
 router.register(r'game-sessions', GameSessionViewSet, basename='game-session')
 router.register(r'user-profiles', UserProfileViewSet, basename='user-profile')
@@ -13,4 +13,3 @@ urlpatterns = [
     path('', include(router.urls)),
 ]
 
-# Additional paths can be added for custom actions or endpoints as needed.
