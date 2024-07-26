@@ -21,7 +21,7 @@ class GameSession(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 class UserGameProfile(models.Model):
-    user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='Gameprofile', on_delete=models.CASCADE)
     points = models.IntegerField(default=0)
     hearts = models.IntegerField(default=3)
     last_played = models.DateTimeField(auto_now_add=True)
