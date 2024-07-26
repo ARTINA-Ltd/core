@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'Account',
     'exhibition',
     'core',
-    'AI',    
+    'AI', 
+    'game',   
     'supervisor',    
     'rest_framework',
     'corsheaders',
@@ -63,6 +64,8 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'Account.middleware.FailedLoginMiddleware',
     # 'Account.middleware.PaymentLoggingMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
+
     
     ]
 JAZZMIN_SETTINGS = {

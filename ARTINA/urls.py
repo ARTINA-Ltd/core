@@ -30,6 +30,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/core/', include(core_urls)),
     path('api/exhibition/', include(ex_urls)),
+    path('api/exhibition/', include('game.urls')),
     path('api/transaction/', include('core.urls')),
     path('api/AI/', include('AI.urls')),
     path('api/supervisor/', include('supervisor.urls')),
