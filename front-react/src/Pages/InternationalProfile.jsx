@@ -11,6 +11,11 @@ import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import { Block, Notify } from "notiflix";
 import BorderButton from "../components/Buttons/BorderButton";
 import { useTranslation } from "react-i18next";
+import imageFive from "../assets/images/5.png"
+import mand1 from "../assets/images/mand1.png"
+import mastercard from "../assets/images/mastercard.png"
+import paypal from "../assets/images/paypal.png"
+import visa from "../assets/images/visa.png"
 
 const InternationalProfile = () => {
   const user = useContext(UserContext);
@@ -747,9 +752,9 @@ const InternationalProfile = () => {
             <div className="flex gap-4  items-center">
               <div className="text-[24px] font-b9 px-24 md:px-0">{t("payment")}</div>
               <div className="flex gap-4 flex-wrap">
-                <img src="/mastercard.png" alt="" className="w-12 h-24 object-contain" />
-                <img src="/visa.png" alt="" className="w-12 h-24 object-contain" />
-                <img src="/paypal.png" alt="" className="w-12 h-24 object-contain" />
+                <img src={mastercard} alt="" className="w-12 h-24 object-contain" />
+                <img src={visa} alt="" className="w-12 h-24 object-contain" />
+                <img src={paypal} alt="" className="w-12 h-24 object-contain" />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4 px-24 md:px-0 lg:grid-cols-1">
@@ -766,13 +771,13 @@ const InternationalProfile = () => {
           </SimpleCard>
           <div className="flex flex-col gap-4 items-center  justify-center w-[35%] relative md:w-full">
             <SimpleCard className="bg-[#4e45d0] flex flex-col relative gap-4 items-start overflow-hidden w-full">
-              <img src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
+              <img src={mand1} className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
               <div className="text-white text-[27px] text-center mb-2 z-10 font-b9 sm:text-[20px]"> {t("uploadIDParagraph")}</div>
               <BorderButton className={"text-white border-white text-center"} onClick={() => window.open("http://api.artina.org/static/pdfs/Form-new-version.pdf")}>
                 {t("authText")}{" "}
               </BorderButton>
               <div className="flex justify-center z-10 group relative w-full h-auto rounded-2xl" id="nationalCardImage">
-                <img src={nationalCardImageUrl ? nationalCardImageUrl : `${user ? user.data.national_card_picture : "/5.png"}`} className="w-auto h-auto rounded-2xl" />
+                <img src={nationalCardImageUrl ? nationalCardImageUrl : `${user ? user.data.national_card_picture : imageFive}`} className="w-auto h-auto rounded-2xl" />
                 <div className="bg-gradient-to-b from-black to-[#00000050] w-full h-full absolute rounded-2xl opacity-70 flex items-center justify-center group-hover:visible invisible cursor-pointer" onClick={() => inputFileNC.current.click()}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="0.5" stroke="currentColor" className="text-white " width="3em">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />

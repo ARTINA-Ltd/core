@@ -1,6 +1,4 @@
 import Avatar from "../assets/images/man.png";
-import Header from "../components/AdminPageNavbar/Header.js";
-import Footer from "../components/Footer/Footer.jsx";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard.jsx";
 import BorderButton from "./../components/Buttons/BorderButton";
 import SimpleInput from "./../components/Inputs/SimpleInput";
@@ -9,6 +7,7 @@ import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AdminLayout from "../Layouts/AdminLayout.jsx";
+import mand1 from "../assets/images/mand1.png"
 
 const Authenticate = () => {
   const Navigate = useNavigate();
@@ -133,7 +132,7 @@ const Authenticate = () => {
 
                     <div className=" w-full my-6 mr-auto lg:ml-auto mt-4 ">
                       <SimpleCard className=" aspect-video bg-[#4e45d0] flex flex-col relative text-white gap-4 items-center overflow-hidden w-full min-h-[12rem]">
-                        <img alt="" src="/mand1.png" className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
+                        <img alt="" src={mand1} className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
                         <div className="text-white text-[22px] mb-2 z-10 font-b9 :text-[1rem]">اطلاعات کارت بانکی</div>
                         <div className="font-b3 sm">شماره شبا</div>
                         <div className="flex items-center gap-5 w-full py-2 px-2" dir="ltr">

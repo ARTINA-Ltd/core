@@ -11,6 +11,7 @@ import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import { Block, Notify } from "notiflix";
 import BorderButton from "../components/Buttons/BorderButton";
 import { useNavigate } from "react-router";
+import imageFive from "../assets/images/5.png"
 
 function Profile() {
   const user = useContext(UserContext);
@@ -733,7 +734,7 @@ function Profile() {
                 متن احراز هویت
               </BorderButton>
               <div className="flex justify-center z-10 group relative w-full h-auto rounded-2xl" id="nationalCardImage">
-                {user && user.data.national_card_picture !== "" ? <img src={nationalCardImageUrl ? nationalCardImageUrl : `${user ? user.data.national_card_picture : "/5.png"}`} className="w-auto h-auto rounded-2xl" /> : <img src={nationalCardImageUrl ? nationalCardImageUrl : nationalPicture} className="w-auto h-auto rounded-2xl" />}
+                {user && user.data.national_card_picture !== "" ? <img src={nationalCardImageUrl ? nationalCardImageUrl : `${user ? user.data.national_card_picture : imageFive}`} className="w-auto h-auto rounded-2xl" /> : <img src={nationalCardImageUrl ? nationalCardImageUrl : nationalPicture} className="w-auto h-auto rounded-2xl" />}
                 {!(user.data.national_card_picture !== "" && user.data.role === "user_one") && (
                   <div className="bg-gradient-to-b from-black to-[#00000050] w-full h-full absolute rounded-2xl opacity-70 flex items-center justify-center group-hover:visible invisible cursor-pointer" onClick={() => inputFileNC.current.click()}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="0.5" stroke="currentColor" className="text-white " width="3em">

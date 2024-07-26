@@ -1,6 +1,8 @@
 import React from "react";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import TestLayout from "../Layouts/TestLayout";
+import meta1 from "../assets/images/meta1.jpg"
+import meta2 from "../assets/images/meta2.jpg"
 
 const MetaExplanation = () => {
   const imageContainerStyle = {
@@ -38,9 +40,9 @@ const MetaExplanation = () => {
             <p>حالا فکر کنید که بجای اینکه مجبور باشید برای انجام کار به اداره برین، یه عینک بزنین و وارد متاورس بشید. اونجا می تونید همکارانتونو یا حتی میز کارتونو ببینین!!</p>
 
             <div style={imageContainerStyle}>
-              <img src="./meta1.jpg" alt="تصویر اول" style={imageStyle} />
+              <img src={meta1} alt="تصویر اول" style={imageStyle} />
 
-              <img src="./meta2.jpg" alt="تصویر دوم" style={imageStyle} />
+              <img src={meta2} alt="تصویر دوم" style={imageStyle} />
             </div>
 
             <h2>کاربردهای متاورس:</h2>

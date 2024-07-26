@@ -3,6 +3,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
+import imageThree from "../../assets/images/3.png"
+import aiLogo from "../../assets/images/AI-logo.png"
+import BlockchainLogo from "../../assets/images/Blockchain-logo.png"
+import blogLogio from "../../assets/images/Blog-logo.jpeg"
+import maticIc from "../../assets/images/matic-ic.png"
+import maticLogo from "../../assets/images/matic-logo.png"
+import MetaverseLogo from "../../assets/images/Metaverse-logo.jpeg"
+import walletVectorIcon from "../../assets/images/wallet-vector-icon.jpg"
 
 const Features = ({ className = "" }) => {
   require("./Home.css");
@@ -41,7 +49,7 @@ const Features = ({ className = "" }) => {
           <SwiperSlide>
             <div className={"w-full cursor-pointer"}>
               <img
-                src="/3.png"
+                src={imageThree}
                 className="w-[200px] h-[200px] object-cover rounded-full m-auto sm:mx-2"
                 alt=""
               />
@@ -57,7 +65,7 @@ const Features = ({ className = "" }) => {
               onClick={() => window.open("https://metaverse.artina.org/")}
             >
               <img
-                src="/Metaverse-logo.jpeg"
+                src={MetaverseLogo}
                 className="w-[200px] h-[200px] object-cover rounded-full m-auto sm:mx-2"
                 alt=""
               />
@@ -71,7 +79,7 @@ const Features = ({ className = "" }) => {
               onClick={() => window.open("https://blog.artina.org/")}
             >
               <img
-                src="/Blog-logo.jpeg"
+                src={blogLogio}
                 className="w-[200px] h-[200px] object-cover rounded-full m-auto sm:mx-2"
                 alt=""
               />
@@ -85,7 +93,7 @@ const Features = ({ className = "" }) => {
               onClick={() => window.open("https://artina.org/ai")}
             >
               <img
-                src="/AI-logo.png"
+                src={aiLogo}
                 className="w-[200px] h-[200px] object-cover rounded-full m-auto sm:mx-2"
                 alt=""
               />
@@ -98,7 +106,7 @@ const Features = ({ className = "" }) => {
           <SwiperSlide>
             <div className={"w-full cursor-pointer"}>
               <img
-                src="/wallet-vector-icon.jpg"
+                src={walletVectorIcon}
                 className="w-[200px] h-[200px] object-cover rounded-full m-auto sm:mx-2"
                 alt=""
               />
@@ -114,7 +122,7 @@ const Features = ({ className = "" }) => {
               onClick={() => window.open("https://artina.org/ai")}
             >
               <img
-                src="/matic-logo.png"
+                src={maticLogo}
                 className="w-[200px] h-[200px] object-cover rounded-full m-auto sm:mx-2"
                 alt=""
               />
@@ -130,7 +138,7 @@ const Features = ({ className = "" }) => {
               onClick={() => window.open("https://artina.org/ai")}
             >
               <img
-                src="/matic-ic.png"
+                src={maticIc}
                 className="w-[200px] h-[200px] object-cover rounded-full m-auto sm:mx-2"
                 alt=""
               />
@@ -143,7 +151,7 @@ const Features = ({ className = "" }) => {
           <SwiperSlide>
             <div className={"w-full cursor-pointer"}>
               <img
-                src="/Blockchain-logo.png"
+                src={BlockchainLogo}
                 className="w-[200px] h-[200px] object-cover rounded-full m-auto sm:m-1"
                 alt=""
               />

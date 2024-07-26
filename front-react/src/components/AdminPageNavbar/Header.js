@@ -11,6 +11,10 @@ import { GoBell } from "react-icons/go";
 import i18n from "../../i18n";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "./../LanguageSelector/LanguageSelector";
+import artinaLogo from "../../assets/images/Artina-Logo-1.jpeg"
+import authenticationImage from "../../assets/images/authentication.png"
+import chatBubbleImage from "../../assets/images/chat-bubble.png"
+import virtualSpace from "../../assets/images/virtual-space.png"
 
 const Header = ({ rev = false }) => {
   const [menuIsVisible, setMenuVisible] = useState(false);
@@ -94,17 +98,17 @@ const Header = ({ rev = false }) => {
     {
       title: " احراز هویت",
       link: "/authentications",
-      icon: <img src="/authentication.png" alt="" className="w-8 h-8" />,
+      icon: <img src={authenticationImage} alt="" className="w-8 h-8" />,
     },
     {
       title: "تیکت ها",
       link: "/alltickets",
-      icon: <img src="/chat-bubble.png" alt="" className="w-8 h-8" />,
+      icon: <img src={chatBubbleImage} alt="" className="w-8 h-8" />,
     },
     {
       title: "متاورس",
       link: "/metaversetickets",
-      icon: <img src="/virtual-space.png" alt="" className="w-8 h-8" />,
+      icon: <img src={virtualSpace} alt="" className="w-8 h-8" />,
     },
   ];
   return (
@@ -204,7 +208,7 @@ const Header = ({ rev = false }) => {
                 </div>
               ) : null}
               <div>
-                <img className="h-16 sm:h-12 rounded-lg cursor-pointer" src={"/Artina-Logo-1.jpeg"} alt="logo" onClick={() => navigate("/admin-panel")} />
+                <img className="h-16 sm:h-12 rounded-lg cursor-pointer" src={artinaLogo} alt="logo" onClick={() => navigate("/admin-panel")} />
               </div>
             </div>
           </div>

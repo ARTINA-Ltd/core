@@ -3,7 +3,7 @@ import Header from "./../components/AdminPageNavbar/Header";
 import axios from "axios";
 import MetaVerseCard from "../components/Cards/MetaVerseCard.jsx";
 import AdminLayout from "../Layouts/AdminLayout.jsx";
-
+import mand1 from "../assets/images/mand1.png"
 const MetaverseTickets = () => {
   const [metaTickets, setMetaTickets] = useState(null);
   useEffect(() => {
@@ -33,7 +33,7 @@ const MetaverseTickets = () => {
             <div className=" mx-auto bg-[#4e45d0] flex flex-col relative text-white gap-4 items-center overflow-hidden rounded-xl shadow-md my-4">
               <img
                 alt=""
-                src="/mand1.png"
+                src={mand1}
                 className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden"
               />
               <h1 className="text-center font-bold text-3xl my-4 p-4 ">

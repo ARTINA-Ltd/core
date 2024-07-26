@@ -1,7 +1,7 @@
 import React from "react";
 import SimpleCard from "./SimpleCard";
 import { useTranslation } from "react-i18next";
-
+import Verified_Status from "../../../assets/images/Verified_Status.png"
 const NftRequestsCard = ({ onClick, firstName, lastName, image, exhibition, nftCount, verified }) => {
   const { t } = useTranslation(["collections"]);
 
@@ -14,7 +14,7 @@ const NftRequestsCard = ({ onClick, firstName, lastName, image, exhibition, nftC
           <div className="flex gap-1 group-hover:translate-x-4 transition-all duration-300 ease-out">
             <div>{firstName}</div>
             <div>{lastName}</div>
-            {verified && <img alt="" src="/Verified_Status.png" className="w-5 h-5  transition-all duration-300 ease-out" />}
+            {verified && <img alt="" src={Verified_Status} className="w-5 h-5  transition-all duration-300 ease-out" />}
           </div>
           {exhibition ? (
             <div className="flex gap-1 group-hover:translate-x-4 transition-all duration-300 ease-out">

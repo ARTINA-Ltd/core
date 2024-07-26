@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-
+import imageEight from "../../assets/images/8.png"
 import "swiper/css";
 import "swiper/css/effect-cards";
 import "swiper/css/navigation";
@@ -28,7 +28,7 @@ const AiImagesCard = () => {
       </SwiperSlide>
       <SwiperSlide>
         <div className="flex flex-col relative">
-          <img src="/8.png" className="object-cover" alt="" />
+          <img src={imageEight} className="object-cover" alt="" />
           <div className="absolute bottom-10 left-0 right-0 mx-auto bg-black/10 backdrop-blur-xl py-4 z-30 text-center text-sm cursor-pointer text-white mb-4">
             Share | Download
           </div>
@@ -44,7 +44,7 @@ const AiImagesCard = () => {
       </SwiperSlide>
       <SwiperSlide>
         <div className="flex flex-col relative">
-          <img src="/8.png" className="object-cover" alt="" />
+          <img src={imageEight} className="object-cover" alt="" />
           <div className="absolute bottom-10 left-0 right-0 mx-auto bg-black/10 backdrop-blur-xl py-4 z-30 text-center text-sm cursor-pointer text-white mb-4">
             Share | Download
           </div>
