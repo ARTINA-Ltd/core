@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Game, GameSession, UserProfile, TransactionCurrency, GameChoice
+from .models import Game, GameSession, UserGameProfile
 from django.contrib.auth.models import User
 
 class GameSerializer(serializers.ModelSerializer):
@@ -14,11 +14,7 @@ class GameSessionSerializer(serializers.ModelSerializer):
 
 class UserGameProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserProfile
+        model = UserGameProfile
         fields = ['points', 'hearts']
 
-class TransactionCurrencySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TransactionCurrency
-        fields = '__all__'
 
