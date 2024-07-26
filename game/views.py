@@ -3,24 +3,25 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.contrib.auth.models import User
 from datetime import datetime, timedelta
-from .models import Game, GameSession, UserProfile
-from .serializers import GameSerializer, GameSessionSerializer, UserProfileSerializer
+from .models import Game, GameSession, UserGameProfile
+from .serializers import GameSerializer, GameSessionSerializer, UserGameProfileSerializer
+import random
 
 class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
     @action(detail=True, methods=['post'])
     def play_solo(self, request, pk=None):
         """
         Endpoint to play solo against the server.
         """
+        user=self.request.user
         game = self.get_object()
         cheat_code = game.cheat_code
         user_choice = request.data.get('choice')
         user_cheat = request.data.get('cheat_code')
-        import random
         choices = ['rock', 'paper', 'scissors']
         server_choice = random.choice(choices)
         
@@ -47,7 +48,7 @@ class GameViewSet(viewsets.ModelViewSet):
         else:
             user_points = 5
         # Update user's profile with points earned
-        user_profile = UserProfile.objects.get(user=request.user)
+        user_profile = UserGameProfile.objects.get(user=user)
         user_profile.points += points_earned
         user_profile.save()
 
@@ -108,12 +109,12 @@ class GameViewSet(viewsets.ModelViewSet):
             friend_points = 25
         
         # Update user's profile with points earned
-        user_profile = UserProfile.objects.get(user=request.user)
+        user_profile = UserGameProfile.objects.get(user=request.user)
         user_profile.points += user_points
         user_profile.save()
         
         # Update friend's profile with points earned
-        friend_profile = UserProfile.objects.get(user=friend)
+        friend_profile = UserGameProfile.objects.get(user=friend)
         friend_profile.points += friend_points
         friend_profile.save()
         
@@ -150,8 +151,8 @@ class GameSessionViewSet(viewsets.ModelViewSet):
     # No custom actions needed here for the provided requirements
 
 class UserProfileViewSet(viewsets.ModelViewSet):
-    queryset = UserProfile.objects.all()
-    serializer_class = UserProfileSerializer
+    queryset = UserGameProfile.objects.all()
+    serializer_class = UserGameProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     @action(detail=True, methods=['post'])
@@ -187,6 +188,6 @@ class LeaderboardViewSet(viewsets.ViewSet):
         Endpoint to fetch leaderboard.
         """
         # Fetch top users based on points
-        top_users = UserProfile.objects.order_by('-points')[:10]
-        serializer = UserProfileSerializer(top_users, many=True)
+        top_users = UserGameProfile.objects.order_by('-points')[:10]
+        serializer = UserGameProfileSerializer(top_users, many=True)
         return Response(serializer.data)
