@@ -4,6 +4,7 @@ import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import ApplicationReqDialog from "../components/Dialog/ApplicationReqDialog/ApplicationReqDialog";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import imageTwo from "../assets/images/2.jpg"
 
 const RequestsList = () => {
   const [getData, setData] = useState();
@@ -27,7 +28,7 @@ const RequestsList = () => {
       <TestLayout>
         <div className="w-full justify-center flex gap-4">
           <div className="flex w-full justify-center items-center gap-4">
-            <img src={"/2.jpg"} className="w-full max-h-[500px] object-cover rounded-2xl" alt="" />
+            <img src={imageTwo} className="w-full max-h-[500px] object-cover rounded-2xl" alt="" />
           </div>
         </div>
 

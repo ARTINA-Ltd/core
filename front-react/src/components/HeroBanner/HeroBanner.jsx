@@ -1,10 +1,11 @@
 import FancyText from "@carefully-coded/react-text-gradient";
 import { useTranslation } from "react-i18next";
+import HeroBannerImage from "../../assets/images/HeroBanner.jpg"
 const HeroBanner = () => {
   const { t } = useTranslation(["translation"]);
   return (
     <div className="relative ">
-      <img src="/HeroBanner.jpg" alt="Hero" className="w-full h-screen object-cover" />
+      <img src={HeroBannerImage} alt="Hero" className="w-full h-screen object-cover" />
       <div className="w-full top-0 left-0 opacity-50 h-screen bg-gradient-to-t from-violet-900 to-black absolute z-10"></div>
       <p className="absolute  text-6xl font-bold cursor-default capitalize text-white z-20 top-2/3 mx max-w-[550px] mx-12 ">
         {t("bannerParaghraph.before")}{" "}

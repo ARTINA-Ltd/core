@@ -3,7 +3,7 @@ import "./Header.css";
 import { useNavigate } from "react-router";
 import { UserContext } from "../../App";
 import { UserChangeContext } from "../../App";
-import { ConnectWallet } from "@thirdweb-dev/react";
+import artinaLogo from "../../assets/images/Artina-Logo-1.jpeg"
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 import BorderButton from "../Buttons/BorderButton";
 import BalanceDialog from "../Dialog/BalanceDialog/BalanceDialog";
@@ -361,7 +361,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                 </BorderButton>
               )}
 
-              <img className="h-16 sm:h-12 rounded-lg cursor-pointer" src={"/Artina-Logo-1.jpeg"} alt="logo" onClick={() => navigate("/")} />
+              <img className="h-16 sm:h-12 rounded-lg cursor-pointer" src={artinaLogo} alt="logo" onClick={() => navigate("/")} />
             </div>
           </div>
         </div>

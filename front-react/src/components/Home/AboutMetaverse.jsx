@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-
+import AboutMetaverseImage from "../../assets/images/AboutMetaverse.png"
 const AboutMetaverse = ({ className }) => {
   const { t } = useTranslation();
   return (
@@ -11,7 +11,7 @@ const AboutMetaverse = ({ className }) => {
           <div className="font-b2 text-[22px] mx-4 text-justify sm:text-[17px] lg:pb-4">{t("metaverseUsageDecription")}</div>
         </div>
         <div className="w-[calc(55%-2rem)] z-20 md:w-full md:mx-auto  ">
-          <img src="/AboutMetaverse.png" className=" object-cover rounded-3xl w-full" alt="" />
+          <img src={AboutMetaverseImage} className=" object-cover rounded-3xl w-full" alt="" />
         </div>
       </div>
     </div>

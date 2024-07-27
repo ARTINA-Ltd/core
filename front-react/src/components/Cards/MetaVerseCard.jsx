@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import BorderButton from "./../Buttons/BorderButton";
+import galleryLogo from "../../assets/images/gallery.png"
 
 function MetaVerseCard(props) {
   const { count, title, img, id, exhibition } = props;
@@ -9,7 +10,7 @@ function MetaVerseCard(props) {
       <div className="flex gap-4">
         <img
           className="w-36  rounded-md shadow-md sm:w-20 sm:h-20"
-          src={img ? img : "/gallery.png"}
+          src={img ? img : galleryLogo}
           alt=""
         />
 

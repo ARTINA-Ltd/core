@@ -3,6 +3,13 @@ import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import TestLayout from "../Layouts/TestLayout";
 import { useTranslation } from "react-i18next";
 import i18n from "./../i18n";
+import helpMintEn1 from "../assets/images/help-mint-1-en.png"
+import helpMintEn2 from "../assets/images/help-mint-2-en.png"
+import helpMintFa1 from "../assets/images/help-mint-1-fa.png"
+import helpMintFa2 from "../assets/images/help-mint-2-fa.png"
+import helpMint3 from "../assets/images/help-mint-3.png"
+import helpMint4 from "../assets/images/help-mint-4.png"
+
 
 const HelpMint = () => {
   const { t } = useTranslation("mintQuide");
@@ -24,20 +31,20 @@ const HelpMint = () => {
           <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">{t("step4")}</div>
           <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">{t("example")}</div>
           <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">
-            <img src={i18n.language === "fa" ? "/help-mint-1-fa.png" : "/help-mint-1-en.png"} className=" object-cover m-auto" alt="" />
+            <img src={i18n.language === "fa" ? helpMintFa1 : helpMintEn1} className=" object-cover m-auto" alt="" />
           </div>
           <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">{t("step5")}</div>
           <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">{t("step6")}</div>
           <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">
-            <img src={i18n.language === "fa" ? "/help-mint-2-fa.png" : "/help-mint-2-en.png"} className=" object-cover m-auto" alt="" />
+            <img src={i18n.language === "fa" ? helpMintFa2 : helpMintEn2} className=" object-cover m-auto" alt="" />
           </div>
           <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">{t("step7")}</div>
           <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">
-            <img src="/help-mint-3.png" className=" object-cover m-auto" alt="" />
+            <img src={helpMint3} className=" object-cover m-auto" alt="" />
           </div>
           <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">{t("step8")}</div>
           <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">
-            <img src="/help-mint-4.png" className=" object-cover m-auto" alt="" />
+            <img src={helpMint4} className=" object-cover m-auto" alt="" />
           </div>
         </SimpleCard>
       </div>

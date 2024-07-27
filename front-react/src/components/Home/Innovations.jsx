@@ -1,6 +1,14 @@
 import { React } from "react";
 import "./Home.css"; // Make sure to import your CSS file
 import { useTranslation } from "react-i18next";
+import imageThree from "../../assets/images/3.png"
+import aiLogo from "../../assets/images/AI-logo.png"
+import BlockchainLogo from "../../assets/images/Blockchain-logo.png"
+import blogLogio from "../../assets/images/Blog-logo.jpeg"
+import maticIc from "../../assets/images/matic-ic.png"
+import maticLogo from "../../assets/images/matic-logo.png"
+import MetaverseLogo from "../../assets/images/Metaverse-logo.jpeg"
+import walletVectorIcon from "../../assets/images/wallet-vector-icon.jpg"
 
 const Innovations = ({ className = "" }) => {
   const { t } = useTranslation();
@@ -13,21 +21,21 @@ const Innovations = ({ className = "" }) => {
           <div className="flex justify-around">
             <div className="flex sm:flex-col">
               <div className="mx-16 my-5 lg:mx-6 sm:mx-2">
-                <img src="/3.png" className="w-[150px] h-[150px] lg:w-[100px] lg:h-[100px] sm:w-[60px] sm:h-[60px] object-cover rounded-full m-auto" alt="" />
+                <img src={imageThree} className="w-[150px] h-[150px] lg:w-[100px] lg:h-[100px] sm:w-[60px] sm:h-[60px] object-cover rounded-full m-auto" alt="" />
                 <div className="mt-3 font-b5 text-[20px] text-center lg:text-sm">{t("connectWithCw")}</div>
               </div>
               <div className="mx-16 my-5 lg:mx-6 sm:mx-2">
-                <img src="/Metaverse-logo.jpeg" className="w-[150px] h-[150px] lg:w-[100px] lg:h-[100px] sm:w-[60px] sm:h-[60px] object-cover rounded-full m-auto" alt="" />
+                <img src={MetaverseLogo} className="w-[150px] h-[150px] lg:w-[100px] lg:h-[100px] sm:w-[60px] sm:h-[60px] object-cover rounded-full m-auto" alt="" />
                 <div className="mt-3 font-b5 text-[20px] text-center lg:text-sm">{t("metaverse")}</div>
               </div>
             </div>
             <div className="flex sm:flex-col">
               <div className="mx-16 my-5 lg:mx-6 sm:mx-2">
-                <img src="/Blog-logo.jpeg" className="w-[150px] h-[150px] lg:w-[100px] lg:h-[100px] sm:w-[60px] sm:h-[60px] object-cover rounded-full m-auto" alt="" />
+                <img src={blogLogio} className="w-[150px] h-[150px] lg:w-[100px] lg:h-[100px] sm:w-[60px] sm:h-[60px] object-cover rounded-full m-auto" alt="" />
                 <div className="mt-3 font-b5 text-[20px] text-center lg:text-sm">{t("NFTnews")}</div>
               </div>
               <div className="mx-16 my-5 lg:mx-6 sm:mx-2">
-                <img src="/AI-logo.png" className="w-[150px] h-[150px] lg:w-[100px] lg:h-[100px] sm:w-[60px] sm:h-[60px] object-cover rounded-full m-auto" alt="" />
+                <img src={aiLogo} className="w-[150px] h-[150px] lg:w-[100px] lg:h-[100px] sm:w-[60px] sm:h-[60px] object-cover rounded-full m-auto" alt="" />
                 <div className="mt-3 font-b5 text-[20px] text-center lg:text-sm">{t("artinaAI")}</div>
               </div>
             </div>
@@ -35,21 +43,21 @@ const Innovations = ({ className = "" }) => {
           <div className="flex justify-around">
             <div className="flex sm:flex-col">
               <div className="mx-16 my-5 lg:mx-6 sm:mx-2">
-                <img src="/wallet-vector-icon.jpg" className="w-[150px] h-[150px] lg:w-[100px] lg:h-[100px] sm:w-[60px] sm:h-[60px] object-cover rounded-full m-auto" alt="" />
+                <img src={walletVectorIcon} className="w-[150px] h-[150px] lg:w-[100px] lg:h-[100px] sm:w-[60px] sm:h-[60px] object-cover rounded-full m-auto" alt="" />
                 <div className="mt-3 font-b5 text-[20px] text-center lg:text-sm">{t("personalWalletGenerate")}</div>
               </div>
               <div className="mx-16 my-5 lg:mx-6 sm:mx-2">
-                <img src="/matic-logo.png" className="w-[150px] h-[150px] lg:w-[100px] lg:h-[100px] sm:w-[60px] sm:h-[60px] object-cover rounded-full m-auto" alt="" />
+                <img src={maticLogo} className="w-[150px] h-[150px] lg:w-[100px] lg:h-[100px] sm:w-[60px] sm:h-[60px] object-cover rounded-full m-auto" alt="" />
                 <div className="mt-3 font-b5 text-[20px] text-center lg:text-sm">{t("gasFeeCalc")}</div>
               </div>
             </div>
             <div className="flex sm:flex-col">
               <div className="mx-16 my-5 lg:mx-6 sm:mx-2">
-                <img src="/matic-ic.png" className="w-[150px] h-[150px] lg:w-[100px] lg:h-[100px] sm:w-[60px] sm:h-[60px] object-cover rounded-full m-auto" alt="" />
+                <img src={maticIc} className="w-[150px] h-[150px] lg:w-[100px] lg:h-[100px] sm:w-[60px] sm:h-[60px] object-cover rounded-full m-auto" alt="" />
                 <div className="mt-3 font-b5 text-[20px] text-center lg:text-sm">{t("dataAnalysisDivision")}</div>
               </div>
               <div className="mx-16 my-5 lg:mx-6 sm:mx-2">
-                <img src="/Blockchain-logo.png" className="w-[150px] h-[150px] lg:w-[100px] lg:h-[100px] sm:w-[60px] sm:h-[60px] object-cover rounded-full m-auto" alt="" />
+                <img src={BlockchainLogo} className="w-[150px] h-[150px] lg:w-[100px] lg:h-[100px] sm:w-[60px] sm:h-[60px] object-cover rounded-full m-auto" alt="" />
                 <div className="mt-3 font-b5 text-[20px] text-center lg:text-sm">{t("smartCintract")}</div>
               </div>
             </div>
