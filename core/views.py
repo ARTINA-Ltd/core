@@ -43,7 +43,7 @@ from django.db.models import Count, Q
 from .serializers import CategorySerializer, CollectionNFTSerializer, NFTRatingSerializer, OwnerWithLikesSerializer
 from django_filters import rest_framework as filters
 import time
- 
+from decimal import Decimal 
 
 # Initialize Web3
 w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
@@ -194,7 +194,25 @@ def get_winner(token_id):
         return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+def transfer_matic(to_address, amount):
+    COMPANY_WALLET_ADDRESS = '0xYourCompanyWalletAddress'
+    COMPANY_WALLET_PRIVATE_KEY = 'YourCompanyWalletPrivateKey'
 
+    nonce = polygon_w3.eth.getTransactionCount(COMPANY_WALLET_ADDRESS)
+    tx = {
+        'nonce': nonce,
+        'to': to_address,
+        'value': polygon_w3.toWei(amount, 'ether'),
+        'gas': 2000000,
+        'gasPrice': polygon_w3.toWei('50', 'gwei')
+    }
+
+    signed_tx = polygon_w3.eth.account.signTransaction(tx, COMPANY_WALLET_PRIVATE_KEY)
+    tx_hash = polygon_w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+    polygon_w3.eth.waitForTransactionReceipt(tx_hash)
+
+    return tx_hash
+ 
 
 class OrderViewSet(viewsets.ViewSet):
     queryset = Order.objects.all()
@@ -329,24 +347,62 @@ class NftViewSet(viewsets.ModelViewSet):
             data[str(nft.token_id)] = nft.image_url
         return JsonResponse(data)
 
+
+
+    
     @action(detail=False, methods=["put"])
     def sell(self, request, pk=None):
+        user = self.request.user
         nft_id = request.data.get('token_id')
         start_date = request.data.get('start_date')
         end_date = request.data.get('end_date')
         floor_price = request.data.get('floor_price')
+
         try:
             nft = NFT.objects.get(token_id=nft_id)
-        except Http404:
+        except NFT.DoesNotExist:
             return Response({"error": "NFT not found."}, status=status.HTTP_404_NOT_FOUND)
 
+        # Check user's MATIC balance
+        user_wallet = Wallet.objects.filter(user=user).first()
+        if not user_wallet:
+            return Response({"error": "User wallet not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            balance_response = get_balance(user)
+            if balance_response.status_code != 200:
+                return balance_response
+            user_balance = Decimal(balance_response.data["matic_balance"])
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        # Check if the user has sold any NFTs before
+        has_sold_before = NFT.objects.filter(owner=user, is_for_sale=False).exists()
+
+        # Ensure the user has at least 0.03 MATIC or it's their first sale and they will receive 0.1 MATIC
+        if user_balance < Decimal('0.03'):
+            if not has_sold_before:
+                # Transfer 0.1 MATIC from company wallet to user wallet
+                try:
+                    transfer_matic(user_wallet.address, 0.1)
+                except Exception as e:
+                    return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+                # Notify user about the reward
+                return Response({"message": "You have received 0.1 MATIC as a reward for selling your first NFT."}, status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "You do not have enough balance to cover the gas fee to sell this NFT."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Proceed with marking the NFT as for sale
         nft.is_for_sale = True
         nft.start_date = start_date
         nft.end_date = end_date
         nft.last_price = floor_price
         nft.save()
-        print("ok by database")
+
         return Response({"message": "NFT is now for sale."}, status=status.HTTP_200_OK)
+     
+
 
 
     @action(detail=False, methods=['put'])
