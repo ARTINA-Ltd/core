@@ -1025,25 +1025,66 @@ class PaymentGateViewSet(viewsets.ViewSet):
 
 
 
+from web3 import Web3
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Wallet
 
+# Connect to the Polygon network
+polygon_w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
 
+# Address of the WETH (Wrapped ETH) token on the Polygon network
+WETH_CONTRACT_ADDRESS = '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619'
 
-
-
-w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
-#test net w3 = Web3(Web3.HTTPProvider("https://mumbai.rpc.thirdweb.com"))
 def get_balance(user):
     user_wallet = Wallet.objects.filter(user=user).first()
-    print(f"user_wallet is: {user_wallet}")
+    
     if not user_wallet:
-            balance = {
-            'matic_balance': 0,
-            'eth_balance':0,
-            'wallet_address' : "" }
-            return Response(balance, status=status.HTTP_200_OK)
-    else :
-        balance = w3.eth.getBalance(user_wallet.address)
-        print(f"Balance: {balance}")
+        return Response({"error": "Wallet not found for the user."}, status=status.HTTP_404_NOT_FOUND)
+    
+    try:
+        # Get MATIC balance on Polygon
+        matic_balance_wei = polygon_w3.eth.get_balance(user_wallet.address)
+        matic_balance_matic = polygon_w3.fromWei(matic_balance_wei, 'ether')
+
+        # Get WETH (Wrapped ETH) balance on Polygon
+        weth_contract = polygon_w3.eth.contract(address=WETH_CONTRACT_ADDRESS, abi=[
+            {
+                'constant': True,
+                'inputs': [{'name': '_owner', 'type': 'address'}],
+                'name': 'balanceOf',
+                'outputs': [{'name': 'balance', 'type': 'uint256'}],
+                'type': 'function'
+            }
+        ])
+        weth_balance_wei = weth_contract.functions.balanceOf(user_wallet.address).call()
+        weth_balance_eth = polygon_w3.fromWei(weth_balance_wei, 'ether')
+
+        return Response({
+            "matic_balance": matic_balance_matic,
+            "eth_balance": weth_balance_eth
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+
+
+#w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
+#test net w3 = Web3(Web3.HTTPProvider("https://mumbai.rpc.thirdweb.com"))
+#def get_balance(user):
+#    user_wallet = Wallet.objects.filter(user=user).first()
+#    print(f"user_wallet is: {user_wallet}")
+#    if not user_wallet:
+#            balance = {
+#            'matic_balance': 0,
+#            'eth_balance':0,
+#            'wallet_address' : "" }
+#            return Response(balance, status=status.HTTP_200_OK)
+#    else :
+ #       balance = w3.eth.getBalance(user_wallet.address)
+ #       print(f"Balance: {balance}")
         # user_wallet.balance=balance
         # user_wallet.save
         # balance = {
@@ -1054,7 +1095,7 @@ def get_balance(user):
             # Add other balance fields as needed
             # }
 
-        return Response(balance, status=status.HTTP_200_OK)
+#        return Response(balance, status=status.HTTP_200_OK)
 
 
 
