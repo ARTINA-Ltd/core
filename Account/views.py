@@ -1101,7 +1101,7 @@ class WalletViewSet(viewsets.ViewSet):
             return Response({'message': 'user wallet has created.', 'address': author_address}, status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=['get'])
-    def get_br(self):
+    def get_br(self,request):
         user = self.request.user
         if not user:
             return JsonResponse({"error": "user is required"}, status=400)
