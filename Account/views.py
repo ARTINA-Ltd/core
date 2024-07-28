@@ -1044,15 +1044,15 @@ def get_balance(user):
     else :
         balance = w3.eth.getBalance(user_wallet.address)
         print(f"Balance: {balance}")
-        user_wallet.balance=balance
-        user_wallet.save
-        balance = {
-                'matic_balance': user_wallet.MATIC_balance,
-                'wallet_address' : user_wallet.address,
-                'eth_balance':user_wallet.ETH_balance
+        # user_wallet.balance=balance
+        # user_wallet.save
+        # balance = {
+        #         'matic_balance': user_wallet.MATIC_balance,
+        #         'wallet_address' : user_wallet.address,
+        #         'eth_balance':user_wallet.ETH_balance
 
             # Add other balance fields as needed
-            }
+            # }
 
         return Response(balance, status=status.HTTP_200_OK)
 
