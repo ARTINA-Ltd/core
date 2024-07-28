@@ -13,7 +13,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create_user(validated_data['username'], validated_data['email'], validated_data['password'])
-        profile = Profile(user=user)
+        profile = Profile(user=user,email=email)
         profile.save()
         # msg = Msg.objects.get(id=0)
         notify_User = NotifyUser(user=user , text="welcome to artina")
