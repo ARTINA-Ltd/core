@@ -1035,7 +1035,31 @@ class PaymentGateViewSet(viewsets.ViewSet):
 
 w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
 #test net w3 = Web3(Web3.HTTPProvider("https://mumbai.rpc.thirdweb.com"))
+def get_balance(user):
+    user_wallet = Wallet.objects.filter(user=user).first()
+    print(f"user_wallet is: {user_wallet}")
+    if not user_wallet:
+            balance = {
+            'matic_balance': 0,
+            'eth_balance':0,
+            'wallet_address' : ""
+            # Add other balance fields as needed
+            }
+    return Response(balance, status=status.HTTP_200_OK)
 
+    balance = w3.eth.getBalance(user_wallet.address)
+    print(f"Balance: {balance}")
+    user_wallet.balance=balance
+    user_wallet.save
+    balance = {
+            'matic_balance': user_wallet.MATIC_balance,
+            'wallet_address' : user_wallet.address,
+            'eth_balance':user_wallet.ETH_balance
+
+            # Add other balance fields as needed
+        }
+
+    return Response(balance, status=status.HTTP_200_OK)
 class WalletViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
     def create_wallet(self, request):
@@ -1079,7 +1103,25 @@ class WalletViewSet(viewsets.ViewSet):
             author_address=account.address
             return Response({'message': 'user wallet has created.', 'address': author_address}, status=status.HTTP_201_CREATED)
 
+    @action(detail=False, methods=['post'])
+    def get_br(self, request):
+        user = self.request.user
+        if not user:
+            return JsonResponse({"error": "user is required"}, status=400)
         
+        try:
+            # Call the get_winner function
+            result = get_balance(user)
+            # Check if result is a Response object (in case of errors within get_winner)
+            if isinstance(result, Response):
+                return result
+            return JsonResponse(result, status=200)
+        except Exception as e:
+            # Catch and handle unexpected errors
+            error_message = f"An unexpected error occurred: {str(e)}"
+            print(error_message)  # Log error to console for debugging
+            return JsonResponse({"error": error_message}, status=500)
+            
 
 # Initialize Web3 connection
 def connect_with_retry():
@@ -1189,31 +1231,7 @@ class EmailMixin(viewsets.ViewSet):
 from rest_framework import viewsets
 from rest_framework.response import Response
 import requests
-def get_balance(user):
-    user_wallet = Wallet.objects.filter(user=user).first()
-    print(f"user_wallet is: {user_wallet}")
-    if not user_wallet:
-            balance = {
-            'matic_balance': 0,
-            'eth_balance':0,
-            'wallet_address' : ""
-            # Add other balance fields as needed
-            }
-    return Response(balance, status=status.HTTP_200_OK)
 
-    balance = w3.eth.getBalance(user_wallet.address)
-    print(f"Balance: {balance}")
-    user_wallet.balance=balance
-    user_wallet.save
-    balance = {
-            'matic_balance': user_wallet.MATIC_balance,
-            'wallet_address' : user_wallet.address,
-            'eth_balance':user_wallet.ETH_balance
-
-            # Add other balance fields as needed
-        }
-
-    return Response(balance, status=status.HTTP_200_OK)
 
 
 class TransactionyViewSet(viewsets.ViewSet):
