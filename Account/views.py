@@ -82,7 +82,7 @@ class NotifyUserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-logger = logging.getLogger('file_register')
+loggerReg = logging.getLogger('file_register')
 
 class RegisterViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -94,14 +94,14 @@ class RegisterViewSet(viewsets.ModelViewSet):
         phone_number = request.data.get('phone_number')
         email = request.data.get('email')
         is_foreigner = request.data.get('is_foreigner')
-        logger.info(f"Register attempt for username: {username}, email: {email}, phone_number: {phone_number}")  # Log the registration attempt
+        loggerReg.info(f"Register attempt for username: {username}, email: {email}, phone_number: {phone_number}")  # Log the registration attempt
 
         if User.objects.filter(username=username).exists():
-            logger.warning(f"Username {username} already exists")  # Log if the username already exists
+            loggerReg.warning(f"Username {username} already exists")  # Log if the username already exists
             return Response({'error': 'This username is already taken.'}, status=status.HTTP_400_BAD_REQUEST)
 
         if User.objects.filter(email=email).exists():
-            logger.warning(f"Email {email} is already registered")  # Log if the email already exists
+            loggerReg.warning(f"Email {email} is already registered")  # Log if the email already exists
             return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Create the user if the username, phone_number, and email are all unique
@@ -110,7 +110,7 @@ class RegisterViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         
-        logger.info(f"User registered successfully: {username}, email: {email}, phone_number: {phone_number}")  # Log successful registration
+        loggerReg.info(f"User registered successfully: {username}, email: {email}, phone_number: {phone_number}")  # Log successful registration
         
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
    
@@ -118,17 +118,17 @@ class RegisterViewSet(viewsets.ModelViewSet):
     def check_username (request,username):
         username = request.data.get('username')
         if User.objects.filter(username=username).exists():
-            logger.warning(f"Username {username} already exists")  # Log if the username already exists
+            loggerReg.warning(f"Username {username} already exists")  # Log if the username already exists
             return Response({'error': 'This username is already taken.'}, status=status.HTTP_400_BAD_REQUEST)
     
     @action(detail=False, methods=['post'])
     def check_email (request,email):
         email = request.data.get('email')
         if User.objects.filter(email=email).exists():
-            logger.warning(f"Email {email} is already registered")  # Log if the email already exists
+            loggerReg.warning(f"Email {email} is already registered")  # Log if the email already exists
             return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
 
-logger = logging.getLogger('file_login')
+loggerLog = logging.getLogger('file_login')
 
 class LoginViewSet(viewsets.ViewSet):
 
@@ -139,15 +139,15 @@ class LoginViewSet(viewsets.ViewSet):
         username = request.data.get('username')
         password = request.data.get('password')
         
-        logger.info(f"Login attempt for username: {username}")  # Log the login attempt
+        loggerLogr.info(f"Login attempt for username: {username}")  # Log the login attempt
         
         user = authenticate(username=username, password=password)
         
         if user is None:
-            logger.warning(f"Invalid credentials for username: {username}")  # Log invalid credentials
+            loggerLog.warning(f"Invalid credentials for username: {username}")  # Log invalid credentials
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
         profile = Profile.objects.get(user=user)
-        logger.info(f"Successful login for username: {username}")  # Log successful login
+        loggerLog.info(f"Successful login for username: {username}")  # Log successful login
         
         refresh = RefreshToken.for_user(user)
         response_data = {
@@ -575,10 +575,28 @@ class CryptoViewSet(viewsets.ViewSet):
             if user_balance:
                 user_balance.rial_available_balance -= (amount*price + 10000)
                 user_balance.save()
+                try:
+                    phone_number=user.profile.phone_number
 
-                #artina=ARTINA_Ballance.objects.get(id=0)
-                #artina.artina_rial += 10000
-                #artina.save()
+                    response = requests.post(
+                f"https://api.kavenegar.com/v1/"
+                f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
+                f"/verify/lookup.json",
+                    data={
+                "receptor": phone_number,
+                "token1": user.profile.first_name,
+                "token2": amount,
+                 "token3": symbol,
+                "template": "WalletChargeVerification"
+                 }
+                )
+                except Profile.DoesNotExist :
+                    pass
+                    
+
+                artina=ARTINA_Ballance.objects.first()
+                artina.artina_rial += 10000
+                artina.save()
                 return Response({'message': 'Purchase successful'}, status=response.status_code)
             else:
                 return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
@@ -629,9 +647,26 @@ class CryptoViewSet(viewsets.ViewSet):
             if user_balance:
                 user_balance.rial_available_balance += (amount*price - 10000)
                 user_balance.save()
-                #artina=ARTINA_Ballance.objects.get(id=0)
-                #artina.artina_rial += 10000
-                #artina.save()
+                try:
+                    phone_number=user.profile.phone_number
+
+                    response = requests.post(
+                f"https://api.kavenegar.com/v1/"
+                f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
+                f"/verify/lookup.json",
+                    data={
+                "receptor": phone_number,
+                "token1": user.profile.first_name,
+                "token2":  (amount*price - 10000)
+                "template": "AccountChargeVerification"
+                 }
+                )
+                except Profile.DoesNotExist :
+                    pass
+                    )
+                artina=ARTINA_Ballance.objects.first()
+                artina.artina_rial += 10000
+                artina.save()
                 return Response({'message': 'Purchase successful'}, status=response.status_code)
             else:
                 return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
