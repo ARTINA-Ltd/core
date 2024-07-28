@@ -139,7 +139,7 @@ class LoginViewSet(viewsets.ViewSet):
         username = request.data.get('username')
         password = request.data.get('password')
         
-        loggerLogr.info(f"Login attempt for username: {username}")  # Log the login attempt
+        loggerLog.info(f"Login attempt for username: {username}")  # Log the login attempt
         
         user = authenticate(username=username, password=password)
         
@@ -262,7 +262,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
         return Response(status=204)
 
 # {"subject" :"jdfskhj" , "text":"skjdfkzs","email":"me@artina.org"}
-from rest_framework.exceptions import PermissionDenied
 
 class TicketViewSet(viewsets.ViewSet):
 
@@ -646,24 +645,25 @@ class CryptoViewSet(viewsets.ViewSet):
     
             if user_balance:
                 user_balance.rial_available_balance += (amount*price - 10000)
+                total=(amount*price - 10000)
                 user_balance.save()
                 try:
                     phone_number=user.profile.phone_number
 
                     response = requests.post(
-                f"https://api.kavenegar.com/v1/"
-                f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
-                f"/verify/lookup.json",
-                    data={
-                "receptor": phone_number,
-                "token1": user.profile.first_name,
-                "token2":  (amount*price - 10000)
-                "template": "AccountChargeVerification"
-                 }
-                )
+                        f"https://api.kavenegar.com/v1/"
+                        f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
+                        f"/verify/lookup.json",
+                        data={
+                            "receptor": phone_number,
+                            "token1": user.profile.first_name,
+                            "token2":  total,
+                            "template": "AccountChargeVerification"
+                                }
+                                )
                 except Profile.DoesNotExist :
                     pass
-                    )
+                    
                 artina=ARTINA_Ballance.objects.first()
                 artina.artina_rial += 10000
                 artina.save()
@@ -889,10 +889,7 @@ class PasswordResetByPhoneViewSet(viewsets.ViewSet):
 
 
 
-from rest_framework import viewsets, status
-from rest_framework.response import Response
-from rest_framework.decorators import action
-import requests
+
 
 class PaymentGateViewSet(viewsets.ViewSet):
 
@@ -1103,8 +1100,8 @@ class WalletViewSet(viewsets.ViewSet):
             author_address=account.address
             return Response({'message': 'user wallet has created.', 'address': author_address}, status=status.HTTP_201_CREATED)
 
-    @action(detail=False, methods=['post'])
-    def get_br(self, request):
+    @action(detail=False, methods=['get'])
+    def get_br(self):
         user = self.request.user
         if not user:
             return JsonResponse({"error": "user is required"}, status=400)
@@ -1179,7 +1176,7 @@ class EmailMixin(viewsets.ViewSet):
     def email_verification(self, request):
         recipient_email = request.data.get('email')
         user = self.request.user
-        user = User.objects.get(profile__email=email)
+        email = User.objects.get(profile__email=email)
         if not email:
             return Response({'error': 'email is required.'}, status.HTTP_400_BAD_REQUEST)
 
@@ -1228,9 +1225,7 @@ class EmailMixin(viewsets.ViewSet):
 
 # Assuming you have already set up Django Rest Framework and configured your project
 # 9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf
-from rest_framework import viewsets
-from rest_framework.response import Response
-import requests
+
 
 
 
@@ -1243,8 +1238,8 @@ class TransactionyViewSet(viewsets.ViewSet):
         ballanceM= res.balance.matic_balance
         ballanceE= res.balance.eth_balance
         userbalance = UserBalance.objects.get(user=user)
-        balance.matic_balance+=ballanceM
-        balance.eth_balance+=ballanceE
+        ballanceM.matic_balance+=ballanceM
+        ballanceE.eth_balance+=ballanceE
         baalance.save()
 
         # use connect_with_retry() to get a connected Web3 instance

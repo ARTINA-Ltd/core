@@ -5,6 +5,9 @@ from core.models import NFT , Order , MyImage , NFTRating , Category , Collectio
 from core import serializers
 from eth_account import Account
 from thirdweb.types.nft import NFTMetadataInput 
+
+from .models import PDF
+from .serializers import PDFSerializer
 import json
 import requests
 from rest_framework import viewsets
@@ -650,9 +653,6 @@ class MyImageViewSet(viewsets.ModelViewSet):
         return Response({'id': serializer.data['id'], 'image': image_url}, status=status.HTTP_201_CREATED, headers=headers)
 
 
-from django.conf import settings
-from .models import PDF
-from .serializers import PDFSerializer
 
 class PDFViewSet(viewsets.ModelViewSet):
     queryset = PDF.objects.all()
