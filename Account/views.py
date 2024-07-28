@@ -1039,24 +1039,25 @@ def get_balance(user):
             balance = {
             'matic_balance': 0,
             'eth_balance':0,
-            'wallet_address' : ""
+            'wallet_address' : "" }
+            return Response(balance, status=status.HTTP_200_OK)
+    else :
+        balance = w3.eth.getBalance(user_wallet.address)
+        print(f"Balance: {balance}")
+        user_wallet.balance=balance
+        user_wallet.save
+        balance = {
+                'matic_balance': user_wallet.MATIC_balance,
+                'wallet_address' : user_wallet.address,
+                'eth_balance':user_wallet.ETH_balance
+
             # Add other balance fields as needed
             }
-    return Response(balance, status=status.HTTP_200_OK)
 
-    balance = w3.eth.getBalance(user_wallet.address)
-    print(f"Balance: {balance}")
-    user_wallet.balance=balance
-    user_wallet.save
-    balance = {
-            'matic_balance': user_wallet.MATIC_balance,
-            'wallet_address' : user_wallet.address,
-            'eth_balance':user_wallet.ETH_balance
+        return Response(balance, status=status.HTTP_200_OK)
 
-            # Add other balance fields as needed
-        }
 
-    return Response(balance, status=status.HTTP_200_OK)
+
 class WalletViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
     def create_wallet(self, request):
