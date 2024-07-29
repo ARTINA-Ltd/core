@@ -30,7 +30,6 @@ const BalanceDialogMatic = () => {
       })
       .then((res) => {
         setData(res.data);
-        console.log(res.data);
       });
     axios
       .get("https://api.artina.org/api/account/user-turnover/get_balance/", {
@@ -45,7 +44,10 @@ const BalanceDialogMatic = () => {
           setTurnOver(res.data);
         }
       })
-      .catch((e) => {});
+      .catch((e) => {
+        console.log(e);
+
+      });
   };
 
   useEffect(() => {
