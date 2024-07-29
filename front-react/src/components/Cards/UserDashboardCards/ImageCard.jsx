@@ -9,7 +9,7 @@ import i18n from "./../../../i18n";
 import SimpleInput from "./../../Inputs/SimpleInput";
 import { Notify } from "notiflix";
 
-const ImageCard = ({ className, children, src, price, onClick, tokenId, showSell = false, onClickShow, onClickHide, has_creator, visible,isForSale }) => {
+const ImageCard = ({ className, children, src, price, onClick, tokenId,showCancel, showSell = false, onClickShow, onClickHide, has_creator, visible,isForSale }) => {
   const [isVisible, setIsVisible] = useState(visible);
   const [isExpanded, setIsExpanded] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");
@@ -129,13 +129,15 @@ const handleCancel =()=>{
                     )}
                   </div>
                   <BorderButton className={"font-bold"} onClick={() => document.getElementById("TransferDialog").showModal()}>
-                  {t("transfer")}
+                    {t("transfer")}
                   </BorderButton>
                   <BorderButton className={"font-bold"} onClick={handleExpand}>
                     {isExpanded ? t("collapse") : t("sell")}
                   </BorderButton>
                 </div>
-              ):<BorderButton onClick={handleCancel}>{t("cancelSell")}</BorderButton>}
+              ) : (
+                showCancel && <BorderButton onClick={handleCancel}>{t("cancelSell")}</BorderButton>
+              )}
             </div>
             <div className={`relative w-full mx-auto ease-out outline-[1.5rem] sm:outline-[.8rem] outline outline-base-100 duration-300 ${isExpanded ? "z-0" : "-translate-y-full  -z-10"} overflow-hidden shadow-2xl`}>
               <SellArea tokenId={tokenId} cancel={handleExpand} />
