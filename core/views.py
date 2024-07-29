@@ -139,6 +139,7 @@ def transferNFT(token_id, sender, recipient):
         print(f"Error in transferNFT: {e}")
         return JsonResponse({"message": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    
 def order_Report(token_id):
     try:
         nft = get_object_or_404(NFT, token_id=token_id)
@@ -148,6 +149,11 @@ def order_Report(token_id):
                 bid.status = 1
                 bid.report = 2
                 bid.save()
+                balance= UserBalance.objects.get(user=bid.bidder)
+                balance.rial_available_balance+= bid.fee
+                balance.rial_available_balance-= bid.fee
+                balance.save()
+                NotifyUser.objects.create(user=bid.bidder, text="Your money reverted to your balance")
                 NotifyUser.objects.create(user=bid.bidder, text="You lost the bid")
         print("Change report status done")
     except Exception as e:
@@ -177,7 +183,24 @@ def get_winner(token_id):
         highest_bid.status = 1
         highest_bid.save()
         recipient = highest_bid.bidder
+        balance= UserBalance.objects.get(user=highest_bid.bidder)
+        balance.rial_untradable_balance-= highest_bid.fee
+        balance.save()
 
+        #artina
+        artina=ARTINA_Ballance.objects.first()
+        
+        value=(1.5*highest_bid.fee)/100
+        artina.artina_commision=value
+        artina.artina_commision_count += 1
+        artina.save
+        #owner
+
+        balanceowner= UserBalance.objects.get(user=nft.owner)
+        total= highest_bid.fee - value
+        balanceowner.rial_available_balance += total
+        balanceowner.save()
+        NotifyUser.objects.create(user=bid.bidder, text="You sold your nft and your balance updated")
         order_Report(token_id)
         result = transferNFT(token_id, sender, recipient)
         print(f"Result: {result}")
@@ -195,16 +218,20 @@ def get_winner(token_id):
 
 
 def transfer_matic(to_address, amount):
-    COMPANY_WALLET_ADDRESS = '0xYourCompanyWalletAddress'
-    COMPANY_WALLET_PRIVATE_KEY = 'YourCompanyWalletPrivateKey'
-
+    COMPANY_WALLET_ADDRESS = '0x2293221D7c357FB04De9c7D0dEeBcA427407429D'
+    COMPANY_WALLET_PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
+    
+    base_fee_per_gas = 244  # in wei (this is very low for current standards)
+    priority_fee = 50000000000  # 50 Gwei in wei for priority fee
+        
+    gas_price = base_fee_per_gas + priority_fee
     nonce = polygon_w3.eth.getTransactionCount(COMPANY_WALLET_ADDRESS)
     tx = {
         'nonce': nonce,
         'to': to_address,
         'value': polygon_w3.toWei(amount, 'ether'),
-        'gas': 2000000,
-        'gasPrice': polygon_w3.toWei('50', 'gwei')
+        'gas': 20000000,
+        'gasPrice': gas_price
     }
 
     signed_tx = polygon_w3.eth.account.signTransaction(tx, COMPANY_WALLET_PRIVATE_KEY)
