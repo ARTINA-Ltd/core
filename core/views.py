@@ -677,10 +677,10 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
             user_balance.rial_available_balance=n
             user_balance.save()
         # Create the NFT metadata
+        # 'collection':collection.name
             prop={
                 'owner':user.username,
                 'creator': creator ,
-                'collection':collection.name
             }
             nft_metadata = {
             'name': nft_name,
