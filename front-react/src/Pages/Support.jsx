@@ -6,6 +6,7 @@ import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import axios from "axios";
 import { UserContext } from "../App";
 import { Block, Notify } from "notiflix";
+import ReCAPTCHA from "react-google-recaptcha";
 import BorderButton from "../components/Buttons/BorderButton";
 import { useRef } from "react";
 import { useEffect } from "react";
@@ -20,6 +21,15 @@ const Support = () => {
     last_name: "",
     phone_number: "",
   });
+  const captchaRef = useRef(null);
+  const [captchaRes, setCaptchaRes] = useState(false);
+  const handleCaptchaChange = (e) => {
+    if (e.length != 0) {
+      setCaptchaRes(true);
+    } else {
+      setCaptchaRes(false);
+    }
+  };
   const user = useContext(UserContext);
   const [image, setImage] = useState();
   const [imageUrl, setImageUrl] = useState();
@@ -184,7 +194,7 @@ const Support = () => {
             />
           </div>
         </div>
-        <div className="mt-3">{t("subject")}</div>
+        <div className="mt-3">{t("context")}</div>
         <textarea
           className={"w-full border-[1px] border-primary bg-base-100 outline-none mt-1 min-h-[190px] p-5 rounded-xl text-lg font-b2 leading-loose"}
           type="text"
@@ -198,9 +208,13 @@ const Support = () => {
           }
           defaultValue={null}
         />
-
+        <div className="mx-auto w-fit my-4">
+        <ReCAPTCHA sitekey={"6LecwBMnAAAAAItOWnJM8T17TlvnA1ewPIUGDuj_"} ref={captchaRef} onChange={handleCaptchaChange} />
+        </div>
         <div className="flex justify-center mt-5">
-          <BorderButton onClick={handleSubmit}>{t("send")}</BorderButton>
+          <BorderButton disabled={!captchaRes} onClick={!captchaRes ? () => {} : handleSubmit}>
+            {t("send")}
+          </BorderButton>
         </div>
       </SimpleCard>
     </TestLayout>

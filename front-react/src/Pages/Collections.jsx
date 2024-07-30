@@ -23,7 +23,6 @@ const Collections = () => {
   useEffect(() => {
     axios.get(`https://api.artina.org/api/transaction/collection/${username}/nfts/`, {}).then((res) => {
       setData(res.data);
-      console.log(res.data);
     });
 
     axios
@@ -82,7 +81,7 @@ const Collections = () => {
     <TestLayout>
       {user && getUser && getData && user.data.username !== username && (
         <div>
-          <div className="w-full flex gap-16 items-center p-6 bg-white rounded-xl mb-4 sm:p-3 sm:gap-4 sm:flex-col">
+          <div className="w-full flex gap-16 items-center p-6 bg-base-100 rounded-xl mb-4 sm:p-3 sm:gap-4 sm:flex-col">
             <img src={getUser.profile_picture} className="rounded-full object-cover h-52 w-52 flex-shrink-0 sm:w-[120px] sm:h-[120px]" alt="" />
             <div className="w-full flex flex-col font-b6">
               <div>
@@ -123,7 +122,7 @@ const Collections = () => {
           ) : null}
 
           {getData.map((item, index) => (
-            <ImageCard key={index} className="bg-base-100 h-[30rem] min-h-[26rem] w-80 sm:w-full my-auto shadow-md max-w-[25rem] p-6 hover:shadow-xl ease-in-out duration-300 grow sm:mx-auto rounded-xl flex-col" src={item.image_url} price={item.last_price} onClick={() => navigate(`/nft-details/${item.token_id}`)} tokenId={item.token_id} showSell={user ? (user.data.username === username)&&item.is_for_sale === false : false} visible={item.is_visible} onClickShow={(e, x) => handleClickShow(e, x, item.token_id)} onClickHide={(e, x) => handleClickHide(e, x, item.token_id)} >
+            <ImageCard key={index} className="bg-base-100 h-[30rem] min-h-[26rem] w-80 sm:w-full my-auto shadow-md max-w-[25rem] p-6 hover:shadow-xl ease-in-out duration-300 grow sm:mx-auto rounded-xl flex-col" src={item.image_url} price={item.last_price} onClick={() => navigate(`/nft-details/${item.token_id}`)} tokenId={item.token_id} showCancel={user?.data.username === username} showSell={user ? (user.data.username === username)&&item.is_for_sale === false : false} visible={item.is_visible} onClickShow={(e, x) => handleClickShow(e, x, item.token_id)} onClickHide={(e, x) => handleClickHide(e, x, item.token_id)} >
               {item.name}
             </ImageCard>
           ))}

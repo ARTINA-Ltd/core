@@ -1,5 +1,3 @@
-import Header from "./../components/AdminPageNavbar/Header";
-import Footer from "./../components/Footer/Footer";
 import BorderButton from "./../components/Buttons/BorderButton";
 import Avatar from "../assets/images/man.png";
 import SimpleInput from "./../components/Inputs/SimpleInput";

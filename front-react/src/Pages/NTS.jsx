@@ -13,7 +13,7 @@ const NTS = () => {
     <div className="bg-[#0A1120] z-10 p-8 w-screen">
     <NightSky />
       <div className="flex items-center justify-around">
-          <div className="text-accent-content h-fit p-10 rounded-full z-10 bg-accent flex justify-center items-center">
+          <div className="text-accent-content h-fit p-10 rounded-full z-10 bg-primary flex justify-center items-center">
             <h1 className="text-7xl lg:text-5xl text-center leading-loose">claim your NFT</h1>
           </div>
           <img src={rocket} alt="" className="w-1/3 z-10" />
