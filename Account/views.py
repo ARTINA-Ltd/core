@@ -438,7 +438,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
             }
             return Response(balance, status=status.HTTP_200_OK)
 
-        balance = w3.eth.getBalance(user_wallet.address)
+        balance = polygon_w3.eth.getBalance(user_wallet.address)
         print(f"Balance: {balance}")
         user_wallet.balance=balance
         user_wallet.save
@@ -539,6 +539,37 @@ class CryptoViewSet(viewsets.ViewSet):
         symbol= request.data.get('symbol') 
         amount = float(request.data.get('amount'))  # Ensure amount is a float
         price = float(request.data.get('price'))  # Ensure price is a float
+        transactionCurrency=TransactionCurrency.objects.filter(name=symbol).first()
+        transactionINS=Transaction.objects.create(user=user, transaction_currency=transactionCurrency,amount=amount,side="BUY",status='Pending')
+        total=amount*price
+        balance_check = check_balance(amount=total, user_id=user.id)
+        if balance_check.status_code != status.HTTP_200_OK:
+            return Response({'error': 'Purchase failed'}, status=status.HTTP_400_BAD_REQUEST)
+            
+        url = 'https://api.wallex.ir/v1/account/otc/orders'
+        headers = {
+            'Content-Type': 'application/json',
+            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  
+        }
+        data = {
+            'symbol': symbol, 
+            'side': "BUY",
+            'amount': amount,
+            'price': price,
+        }
+        response = requests.post(url, headers=headers, json=data)
+        datam = response.json()
+        # Check if the request was successful
+        if response.status_code == 201:
+            transactionINS.status='completed'
+            transactionINS.save()
+            balance_update = updating_balance(user_id=user.id, currency=symbol, amount=amount, side="deposit")
+            if balance_update.status_code != status.HTTP_200_OK:
+                return Response({'error': 'Failed to update balance'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    def BackBuyCrypto(user, symbol,amount,price):
+        amount = float(amount)  # Ensure amount is a float
+        price = float(price)  # Ensure price is a float
         transactionCurrency=TransactionCurrency.objects.filter(name=symbol).first()
         transactionINS=Transaction.objects.create(user=user, transaction_currency=transactionCurrency,amount=amount,side="BUY",status='Pending')
         total=amount*price
@@ -1025,10 +1056,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
 
 
 
-from web3 import Web3
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Wallet
+
 
 # Connect to the Polygon network
 polygon_w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
@@ -1109,7 +1137,7 @@ class WalletViewSet(viewsets.ViewSet):
             return Response({'message': 'Wallet already exists for this user.'}, status=status.HTTP_400_BAD_REQUEST)
 
         private_key = Web3.toHex(os.urandom(32))  # Generate a random private key
-        account = w3.eth.account.privateKeyToAccount(private_key)
+        account = polygon_w3.eth.account.privateKeyToAccount(private_key)
 
         wallet = Wallet.objects.create(user=user, address=account.address, private_key=private_key)
         
@@ -1137,7 +1165,7 @@ class WalletViewSet(viewsets.ViewSet):
 
         else :
             private_key = Web3.toHex(os.urandom(32))  # Generate a random private key
-            account = w3.eth.account.privateKeyToAccount(private_key)
+            account = polygon_w3.eth.account.privateKeyToAccount(private_key)
             wallet = Wallet.objects.create(user=user, address=account.address, private_key=private_key)
             author_address=account.address
             return Response({'message': 'user wallet has created.', 'address': author_address}, status=status.HTTP_201_CREATED)
@@ -1273,23 +1301,28 @@ class EmailMixin(viewsets.ViewSet):
 
 class TransactionyViewSet(viewsets.ViewSet):
 
-    def create(self, request):
+    def transfer_matic(self, request):
+        w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
+
         user = request.user
         wallet= Wallet.objects.get(user=user)
         res=get_balance(user)
-        ballanceM= res.balance.matic_balance
-        ballanceE= res.balance.eth_balance
+        ballanceM= res.matic_balance
+        ballanceE= res.eth_balance                    
         userbalance = UserBalance.objects.get(user=user)
-        ballanceM.matic_balance+=ballanceM
-        ballanceE.eth_balance+=ballanceE
-        baalance.save()
+        userbalance.matic_balance+=ballanceM
+        userbalance.eth_balance+=ballanceE
+        userbalance.save()
 
         # use connect_with_retry() to get a connected Web3 instance
         # w3 = connect_with_retry()
-        print(f"ad:{recipient_address}")
         private_key = wallet.private_key
-        gas_price = w3.toWei('5', 'gwei')  # Example gas price
-        gas_limit = 21000  # Example gas limit
+        gas_limit = 200000  # Example gas limit
+        base_fee_per_gas = 244  # in wei (this is very low for current standards)
+        priority_fee = 50000000000  # 50 Gwei in wei for priority fee
+        
+        gas_price = base_fee_per_gas + priority_fee
+        
         if ballanceM != 0 :
             value= ballanceM-0.04
             nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
@@ -1309,39 +1342,13 @@ class TransactionyViewSet(viewsets.ViewSet):
             tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
             print(tx_receipt)
             if tx_receipt.status == 1:
-                transaction = Transaction.objects.create(user=user, amount=amount, status='completed')
+                transaction = Transaction.objects.create(user=user, amount=value, status='completed')
                 print(f"transaction:{transaction}")
                 return Response({'message': 'transfered successfully.'}, status=status.HTTP_200_OK)
             else:
-                transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='failed')
+                transaction = Transaction.objects.create(user=user, matic_amount=value, status='failed')
                 return Response({'message': 'Transaction failed.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        if ballanceE != 0 :
-            value= ballanceE
-            nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
-            transaction_data = {
-                'to': "0x2293221D7c357FB04De9c7D0dEeBcA427407429D",
-                'value': w3.toWei(value, 'ethereum'),
-                'gas': gas_limit,
-                'gasPrice': gas_price,
-                'nonce': nonce,
-                'chainId': 137
-            }
-        
-            signed_txn = w3.eth.account.signTransaction(transaction_data, private_key)
-            print(signed_txn)
-            tx_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)
-            print(tx_hash)
-            tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
-            print(tx_receipt)
-            if tx_receipt.status == 1:
-                transaction = Transaction.objects.create(user=user, amount=amount, status='completed')
-                print(f"transaction:{transaction}")
-                return Response({'message': 'transfered successfully.'}, status=status.HTTP_200_OK)
-            else:
-                transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='failed')
-                return Response({'message': 'Transaction failed.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        else:
-                return Response({'message': 'Transaction failed.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
 
