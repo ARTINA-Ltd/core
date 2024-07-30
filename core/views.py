@@ -256,7 +256,6 @@ class OrderViewSet(viewsets.ViewSet):
         user_balance = UserBalance.objects.filter(user=bidder).first()
         user_rial=user_balance.rial_available_balance
         user_eth=user_balance.eth_balance
-        fee=float(fee)
         nft = NFT.objects.get(token_id=token_id)
         if (nft.owner==bidder):
             return Response({'error': 'you are the owner, you can not bid'},status=HTTPStatus.BAD_REQUEST)
@@ -290,7 +289,7 @@ class OrderViewSet(viewsets.ViewSet):
                 buy_data = response_BUY.json()
                 buy_price = buy_data['result']['price']
             total= fee*  buy_price 
-            total=float(total)
+        
 
             if user_rial< total :
                 return Response({'error': 'insufficient ballance'},status=HTTPStatus.BAD_REQUEST)
