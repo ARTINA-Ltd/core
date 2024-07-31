@@ -566,7 +566,6 @@ class CryptoViewSet(viewsets.ViewSet):
             balance_update = updating_balance(user_id=user.id, currency=symbol, amount=amount, side="deposit")
             if balance_update.status_code != status.HTTP_200_OK:
                 return Response({'error': 'Failed to update balance'}, status=status.HTTP_400_BAD_REQUEST)
-    @action(detail=False, methods=['post'])
 
     def BackBuyCrypto(user, symbol,amount,price):
         amount = float(amount)  # Ensure amount is a float
@@ -639,6 +638,27 @@ class CryptoViewSet(viewsets.ViewSet):
             transactionINS.save()
             return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
 
+    @action(detail=False, methods=['get'])
+    def get_br(self,request):
+        user = self.request.user
+        price=request.data.get("price")
+        if not user:
+            return JsonResponse({"error": "user is required"}, status=400)
+        
+        try:
+            # Call the get_winner function
+            result = self.BackBuyCrypto(user=user, symbol="ETHTMN",amount=0.001,price=price)
+
+            # Check if result is a Response object (in case of errors within get_winner)
+            if isinstance(result, Response):
+                return result
+            return JsonResponse(result, status=200)
+        except Exception as e:
+            # Catch and handle unexpected errors
+            error_message = f"An unexpected error occurred: {str(e)}"
+            print(error_message)  # Log error to console for debugging
+            return JsonResponse({"error": error_message}, status=500)
+            
 
     @action(detail=False, methods=['post'])
     def SellCrypto(self, request):
