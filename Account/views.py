@@ -589,6 +589,7 @@ class CryptoViewSet(viewsets.ViewSet):
             'price': price,
         }
         response = requests.post(url, headers=headers, json=data)
+        print(response)
         datam = response.json()
         # Check if the request was successful
         if response.status_code == 201:
