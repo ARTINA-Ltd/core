@@ -566,7 +566,8 @@ class CryptoViewSet(viewsets.ViewSet):
             balance_update = updating_balance(user_id=user.id, currency=symbol, amount=amount, side="deposit")
             if balance_update.status_code != status.HTTP_200_OK:
                 return Response({'error': 'Failed to update balance'}, status=status.HTTP_400_BAD_REQUEST)
-    
+    @action(detail=False, methods=['post'])
+
     def BackBuyCrypto(user, symbol,amount,price):
         amount = float(amount)  # Ensure amount is a float
         price = float(price)  # Ensure price is a float
