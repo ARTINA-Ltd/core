@@ -567,9 +567,10 @@ class CryptoViewSet(viewsets.ViewSet):
             if balance_update.status_code != status.HTTP_200_OK:
                 return Response({'error': 'Failed to update balance'}, status=status.HTTP_400_BAD_REQUEST)
 
-    def BackBuyCrypto(user, symbol,amount,price):
+    def BackBuyCrypto(id, symbol,amount,price):
         amount = float(amount)  # Ensure amount is a float
         price = float(price)  # Ensure price is a float
+        user=User.objects.get(id)
         transactionCurrency=TransactionCurrency.objects.filter(name=symbol).first()
         transactionINS=Transaction.objects.create(user=user, transaction_currency=transactionCurrency,amount=amount,side="BUY",status='Pending')
         total=amount*price
@@ -641,13 +642,14 @@ class CryptoViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
     def get_br(self,request):
         user = self.request.user
+        id=user.id
         price=request.data.get("price")
         if not user:
             return JsonResponse({"error": "user is required"}, status=400)
         
         try:
             # Call the get_winner function
-            result = self.BackBuyCrypto(user=user, symbol="ETHTMN",amount=0.001,price=price)
+            result = self.BackBuyCrypto(id=id, symbol="ETHTMN",amount=0.001,price=price)
 
             # Check if result is a Response object (in case of errors within get_winner)
             if isinstance(result, Response):
