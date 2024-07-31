@@ -11,7 +11,6 @@ const GasPrice = ({ className = "" }) => {
   useEffect(() => {
     const settingsFile = require("../../settings.json");
     const apiKey = settingsFile.OWLRACLE_API_KEY;
-    console.log("API Key:", apiKey);
 
     // Fetch gas price data from Owlracle API using Axios
     axios
@@ -26,14 +25,12 @@ const GasPrice = ({ className = "" }) => {
         const tx = averageTx.toFixed(2);
         const time = averageTime.toFixed(2);
 
-        console.log("Gas price:", gas_price);
         // Set the gas price in the state
         setGasPrice(gas);
         setAverageTx(tx);
         setAverageTime(time);
       })
       .catch((error) => {
-        console.error("Error fetching gas price:", error);
       });
   }, []);
 

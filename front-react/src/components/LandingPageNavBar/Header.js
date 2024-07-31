@@ -36,8 +36,6 @@ const Header = ({ connectWallet = false, rev = false }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-
-  useEffect(()=>{console.log(user);},[user])
   const NotActiveItems = [
     {
       title: t("mainPage"),
@@ -248,11 +246,17 @@ const Header = ({ connectWallet = false, rev = false }) => {
                                 <div>{item.text}</div>
                                 <div className="text-sm opacity-50">
                                   <span className="px-1">{t("inDate")}</span>
-                                  {Intl.DateTimeFormat("fa", {
-                                    year: "numeric",
-                                    month: "numeric",
-                                    day: "numeric",
-                                  }).format(new Date(item.created_at))}
+                                  {i18n.language === "en"
+                                    ? Intl.DateTimeFormat({
+                                      day: "numeric",
+                                      month: "numeric",
+                                      year: "numeric",
+                                    }).format(new Date(item.created_at))
+                                    : Intl.DateTimeFormat("fa", {
+                                        year: "numeric",
+                                        month: "numeric",
+                                        day: "numeric",
+                                      }).format(new Date(item.created_at))}
                                 </div>
                               </div>
                               {item.message_seen ? (
@@ -332,7 +336,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                       </div>
                       <BalanceDialog />
                       <BalanceDialogMatic />
-                      <div className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-base-100" onClick={() => navigate(user.data.is_foregner?"/inter-profile":"/profile")}>
+                      <div className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-base-100" onClick={() => navigate(user.data.is_foregner ? "/inter-profile" : "/profile")}>
                         {t("profile")}
                       </div>
 

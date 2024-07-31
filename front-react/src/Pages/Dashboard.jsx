@@ -52,7 +52,6 @@ const Dashboard = () => {
         mode: "cors",
       })
       .then((res) => {
-        console.log(res.data);
         setProfit(res.data);
       })
       .catch((res) => {});
@@ -145,7 +144,6 @@ const Dashboard = () => {
       })
       .then((res) => {
         setOrders(res.data);
-        console.log(res.data);
       })
       .catch((res) => {});
   }, []);
@@ -188,7 +186,7 @@ const Dashboard = () => {
             <SimpleCard className="bg-base-100 w-full h-full flex-col items-center justify-start">
               <div className="text-xl font-b6 px-4 mx-auto py-1 transition-all rounded-2xl mb-2 text-center">{t("financialReport")} </div>
               <div className="grid grid-cols-2 gap-2">
-                <div id="rials" className="w-full h-auto text-center rounded-2xl bg-base-100 flex flex-col gap-3 py-2 px-4">
+                <div id="rials" className="w-full h-auto rounded-2xl bg-base-100 flex flex-col gap-3 py-2 px-4">
                   <div className="font-b6">{t("tooman")}</div>
                   <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
                     {t("negotiablebalance")}{" "}
@@ -206,7 +204,7 @@ const Dashboard = () => {
                   </div>
                 </div>
 
-                <div id="ethrs" className="w-full h-auto text-center rounded-2xl bg-base-100 flex flex-col gap-3 py-2 px-4">
+                <div id="ethrs" className="w-full h-auto rounded-2xl bg-base-100 flex flex-col gap-3 py-2 px-4">
                   <div className="font-b6">{t("ethereum")}</div>
                   <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
                     {t("negotiablebalance")}{" "}
@@ -222,7 +220,24 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+                </div>
+                <div id="matics" className="w-full h-auto rounded-2xl bg-base-100 flex flex-col gap-3 py-2 px-4">
+                  <div className="font-b6 ">{t("matic")}</div>
+                  <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
+                    {t("negotiablebalance")}{" "}
+                    <div className="px-2 py-1 text-sm bg-neutral text-neutral-content rounded-md">
+                      {getBalance ? getBalance.matic_balance : ""} {t("matic")}
+                    </div>
+                  </div>
+                  <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
+                    {t("nonNegotiableBalance")}{" "}
+                    <div className="px-2 py-1 text-sm bg-neutral text-neutral-content rounded-md">
+                      {getBalance ? getBalance.matic_unavailable_balance : ""}
+                      {t("matic")}{" "}
+                    </div>
+                  </div>
+                </div>
+                <br />
 
               <div className="my-3">
                 <div id="" className="w-full h-auto text-center rounded-2xl bg-base-100 flex justify-between gap-3 py-2 px-4 sm:flex-col">

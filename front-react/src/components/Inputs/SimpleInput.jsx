@@ -23,16 +23,23 @@ const SimpleInput = ({ onChange, title, placeholder, type, isValid, validationEr
     }),
   };
 
+  const formatCardNumber = (input) => {
+    if (input){
+    input = input.replace(/\D/g, "");
+    return input.match(/.{1,4}/g)?.join("-") || "";
+    }
+  };
+
   const handleChange = (event) => {
     const inputValue = event.target.value;
-    if (maxChars && inputValue.length > maxChars) {
-      event.preventDefault();
-      event.stopPropagation();
+    if (type === "card") {
+      // Remove dashes and non-digit characters for the raw value
+      const rawValue = inputValue.replace(/\D/g, "");
+      setValue(rawValue);
+      onChange(rawValue);
     } else {
-      if (/^[\d+.]*$/.test(inputValue) || inputValue === "") {
-        setValue(inputValue);
-        onChange(inputValue);
-      }
+      setValue(inputValue);
+      onChange(inputValue);
     }
   };
 
@@ -48,39 +55,55 @@ const SimpleInput = ({ onChange, title, placeholder, type, isValid, validationEr
       case "date":
         if (disabled) {
           return (
-            <div className={`simple-input w-full border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={ltr ? "ltr":i18n.dir()}>
+            <div className={`simple-input w-full border-x-2 border-x-transparent ${ ltr ? "border-l-primary": (i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary")}`} placeholder={focus ? placeholder : ""} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={ltr ? "ltr":i18n.dir()}>
               {defaultVal?.getFullYear() > 1500 ? new Intl.DateTimeFormat("fa").format(defaultVal) : new Intl.DateTimeFormat("en").format(defaultVal)}
             </div>
           );
         }
         return (
-          <div disabled type="text" className={`simple-input w-full border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={ltr ? "ltr":i18n.dir()}>
+          <div type="text" className={`simple-input w-full border-x-2 border-x-transparent ${ ltr ? "border-l-primary": (i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary")}`} placeholder={focus ? placeholder : ""} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={ltr ? "ltr":i18n.dir()}>
             <DatePicker onChange={onChange} inputClass="w-full bg-transparent" defaultValue={defaultVal} dir={ltr ? "ltr":i18n.dir()} />
           </div>
         );
       case "time":
         return <TimePicker inputClass="bg-transparent" onChange={onChange} dir={ltr ? "ltr":i18n.dir()} />;
       case "dropdown":
-        return <Select placeholder={placeholder} options={options} onChange={onChange} className={`simple-input2 w-full border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} styles={customStyles} menuPlacement={menuPlacement} dir={ltr ? "ltr":i18n.dir()} />;
+        return <Select placeholder={placeholder} options={options} onChange={onChange} className={`simple-input2 w-full border-x-2 border-x-transparent ${ ltr ? "border-l-primary": (i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary")}`} styles={customStyles} menuPlacement={menuPlacement} dir={ltr ? "ltr":i18n.dir()} />;
       case "password":
-        return <input disabled={disabled} type="password" className={`simple-input w-full border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} defaultValue={defaultValue} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={i18n.dir()} onKeyUp={onChange} />;
+        return <input disabled={disabled} type="password" className={`simple-input w-full border-x-2 border-x-transparent ${ ltr ? "border-l-primary": (i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary")}`} placeholder={focus ? placeholder : ""} defaultValue={defaultValue} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={i18n.dir()} onKeyUp={onChange} />;
       case "number":
-        return <input disabled={disabled} type="text" className={`simple-input w-full border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} value={value} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={ltr ? "ltr":i18n.dir()} onKeyUp={onChange} onChange={handleChange} />;
+        return <input disabled={disabled} type="text" className={`simple-input w-full border-x-2 border-x-transparent ${ ltr ? "border-l-primary": (i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary")}`} placeholder={focus ? placeholder : ""} value={value} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={ltr ? "ltr":i18n.dir()} onKeyUp={onChange} onChange={handleChange} />;
       case "double":
-        return <input disabled={disabled} type="text" className={`simple-input w-full border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} value={value} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={ltr ? "ltr":i18n.dir()} onKeyUp={onChange} onChange={handleChange} />;
+        return <input disabled={disabled} type="text" className={`simple-input w-full border-x-2 border-x-transparent ${ ltr ? "border-l-primary": (i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary")}`} placeholder={focus ? placeholder : ""} value={value} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={ltr ? "ltr":i18n.dir()} onKeyUp={onChange} onChange={handleChange} />;
+      case "card":
+        return (
+          <input
+            disabled={disabled}
+            type="text"
+            className={`simple-input w-full border-x-2 border-x-transparent ${ ltr ? "border-l-primary": (i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary")}`}
+            placeholder={focus ? placeholder : ""}
+            value={formatCardNumber(value)}
+            onFocus={() => setFocus(true)}
+            onBlur={(e) => setFocus(e.target.value !== "")}
+            dir={ltr ? "ltr":i18n.dir()}
+            onKeyUp={onChange}
+            onChange={handleChange}
+            maxLength={19} // Max length considering dashes
+          />
+        );
       default:
-        return <input disabled={disabled} type="text" className={`simple-input w-full border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} defaultValue={defaultValue} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={ltr ? "ltr":i18n.dir()} onKeyUp={onChange} />;
+        return <input disabled={disabled} type="text" className={`simple-input w-full border-x-2 border-x-transparent ${ ltr ? "border-l-primary": (i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary")}`} placeholder={focus ? placeholder : ""} defaultValue={defaultValue} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={ltr ? "ltr":i18n.dir()} onKeyUp={onChange} />;
     }
   };
 
   return (
-    <div dir={ltr ? "ltr":i18n.dir()} className={`w-full items-start gap-1 relative  ${className} flex flex-col`}>
+    <div dir={ltr ? "ltr":i18n.dir()} className={`w-full items-start gap-1 relative ${className} flex flex-col`}>
       {renderInput()}
-      <div dir={ltr ? "ltr":i18n.dir()} className={`text-[14px] font-b5 px-2 pointer-events-none absolute translate-y-1/2 transition-all ${focus ? "bottom-[110%] text-[14px] text-accent" : "bottom-[50%]"}`}>
+      <div dir={ltr ? "ltr":i18n.dir()} className={`text-[14px] sm:bottom-[110%] sm:text-[14px] font-b5 px-2 pointer-events-none absolute translate-y-1/2 transition-all ${focus ? "bottom-[110%] text-[14px] text-accent" : "bottom-[50%]"}`}>
         {title}
       </div>
       {validationError && (
-        <div dir={ltr ? "ltr":i18n.dir()} className={`absolute ${i18n.dir() === "rtl" ? "left-2 top-1/2 -translate-y-1/2" : "text-center right-0 translate-y-1/2"} text-sm bg-base-100 border-2 border-error text-error px-2 rounded-full font-b2 my-auto ${isValid ? "opacity-0" : "opacity-90"} transition-all`}>
+        <div dir={ltr ? "ltr":i18n.dir()} className={`pointer-events-none absolute ${i18n.dir() === "rtl" ? "left-2 top-1/2 -translate-y-1/2" : "text-center right-0 translate-y-1/2"} text-sm bg-base-100 border-2 border-error text-error px-2 rounded-full font-b2 my-auto ${isValid ? "opacity-0" : "opacity-90"} transition-all`}>
           {validationError}
         </div>
       )}

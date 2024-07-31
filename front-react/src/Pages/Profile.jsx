@@ -14,6 +14,7 @@ import { useNavigate } from "react-router";
 import imageFive from "../assets/images/5.png"
 
 function Profile() {
+
   const user = useContext(UserContext);
   const userChange = useContext(UserChangeContext);
   const [editBio, setEditBio] = useState();
@@ -26,7 +27,7 @@ function Profile() {
     navigate("/");
     Notify.warning("Please log in to you account");
   }
-  const [values, setValues] = useState(
+    const [values, setValues] = useState(
     user
       ? {
           first_name: user.data.first_name !== null ? user.data.first_name : "",
@@ -327,9 +328,7 @@ function Profile() {
       var b_date;
       if (typeof values.birthdate !== "string") {
         b_date = values.birthdate;
-        console.log("IF", values.birthdate);
       } else {
-        console.log("ELSE", values.birthdate);
 
         b_date = values.birthdate != "" && values.birthdate != null ? new Date(values.birthdate.split("/")[2], values.birthdate.split("/")[1] - 1, values.birthdate.split("/")[0]) : "";
       }
@@ -386,7 +385,6 @@ function Profile() {
   }
 
   useEffect(() => {
-    console.log(user);
     if (user && user.data) {
       setDisableInputs(user ? user.data.role === "user_one" : "false");
 
@@ -403,7 +401,6 @@ function Profile() {
         phone_number: user.data.phone_number !== null ? user.data.phone_number : "",
         email: user.data.email !== null ? user.data.email : "",
       });
-      console.log(values);
       setEditBio(user?.data.bio === null);
       setValidate({
         first_name: values.first_name !== "",
@@ -568,7 +565,6 @@ function Profile() {
                 validationError="کدملی بایستی 10 رقمی باشد"
                 isValid={validate.national_code}
                 onChange={(e) => {
-                  console.log(values);
                   setValues({
                     ...values,
                     national_code: e.target.value,
@@ -613,9 +609,9 @@ function Profile() {
                 defaultValue={user != null ? user.data.address : null}
                 disabled={disableInputs && user != null ? user.data.address != null : null}
               />
+              
               <SimpleInput
                 type="number"
-                ltr={true}
                 title="کد پستی"
                 placeholder="مثلا: 3521 ..."
                 isValid={validate.postal_code}
@@ -750,12 +746,12 @@ function Profile() {
             <SimpleCard className="bg-primary flex flex-col relative text-white gap-4 items-center overflow-hidden w-full">
               <div className="text-white text-[27px] mb-2 z-10 font-b9">اطلاعات کارت بانکی</div>
               <div className="font-b3">شماره کارت</div>
-              <SimpleInput defaultValue={user && user.data ? user.data.card_number : null} disabled={disableInputs && user && user.data != null ? user.data.card_number != null : false} title={""} type="number" onChange={(e) => setCardNumber(e.target.value)} className="border-black rounded-md border-2 text-white" maxChars={16} />
+              <SimpleInput defaultValue={user && user.data ? user.data.card_number : null} disabled={disableInputs && user && user.data != null ? user.data.card_number != null : false} title={""} type="card" onChange={(e) => {setCardNumber((e.target.value).split('-').join(''))}} className="border-black rounded-md border-2 text-white" maxChars={16} />
               <div className="font-b3">شماره شبا</div>
               <div className="flex items-center gap-5 w-full py-2 px-2" dir="ltr">
                 <div className="pt-2">IR </div>
 
-                <SimpleInput defaultValue={user && user.data ? user.data.shaba_number : null} disabled={disableInputs && user && user.data != null ? user.data.shaba_number != null : false} title={""} type="number" onChange={(e) => setShabaNumber(e.target.value)} className="border-black rounded-md border-2 text-white" maxChars={24} />
+                <SimpleInput defaultValue={user && user.data ? user.data.shaba_number : null} disabled={disableInputs && user && user.data != null ? user.data.shaba_number != null : false} title={""} type="card" onChange={(e) => setShabaNumber((e.target.value).split('-').join(''))} className="border-black rounded-md border-2 text-white" maxChars={24} />
               </div>
             </SimpleCard>
           </div>
