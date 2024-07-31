@@ -638,7 +638,7 @@ class CryptoViewSet(viewsets.ViewSet):
             transactionINS.save()
             return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
 
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['post'])
     def get_br(self,request):
         user = self.request.user
         price=request.data.get("price")
