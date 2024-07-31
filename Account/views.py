@@ -571,6 +571,7 @@ class CryptoViewSet(viewsets.ViewSet):
         amount = float(amount)  # Ensure amount is a float
         price = float(price)  # Ensure price is a float
         user=User.objects.get(id)
+        print(user)
         transactionCurrency=TransactionCurrency.objects.filter(name=symbol).first()
         transactionINS=Transaction.objects.create(user=user, transaction_currency=transactionCurrency,amount=amount,side="BUY",status='Pending')
         total=amount*price
