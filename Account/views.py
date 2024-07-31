@@ -571,6 +571,7 @@ class CryptoViewSet(viewsets.ViewSet):
         amount = float(amount)  # Ensure amount is a float
         price = float(price)  # Ensure price is a float
         user=User.objects.get(id)
+        id=int(user.id)
         print(user)
         transactionCurrency=TransactionCurrency.objects.filter(name=symbol).first()
         transactionINS=Transaction.objects.create(user=user, transaction_currency=transactionCurrency,amount=amount,side="BUY",status='Pending')
@@ -644,6 +645,7 @@ class CryptoViewSet(viewsets.ViewSet):
     def get_br(self,request):
         user = self.request.user
         id=user.id
+        print(id)
         price=request.data.get("price")
         if not user:
             return JsonResponse({"error": "user is required"}, status=400)
