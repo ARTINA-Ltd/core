@@ -268,7 +268,7 @@ class OrderViewSet(viewsets.ViewSet):
 
         elif pay_with=="CRYPTO":
             if user_eth< fee  :
-                return Response({'error': 'insufficient ballance'},status=HTTPStatus.BAD_REQUEST)
+                return Response({'error': 'insufficient ballance','usereth':user_eth},status=HTTPStatus.BAD_REQUEST)
           
             user_balance.eth_balance -= fee
             user_balance.eth_untradable_balance +=fee
@@ -297,7 +297,8 @@ class OrderViewSet(viewsets.ViewSet):
                 return Response({'error': 'insufficient ballance'},status=HTTPStatus.BAD_REQUEST)
           
             buyingETH=CryptoViewSet.BackBuyCrypto(user=bidder, symbol="ETHTMN",amount=fee,price=buy_price)
-            if buyingETH.status==200:
+            print(buyingETH)
+            if buyingETH.response.status==200:
                 user_balance.eth_balance -= fee
                 user_balance.eth_untradable_balance +=fee
                 user_balance.save()
