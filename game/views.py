@@ -19,9 +19,9 @@ class GameViewSet(viewsets.ModelViewSet):
         """
         user=self.request.user
         game = self.get_object()
-        cheat_code = game.cheat_code
+        # cheat_code = game.cheat_code
         user_choice = request.data.get('choice')
-        user_cheat = request.data.get('cheat_code')
+        # user_cheat = request.data.get('cheat_code')
         choices = ['rock', 'paper', 'scissors']
         server_choice = random.choice(choices)
         
