@@ -49,7 +49,7 @@ class GameViewSet(viewsets.ModelViewSet):
             user_points = 5
         # Update user's profile with points earned
         user_profile = UserGameProfile.objects.get(user=user)
-        user_profile.points += points_earned
+        user_profile.points += 10
         user_profile.save()
 
         # Save game session details
