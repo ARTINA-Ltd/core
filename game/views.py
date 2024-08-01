@@ -26,18 +26,18 @@ class GameViewSet(viewsets.ModelViewSet):
         server_choice = random.choice(choices)
         
         # Example logic to determine game result based on cheat code
-        if cheat_code == user_cheat:
-            result = 'win'
-            points_earned = 10
-        else :
+        # if cheat_code == user_cheat:
+        #     result = 'win'
+        #     points_earned = 10
+        # else :
             
-            if user_choice == server_choice:
+        if user_choice == server_choice:
                 result = 'draw'
-            elif (user_choice == 'rock' and server_choice == 'scissors') or \
+        elif (user_choice == 'rock' and server_choice == 'scissors') or \
                  (user_choice == 'paper' and server_choice == 'rock') or \
                  (user_choice == 'scissors' and server_choice == 'paper'):
                 result = 'win'
-            else:
+        else:
                 result = 'lose'
         
             # Update points for both users based on result
@@ -58,7 +58,7 @@ class GameViewSet(viewsets.ModelViewSet):
             user=request.user,
             choice=user_choice,
             result=result,
-            points=points_earned
+            points=10
         )
 
         # Update last played timestamp and hearts for user profile
@@ -66,7 +66,7 @@ class GameViewSet(viewsets.ModelViewSet):
         user_profile.hearts -= 1  # Deduct one heart for playing
         user_profile.save()
 
-        return Response({'message': 'Solo game played successfully', 'result': result, 'points_earned': points_earned}, status=status.HTTP_200_OK)
+        return Response({'message': 'Solo game played successfully', 'result': result, 'points_earned': 10,"server_choice":server_choice}, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['post'])
     def play_with_friend(self, request, pk=None):
