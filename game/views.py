@@ -55,7 +55,6 @@ class GameViewSet(viewsets.ModelViewSet):
         # Save game session details
         session = GameSession.objects.create(
             game=game,
-            user=request.user,
             choice=user_choice,
             result=result,
             points=10
