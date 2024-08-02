@@ -194,7 +194,7 @@ const BalanceDialogMatic = () => {
               <BorderButton className="">انتقال به موجودی سایت</BorderButton>
             </div>
             {address && (
-              <div className="text-sm sm:text-xs cursor-pointer border-2 border-primary border-opacity-50 rounded-md p-2" onClick={handleCopy}>
+              <div className="text-sm sm:text-[8px] cursor-pointer border-2 border-primary border-opacity-50 rounded-md p-2" onClick={handleCopy}>
                 {t("walletAddress")} <span> </span>
                 {address}
               </div>

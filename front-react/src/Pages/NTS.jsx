@@ -1,18 +1,19 @@
-import TestLayout from "../Layouts/TestLayout.jsx"
-import rocket from "../assets/images/NTS_rocket.png"
+import rocket from "../assets/images/NTS_rocket.png";
 import NightSky from "../components/NightSky/NightSky.jsx";
-import nft1 from "../assets/images/NFT1.png"
-import nft2 from "../assets/images/NFT2.png"
-import nft3 from "../assets/images/NFT3.jpg"
-import nft4 from "../assets/images/NFT4.png"
-
+import nft1 from "../assets/images/NFT1.png";
+import nft2 from "../assets/images/NFT2.png";
+import nft3 from "../assets/images/NFT3.jpg";
+import nft4 from "../assets/images/NFT4.png";
+import NTSNavbar from "../components/NTSNavbar/NTSNavbar.jsx";
+import PaperRockScissors from "../components/Nts/PaperRockScissors.jsx";
 
 const NTS = () => {
   return (
-    <TestLayout wfull={true} className={"w-screen overflow-hidden"}>
-    <div className="bg-[#0A1120] z-10 p-8 w-screen">
-    <NightSky />
-      <div className="flex items-center justify-around">
+    <>
+      <NTSNavbar />
+      <div className="z-10 p-8 bg-base-100 w-[99vw] overflow-hidden">
+        <NightSky />
+        <div className="flex items-center bgba justify-around overflow-hidden">
           <div className="text-accent-content h-fit p-10 rounded-full z-10 bg-primary flex justify-center items-center">
             <h1 className="text-7xl lg:text-5xl text-center leading-loose">claim your NFT</h1>
           </div>
@@ -43,15 +44,16 @@ const NTS = () => {
 
         <div className="mt-32 z-10">
           <h1 className="text-center text-7xl">Play!</h1>
-          <div className="text-5xl text-accent-content text-center flex gap-2 justify-around my-16">
-          <div className="flex items-center justify-center bg-accent rounded-[100%] w-[20rem] p-8 ">
-          <h1 className="">Solo</h1>
-          </div>
+          <div className="text-5xl border-b-2 border-b-base-content border-opacity-25 pb-12 text-accent-content text-center flex gap-2 justify-around my-16">
+            <div className="flex items-center justify-center bg-accent rounded-[100%] w-[20rem] p-8 ">
+              <h1 className="">Solo</h1>
+            </div>
             <h1 className="bg-accent rounded-[100%] w-[20rem] p-8">With Friends</h1>
           </div>
         </div>
+        <PaperRockScissors />
       </div>
-    </TestLayout>
+    </>
   );
-}
-export default NTS
+};
+export default NTS;

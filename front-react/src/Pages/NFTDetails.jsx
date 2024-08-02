@@ -25,8 +25,16 @@ const NFTDetails = () => {
   const [likeColor, setLikeColor] = useState(false);
   const [shareCount, setShareCount] = useState(0);
   const [countdown, setCountdown] = useState(0);
+  const [ethPrice, setEthPrice] = useState(0);
+  const [maticPrice, setMaticPrice] = useState(0);
   const { t } = useTranslation();
 
+  const [selectedPayment, setSelectedPayment] = useState("Toman");
+
+  const handleChange = (value) => {
+    setSelectedPayment(value);
+    console.log(value); // or handle the selected value as needed
+  };
   const icons = {
     heart: (
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.9" stroke="currentColor" className="text-primary-content h-[40%]">
@@ -56,6 +64,39 @@ const NFTDetails = () => {
     ),
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("https://api.artina.org/api/account/CryptoViewSet/CryptoPrice_ETH/", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+          mode: "cors",
+        });
+        setEthPrice(response.data);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+      try {
+        const response = await axios.get("https://api.artina.org/api/account/CryptoViewSet/CryptoPrice_MATIC/", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+          mode: "cors",
+        });
+        setMaticPrice(response.data);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    fetchData();
+
+    const intervalId = setInterval(fetchData, 8000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
   const handleClickShare = () => {
     navigator.clipboard.writeText(window.location.href);
     Notify.success("لینک کپی شد");
@@ -72,8 +113,6 @@ const NFTDetails = () => {
         }
       )
       .then((d) => {
-        console.log("view");
-        console.log(d);
         setShareCount(shareCount + 1);
       });
   };
@@ -92,8 +131,6 @@ const NFTDetails = () => {
         }
       )
       .then((res) => {
-        console.log("like");
-        console.log("status", res.status);
         Notify.success("با موفقیت ثبت شد");
         setLikeColor(true);
         setLikeCount(likeCount + 1);
@@ -114,7 +151,6 @@ const NFTDetails = () => {
       .then((d) => {
         setData(d.data.nft);
         setLikeCount(d.data.count);
-        console.log(d.data);
         setShareCount(d.data.nft.share_count);
         setCountdown(d.data.nft.end_date);
       });
@@ -245,8 +281,7 @@ const NFTDetails = () => {
               <div className="flex gap-3 w-full">
                 <div className={`bg-[#574eda] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-secondary hover:cursor-pointer sm:px-2 sm:h-10 sm:justify-around`} onClick={handleClickLike}>
                   {data && likeColor ? icons.red_heart : icons.heart}
-                  {console.log("like ->>>>", like.user_has_liked)}
-                  {console.log("likeColor ->>>>", likeColor)}
+
                   <div className="text-primary-content text-[16px]">{likeCount}</div>
                 </div>
                 <div className="bg-[#574eda] w-full h-16 rounded-xl flex justify-between items-center px-10 transition-all hover:bg-secondary hover:cursor-pointer sm:px-2 sm:h-10 sm:justify-around">
@@ -337,7 +372,6 @@ const NFTDetails = () => {
                       <div className="text-[16px]">{index + 1}-</div>
                       <div className="text-[16px] opacity-40 text-cyan-900">{item.name}:</div>
                       <div className="text-[16px]">{item.type}</div>
-                      {console.log("--->>", item.name, item.type)}
                     </div>
                   ))
                 ) : (
@@ -404,20 +438,45 @@ const NFTDetails = () => {
                           placeholder={"مثلا: 3"}
                           title="قیمت پیشنهادی شما به اتریوم"
                           onChange={(e) => {
-                            setPrice(e.target.value * 104759811);
+                            setPrice(e.target.value * (Math.round(ethPrice.ETH_buy_price * 100) / 100));
                             setEthereum(e.target.value);
                           }}
                         />
                       </div>
-                      <BorderButton
-                        className="w-1/4 text-center"
-                        onClick={() => {
-                          price !== 0 && addRequest();
-                        }}
-                      >
-                        ثبت
-                      </BorderButton>
-                    </div>
+                      <div>
+                        <div className="dropdown">
+                          <div tabIndex={0} role="button" className="btn w-36 bg-primary hover:bg-[#2FA4D8] text-primary-content m-1">
+                            انتخاب نوع پرداخت
+                          </div>
+                          <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                            <li>
+                              <div className="form-control">
+                                <label className="label cursor-pointer">
+                                  <span className="label-text mr-24">تومانی</span>
+                                  <input type="radio" name="payment" value="Toman" className="ml-auto radio checked:bg-primary" checked={selectedPayment === "Toman"} onChange={() => handleChange("Toman")} />
+                                </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div className="form-control">
+                                <label className="label cursor-pointer">
+                                  <span className="label-text">رمزارزی</span>
+                                  <input type="radio" name="payment" value="Crypto" className="radio block ml-24 checked:bg-primary" checked={selectedPayment === "Crypto"} onChange={() => handleChange("Crypto")} />
+                                </label>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <BorderButton
+                          className="w-36 text-center"
+                          onClick={() => {
+                            price !== 0 && addRequest();
+                          }}
+                        >
+                          ثبت
+                        </BorderButton>
+                      </div>
+                    </div>{" "}
                     <div className="flex pr-4 text-xs sm:pr-0 sm:gap-2 sm:my-2">
                       قیمت به تومان:
                       <div className="text-indigo-600">&nbsp;{price}&nbsp;</div>

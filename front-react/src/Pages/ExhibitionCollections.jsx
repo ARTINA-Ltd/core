@@ -5,6 +5,7 @@ import TestLayout from "../Layouts/TestLayout";
 import { useParams } from "react-router";
 import NftsSwiper from "../components/NftsSwiper/NftsSwiper.jsx";
 import CountdownTimer from "./../components/CountdownTimer";
+import i18n from "../i18n.js";
 
 const ExhibitionCollections = () => {
   const [nfts, setNfts] = useState([]);
@@ -46,7 +47,7 @@ const ExhibitionCollections = () => {
       )
       .then((res) => {});
   }, []);
-  // email nameoncard country cardnumber exprdate cvc postcode address1 adderess2
+
   return (
     <TestLayout>
       {exhibition && banner && (
@@ -61,32 +62,55 @@ const ExhibitionCollections = () => {
             <p className=" text-2xl md:text-xl my-4 ">{exhibition.description}</p>
             <h4 className=" text-2xl md:text-xl">
               تاریخ شروع:{" "}
-              {Intl.DateTimeFormat("fa", {
-                year: "numeric",
-                month: "numeric",
-                day: "numeric",
-              }).format(new Date(exhibition.start_date))}
+              {i18n.language === "en"
+                ? Intl.DateTimeFormat({
+                    day: "numeric",
+                    month: "numeric",
+                    year: "numeric",
+                  }).format(new Date(exhibition.start_date))
+                : Intl.DateTimeFormat("fa", {
+                    year: "numeric",
+                    month: "numeric",
+                    day: "numeric",
+                  }).format(new Date(exhibition.start_date))}
             </h4>
             <h4 className=" text-2xl md:text-xl">
-              تاریخ پایان:{" "}
-              {Intl.DateTimeFormat("fa", {
-                year: "numeric",
-                month: "numeric",
-                day: "numeric",
-              }).format(new Date(exhibition.end_date))}
+              تاریخ پایان:
+              {i18n.language === "en"
+                ? Intl.DateTimeFormat("en",{
+                    year: "numeric",
+                    month: "numeric",
+                    day: "numeric",
+                  }).format(new Date(exhibition.end_date))
+                : Intl.DateTimeFormat("fa", {
+                    year: "numeric",
+                    month: "numeric",
+                    day: "numeric",
+                  }).format(new Date(exhibition.end_date))}
             </h4>
             <h4 className=" text-2xl md:text-xl">
               پایان ثبت نام:{" "}
-              {Intl.DateTimeFormat("fa", {
-                year: "numeric",
-                month: "numeric",
-                day: "numeric",
-              }).format(new Date(exhibition.application_deadline))}
+              {i18n.language === "en"
+                ? Intl.DateTimeFormat("en",{
+                    year: "numeric",
+                    month: "numeric",
+                    day: "numeric",
+                  }).format(new Date(exhibition.application_deadline))
+                : Intl.DateTimeFormat("fa", {
+                    year: "numeric",
+                    month: "numeric",
+                    day: "numeric",
+                  }).format(new Date(exhibition.application_deadline))}
               <br />
-              {Intl.DateTimeFormat("fa", {
-                minute: "numeric",
-                hour: "numeric",
-              }).format(new Date(exhibition.application_deadline))}
+              {i18n.language === "en"
+                ? Intl.DateTimeFormat("en", {
+                    minute: "numeric",
+                    hour: "numeric",
+                  }).format(new Date(exhibition.application_deadline))
+                : Intl.DateTimeFormat("fa", {
+                    minute: "numeric",
+                    hour: "numeric",
+                  }).format(new Date(exhibition.application_deadline))}
             </h4>
             <h4>
               <CountdownTimer targetDate={deadline} />
