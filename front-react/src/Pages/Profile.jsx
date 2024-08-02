@@ -27,32 +27,32 @@ function Profile() {
     navigate("/");
     Notify.warning("Please log in to you account");
   }
-    const [values, setValues] = useState(
+  const [values, setValues] = useState(
     user
       ? {
-          first_name: user.data.first_name !== null ? user.data.first_name : "",
-          last_name: user.data.last_name !== null ? user.data.last_name : "",
-          national_code: user.data.national_code !== null ? user.data.national_code : "",
-          birthdate: user.data.birthdate !== null ? user.data.birthdate : "",
-          address: user.data.address !== null ? user.data.address : "",
-          bio: user.data.bio !== null ? user.data.bio : "",
-          postal_code: user.data.postal_code !== null ? user.data.postal_code : "",
-          cell_number: user.data.cell_number !== null ? user.data.cell_number : "",
-          phone_number: user.data.phone_number !== null ? user.data.phone_number : "",
-          email: user.data.email !== null ? user.data.email : "",
-        }
+        first_name: user.data.first_name !== null ? user.data.first_name : "",
+        last_name: user.data.last_name !== null ? user.data.last_name : "",
+        national_code: user.data.national_code !== null ? user.data.national_code : "",
+        birthdate: user.data.birthdate !== null ? user.data.birthdate : "",
+        address: user.data.address !== null ? user.data.address : "",
+        bio: user.data.bio !== null ? user.data.bio : "",
+        postal_code: user.data.postal_code !== null ? user.data.postal_code : "",
+        cell_number: user.data.cell_number !== null ? user.data.cell_number : "",
+        phone_number: user.data.phone_number !== null ? user.data.phone_number : "",
+        email: user.data.email !== null ? user.data.email : "",
+      }
       : {
-          first_name: "",
-          last_name: "",
-          national_code: "",
-          birthdate: "",
-          address: "",
-          bio: "",
-          postal_code: "",
-          cell_number: "",
-          phone_number: "",
-          email: "",
-        }
+        first_name: "",
+        last_name: "",
+        national_code: "",
+        birthdate: "",
+        address: "",
+        bio: "",
+        postal_code: "",
+        cell_number: "",
+        phone_number: "",
+        email: "",
+      }
   );
 
   const [validate, setValidate] = useState({
@@ -182,10 +182,10 @@ function Profile() {
             birthdate:
               b_date != ""
                 ? Intl.DateTimeFormat("en-UK", {
-                    year: "numeric",
-                    month: "numeric",
-                    day: "numeric",
-                  }).format(b_date)
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                }).format(b_date)
                 : null,
             phone_number: values.phone_number,
             cell_number: values.cell_number,
@@ -257,10 +257,10 @@ function Profile() {
             birthdate:
               b_date != ""
                 ? Intl.DateTimeFormat("en-UK", {
-                    year: "numeric",
-                    month: "numeric",
-                    day: "numeric",
-                  }).format(b_date)
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                }).format(b_date)
                 : null,
             phone_number: values.phone_number,
             cell_number: values.cell_number,
@@ -344,10 +344,10 @@ function Profile() {
             birthdate:
               b_date != ""
                 ? Intl.DateTimeFormat("en-UK", {
-                    year: "numeric",
-                    month: "numeric",
-                    day: "numeric",
-                  }).format(b_date)
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                }).format(b_date)
                 : null,
             phone_number: values.phone_number,
             cell_number: values.cell_number,
@@ -609,7 +609,7 @@ function Profile() {
                 defaultValue={user != null ? user.data.address : null}
                 disabled={disableInputs && user != null ? user.data.address != null : null}
               />
-              
+
               <SimpleInput
                 type="number"
                 title="کد پستی"
@@ -743,15 +743,32 @@ function Profile() {
               </div>
             </SimpleCard>
 
-            <SimpleCard className="bg-primary flex flex-col relative text-white gap-4 items-center overflow-hidden w-full">
+            <SimpleCard className="bg-primary flex flex-col relative text-white gap-2 items-center overflow-hidden w-full ">
               <div className="text-white text-[27px] mb-2 z-10 font-b9">اطلاعات کارت بانکی</div>
               <div className="font-b3">شماره کارت</div>
-              <SimpleInput defaultValue={user && user.data ? user.data.card_number : null} disabled={disableInputs && user && user.data != null ? user.data.card_number != null : false} title={""} type="card" onChange={(e) => {setCardNumber((e.target.value).split('-').join(''))}} className="border-black rounded-md border-2 text-white" maxChars={16} />
+              <SimpleInput
+                defaultValue={user && user.data ? user.data.card_number : null}
+                disabled={disableInputs && user && user.data != null ? user.data.card_number != null : false}
+                title={""}
+                type="card"
+                onChange={(e) => { setCardNumber((e.target.value).split('-').join('')) }}
+                className="border-black rounded-md border-2 text-white"
+                maxChars={16}
+              />
               <div className="font-b3">شماره شبا</div>
-              <div className="flex items-center gap-5 w-full py-2 px-2" dir="ltr">
-                <div className="pt-2">IR </div>
-
-                <SimpleInput defaultValue={user && user.data ? user.data.shaba_number : null} disabled={disableInputs && user && user.data != null ? user.data.shaba_number != null : false} title={""} type="card" onChange={(e) => setShabaNumber((e.target.value).split('-').join(''))} className="border-black rounded-md border-2 text-white" maxChars={24} />
+              <div className="flex items-center w-full" dir="ltr">
+                <div className="flex w-full items-center border-black rounded-md border-2">
+                  <span className="px-2 text-white">IR</span>
+                  <SimpleInput
+                    defaultValue={user && user.data ? user.data.shaba_number : null}
+                    disabled={disableInputs && user && user.data != null ? user.data.shaba_number != null : false}
+                    title={""}
+                    type="card"
+                    onChange={(e) => setShabaNumber((e.target.value).split('-').join(''))}
+                    className="text-white flex items-center justify-center text-sm w-full"
+                    maxChars={24}
+                  />
+                </div>
               </div>
             </SimpleCard>
           </div>

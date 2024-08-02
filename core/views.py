@@ -5,6 +5,10 @@ from core.models import NFT , Order , MyImage , NFTRating , Category , Collectio
 from core import serializers
 from eth_account import Account
 from thirdweb.types.nft import NFTMetadataInput 
+from Account.views import get_balance,CryptoViewSet
+
+from .models import PDF
+from .serializers import PDFSerializer
 import json
 import requests
 from rest_framework import viewsets
@@ -34,13 +38,13 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.conf import settings
 import os
-from Account.models import Msg, Wallet , NotifyUser,UserBalance,TransactionCurrency,Profile,Transaction
+from Account.models import Msg, ARTINA_Ballance,Wallet , NotifyUser,UserBalance,TransactionCurrency,Profile,Transaction
 from http import HTTPStatus
 from django.db.models import Count, Q
 from .serializers import CategorySerializer, CollectionNFTSerializer, NFTRatingSerializer, OwnerWithLikesSerializer
 from django_filters import rest_framework as filters
 import time
- 
+from decimal import Decimal 
 
 # Initialize Web3
 w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
@@ -136,6 +140,7 @@ def transferNFT(token_id, sender, recipient):
         print(f"Error in transferNFT: {e}")
         return JsonResponse({"message": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    
 def order_Report(token_id):
     try:
         nft = get_object_or_404(NFT, token_id=token_id)
@@ -145,6 +150,11 @@ def order_Report(token_id):
                 bid.status = 1
                 bid.report = 2
                 bid.save()
+                balance= UserBalance.objects.get(user=bid.bidder)
+                balance.rial_available_balance+= bid.fee
+                balance.rial_available_balance-= bid.fee
+                balance.save()
+                NotifyUser.objects.create(user=bid.bidder, text="Your money reverted to your balance")
                 NotifyUser.objects.create(user=bid.bidder, text="You lost the bid")
         print("Change report status done")
     except Exception as e:
@@ -174,7 +184,24 @@ def get_winner(token_id):
         highest_bid.status = 1
         highest_bid.save()
         recipient = highest_bid.bidder
+        balance= UserBalance.objects.get(user=highest_bid.bidder)
+        balance.rial_untradable_balance-= highest_bid.fee
+        balance.save()
 
+        #artina
+        artina=ARTINA_Ballance.objects.first()
+        
+        value=(1.5*highest_bid.fee)/100
+        artina.artina_commision=value
+        artina.artina_commision_count += 1
+        artina.save
+        #owner
+
+        balanceowner= UserBalance.objects.get(user=nft.owner)
+        total= highest_bid.fee - value
+        balanceowner.rial_available_balance += total
+        balanceowner.save()
+        NotifyUser.objects.create(user=bid.bidder, text="You sold your nft and your balance updated")
         order_Report(token_id)
         result = transferNFT(token_id, sender, recipient)
         print(f"Result: {result}")
@@ -191,7 +218,28 @@ def get_winner(token_id):
         return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+def transfer_matic(to_address, amount):
+    COMPANY_WALLET_ADDRESS = '0x2293221D7c357FB04De9c7D0dEeBcA427407429D'
+    COMPANY_WALLET_PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
+    
+    base_fee_per_gas = 244  # in wei (this is very low for current standards)
+    priority_fee = 50000000000  # 50 Gwei in wei for priority fee
+        
+    gas_price = base_fee_per_gas + priority_fee
+    nonce = w3.eth.getTransactionCount(COMPANY_WALLET_ADDRESS)
+    tx = {
+        'nonce': nonce,
+        'to': to_address,
+        'value': w3.toWei(amount, 'ether'),
+        'gas': 20000000,
+        'gasPrice': gas_price
+    }
 
+    signed_tx = w3.eth.account.signTransaction(tx, COMPANY_WALLET_PRIVATE_KEY)
+    tx_hash = w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+    w3.eth.waitForTransactionReceipt(tx_hash)
+
+    return tx_hash
 
 class OrderViewSet(viewsets.ViewSet):
     queryset = Order.objects.all()
@@ -201,29 +249,61 @@ class OrderViewSet(viewsets.ViewSet):
         fee = request.data.get('fee')
         token_id = request.data.get('token_id')
         eth = request.data.get('eth_fee')
+        pay_with=request.data.get('pay_with')
         status = 0
         bidder=self.request.user
         user_balance=None
         user_balance = UserBalance.objects.filter(user=bidder).first()
-        n=user_balance.rial_available_balance
-        fee=int(fee)
+        user_rial=user_balance.rial_available_balance
+        user_eth=user_balance.eth_balance
+        fee=float(fee)
         nft = NFT.objects.get(token_id=token_id)
         if (nft.owner==bidder):
             return Response({'error': 'you are the owner, you can not bid'},status=HTTPStatus.BAD_REQUEST)
            
-        if n< fee :
-            return Response({'error': 'insufficient ballance'},status=HTTPStatus.BAD_REQUEST)
-        
+
         if Order.objects.filter(nft=nft,bidder=bidder, status=0).first() :
             return Response({'error': 'you had already order on this NFT'},status=HTTPStatus.BAD_REQUEST)
 
 
-        else:
-            user_balance.rial_available_balance -= fee
-            user_balance.rial_untradable_balance +=fee
+        elif pay_with=="CRYPTO":
+            if user_eth< fee  :
+                return Response({'error': 'insufficient ballance','usereth':user_eth},status=HTTPStatus.BAD_REQUEST)
+          
+            user_balance.eth_balance -= fee
+            user_balance.eth_untradable_balance +=fee
             user_balance.save()
             Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status,eth=eth)
             return Response(status=HTTPStatus.OK)
+        else :
+            headers = {
+            'Content-Type': 'application/json',
+            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
+            }
+            url = 'https://api.wallex.ir/v1/account/otc/price'
+            params = {
+                'symbol': 'ETHTMN',
+                'side': 'BUY',
+            }
+            response_BUY = requests.get(url, headers=headers, params=params) 
+            if response_BUY.status_code == 200 :
+                buy_data = response_BUY.json()
+                buy_price = buy_data['result']['price']
+            buy_price=float(buy_price)
+            total= fee*  buy_price 
+            user_rial=float(user_rial)
+
+            if user_rial< total :
+                return Response({'error': 'insufficient ballance'},status=HTTPStatus.BAD_REQUEST)
+          
+            buyingETH=CryptoViewSet.BackBuyCrypto(user=bidder, symbol="ETHTMN",amount=fee,price=buy_price)
+            print(buyingETH)
+            if buyingETH.response.status==200:
+                user_balance.eth_balance -= fee
+                user_balance.eth_untradable_balance +=fee
+                user_balance.save()
+                Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status)
+            return Response(status=HTTPStatus.OK)          
     
     @action(detail=False, methods=['post'])
     def disable_order(self,request):
@@ -326,24 +406,61 @@ class NftViewSet(viewsets.ModelViewSet):
             data[str(nft.token_id)] = nft.image_url
         return JsonResponse(data)
 
+
+    
     @action(detail=False, methods=["put"])
     def sell(self, request, pk=None):
+        user = self.request.user
         nft_id = request.data.get('token_id')
         start_date = request.data.get('start_date')
         end_date = request.data.get('end_date')
         floor_price = request.data.get('floor_price')
+
         try:
             nft = NFT.objects.get(token_id=nft_id)
-        except Http404:
+        except NFT.DoesNotExist:
             return Response({"error": "NFT not found."}, status=status.HTTP_404_NOT_FOUND)
 
+        # Check user's MATIC balance
+        user_wallet = Wallet.objects.filter(user=user).first()
+        if not user_wallet:
+            return Response({"error": "User wallet not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            balance_response = get_balance(user)
+            if balance_response.status_code != 200:
+                return balance_response
+            user_balance = Decimal(balance_response.data["matic_balance"])
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        # Check if the user has sold any NFTs before
+        has_sold_before = NFT.objects.filter(owner=user, is_for_sale=False).exists()
+
+        # Ensure the user has at least 0.03 MATIC or it's their first sale and they will receive 0.1 MATIC
+        if user_balance < Decimal('0.03'):
+            if not has_sold_before:
+                # Transfer 0.1 MATIC from company wallet to user wallet
+                try:
+                    transfer_matic(user_wallet.address, 0.1)
+                except Exception as e:
+                    return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+                # Notify user about the reward
+                return Response({"message": "You have received 0.1 MATIC as a reward for selling your first NFT."}, status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "You do not have enough balance to cover the gas fee to sell this NFT."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Proceed with marking the NFT as for sale
         nft.is_for_sale = True
         nft.start_date = start_date
         nft.end_date = end_date
         nft.last_price = floor_price
         nft.save()
-        print("ok by database")
+
         return Response({"message": "NFT is now for sale."}, status=status.HTTP_200_OK)
+     
+
 
 
     @action(detail=False, methods=['put'])
@@ -564,9 +681,10 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
             user_balance.rial_available_balance=n
             user_balance.save()
         # Create the NFT metadata
+        # 'collection':collection.name
             prop={
                 'owner':user.username,
-                'creator': creator 
+                'creator': creator ,
             }
             nft_metadata = {
             'name': nft_name,
@@ -574,6 +692,7 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
             'image': image_nft,
             'properties': prop,
             'data': data,
+            'price':last_price,
 
 
         }
@@ -650,9 +769,6 @@ class MyImageViewSet(viewsets.ModelViewSet):
         return Response({'id': serializer.data['id'], 'image': image_url}, status=status.HTTP_201_CREATED, headers=headers)
 
 
-from django.conf import settings
-from .models import PDF
-from .serializers import PDFSerializer
 
 class PDFViewSet(viewsets.ModelViewSet):
     queryset = PDF.objects.all()

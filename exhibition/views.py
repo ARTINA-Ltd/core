@@ -63,7 +63,7 @@ class ArtistClosedExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         user = self.request.user
         now = timezone.now()
-        return Exhibition.objects.filter(applicatons_nft__owner=user, end_date__lt=now)
+        return Exhibition.objects.filter(applications_nft__owner=user, end_date__lt=now)
 
 class OpenForArtistRegistrationExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.ExhibitionSerializer
@@ -364,7 +364,7 @@ class TicketViewSet(viewsets.ViewSet):
                 ticket=Ticket.objects.create(user=user, exhibition=exhibition)
                 # Send the SMS via Kavenegar API
                 # The URL IS like : https://api.kavenegar.com/v1/{API-KEY}/verify/lookup.json
-                updating_balance(user_id=user.id, currency='rial', amount=pri, side=side)
+                updating_balance(user_id=user.id, currency='rial', amount=payment.amount, side="deposit")
                 response = requests.post(
                         f"https://api.kavenegar.com/v1/"
                         f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
