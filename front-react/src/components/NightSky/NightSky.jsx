@@ -41,7 +41,7 @@ const NightSky = () => {
   const getRandomY = () => Math.floor(Math.random() * Math.floor(vh)).toString();
 
   return (
-    <div className="">
+    <div className="sticky">
       <div id="App">
         <svg id="sky">
           {[...Array(num)].map((_, index) => (
