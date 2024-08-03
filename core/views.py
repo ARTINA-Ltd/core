@@ -268,12 +268,14 @@ class OrderViewSet(viewsets.ViewSet):
             
         if user_eth< eth  :
                 return Response({'error': 'insufficient ballance','usereth':user_eth},status=HTTPStatus.BAD_REQUEST)
-          
-            user_balance.eth_balance -= eth
-            user_balance.eth_untradable_balance += eth
-            user_balance.save()
-            Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status,eth=eth)
-            return Response(status=HTTPStatus.OK)
+            
+        eth=float(eth)     
+        user_balance.eth_balance -= eth
+        user_balance.eth_untradable_balance += eth  
+        user_balance.save()  
+        Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status,eth=eth)
+           
+        return Response(status=HTTPStatus.OK)
           
     
     @action(detail=False, methods=['post'])
