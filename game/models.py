@@ -10,14 +10,12 @@ class Game(models.Model):
     user2 = models.ForeignKey(User, related_name='user2_games', on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
-
-class GameSession(models.Model):
     game = models.ForeignKey(Game, related_name='sessions', on_delete=models.CASCADE)
- #   user = models.ForeignKey(User, related_name='sessions', on_delete=models.CASCADE)
     choice = models.CharField(max_length=10, blank=True, null=True)  # 'rock', 'paper', 'scissors'
     result = models.CharField(max_length=10, blank=True, null=True)  # 'win', 'lose', 'draw'
     points = models.IntegerField(default=0)
-    is_user_turn = models.BooleanField(default=False)
+    user_turn = models.BooleanField(default=False)
+    status = models.ChoiceField(default=pending)
     created_at = models.DateTimeField(auto_now_add=True)
 
 class UserGameProfile(models.Model):
