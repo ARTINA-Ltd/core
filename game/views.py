@@ -13,25 +13,41 @@ class GameViewSet(viewsets.ModelViewSet):
     # permission_classes = [permissions.IsAuthenticated]
 
     @action(detail=True, methods=['post'])
+    def create_play_solo(self,request):
+        user=self.request.user
+        profile=UserGameProfile.objects.get(user=user)
+        if profile.hearts>= 1 :
+            game= Game.objects.create(user1=user)
+            return({"id":game.id},status=status.HTTP_201_CREATED)
+        else :
+            return ({"message":"you don't have credit to play"},status=status.HTTP_403_BAD_REQUEST)
+    @action(detail=True, methods=['post'])
+    def creat_play_friend(self,request):
+        user=self.request.user
+        friend_username = request.data.get('friend_username')
+        user2= User.objects.get(username=friend_username)
+        if profile.hearts>= 1 :
+            game= Game.objects.create(user1=user,user2=user2)
+            return({"id":game.id},status=status.HTTP_201_CREATED)
+        else :
+            return ({"message":"you don't have credit to play"},status=status.HTTP_403_BAD_REQUEST)
+        
+    @action(detail=True, methods=['post'])
     def play_solo(self, request, pk=None):
         """
         Endpoint to play solo against the server.
         """
         user=self.request.user
         game = self.get_object()
-        # cheat_code = game.cheat_code
+        
         user_choice = request.data.get('choice')
-        # user_cheat = request.data.get('cheat_code')
+        user_cheat = request.data.get('cheat_code')
         choices = ['rock', 'paper', 'scissors']
         server_choice = random.choice(choices)
-        
-        # Example logic to determine game result based on cheat code
-        # if cheat_code == user_cheat:
-        #     result = 'win'
-        #     points_earned = 10
-        # else :
-            
-        if user_choice == server_choice:
+        user_profile = UserGameProfile.objects.get(user=user)
+        if CheatCode.objects.get(cheat_code=user_cheat) :
+            result="win"    
+        elif user_choice == server_choice:
                 result = 'draw'
         elif (user_choice == 'rock' and server_choice == 'scissors') or \
                  (user_choice == 'paper' and server_choice == 'rock') or \
@@ -40,29 +56,30 @@ class GameViewSet(viewsets.ModelViewSet):
         else:
                 result = 'lose'
         
-            # Update points for both users based on result
-        if result == 'win':
+        
+        if result == 'win': 
             user_points = 10
+            user_profile.points += 10
+            user_profile.save()
         elif result == 'lose':
             user_points = 0
+            user_profile.hearts -= 1
+            user_profile.save()
         else:
             user_points = 5
-        # Update user's profile with points earned
-        user_profile = UserGameProfile.objects.get(user=user)
-        user_profile.points += 10
-        user_profile.save()
-
-        # Save game session details
+            user_profile.points += 5
+            user_profile.save()
+        
         session = GameSession.objects.create(
+            user=user ,
             game=game,
             choice=user_choice,
             result=result,
-            points=10
+            points=user_points
         )
 
         # Update last played timestamp and hearts for user profile
         user_profile.last_played = datetime.now()
-        user_profile.hearts -= 1  # Deduct one heart for playing
         user_profile.save()
 
         return Response({'message': 'Solo game played successfully', 'result': result, 'points_earned': 10,"server_choice":server_choice}, status=status.HTTP_200_OK)
@@ -72,6 +89,7 @@ class GameViewSet(viewsets.ModelViewSet):
         """
         Endpoint to play with a friend.
         """
+        user=self.request.user
         game = self.get_object()
         friend_username = request.data.get('friend_username')
         
@@ -85,7 +103,6 @@ class GameViewSet(viewsets.ModelViewSet):
         import random
         choices = ['rock', 'paper', 'scissors']
         user_choice = random.choice(choices)
-        friend_choice = random.choice(choices)
         
         if user_choice == friend_choice:
             result = 'draw'
