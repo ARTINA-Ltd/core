@@ -18,9 +18,9 @@ class GameViewSet(viewsets.ModelViewSet):
         profile=UserGameProfile.objects.get(user=user)
         if profile.hearts>= 1 :
             game= Game.objects.create(user1=user)
-            return({"id":game.id},status=status.HTTP_201_CREATED)
+            return Response ({"id":game.id},status=status.HTTP_201_CREATED)
         else :
-            return ({"message":"you don't have credit to play"},status=status.HTTP_403_BAD_REQUEST)
+            return Response ({"message":"you don't have credit to play"},status=status.HTTP_403_BAD_REQUEST)
     @action(detail=True, methods=['post'])
     def creat_play_friend(self,request):
         user=self.request.user
@@ -28,9 +28,9 @@ class GameViewSet(viewsets.ModelViewSet):
         user2= User.objects.get(username=friend_username)
         if profile.hearts>= 1 :
             game= Game.objects.create(user1=user,user2=user2)
-            return({"id":game.id},status=status.HTTP_201_CREATED)
+            return Response ({"id":game.id},status=status.HTTP_201_CREATED)
         else :
-            return ({"message":"you don't have credit to play"},status=status.HTTP_403_BAD_REQUEST)
+            return Response({"message":"you don't have credit to play"},status=status.HTTP_403_BAD_REQUEST)
         
     @action(detail=True, methods=['post'])
     def play_solo(self, request, pk=None):
