@@ -151,8 +151,8 @@ def order_Report(token_id):
                 bid.report = 2
                 bid.save()
                 balance= UserBalance.objects.get(user=bid.bidder)
-                balance.rial_available_balance+= bid.fee
-                balance.rial_available_balance-= bid.fee
+                balance.eth_balance+= bid.eth
+                balance.eth_untradable_balance -= bid.eth
                 balance.save()
                 NotifyUser.objects.create(user=bid.bidder, text="Your money reverted to your balance")
                 NotifyUser.objects.create(user=bid.bidder, text="You lost the bid")
@@ -170,7 +170,7 @@ def get_winner(token_id):
         highest_bid = None
         orders = Order.objects.filter(nft=nft, status=0)
         for bid in orders:
-            if highest_bid is None or bid.fee > highest_bid.fee:
+            if highest_bid is None or bid.eth > highest_bid.eth:
                 highest_bid = bid
 
         nft.is_for_sale = False
@@ -185,21 +185,21 @@ def get_winner(token_id):
         highest_bid.save()
         recipient = highest_bid.bidder
         balance= UserBalance.objects.get(user=highest_bid.bidder)
-        balance.rial_untradable_balance-= highest_bid.fee
+        balance.eth_untradable_balance-= highest_bid.eth
         balance.save()
 
         #artina
         artina=ARTINA_Ballance.objects.first()
         
-        value=(1.5*highest_bid.fee)/100
+        value=(1.5*highest_bid.eth)/100
         artina.artina_commision=value
         artina.artina_commision_count += 1
         artina.save
         #owner
 
         balanceowner= UserBalance.objects.get(user=nft.owner)
-        total= highest_bid.fee - value
-        balanceowner.rial_available_balance += total
+        total= highest_bid.eth - value
+        balanceowner.eth_balance += total
         balanceowner.save()
         NotifyUser.objects.create(user=bid.bidder, text="You sold your nft and your balance updated")
         order_Report(token_id)
@@ -212,7 +212,7 @@ def get_winner(token_id):
             "email": recipient.email,
         }
 
-        return Response({"winner": recipient_data, "price": highest_bid.fee}, status=status.HTTP_200_OK)
+        return Response({"winner": recipient_data, "price": highest_bid.eth}, status=status.HTTP_200_OK)
     except Exception as e:
         print(f"Error in get_winner: {e}")
         return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -249,12 +249,10 @@ class OrderViewSet(viewsets.ViewSet):
         fee = request.data.get('fee')
         token_id = request.data.get('token_id')
         eth = request.data.get('eth_fee')
-        pay_with=request.data.get('pay_with')
         status = 0
         bidder=self.request.user
         user_balance=None
         user_balance = UserBalance.objects.filter(user=bidder).first()
-        user_rial=user_balance.rial_available_balance
         user_eth=user_balance.eth_balance
         fee=float(fee)
         nft = NFT.objects.get(token_id=token_id)
@@ -266,44 +264,16 @@ class OrderViewSet(viewsets.ViewSet):
             return Response({'error': 'you had already order on this NFT'},status=HTTPStatus.BAD_REQUEST)
 
 
-        elif pay_with=="CRYPTO":
-            if user_eth< fee  :
+        
+        if user_eth< eth  :
                 return Response({'error': 'insufficient ballance','usereth':user_eth},status=HTTPStatus.BAD_REQUEST)
           
-            user_balance.eth_balance -= fee
-            user_balance.eth_untradable_balance +=fee
+            user_balance.eth_balance -= eth
+            user_balance.eth_untradable_balance += eth
             user_balance.save()
             Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status,eth=eth)
             return Response(status=HTTPStatus.OK)
-        else :
-            headers = {
-            'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
-            }
-            url = 'https://api.wallex.ir/v1/account/otc/price'
-            params = {
-                'symbol': 'ETHTMN',
-                'side': 'BUY',
-            }
-            response_BUY = requests.get(url, headers=headers, params=params) 
-            if response_BUY.status_code == 200 :
-                buy_data = response_BUY.json()
-                buy_price = buy_data['result']['price']
-            buy_price=float(buy_price)
-            total= fee*  buy_price 
-            user_rial=float(user_rial)
-
-            if user_rial< total :
-                return Response({'error': 'insufficient ballance'},status=HTTPStatus.BAD_REQUEST)
           
-            buyingETH=CryptoViewSet.BackBuyCrypto(user=bidder, symbol="ETHTMN",amount=fee,price=buy_price)
-            print(buyingETH)
-            if buyingETH.response.status==200:
-                user_balance.eth_balance -= fee
-                user_balance.eth_untradable_balance +=fee
-                user_balance.save()
-                Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status)
-            return Response(status=HTTPStatus.OK)          
     
     @action(detail=False, methods=['post'])
     def disable_order(self,request):
