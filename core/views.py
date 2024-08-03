@@ -263,8 +263,9 @@ class OrderViewSet(viewsets.ViewSet):
         if Order.objects.filter(nft=nft,bidder=bidder, status=0).first() :
             return Response({'error': 'you had already order on this NFT'},status=HTTPStatus.BAD_REQUEST)
 
-
-        
+        if Order.objects.filter(nft=nft,eth=eth, status=0).first() :
+            return Response({'error': 'you have to bid more. this already exists.'},status=HTTPStatus.BAD_REQUEST)
+            
         if user_eth< eth  :
                 return Response({'error': 'insufficient ballance','usereth':user_eth},status=HTTPStatus.BAD_REQUEST)
           
