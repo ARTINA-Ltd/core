@@ -989,7 +989,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
     
         failure_url = f'http://artina.org/payment_status/?status=failed&authority={authority}'
         success_url = f'http://artina.org/payment_status/?status=success&authority={authority}'
-        user = self.request.user
+        user = Payment.user
         response = self.verify_payment(payment.amount, payment.authority)
 
         if response.status_code == 200:
