@@ -7,7 +7,8 @@ import nft4 from "../assets/images/NFT4.png";
 import NTSNavbar from "../components/NTSNavbar/NTSNavbar.jsx";
 import PaperRockScissors from "../components/Nts/PaperRockScissors.jsx";
 import axios from "axios";
-import { Notify } from "notiflix";
+import "../components/Nts/Styles.css";
+
 import { useState } from "react";
 
 const NTS = () => {
@@ -25,7 +26,7 @@ const NTS = () => {
         console.log(e.data);
       });
   };
-
+  // https://api.artina.org/api/game/games/create_play_solo/
   const playWithServer = () => {
     axios
       .post(
@@ -47,9 +48,7 @@ const NTS = () => {
   return (
     <>
       <NTSNavbar />
-      <button className="mx-auto block  z-[100]" onClick={playWithServer}>
-        123
-      </button>
+
       <div className="z-10 p-8 bg-base-100 w-[99vw] overflow-hidden">
         <NightSky />
         <div className="flex items-center bgba justify-around overflow-hidden">
@@ -82,12 +81,14 @@ const NTS = () => {
         </div>
 
         <div className="mt-32 z-10">
-          <h1 className="text-center text-7xl">Play!</h1>
-          <div className="text-5xl border-b-2 border-b-base-content border-opacity-25 pb-12 text-accent-content text-center flex gap-2 justify-around my-16">
-            <button onClick={playWithServer} className="flex z-[90] cursor-pointer items-center justify-center bg-primary rounded-[100%] w-[20rem] p-8 ">
+          <h1 className="text-center text-7xl w-fit mx-auto border-none neon-container">Play!</h1>
+          <div className="text-7xl border-b-2 border-b-base-content border-opacity-25 pb-12 text-accent-content text-center flex gap-2 justify-around my-16">
+            <button onClick={playWithServer} className="flex  cursor-pointer items-center justify-center neon-container neon-border  rounded-[100%] w-[20rem] p-8 ">
               <h1 className="">Solo</h1>
             </button>
-            <h1 className="bg-primary rounded-[100%] w-[20rem] p-8">With Friends</h1>
+            <button className="flex text-7xl cursor-pointer items-center justify-center neon-container neon-border  rounded-[100%] w-[20rem] p-8 ">
+              <h1 className="">With Friends</h1>
+            </button>
           </div>
         </div>
         <PaperRockScissors />

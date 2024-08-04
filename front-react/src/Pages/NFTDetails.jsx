@@ -306,7 +306,7 @@ const NFTDetails = () => {
                 </div>
               </div>
             </div>
-            {data?.end_date && (
+            {data?.end_date && data?.is_for_sale && (
               <div className="w-full h-[50px] flex justify-center items-center bg-base-100 text-base-content rounded-xl text-[20px]">
                 {" "}
                 <CountdownTimer end_date={data && countdown} className="" />
@@ -465,40 +465,15 @@ const NFTDetails = () => {
                         ثبت
                       </BorderButton>
                     </div>
-                    <div className="flex w-full my-2 items-center justify-between">
-                      {selectedPayment === "Crypto" ? (
-                        <div className="">
-                          موجودی رمزارزی شما
-                          <h1 className="my-2">اتریوم: {balance.eth_balance} </h1>
-                        </div>
-                      ) : (
-                        <div className="">
-                          موجودی تومانی شما
-                          <h1 className="my-2">تومان: {balance.rial_available_balance}</h1>
-                        </div>
-                      )}
-                      <div className="dropdown" dir="ltr">
-                        <div tabIndex={0} role="button" className="btn w-36 bg-primary hover:bg-[#2FA4D8] text-primary-content ">
-                          انتخاب نوع پرداخت
-                        </div>
-                        <ul tabIndex={0} className="dropdown-content menu  bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-                          <li>
-                            <div className="form-control">
-                              <label className="label cursor-pointer">
-                                <span className="label-text mr-24">تومانی</span>
-                                <input type="radio" name="payment" value="Toman" className="radio checked:bg-primary" checked={selectedPayment === "Toman"} onChange={() => handleChange("Toman")} />
-                              </label>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="form-control">
-                              <label className="label cursor-pointer">
-                                <span className="label-text mr-24">رمزارزی</span>
-                                <input type="radio" name="payment" value="Crypto" className="radio  checked:bg-primary" checked={selectedPayment === "Crypto"} onChange={() => handleChange("Crypto")} />
-                              </label>
-                            </div>
-                          </li>
-                        </ul>
+                    <div className="flex w-full my-2 items-center gap-4">
+                      <div className={`${ethereum > balance.eth_balance ? "text-error" : "text-success"}`}>
+                        موجودی رمزارزی شما
+                        <h1 className="my-2">اتریوم: {balance.eth_balance} </h1>
+                      </div>
+
+                      <div className={""}>
+                        موجودی تومانی شما
+                        <h1 className="my-2">تومان: {balance.rial_available_balance}</h1>
                       </div>
                     </div>
                     <div className="flex pr-4 text-xs sm:pr-0 sm:gap-2 sm:my-2">

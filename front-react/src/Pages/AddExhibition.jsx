@@ -40,9 +40,6 @@ const AddExhibition = () => {
   });
 
   const inputFile = useRef(null);
-  const handleCategoryChange = (e) => {
-    setSelectedCategory(e.value);
-  };
   const [profileImage, setProfileImage] = useState();
   const [profileImageUrl, setProfileImageUrl] = useState();
 
@@ -68,7 +65,7 @@ const AddExhibition = () => {
           end_date: values.end_date,
           description: values.description,
           has_ticket: ticket,
-          price: ticket ? ticketPrice : 0,
+          price: ticket ? ticketPrice : null,
           application_deadline: values.application_deadline,
           category: selectedCategory,
           commision: values.commision,
@@ -81,11 +78,11 @@ const AddExhibition = () => {
       )
       .then((res) => {
         Notify.success(t("addSuccessful"));
-        console.log(res);
         navigate("/exhibitor");
       })
       .catch((e) => {
         Notify.failure(t("error"));
+
         console.log(e);
       });
   };
@@ -98,10 +95,6 @@ const AddExhibition = () => {
         },
       })
       .then((res) => {
-        console.log("_____________________");
-        console.log("categories");
-        console.log(res.data);
-        console.log("_____________________");
         setCtegories(res.data);
       });
   }, []);
@@ -121,7 +114,6 @@ const AddExhibition = () => {
         })
         .catch((res) => {
           Notify.failure(t("uploadError"));
-          console.log(res);
           Block.remove("#exhibitionImage", 3000);
         });
     }
@@ -266,7 +258,6 @@ const AddExhibition = () => {
                   type="number"
                   title={t("commision")}
                   onChange={(e) => {
-                    console.log(values);
                     setValues((prev) => ({
                       ...prev,
                       commision: e.value,
@@ -281,7 +272,6 @@ const AddExhibition = () => {
                 className={`border-[1px] w-1/2 mx-auto rounded-full px-3 py-1 cursor-pointer text-center transition-all ${ticket ? "border-green-500 text-green-600 bg-green-50" : "border-red-600 text-red-700 bg-red-50"}`}
                 onClick={() => {
                   setTicket((prev) => !prev);
-                  console.log(ticket);
                 }}
               >
                 {ticket ? t("hasTicket") : t("noTicket")}
@@ -296,7 +286,6 @@ const AddExhibition = () => {
                   onChange={(e) => {
                     setTicketPrice(e.target.value);
                   }}
-                  defaultValue={null}
                   disabled={false}
                 />
               ) : (

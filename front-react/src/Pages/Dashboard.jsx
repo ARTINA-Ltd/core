@@ -79,6 +79,8 @@ const Dashboard = () => {
       })
       .then((res) => {
         setLastMonthTurnover(res.data.last_month_turnover);
+        console.log(res.data);
+
         setAllTurnovers(res.data.all_turnovers);
         setFirstFiveTurnovers(res.data.all_turnovers.slice(0, 5));
       })
@@ -132,7 +134,6 @@ const Dashboard = () => {
         setArtistOpenExhibitions(res.data);
       });
   }, []);
-
 
   useEffect(() => {
     axios
@@ -220,24 +221,24 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-                </div>
-                <div id="matics" className="w-full h-auto rounded-2xl bg-base-100 flex flex-col gap-3 py-2 px-4">
-                  <div className="font-b6 ">{t("matic")}</div>
-                  <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
-                    {t("negotiablebalance")}{" "}
-                    <div className="px-2 py-1 text-sm bg-neutral text-neutral-content rounded-md">
-                      {getBalance ? getBalance.matic_balance : ""} {t("matic")}
-                    </div>
-                  </div>
-                  <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
-                    {t("nonNegotiableBalance")}{" "}
-                    <div className="px-2 py-1 text-sm bg-neutral text-neutral-content rounded-md">
-                      {getBalance ? getBalance.matic_unavailable_balance : ""}
-                      {t("matic")}{" "}
-                    </div>
+              </div>
+              <div id="matics" className="w-full h-auto rounded-2xl bg-base-100 flex flex-col gap-3 py-2 px-4">
+                <div className="font-b6 ">{t("matic")}</div>
+                <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
+                  {t("negotiablebalance")}{" "}
+                  <div className="px-2 py-1 text-sm bg-neutral text-neutral-content rounded-md">
+                    {getBalance ? getBalance.matic_balance : ""} {t("matic")}
                   </div>
                 </div>
-                <br />
+                <div className="flex gap-2 items-center justify-between sm:flex-col sm:text-xs">
+                  {t("nonNegotiableBalance")}{" "}
+                  <div className="px-2 py-1 text-sm bg-neutral text-neutral-content rounded-md">
+                    {getBalance ? getBalance.matic_unavailable_balance : ""}
+                    {t("matic")}{" "}
+                  </div>
+                </div>
+              </div>
+              <br />
 
               <div className="my-3">
                 <div id="" className="w-full h-auto text-center rounded-2xl bg-base-100 flex justify-between gap-3 py-2 px-4 sm:flex-col">
@@ -362,7 +363,6 @@ const Dashboard = () => {
               <table className="dashboard-table w-full text-cente sm:text-xs">
                 <thead>
                   <tr>
-                  
                     <th>{t("nftPhoto")}</th>
                     <th>{t("nfNname")}</th>
                     <th>{t("date")} </th>
@@ -376,7 +376,9 @@ const Dashboard = () => {
                   {getOrders ? (
                     getOrders.map((item, index) => (
                       <tr className="group cursor-pointer hover:bg-base-100 rounded-xl transition-all" onClick={() => navigate(`/nft-details/${item.nft.token_id}`)}>
-                        <td><img src={item.nft.image_url} alt="" className="w-[42px] h-[42px] rounded-xl"/></td>
+                        <td>
+                          <img src={item.nft.image_url} alt="" className="w-[42px] h-[42px] rounded-xl" />
+                        </td>
                         <td>{item.nft.name}</td>
                         <td>
                           {Intl.DateTimeFormat("fa", {
@@ -389,9 +391,7 @@ const Dashboard = () => {
                           {item.fee} {t("tooman")}
                         </td>
                         <td>
-                      
-                        {item.eth} {t("ethereum")}
-                 
+                          {item.eth} {t("ethereum")}
                         </td>
 
                         <td className="pl-4 align-middle group-hover:-translate-x-2 transition-all duration-200">
