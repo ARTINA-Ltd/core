@@ -463,9 +463,9 @@ class NftViewSet(viewsets.ModelViewSet):
             order.status=1
             order.save()
             user_balance=None
-            user_balance = UserBalance.objects.filter(user=order.bidder).first()
-            user_balance.rial_available_balance += order.fee    
-            user_balance.rial_untradable_balance -=order.fee
+            user_balance = UserBalance.objects.get(user=order.bidder)
+            user_balance.eth_balance += order.eth    
+            user_balance.eth_untradable_balance-=order.eth
             user_balance.save()
 
         serializer = self.get_serializer(nft)
