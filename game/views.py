@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.contrib.auth.models import User
 from datetime import datetime, timedelta
-from .models import Game, GameSession, UserGameProfile
+from .models import *
 from .serializers import GameSerializer, GameSessionSerializer, UserGameProfileSerializer
 import random
 
@@ -18,16 +18,22 @@ class GameViewSet(viewsets.ModelViewSet):
         profile=UserGameProfile.objects.get(user=user)
         if profile.hearts>= 1 :
             game= Game.objects.create(user1=user)
+            GameSession.objects.create(user=user,points=10,user_turn=True)
             return Response ({"id":game.id},status=status.HTTP_201_CREATED)
         else :
             return Response ({"message":"you don't have credit to play"},status=status.HTTP_403_BAD_REQUEST)
+    
+    
     @action(detail=True, methods=['post'])
     def creat_play_friend(self,request):
         user=self.request.user
+        profile=UserGameProfile.objects.get(user=user)
         friend_username = request.data.get('friend_username')
         user2= User.objects.get(username=friend_username)
         if profile.hearts>= 1 :
             game= Game.objects.create(user1=user,user2=user2)
+            GameSession.objects.create(user=user,points=50,user_turn=True)
+            GameSession.objects.create(user=user2,points=50,user_turn=True)
             return Response ({"id":game.id},status=status.HTTP_201_CREATED)
         else :
             return Response({"message":"you don't have credit to play"},status=status.HTTP_403_BAD_REQUEST)
@@ -69,37 +75,124 @@ class GameViewSet(viewsets.ModelViewSet):
             user_points = 5
             user_profile.points += 5
             user_profile.save()
-        
-        session = GameSession.objects.create(
-            user=user ,
-            game=game,
-            choice=user_choice,
-            result=result,
-            points=user_points
-        )
-
+        session=GameSession.objects.get(game=game,user=user)
+        session.choice=user_choice
+        session.result=result
+        session.user_turn=False
+        session.save()
+        game.is_active=False
+        game.save()
         # Update last played timestamp and hearts for user profile
+        user_profile.points=user_points
         user_profile.last_played = datetime.now()
         user_profile.save()
 
+
         return Response({'message': 'Solo game played successfully', 'result': result, 'points_earned': 10,"server_choice":server_choice}, status=status.HTTP_200_OK)
 
+    
+    def is_game_finished(gameid):
+        game=Game.objects.get(id=gameid)
+        #if time passed 24 hours from created game is finished
+        if game.is_active :
+                return Response({'message': 'Game is still on','is_game_finished':"False"}, status=status.HTTP_200_OK)
+        gamesession=GameSession.objects.filter(game=game)
+        for game in gamesession :
+            if game.user_turn==True:
+                return Response({'message': 'Game is still on','is_game_finished':"False"}, status=status.HTTP_200_OK)
+        
+        return Response({'message': 'Game is finished','is_game_finished':"True"}, status=status.HTTP_200_OK)
+        
+
+
+
+    def who_won(gameid):
+        game=Game.objects.get(id=gameid)
+        gamesession=GameSession.objects.filter(game=game)
+        gamer1=gamesession.first()
+        gamer2=gamesession.last()
+        profile1=UserGameProfile.objects.get(user=gamer1.user)
+        profile2=UserGameProfile.objects.get(user=gamer2.user)
+        # points=game.points
+        if gamer1.choice == gamer2.choice:
+            gamer1.result = 'draw'
+            gamer2.result = 'draw'
+            profile1.points+=25
+            profile2.points+=25
+
+        elif (gamer1.choice == 'rock' and gamer2.choice == 'scissors') or \
+             (gamer1.choice == 'paper' and gamer2.choice == 'rock') or \
+             (gamer1.choice == 'scissors' and gamer2.choice == 'paper'):
+            gamer1.result = 'win'
+            gamer2.result = 'lose'
+            profile1.points+=50
+            profile2.hearts-=1
+    
+
+        else:
+            gamer1.result  = 'lose'
+            gamer2.result = 'win'
+            profile1.hearts-=1
+            profile2.points+=50
+
+        game.is_active=False
+        game.save()
+        profile1.save()
+        profile2.save()
+        gamer1.save()
+        gamer2.save()
+
+               
+
+
+
     @action(detail=True, methods=['post'])
-    def play_with_friend(self, request, pk=None):
-        """
-        Endpoint to play with a friend.
-        """
+    
+    
+    def play_friend_user1(self, request, pk=None):
+
         user=self.request.user
         game = self.get_object()
-        friend_username = request.data.get('friend_username')
+        user_choice = request.data.get('choice')
+        user_cheat = request.data.get('cheat_code')
+        choices = ['rock', 'paper', 'scissors'] 
+        session=GameSession.objects.get(game=game,user=user)
+        
+        if CheatCode.objects.get(cheat_code=user_cheat) :
+            result="win"
+        
+        today=datetime.now().date()
+        if session.created_at>today:
+            return Response({'error': 'Your 24 hours time for play is finished'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+        if session.user_turn == False :
+            return Response({'error': 'Not your turn to choose'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if game.is_active == False :
+            return Response({'error': 'Game is finished'}, status=status.HTTP_400_BAD_REQUEST)
         
         # Logic to find friend and initiate game session
-        try:
-            friend = User.objects.get(username=friend_username)
-        except User.DoesNotExist:
-            return Response({'error': 'Friend not found'}, status=status.HTTP_404_NOT_FOUND)
+        # try:
+        #     friend = User.objects.get(username=friend_username)
+        # except User.DoesNotExist:
+        #     return Response({'error': 'Friend not found'}, status=status.HTTP_404_NOT_FOUND)
         
-        # Example game logic for demo purposes
+        session.choice=user_choice,
+        session.result=result,
+        session.points=user_points,
+        session.user_turn=False,
+        session.save()
+        # Update last played timestamp and hearts for user profile
+        user_profile = UserGameProfile.objects.get(user=user)
+        user_profile.last_played = datetime.now()
+        user_profile.save()                
+        
+        
+        
+        
+        
+        
         import random
         choices = ['rock', 'paper', 'scissors']
         user_choice = random.choice(choices)

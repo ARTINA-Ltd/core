@@ -256,6 +256,8 @@ class OrderViewSet(viewsets.ViewSet):
         user_eth=user_balance.eth_balance
         fee=float(fee)
         nft = NFT.objects.get(token_id=token_id)
+        eth=float(eth) 
+        user_eth=float(user_eth)    
         if (nft.owner==bidder):
             return Response({'error': 'you are the owner, you can not bid'},status=HTTPStatus.BAD_REQUEST)
            
@@ -269,7 +271,6 @@ class OrderViewSet(viewsets.ViewSet):
         if user_eth< eth  :
                 return Response({'error': 'insufficient ballance','usereth':user_eth},status=HTTPStatus.BAD_REQUEST)
             
-        eth=float(eth)     
         user_balance.eth_balance -= eth
         user_balance.eth_untradable_balance += eth  
         user_balance.save()  

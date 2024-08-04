@@ -6,10 +6,12 @@ class CheatCode(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 class Game (models.Model):
-    user1_choice = models.CharField(max_length=10, blank=True, null=True)
-    user2_choice = models.CharField(max_length=10, blank=True, null=True)
-    is_active = models.BooleanField(default=True)
+    user = models.ForeignKey(User, related_name='user1_games', on_delete=models.CASCADE) 
+    user = models.ForeignKey(User, related_name='user2_games',on_delete=models.SET_NULL, blank=True, null=True)
+    points = models.IntegerField(default=0)
+    
     created_at = models.DateTimeField(auto_now_add=True)
+    is_active=models.BooleanField(default=True)
 
 
 class GameSession (models.Model):
@@ -20,10 +22,8 @@ class GameSession (models.Model):
     )
     user = models.ForeignKey(User, related_name='user1_games', on_delete=models.CASCADE) 
     game = models.ForeignKey(Game, related_name='sessions', on_delete=models.CASCADE)
-    user1_choice = models.CharField(max_length=10, blank=True, null=True)  # 'rock', 'paper', 'scissors'
-    user2_choice = models.CharField(max_length=10, blank=True, null=True)
+    choice = models.CharField(max_length=10, blank=True, null=True)  # 'rock', 'paper', 'scissors'
     result = models.CharField(max_length=10, blank=True, null=True)  # 'win', 'lose', 'draw'
-    points = models.IntegerField(default=0)
     user_turn = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
