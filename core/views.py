@@ -464,6 +464,7 @@ class NftViewSet(viewsets.ModelViewSet):
             order.save()
             user_balance=None
             user_balance = UserBalance.objects.get(user=order.bidder)
+            NotifyUser.objects.create(user=order.bidder,text="sell was cancelled and your balance updated")
             user_balance.eth_balance += order.eth    
             user_balance.eth_untradable_balance-=order.eth
             user_balance.save()
