@@ -8,8 +8,8 @@ const ExhibitionCard = (props) => {
   return (
     <Fragment>
       <div className=" flex flex-col my-8 w-[16rem] shadow-lg hover:shadow-lg transition-all ease-in-out duration-200 cursor-pointer hover:-translate-y-2 hover:shadow-black  bg-base-100 rounded-xl grow max-w-md max-h-[35rem] overflow-hidden">
-        <div className="h-3/4 w-[100%-2rem] mx-4 mt-4 overflow-hidden rounded-md">
-          <img src={image} alt="" className="w-full object-cover " />
+        <div className="w-[100%-2rem] mx-4 mt-4 h-96 sm:h-48 overflow-hidden rounded-md">
+          <img src={image} alt="" className="w-full min-h-full h-96 object-cover " />
         </div>
 
         <div

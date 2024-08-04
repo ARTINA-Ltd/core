@@ -27,13 +27,13 @@ const NFTDetails = () => {
   const [countdown, setCountdown] = useState(0);
   const [ethPrice, setEthPrice] = useState(0);
   const [maticPrice, setMaticPrice] = useState(0);
+  const [balance, setBalance] = useState(0);
   const { t } = useTranslation();
 
   const [selectedPayment, setSelectedPayment] = useState("Toman");
 
   const handleChange = (value) => {
     setSelectedPayment(value);
-    console.log(value); // or handle the selected value as needed
   };
   const icons = {
     heart: (
@@ -88,6 +88,17 @@ const NFTDetails = () => {
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
+      axios
+        .get("https://api.artina.org/api/account/user-balance/get_balance/", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+          mode: "cors",
+        })
+        .then((res) => {
+          setBalance(res.data);
+          console.log(res.data);
+        });
     };
 
     fetchData();
@@ -235,6 +246,7 @@ const NFTDetails = () => {
           token_id: id,
           fee: price.toFixed(0).toString(),
           eth_fee: ethereum,
+          pay_with: selectedPayment === "Toman" ? "TMN" : "CRYPTO",
         },
         {
           headers: {
@@ -294,7 +306,7 @@ const NFTDetails = () => {
                 </div>
               </div>
             </div>
-            {data?.end_date && (
+            {data?.end_date && data?.is_for_sale && (
               <div className="w-full h-[50px] flex justify-center items-center bg-base-100 text-base-content rounded-xl text-[20px]">
                 {" "}
                 <CountdownTimer end_date={data && countdown} className="" />
@@ -430,8 +442,8 @@ const NFTDetails = () => {
                 <div className="bg-neutral text-neutral-content rounded-xl p-3 w-full">
                   <div className="w-full text-center font-b6 text-xl sm:mb-8">ثبت پیشنهاد جدید</div>
                   <div className="flex gap-1 w-full flex-col">
-                    <div className="flex items-center gap-3 sm:my-2">
-                      <div className="grow">
+                    <div className="flex items-center justify-between sm:my-2">
+                      <div className=" w-32">
                         <SimpleInput
                           type={"number"}
                           className={"rounded-lg "}
@@ -443,40 +455,27 @@ const NFTDetails = () => {
                           }}
                         />
                       </div>
-                      <div>
-                        <div className="dropdown">
-                          <div tabIndex={0} role="button" className="btn w-36 bg-primary hover:bg-[#2FA4D8] text-primary-content m-1">
-                            انتخاب نوع پرداخت
-                          </div>
-                          <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-                            <li>
-                              <div className="form-control">
-                                <label className="label cursor-pointer">
-                                  <span className="label-text mr-24">تومانی</span>
-                                  <input type="radio" name="payment" value="Toman" className="ml-auto radio checked:bg-primary" checked={selectedPayment === "Toman"} onChange={() => handleChange("Toman")} />
-                                </label>
-                              </div>
-                            </li>
-                            <li>
-                              <div className="form-control">
-                                <label className="label cursor-pointer">
-                                  <span className="label-text">رمزارزی</span>
-                                  <input type="radio" name="payment" value="Crypto" className="radio block ml-24 checked:bg-primary" checked={selectedPayment === "Crypto"} onChange={() => handleChange("Crypto")} />
-                                </label>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                        <BorderButton
-                          className="w-36 text-center"
-                          onClick={() => {
-                            price !== 0 && addRequest();
-                          }}
-                        >
-                          ثبت
-                        </BorderButton>
+
+                      <BorderButton
+                        className="w-36 text-center"
+                        onClick={() => {
+                          price !== 0 && addRequest();
+                        }}
+                      >
+                        ثبت
+                      </BorderButton>
+                    </div>
+                    <div className="flex w-full my-2 items-center gap-4">
+                      <div className={`${ethereum > balance.eth_balance ? "text-error" : "text-success"}`}>
+                        موجودی رمزارزی شما
+                        <h1 className="my-2">اتریوم: {balance.eth_balance} </h1>
                       </div>
-                    </div>{" "}
+
+                      <div className={""}>
+                        موجودی تومانی شما
+                        <h1 className="my-2">تومان: {balance.rial_available_balance}</h1>
+                      </div>
+                    </div>
                     <div className="flex pr-4 text-xs sm:pr-0 sm:gap-2 sm:my-2">
                       قیمت به تومان:
                       <div className="text-indigo-600">&nbsp;{price}&nbsp;</div>

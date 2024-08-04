@@ -9,7 +9,7 @@ import i18n from "./../../../i18n";
 import SimpleInput from "./../../Inputs/SimpleInput";
 import { Notify } from "notiflix";
 
-const ImageCard = ({ className, children, src, price, onClick, tokenId,showCancel, showSell = false, onClickShow, onClickHide, has_creator, visible,isForSale }) => {
+const ImageCard = ({ className, children, src, price, onClick, tokenId, showCancel, showSell = false, onClickShow, onClickHide, has_creator, visible, isForSale }) => {
   const [isVisible, setIsVisible] = useState(visible);
   const [isExpanded, setIsExpanded] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");
@@ -33,21 +33,27 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId,showCance
     setIsExpanded((prev) => !prev);
   }, []);
 
-const handleCancel =()=>{
-
-  axios.put("https://api.artina.org/api/transaction/nfts/cancel_sell/",{
-    token_id: tokenId,
-  },{
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-    },
-    mode: "cors",
-  }).then((r)=>{
-    Notify.success("فروش برای این اثر لغو شد")
-  }).catch((e)=>{
-    console.log(e);
-  })
-}
+  const handleCancel = () => {
+    axios
+      .put(
+        "https://api.artina.org/api/transaction/nfts/cancel_sell/",
+        {
+          token_id: tokenId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+          mode: "cors",
+        }
+      )
+      .then((r) => {
+        Notify.success("فروش برای این اثر لغو شد");
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   const handleTransfer = () => {
     axios

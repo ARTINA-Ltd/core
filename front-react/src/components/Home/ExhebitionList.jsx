@@ -56,7 +56,7 @@ const ExhebitionList = ({ className }) => {
               ? data.map((item, index) => (
                   <SwiperSlide key={index}>
                     <SimpleCard className={"bg-neutral h-[30rem] flex flex-col justify-around w-full lg:p-5"}>
-                      <img src={item.image} className="w-full h-96 object-cover rounded-2xl" alt="" style={{ maxHeight: "75%" }} />
+                      <img src={item.image} className="w-full max-h-80 object-cover rounded-2xl" alt="" />
                       <div className="mt-3 font-b4 text-[24px] text-center cursor-pointer" onClick={() => (localStorage.getItem("authTokens") != null ? navigate(`/exhibition-collections/${item.id}`) : navigate(`/login`))}>
                         {item.marketName}
                       </div>

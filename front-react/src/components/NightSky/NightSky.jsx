@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import anime from 'animejs/lib/anime.es.js';
-import "./NightSky.css"
+import React, { useEffect, useState } from "react";
+import anime from "animejs/lib/anime.es.js";
+import "./NightSky.css";
 const NightSky = () => {
   const [num, setNum] = useState(60);
   const [vw, setVw] = useState(Math.max(document.documentElement.clientWidth, window.innerWidth || 0));
@@ -12,11 +12,11 @@ const NightSky = () => {
         targets: ["#sky .star"],
         opacity: [
           { duration: 700, value: "0" },
-          { duration: 700, value: "1" }
+          { duration: 700, value: "1" },
         ],
         easing: "linear",
         loop: true,
-        delay: (el, i) => 50 * i
+        delay: (el, i) => 50 * i,
       });
     };
 
@@ -28,7 +28,7 @@ const NightSky = () => {
         delay: (el, i) => 1000 * i,
         opacity: [{ duration: 700, value: "1" }],
         width: [{ value: "150px" }, { value: "0px" }],
-        translateX: 350
+        translateX: 350,
       });
     };
 
@@ -41,7 +41,7 @@ const NightSky = () => {
   const getRandomY = () => Math.floor(Math.random() * Math.floor(vh)).toString();
 
   return (
-    <div className="sticky">
+    <div className="sticky top-0 pointer-events-none ">
       <div id="App">
         <svg id="sky">
           {[...Array(num)].map((_, index) => (
@@ -58,4 +58,4 @@ const NightSky = () => {
   );
 };
 
-export default NightSky
+export default NightSky;
