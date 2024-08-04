@@ -39,7 +39,7 @@ from celery import shared_task
 from django.utils import timezone
 from .models import NFT
 from .views import get_winner
-
+import time
 @shared_task
 
 def check_nft_end_time():
@@ -52,6 +52,9 @@ def check_nft_end_time():
         print(f"Processing NFT {nft.token_id}")
         tokenid=nft.token_id
         line=get_winner(tokenid)  # Use delay to enqueue the task asynchronously
+        print("start waiting")
+        time.sleep(40)
+        print("waiting is done")
         print(f"this is the result>>>>>>>>>>>>>>>>>>>>>>>{line}")
         nft.is_for_sale = False 
         print(f"Finished processing NFT {nft.token_id}") 
