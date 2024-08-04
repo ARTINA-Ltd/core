@@ -6,10 +6,9 @@ class CheatCode(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 class Game (models.Model):
-    user = models.ForeignKey(User, related_name='user1_games', on_delete=models.CASCADE) 
-    user = models.ForeignKey(User, related_name='user2_games',on_delete=models.SET_NULL, blank=True, null=True)
+    user1 = models.ForeignKey(User, related_name='user1_games', on_delete=models.CASCADE) 
+    user2 = models.ForeignKey(User, related_name='user2_games',on_delete=models.SET_NULL, blank=True, null=True)
     points = models.IntegerField(default=0)
-    
     created_at = models.DateTimeField(auto_now_add=True)
     is_active=models.BooleanField(default=True)
 
