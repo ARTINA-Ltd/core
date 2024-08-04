@@ -6,11 +6,50 @@ import nft3 from "../assets/images/NFT3.jpg";
 import nft4 from "../assets/images/NFT4.png";
 import NTSNavbar from "../components/NTSNavbar/NTSNavbar.jsx";
 import PaperRockScissors from "../components/Nts/PaperRockScissors.jsx";
+import axios from "axios";
+import { Notify } from "notiflix";
+import { useState } from "react";
 
 const NTS = () => {
+  const [sessionId, setSessionId] = useState("");
+  const [choice, setChoice] = useState("");
+  const startNewSession = () => {
+    axios
+      .post("https://api.artina.org/api/game/games/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+      })
+      .then((e) => {
+        setSessionId(e.data);
+        console.log(e.data);
+      });
+  };
+
+  const playWithServer = () => {
+    axios
+      .post(
+        `https://api.artina.org/api/game/games/1/play_solo/`,
+        {
+          choice: "paper",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+        }
+      )
+      .then((e) => {
+        console.log(e.data);
+      });
+  };
+
   return (
     <>
       <NTSNavbar />
+      <button className="mx-auto block  z-[100]" onClick={playWithServer}>
+        123
+      </button>
       <div className="z-10 p-8 bg-base-100 w-[99vw] overflow-hidden">
         <NightSky />
         <div className="flex items-center bgba justify-around overflow-hidden">
@@ -45,10 +84,10 @@ const NTS = () => {
         <div className="mt-32 z-10">
           <h1 className="text-center text-7xl">Play!</h1>
           <div className="text-5xl border-b-2 border-b-base-content border-opacity-25 pb-12 text-accent-content text-center flex gap-2 justify-around my-16">
-            <div className="flex items-center justify-center bg-accent rounded-[100%] w-[20rem] p-8 ">
+            <button onClick={playWithServer} className="flex z-[90] cursor-pointer items-center justify-center bg-primary rounded-[100%] w-[20rem] p-8 ">
               <h1 className="">Solo</h1>
-            </div>
-            <h1 className="bg-accent rounded-[100%] w-[20rem] p-8">With Friends</h1>
+            </button>
+            <h1 className="bg-primary rounded-[100%] w-[20rem] p-8">With Friends</h1>
           </div>
         </div>
         <PaperRockScissors />

@@ -4,7 +4,7 @@ import BuyTicketDialog from "../components/Dialog/BuyTicketDialog/BuyTicketDialo
 import ExhibitionCard from "./../components/Cards/ExhibitionCard/ExhibitionCard";
 import TestLayout from "../Layouts/TestLayout.jsx";
 import { useNavigate } from "react-router";
-import { Notify } from 'notiflix';
+import { Notify } from "notiflix";
 
 const ExhibitionList = () => {
   const navigate = useNavigate();
@@ -12,7 +12,6 @@ const ExhibitionList = () => {
     navigate("/");
     Notify.warning("Please log in to you account");
   }
-
 
   const [getData, setData] = useState();
   useEffect(() => {
@@ -47,14 +46,14 @@ const ExhibitionList = () => {
       );
     } else if (item.has_ticket && !item.user_has_ticket) {
       return (
-        <div className="flex items-center gap-1 font-b4 text-lg">
+        <div className="flex items-center gap-1 font-b4 lg:text-xs text-lg">
           <div className="bg-red-50 text-red-800 rounded-lg px-4 py-1 opacity-70">شما بلیت این نمایشگاه را ندارید</div>
           <BuyTicketDialog onClick={(event) => event.stopPropagation()} price={item.price} exhibitionId={item.id} exhibitionName={item.marketName} hasLogin={localStorage.getItem("authTokens") == "null" ? false : true} />
         </div>
       );
     } else {
       return (
-        <div className="flex items-center gap-1 w-1/2 md:w-full  font-b4 text-lg">
+        <div className="flex items-center gap-1 w-1/2 md:w-full lg:text-xs font-b4 text-lg">
           <div className="bg-sky-50 text-sky-700 w-full text-center text-sm rounded-xl py-1 opacity-70">نمایشگاه رایگان</div>
         </div>
       );
