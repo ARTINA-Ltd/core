@@ -82,7 +82,7 @@ class NotifyUserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-logger = logging.getLogger('file_register')
+loggerReg = logging.getLogger('file_register')
 
 class RegisterViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -94,14 +94,14 @@ class RegisterViewSet(viewsets.ModelViewSet):
         phone_number = request.data.get('phone_number')
         email = request.data.get('email')
         is_foreigner = request.data.get('is_foreigner')
-        logger.info(f"Register attempt for username: {username}, email: {email}, phone_number: {phone_number}")  # Log the registration attempt
+        loggerReg.info(f"Register attempt for username: {username}, email: {email}, phone_number: {phone_number}")  # Log the registration attempt
 
         if User.objects.filter(username=username).exists():
-            logger.warning(f"Username {username} already exists")  # Log if the username already exists
+            loggerReg.warning(f"Username {username} already exists")  # Log if the username already exists
             return Response({'error': 'This username is already taken.'}, status=status.HTTP_400_BAD_REQUEST)
 
         if User.objects.filter(email=email).exists():
-            logger.warning(f"Email {email} is already registered")  # Log if the email already exists
+            loggerReg.warning(f"Email {email} is already registered")  # Log if the email already exists
             return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Create the user if the username, phone_number, and email are all unique
@@ -110,7 +110,7 @@ class RegisterViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         
-        logger.info(f"User registered successfully: {username}, email: {email}, phone_number: {phone_number}")  # Log successful registration
+        loggerReg.info(f"User registered successfully: {username}, email: {email}, phone_number: {phone_number}")  # Log successful registration
         
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
    
@@ -118,17 +118,17 @@ class RegisterViewSet(viewsets.ModelViewSet):
     def check_username (request,username):
         username = request.data.get('username')
         if User.objects.filter(username=username).exists():
-            logger.warning(f"Username {username} already exists")  # Log if the username already exists
+            loggerReg.warning(f"Username {username} already exists")  # Log if the username already exists
             return Response({'error': 'This username is already taken.'}, status=status.HTTP_400_BAD_REQUEST)
     
     @action(detail=False, methods=['post'])
     def check_email (request,email):
         email = request.data.get('email')
         if User.objects.filter(email=email).exists():
-            logger.warning(f"Email {email} is already registered")  # Log if the email already exists
+            loggerReg.warning(f"Email {email} is already registered")  # Log if the email already exists
             return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
 
-logger = logging.getLogger('file_login')
+loggerLog = logging.getLogger('file_login')
 
 class LoginViewSet(viewsets.ViewSet):
 
@@ -139,15 +139,15 @@ class LoginViewSet(viewsets.ViewSet):
         username = request.data.get('username')
         password = request.data.get('password')
         
-        logger.info(f"Login attempt for username: {username}")  # Log the login attempt
+        loggerLog.info(f"Login attempt for username: {username}")  # Log the login attempt
         
         user = authenticate(username=username, password=password)
         
         if user is None:
-            logger.warning(f"Invalid credentials for username: {username}")  # Log invalid credentials
+            loggerLog.warning(f"Invalid credentials for username: {username}")  # Log invalid credentials
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
         profile = Profile.objects.get(user=user)
-        logger.info(f"Successful login for username: {username}")  # Log successful login
+        loggerLog.info(f"Successful login for username: {username}")  # Log successful login
         
         refresh = RefreshToken.for_user(user)
         response_data = {
@@ -262,7 +262,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
         return Response(status=204)
 
 # {"subject" :"jdfskhj" , "text":"skjdfkzs","email":"me@artina.org"}
-from rest_framework.exceptions import PermissionDenied
 
 class TicketViewSet(viewsets.ViewSet):
 
@@ -439,7 +438,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
             }
             return Response(balance, status=status.HTTP_200_OK)
 
-        balance = w3.eth.getBalance(user_wallet.address)
+        balance = polygon_w3.eth.getBalance(user_wallet.address)
         print(f"Balance: {balance}")
         user_wallet.balance=balance
         user_wallet.save
@@ -568,6 +567,41 @@ class CryptoViewSet(viewsets.ViewSet):
             if balance_update.status_code != status.HTTP_200_OK:
                 return Response({'error': 'Failed to update balance'}, status=status.HTTP_400_BAD_REQUEST)
 
+    def BackBuyCrypto(id, symbol,amount,price):
+        amount = float(amount)  # Ensure amount is a float
+        price = float(price)  # Ensure price is a float
+        user=User.objects.get(id)
+        id=int(user.id)
+        print(user)
+        transactionCurrency=TransactionCurrency.objects.filter(name=symbol).first()
+        transactionINS=Transaction.objects.create(user=user, transaction_currency=transactionCurrency,amount=amount,side="BUY",status='Pending')
+        total=amount*price
+        balance_check = check_balance(amount=total, user_id=user.id)
+        if balance_check.status_code != status.HTTP_200_OK:
+            return Response({'error': 'Purchase failed'}, status=status.HTTP_400_BAD_REQUEST)
+            
+        url = 'https://api.wallex.ir/v1/account/otc/orders'
+        headers = {
+            'Content-Type': 'application/json',
+            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  
+        }
+        data = {
+            'symbol': symbol, 
+            'side': "BUY",
+            'amount': amount,
+            'price': price,
+        }
+        response = requests.post(url, headers=headers, json=data)
+        print(response)
+        datam = response.json()
+        # Check if the request was successful
+        if response.status_code == 201:
+            transactionINS.status='completed'
+            transactionINS.save()
+            balance_update = updating_balance(user_id=user.id, currency=symbol, amount=amount, side="deposit")
+            if balance_update.status_code != status.HTTP_200_OK:
+                return Response({'error': 'Failed to update balance'}, status=status.HTTP_400_BAD_REQUEST)
+
   
             transaction_currency = TransactionCurrency.objects.get(name="rial")
             user_balance = UserBalance.objects.filter(user=user).first()
@@ -575,10 +609,28 @@ class CryptoViewSet(viewsets.ViewSet):
             if user_balance:
                 user_balance.rial_available_balance -= (amount*price + 10000)
                 user_balance.save()
+                try:
+                    phone_number=user.profile.phone_number
 
-                #artina=ARTINA_Ballance.objects.get(id=0)
-                #artina.artina_rial += 10000
-                #artina.save()
+                    response = requests.post(
+                f"https://api.kavenegar.com/v1/"
+                f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
+                f"/verify/lookup.json",
+                    data={
+                "receptor": phone_number,
+                "token1": user.profile.first_name,
+                "token2": amount,
+                 "token3": symbol,
+                "template": "WalletChargeVerification"
+                 }
+                )
+                except Profile.DoesNotExist :
+                    pass
+                    
+
+                artina=ARTINA_Ballance.objects.first()
+                artina.artina_rial += 10000
+                artina.save()
                 return Response({'message': 'Purchase successful'}, status=response.status_code)
             else:
                 return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
@@ -589,6 +641,29 @@ class CryptoViewSet(viewsets.ViewSet):
             transactionINS.save()
             return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
 
+    @action(detail=False, methods=['post'])
+    def get_br(self,request):
+        user = self.request.user
+        id=user.id
+        print(id)
+        price=request.data.get("price")
+        if not user:
+            return JsonResponse({"error": "user is required"}, status=400)
+        
+        try:
+            # Call the get_winner function
+            result = self.BackBuyCrypto(id=id, symbol="ETHTMN",amount=0.001,price=price)
+
+            # Check if result is a Response object (in case of errors within get_winner)
+            if isinstance(result, Response):
+                return result
+            return JsonResponse(result, status=200)
+        except Exception as e:
+            # Catch and handle unexpected errors
+            error_message = f"An unexpected error occurred: {str(e)}"
+            print(error_message)  # Log error to console for debugging
+            return JsonResponse({"error": error_message}, status=500)
+            
 
     @action(detail=False, methods=['post'])
     def SellCrypto(self, request):
@@ -628,10 +703,28 @@ class CryptoViewSet(viewsets.ViewSet):
     
             if user_balance:
                 user_balance.rial_available_balance += (amount*price - 10000)
+                total=(amount*price - 10000)
                 user_balance.save()
-                #artina=ARTINA_Ballance.objects.get(id=0)
-                #artina.artina_rial += 10000
-                #artina.save()
+                try:
+                    phone_number=user.profile.phone_number
+
+                    response = requests.post(
+                        f"https://api.kavenegar.com/v1/"
+                        f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
+                        f"/verify/lookup.json",
+                        data={
+                            "receptor": phone_number,
+                            "token1": user.profile.first_name,
+                            "token2":  total,
+                            "template": "AccountChargeVerification"
+                                }
+                                )
+                except Profile.DoesNotExist :
+                    pass
+                    
+                artina=ARTINA_Ballance.objects.first()
+                artina.artina_rial += 10000
+                artina.save()
                 return Response({'message': 'Purchase successful'}, status=response.status_code)
             else:
                 return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
@@ -854,10 +947,7 @@ class PasswordResetByPhoneViewSet(viewsets.ViewSet):
 
 
 
-from rest_framework import viewsets, status
-from rest_framework.response import Response
-from rest_framework.decorators import action
-import requests
+
 
 class PaymentGateViewSet(viewsets.ViewSet):
 
@@ -995,11 +1085,74 @@ class PaymentGateViewSet(viewsets.ViewSet):
 
 
 
+# Connect to the Polygon network
+polygon_w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
+
+# Address of the WETH (Wrapped ETH) token on the Polygon network
+WETH_CONTRACT_ADDRESS = '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619'
+
+def get_balance(user):
+    user_wallet = Wallet.objects.filter(user=user).first()
+    
+    if not user_wallet:
+        return Response({"error": "Wallet not found for the user."}, status=status.HTTP_404_NOT_FOUND)
+    
+    try:
+        # Get MATIC balance on Polygon
+        matic_balance_wei = polygon_w3.eth.get_balance(user_wallet.address)
+        matic_balance_matic = polygon_w3.fromWei(matic_balance_wei, 'ether')
+
+        # Get WETH (Wrapped ETH) balance on Polygon
+        weth_contract = polygon_w3.eth.contract(address=WETH_CONTRACT_ADDRESS, abi=[
+            {
+                'constant': True,
+                'inputs': [{'name': '_owner', 'type': 'address'}],
+                'name': 'balanceOf',
+                'outputs': [{'name': 'balance', 'type': 'uint256'}],
+                'type': 'function'
+            }
+        ])
+        weth_balance_wei = weth_contract.functions.balanceOf(user_wallet.address).call()
+        weth_balance_eth = polygon_w3.fromWei(weth_balance_wei, 'ether')
+
+        return Response({
+            "matic_balance": matic_balance_matic,
+            "eth_balance": weth_balance_eth
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 
-w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
+
+
+#w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
 #test net w3 = Web3(Web3.HTTPProvider("https://mumbai.rpc.thirdweb.com"))
+#def get_balance(user):
+#    user_wallet = Wallet.objects.filter(user=user).first()
+#    print(f"user_wallet is: {user_wallet}")
+#    if not user_wallet:
+#            balance = {
+#            'matic_balance': 0,
+#            'eth_balance':0,
+#            'wallet_address' : "" }
+#            return Response(balance, status=status.HTTP_200_OK)
+#    else :
+ #       balance = w3.eth.getBalance(user_wallet.address)
+ #       print(f"Balance: {balance}")
+        # user_wallet.balance=balance
+        # user_wallet.save
+        # balance = {
+        #         'matic_balance': user_wallet.MATIC_balance,
+        #         'wallet_address' : user_wallet.address,
+        #         'eth_balance':user_wallet.ETH_balance
+
+            # Add other balance fields as needed
+            # }
+
+#        return Response(balance, status=status.HTTP_200_OK)
+
+
 
 class WalletViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
@@ -1011,7 +1164,7 @@ class WalletViewSet(viewsets.ViewSet):
             return Response({'message': 'Wallet already exists for this user.'}, status=status.HTTP_400_BAD_REQUEST)
 
         private_key = Web3.toHex(os.urandom(32))  # Generate a random private key
-        account = w3.eth.account.privateKeyToAccount(private_key)
+        account = polygon_w3.eth.account.privateKeyToAccount(private_key)
 
         wallet = Wallet.objects.create(user=user, address=account.address, private_key=private_key)
         
@@ -1039,12 +1192,30 @@ class WalletViewSet(viewsets.ViewSet):
 
         else :
             private_key = Web3.toHex(os.urandom(32))  # Generate a random private key
-            account = w3.eth.account.privateKeyToAccount(private_key)
+            account = polygon_w3.eth.account.privateKeyToAccount(private_key)
             wallet = Wallet.objects.create(user=user, address=account.address, private_key=private_key)
             author_address=account.address
             return Response({'message': 'user wallet has created.', 'address': author_address}, status=status.HTTP_201_CREATED)
 
+    @action(detail=False, methods=['get'])
+    def get_br(self,request):
+        user = self.request.user
+        if not user:
+            return JsonResponse({"error": "user is required"}, status=400)
         
+        try:
+            # Call the get_winner function
+            result = get_balance(user)
+            # Check if result is a Response object (in case of errors within get_winner)
+            if isinstance(result, Response):
+                return result
+            return JsonResponse(result, status=200)
+        except Exception as e:
+            # Catch and handle unexpected errors
+            error_message = f"An unexpected error occurred: {str(e)}"
+            print(error_message)  # Log error to console for debugging
+            return JsonResponse({"error": error_message}, status=500)
+            
 
 # Initialize Web3 connection
 def connect_with_retry():
@@ -1102,7 +1273,7 @@ class EmailMixin(viewsets.ViewSet):
     def email_verification(self, request):
         recipient_email = request.data.get('email')
         user = self.request.user
-        user = User.objects.get(profile__email=email)
+        email = User.objects.get(profile__email=email)
         if not email:
             return Response({'error': 'email is required.'}, status.HTTP_400_BAD_REQUEST)
 
@@ -1151,55 +1322,34 @@ class EmailMixin(viewsets.ViewSet):
 
 # Assuming you have already set up Django Rest Framework and configured your project
 # 9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf
-from rest_framework import viewsets
-from rest_framework.response import Response
-import requests
-def get_balance(user):
-    user_wallet = Wallet.objects.filter(user=user).first()
-    print(f"user_wallet is: {user_wallet}")
-    if not user_wallet:
-            balance = {
-            'matic_balance': 0,
-            'eth_balance':0,
-            'wallet_address' : ""
-            # Add other balance fields as needed
-            }
-    return Response(balance, status=status.HTTP_200_OK)
 
-    balance = w3.eth.getBalance(user_wallet.address)
-    print(f"Balance: {balance}")
-    user_wallet.balance=balance
-    user_wallet.save
-    balance = {
-            'matic_balance': user_wallet.MATIC_balance,
-            'wallet_address' : user_wallet.address,
-            'eth_balance':user_wallet.ETH_balance
 
-            # Add other balance fields as needed
-        }
-
-    return Response(balance, status=status.HTTP_200_OK)
 
 
 class TransactionyViewSet(viewsets.ViewSet):
 
-    def create(self, request):
+    def transfer_matic(self, request):
+        w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
+
         user = request.user
         wallet= Wallet.objects.get(user=user)
         res=get_balance(user)
-        ballanceM= res.balance.matic_balance
-        ballanceE= res.balance.eth_balance
+        ballanceM= res.matic_balance
+        ballanceE= res.eth_balance                    
         userbalance = UserBalance.objects.get(user=user)
-        balance.matic_balance+=ballanceM
-        balance.eth_balance+=ballanceE
-        baalance.save()
+        userbalance.matic_balance+=ballanceM
+        userbalance.eth_balance+=ballanceE
+        userbalance.save()
 
         # use connect_with_retry() to get a connected Web3 instance
         # w3 = connect_with_retry()
-        print(f"ad:{recipient_address}")
         private_key = wallet.private_key
-        gas_price = w3.toWei('5', 'gwei')  # Example gas price
-        gas_limit = 21000  # Example gas limit
+        gas_limit = 200000  # Example gas limit
+        base_fee_per_gas = 244  # in wei (this is very low for current standards)
+        priority_fee = 50000000000  # 50 Gwei in wei for priority fee
+        
+        gas_price = base_fee_per_gas + priority_fee
+        
         if ballanceM != 0 :
             value= ballanceM-0.04
             nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
@@ -1219,39 +1369,13 @@ class TransactionyViewSet(viewsets.ViewSet):
             tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
             print(tx_receipt)
             if tx_receipt.status == 1:
-                transaction = Transaction.objects.create(user=user, amount=amount, status='completed')
+                transaction = Transaction.objects.create(user=user, amount=value, status='completed')
                 print(f"transaction:{transaction}")
                 return Response({'message': 'transfered successfully.'}, status=status.HTTP_200_OK)
             else:
-                transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='failed')
+                transaction = Transaction.objects.create(user=user, matic_amount=value, status='failed')
                 return Response({'message': 'Transaction failed.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        if ballanceE != 0 :
-            value= ballanceE
-            nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
-            transaction_data = {
-                'to': "0x2293221D7c357FB04De9c7D0dEeBcA427407429D",
-                'value': w3.toWei(value, 'ethereum'),
-                'gas': gas_limit,
-                'gasPrice': gas_price,
-                'nonce': nonce,
-                'chainId': 137
-            }
-        
-            signed_txn = w3.eth.account.signTransaction(transaction_data, private_key)
-            print(signed_txn)
-            tx_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)
-            print(tx_hash)
-            tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
-            print(tx_receipt)
-            if tx_receipt.status == 1:
-                transaction = Transaction.objects.create(user=user, amount=amount, status='completed')
-                print(f"transaction:{transaction}")
-                return Response({'message': 'transfered successfully.'}, status=status.HTTP_200_OK)
-            else:
-                transaction = Transaction.objects.create(user=user, matic_amount=matic_amount, status='failed')
-                return Response({'message': 'Transaction failed.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        else:
-                return Response({'message': 'Transaction failed.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
 

@@ -68,8 +68,14 @@ class NFTRating(models.Model):
 
 
 class Order(models.Model):
+    CURRENCY_CHOICES = (
+        ('CRYPTO','CRYPTO'),
+        ('TMN','TMN')
+    )
     nft = models.ForeignKey(NFT, null=False, blank=False, on_delete=models.CASCADE)
     bidder = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)
+    side = models.CharField(max_length=10, choices=CURRENCY_CHOICES, default='TMN')
+
     fee = models.FloatField(verbose_name="قیمت", null=False, blank=False)
     eth = models.FloatField(verbose_name="قیمت به اتریوم", default=0)
     date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
