@@ -235,17 +235,17 @@ def transfer_matic(to_address, amount):
     COMPANY_WALLET_ADDRESS = '0x2293221D7c357FB04De9c7D0dEeBcA427407429D'
     COMPANY_WALLET_PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
     
-    base_fee_per_gas = 2440  # in wei (this is very low for current standards)
-    priority_fee = 50000000000  # 50 Gwei in wei for priority fee
-        
-    gas_price = base_fee_per_gas + priority_fee
-    nonce = w3.eth.getTransactionCount(COMPANY_WALLET_ADDRESS)
+    #base_fee_per_gas = 2440  # in wei (this is very low for current standards)
+    #priority_fee = 50000000000  # 50 Gwei in wei for priority fee
+    gas_price = 172.5 * 10**9  # Convert 172.5 GWei to wei    
+    #gas_price = base_fee_per_gas + priority_fee
+    nonce = w3.eth.getTransactionCount(COMPANY_WALLET_ADDRESS,'pending')
     tx = {
         'nonce': nonce,
         'to': to_address,
         'value': w3.toWei(amount, 'ether'),
-        'gas': 20000000,
-        'gasPrice': gas_price,
+        'gas': 2000000,
+        'gasPrice': int(gas_price),
         'chainId': 137
     }
 
