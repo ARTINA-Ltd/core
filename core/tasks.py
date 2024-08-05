@@ -53,7 +53,7 @@ def check_nft_end_time():
         tokenid=nft.token_id
         line=get_winner(tokenid)  # Use delay to enqueue the task asynchronously
         print("start waiting")
-        time.sleep(40)
+        time.sleep(130)
         print("waiting is done")
         print(f"this is the result>>>>>>>>>>>>>>>>>>>>>>>{line}")
         print(f"Finished processing NFT {nft.token_id}") 

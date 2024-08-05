@@ -63,15 +63,15 @@ def transfer_nft(sender_private_key, sender_address, recipient_address, token_id
         nft_contract = w3.eth.contract(address=nft_contract_address, abi=nft_contract_abi)
         
         # Use a higher priority fee
-        base_fee_per_gas = 244000  # in wei (this is very low for current standards)
-        priority_fee = 70000000000  # 50 Gwei in wei for priority fee
+        base_fee_per_gas = 2440000  # in wei (this is very low for current standards)
+        priority_fee = 700000000000  # 50 Gwei in wei for priority fee
         
         gas_price = base_fee_per_gas + priority_fee
         
         # Build the transaction
         tx = nft_contract.functions.safeTransferFrom(sender_address, recipient_address, token_id).buildTransaction({
             'chainId': 137,  # Chain ID for Polygon (Matic) mainnet
-            'gas': 200000,  # Set a reasonable gas limit
+            'gas': 20000000000,  # Set a reasonable gas limit
             'gasPrice': gas_price,  # Set the gas price
             'nonce': nonce,
             'from': sender_address,  # The sender's address
@@ -115,7 +115,7 @@ def transferNFT(token_id, sender, recipient):
         tx_hash = transfer_nft(sender_private_key, sender_address, recipient_address, token_id)
         if not tx_hash:
             return JsonResponse({"message": "Transaction failed."}, status=status.HTTP_400_BAD_REQUEST)
-
+        time.sleep(30) 
         # Wait for transaction receipt
         tx_receipt = None
         for _ in range(10):  # Poll for the receipt up to 10 times
@@ -125,7 +125,7 @@ def transferNFT(token_id, sender, recipient):
                     break
             except Exception as e:
                 print(f"Error getting transaction receipt: {e}")
-            time.sleep(5)  # Wait for 5 seconds before polling again
+            time.sleep(10)  # Wait for 5 seconds before polling again
 
         if tx_receipt is None or tx_receipt['status'] == 0:
             return JsonResponse({"message": "Transaction failed or did not get mined in time."}, status=status.HTTP_400_BAD_REQUEST)
