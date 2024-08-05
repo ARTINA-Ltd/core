@@ -245,7 +245,8 @@ def transfer_matic(to_address, amount):
         'to': to_address,
         'value': w3.toWei(amount, 'ether'),
         'gas': 20000000,
-        'gasPrice': gas_price
+        'gasPrice': gas_price,
+        'chainId': 137
     }
 
     signed_tx = w3.eth.account.signTransaction(tx, COMPANY_WALLET_PRIVATE_KEY)
