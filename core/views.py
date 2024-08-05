@@ -63,16 +63,17 @@ def transfer_nft(sender_private_key, sender_address, recipient_address, token_id
         nft_contract = w3.eth.contract(address=nft_contract_address, abi=nft_contract_abi)
         
         # Use a higher priority fee
-        base_fee_per_gas = 2440  # in wei (this is very low for current standards)
-        priority_fee = 50000000000  # 50 Gwei in wei for priority fee
-        
-        gas_price = base_fee_per_gas + priority_fee
+        #base_fee_per_gas = 2440  # in wei (this is very low for current standards)
+        #priority_fee = 50000000000  # 50 Gwei in wei for priority fee
+        gas_price = 172.5 * 10**9  # Convert 172.5 GWei to wei    
+
+        #gas_price = base_fee_per_gas + priority_fee
         
         # Build the transaction
         tx = nft_contract.functions.safeTransferFrom(sender_address, recipient_address, token_id).buildTransaction({
             'chainId': 137,  # Chain ID for Polygon (Matic) mainnet
-            'gas': 200000000,  # Set a reasonable gas limit
-            'gasPrice': gas_price,  # Set the gas price
+            'gas': 2000000,  # Set a reasonable gas limit
+            'gasPrice': int(gas_price),  # Set the gas price
             'nonce': nonce,
             'from': sender_address,  # The sender's address
         })
@@ -431,12 +432,17 @@ class NftViewSet(viewsets.ModelViewSet):
                 # Transfer 0.1 MATIC from company wallet to user wallet
                 try:
                     transfer_matic(user_wallet.address, 0.1)
-                    time.sleep(30)
+                    time.sleep(5)
                     print("wait for 30 second")
                 except Exception as e:
                     return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
                 # Notify user about the reward
+                nft.is_for_sale = True
+                nft.start_date = start_date
+                nft.end_date = end_date
+                nft.last_price = floor_price
+                nft.save()
                 return Response({"message": "You have received 0.1 MATIC as a reward for selling your first NFT."}, status=status.HTTP_200_OK)
             else:
                 return Response({"error": "You do not have enough balance to cover the gas fee to sell this NFT."}, status=status.HTTP_400_BAD_REQUEST)
