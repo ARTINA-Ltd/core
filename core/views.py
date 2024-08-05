@@ -63,15 +63,15 @@ def transfer_nft(sender_private_key, sender_address, recipient_address, token_id
         nft_contract = w3.eth.contract(address=nft_contract_address, abi=nft_contract_abi)
         
         # Use a higher priority fee
-        base_fee_per_gas = 2440000  # in wei (this is very low for current standards)
-        priority_fee = 700000000000  # 50 Gwei in wei for priority fee
+        base_fee_per_gas = 2440  # in wei (this is very low for current standards)
+        priority_fee = 50000000000  # 50 Gwei in wei for priority fee
         
         gas_price = base_fee_per_gas + priority_fee
         
         # Build the transaction
         tx = nft_contract.functions.safeTransferFrom(sender_address, recipient_address, token_id).buildTransaction({
             'chainId': 137,  # Chain ID for Polygon (Matic) mainnet
-            'gas': 20000000000,  # Set a reasonable gas limit
+            'gas': 200000000,  # Set a reasonable gas limit
             'gasPrice': gas_price,  # Set the gas price
             'nonce': nonce,
             'from': sender_address,  # The sender's address
@@ -235,8 +235,8 @@ def transfer_matic(to_address, amount):
     COMPANY_WALLET_ADDRESS = '0x2293221D7c357FB04De9c7D0dEeBcA427407429D'
     COMPANY_WALLET_PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
     
-    base_fee_per_gas = 244000  # in wei (this is very low for current standards)
-    priority_fee = 700000000000  # 50 Gwei in wei for priority fee
+    base_fee_per_gas = 2440  # in wei (this is very low for current standards)
+    priority_fee = 50000000000  # 50 Gwei in wei for priority fee
         
     gas_price = base_fee_per_gas + priority_fee
     nonce = w3.eth.getTransactionCount(COMPANY_WALLET_ADDRESS)
@@ -244,7 +244,7 @@ def transfer_matic(to_address, amount):
         'nonce': nonce,
         'to': to_address,
         'value': w3.toWei(amount, 'ether'),
-        'gas': 2000000000,
+        'gas': 20000000,
         'gasPrice': gas_price
     }
 
