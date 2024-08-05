@@ -56,8 +56,6 @@ def check_nft_end_time():
         time.sleep(40)
         print("waiting is done")
         print(f"this is the result>>>>>>>>>>>>>>>>>>>>>>>{line}")
-        nft.is_for_sale = False 
         print(f"Finished processing NFT {nft.token_id}") 
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.>>>>>>>>>>line")
-        nft.save()
     print("Task completed")

@@ -63,8 +63,8 @@ def transfer_nft(sender_private_key, sender_address, recipient_address, token_id
         nft_contract = w3.eth.contract(address=nft_contract_address, abi=nft_contract_abi)
         
         # Use a higher priority fee
-        base_fee_per_gas = 244  # in wei (this is very low for current standards)
-        priority_fee = 50000000000  # 50 Gwei in wei for priority fee
+        base_fee_per_gas = 244000  # in wei (this is very low for current standards)
+        priority_fee = 70000000000  # 50 Gwei in wei for priority fee
         
         gas_price = base_fee_per_gas + priority_fee
         
@@ -125,7 +125,7 @@ def transferNFT(token_id, sender, recipient):
                     break
             except Exception as e:
                 print(f"Error getting transaction receipt: {e}")
-            time.sleep(3)  # Wait for 3 seconds before polling again
+            time.sleep(5)  # Wait for 5 seconds before polling again
 
         if tx_receipt is None or tx_receipt['status'] == 0:
             return JsonResponse({"message": "Transaction failed or did not get mined in time."}, status=status.HTTP_400_BAD_REQUEST)
@@ -190,8 +190,9 @@ def get_winner(token_id):
 
         #artina
         artina=ARTINA_Ballance.objects.first()
-        
-        value=(1.5*highest_bid.eth)/100
+        commision=float(highest_bid.eth)
+        value=(1.5*commision)/100
+        print(f"value is {value}")
         artina.artina_commision=value
         artina.artina_commision_count += 1
         artina.save
@@ -201,7 +202,7 @@ def get_winner(token_id):
         total= highest_bid.eth - value
         balanceowner.eth_balance += total
         balanceowner.save()
-        NotifyUser.objects.create(user=bid.bidder, text="You sold your nft and your balance updated")
+        NotifyUser.objects.create(user=bid.bidder, text="You won the nft and your balance updated")
         order_Report(token_id)
         result = transferNFT(token_id, sender, recipient)
         print(f"Result: {result}")
@@ -211,7 +212,19 @@ def get_winner(token_id):
             "username": recipient.username,
             "email": recipient.email,
         }
+        phone_number=recipient.profile.phone_number
 
+        response = requests.post(
+                        f"https://api.kavenegar.com/v1/"
+                        f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
+                        f"/verify/lookup.json",
+                        data={
+                            "receptor": phone_number,
+                            "token1": recipient.profile.first_name,
+                            "token2":  total,
+                            "template": "AccountChargeVerification"
+                                }
+                                )
         return Response({"winner": recipient_data, "price": highest_bid.eth}, status=status.HTTP_200_OK)
     except Exception as e:
         print(f"Error in get_winner: {e}")
