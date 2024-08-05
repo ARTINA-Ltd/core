@@ -221,7 +221,7 @@ def get_winner(token_id):
                         data={
                             "receptor": phone_number,
                             "token1": recipient.profile.first_name,
-                            "token2":  total,
+                            "token2":  token_id,
                             "template": "AccountChargeVerification"
                                 }
                                 )
@@ -235,8 +235,8 @@ def transfer_matic(to_address, amount):
     COMPANY_WALLET_ADDRESS = '0x2293221D7c357FB04De9c7D0dEeBcA427407429D'
     COMPANY_WALLET_PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
     
-    base_fee_per_gas = 244  # in wei (this is very low for current standards)
-    priority_fee = 50000000000  # 50 Gwei in wei for priority fee
+    base_fee_per_gas = 244000  # in wei (this is very low for current standards)
+    priority_fee = 700000000000  # 50 Gwei in wei for priority fee
         
     gas_price = base_fee_per_gas + priority_fee
     nonce = w3.eth.getTransactionCount(COMPANY_WALLET_ADDRESS)
@@ -244,7 +244,7 @@ def transfer_matic(to_address, amount):
         'nonce': nonce,
         'to': to_address,
         'value': w3.toWei(amount, 'ether'),
-        'gas': 20000000,
+        'gas': 2000000000,
         'gasPrice': gas_price
     }
 
@@ -422,7 +422,7 @@ class NftViewSet(viewsets.ModelViewSet):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # Check if the user has sold any NFTs before
-        has_sold_before = NFT.objects.filter(owner=user, is_for_sale=False).exists()
+        has_sold_before = NFT.objects.filter(owner=user, is_for_sale=True).exists()
 
         # Ensure the user has at least 0.03 MATIC or it's their first sale and they will receive 0.1 MATIC
         if user_balance < Decimal('0.03'):
@@ -430,6 +430,8 @@ class NftViewSet(viewsets.ModelViewSet):
                 # Transfer 0.1 MATIC from company wallet to user wallet
                 try:
                     transfer_matic(user_wallet.address, 0.1)
+                    time.sleep(30)
+                    print("wait for 30 second")
                 except Exception as e:
                     return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
