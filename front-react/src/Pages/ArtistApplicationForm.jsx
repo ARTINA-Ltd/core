@@ -102,7 +102,7 @@ const ArtistApplicationForm = () => {
                 <div className="w-full rounded-xl z-20 flex justify-center inset-0 m-auto">
                   <div className="bg-base-100 w-1/3  h-min  font-b7 -mt-[400px] rounded-2xl shadow-lg text-center p-3 opacity-70 flex flex-col gap-2 sm:w-4/5">
                     <div className="text-2xl font-b9">{item.marketName}</div>
-                    <div className="flex items-center gap-5 justify-center py-3 rounded-lg bg-gray-50 hover:bg-gray-100">
+                    <div className="flex items-center gap-5 justify-center py-3 rounded-lg  hover:bg-gray-100 hover:text-black">
                       <div>
                         {t("startDate")} :{formatDate(item.start_date)}
                       </div>
@@ -111,7 +111,7 @@ const ArtistApplicationForm = () => {
                       </div>
                     </div>
                     <hr />
-                    <div className="flex items-center gap-5 justify-center py-3 rounded-lg hover:bg-gray-100">
+                    <div className="flex items-center gap-5 justify-center py-3 rounded-lg hover:bg-gray-100 hover:text-black">
                       <div>
                         {t("endDate")} :{formatDate(item.end_date)}
                       </div>
@@ -120,7 +120,7 @@ const ArtistApplicationForm = () => {
                       </div>
                     </div>
                     <hr />
-                    <div className="flex items-center gap-5 justify-center py-3 rounded-lg hover:bg-gray-100">
+                    <div className="flex items-center gap-5 justify-center py-3 rounded-lg hover:bg-gray-100 hover:text-black">
                       <div>
                         {t("deadLine")} :{formatDate(item.application_deadline)}
                       </div>

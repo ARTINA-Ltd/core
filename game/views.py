@@ -12,7 +12,7 @@ class GameViewSet(viewsets.ModelViewSet):
     serializer_class = GameSerializer
     # permission_classes = [permissions.IsAuthenticated]
 
-    @action(detail=True, methods=['post'])
+    @action(detail=False, methods=['post'])
     def create_play_solo(self,request):
         user=self.request.user
         profile=UserGameProfile.objects.get(user=user)
@@ -24,7 +24,7 @@ class GameViewSet(viewsets.ModelViewSet):
             return Response ({"message":"you don't have credit to play"},status=status.HTTP_403_BAD_REQUEST)
     
     
-    @action(detail=True, methods=['post'])
+    @action(detail=False, methods=['post'])
     def creat_play_friend(self,request):
         user=self.request.user
         profile=UserGameProfile.objects.get(user=user)

@@ -46,7 +46,6 @@ const BalanceDialogMatic = () => {
       })
       .catch((e) => {
         console.log(e);
-
       });
   };
 
@@ -97,9 +96,9 @@ const BalanceDialogMatic = () => {
   }, [setIsOpen]);
 
   const cryptoBuy = async (symbol, amount, price) => {
-    if (amount<100000){
-      Notify.failure("مقدار باید از 100000 تومان بیشتر باشد")
-    return
+    if (amount < 100000) {
+      Notify.failure("مقدار باید از 100000 تومان بیشتر باشد");
+      return;
     }
     try {
       axios
@@ -127,9 +126,9 @@ const BalanceDialogMatic = () => {
   };
 
   const cryptoSell = async (symbol, amount, price) => {
-    if (amount<100000){
-      Notify.failure("مقدار باید از 100000 تومان بیشتر باشد")
-    return
+    if (amount < 100000) {
+      Notify.failure("مقدار باید از 100000 تومان بیشتر باشد");
+      return;
     }
     try {
       axios

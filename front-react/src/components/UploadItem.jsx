@@ -31,7 +31,6 @@ const UploadItem = () => {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [collectionsOptions, setCollectionOptions] = useState([]);
 
-
   const navigate = useNavigate();
   useEffect(() => {
     if (categories != undefined) {
@@ -88,10 +87,6 @@ const UploadItem = () => {
     last_price: "",
   });
 
-  const handleCategoryChange = (e) => {
-    setSelectedCategory(e.value);
-  };
-
   const handleSubmit = (e) => {
     setDisabled(true);
     setTimeout(() => setDisabled(false), 30000);
@@ -137,11 +132,12 @@ const UploadItem = () => {
 
           if (e.response.data.error === "your money is not enough") {
             Notify.failure(t("mintLowBalanceNotif"));
-          } 
-          else if (e.response.status ===401){
+          } else if (e.response.status === 3) {
+            Notify.failure(t("tryAgain"));
+            navigate("/");
+          } else if (e.response.status === 401) {
             Notify.failure("Please log in to your account");
-            navigate("/")
-          
+            navigate("/");
           } else {
             Notify.failure(t("error"));
           }
@@ -182,15 +178,15 @@ const UploadItem = () => {
           setIsUploaded(true);
         })
         .catch((e) => {
-          if (e.response.status ===401){
+          if (e.response.status === 401) {
             Notify.failure("Please log in to your account");
-            navigate("/")
-          }else{
-          setIsLoading(false);
-          console.log(e);
-          console.log("Category:", selectedCategory);
-          console.log("Has Physical:", hasPhysical);
-        }
+            navigate("/");
+          } else {
+            setIsLoading(false);
+            console.log(e);
+            console.log("Category:", selectedCategory);
+            console.log("Has Physical:", hasPhysical);
+          }
           if (e.response.data.error === "your money is not enough") {
             Notify.failure(t("mintLowBalanceNotif"));
           } else {
@@ -340,12 +336,10 @@ const UploadItem = () => {
           <div className="w-full flex gap-4 sm:flex-col">
             {}
             <div className="">
-             <div className="flex gap-4 items-center text-2xl cursor-pointer" onClick={() => document.getElementById("AddNftPopup").showModal()}>
-                <p className={`text-[14px] pt-2 border-x-2 border-x-transparent p-2 ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"} font-b5`} >
-                  {t("chooseProperties")}{" "}
-                  </p>
-                  <AiTwotonePlusCircle />
-             </div>
+              <div className="flex gap-4 items-center text-2xl cursor-pointer" onClick={() => document.getElementById("AddNftPopup").showModal()}>
+                <p className={`text-[14px] pt-2 border-x-2 border-x-transparent p-2 ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"} font-b5`}>{t("chooseProperties")} </p>
+                <AiTwotonePlusCircle />
+              </div>
               {uploadObj.properties.map((property, index) => (
                 <div key={index} className="flex gap-12 mt-4 items-center justify-between">
                   {/* <p className="">{index + 1}-</p> */}
@@ -386,9 +380,9 @@ const UploadItem = () => {
             />
           </div>
 
-          <div className="w-full" >
+          <div className="w-full">
             <SimpleInput
-            ltr = {true}
+              ltr={true}
               type="text"
               className={"ltr"}
               title={t("externalLink")}

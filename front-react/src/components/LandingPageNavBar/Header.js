@@ -3,7 +3,7 @@ import "./Header.css";
 import { useNavigate } from "react-router";
 import { UserContext } from "../../App";
 import { UserChangeContext } from "../../App";
-import artinaLogo from "../../assets/images/Artina-Logo-1.jpeg"
+import artinaLogo from "../../assets/images/Artina-Logo-1.jpeg";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 import BorderButton from "../Buttons/BorderButton";
 import BalanceDialog from "../Dialog/BalanceDialog/BalanceDialog";
@@ -94,6 +94,11 @@ const Header = ({ connectWallet = false, rev = false }) => {
             <li>
               <a href="/all-collections" className="hover:text-primary">
                 {t("nfts")}
+              </a>
+            </li>
+            <li>
+              <a href="/exhibition-list" className="hover:text-primary">
+                {t("exhibitions")}
               </a>
             </li>
           </ul>
@@ -248,10 +253,10 @@ const Header = ({ connectWallet = false, rev = false }) => {
                                   <span className="px-1">{t("inDate")}</span>
                                   {i18n.language === "en"
                                     ? Intl.DateTimeFormat({
-                                      day: "numeric",
-                                      month: "numeric",
-                                      year: "numeric",
-                                    }).format(new Date(item.created_at))
+                                        day: "numeric",
+                                        month: "numeric",
+                                        year: "numeric",
+                                      }).format(new Date(item.created_at))
                                     : Intl.DateTimeFormat("fa", {
                                         year: "numeric",
                                         month: "numeric",

@@ -25,9 +25,9 @@ const Home = () => {
       <AboutAI />
       <Innovations className={"my-10"} />
       <MostFrequentQuestions className={""} />
-      <GasPrice className={"mt-10 sm:m-3"} />
       <Milesone className={"mx-auto container "} />
-      
+      <GasPrice className={"mt-10 sm:m-3"} />
+
       {/* <Features className={"my-20"} /> */}
     </TestLayout>
   );
