@@ -63,9 +63,16 @@ def transfer_nft(sender_private_key, sender_address, recipient_address, token_id
         nft_contract = w3.eth.contract(address=nft_contract_address, abi=nft_contract_abi)
         
         # Use a higher priority fee
-        #base_fee_per_gas = 2440  # in wei (this is very low for current standards)
-        #priority_fee = 50000000000  # 50 Gwei in wei for priority fee
-        gas_price = 0.015 * 10**9  # Convert 172.5 GWei to wei    
+        base_fee_per_gas = 2440  # in wei (this is very low for current standards)
+        
+        #base_fee_per_gas = 244  # in wei (this is very low for current standards)
+        priority_fee = 50000000000  # 50 Gwei in wei for priority fee
+        #base_fee_per_gas = 244000  # in wei (this is very low for current standards)
+        #priority_fee = 70000000000  # 50 Gwei in wei for priority fee
+
+        gas_price = base_fee_per_gas + priority_fee
+        priority_fee = 50000000000  # 50 Gwei in wei for priority fee
+        #gas_price = 0.015 * 10**9  # Convert 172.5 GWei to wei    
 
         #gas_price = base_fee_per_gas + priority_fee
         
