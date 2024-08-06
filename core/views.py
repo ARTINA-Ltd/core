@@ -65,7 +65,7 @@ def transfer_nft(sender_private_key, sender_address, recipient_address, token_id
         # Use a higher priority fee
         #base_fee_per_gas = 2440  # in wei (this is very low for current standards)
         #priority_fee = 50000000000  # 50 Gwei in wei for priority fee
-        gas_price = 172.5 * 10**9  # Convert 172.5 GWei to wei    
+        gas_price = 0.015 * 10**9  # Convert 172.5 GWei to wei    
 
         #gas_price = base_fee_per_gas + priority_fee
         
@@ -238,7 +238,7 @@ def transfer_matic(to_address, amount):
     
     #base_fee_per_gas = 2440  # in wei (this is very low for current standards)
     #priority_fee = 50000000000  # 50 Gwei in wei for priority fee
-    gas_price = 172.5 * 10**9  # Convert 172.5 GWei to wei    
+    gas_price = 0.015 * 10**9  # Convert 172.5 GWei to wei    
     #gas_price = base_fee_per_gas + priority_fee
     nonce = w3.eth.getTransactionCount(COMPANY_WALLET_ADDRESS,'pending')
     tx = {
