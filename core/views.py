@@ -83,8 +83,9 @@ def transfer_nft(sender_private_key, sender_address, recipient_address, token_id
             'gasPrice': int(gas_price),  # Set the gas price
             'nonce': nonce,
             'from': sender_address,  # The sender's address
+            'value':0
         })
-
+        print(tx)
         # Sign the transaction with the sender's private key
         signed_txn = w3.eth.account.signTransaction(tx, sender_private_key)
         print(f"Signed transaction by sender: {signed_txn}")
