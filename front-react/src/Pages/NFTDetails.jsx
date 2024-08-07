@@ -12,6 +12,7 @@ import { Notify } from "notiflix";
 import BorderButton from "../components/Buttons/BorderButton";
 import CountdownTimer from "../components/CountDown/CountDown";
 import { useTranslation } from "react-i18next";
+import { IoMdClose } from "react-icons/io";
 
 const NFTDetails = () => {
   const [data, setData] = useState();
@@ -26,15 +27,11 @@ const NFTDetails = () => {
   const [shareCount, setShareCount] = useState(0);
   const [countdown, setCountdown] = useState(0);
   const [ethPrice, setEthPrice] = useState(0);
+  const [amount, setAmount] = useState(0);
   const [maticPrice, setMaticPrice] = useState(0);
   const [balance, setBalance] = useState(0);
   const { t } = useTranslation();
 
-  const [selectedPayment, setSelectedPayment] = useState("Toman");
-
-  const handleChange = (value) => {
-    setSelectedPayment(value);
-  };
   const icons = {
     heart: (
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.9" stroke="currentColor" className="text-primary-content h-[40%]">
@@ -238,6 +235,35 @@ const NFTDetails = () => {
       });
   }
 
+  const cryptoBuy = async (amount, price) => {
+    if (amount < 100000) {
+      Notify.failure("مقدار باید از 100000 تومان بیشتر باشد");
+      return;
+    }
+    try {
+      axios
+        .post(
+          "https://api.artina.org/api/account/CryptoViewSet/BuyCrypto/",
+          { symbol: "ETHTMN", amount: amount, price: price },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            },
+          }
+        )
+        .then(() => {
+          Notify.success("your request has been successfull.");
+          console.log();
+        })
+        .catch((err) => {
+          if (err.response.status === 403) {
+            Notify.failure("درحال حاضر امکان معامله وجود ندارد");
+          } else Notify.failure("there was an error!");
+          console.log(err);
+        });
+    } catch {}
+  };
+
   function addRequest() {
     axios
       .post(
@@ -246,7 +272,6 @@ const NFTDetails = () => {
           token_id: id,
           fee: price.toFixed(0).toString(),
           eth_fee: ethereum,
-          pay_with: selectedPayment === "Toman" ? "TMN" : "CRYPTO",
         },
         {
           headers: {
@@ -456,12 +481,7 @@ const NFTDetails = () => {
                         />
                       </div>
 
-                      <BorderButton
-                        className="w-36 text-center"
-                        onClick={() => {
-                          price !== 0 && addRequest();
-                        }}
-                      >
+                      <BorderButton className="w-36 text-center" onClick={ethereum > balance.eth_balance ? () => document.getElementById("insufficient-balance").showModal() : price !== 0 && addRequest()}>
                         ثبت
                       </BorderButton>
                     </div>
@@ -490,6 +510,19 @@ const NFTDetails = () => {
           )}
         </div>
       </div>
+      <dialog id="insufficient-balance" className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">
+          <form method="dialog">
+            <button className="rounded-full hover:bg-error w-8 h-8 hover:text-error-content flex items-center justify-center absolute left-3 top-3'">
+              <IoMdClose />
+            </button>
+          </form>
+          <h3 className="font-bold text-lg">شما {ethereum - balance.eth_balance} اتریوم برای ارائه این پیشنهاد کم دارید!</h3>
+          <p className="py-4">برای ادامه خرید لظفا موجودی خود را شارژ کنید!</p>
+          <div className="modal-action">{<SimpleInput type="number" title={`${t("amount")}`} defaultValue={ethereum - balance.eth_balance} isValid={amount * ethPrice.ETH_buy_price > 100000} validationError={t("notLessThan")} onChange={(e) => setAmount(e.target.value)} />}</div>
+          <BorderButton onClick={cryptoBuy(amount, ethPrice.ETH_buy_price)}>{t("buy")}</BorderButton>
+        </div>
+      </dialog>
     </TestLayout>
   );
 };
