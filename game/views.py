@@ -100,9 +100,12 @@ class GameViewSet(viewsets.ModelViewSet):
 
     @staticmethod
     def determine_winner(game):
+
         sessions = GameSession.objects.filter(game=game)
         gamer1 = sessions.first()
         gamer2 = sessions.last()
+        user_profile1 = UserGameProfile.objects.get(user=gamer1.user)
+        user_profile2 = UserGameProfile.objects.get(user=gamer2.user)        
 
         if not gamer1.choice or not gamer2.choice:
             return
@@ -110,23 +113,25 @@ class GameViewSet(viewsets.ModelViewSet):
         if gamer1.choice == gamer2.choice:
             gamer1.result = 'draw'
             gamer2.result = 'draw'
-            gamer1.points += 25
-            gamer2.points += 25
+            user_profile1.points += 25
+            user_profile2.points += 25
         elif (gamer1.choice == 'rock' and gamer2.choice == 'scissors') or \
              (gamer1.choice == 'paper' and gamer2.choice == 'rock') or \
              (gamer1.choice == 'scissors' and gamer2.choice == 'paper'):
             gamer1.result = 'win'
             gamer2.result = 'lose'
-            gamer1.points += 50
-            gamer2.hearts -= 1
+            user_profile1.points += 50
+            user_profile2.hearts -= 1
         else:
             gamer1.result = 'lose'
             gamer2.result = 'win'
-            gamer1.hearts -= 1
-            gamer2.points += 50
+            user_profile1.hearts -= 1
+            user_profile2.points += 50
 
         game.is_active = False
         game.save()
+        user_profile1.save()
+        user_profile2.save()
         gamer1.save()
         gamer2.save()
 
@@ -137,6 +142,7 @@ class GameViewSet(viewsets.ModelViewSet):
         user_choice = request.data.get('choice')
         user_cheat = request.data.get('cheat_code')
         session = GameSession.objects.get(game=game, user=user)
+        user_profile = UserGameProfile.objects.get(user=user)
         opponent_session = GameSession.objects.filter(game=game).exclude(user=user).first()
 
         if self.is_game_finished(game):
@@ -148,7 +154,6 @@ class GameViewSet(viewsets.ModelViewSet):
         if CheatCode.objects.filter(cheat_code=user_cheat).exists():
             session.choice = user_choice
             session.result = "win"
-            session.points += 50
             session.user_turn = False
             session.save()
             user_profile = UserGameProfile.objects.get(user=user)
@@ -161,7 +166,7 @@ class GameViewSet(viewsets.ModelViewSet):
         session.choice = user_choice
         session.user_turn = False
         session.save()
-        user_profile = UserGameProfile.objects.get(user=user)
+        
         user_profile.last_played = timezone.now()
         user_profile.save()
 
