@@ -36,8 +36,8 @@ class GameViewSet(viewsets.ModelViewSet):
 
         if profile.hearts >= 1:
             game = Game.objects.create(user1=user, user2=user2)
-            GameSession.objects.create(game=game, user=user, points=50, user_turn=True)
-            GameSession.objects.create(game=game, user=user2, points=50, user_turn=False)
+            GameSession.objects.create(game=game, user=user, user_turn=True)
+            GameSession.objects.create(game=game, user=user2, user_turn=False)
             return Response({"id": game.id}, status=status.HTTP_201_CREATED)
         else:
             return Response({"message": "You don't have credit to play"}, status=status.HTTP_403_FORBIDDEN)
