@@ -14,9 +14,10 @@ import { useState } from "react";
 const NTS = () => {
   const [sessionId, setSessionId] = useState("");
   const [choice, setChoice] = useState("");
-  const startNewSession = () => {
+
+  const startNewSessionSolo = () => {
     axios
-      .post("https://api.artina.org/api/game/games/", {
+      .post("https://api.artina.org/api/game/games/create_play_solo/", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
         },
@@ -26,11 +27,23 @@ const NTS = () => {
         console.log(e.data);
       });
   };
-  // https://api.artina.org/api/game/games/create_play_solo/
-  const playWithServer = () => {
+  // const playSolo1 = () => {
+  //   axios
+  //     .post("https://api.artina.org/api/game/games/create_play_solo/", {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+  //       },
+  //     })
+  //     .then((e) => {
+  //       setSessionId(e.data);
+  //       console.log(e.data);
+  //     });
+  // };
+
+  const playSolo = () => {
     axios
       .post(
-        `https://api.artina.org/api/game/games/1/play_solo/`,
+        `https://api.artina.org/api/game/games/${sessionId}/play_solo/`,
         {
           choice: "paper",
         },
@@ -83,13 +96,16 @@ const NTS = () => {
         <div className="mt-32 z-10">
           <h1 className="text-center text-7xl w-fit mx-auto border-none neon-container">Play!</h1>
           <div className="text-7xl border-b-2 border-b-base-content border-opacity-25 pb-12 text-accent-content text-center flex gap-2 justify-around my-16">
-            <button onClick={playWithServer} className="flex  cursor-pointer items-center justify-center neon-container neon-border  rounded-[100%] w-[20rem] p-8 ">
+            <button onClick={startNewSessionSolo} className="flex  cursor-pointer items-center justify-center neon-container neon-border  rounded-[100%] w-[20rem] p-8 ">
               <h1 className="">Solo</h1>
             </button>
             <button className="flex text-7xl cursor-pointer items-center justify-center neon-container neon-border  rounded-[100%] w-[20rem] p-8 ">
               <h1 className="">With Friends</h1>
             </button>
           </div>
+        </div>
+        <div className="" onClick={playSolo}>
+          test Play
         </div>
         <PaperRockScissors />
       </div>
