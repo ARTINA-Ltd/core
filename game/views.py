@@ -229,7 +229,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         return Response({'message': f'{hearts_to_buy} hearts purchased successfully'}, status=status.HTTP_200_OK)
 
 class LeaderboardViewSet(viewsets.ViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
     def list(self, request):
         """
