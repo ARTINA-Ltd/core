@@ -202,7 +202,13 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserGameProfile.objects.all()
     serializer_class = UserGameProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
-
+    
+    @action(detail=False, methods=['get'])
+    def all_user_game_profiles(self, request):
+        profiles = UserGameProfile.objects.all()
+        serializer = UserGameProfileSerializer(profiles, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+   
     @action(detail=True, methods=['post'])
     def buy_hearts(self, request, pk=None):
         """
