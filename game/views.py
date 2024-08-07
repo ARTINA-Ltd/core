@@ -2,11 +2,11 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.contrib.auth.models import User
-from datetime import datetime, timedelta
+from django.utils import timezone  # Import timezone utility
+from datetime import timedelta
 from .models import Game, GameSession, UserGameProfile, CheatCode
 from .serializers import GameSerializer, GameSessionSerializer, UserGameProfileSerializer
 import random
-
 
 class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
@@ -29,6 +29,10 @@ class GameViewSet(viewsets.ModelViewSet):
         user = request.user
         profile = UserGameProfile.objects.get(user=user)
         friend_username = request.data.get('friend_username')
+        
+        if friend_username == user.username:
+            return Response({"message": "You cannot choose yourself as a friend"}, status=status.HTTP_400_BAD_REQUEST)
+        
         try:
             user2 = User.objects.get(username=friend_username)
         except User.DoesNotExist:
@@ -37,7 +41,7 @@ class GameViewSet(viewsets.ModelViewSet):
         if profile.hearts >= 1:
             game = Game.objects.create(user1=user, user2=user2)
             GameSession.objects.create(game=game, user=user, user_turn=True)
-            GameSession.objects.create(game=game, user=user2, user_turn=False)
+            GameSession.objects.create(game=game, user=user2, user_turn=True)
             return Response({"id": game.id}, status=status.HTTP_201_CREATED)
         else:
             return Response({"message": "You don't have credit to play"}, status=status.HTTP_403_FORBIDDEN)
@@ -81,14 +85,14 @@ class GameViewSet(viewsets.ModelViewSet):
         session.save()
         game.is_active = False
         game.save()
-        user_profile.last_played = datetime.now()
+        user_profile.last_played = timezone.now()  # Use timezone-aware datetime
         user_profile.save()
 
         return Response({'message': 'Solo game played successfully', 'result': result, 'points_earned': user_points, "server_choice": server_choice}, status=status.HTTP_200_OK)
 
     @staticmethod
     def is_game_finished(game):
-        if (datetime.now() - game.created_at).total_seconds() > 86400:  # 24 hours
+        if (timezone.now() - game.created_at).total_seconds() > 86400:  # 24 hours, using timezone-aware datetime
             game.is_active = False
             game.save()
             return True
@@ -149,16 +153,16 @@ class GameViewSet(viewsets.ModelViewSet):
             session.save()
             user_profile = UserGameProfile.objects.get(user=user)
             user_profile.points += 50
-            user_profile.last_played = datetime.now()
+            user_profile.last_played = timezone.now()
             user_profile.save()
-            self.determine_winner(game)
+            
             return Response({'message': 'You won using a cheat code'}, status=status.HTTP_200_OK)
 
         session.choice = user_choice
         session.user_turn = False
         session.save()
         user_profile = UserGameProfile.objects.get(user=user)
-        user_profile.last_played = datetime.now()
+        user_profile.last_played = timezone.now()
         user_profile.save()
 
         if not opponent_session.user_turn:
@@ -166,32 +170,28 @@ class GameViewSet(viewsets.ModelViewSet):
             return Response({'message': 'Game result is on'}, status=status.HTTP_200_OK)
         else:
             return Response({'message': 'Wait for your opponent'}, status=status.HTTP_200_OK)
-            
-        
- 
-        
-
-
-        
-        
-        
-        
-
-class GameSessionViewSet(viewsets.ModelViewSet):
-    queryset = GameSession.objects.all()
-    serializer_class = GameSessionSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
     @action(detail=False, methods=['get'])
-    def user_game_list(self,request):
-        user=self.request.user
-        games=GameSession.objects.filter(user=user)
-        serialized_data = self.get_serializer(games, many=True).data
-        return Response(serialized_data, status=status.HTTP_200_OK)
+    def user_game_sessions(self, request):
+        user = request.user
+        sessions = GameSession.objects.filter(user=user)
+        result = []
+
+        for session in sessions:
+            game = session.game
+            if self.is_game_finished(game):
+                self.determine_winner(game)
+            result.append({
+                'game_id': game.id,
+                'choice': session.choice,
+                'result': session.result,
+                'is_active': game.is_active,
+                'created_at': game.created_at,
+            })
+
+        return Response(result, status=status.HTTP_200_OK)
 
 
-    # Normally, CRUD operations are sufficient for GameSessionViewSet
-    # No custom actions needed here for the provided requirements
 
 class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserGameProfile.objects.all()
