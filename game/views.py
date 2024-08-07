@@ -15,7 +15,7 @@ class GameViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post'])
     def create_play_solo(self, request):
-        user = request.user
+        user = self.request.user
         profile = UserGameProfile.objects.get(user=user)
         if profile.hearts >= 1:
             game = Game.objects.create(user1=user)
@@ -26,7 +26,7 @@ class GameViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post'])
     def create_play_friend(self, request):
-        user = request.user
+        user = self.request.user
         profile = UserGameProfile.objects.get(user=user)
         friend_username = request.data.get('friend_username')
         
@@ -48,7 +48,7 @@ class GameViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def play_solo(self, request, pk=None):
-        user = request.user
+        user = self.request.user
         game = self.get_object()
         user_choice = request.data.get('choice')
         user_cheat = request.data.get('cheat_code')
@@ -137,7 +137,7 @@ class GameViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def play_friend(self, request, pk=None):
-        user = request.user
+        user = self.request.user
         game = self.get_object()
         user_choice = request.data.get('choice')
         user_cheat = request.data.get('cheat_code')
@@ -178,7 +178,7 @@ class GameViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def user_game_sessions(self, request):
-        user = request.user
+        user = self.request.user
         sessions = GameSession.objects.filter(user=user)
         result = []
 
