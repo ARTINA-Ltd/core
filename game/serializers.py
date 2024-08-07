@@ -15,6 +15,6 @@ class GameSessionSerializer(serializers.ModelSerializer):
 class UserGameProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserGameProfile
-        fields = ['points', 'hearts']
+        fields = '__all__'
 
 
