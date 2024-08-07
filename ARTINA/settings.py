@@ -227,13 +227,14 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'artina',
         'USER': 'administrator',
-        'PASSWORD': 'drmNi80!prhLiPVPt@Ly',
+        'PASSWORD': 'N0thing!Yet',
         'HOST': 'localhost',
         'PORT': '',
         'TEST': {
             'NAME': 'mytestdatabase',
         }, }
 }
+
 
 # DATABASES = {
 #     'default': {
