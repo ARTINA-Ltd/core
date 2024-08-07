@@ -64,7 +64,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'Account.middleware.FailedLoginMiddleware',
     # 'Account.middleware.PaymentLoggingMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
+    # 'allauth.account.middleware.AccountMiddleware',
 
     
     ]
@@ -227,7 +227,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'artina',
         'USER': 'administrator',
-        'PASSWORD': 'N0thing!Yet',
+        'PASSWORD': 'drmNi80!prhLiPVPt@Ly',
         'HOST': 'localhost',
         'PORT': '',
         'TEST': {
