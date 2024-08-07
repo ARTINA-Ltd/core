@@ -24,7 +24,6 @@ class GameSession (models.Model):
     choice = models.CharField(max_length=10, blank=True, null=True)  # 'rock', 'paper', 'scissors'
     result = models.CharField(max_length=10, blank=True, null=True)  # 'win', 'lose', 'draw'
     user_turn = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
 
 class UserGameProfile(models.Model):
     user = models.OneToOneField(User, related_name='Gameprofile', on_delete=models.CASCADE)

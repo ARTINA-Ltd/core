@@ -93,14 +93,21 @@ class GameViewSet(viewsets.ModelViewSet):
     
     def is_game_finished(gameid):
         game=Game.objects.get(id=gameid)
-        #if time passed 24 hours from created game is finished
-        if game.is_active :
-                return Response({'message': 'Game is still on','is_game_finished':"False"}, status=status.HTTP_200_OK)
         gamesession=GameSession.objects.filter(game=game)
-        for game in gamesession :
-            if game.user_turn==True:
-                return Response({'message': 'Game is still on','is_game_finished':"False"}, status=status.HTTP_200_OK)
-        
+        #if time passed 24 hours from created game is finished
+
+        today=datetime.now().date()
+        if game.created_at>today:
+            game.is_active=False 
+            game.save()   
+            return Response({'error': 'Your 24 hours time for play is finished'}, status=status.HTTP_400_BAD_REQUEST)
+        else:   
+            for game in gamesession :
+                if game.user_turn==True:
+                    return Response({'message': 'Game is still on','is_game_finished':"False"}, status=status.HTTP_200_OK)
+        game.is_active=False    
+        game.save()   
+
         return Response({'message': 'Game is finished','is_game_finished':"True"}, status=status.HTTP_200_OK)
         
 
@@ -113,8 +120,21 @@ class GameViewSet(viewsets.ModelViewSet):
         gamer2=gamesession.last()
         profile1=UserGameProfile.objects.get(user=gamer1.user)
         profile2=UserGameProfile.objects.get(user=gamer2.user)
+        today=datetime.now().date()
+        if game.created_at>today:
+            if gamer1.user_turn==True :
+                gamer1.result='lose'
+                gamer2.result='win'
+                profile1.hearts-=1
+                profile2.points+=50
+            else:
+                gamer2.result='lose'
+                gamer1.result='win'
+                profile1.points+=50
+                profile2.hearts-=1                
+        
         # points=game.points
-        if gamer1.choice == gamer2.choice:
+        elif gamer1.choice == gamer2.choice:
             gamer1.result = 'draw'
             gamer2.result = 'draw'
             profile1.points+=25
@@ -157,104 +177,60 @@ class GameViewSet(viewsets.ModelViewSet):
         user_cheat = request.data.get('cheat_code')
         choices = ['rock', 'paper', 'scissors'] 
         session=GameSession.objects.get(game=game,user=user)
-        
+        opponent_session=GameSession.objects.filter(game=game,user!=user).first()
+        self.is_game_finished(game.id)
+        if game.is_active==False:
+            return Response({'error': 'Your 24 hours time for play is finished'}, status=status.HTTP_400_BAD_REQUEST)
+
         if CheatCode.objects.get(cheat_code=user_cheat) :
             result="win"
+            session.choice=user_choice,
+            session.result=result,
+            session.points=user_points,
+            session.user_turn=False,
+            session.save()
+
+        # Update last played timestamp and hearts for user profile
+            user_profile = UserGameProfile.objects.get(user=user)
+            user_profile.last_played = datetime.now()
+            user_profile.save() 
         
-        today=datetime.now().date()
-        if session.created_at>today:
-            return Response({'error': 'Your 24 hours time for play is finished'}, status=status.HTTP_400_BAD_REQUEST)
 
 
         if session.user_turn == False :
             return Response({'error': 'Not your turn to choose'}, status=status.HTTP_400_BAD_REQUEST)
         
-        if game.is_active == False :
-            return Response({'error': 'Game is finished'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        # Logic to find friend and initiate game session
-        # try:
-        #     friend = User.objects.get(username=friend_username)
-        # except User.DoesNotExist:
-        #     return Response({'error': 'Friend not found'}, status=status.HTTP_404_NOT_FOUND)
-        
         session.choice=user_choice,
-        session.result=result,
-        session.points=user_points,
         session.user_turn=False,
         session.save()
+
         # Update last played timestamp and hearts for user profile
         user_profile = UserGameProfile.objects.get(user=user)
         user_profile.last_played = datetime.now()
-        user_profile.save()                
-        
-        
-        
-        
-        
-        
-        import random
-        choices = ['rock', 'paper', 'scissors']
-        user_choice = random.choice(choices)
-        
-        if user_choice == friend_choice:
-            result = 'draw'
-        elif (user_choice == 'rock' and friend_choice == 'scissors') or \
-             (user_choice == 'paper' and friend_choice == 'rock') or \
-             (user_choice == 'scissors' and friend_choice == 'paper'):
-            result = 'win'
+        user_profile.save()  
+        if opponent_session.user_turn==False:
+            self.who_won(game.id)
+            return Response({'message': 'game rsult is on'}, status=status.HTTP_200_OK)
+
         else:
-            result = 'lose'
+            return Response({'message': 'wait for your opponent'}, status=status.HTTP_200_OK)
+
+
         
-        # Update points for both users based on result
-        if result == 'win':
-            user_points = 50
-            friend_points = 0
-        elif result == 'lose':
-            user_points = 0
-            friend_points = 50
-        else:
-            user_points = 25
-            friend_points = 25
         
-        # Update user's profile with points earned
-        user_profile = UserGameProfile.objects.get(user=request.user)
-        user_profile.points += user_points
-        user_profile.save()
         
-        # Update friend's profile with points earned
-        friend_profile = UserGameProfile.objects.get(user=friend)
-        friend_profile.points += friend_points
-        friend_profile.save()
         
-        # Save game session details for both users
-        session_user = GameSession.objects.create(
-            game=game,
-            user=request.user,
-            choice=user_choice,
-            result=result,
-            points=user_points
-        )
-        
-        session_friend = GameSession.objects.create(
-            game=game,
-            user=friend,
-            choice=friend_choice,
-            result=result,
-            points=friend_points
-        )
-        
-        # Update last played timestamp and hearts for user profile
-        user_profile.last_played = datetime.now()
-        user_profile.hearts -= 1  # Deduct one heart for playing
-        user_profile.save()
-        
-        return Response({'message': 'Game with friend initiated successfully', 'result': result, 'user_points': user_points, 'friend_points': friend_points}, status=status.HTTP_200_OK)
 
 class GameSessionViewSet(viewsets.ModelViewSet):
     queryset = GameSession.objects.all()
     serializer_class = GameSessionSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    @action(detail=False, methods=['get'])
+    def user_game_list(self,request):
+        user=self.request.user
+        return GameSession.objects.filter(user=user)
+
 
     # Normally, CRUD operations are sufficient for GameSessionViewSet
     # No custom actions needed here for the provided requirements
