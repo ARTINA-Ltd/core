@@ -11,7 +11,7 @@ import random
 class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
     @action(detail=False, methods=['post'])
     def create_play_solo(self, request):
@@ -201,7 +201,7 @@ class GameViewSet(viewsets.ModelViewSet):
 class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserGameProfile.objects.all()
     serializer_class = UserGameProfileSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     
     @action(detail=False, methods=['get'])
     def all_user_game_profiles(self, request):
