@@ -185,7 +185,9 @@ class GameSessionViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def user_game_list(self,request):
         user=self.request.user
-        return GameSession.objects.filter(user=user)
+        games=GameSession.objects.filter(user=user)
+        serialized_data = self.get_serializer(games, many=True).data
+        return Response(serialized_data, status=status.HTTP_200_OK)
 
 
     # Normally, CRUD operations are sufficient for GameSessionViewSet
