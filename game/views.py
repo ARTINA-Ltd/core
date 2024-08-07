@@ -18,7 +18,7 @@ class GameViewSet(viewsets.ModelViewSet):
         user = request.user
         profile = UserGameProfile.objects.get(user=user)
         if profile.hearts >= 1:
-            game = Game.objects.create(user1=user,points=10)
+            game = Game.objects.create(user1=user)
             GameSession.objects.create(game=game, user=user, user_turn=True)
             return Response({"id": game.id}, status=status.HTTP_201_CREATED)
         else:
