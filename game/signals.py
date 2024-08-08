@@ -16,6 +16,6 @@ def create_user_profile(sender, instance, created, **kwargs):
             points=0,
             profile_picture=selected_avatar.picture if selected_avatar else "http://api.artina.org/static/images/default_C7876ge.webp"
         )
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.UserGameProfile.save()
+# @receiver(post_save, sender=User)
+# def save_user_profile(sender, instance, **kwargs):
+#     instance.UserGameProfile.save()
