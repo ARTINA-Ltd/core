@@ -71,14 +71,14 @@ const SellArea = ({ tokenId }) => {
   return (
     <Fragment>
       <div className="bg-base-100 card flex justify-center p-4 rounded-none w-full">
-        <div style={{ direction: "rtl" }} className="w-full">
+        <div className="w-full">
           <div className="gap-12 pt-5 items-center font-b4 lg:flex-col mb-4">
-            <div className="flex justify-between whitespace-nowrap gap-2">
-              <span>تاریخ شروع و پایان</span>
+            <div className={`flex justify-between items-center whitespace-nowrap gap-2 border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`}>
+              <span className="mx-1">تاریخ شروع و پایان</span>
               <DatePicker digits={digits} inputClass="bg-base-300 w-48 p-2 rounded-lg" calendar={i18n.language === "fa" ? persian : null} locale={i18n.language === "fa" ? persian_fa : null} range dateSeparator=" to " onChange={setDate} />
             </div>
-            <div className="flex mt-4 gap-2 justify-between items-center font-b4">
-              <div>ساعت شروع</div>
+            <div className={`flex mt-4 gap-2 justify-between items-center font-b4 border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`}>
+              <div className="mx-1">ساعت شروع</div>
               <DatePicker
                 value={startTime}
                 disableDayPicker
@@ -90,8 +90,8 @@ const SellArea = ({ tokenId }) => {
             </div>
           </div>
           <div className="items-center font-b4 lg:flex-col">
-            <div className="flex gap-2 justify-between items-center font-b4">
-              <div>ساعت پایان</div>
+            <div className={`flex gap-2 justify-between items-center font-b4 border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`}>
+              <div className="mx-1">ساعت پایان</div>
               <DatePicker
                 value={endTime}
                 disableDayPicker

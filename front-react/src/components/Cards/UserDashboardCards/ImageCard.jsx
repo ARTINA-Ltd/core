@@ -158,12 +158,12 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
               //   </BorderButton>
             }
             {showSell && (
-              <div class="collapse collapse-arrow mx-auto p-0 -my-4 ">
+              <div class="collapse collapse-arrow mx-auto p-0 -my-4 overflow-visible">
                 <input type="checkbox" clas onClick={handleExpand} />
                 <div class="collapse-title text-xl w-[95%] font-medium m-0 ">
                   <BorderButton className={"font-bold w-20"}>{isExpanded ? t("collapse") : t("sell")}</BorderButton>
                 </div>
-                <div class="collapse-content z-[100]">
+                <div class="collapse-content z-[100] overflow-visible">
                   <SellArea tokenId={tokenId} cancel={handleExpand} />
                 </div>
               </div>
