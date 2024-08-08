@@ -24,6 +24,18 @@ class GameSession (models.Model):
     result = models.CharField(max_length=10, blank=True, null=True)  # 'win', 'lose', 'draw'
     user_turn = models.BooleanField(default=False)
 
+class Avatar(models.Model):
+    GENDER_CHOICES = [
+        ('male', 'Male'),
+        ('female', 'Female'),
+    ]
+    
+    picture = models.TextField()
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
+    
+    def __str__(self):
+        return f"{self.gender} - {self.picture}"
+        
 class UserGameProfile(models.Model):
     user = models.OneToOneField(User, related_name='Gameprofile', on_delete=models.CASCADE)
     profile_picture = models.TextField(verbose_name="عکس پروفایل",
