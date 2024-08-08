@@ -251,7 +251,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         profile = UserGameProfile.objects.get(user=user)  
         serializer = UserGameProfileSerializer(profile) 
 
-        return Response(serializer.data, status=status.HTTP_200_OK   
+        return Response(serializer.data, status=status.HTTP_200_OK)   
     @action(detail=True, methods=['post'])
     def buy_hearts(self, request, pk=None):
         """
