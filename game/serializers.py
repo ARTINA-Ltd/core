@@ -12,9 +12,18 @@ class GameSessionSerializer(serializers.ModelSerializer):
         model = GameSession
         fields = '__all__'
 
+
+class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
 class UserGameProfileSerializer(serializers.ModelSerializer):
+    user=UserSerializer
     class Meta:
         model = UserGameProfile
-        fields = '__all__'
+        fields = ['user','points','hearts']
 
 
