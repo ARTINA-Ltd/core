@@ -22,6 +22,6 @@ class UserGameProfileSerializer(serializers.ModelSerializer):
     user=UserSerializer
     class Meta:
         model = UserGameProfile
-        fields = ['user.username','points','hearts']
+        fields = ['user','points','hearts']
 
 
