@@ -26,6 +26,8 @@ class GameSession (models.Model):
 
 class UserGameProfile(models.Model):
     user = models.OneToOneField(User, related_name='Gameprofile', on_delete=models.CASCADE)
+    profile_picture = models.TextField(verbose_name="عکس پروفایل",
+                                        null=True, blank=False, default="http://api.artina.org/static/images/default_C7876ge.webp",)   
     points = models.IntegerField(default=0)
     hearts = models.IntegerField(default=3)
     last_played = models.DateTimeField(auto_now_add=True)
