@@ -178,24 +178,25 @@ class GameViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def user_game_sessions(self, request):
-        user = self.request.user
+        user = request.user
         sessions = GameSession.objects.filter(user=user)
         result = []
 
         for session in sessions:
             game = session.game
+            opponent_session = GameSession.objects.filter(game=game).exclude(user=user).first()
             if self.is_game_finished(game):
                 self.determine_winner(game)
             result.append({
                 'game_id': game.id,
                 'choice': session.choice,
+                'opponent_choice': opponent_session.choice if opponent_session else None,
                 'result': session.result,
                 'is_active': game.is_active,
                 'created_at': game.created_at,
             })
 
         return Response(result, status=status.HTTP_200_OK)
-
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
