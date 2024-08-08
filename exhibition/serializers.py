@@ -53,10 +53,13 @@ class ExhibitionSerializer(serializers.ModelSerializer):
 class ApplicationSerializer(serializers.ModelSerializer):
     exhibition = serializers.PrimaryKeyRelatedField(queryset=Exhibition.objects.all())
     contract_accepted = serializers.BooleanField(required=True)
-    nft = serializers.PrimaryKeyRelatedField(queryset=NFT.objects.all(), many=True)
+    nft = serializers.SlugRelatedField(  # Changed line
+        slug_field='token_id',  # Changed line
+        queryset=NFT.objects.all(),
+        many=True
+    )
 
     class Meta:
         model = Application
         fields = ['id', 'artist', 'exhibition', 'description', 'nft', 'contract_accepted']
-
-
+        
