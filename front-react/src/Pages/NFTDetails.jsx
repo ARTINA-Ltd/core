@@ -235,7 +235,7 @@ const NFTDetails = () => {
       });
   }
 
-  const cryptoBuy = async (amount, price) => {
+  const cryptoBuy = async () => {
     if (amount < 100000) {
       Notify.failure("مقدار باید از 100000 تومان بیشتر باشد");
       return;
@@ -244,7 +244,7 @@ const NFTDetails = () => {
       axios
         .post(
           "https://api.artina.org/api/account/CryptoViewSet/BuyCrypto/",
-          { symbol: "ETHTMN", amount: amount, price: price },
+          { symbol: "ETHTMN", amount: amount, price: ethPrice.ETH_buy_price },
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
@@ -520,7 +520,7 @@ const NFTDetails = () => {
           <h3 className="font-bold text-lg">شما {ethereum - balance.eth_balance} اتریوم برای ارائه این پیشنهاد کم دارید!</h3>
           <p className="py-4">برای ادامه خرید لظفا موجودی خود را شارژ کنید!</p>
           <div className="modal-action">{<SimpleInput type="number" title={`${t("amount")}`} defaultValue={ethereum - balance.eth_balance} isValid={amount * ethPrice.ETH_buy_price > 100000} validationError={t("notLessThan")} onChange={(e) => setAmount(e.target.value)} />}</div>
-          <BorderButton onClick={cryptoBuy(amount, ethPrice.ETH_buy_price)}>{t("buy")}</BorderButton>
+          <BorderButton onClick={cryptoBuy}>{t("buy")}</BorderButton>
         </div>
       </dialog>
     </TestLayout>
