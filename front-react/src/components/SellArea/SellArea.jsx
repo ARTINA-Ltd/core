@@ -1,34 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import axios from "axios";
 import { Notify } from "notiflix";
 import SimpleInput from "../Inputs/SimpleInput.jsx";
-import { Fragment } from "react";
 import BorderButton from "./../Buttons/BorderButton";
+import DatePicker from "react-multi-date-picker";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
+import DateObject from "react-date-object";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
+import i18n from "../../i18n.js";
 
-const SellArea = (tokenId, cancel) => {
-  const [startDate, setStartDate] = useState("");
-  const [startTime, setStartTime] = useState({ h: 0, m: 0 });
-  const [endDate, setEndDate] = useState("");
-  const [endTime, setEndTime] = useState({ h: 0, m: 0 });
+const SellArea = ({ tokenId }) => {
+  const digits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+  const [date, setDate] = useState([null, null]);
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
   const [price, setPrice] = useState("");
 
+  const convertToGregorian = (persianDate) => {
+    if (!persianDate) return null;
+    const dateObj = new DateObject({
+      calendar: persian,
+      date: persianDate,
+    });
+    return dateObj.toDate(); // Converts to JavaScript Date object
+  };
+
   const submit = () => {
-    if (!startDate || !startTime || !endDate || !endTime || !price) {
+    if (!date[0] || !date[1] || !startTime || !endTime || !price) {
       Notify.failure("لطفاً تمام فیلدها را پر کنید");
       return;
     }
 
-    var start = startDate;
-    var end = endDate;
-    start.setHours(startTime.h, startTime.m);
-    end.setHours(endTime.h, endTime.m);
+    const startDate = convertToGregorian(date[0]);
+    const endDate = convertToGregorian(date[1]);
+
+    if (!startDate || !endDate) {
+      Notify.failure("تاریخ نامعتبر");
+      return;
+    }
+
+    startDate.setHours(startTime.hour, startTime.minute);
+    endDate.setHours(endTime.hour, endTime.minute);
+
     axios
       .put(
         "https://api.artina.org/api/transaction/nfts/sell/",
         {
-          token_id: tokenId.tokenId,
-          start_date: start,
-          end_date: end,
+          token_id: tokenId,
+          start_date: startDate.toISOString(),
+          end_date: endDate.toISOString(),
           floor_price: price,
         },
         {
@@ -38,31 +59,50 @@ const SellArea = (tokenId, cancel) => {
           mode: "cors",
         }
       )
-      .then(() => {
+      .then((response) => {
+        console.log(response);
         Notify.success("با موفقیت ثبت شد");
       })
-      .catch();
+      .catch(() => {
+        Notify.failure("خطا در ثبت اطلاعات");
+      });
   };
 
   return (
     <Fragment>
-      <div className="bg-base-100 card flex justify-content-center p-4 rounded-none w-full">
+      <div className="bg-base-100 card flex justify-center p-4 rounded-none w-full">
         <div style={{ direction: "rtl" }} className="w-full">
           <div className="gap-12 pt-5 items-center font-b4 lg:flex-col mb-4">
-            <SimpleInput type="date" title="تاریخ آغاز فروش " placeholder="مثلا" validationError={startDate === "" && "نمی‌تواند خالی باشد"} defaultValue={null} onChange={(e) => setStartDate(e.value)} />
-            <div className="flex mt-4 gap-2 items-center font-b4">
-              <div>ساعت</div>
-              <SimpleInput type="time" onChange={(e) => setStartTime({ h: e.hour, m: e.minute })} />
+            <div className="flex justify-between whitespace-nowrap gap-2">
+              <span>تاریخ شروع و پایان</span>
+              <DatePicker digits={digits} inputClass="bg-base-300 w-48 p-2 rounded-lg" calendar={i18n.language === "fa" ? persian : null} locale={i18n.language === "fa" ? persian_fa : null} range dateSeparator=" to " onChange={setDate} />
+            </div>
+            <div className="flex mt-4 gap-2 justify-between items-center font-b4">
+              <div>ساعت شروع</div>
+              <DatePicker
+                value={startTime}
+                disableDayPicker
+                inputClass="bg-base-300 w-48 p-2 rounded-lg"
+                onChange={setStartTime}
+                format="HH:mm" // 24-hour format
+                plugins={[<TimePicker position="bottom" hideSeconds />]} // TimePicker without seconds
+              />
             </div>
           </div>
-          <div className="gap-12 pt-5 items-center font-b4 lg:flex-col">
-            <SimpleInput type="date" title="تاریخ پایان فروش " placeholder="مثلا" validationError={endDate === "" && "نمی‌تواند خالی باشد"} defaultValue={null} onChange={(e) => setEndDate(e.value)} />
-            <div className="flex mt-4 gap-2 items-center font-b4">
-              <div className="">ساعت</div>
-              <SimpleInput type="time" onChange={(e) => setEndTime({ h: e.hour, m: e.minute })} />
+          <div className="items-center font-b4 lg:flex-col">
+            <div className="flex gap-2 justify-between items-center font-b4">
+              <div>ساعت پایان</div>
+              <DatePicker
+                value={endTime}
+                disableDayPicker
+                inputClass="bg-base-300 w-48 p-2 rounded-lg"
+                onChange={setEndTime}
+                format="HH:mm" // 24-hour format
+                plugins={[<TimePicker position="bottom" hideSeconds />]} // TimePicker without seconds
+              />
             </div>
           </div>
-          <SimpleInput className={"mt-8  font-b4"} type="number" title="قیمت " placeholder="مثلا" validationError={price === "" && "نمی‌تواند خالی باشد"} defaultValue={null} onChange={(e) => setPrice(e.target.value)} />
+          <SimpleInput className="mt-8 font-b4" type="number" title="قیمت" placeholder="مثلا" validationError={price === "" && "نمی‌تواند خالی باشد"} defaultValue={null} onChange={(e) => setPrice(e.target.value)} />
           <div className="mt-4 flex gap-4">
             <BorderButton onClick={submit}>ثبت</BorderButton>
           </div>
@@ -71,4 +111,5 @@ const SellArea = (tokenId, cancel) => {
     </Fragment>
   );
 };
+
 export default SellArea;

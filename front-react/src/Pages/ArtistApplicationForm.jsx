@@ -35,15 +35,14 @@ const ArtistApplicationForm = () => {
       hour: "numeric",
     }).format(new Date(inputDate));
   };
+
   const handleClickNft = (nftId) => {
-    var newArr = [];
-    var temp = 0;
-    selectedNfts.forEach((val) => {
-      if (val !== nftId) {
-        newArr.push(val);
-      } else temp = 1;
-    });
-    if (temp == 0) newArr.push(nftId);
+    let newArr = selectedNfts.filter((val) => val !== nftId);
+
+    if (newArr.length === selectedNfts.length) {
+      newArr.push(nftId);
+    }
+
     setSelectedNfts(newArr);
   };
 
@@ -78,6 +77,7 @@ const ArtistApplicationForm = () => {
 
   useEffect(() => {
     axios.get(`https://api.artina.org/api/transaction/collection/${user ? user.data.username : 0}/nfts/`).then((res) => {
+      console.log(res.data);
       setNfts(res.data);
     });
     axios
@@ -153,17 +153,17 @@ const ArtistApplicationForm = () => {
                                 !item.is_for_sale ? (
                                   <SelectNftCard
                                     onClick={() => {
-                                      if (selectedNfts.length >= 5 && !selectedNfts.includes(item.id)) {
+                                      if (selectedNfts.length >= 5 && !selectedNfts.includes(item.token_id)) {
                                         Notify.failure(t("maximumAmount"));
                                       } else {
-                                        handleClickNft(item.id);
+                                        handleClickNft(item.token_id);
                                       }
                                     }}
                                     name={item.name}
                                     key={index}
                                     price={item.last_price}
                                     image={item.image_url}
-                                    isSelected={selectedNfts.includes(item.id)}
+                                    isSelected={selectedNfts.includes(item.token_id)}
                                   />
                                 ) : (
                                   ""
