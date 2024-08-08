@@ -19,9 +19,10 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['username', 'email']
 
 class UserGameProfileSerializer(serializers.ModelSerializer):
-    user=UserSerializer
+    username = serializers.CharField(source='user.username', read_only=True)
+
     class Meta:
         model = UserGameProfile
-        fields = ['user','points','hearts']
+        fields = ['username', 'points', 'hearts', 'last_played']
 
 
