@@ -131,7 +131,7 @@ class TransactionCurrency(models.Model):
 
 class UserBalance(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    rial_available_balance = models.IntegerField(default=100000,verbose_name="mojudi")
+    rial_available_balance = models.IntegerField(default=0,verbose_name="mojudi")
     rial_untradable_balance = models.IntegerField(default=0,verbose_name="unavailable mojudi")
     matic_balance = models.FloatField(default=0)
     matic_untradable_balance = models.FloatField(default=0)
