@@ -1023,7 +1023,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
                         user_balance = UserBalance.objects.create(rial_available_balance=payment.amount, user=user)
     
                     Transaction.objects.create(user=user, side='deposit', transaction_currency=transaction_currency,
-                                               transaction_value=payment.amount, status='completed')
+                                               amount=payment.amount, status='completed')
     
                     profile = Profile.objects.get(user=user)
                     # Send SMS via Kavenegar API
