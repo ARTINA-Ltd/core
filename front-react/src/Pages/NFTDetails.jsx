@@ -236,7 +236,7 @@ const NFTDetails = () => {
   }
 
   const cryptoBuy = async () => {
-    if (amount < 100000) {
+    if (amount * ethPrice.ETH_buy_price < 100000) {
       Notify.failure("مقدار باید از 100000 تومان بیشتر باشد");
       return;
     }
@@ -481,7 +481,7 @@ const NFTDetails = () => {
                         />
                       </div>
 
-                      <BorderButton className="w-36 text-center" onClick={ethereum > balance.eth_balance ? () => document.getElementById("insufficient-balance").showModal() : price !== 0 && addRequest()}>
+                      <BorderButton className="w-36 text-center" onClick={ethereum > balance.eth_balance ? () => document.getElementById("insufficient-balance").showModal() : price !== 0 && addRequest}>
                         ثبت
                       </BorderButton>
                     </div>
@@ -518,9 +518,14 @@ const NFTDetails = () => {
             </button>
           </form>
           <h3 className="font-bold text-lg">شما {ethereum - balance.eth_balance} اتریوم برای ارائه این پیشنهاد کم دارید!</h3>
+
           <p className="py-4">برای ادامه خرید لظفا موجودی خود را شارژ کنید!</p>
-          <div className="modal-action">{<SimpleInput type="number" title={`${t("amount")}`} defaultValue={ethereum - balance.eth_balance} isValid={amount * ethPrice.ETH_buy_price > 100000} validationError={t("notLessThan")} onChange={(e) => setAmount(e.target.value)} />}</div>
-          <BorderButton onClick={cryptoBuy}>{t("buy")}</BorderButton>
+          <div className="flex w-full gap-4 justify-between items-center my-4 px-4">
+            <div className="modal-action w-1/2">{<SimpleInput className={""} type="number" title={`${t("amount")}`} defaultValue={Number(ethereum - balance.eth_balance)} isValid={amount * ethPrice.ETH_buy_price > 100000} validationError={t("notLessThan")} onChange={(e) => setAmount(e.target.value)} />}</div>
+            <p>قیمت تمام شده {amount * ethPrice.ETH_buy_price}</p>
+
+            <BorderButton onClick={cryptoBuy}>{t("buy")}</BorderButton>
+          </div>
         </div>
       </dialog>
     </TestLayout>

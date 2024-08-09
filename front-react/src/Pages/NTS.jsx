@@ -8,14 +8,33 @@ import NTSNavbar from "../components/NTSNavbar/NTSNavbar.jsx";
 import PaperRockScissors from "../components/Nts/PaperRockScissors.jsx";
 import axios from "axios";
 import "../components/Nts/Styles.css";
-
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../App.js";
 
 const NTS = () => {
-  const [sessionId, setSessionId] = useState("");
+  const user = useContext(UserContext);
+
+  const [sessionId, setSessionId] = useState(0);
   const [choice, setChoice] = useState("");
 
   const startNewSessionSolo = () => {
+    axios
+      .post(
+        "https://api.artina.org/api/game/games/create_play_solo/",
+        { id: user.id },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+          mode: "cors",
+        }
+      )
+      .then((e) => {
+        setSessionId(e.data.data);
+        console.log(e.data);
+      });
+  };
+  const playFriend = () => {
     axios
       .post("https://api.artina.org/api/game/games/create_play_solo/", {
         headers: {
@@ -27,18 +46,6 @@ const NTS = () => {
         console.log(e.data);
       });
   };
-  // const playSolo1 = () => {
-  //   axios
-  //     .post("https://api.artina.org/api/game/games/create_play_solo/", {
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-  //       },
-  //     })
-  //     .then((e) => {
-  //       setSessionId(e.data);
-  //       console.log(e.data);
-  //     });
-  // };
 
   const playSolo = () => {
     axios

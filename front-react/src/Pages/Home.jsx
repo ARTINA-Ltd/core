@@ -11,7 +11,6 @@ import GasPrice from "../components/Home/GasPrice";
 import Milesone from "./../components/Milestones/Milesone";
 
 const HeroBanner = lazy(() => import("../components/HeroBanner/HeroBanner.jsx"));
-
 const Home = () => {
   return (
     <TestLayout wfull={true}>
@@ -27,7 +26,6 @@ const Home = () => {
       <MostFrequentQuestions className={""} />
       <Milesone className={"mx-auto container "} />
       <GasPrice className={"mt-10 sm:m-3"} />
-
       {/* <Features className={"my-20"} /> */}
     </TestLayout>
   );

@@ -40,6 +40,7 @@ const BalanceDialogMatic = () => {
       })
       .then((res) => {
         if (res.data && res.data.wallet_address) {
+          console.log(res.data);
           setAddress(res.data.wallet_address);
           setTurnOver(res.data);
         }
@@ -96,7 +97,7 @@ const BalanceDialogMatic = () => {
   }, [setIsOpen]);
 
   const cryptoBuy = async (symbol, amount, price) => {
-    if (amount < 100000) {
+    if (amount * price < 100000) {
       Notify.failure("مقدار باید از 100000 تومان بیشتر باشد");
       return;
     }
@@ -126,7 +127,7 @@ const BalanceDialogMatic = () => {
   };
 
   const cryptoSell = async (symbol, amount, price) => {
-    if (amount < 100000) {
+    if (amount * price < 100000) {
       Notify.failure("مقدار باید از 100000 تومان بیشتر باشد");
       return;
     }
@@ -186,30 +187,28 @@ const BalanceDialogMatic = () => {
   const footer = () => {
     if (isCharge === false) {
       return (
-        getData && (
-          <div className="w-full flex flex-col gap-4">
-            <div className="flex gap-4 justify-center items-center">
-              <p>موجودی والت شخصی: {currentTab === "Ethereum" ? turnOver.eth_balance + " اتریوم" : turnOver.matic_balance + " متیک"} </p>
-              <BorderButton className="">انتقال به موجودی سایت</BorderButton>
-            </div>
-            {address && (
-              <div className="text-sm sm:text-[8px] cursor-pointer border-2 border-primary border-opacity-50 rounded-md p-2" onClick={handleCopy}>
-                {t("walletAddress")} <span> </span>
-                {address}
-              </div>
-            )}
-            {!address && (
-              <div
-                className="border-[1px] cursor-pointer border-indigo-500 bg-indigo-100 text-indigo-500 rounded-xl py-2 px-3 hover:scale-105 transition-all"
-                onClick={() => {
-                  createWallet();
-                }}
-              >
-                {t("createWallet")}
-              </div>
-            )}
+        <div className="w-full flex flex-col gap-4">
+          <div className="flex gap-4 justify-center items-center">
+            <p>موجودی والت شخصی: {currentTab === "Ethereum" ? turnOver.eth_balance + " اتریوم" : turnOver.matic_balance + " متیک"} </p>
+            <BorderButton className="">انتقال به موجودی سایت</BorderButton>
           </div>
-        )
+          {address !== "" && (
+            <div className="text-sm sm:text-[8px] cursor-pointer border-2 border-primary border-opacity-50 rounded-md p-2" onClick={handleCopy}>
+              {t("walletAddress")} <span> </span>
+              {address}
+            </div>
+          )}
+          {!address && (
+            <div
+              className="border-[1px] cursor-pointer border-indigo-500 bg-indigo-100 text-indigo-500 rounded-xl py-2 px-3 hover:scale-105 transition-all"
+              onClick={() => {
+                createWallet();
+              }}
+            >
+              {t("createWallet")}
+            </div>
+          )}
+        </div>
       );
     }
   };

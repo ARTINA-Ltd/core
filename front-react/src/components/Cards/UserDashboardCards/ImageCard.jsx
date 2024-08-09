@@ -54,7 +54,21 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
         console.log(e);
       });
   };
-
+  const dialog = () => {
+    return (
+      <dialog id="TransferDialog" className={`${i18n.dir() === "rtl" ? "text-right" : "text-left"} modal relative p-0 m-0 `}>
+        <div className="modal-box p-0 m-0 bg-neutral">
+          <form method="dialog">
+            <button className="btn btn-sm btn-circle btn-ghost hover:bg-red-500 right-2 my-4 mx-4 mb-4">✕</button>
+          </form>
+          <div className="p-8">
+            <SimpleInput className={"my-6"} type="text" title={t("walletaddress")} placeholder={t("example")} isValid={walletAddress !== "" && walletAddress.length > 24} validationError={t("required")} onChange={(e) => setWalletAddress(() => e.target.value)} defaultValue={""} />
+            <BorderButton onClick={() => handleTransfer()}>Submit</BorderButton>
+          </div>
+        </div>
+      </dialog>
+    );
+  };
   const handleTransfer = () => {
     axios
       .post(
@@ -105,7 +119,6 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
                       </svg>
                     )}
                   </div>
-                  <CollectionDialog tokenId={tokenId} />
                 </div>
               )}
             </div>
@@ -134,34 +147,33 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
                       </svg>
                     )}
                   </div>
-                  <BorderButton className={"font-bold"} onClick={() => document.getElementById("TransferDialog").showModal()}>
-                    {t("transfer")}
-                  </BorderButton>
-                  <BorderButton className={"font-bold"} onClick={handleExpand}>
-                    {isExpanded ? t("collapse") : t("sell")}
-                  </BorderButton>
                 </div>
               ) : (
                 showCancel && <BorderButton onClick={handleCancel}>{t("cancelSell")}</BorderButton>
               )}
             </div>
-            <div className={`relative w-full mx-auto ease-out outline-[1.5rem] sm:outline-[.8rem] outline outline-base-100 duration-300 ${isExpanded ? "z-0" : "-translate-y-full  -z-10"} overflow-hidden shadow-2xl`}>
-              <SellArea tokenId={tokenId} cancel={handleExpand} />
-            </div>
+            {
+              //  <BorderButton className={"font-bold mx-6 mb-1 w-20"} onClick={() => document.getElementById("TransferDialog").showModal()}>
+              //     {t("transfer")}
+              //   </BorderButton>
+            }
+            {showSell && (
+              <div class="collapse collapse-arrow  -my-4 -mx-4 overflow-visible">
+                <input type="checkbox" clas onClick={handleExpand} />
+                <div class="collapse-title text-xl  font-medium m-0 ">
+                  <BorderButton className={"font-bold w-20 mx-auto"}>{isExpanded ? t("collapse") : t("sell")}</BorderButton>
+                </div>
+                <div class="collapse-content w-full overflow-visible ">
+                  <SellArea tokenId={tokenId} cancel={handleExpand} />
+                </div>
+              </div>
+            )}
+            {
+              //dialog()
+            }
           </Fragment>
         )}
       </div>
-      <dialog id="TransferDialog" className={`${i18n.dir() === "rtl" ? "text-right" : "text-left"} modal relative p-0 m-0 `}>
-        <div className="modal-box p-0 m-0 bg-neutral">
-          <form method="dialog">
-            <button className="btn btn-sm btn-circle btn-ghost hover:bg-red-500 right-2 my-4 mx-4 mb-4">✕</button>
-          </form>
-          <div className="p-8">
-            <SimpleInput className={"my-6"} type="text" title={t("walletaddress")} placeholder={t("example")} isValid={walletAddress !== "" && walletAddress.length > 24} validationError={t("required")} onChange={(e) => setWalletAddress(() => e.target.value)} defaultValue={""} />
-            <BorderButton onClick={() => handleTransfer()}>Submit</BorderButton>
-          </div>
-        </div>
-      </dialog>
     </div>
   );
 };
