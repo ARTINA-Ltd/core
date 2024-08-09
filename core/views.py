@@ -238,31 +238,72 @@ def get_winner(token_id):
     except Exception as e:
         print(f"Error in get_winner: {e}")
         return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+from web3 import Web3
+import os
+
 
 
 def transfer_matic(to_address, amount):
     COMPANY_WALLET_ADDRESS = '0x2293221D7c357FB04De9c7D0dEeBcA427407429D'
-    COMPANY_WALLET_PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
-    
-    #base_fee_per_gas = 2440  # in wei (this is very low for current standards)
-    #priority_fee = 50000000000  # 50 Gwei in wei for priority fee
-    gas_price = 0.015 * 10**9  # Convert 172.5 GWei to wei    
-    #gas_price = base_fee_per_gas + priority_fee
-    nonce = w3.eth.getTransactionCount(COMPANY_WALLET_ADDRESS,'pending')
+    COMPANY_WALLET_PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520" # Securely get from env variable
+
+    # Get dynamic gas price
+    gas_price = w3.eth.gas_price
+
+    # Get nonce
+    nonce = w3.eth.getTransactionCount(COMPANY_WALLET_ADDRESS, 'pending')
+
+    # Estimate gas limit for the transaction
+    estimated_gas = w3.eth.estimateGas({
+        'from': COMPANY_WALLET_ADDRESS,
+        'to': to_address,
+        'value': w3.toWei(amount, 'ether'),
+    })
+
     tx = {
         'nonce': nonce,
         'to': to_address,
         'value': w3.toWei(amount, 'ether'),
-        'gas': 2000000,
-        'gasPrice': int(gas_price),
-        'chainId': 137
+        'gas': estimated_gas,
+        'gasPrice': gas_price,
+        'chainId': 137  # Polygon Mainnet Chain ID
     }
 
+    # Sign the transaction
     signed_tx = w3.eth.account.signTransaction(tx, COMPANY_WALLET_PRIVATE_KEY)
-    tx_hash = w3.eth.sendRawTransaction(signed_tx.rawTransaction)
-    w3.eth.waitForTransactionReceipt(tx_hash)
 
-    return tx_hash
+    # Send the transaction
+    tx_hash = w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+
+    # Wait for the transaction receipt
+    receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+
+    return receipt.transactionHash
+
+
+#def transfer_matic(to_address, amount):
+   # COMPANY_WALLET_ADDRESS = '0x2293221D7c357FB04De9c7D0dEeBcA427407429D'
+ #   COMPANY_WALLET_PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
+    
+    #base_fee_per_gas = 2440  # in wei (this is very low for current standards)
+    #priority_fee = 50000000000  # 50 Gwei in wei for priority fee
+  #  gas_price = 0.015 * 10**9  # Convert 172.5 GWei to wei    
+    #gas_price = base_fee_per_gas + priority_fee
+#    nonce = w3.eth.getTransactionCount(COMPANY_WALLET_ADDRESS,'pending')
+#    tx = {
+      #  'nonce': nonce,
+     #   'to': to_address,
+     #   'value': w3.toWei(amount, 'ether'),
+    #    'gas': 2000000,
+    #    'gasPrice': int(gas_price),
+   #     'chainId': 137
+#    }
+
+ #   signed_tx = w3.eth.account.signTransaction(tx, COMPANY_WALLET_PRIVATE_KEY)
+ #   tx_hash = w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+ #   w3.eth.waitForTransactionReceipt(tx_hash)
+#
+ #   return tx_hash
 
 class OrderViewSet(viewsets.ViewSet):
     queryset = Order.objects.all()
