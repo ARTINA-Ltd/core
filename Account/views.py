@@ -1291,7 +1291,7 @@ class EmailMixin(viewsets.ViewSet):
             print(f"Verification code for {email}: {verification_code}")
         subject="verify email from ARTINA"
         message = f"your verfication code is : {verification_code}"
-        self.send_email(subject,recipient_email, message)
+        self.send_email(subject,email, message)
         return Response({'success': 'email sent.'}, status.HTTP_200_OK)
 
 
