@@ -10,18 +10,23 @@ import axios from "axios";
 import "../components/Nts/Styles.css";
 import { useContext, useState } from "react";
 import { UserContext } from "../App.js";
+import Dialog from "../components/Nts/Dialog.jsx";
 
 const NTS = () => {
   const user = useContext(UserContext);
 
   const [sessionId, setSessionId] = useState(0);
-  const [choice, setChoice] = useState("");
+  const [selectedMove, setSelectedMove] = useState("");
+
+  const handleUserChoice = (choice) => {
+    setSelectedMove(choice);
+  };
 
   const startNewSessionSolo = () => {
     axios
       .post(
         "https://api.artina.org/api/game/games/create_play_solo/",
-        { id: user.id },
+        { id: user.data.id },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
@@ -32,7 +37,8 @@ const NTS = () => {
       .then((e) => {
         setSessionId(e.data.data);
         console.log(e.data);
-      });
+      })
+      .catch();
   };
   const playFriend = () => {
     axios
@@ -50,9 +56,9 @@ const NTS = () => {
   const playSolo = () => {
     axios
       .post(
-        `https://api.artina.org/api/game/games/${sessionId}/play_solo/`,
+        `https://api.artina.org/api/game/games/12/play_solo/`,
         {
-          choice: "paper",
+          choice: selectedMove,
         },
         {
           headers: {
@@ -99,23 +105,25 @@ const NTS = () => {
             </div>
           </div>
         </div>
-
         <div className="mt-32 z-10">
           <h1 className="text-center text-7xl w-fit mx-auto border-none neon-container">Play!</h1>
           <div className="text-7xl border-b-2 border-b-base-content border-opacity-25 pb-12 text-accent-content text-center flex gap-2 justify-around my-16">
-            <button onClick={startNewSessionSolo} className="flex  cursor-pointer items-center justify-center neon-container neon-border  rounded-[100%] w-[20rem] p-8 ">
+            <button onClick={startNewSessionSolo} className="flex cursor-pointer items-center justify-center neon-container neon-border rounded-[100%] w-[20rem] p-8 ">
               <h1 className="">Solo</h1>
             </button>
             <button className="flex text-7xl cursor-pointer items-center justify-center neon-container neon-border  rounded-[100%] w-[20rem] p-8 ">
-              <h1 className="">With Friends</h1>
+              <h1 className="" onClick={() => document.getElementById("frirens-list").showModal()}>
+                With Friends
+              </h1>
             </button>
           </div>
         </div>
         <div className="" onClick={playSolo}>
-          test Play
+          Start the game
         </div>
-        <PaperRockScissors />
+        <PaperRockScissors onChoice={handleUserChoice} />{" "}
       </div>
+      {user && <Dialog username={user.data.username} />}
     </>
   );
 };

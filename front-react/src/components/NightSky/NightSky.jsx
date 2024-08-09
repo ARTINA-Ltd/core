@@ -48,11 +48,6 @@ const NightSky = () => {
             <circle cx={getRandomX()} cy={getRandomY()} r={randomRadius()} stroke="none" strokeWidth="0" fill="white" key={index} className="star" />
           ))}
         </svg>
-        <div id="shootingstars">
-          {[...Array(num)].map((_, index) => (
-            <div key={index} className="wish" style={{ left: `${getRandomY()}px`, top: `${getRandomX()}px` }} />
-          ))}
-        </div>
       </div>
     </div>
   );

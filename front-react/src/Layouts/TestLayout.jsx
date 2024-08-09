@@ -4,7 +4,7 @@ import Footer from "../components/Footer/Footer";
 import i18next from "../../src/i18n";
 const TestLayout = ({ children, connectWallet, className, wfull = false, rev = false }) => {
   return (
-    <div style={{ direction: i18next.dir() }} className={`bg-base-300 overflow-hidden`}>
+    <div style={{ direction: i18next.dir() }} className={`bg-base-300 overflow-clip`}>
       <Header connectWallet={connectWallet} rev={rev} />
       <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
       <meta httpEquiv="Content-Language" content="fa" />

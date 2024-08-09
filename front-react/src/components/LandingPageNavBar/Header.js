@@ -80,7 +80,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
       title: "",
       link: "",
       icon: (
-        <div className="dropdown">
+        <div className="dropdown z-[60]">
           <div tabIndex={0} role="button" className="flex m-0 font-normal  p-0 shadow-none">
             <MdOutlineCollections className="w-6 h-6 ml-1 text-primary" />
             {t("collections")}
