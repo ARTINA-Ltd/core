@@ -1012,7 +1012,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
                 if verification_status == 100:
                     payment.is_paid = True
                     payment.save()
-    
+                    payment.amount= payment.amount//10
                     transaction_currency = TransactionCurrency.objects.get(name="rial")
                     user_balance = UserBalance.objects.get(user=user)
     
@@ -1021,6 +1021,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
                         user_balance.save()
                     else:
                         user_balance = UserBalance.objects.create(rial_available_balance=payment.amount, user=user)
+                        
     
                     Transaction.objects.create(user=user, side='deposit', transaction_currency=transaction_currency,
                                                amount=payment.amount, status='completed')
