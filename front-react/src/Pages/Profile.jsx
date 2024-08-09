@@ -21,6 +21,8 @@ function Profile() {
   const inputFileNC = useRef(null);
   const [disableInputs, setDisableInputs] = useState(user ? user.data.role === "user_one" : "false");
 
+  console.log(user);
+
   const navigate = useNavigate();
   if (localStorage.getItem("authTokens") === null) {
     navigate("/");
@@ -414,7 +416,7 @@ function Profile() {
       });
       if (user) {
         setShabaNumber(user ? user.data.shaba_number : null);
-        setCardNumber(user ? user.data.card_number : null);
+        setCardNumber(user ? user.data.card_number : "");
         setIsPhoneVerified(user ? user.data.phone_number_verified == true : null);
         setIsEmailVerified(user ? user.data.email_verified == true : null);
       }
@@ -654,10 +656,10 @@ function Profile() {
                   setValidate({ ...validate, phone_number: e.target.value.length === 11 });
                 }}
                 defaultValue={user != null ? user.data.phone_number : null}
-                disabled={disableInputs && user.data.phone_number != null}
+                disabled={disableInputs && user.data.phone_number != null && user.data.phone_number_verified}
                 maxChars={11}
               />
-              <div className={`${showPhoneValidate && !isPhoneVerified ? "" : "hidden"}`}>
+              <div className={`${showPhoneValidate && !isPhoneVerified && (!user.data.phone_number || !user.data.phone_number_verified) ? "" : "hidden"}`}>
                 <SimpleInput
                   type="number"
                   title="کد "
@@ -668,7 +670,7 @@ function Profile() {
                   defaultValue={null}
                 />
               </div>
-              {!user.data.phone_number && (
+              {(!user.data.phone_number || !user.data.phone_number_verified) && (
                 <div className={`transition-all w-1/2 shrink-0 ${isPhoneVerified ? "hidden" : "flex gap-4 "}`}>
                   <div className={`w-1/3 ${!showPhoneValidate ? "hidden" : "bg-sky-400 cursor-pointer hover:bg-sky-500 w-full text-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center"} `} onClick={handleSendPhoneVerificationCode}>
                     ثبت
@@ -692,10 +694,10 @@ function Profile() {
                   setValidate({ ...validate, email: e.target.value.indexOf("@") > -1 });
                 }}
                 defaultValue={user != null ? user.data.email : null}
-                disabled={disableInputs && user.data.email != null}
+                disabled={user.data.email != null && user.data.email_verified}
                 maxChars={30}
               />
-              <div className={`${showEmailValidate && !isEmailVerified ? "" : "hidden"}`}>
+              <div className={`${showEmailValidate && !isEmailVerified && (!user.data.email || !user.data.email_verified) ? "" : "hidden"}`}>
                 <SimpleInput
                   type="number"
                   title="کد "
@@ -706,7 +708,7 @@ function Profile() {
                   defaultValue={null}
                 />
               </div>
-              {user.data.email == null && (
+              {(!user.data.email || !user.data.email_verified) && (
                 <div className={`transition-all w-1/2 shrink-0 ${isEmailVerified ? "hidden" : "flex gap-4 "}`}>
                   <div className={`w-1/3 ${!showEmailValidate ? "hidden" : "bg-sky-400 cursor-pointer hover:bg-sky-500 w-full text-nowrap px-10 rounded-lg transition-all  text-white text-[14px] flex items-center justify-center"} `} onClick={handleSendEmailVerificationCode}>
                     ثبت
@@ -749,17 +751,20 @@ function Profile() {
                 disabled={disableInputs && user && user.data != null ? user.data.card_number != null : false}
                 title={""}
                 type="card"
+                validationError="لطفا از اعداد لاتین استفاده کنید"
                 onChange={(e) => {
                   setCardNumber(e.target.value.split("-").join(""));
+                  console.log(cardNumber.length);
                 }}
+                isValid={cardNumber && cardNumber.length === 16}
                 className="border-black rounded-md border-2 text-white"
-                maxChars={16}
+                maxChars={19}
               />
               <div className="font-b3">شماره شبا</div>
               <div className="flex items-center gap-5 w-full py-2 px-2" dir="ltr">
                 <div className="pt-2">IR </div>
 
-                <SimpleInput defaultValue={user && user.data ? user.data.shaba_number : null} disabled={disableInputs && user && user.data != null ? user.data.shaba_number != null : false} title={""} type="card" onChange={(e) => setShabaNumber(e.target.value.split("-").join(""))} className="border-black rounded-md border-2 text-white" maxChars={24} />
+                <SimpleInput defaultValue={user && user.data ? user.data.shaba_number : null} isValid={shabaNumber && shabaNumber.length === 24} disabled={disableInputs && user && user.data != null ? user.data.shaba_number != null : false} validationError="لطفا از اعداد لاتین استفاده کنید" title={""} type="card" onChange={(e) => setShabaNumber(e.target.value.split("-").join(""))} className="border-black rounded-md border-2 text-white" maxChars={29} />
               </div>
             </SimpleCard>
           </div>

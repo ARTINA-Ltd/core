@@ -9,87 +9,56 @@ const SignUp = () => {
       <div className=" flex justify-center" dir="rtl">
         <ul className={"col-5 "}>
           <div className="rec1 rounded-[0.5rem] bg-[#7c73e8] m-10">
-            <span
-              className={
-                "flex justify-center pt-4 mt-2 mr-2 text-5xl font-extrabold text-white "
-              }
-            >
-              ثبت نام
-            </span>
+            <span className={"flex justify-center pt-4 mt-2 mr-2 text-5xl font-extrabold text-white "}>ثبت نام</span>
             <div className={"flex justify-center items-center mr-9  "}>
               <ul>
                 <li>
-                  <span className={" mt-4 font-bold text-2xl flex text-right"}>
-                    {" "}
-                    نام{" "}
-                  </span>
+                  <span className={" mt-4 font-bold text-2xl flex text-right"}> نام </span>
                 </li>
                 <li>
                   <input dir="rtl" className={"userinput"} type="text" />
                 </li>
                 <li>
-                  <span
-                    className={" mt-4 font-bold  text-2xl  flex text-right"}
-                  >
-                    {" "}
-                    رمز عبور
-                  </span>
+                  <span className={" mt-4 font-bold  text-2xl  flex text-right"}> رمز عبور</span>
                 </li>
                 <li>
                   <input dir="rtl" className={"userinput"} type="password" />
                 </li>
                 <li>
-                  <span className={" mt-4 font-bold text-2xl  flex text-right"}>
-                    ایمیل
-                  </span>
+                  <span className={" mt-4 font-bold text-2xl  flex text-right"}>ایمیل</span>
                 </li>
                 <li>
                   <input dir="rtl" className={"userinput"} type="email" />
                 </li>
                 <li>
-                  <span className={"mt-4 font-bold text-2xl  flex text-right"}>
-                    شماره تماس
-                  </span>
+                  <span className={"mt-4 font-bold text-2xl  flex text-right"}>شماره تماس</span>
                 </li>
                 <li>
                   <input dir="rtl" className={"userinput   "} type="tel" />
                 </li>
                 <li>
-                  <span className={" mt-4 font-bold text-2xl  flex text-right"}>
-                    {" "}
-                    تاریخ تولد
-                  </span>
+                  <span className={" mt-4 font-bold text-2xl  flex text-right"}> تاریخ تولد</span>
                 </li>
                 <li>
-                  <input dir="rtl" className={"userinput      "} type="date" />
+                  <input dir="rtl" className={"userinput"} type="date" />
                 </li>
               </ul>
             </div>
             <div className="flex justify-center">
               <Link to="/signup">
-                <button
-                  type={"button"}
-                  className={"loginbutton text-3xl font-bold  text-black  "}
-                >
+                <button type={"button"} className={"loginbutton text-3xl font-bold  text-black  "}>
                   {" "}
                   ثبت نام
                 </button>
               </Link>
             </div>
-            <Link
-              to="/"
-              className={"flex justify-center mt-4 text-2xl mb-8 text-white"}
-            >
+            <Link to="/" className={"flex justify-center mt-4 text-2xl mb-8 text-white"}>
               ورود
             </Link>
           </div>
         </ul>
         <div className="col-7 flex justify-center">
-          <img
-            className="image"
-            src={require("./images/section-3-1.png")}
-            alt="Girl in a jacket"
-          ></img>
+          <img className="image" src={require("./images/section-3-1.png")} alt="Girl in a jacket"></img>
         </div>
       </div>
       <Footer />

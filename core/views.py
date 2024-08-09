@@ -46,8 +46,66 @@ from django_filters import rest_framework as filters
 import time
 from decimal import Decimal 
 
-# Initialize Web3
+
+import os
+import json
+from web3 import Web3
+
+# Connect to Polygon Network
 w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
+
+def transfer_nft(sender_private_key, sender_address, recipient_address, token_id):
+    try:
+        # Fetch the current nonce for the sender's address
+        nonce = w3.eth.getTransactionCount(sender_address, 'pending')
+        
+        # Contract details
+        nft_contract_address = "0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a"
+        abi_filename = os.path.join(settings.BASE_DIR, "Account", "ABI.json")
+
+        # Read ABI from JSON file
+        with open(abi_filename, "r") as abi_file:
+            nft_contract_abi = json.load(abi_file)
+
+        # Set up the contract
+        nft_contract = w3.eth.contract(address=nft_contract_address, abi=nft_contract_abi)
+        
+        # Get dynamic gas price
+        gas_price = w3.eth.gas_price
+        
+        # Estimate gas limit for the transaction
+        estimated_gas = nft_contract.functions.safeTransferFrom(sender_address, recipient_address, token_id).estimateGas({
+            'from': sender_address
+        })
+        
+        # Build the transaction
+        tx = nft_contract.functions.safeTransferFrom(sender_address, recipient_address, token_id).buildTransaction({
+            'chainId': 137,  # Polygon Mainnet Chain ID
+            'gas': estimated_gas,  # Use estimated gas
+            'gasPrice': gas_price,  # Dynamic gas price
+            'nonce': nonce,
+            'from': sender_address,
+            
+        })
+
+        print(f"Transaction to be signed: {tx}")
+
+        # Sign the transaction with the sender's private key
+        signed_txn = w3.eth.account.signTransaction(tx, sender_private_key)
+        print(f"Signed transaction: {signed_txn.rawTransaction.hex()}")
+
+        # Send the transaction
+        tx_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)
+        print(f"Transaction hash: {tx_hash.hex()}")
+
+        return tx_hash.hex()
+
+    except Exception as e:
+        print(f"Error in transfer_nft: {e}")
+        return None
+
+# Initialize Web3
+"""w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
 def transfer_nft(sender_private_key, sender_address, recipient_address, token_id):
     try:
         nonce = w3.eth.getTransactionCount(sender_address)
@@ -98,7 +156,7 @@ def transfer_nft(sender_private_key, sender_address, recipient_address, token_id
     except Exception as e:
         print(f"Error in transfer_nft: {e}")
         return None
-
+"""
 
 
 def transferNFT(token_id, sender, recipient):
@@ -238,31 +296,72 @@ def get_winner(token_id):
     except Exception as e:
         print(f"Error in get_winner: {e}")
         return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+from web3 import Web3
+import os
+
 
 
 def transfer_matic(to_address, amount):
     COMPANY_WALLET_ADDRESS = '0x2293221D7c357FB04De9c7D0dEeBcA427407429D'
-    COMPANY_WALLET_PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
-    
-    #base_fee_per_gas = 2440  # in wei (this is very low for current standards)
-    #priority_fee = 50000000000  # 50 Gwei in wei for priority fee
-    gas_price = 0.015 * 10**9  # Convert 172.5 GWei to wei    
-    #gas_price = base_fee_per_gas + priority_fee
-    nonce = w3.eth.getTransactionCount(COMPANY_WALLET_ADDRESS,'pending')
+    COMPANY_WALLET_PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520" # Securely get from env variable
+
+    # Get dynamic gas price
+    gas_price = w3.eth.gas_price
+
+    # Get nonce
+    nonce = w3.eth.getTransactionCount(COMPANY_WALLET_ADDRESS, 'pending')
+
+    # Estimate gas limit for the transaction
+    estimated_gas = w3.eth.estimateGas({
+        'from': COMPANY_WALLET_ADDRESS,
+        'to': to_address,
+        'value': w3.toWei(amount, 'ether'),
+    })
+
     tx = {
         'nonce': nonce,
         'to': to_address,
         'value': w3.toWei(amount, 'ether'),
-        'gas': 2000000,
-        'gasPrice': int(gas_price),
-        'chainId': 137
+        'gas': estimated_gas,
+        'gasPrice': gas_price,
+        'chainId': 137  # Polygon Mainnet Chain ID
     }
 
+    # Sign the transaction
     signed_tx = w3.eth.account.signTransaction(tx, COMPANY_WALLET_PRIVATE_KEY)
-    tx_hash = w3.eth.sendRawTransaction(signed_tx.rawTransaction)
-    w3.eth.waitForTransactionReceipt(tx_hash)
 
-    return tx_hash
+    # Send the transaction
+    tx_hash = w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+
+    # Wait for the transaction receipt
+    receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+
+    return receipt.transactionHash
+
+
+#def transfer_matic(to_address, amount):
+   # COMPANY_WALLET_ADDRESS = '0x2293221D7c357FB04De9c7D0dEeBcA427407429D'
+ #   COMPANY_WALLET_PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
+    
+    #base_fee_per_gas = 2440  # in wei (this is very low for current standards)
+    #priority_fee = 50000000000  # 50 Gwei in wei for priority fee
+  #  gas_price = 0.015 * 10**9  # Convert 172.5 GWei to wei    
+    #gas_price = base_fee_per_gas + priority_fee
+#    nonce = w3.eth.getTransactionCount(COMPANY_WALLET_ADDRESS,'pending')
+#    tx = {
+      #  'nonce': nonce,
+     #   'to': to_address,
+     #   'value': w3.toWei(amount, 'ether'),
+    #    'gas': 2000000,
+    #    'gasPrice': int(gas_price),
+   #     'chainId': 137
+#    }
+
+ #   signed_tx = w3.eth.account.signTransaction(tx, COMPANY_WALLET_PRIVATE_KEY)
+ #   tx_hash = w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+ #   w3.eth.waitForTransactionReceipt(tx_hash)
+#
+ #   return tx_hash
 
 class OrderViewSet(viewsets.ViewSet):
     queryset = Order.objects.all()

@@ -52,8 +52,10 @@ const Login = () => {
           console.log(res.data.role);
           if (res.data.role == "supervisor") {
             navigate("/admin-panel");
-          } else {
+          } else if (res.data.role == "user_one") {
             navigate("/dashboard");
+          } else {
+            navigate("/profile");
           }
         }
       })

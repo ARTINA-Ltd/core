@@ -1271,9 +1271,8 @@ class EmailMixin(viewsets.ViewSet):
 
     @action(detail=False, methods=['post'])
     def email_verification(self, request):
-        recipient_email = request.data.get('email')
         user = self.request.user
-        email = User.objects.get(profile__email=email)
+        email = user.email
         if not email:
             return Response({'error': 'email is required.'}, status.HTTP_400_BAD_REQUEST)
 
