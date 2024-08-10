@@ -151,7 +151,7 @@ class Payment(models.Model):
     def __str__(self):
         return f'{self.user} - {self.amount}'
 
-class withdrawal_list(models.Model):
+class Withdrawal_list(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     shaba_number = models.CharField(max_length=24, verbose_name="shaba_number", null=True, blank=True)
     amount = models.PositiveIntegerField()
