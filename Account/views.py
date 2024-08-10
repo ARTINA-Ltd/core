@@ -629,12 +629,12 @@ class CryptoViewSet(viewsets.ViewSet):
         total = amount * price
 
         # Check if the user has enough TMN balance to cover the purchase
-        balance_check = check_balance(amount=total, user_id=user.id)
-        if balance_check.status_code != status.HTTP_200_OK:
+        user_balance_check = check_balance(amount=total, user_id=user.id)
+        if user_balance_check.status_code != status.HTTP_200_OK:
             return Response({'error': 'Purchase failed'}, status=status.HTTP_400_BAD_REQUEST)
          
-        balance_check_response = self.check_tmn_balance(total=total)
-        if balance_check_response['status'] != status.HTTP_200_OK:
+        artina_balance_response = self.check_tmn_balance(total=total)
+        if artina_balance_response['status'] != status.HTTP_200_OK:
             return Response({'error': 'Insufficient TMN balance to complete the purchase'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Proceed with creating the transaction
@@ -714,12 +714,6 @@ class CryptoViewSet(viewsets.ViewSet):
             return JsonResponse({"error": error_message}, status=500)
             
 
-from rest_framework import viewsets, status
-from rest_framework.decorators import action
-from rest_framework.response import Response
-import requests
-
-class CryptoViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=['post'])
     def SellCrypto(self, request):
