@@ -527,9 +527,93 @@ def updating_balance(user_id, currency, amount, side):
 
 
 
+
 class WithdrawalViewSet(viewsets.ModelViewSet):
-    queryset = withdrawal_list.objects.all()
-    serializer_class = withdrawal_listSerializer
+    queryset = WithdrawalList.objects.all()
+    serializer_class = WithdrawalListSerializer
+
+    
+    @action(detail=False, methods=['post'])
+    def create_request(self, request):
+        user = self.request.user
+        amount = request.data.get('amount')
+
+        # Ensure the user has enough balance
+        user_balance = UserBalance.objects.get(user=user)
+        if int(amount) > user_balance.rial_available_balance:
+            return Response({"detail": "Insufficient balance."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Check if the user has already made two withdrawal requests today
+        today = now().date()
+        requests_today = WithdrawalList.objects.filter(user=user, created_at__date=today).count()
+        if requests_today >= 2:
+            return Response({"detail": "You can only make two withdrawal requests per day."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Transfer the amount to untradable balance
+        user_balance.rial_available_balance -= int(amount)
+        user_balance.rial_untradable_balance += int(amount)
+        user_balance.save()
+
+        # Create the withdrawal request
+        withdrawal = WithdrawalList.objects.create(
+            user=user,
+            shaba_number=user_profile.shaba_number,
+            amount=int(amount)
+        )
+
+        serializer = self.get_serializer(withdrawal)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    @action(detail=True, methods=['post'])
+    def update_request(self, request, pk=None):
+        withdrawal = self.get_object()
+        if withdrawal.is_paid:
+            return Response({"detail": "This withdrawal has already been processed."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Process the withdrawal
+        withdrawal.is_paid = True
+        withdrawal.reference_number = request.data.get('reference_number')
+        withdrawal.save()
+
+        # Decrease the user's untradable balance
+        user_balance = UserBalance.objects.get(user=withdrawal.user)
+        user_balance.rial_untradable_balance -= withdrawal.amount
+        user_balance.save()
+
+        serializer = self.get_serializer(withdrawal)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['get'])
+    def list_requests(self, request, *args, **kwargs):
+    
+        queryset = self.get_queryset()
+
+        # Optional filters (e.g., by user, date, or status)
+        user_id = request.query_params.get('user')
+        if user_id:
+            queryset = queryset.filter(user__id=user_id)
+
+        date_from = request.query_params.get('date_from')
+        if date_from:
+            queryset = queryset.filter(created_at__gte=date_from)
+
+        date_to = request.query_params.get('date_to')
+        if date_to:
+            queryset = queryset.filter(created_at__lte=date_to)
+
+        is_paid = request.query_params.get('is_paid')
+        if is_paid is not None:
+            queryset = queryset.filter(is_paid=is_paid.lower() in ['true', '1'])
+
+        # Paginate the result if needed
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        # Serialize and return the data
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class CryptoViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
