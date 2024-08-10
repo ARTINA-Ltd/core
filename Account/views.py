@@ -615,115 +615,80 @@ class WithdrawalViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-class CryptoViewSet(viewsets.ViewSet):
-    @action(detail=False, methods=['post'])
 
+class CryptoViewSet(viewsets.ViewSet):
+
+    @action(detail=False, methods=['post'])
     def BuyCrypto(self, request):
         user = self.request.user
-        symbol= request.data.get('symbol') 
+        symbol = request.data.get('symbol')
         amount = float(request.data.get('amount'))  # Ensure amount is a float
         price = float(request.data.get('price'))  # Ensure price is a float
-        transactionCurrency=TransactionCurrency.objects.filter(name=symbol).first()
-        transactionINS=Transaction.objects.create(user=user, transaction_currency=transactionCurrency,amount=amount,side="BUY",status='Pending')
-        total=amount*price
+
+        # Calculate the total cost of the purchase
+        total = amount * price
+
+        # Check if the user has enough TMN balance to cover the purchase
         balance_check = check_balance(amount=total, user_id=user.id)
         if balance_check.status_code != status.HTTP_200_OK:
             return Response({'error': 'Purchase failed'}, status=status.HTTP_400_BAD_REQUEST)
-            
+         
+        balance_check_response = self.check_tmn_balance(total=total)
+        if balance_check_response['status'] != status.HTTP_200_OK:
+            return Response({'error': 'Insufficient TMN balance to complete the purchase'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Proceed with creating the transaction
+        transactionCurrency = TransactionCurrency.objects.filter(name=symbol).first()
+        transactionINS = Transaction.objects.create(user=user, transaction_currency=transactionCurrency, amount=amount, side="BUY", status='Pending')
+
+        # Make the API call to perform the purchase
         url = 'https://api.wallex.ir/v1/account/otc/orders'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  
+            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',
         }
         data = {
-            'symbol': symbol, 
+            'symbol': symbol,
             'side': "BUY",
             'amount': amount,
             'price': price,
         }
         response = requests.post(url, headers=headers, json=data)
         datam = response.json()
-        # Check if the request was successful
+
         if response.status_code == 201:
-            transactionINS.status='completed'
+            transactionINS.status = 'completed'
             transactionINS.save()
-            balance_update = updating_balance(user_id=user.id, currency=symbol, amount=amount, side="deposit")
+
+            # Update the user's balance
+            balance_update = self.updating_balance(user_id=user.id, currency=symbol, amount=amount, side="deposit")
             if balance_update.status_code != status.HTTP_200_OK:
                 return Response({'error': 'Failed to update balance'}, status=status.HTTP_400_BAD_REQUEST)
 
-    def BackBuyCrypto(id, symbol,amount,price):
-        amount = float(amount)  # Ensure amount is a float
-        price = float(price)  # Ensure price is a float
-        user=User.objects.get(id)
-        id=int(user.id)
-        print(user)
-        transactionCurrency=TransactionCurrency.objects.filter(name=symbol).first()
-        transactionINS=Transaction.objects.create(user=user, transaction_currency=transactionCurrency,amount=amount,side="BUY",status='Pending')
-        total=amount*price
-        balance_check = check_balance(amount=total, user_id=user.id)
-        if balance_check.status_code != status.HTTP_200_OK:
-            return Response({'error': 'Purchase failed'}, status=status.HTTP_400_BAD_REQUEST)
-            
-        url = 'https://api.wallex.ir/v1/account/otc/orders'
-        headers = {
-            'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  
-        }
-        data = {
-            'symbol': symbol, 
-            'side': "BUY",
-            'amount': amount,
-            'price': price,
-        }
-        response = requests.post(url, headers=headers, json=data)
-        print(response)
-        datam = response.json()
-        # Check if the request was successful
-        if response.status_code == 201:
-            transactionINS.status='completed'
-            transactionINS.save()
-            balance_update = updating_balance(user_id=user.id, currency=symbol, amount=amount, side="deposit")
-            if balance_update.status_code != status.HTTP_200_OK:
-                return Response({'error': 'Failed to update balance'}, status=status.HTTP_400_BAD_REQUEST)
-
-  
-            transaction_currency = TransactionCurrency.objects.get(name="rial")
-            user_balance = UserBalance.objects.filter(user=user).first()
-            
-            if user_balance:
-                user_balance.rial_available_balance -= (amount*price + 10000)
-                user_balance.save()
-                try:
-                    phone_number=user.profile.phone_number
-
-                    response = requests.post(
-                f"https://api.kavenegar.com/v1/"
-                f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
-                f"/verify/lookup.json",
-                    data={
-                "receptor": phone_number,
-                "token1": user.profile.first_name,
-                "token2": amount,
-                 "token3": symbol,
-                "template": "WalletChargeVerification"
-                 }
-                )
-                except Profile.DoesNotExist :
-                    pass
-                    
-
-                artina=ARTINA_Ballance.objects.first()
-                artina.artina_rial += 10000
-                artina.save()
-                return Response({'message': 'Purchase successful'}, status=response.status_code)
-            else:
-                return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
-
-        
+            return Response({'message': 'Purchase successful'}, status=status.HTTP_201_CREATED)
         else:
-            transactionINS.status='failed'
-            transactionINS.save()
-            return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
+            return Response({'error': 'Purchase failed', 'details': datam}, status=status.HTTP_400_BAD_REQUEST)
+
+    def check_tmn_balance(self, user, total):
+        url = 'https://api.wallex.ir/v1/account/balances'
+        headers = {
+            'Content-Type': 'application/json',
+            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace with your actual API key
+        }
+        response = requests.get(url, headers=headers)
+
+        if response.status_code == 200:
+            data = response.json()
+            tmn_balance = float(data['result']['balances']['TMN']['value'])
+
+            if total <= tmn_balance:
+                return {'status': status.HTTP_200_OK, 'message': 'Sufficient balance'}
+            else:
+                return {'status': status.HTTP_400_BAD_REQUEST, 'message': 'Insufficient balance'}
+        else:
+            return {'status': response.status_code, 'message': 'Failed to retrieve account balances'}
+            
+
 
     @action(detail=False, methods=['post'])
     def get_br(self,request):
@@ -749,19 +714,50 @@ class CryptoViewSet(viewsets.ViewSet):
             return JsonResponse({"error": error_message}, status=500)
             
 
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
+import requests
+
+class CryptoViewSet(viewsets.ViewSet):
+
     @action(detail=False, methods=['post'])
     def SellCrypto(self, request):
         user = self.request.user
-        symbol= request.data.get('symbol') 
+        symbol = request.data.get('symbol') 
         amount = float(request.data.get('amount'))  # Ensure amount is a float
         price = float(request.data.get('price'))  # Ensure price is a float
-        transactionCurrency=TransactionCurrency.objects.filter(name=symbol).first()
-        transactionINS=Transaction.objects.create(user=user, transaction_currency=transactionCurrency,amount=amount,side="SELL",status='Pending')
-        total=amount*price
-        balance_check = check_balance(amount=total, user_id=user.id)
-        if balance_check.status_code != status.HTTP_200_OK:
-            return Response({'error': 'Purchase failed'}, status=status.HTTP_400_BAD_REQUEST)
-         
+
+        # Calculate the total value of the sale
+        total = amount * price
+        
+        # Map for balance fields
+        balance_fields = {
+            'MATICTMN': 'matic_balance',
+            'ETHTMN': 'eth_balance',
+            'rial': 'rial_available_balance'
+        }
+
+        # Check if the symbol is valid
+        if symbol not in balance_fields:
+            return Response({'error': 'Invalid symbol.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Get the appropriate balance field
+        balance_field = balance_fields[symbol]
+        user_balance = UserBalance.objects.get(user=user)
+
+        # Use `getattr` to dynamically access the balance field
+        current_balance = getattr(user_balance, balance_field)
+        
+        # Check if the user has sufficient balance
+        if current_balance < amount:
+            return Response({'error': 'Insufficient balance to complete the sale'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Proceed with creating the transaction
+        transactionCurrency = TransactionCurrency.objects.filter(name=symbol).first()
+        transactionINS = Transaction.objects.create(user=user, transaction_currency=transactionCurrency, amount=amount, side="SELL", status='Pending')
+
+        # Make the API call to perform the sale
         url = 'https://api.wallex.ir/v1/account/otc/orders'
         headers = {
             'Content-Type': 'application/json',
@@ -775,49 +771,46 @@ class CryptoViewSet(viewsets.ViewSet):
         }
         response = requests.post(url, headers=headers, json=data)
         datam = response.json()
-        # Check if the request was successful
+
         if response.status_code == 201:
-            transactionINS.status='completed'
+            transactionINS.status = 'completed'
             transactionINS.save()
-            balance_update = updating_balance(user_id=user.id, currency=symbol, amount=amount, side="withdrawal")
-            if balance_update.status_code != status.HTTP_200_OK:
-                return Response({'error': 'Failed to update balance'}, status=status.HTTP_400_BAD_REQUEST)
-            transaction_currency = TransactionCurrency.objects.get(name="rial")
-            user_balance = UserBalance.objects.filter(user=user).first()
-    
-            if user_balance:
-                user_balance.rial_available_balance += (amount*price - 10000)
-                total=(amount*price - 10000)
-                user_balance.save()
-                try:
-                    phone_number=user.profile.phone_number
 
-                    response = requests.post(
-                        f"https://api.kavenegar.com/v1/"
-                        f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
-                        f"/verify/lookup.json",
-                        data={
-                            "receptor": phone_number,
-                            "token1": user.profile.first_name,
-                            "token2":  total,
-                            "template": "AccountChargeVerification"
-                                }
-                                )
-                except Profile.DoesNotExist :
-                    pass
-                    
-                artina=ARTINA_Ballance.objects.first()
-                artina.artina_rial += 10000
-                artina.save()
-                return Response({'message': 'Purchase successful'}, status=response.status_code)
-            else:
-                return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
+            # Update the user's balance
+            setattr(user_balance, balance_field, current_balance - amount)
+            user_balance.save()
 
-        
+            # Add the equivalent amount in rial to the user's rial balance minus a fee
+            fee = 10000
+            rial_amount = total - fee
+            user_balance.rial_available_balance += rial_amount
+            user_balance.save()
+
+            # Optionally, send a notification via SMS
+            try:
+                phone_number = user.profile.phone_number
+                response = requests.post(
+                    "https://api.kavenegar.com/v1/4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D/verify/lookup.json",
+                    data={
+                        "receptor": phone_number,
+                        "token1": user.profile.first_name,
+                        "token2": rial_amount,
+                        "template": "AccountChargeVerification"
+                    }
+                )
+            except Profile.DoesNotExist:
+                pass
+
+            # Update ARTINA_Ballance
+            artina = ARTINA_Ballance.objects.first()
+            artina.artina_rial += fee
+            artina.save()
+
+            return Response({'message': 'Sale successful'}, status=status.HTTP_201_CREATED)
         else:
-            transactionINS.status='failed'
+            transactionINS.status = 'failed'
             transactionINS.save()
-            return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
+            return Response({'error': 'Sale failed', 'info': datam}, status=status.HTTP_400_BAD_REQUEST)
 
 
     
