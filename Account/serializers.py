@@ -107,7 +107,7 @@ class PaymentSerializer(serializers.ModelSerializer):
         model = Payment
         fields = '__all__'
 
-class withdrawal_listSerializer(serializers.ModelSerializer):
+class Withdrawal_listSerializer(serializers.ModelSerializer):
     class Meta:
-        model = withdrawal_list
+        model = Withdrawal_list
         fields = '__all__'
