@@ -38,7 +38,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.contrib.auth.models import User
-from .models import Wallet, Transaction
+from .models import Wallet, Transaction,withdrawal_list
 from web3 import Web3, eth
 import os
 import time
@@ -529,8 +529,8 @@ def updating_balance(user_id, currency, amount, side):
 
 
 class WithdrawalViewSet(viewsets.ModelViewSet):
-    queryset = WithdrawalList.objects.all()
-    serializer_class = WithdrawalListSerializer
+    queryset = Withdrawal_List.objects.all()
+    serializer_class = Withdrawal_ListSerializer
 
     
     @action(detail=False, methods=['post'])
@@ -545,7 +545,7 @@ class WithdrawalViewSet(viewsets.ModelViewSet):
 
         # Check if the user has already made two withdrawal requests today
         today = now().date()
-        requests_today = WithdrawalList.objects.filter(user=user, created_at__date=today).count()
+        requests_today = Withdrawal_List.objects.filter(user=user, created_at__date=today).count()
         if requests_today >= 2:
             return Response({"detail": "You can only make two withdrawal requests per day."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -555,7 +555,7 @@ class WithdrawalViewSet(viewsets.ModelViewSet):
         user_balance.save()
 
         # Create the withdrawal request
-        withdrawal = WithdrawalList.objects.create(
+        withdrawal = Withdrawal_List.objects.create(
             user=user,
             shaba_number=user_profile.shaba_number,
             amount=int(amount)
