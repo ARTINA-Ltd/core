@@ -16,7 +16,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=DocumentApproval)
 def update_user_role(sender, instance, **kwargs):
-    if instance.national_code_approved
+    if instance.national_code_approved:
         try:
             user_one_role = Role.objects.get(name="user_one")
         except Role.DoesNotExist:
