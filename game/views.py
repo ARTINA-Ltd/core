@@ -220,12 +220,15 @@ class GameViewSet(viewsets.ModelViewSet):
         for session in sessions:
             game = session.game
             opponent_session = GameSession.objects.filter(game=game).exclude(user=user).first()
+            user_profile = UserGameProfile.objects.get(user=user)
             if self.is_game_finished(game):
                 self.determine_winner(game)
             result.append({
                 'game_id': game.id,
                 'choice': session.choice,
                 'opponent_choice': opponent_session.choice if opponent_session else None,
+                'opponent_profile_picture':user_profile.profile_picture,
+                'opponent_username':opponent_session.user.username,
                 'result': session.result,
                 'is_active': game.is_active,
                 'created_at': game.created_at,
