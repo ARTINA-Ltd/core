@@ -208,7 +208,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                       key={index}
                       className="cursor-pointer flex items-center gap-1  hover:text-accent transition-all duration-200"
                       onClick={() => {
-                        item.link === null ? Notify.failure("ابتدا باید در صفحه ی پروفایل، هویت خود را احزار کنید") : navigate(item.link);
+                        item.link === null ? Notify.failure(t("identity")) : navigate(item.link);
                       }}
                     >
                       {item.icon}

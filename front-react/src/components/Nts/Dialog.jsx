@@ -2,8 +2,10 @@ import axios from "axios";
 import { Fragment, useEffect, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import BorderButton from "../Buttons/BorderButton.jsx";
+import { useNavigate } from "react-router";
 
 const Dialog = ({ username }) => {
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [selected, setSelected] = useState([]);
   useEffect(() => {
@@ -20,7 +22,7 @@ const Dialog = ({ username }) => {
     axios
       .post(
         "https://api.artina.org/api/game/games/create_play_friend/",
-        { user2: selected },
+        { friend_username: selected },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
@@ -33,8 +35,6 @@ const Dialog = ({ username }) => {
   function removeRecord(array) {
     return array.filter((item) => item.username !== username);
   }
-
-  console.log(users);
 
   return (
     <Fragment>
@@ -54,7 +54,13 @@ const Dialog = ({ username }) => {
                 </div>
               );
             })}
-            <BorderButton onClick={() => createGame()} className={`mx-auto`}>
+            <BorderButton
+              onClick={() => {
+                createGame();
+                navigate("./play-with-friend");
+              }}
+              className={`mx-auto`}
+            >
               Start playing with your friend !
             </BorderButton>
           </div>
