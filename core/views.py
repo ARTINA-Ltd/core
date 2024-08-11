@@ -388,6 +388,61 @@ def get_winner(token_id):
         logger.error(f"Error in get_winner: {e}")
         return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from rest_framework.decorators import action
+import logging
+
+# Initialize logger
+logger = logging.getLogger(__name__)
+
+class TransferViewSet(viewsets.ViewSet):
+    
+    @action(detail=False, methods=['post'])
+    def transfer_nft(self, request):
+        sender_private_key = request.data.get('sender_private_key')
+        sender_address = request.data.get('sender_address')
+        recipient_address = request.data.get('recipient_address')
+        token_id = request.data.get('token_id')
+
+        if not all([sender_private_key, sender_address, recipient_address, token_id]):
+            return Response({"error": "Missing required fields."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            tx_hash = transfer_nft(sender_private_key, sender_address, recipient_address, token_id)
+            if tx_hash:
+                return Response({"transaction_hash": tx_hash}, status=status.HTTP_200_OK)
+            else:
+                logger.error(f"Failed to transfer NFT with token_id {token_id} from {sender_address} to {recipient_address}.")
+                return Response({"error": "Failed to transfer NFT."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            logger.error(f"Exception during NFT transfer: {e}")
+            return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @action(detail=False, methods=['post'])
+    def transfer_matic(self, request):
+        to_address = request.data.get('to_address')
+        amount = request.data.get('amount')
+
+        if not all([to_address, amount]):
+            return Response({"error": "Missing required fields."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            amount = float(amount)
+        except ValueError:
+            return Response({"error": "Invalid amount."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            tx_hash = transfer_matic(to_address, amount)
+            if tx_hash:
+                return Response({"transaction_hash": tx_hash}, status=status.HTTP_200_OK)
+            else:
+                logger.error(f"Failed to transfer {amount} MATIC to {to_address}.")
+                return Response({"error": "Failed to transfer MATIC."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            logger.error(f"Exception during MATIC transfer: {e}")
+            return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class OrderViewSet(viewsets.ViewSet):
     queryset = Order.objects.all()
