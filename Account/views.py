@@ -616,10 +616,17 @@ class WithdrawalViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+
+
+import logging
+
+logger = logging.getLogger(__name__)
+
 class CryptoViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=['post'])
     def BuyCrypto(self, request):
+        logger.info("BuyCrypto called")
         user = self.request.user
         symbol = request.data.get('symbol')
         amount = float(request.data.get('amount'))  # Ensure amount is a float
@@ -627,14 +634,17 @@ class CryptoViewSet(viewsets.ViewSet):
 
         # Calculate the total cost of the purchase
         total = amount * price
+        logger.debug(f"Total cost calculated: {total}")
 
         # Check if the user has enough TMN balance to cover the purchase
         user_balance_check = check_balance(amount=total, user_id=user.id)
         if user_balance_check.status_code != status.HTTP_200_OK:
+            logger.warning("Purchase failed: Insufficient user balance")
             return Response({'error': 'Purchase failed'}, status=status.HTTP_400_BAD_REQUEST)
          
         artina_balance_response = self.check_tmn_balance(total=total)
         if artina_balance_response['status'] != status.HTTP_200_OK:
+            logger.warning("Purchase failed: Insufficient TMN balance")
             return Response({'error': 'Insufficient TMN balance to complete the purchase'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Proceed with creating the transaction
@@ -653,23 +663,28 @@ class CryptoViewSet(viewsets.ViewSet):
             'amount': amount,
             'price': price,
         }
+        logger.debug(f"Sending POST request to {url} with data: {data}")
         response = requests.post(url, headers=headers, json=data)
         datam = response.json()
 
         if response.status_code == 201:
             transactionINS.status = 'completed'
             transactionINS.save()
+            logger.info("Purchase completed successfully")
 
             # Update the user's balance
             balance_update = self.updating_balance(user_id=user.id, currency=symbol, amount=amount, side="deposit")
             if balance_update.status_code != status.HTTP_200_OK:
+                logger.error("Failed to update balance after purchase")
                 return Response({'error': 'Failed to update balance'}, status=status.HTTP_400_BAD_REQUEST)
 
             return Response({'message': 'Purchase successful'}, status=status.HTTP_201_CREATED)
         else:
+            logger.error(f"Purchase failed: {datam}")
             return Response({'error': 'Purchase failed', 'details': datam}, status=status.HTTP_400_BAD_REQUEST)
 
     def check_tmn_balance(self, user, total):
+        logger.info("Checking TMN balance")
         url = 'https://api.wallex.ir/v1/account/balances'
         headers = {
             'Content-Type': 'application/json',
@@ -680,43 +695,49 @@ class CryptoViewSet(viewsets.ViewSet):
         if response.status_code == 200:
             data = response.json()
             tmn_balance = float(data['result']['balances']['TMN']['value'])
+            logger.debug(f"TMN balance: {tmn_balance}")
 
             if total <= tmn_balance:
+                logger.info("Sufficient TMN balance")
                 return {'status': status.HTTP_200_OK, 'message': 'Sufficient balance'}
             else:
+                logger.warning("Insufficient TMN balance")
                 return {'status': status.HTTP_400_BAD_REQUEST, 'message': 'Insufficient balance'}
         else:
+            logger.error(f"Failed to retrieve account balances, status code: {response.status_code}")
             return {'status': response.status_code, 'message': 'Failed to retrieve account balances'}
             
 
 
     @action(detail=False, methods=['post'])
     def get_br(self,request):
+        logger.info("get_br called")
         user = self.request.user
         id=user.id
-        print(id)
+        logger.debug(f"User ID: {id}")
         price=request.data.get("price")
         if not user:
+            logger.warning("get_br: User not found")
             return JsonResponse({"error": "user is required"}, status=400)
         
         try:
-            # Call the get_winner function
             result = self.BackBuyCrypto(id=id, symbol="ETHTMN",amount=0.001,price=price)
+            logger.debug(f"BackBuyCrypto result: {result}")
 
-            # Check if result is a Response object (in case of errors within get_winner)
             if isinstance(result, Response):
+                logger.warning("get_br: Error within BackBuyCrypto")
                 return result
             return JsonResponse(result, status=200)
         except Exception as e:
-            # Catch and handle unexpected errors
             error_message = f"An unexpected error occurred: {str(e)}"
-            print(error_message)  # Log error to console for debugging
+            logger.error(error_message)
             return JsonResponse({"error": error_message}, status=500)
             
 
 
     @action(detail=False, methods=['post'])
     def SellCrypto(self, request):
+        logger.info("SellCrypto called")
         user = self.request.user
         symbol = request.data.get('symbol') 
         amount = float(request.data.get('amount'))  # Ensure amount is a float
@@ -724,6 +745,7 @@ class CryptoViewSet(viewsets.ViewSet):
 
         # Calculate the total value of the sale
         total = amount * price
+        logger.debug(f"Total sale value: {total}")
         
         # Map for balance fields
         balance_fields = {
@@ -734,24 +756,21 @@ class CryptoViewSet(viewsets.ViewSet):
 
         # Check if the symbol is valid
         if symbol not in balance_fields:
+            logger.warning("SellCrypto: Invalid symbol")
             return Response({'error': 'Invalid symbol.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Get the appropriate balance field
         balance_field = balance_fields[symbol]
         user_balance = UserBalance.objects.get(user=user)
-
-        # Use `getattr` to dynamically access the balance field
         current_balance = getattr(user_balance, balance_field)
+        logger.debug(f"Current balance for {symbol}: {current_balance}")
         
-        # Check if the user has sufficient balance
         if current_balance < amount:
+            logger.warning("SellCrypto: Insufficient balance")
             return Response({'error': 'Insufficient balance to complete the sale'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Proceed with creating the transaction
         transactionCurrency = TransactionCurrency.objects.filter(name=symbol).first()
         transactionINS = Transaction.objects.create(user=user, transaction_currency=transactionCurrency, amount=amount, side="SELL", status='Pending')
 
-        # Make the API call to perform the sale
         url = 'https://api.wallex.ir/v1/account/otc/orders'
         headers = {
             'Content-Type': 'application/json',
@@ -763,24 +782,23 @@ class CryptoViewSet(viewsets.ViewSet):
             'amount': amount,
             'price': price,
         }
+        logger.debug(f"Sending POST request to {url} with data: {data}")
         response = requests.post(url, headers=headers, json=data)
         datam = response.json()
 
         if response.status_code == 201:
             transactionINS.status = 'completed'
             transactionINS.save()
+            logger.info("Sale completed successfully")
 
-            # Update the user's balance
             setattr(user_balance, balance_field, current_balance - amount)
             user_balance.save()
 
-            # Add the equivalent amount in rial to the user's rial balance minus a fee
             fee = 10000
             rial_amount = total - fee
             user_balance.rial_available_balance += rial_amount
             user_balance.save()
 
-            # Optionally, send a notification via SMS
             try:
                 phone_number = user.profile.phone_number
                 response = requests.post(
@@ -793,9 +811,8 @@ class CryptoViewSet(viewsets.ViewSet):
                     }
                 )
             except Profile.DoesNotExist:
-                pass
+                logger.warning("Profile not found for SMS notification")
 
-            # Update ARTINA_Ballance
             artina = ARTINA_Ballance.objects.first()
             artina.artina_rial += fee
             artina.save()
@@ -804,8 +821,8 @@ class CryptoViewSet(viewsets.ViewSet):
         else:
             transactionINS.status = 'failed'
             transactionINS.save()
+            logger.error(f"Sale failed: {datam}")
             return Response({'error': 'Sale failed', 'info': datam}, status=status.HTTP_400_BAD_REQUEST)
-
 
     
     @action(detail=False, methods=['get'])
