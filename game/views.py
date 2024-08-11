@@ -245,7 +245,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         serializer = UserGameProfileSerializer(profiles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
    
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['post'])
     def user_profile(self, request):
         user = self.request.user 
         profile = UserGameProfile.objects.get(user=user)  
