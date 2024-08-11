@@ -211,7 +211,7 @@ class GameViewSet(viewsets.ModelViewSet):
         else:
             return Response({'message': 'Wait for your opponent'}, status=status.HTTP_200_OK)
 
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['post'])
     def user_game_sessions(self, request):
         user = self.request.user
         sessions = GameSession.objects.filter(user=user)
