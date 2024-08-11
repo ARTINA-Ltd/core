@@ -47,131 +47,347 @@ import time
 from decimal import Decimal 
 import logging
 from django.utils import timezone
-import os
-import json
-from web3 import Web3
 
+# Initialize Web3
+w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
 
-# Initialize logging
+# Initialize Logger
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-handler = logging.FileHandler('transactions.log')
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
+logging.basicConfig(level=logging.INFO)
+
+def transfer_nft(sender_private_key, sender_address, recipient_address, token_id):
+    try:
+        # Fetch the current nonce for the sender's address
+        nonce = w3.eth.getTransactionCount(sender_address, 'pending')
+        logger.info(f"Nonce fetched for sender address {sender_address}: {nonce}")
+
+        # Contract details
+        nft_contract_address = "0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a"
+        abi_filename = os.path.join(settings.BASE_DIR, "Account", "ABI.json")
+
+        # Read ABI from JSON file
+        with open(abi_filename, "r") as abi_file:
+            nft_contract_abi = json.load(abi_file)
+
+        # Set up the contract
+        nft_contract = w3.eth.contract(address=nft_contract_address, abi=nft_contract_abi)
+
+        # Get dynamic gas price
+        gas_price = w3.eth.gas_price
+        logger.info(f"Gas price fetched: {gas_price}")
+
+        # Estimate gas limit for the transaction
+        estimated_gas = nft_contract.functions.safeTransferFrom(sender_address, recipient_address, token_id).estimateGas({
+            'from': sender_address
+        }) + 10000  # Adding a buffer to the gas estimate
+        logger.info(f"Estimated gas with buffer: {estimated_gas}")
+
+        # Build the transaction
+        tx = nft_contract.functions.safeTransferFrom(sender_address, recipient_address, token_id).buildTransaction({
+            'chainId': 137,  # Polygon Mainnet Chain ID
+            'gas': estimated_gas,
+            'gasPrice': gas_price,
+            'nonce': nonce,
+            'from': sender_address,
+        })
+
+        logger.info(f"Transaction built: {tx}")
+
+        # Sign the transaction with the sender's private key
+        signed_txn = w3.eth.account.signTransaction(tx, sender_private_key)
+        logger.info(f"Transaction signed. Raw transaction: {signed_txn.rawTransaction.hex()}")
+
+        # Send the transaction
+        tx_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)
+        logger.info(f"Transaction sent. Hash: {tx_hash.hex()}")
+
+        # Wait for the transaction receipt
+        try:
+            receipt = w3.eth.waitForTransactionReceipt(tx_hash, timeout=120)  # Timeout set to 2 minutes
+            logger.info(f"Transaction receipt received: {receipt}")
+        except Exception as e:
+            logger.error(f"Error waiting for transaction receipt: {e}")
+            raise
+
+        if receipt.status != 1:
+            raise Exception("Transaction failed")
+
+        return receipt.transactionHash.hex()
+
+    except Exception as e:
+        logger.error(f"Error in transfer_nft: {e}")
+        return None
+
+def transfer_matic(to_address, amount):
+    COMPANY_WALLET_ADDRESS = '0x2293221D7c357FB04De9c7D0dEeBcA427407429D'
+    COMPANY_WALLET_PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"  # Securely get from env variable
+
+    try:
+        # Get dynamic gas price
+        gas_price = w3.eth.gas_price
+        logger.info(f"Gas price fetched: {gas_price}")
+
+        # Get nonce
+        nonce = w3.eth.getTransactionCount(COMPANY_WALLET_ADDRESS, 'pending')
+        logger.info(f"Nonce fetched for company wallet address {COMPANY_WALLET_ADDRESS}: {nonce}")
+
+        # Estimate gas limit for the transaction
+        estimated_gas = w3.eth.estimateGas({
+            'from': COMPANY_WALLET_ADDRESS,
+            'to': to_address,
+            'value': w3.toWei(amount, 'ether'),
+        }) + 10000  # Adding a buffer to the gas estimate
+        logger.info(f"Estimated gas with buffer: {estimated_gas}")
+
+        tx = {
+            'nonce': nonce,
+            'to': to_address,
+            'value': w3.toWei(amount, 'ether'),
+            'gas': estimated_gas,
+            'gasPrice': gas_price,
+            'chainId': 137  # Polygon Mainnet Chain ID
+        }
+
+        logger.info(f"Transaction to transfer MATIC: {tx}")
+
+        # Sign the transaction
+        signed_tx = w3.eth.account.signTransaction(tx, COMPANY_WALLET_PRIVATE_KEY)
+        logger.info(f"Transaction signed. Raw transaction: {signed_tx.rawTransaction.hex()}")
+
+        # Send the transaction
+        tx_hash = w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+        logger.info(f"Transaction sent. Hash: {tx_hash.hex()}")
+
+        # Wait for the transaction receipt
+        try:
+            receipt = w3.eth.waitForTransactionReceipt(tx_hash, timeout=120)  # Timeout set to 2 minutes
+            logger.info(f"Transaction receipt received: {receipt}")
+        except Exception as e:
+            logger.error(f"Error waiting for transaction receipt: {e}")
+            raise
+
+        if receipt.status != 1:
+            raise Exception("Transaction failed")
+
+        return receipt.transactionHash.hex()
+
+    except Exception as e:
+        logger.error(f"Error in transfer_matic: {e}")
+        return None
+
+def get_winner(token_id):
+    try:
+        nft = get_object_or_404(NFT, token_id=token_id)
+        sender = nft.owner
+        if nft.end_date >= timezone.now():
+            return Response({"error": "NFT has not expired."}, status=status.HTTP_400_BAD_REQUEST)
+
+        highest_bid = None
+        orders = Order.objects.filter(nft=nft, status=0)
+        for bid in orders:
+            if highest_bid is None or bid.eth > highest_bid.eth:
+                highest_bid = bid
+
+        nft.is_for_sale = False
+        nft.in_exhibition = False
+        nft.save()
+
+        if highest_bid is None:
+            return Response({"error": "No bids found for this NFT."}, status=status.HTTP_400_BAD_REQUEST)
+
+        highest_bid.report = 1
+        highest_bid.status = 1
+        highest_bid.save()
+        recipient = highest_bid.bidder
+        balance = UserBalance.objects.get(user=highest_bid.bidder)
+        balance.eth_untradable_balance -= highest_bid.eth
+        balance.save()
+
+        # Calculate and update ARTINA commission
+        artina = ARTINA_Ballance.objects.first()
+        commission = float(highest_bid.eth)
+        value = (1.5 * commission) / 100
+        logger.info(f"ARTINA commission value: {value}")
+        artina.artina_commision = value
+        artina.artina_commision_count += 1
+        artina.save()
+
+        # Update owner balance
+        balanceowner = UserBalance.objects.get(user=nft.owner)
+        total = highest_bid.eth - value
+        balanceowner.eth_balance += total
+        balanceowner.save()
+        NotifyUser.objects.create(user=highest_bid.bidder, text="You won the NFT and your balance has been updated")
+        order_Report(token_id)
+
+        # Transfer NFT
+        tx_hash = transfer_nft(sender_private_key=recipient.private_key, 
+                              sender_address=sender, 
+                              recipient_address=recipient.address, 
+                              token_id=token_id)
+        logger.info(f"NFT transfer result: {tx_hash}")
+
+        if not tx_hash:
+            raise Exception("NFT transfer failed")
+
+        recipient_data = {
+            "id": recipient.id,
+            "username": recipient.username,
+            "email": recipient.email,
+        }
+        phone_number = recipient.profile.phone_number
+
+        response = requests.post(
+            f"https://api.kavenegar.com/v1/"
+            f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
+            f"/verify/lookup.json",
+            data={
+                "receptor": phone_number,
+                "token1": recipient.profile.first_name,
+                "token2": token_id,
+                "template": "AccountChargeVerification"
+            }
+        )
+        logger.info(f"Notification sent to {phone_number}. Response: {response.json()}")
+
+        return Response({"winner": recipient_data, "price": highest_bid.eth}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        logger.error(f"Error in get_winner: {e}")
+        return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+def transfer_matic(to_address, amount):
+    COMPANY_WALLET_ADDRESS = '0x2293221D7c357FB04De9c7D0dEeBcA427407429D'
+    COMPANY_WALLET_PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"  # Securely get from env variable
 
-# def get_winner(token_id):
-#     try:
-#         nft = get_object_or_404(NFT, token_id=token_id)
-#         sender = nft.owner
-#         if nft.end_date >= timezone.now():
-#             return Response({"error": "NFT has not expired."}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        # Get dynamic gas price
+        gas_price = w3.eth.gas_price
+        logger.info(f"Gas price fetched: {gas_price}")
 
-#         highest_bid = None
-#         orders = Order.objects.filter(nft=nft, status=0)
-#         for bid in orders:
-#             if highest_bid is None or bid.eth > highest_bid.eth:
-#                 highest_bid = bid
+        # Get nonce
+        nonce = w3.eth.getTransactionCount(COMPANY_WALLET_ADDRESS, 'pending')
+        logger.info(f"Nonce fetched for company wallet address {COMPANY_WALLET_ADDRESS}: {nonce}")
 
-#         nft.is_for_sale = False
-#         nft.in_exhibition = False
-#         nft.save()
+        # Estimate gas limit for the transaction
+        estimated_gas = w3.eth.estimateGas({
+            'from': COMPANY_WALLET_ADDRESS,
+            'to': to_address,
+            'value': w3.toWei(amount, 'ether'),
+        }) + 10000  # Adding a buffer to the gas estimate
+        logger.info(f"Estimated gas with buffer: {estimated_gas}")
 
-#         if highest_bid is None:
-#             return Response({"error": "No bids found for this NFT."}, status=status.HTTP_400_BAD_REQUEST)
+        tx = {
+            'nonce': nonce,
+            'to': to_address,
+            'value': w3.toWei(amount, 'ether'),
+            'gas': estimated_gas,
+            'gasPrice': gas_price,
+            'chainId': 137  # Polygon Mainnet Chain ID
+        }
 
-#         highest_bid.report = 1
-#         highest_bid.status = 1
-#         highest_bid.save()
-#         recipient = highest_bid.bidder
-#         balance= UserBalance.objects.get(user=highest_bid.bidder)
-#         balance.eth_untradable_balance-= highest_bid.eth
-#         balance.save()
+        logger.info(f"Transaction to transfer MATIC: {tx}")
 
-#         #artina
-#         artina=ARTINA_Ballance.objects.first()
-#         commision=float(highest_bid.eth)
-#         value=(1.5*commision)/100
-#         print(f"value is {value}")
-#         artina.artina_commision=value
-#         artina.artina_commision_count += 1
-#         artina.save
-#         #owner
+        # Sign the transaction
+        signed_tx = w3.eth.account.signTransaction(tx, COMPANY_WALLET_PRIVATE_KEY)
+        logger.info(f"Transaction signed. Raw transaction: {signed_tx.rawTransaction.hex()}")
 
-#         balanceowner= UserBalance.objects.get(user=nft.owner)
-#         total= highest_bid.eth - value
-#         balanceowner.eth_balance += total
-#         balanceowner.save()
-#         NotifyUser.objects.create(user=bid.bidder, text="You won the nft and your balance updated")
-#         order_Report(token_id)
-#         result = transferNFT(token_id, sender, recipient)
-#         print(f"Result: {result}")
+        # Send the transaction
+        tx_hash = w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+        logger.info(f"Transaction sent. Hash: {tx_hash.hex()}")
 
-#         recipient_data = {
-#             "id": recipient.id,
-#             "username": recipient.username,
-#             "email": recipient.email,
-#         }
-#         phone_number=recipient.profile.phone_number
+        # Wait for the transaction receipt
+        receipt = w3.eth.waitForTransactionReceipt(tx_hash, timeout=120)  # Timeout set to 2 minutes
+        logger.info(f"Transaction receipt received: {receipt}")
 
-#         response = requests.post(
-#                         f"https://api.kavenegar.com/v1/"
-#                         f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
-#                         f"/verify/lookup.json",
-#                         data={
-#                             "receptor": phone_number,
-#                             "token1": recipient.profile.first_name,
-#                             "token2":  token_id,
-#                             "template": "AccountChargeVerification"
-#                                 }
-#                                 )
-#         return Response({"winner": recipient_data, "price": highest_bid.eth}, status=status.HTTP_200_OK)
-#     except Exception as e:
-#         print(f"Error in get_winner: {e}")
-#         return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-# from web3 import Web3
-# import os
+        if receipt.status != 1:
+            raise Exception("Transaction failed")
 
+        return receipt.transactionHash.hex()
 
+    except Exception as e:
+        logger.error(f"Error in transfer_matic: {e}")
+        return None
 
+def get_winner(token_id):
+    try:
+        nft = get_object_or_404(NFT, token_id=token_id)
+        sender = nft.owner
+        if nft.end_date >= timezone.now():
+            return Response({"error": "NFT has not expired."}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Sign the transaction
-    signed_tx = w3.eth.account.signTransaction(tx, COMPANY_WALLET_PRIVATE_KEY)
+        highest_bid = None
+        orders = Order.objects.filter(nft=nft, status=0)
+        for bid in orders:
+            if highest_bid is None or bid.eth > highest_bid.eth:
+                highest_bid = bid
 
-    # Send the transaction
-    tx_hash = w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+        nft.is_for_sale = False
+        nft.in_exhibition = False
+        nft.save()
 
-    # Wait for the transaction receipt
-    receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+        if highest_bid is None:
+            return Response({"error": "No bids found for this NFT."}, status=status.HTTP_400_BAD_REQUEST)
 
-    return receipt.transactionHash
+        highest_bid.report = 1
+        highest_bid.status = 1
+        highest_bid.save()
+        recipient = highest_bid.bidder
+        balance = UserBalance.objects.get(user=highest_bid.bidder)
+        balance.eth_untradable_balance -= highest_bid.eth
+        balance.save()
 
+        # Calculate and update ARTINA commission
+        artina = ARTINA_Ballance.objects.first()
+        commission = float(highest_bid.eth)
+        value = (1.5 * commission) / 100
+        logger.info(f"ARTINA commission value: {value}")
+        artina.artina_commision = value
+        artina.artina_commision_count += 1
+        artina.save()
 
-#def transfer_matic(to_address, amount):
-   # COMPANY_WALLET_ADDRESS = '0x2293221D7c357FB04De9c7D0dEeBcA427407429D'
- #   COMPANY_WALLET_PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
-    
-    #base_fee_per_gas = 2440  # in wei (this is very low for current standards)
-    #priority_fee = 50000000000  # 50 Gwei in wei for priority fee
-  #  gas_price = 0.015 * 10**9  # Convert 172.5 GWei to wei    
-    #gas_price = base_fee_per_gas + priority_fee
-#    nonce = w3.eth.getTransactionCount(COMPANY_WALLET_ADDRESS,'pending')
-#    tx = {
-      #  'nonce': nonce,
-     #   'to': to_address,
-     #   'value': w3.toWei(amount, 'ether'),
-    #    'gas': 2000000,
-    #    'gasPrice': int(gas_price),
-   #     'chainId': 137
-#    }
+        # Update owner balance
+        balanceowner = UserBalance.objects.get(user=nft.owner)
+        total = highest_bid.eth - value
+        balanceowner.eth_balance += total
+        balanceowner.save()
+        NotifyUser.objects.create(user=highest_bid.bidder, text="You won the NFT and your balance has been updated")
+        order_Report(token_id)
 
- #   signed_tx = w3.eth.account.signTransaction(tx, COMPANY_WALLET_PRIVATE_KEY)
- #   tx_hash = w3.eth.sendRawTransaction(signed_tx.rawTransaction)
- #   w3.eth.waitForTransactionReceipt(tx_hash)
-#
- #   return tx_hash
+        # Transfer NFT
+        result = transfer_nft(sender_private_key=recipient.private_key, 
+                              sender_address=sender, 
+                              recipient_address=recipient.address, 
+                              token_id=token_id)
+        logger.info(f"NFT transfer result: {result}")
+
+        recipient_data = {
+            "id": recipient.id,
+            "username": recipient.username,
+            "email": recipient.email,
+        }
+        phone_number = recipient.profile.phone_number
+
+        response = requests.post(
+            f"https://api.kavenegar.com/v1/"
+            f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
+            f"/verify/lookup.json",
+            data={
+                "receptor": phone_number,
+                "token1": recipient.profile.first_name,
+                "token2": token_id,
+                "template": "AccountChargeVerification"
+            }
+        )
+        logger.info(f"Notification sent to {phone_number}. Response: {response.json()}")
+
+        return Response({"winner": recipient_data, "price": highest_bid.eth}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        logger.error(f"Error in get_winner: {e}")
+        return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class OrderViewSet(viewsets.ViewSet):
     queryset = Order.objects.all()
