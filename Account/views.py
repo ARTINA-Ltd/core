@@ -44,6 +44,7 @@ import os
 import time
 import json
 from django.conf import settings
+from django.utils import timezone
 
 
 class NotifyUserViewSet(viewsets.ModelViewSet):
@@ -544,7 +545,7 @@ class WithdrawalViewSet(viewsets.ModelViewSet):
             return Response({"detail": "Insufficient balance."}, status=status.HTTP_400_BAD_REQUEST)
 
         # Check if the user has already made two withdrawal requests today
-        today = now().date()
+        today = timezone.now().date()
         requests_today = Withdrawal_list.objects.filter(user=user, created_at__date=today).count()
         if requests_today >= 2:
             return Response({"detail": "You can only make two withdrawal requests per day."}, status=status.HTTP_400_BAD_REQUEST)
@@ -557,7 +558,7 @@ class WithdrawalViewSet(viewsets.ModelViewSet):
         # Create the withdrawal request
         withdrawal = Withdrawal_list.objects.create(
             user=user,
-            shaba_number=user_profile.shaba_number,
+            shaba_number=user.profile.shaba_number,
             amount=int(amount)
         )
 
