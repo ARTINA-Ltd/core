@@ -21,6 +21,8 @@ router.register(r'nakamigos-listings', views.NakamigosListingsViewSet, basename=
 router.register(r'UsersWithNFTsViewSet', views.UsersWithNFTsViewSet, basename='UsersWithNFTsViewSet')
 # router.register(r'listingViewSet', views.listingViewSet, basename='listingViewSet')
 router.register(r'collection/(?P<username>[^/.]+)/nfts', views.UserNFTViewSet, basename='user_nfts')
+router.register(r'transfers', views.TransferViewSet, basename='transfer')
+
 
 
 
