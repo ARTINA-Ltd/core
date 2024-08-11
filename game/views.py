@@ -213,7 +213,7 @@ class GameViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def user_game_sessions(self, request):
-        user = request.user
+        user = self.request.user
         sessions = GameSession.objects.filter(user=user)
         result = []
 
