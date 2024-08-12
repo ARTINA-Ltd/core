@@ -727,7 +727,7 @@ class CryptoViewSet(viewsets.ViewSet):
             logger.info("Purchase completed successfully")
 
             # Update the user's balance
-            balance_update = self.updating_balance(user_id=user.id, currency=symbol, amount=amount, side="deposit")
+            balance_update = updating_balance(user_id=user.id, currency=symbol, amount=amount, side="deposit")
             if balance_update.status_code != status.HTTP_200_OK:
                 logger.error("Failed to update balance after purchase")
                 return Response({'error': 'Failed to update balance'}, status=status.HTTP_400_BAD_REQUEST)
