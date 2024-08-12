@@ -685,6 +685,16 @@ class CryptoViewSet(viewsets.ViewSet):
         symbol = request.data.get('symbol')
         amount = float(request.data.get('amount'))  # Ensure amount is a float
         price = float(request.data.get('price'))  # Ensure price is a float
+                # Map for balance fields
+        balance_fields = {
+            'MATICTMN': 'matic_balance',
+            'ETHTMN': 'eth_balance',
+            'rial': 'rial_available_balance'
+        }
+        user_balance = UserBalance.objects.get(user=user)
+        
+        balance_field = balance_fields['rial']
+        current_balance = getattr(user_balance, balance_field)
 
         # Calculate the total cost of the purchase
         total = amount * price
@@ -726,6 +736,30 @@ class CryptoViewSet(viewsets.ViewSet):
             transactionINS.save()
             logger.info("Purchase completed successfully")
 
+            setattr(user_balance, balance_field, current_balance - total)
+            user_balance.save()
+
+            fee = 10000
+
+
+            try:
+                phone_number = user.profile.phone_number
+                response = requests.post(
+                    "https://api.kavenegar.com/v1/4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D/verify/lookup.json",
+                    data={
+                        "receptor": phone_number,
+                        "token1": user.profile.first_name,
+                        "token2": total,
+                        "template": "AccountChargeVerification"
+                    }
+                )
+            except Profile.DoesNotExist:
+                logger.warning("Profile not found for SMS notification")
+
+            artina = ARTINA_Ballance.objects.first()
+            artina.artina_rial += fee
+            artina.save()
+
             # Update the user's balance
             balance_update = updating_balance(user_id=user.id, currency=symbol, amount=amount, side="deposit")
             if balance_update.status_code != status.HTTP_200_OK:
@@ -762,31 +796,6 @@ class CryptoViewSet(viewsets.ViewSet):
             return {'status': response.status_code, 'message': 'Failed to retrieve account balances'}
             
 
-
-    @action(detail=False, methods=['post'])
-    def get_br(self,request):
-        logger.info("get_br called")
-        user = self.request.user
-        id=user.id
-        logger.debug(f"User ID: {id}")
-        price=request.data.get("price")
-        if not user:
-            logger.warning("get_br: User not found")
-            return JsonResponse({"error": "user is required"}, status=400)
-        
-        try:
-            result = self.BackBuyCrypto(id=id, symbol="ETHTMN",amount=0.001,price=price)
-            logger.debug(f"BackBuyCrypto result: {result}")
-
-            if isinstance(result, Response):
-                logger.warning("get_br: Error within BackBuyCrypto")
-                return result
-            return JsonResponse(result, status=200)
-        except Exception as e:
-            error_message = f"An unexpected error occurred: {str(e)}"
-            logger.error(error_message)
-            return JsonResponse({"error": error_message}, status=500)
-            
 
 
     @action(detail=False, methods=['post'])
