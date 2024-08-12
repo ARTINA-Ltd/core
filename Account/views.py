@@ -737,7 +737,7 @@ class CryptoViewSet(viewsets.ViewSet):
             logger.error(f"Purchase failed: {datam}")
             return Response({'error': 'Purchase failed', 'details': datam}, status=status.HTTP_400_BAD_REQUEST)
 
-    def check_tmn_balance(self, user, total):
+    def check_tmn_balance(self, total):
         logger.info("Checking TMN balance")
         url = 'https://api.wallex.ir/v1/account/balances'
         headers = {
