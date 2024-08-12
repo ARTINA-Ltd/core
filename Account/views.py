@@ -46,6 +46,43 @@ import json
 from django.conf import settings
 from django.utils import timezone
 
+polygon_w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
+
+# Address of the WETH (Wrapped ETH) token on the Polygon network
+WETH_CONTRACT_ADDRESS = '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619'
+
+def get_balance(user):
+    user_wallet = Wallet.objects.filter(user=user).first()
+    
+    if not user_wallet:
+        return Response({"error": "Wallet not found for the user."}, status=status.HTTP_404_NOT_FOUND)
+    
+    try:
+        # Get MATIC balance on Polygon
+        matic_balance_wei = polygon_w3.eth.get_balance(user_wallet.address)
+        matic_balance_matic = polygon_w3.fromWei(matic_balance_wei, 'ether')
+
+        # Get WETH (Wrapped ETH) balance on Polygon
+        weth_contract = polygon_w3.eth.contract(address=WETH_CONTRACT_ADDRESS, abi=[
+            {
+                'constant': True,
+                'inputs': [{'name': '_owner', 'type': 'address'}],
+                'name': 'balanceOf',
+                'outputs': [{'name': 'balance', 'type': 'uint256'}],
+                'type': 'function'
+            }
+        ])
+        weth_balance_wei = weth_contract.functions.balanceOf(user_wallet.address).call()
+        weth_balance_eth = polygon_w3.fromWei(weth_balance_wei, 'ether')
+
+        return Response({
+            "matic_balance": matic_balance_matic,
+            "eth_balance": weth_balance_eth
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
 class NotifyUserViewSet(viewsets.ModelViewSet):
     queryset = NotifyUser.objects.all()
@@ -438,20 +475,37 @@ class TransactionViewSet(viewsets.ModelViewSet):
             # Add other balance fields as needed
             }
             return Response(balance, status=status.HTTP_200_OK)
+        else:
+            polygon_w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
 
-        balance = polygon_w3.eth.getBalance(user_wallet.address)
-        print(f"Balance: {balance}")
-        user_wallet.balance=balance
-        user_wallet.save
-        balance = {
-            'matic_balance': user_wallet.MATIC_balance,
-            'wallet_address' : user_wallet.address,
-            'eth_balance':user_wallet.ETH_balance
+            try:
+                # Get MATIC balance on Polygon
+                matic_balance_wei = polygon_w3.eth.get_balance(user_wallet.address)
+                matic_balance_matic = polygon_w3.fromWei(matic_balance_wei, 'ether')
 
-            # Add other balance fields as needed
-        }
+                # Get WETH (Wrapped ETH) balance on Polygon
+                weth_contract = polygon_w3.eth.contract(address=WETH_CONTRACT_ADDRESS, abi=[
+            {
+                'constant': True,
+                'inputs': [{'name': '_owner', 'type': 'address'}],
+                'name': 'balanceOf',
+                'outputs': [{'name': 'balance', 'type': 'uint256'}],
+                'type': 'function'
+            }
+        ])
+                weth_balance_wei = weth_contract.functions.balanceOf(user_wallet.address).call()
+                weth_balance_eth = polygon_w3.fromWei(weth_balance_wei, 'ether')
+                balance = {
+                    'matic_balance': user_wallet.MATIC_balance,
+                    'wallet_address' : user_wallet.address,
+                    'eth_balance':user_wallet.ETH_balance
+                    }
+                return Response(balance, status=status.HTTP_200_OK)
+            except Exception as e:
+                return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        return Response(balance, status=status.HTTP_200_OK)
+
+
 
 class UserBalanceViewSet(viewsets.ModelViewSet):
     queryset = UserBalance.objects.all()
@@ -1176,41 +1230,6 @@ class PaymentGateViewSet(viewsets.ViewSet):
 
 
 # Connect to the Polygon network
-polygon_w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
-
-# Address of the WETH (Wrapped ETH) token on the Polygon network
-WETH_CONTRACT_ADDRESS = '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619'
-
-def get_balance(user):
-    user_wallet = Wallet.objects.filter(user=user).first()
-    
-    if not user_wallet:
-        return Response({"error": "Wallet not found for the user."}, status=status.HTTP_404_NOT_FOUND)
-    
-    try:
-        # Get MATIC balance on Polygon
-        matic_balance_wei = polygon_w3.eth.get_balance(user_wallet.address)
-        matic_balance_matic = polygon_w3.fromWei(matic_balance_wei, 'ether')
-
-        # Get WETH (Wrapped ETH) balance on Polygon
-        weth_contract = polygon_w3.eth.contract(address=WETH_CONTRACT_ADDRESS, abi=[
-            {
-                'constant': True,
-                'inputs': [{'name': '_owner', 'type': 'address'}],
-                'name': 'balanceOf',
-                'outputs': [{'name': 'balance', 'type': 'uint256'}],
-                'type': 'function'
-            }
-        ])
-        weth_balance_wei = weth_contract.functions.balanceOf(user_wallet.address).call()
-        weth_balance_eth = polygon_w3.fromWei(weth_balance_wei, 'ether')
-
-        return Response({
-            "matic_balance": matic_balance_matic,
-            "eth_balance": weth_balance_eth
-        }, status=status.HTTP_200_OK)
-    except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 
