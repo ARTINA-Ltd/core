@@ -30,17 +30,16 @@
 
 #     for nft in nfts_to_process:
 #         get_winner.delay(nft.token_id)  # Use delay to enqueue the task asynchronously
-#         nft.is_for_sale = False  # Assuming you have a field to track if the winner has been processed
-#         nft.save()
-
+#         nft.is_for_sale = Fal
 # tasks.py
+from __future__ import absolute_import, unicode_literals
+
 from datetime import timedelta
 from celery import shared_task
 #from django.utils import timezone
 from .models import NFT
 from .views import get_winner
 #import time
-from __future__ import absolute_import, unicode_literals
 from celery import shared_task
 from datetime import datetime
 import pytz
