@@ -228,7 +228,7 @@ class GameViewSet(viewsets.ModelViewSet):
                 'choice': session.choice,
                 'opponent_choice': opponent_session.choice if opponent_session else None,
                 'opponent_profile_picture':user_profile.profile_picture,
-                'opponent_username':opponent_session.user.username,
+                'opponent_username':opponent_session.user.username if opponent_session else None,
                 'result': session.result,
                 'is_active': game.is_active,
                 'created_at': game.created_at,
