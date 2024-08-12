@@ -465,7 +465,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def get_balance(self, request):
         user = self.request.user
-        user_wallet = Wallet.objects.filter(user=user).first()
+        user_wallet = Wallet.objects.get(user=user)
         print(f"user_wallet is: {user_wallet}")
         if not user_wallet:
             balance = {
@@ -485,20 +485,19 @@ class TransactionViewSet(viewsets.ModelViewSet):
 
                 # Get WETH (Wrapped ETH) balance on Polygon
                 weth_contract = polygon_w3.eth.contract(address=WETH_CONTRACT_ADDRESS, abi=[
-            {
+                {
                 'constant': True,
                 'inputs': [{'name': '_owner', 'type': 'address'}],
                 'name': 'balanceOf',
                 'outputs': [{'name': 'balance', 'type': 'uint256'}],
                 'type': 'function'
-            }
-        ])
+                } ])
                 weth_balance_wei = weth_contract.functions.balanceOf(user_wallet.address).call()
                 weth_balance_eth = polygon_w3.fromWei(weth_balance_wei, 'ether')
                 balance = {
-                    'matic_balance': user_wallet.MATIC_balance,
+                    'matic_balance': matic_balance_matic,
                     'wallet_address' : user_wallet.address,
-                    'eth_balance':user_wallet.ETH_balance
+                    'eth_balance':weth_balance_eth
                     }
                 return Response(balance, status=status.HTTP_200_OK)
             except Exception as e:
