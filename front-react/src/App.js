@@ -38,6 +38,7 @@ import RedirectedPage from "./Pages/RedirectPage";
 import WhitePaper from "./Pages/WhitePaper";
 import PreMint from "./Pages/PreMint";
 import NTS from "./Pages/NTS";
+import PWF from "./Pages/PlayWithFriend";
 
 // HEAD ADMIN_PANEL BRANCH
 import Authentications from "./Pages/Authentications";
@@ -135,6 +136,7 @@ export default () => {
                   <Route exact path="help-create-exhibition" element={<HelpCreateExhibition />} />
                   <Route exact path="help-create-wallet" element={<HelpCreateWallet />} />
                   <Route exact path="NTS" element={<NTS />} />
+                  <Route exact path="NTS/play-with-friend" element={<PWF />} />
 
                   <Route exact path="metaverse_explanation" element={<MetaExplanation />} />
                   <Route exact path="exhibition-list" element={<ExhibitionList />} />

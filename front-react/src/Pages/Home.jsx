@@ -9,11 +9,13 @@ import Innovations from "../components/Home/Innovations";
 import MostFrequentQuestions from "../components/Home/MostFreQuestions";
 import GasPrice from "../components/Home/GasPrice";
 import Milesone from "./../components/Milestones/Milesone";
+import Announcement from "../components/Announcement/Announcement.jsx";
 
 const HeroBanner = lazy(() => import("../components/HeroBanner/HeroBanner.jsx"));
 const Home = () => {
   return (
     <TestLayout wfull={true}>
+      <Announcement />
       <Suspense fallback={<span className="loading loading-spinner loading-lg"></span>}>
         <HeroBanner />
       </Suspense>

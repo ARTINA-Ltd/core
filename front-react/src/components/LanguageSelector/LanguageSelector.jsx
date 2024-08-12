@@ -7,7 +7,7 @@ const LanguageSelector = () => {
   const { t } = useTranslation();
   return (
     <Fragment>
-      <div className="dropdown z-20 dropdown-hover text-2xl ease-in-out duration-300 transition-all">
+      <div className="dropdown z-[60] dropdown-hover text-2xl ease-in-out duration-300 transition-all">
         <div tabIndex={0} role="button" className="btn bg-transparent hover:bg-base-200 w-full border-none shadow-none">
           <IoLanguage className="w-8 h-8 text-primary hover:text-secondary ease-in-out " />
         </div>
