@@ -4,8 +4,10 @@ import { GiDeadWood } from "react-icons/gi";
 import { FaRegLightbulb } from "react-icons/fa";
 import { GrMoney } from "react-icons/gr";
 import { MdOutlineAttachMoney, MdSell } from "react-icons/md";
+import { useNavigate } from "react-router";
 
 const FlowComponent = () => {
+  const navigate = useNavigate();
   return (
     <div className=" w-[80vw] mx-auto sm:w-full text-center my-12 bg-base-100 rounded-md p-4" style={{ direction: "ltr" }}>
       <h1 className="text-6xl my-4">Explore</h1>
@@ -24,13 +26,18 @@ const FlowComponent = () => {
             </div>
           </div>
 
-          <div className="my-4 z-[6] -translate-x-7 ">
+          <div
+            onClick={() => {
+              navigate("/nft-details/66");
+            }}
+            className="my-4 z-[6] -translate-x-7 cursor-pointer"
+          >
             <div className="w-fit text-5xl  rounded-full text-black bg-secondary p-2 mx-auto">
               <FaRegLightbulb />
             </div>
             <div className="w-1 h-12 mx-auto bg-secondary"></div>
             <div className="flex justify-center items-center ">
-              <div className="w-56 text-center lg:w-36 lg:text-xs md:w-24 md:text-[9px]sm:w-16  h-10 bg-secondary flex justify-center items-center">
+              <div o className="w-56 text-center lg:w-36 lg:text-xs md:w-24 md:text-[9px]sm:w-16  h-10 bg-secondary flex justify-center items-center">
                 <p className="w-fit text-right text-black z-50">Create NFT</p>
               </div>
               <div className="w-[32px] h-[32px] rotate-45 border-r-4 border-t-4  border-base-300 bg-secondary -translate-x-1/2"></div>
