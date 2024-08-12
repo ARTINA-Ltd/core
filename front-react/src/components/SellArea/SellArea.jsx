@@ -63,8 +63,13 @@ const SellArea = ({ tokenId }) => {
         console.log(response);
         Notify.success("با موفقیت ثبت شد");
       })
-      .catch(() => {
-        Notify.failure("خطا در ثبت اطلاعات");
+      .catch((error) => {
+        if (error.response.status === 400) {
+          Notify.failure("موجودی حساب شما برای پرداخت هزینه شبکه کافی نیست");
+        }
+        else {
+          Notify.failure("خطا در ثبت اطلاعات");
+        }
       });
   };
 

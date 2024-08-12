@@ -388,7 +388,7 @@ const NFTDetails = () => {
                 <div className="text-[16px] mx-auto">{data ? data.transactionIndex : ""}</div>
               </div>
             </div>
-            <div className="flex gap-12 items-center sm:items-start h-full sm:flex-col sm:gap-2 sm:mb-4">
+            <div className="flex gap-12 justify-between items-center sm:items-start h-full sm:flex-col sm:gap-2 sm:mb-4">
               <div className="flex justify-between gap-8">
                 <div className="text-[16px] opacity-40">{t("collectionName")}</div>
                 <div className="text-[16px]">{data && data.collection ? data.collection.name : <div className="text-[16px]">ندارد</div>}</div>
@@ -406,8 +406,8 @@ const NFTDetails = () => {
                 {data && data.traits ? (
                   data.traits.map((item, index) => (
                     <div key={index} className="flex justify-between gap-10">
-                      <div className="text-[16px]">{index + 1}-</div>
-                      <div className="text-[16px] opacity-40 text-cyan-900">{item.name}:</div>
+                      {/* <div className="text-[16px] opacity-40">{index + 1}-</div> */}
+                      <div className="text-[16px] opacity-40 text-cyan-900">{index + 1}- {item.name}:</div>
                       <div className="text-[16px]">{item.type}</div>
                     </div>
                   ))
@@ -468,7 +468,7 @@ const NFTDetails = () => {
                   <div className="w-full text-center font-b6 text-xl sm:mb-8">ثبت پیشنهاد جدید</div>
                   <div className="flex gap-1 w-full flex-col">
                     <div className="flex items-center justify-between sm:my-2">
-                      <div className=" w-32">
+                      <div className=" w-1/2">
                         <SimpleInput
                           type={"number"}
                           className={"rounded-lg "}
