@@ -621,7 +621,7 @@ class WithdrawalViewSet(viewsets.ModelViewSet):
 
 import logging
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('cryptoTransaction')
 
 class CryptoViewSet(viewsets.ViewSet):
 
