@@ -40,7 +40,6 @@ from celery import shared_task
 from .models import NFT
 from .views import get_winner
 #import time
-@shared_task
 from __future__ import absolute_import, unicode_literals
 from celery import shared_task
 from datetime import datetime
