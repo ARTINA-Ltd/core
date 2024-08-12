@@ -6,6 +6,7 @@ from celery.schedules import crontab
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ARTINA.settings')
+app.conf.timezone = 'Asia/Tehran'
 
 # create a Celery instance and configure it using the settings from Django
 app = Celery('ARTINA')
