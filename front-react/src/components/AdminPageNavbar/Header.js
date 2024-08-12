@@ -11,10 +11,10 @@ import { GoBell } from "react-icons/go";
 import i18n from "../../i18n";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "./../LanguageSelector/LanguageSelector";
-import artinaLogo from "../../assets/images/Artina-Logo-1.jpeg"
-import authenticationImage from "../../assets/images/authentication.png"
-import chatBubbleImage from "../../assets/images/chat-bubble.png"
-import virtualSpace from "../../assets/images/virtual-space.png"
+import artinaLogo from "../../assets/images/Artina-Logo-1.jpeg";
+import authenticationImage from "../../assets/images/authentication.png";
+import chatBubbleImage from "../../assets/images/chat-bubble.png";
+import virtualSpace from "../../assets/images/virtual-space.png";
 
 const Header = ({ rev = false }) => {
   const [menuIsVisible, setMenuVisible] = useState(false);
@@ -114,7 +114,7 @@ const Header = ({ rev = false }) => {
   return (
     <div>
       <header>
-        <div className={`flex justify-center h-[80px] sm:h-[60px] ${rev ? "" : "from-[#f9f9f9] bg-gradient-to-b"}  font-b3`}>
+        <div className={`flex justify-center h-[80px] sm:h-[60px]  ${rev ? "" : "from-[#f9f9f9] bg-gradient-to-b"}  font-b3`}>
           <div className="flex items-center justify-between w-[90%] justify-self-center">
             <div className="flex items-center gap-8 text-sm lg:hidden">
               {NotActiveItems.map((item, index) => (

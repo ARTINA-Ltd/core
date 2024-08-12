@@ -75,7 +75,7 @@ const PreMint = () => {
               </div>
             </div>
             <div className="w-1/2 h-full flex-col items-center justify-center lg:w-full">
-              <img src="http://api.artina.org/static/images/00_testgif_V2ZOfKU.gif" className=" object-cover m-auto rounded-2xl" alt="" />
+              <img src="http://api.artina.org/static/images/00_testgif.gif" className=" object-cover m-auto rounded-2xl" alt="" />
             </div>
           </SimpleCard>
         </div>

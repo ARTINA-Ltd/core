@@ -111,6 +111,7 @@
   "inDate": "Sent In",
   "linkWallet": "Link Your Wallet",
   "mintingNotif": "Mint in Process. It may take a while...",
+  "tryAgain": "Try Again",
   "mintSuccessNotif": "Your request has been successfully registered",
   "mintLowBalanceNotif": "Your account balance is insufficient, please top up your wallet first",
   "error": "Error",
@@ -137,5 +138,7 @@
   "sell": "Sell",
   "collapse": "Collapse",
   "collectionName": "Name of Collection",
-  "addingLater": "This feature will be added in the future."
+  "addingLater": "This feature will be added in the future.",
+  "exhibitions": "Exhibitions",
+  "identity": "First, you need to verify your identity on the profile page"
 }

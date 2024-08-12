@@ -8,20 +8,38 @@ import NTSNavbar from "../components/NTSNavbar/NTSNavbar.jsx";
 import PaperRockScissors from "../components/Nts/PaperRockScissors.jsx";
 import axios from "axios";
 import "../components/Nts/Styles.css";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../App.js";
+import Dialog from "../components/Nts/Dialog.jsx";
+import BorderButton from "../components/Buttons/BorderButton.jsx";
 
 const NTS = () => {
   const user = useContext(UserContext);
-
   const [sessionId, setSessionId] = useState(0);
-  const [choice, setChoice] = useState("");
+  const [selectedMove, setSelectedMove] = useState("");
+  const [refresh, setRefresh] = useState(false);
+  const handleUserChoice = (choice) => {
+    setSelectedMove(choice);
+  };
+  const [serverResponse, setServerResponse] = useState("");
+  const [status, setStatus] = useState("Pending");
+
+  useEffect(() => {
+    axios
+      .get("https://api.artina.org/api/game/leaderboard/")
+      .then((e) => {
+        console.log(e.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
 
   const startNewSessionSolo = () => {
     axios
       .post(
         "https://api.artina.org/api/game/games/create_play_solo/",
-        { id: user.id },
+        { id: user?.data.id },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
@@ -30,21 +48,10 @@ const NTS = () => {
         }
       )
       .then((e) => {
-        setSessionId(e.data.data);
-        console.log(e.data);
-      });
-  };
-  const playFriend = () => {
-    axios
-      .post("https://api.artina.org/api/game/games/create_play_solo/", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-        },
+        console.log(e.data.id);
+        setSessionId(e.data.id);
       })
-      .then((e) => {
-        setSessionId(e.data);
-        console.log(e.data);
-      });
+      .catch();
   };
 
   const playSolo = () => {
@@ -52,7 +59,7 @@ const NTS = () => {
       .post(
         `https://api.artina.org/api/game/games/${sessionId}/play_solo/`,
         {
-          choice: "paper",
+          choice: selectedMove,
         },
         {
           headers: {
@@ -61,13 +68,15 @@ const NTS = () => {
         }
       )
       .then((e) => {
-        console.log(e.data);
+        setRefresh(!refresh);
+        setStatus(e.data.result);
+        setServerResponse(e.data.server_choice);
       });
   };
 
   return (
     <>
-      <NTSNavbar />
+      <NTSNavbar refetch={refresh} />
 
       <div className="z-10 p-8 bg-base-100 w-[99vw] overflow-hidden">
         <NightSky />
@@ -99,23 +108,25 @@ const NTS = () => {
             </div>
           </div>
         </div>
-
         <div className="mt-32 z-10">
           <h1 className="text-center text-7xl w-fit mx-auto border-none neon-container">Play!</h1>
-          <div className="text-7xl border-b-2 border-b-base-content border-opacity-25 pb-12 text-accent-content text-center flex gap-2 justify-around my-16">
-            <button onClick={startNewSessionSolo} className="flex  cursor-pointer items-center justify-center neon-container neon-border  rounded-[100%] w-[20rem] p-8 ">
+          <div className="text-7xl border-b-2 border-b-base-content border-opacity-25 pb-12  text-center flex gap-2 justify-around my-16">
+            <button onClick={startNewSessionSolo} className="flex cursor-pointer items-center justify-center neon-container neon-border rounded-[100%] w-[20rem] p-8 ">
               <h1 className="">Solo</h1>
             </button>
             <button className="flex text-7xl cursor-pointer items-center justify-center neon-container neon-border  rounded-[100%] w-[20rem] p-8 ">
-              <h1 className="">With Friends</h1>
+              <h1 className="" onClick={() => document.getElementById("frirens-list").showModal()}>
+                With Friends
+              </h1>
             </button>
           </div>
         </div>
-        <div className="" onClick={playSolo}>
-          test Play
+        <PaperRockScissors serverResponse={serverResponse} status={status} onChoice={handleUserChoice} />
+        <div className="mx-auto w-fit">
+          <BorderButton onClick={playSolo}>Start the game</BorderButton>
         </div>
-        <PaperRockScissors />
       </div>
+      {user && <Dialog username={user.data.username} />}
     </>
   );
 };

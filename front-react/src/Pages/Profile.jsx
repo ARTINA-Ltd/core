@@ -372,7 +372,9 @@ function Profile() {
           userChange();
         })
         .catch((e) => {
-          Notify.failure("خطا");
+          if (e.response && e.response.status === 400) {
+            Notify.failure("لطفا تمامی فیلد ها را پر کنید");
+          }
         });
     }
   }

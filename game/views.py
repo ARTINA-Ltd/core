@@ -211,21 +211,24 @@ class GameViewSet(viewsets.ModelViewSet):
         else:
             return Response({'message': 'Wait for your opponent'}, status=status.HTTP_200_OK)
 
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['post'])
     def user_game_sessions(self, request):
-        user = request.user
+        user = self.request.user
         sessions = GameSession.objects.filter(user=user)
         result = []
 
         for session in sessions:
             game = session.game
             opponent_session = GameSession.objects.filter(game=game).exclude(user=user).first()
+            user_profile = UserGameProfile.objects.get(user=user)
             if self.is_game_finished(game):
                 self.determine_winner(game)
             result.append({
                 'game_id': game.id,
                 'choice': session.choice,
                 'opponent_choice': opponent_session.choice if opponent_session else None,
+                'opponent_profile_picture':user_profile.profile_picture,
+                'opponent_username':opponent_session.user.username,
                 'result': session.result,
                 'is_active': game.is_active,
                 'created_at': game.created_at,
@@ -245,7 +248,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         serializer = UserGameProfileSerializer(profiles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
    
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['post'])
     def user_profile(self, request):
         user = self.request.user 
         profile = UserGameProfile.objects.get(user=user)  

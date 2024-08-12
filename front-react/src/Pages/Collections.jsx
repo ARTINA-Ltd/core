@@ -122,7 +122,7 @@ const Collections = () => {
           ) : null}
 
           {getData.map((item, index) => (
-            <ImageCard key={index} className="bg-base-100  min-h-[26rem] w-80 sm:w-full my-auto shadow-md max-w-[25rem] p-6 hover:shadow-xl ease-in-out duration-300 grow sm:mx-auto rounded-xl flex-col" src={item.image_url} price={item.last_price} onClick={() => navigate(`/nft-details/${item.token_id}`)} tokenId={item.token_id} showCancel={user?.data.username === username} showSell={user ? user.data.username === username && item.is_for_sale === false : false} visible={item.is_visible} onClickShow={(e, x) => handleClickShow(e, x, item.token_id)} onClickHide={(e, x) => handleClickHide(e, x, item.token_id)}>
+            <ImageCard key={index} className="bg-base-100 min-h-[480px] w-80 sm:w-full my-auto shadow-md max-w-[25rem] p-6 hover:shadow-xl ease-in-out duration-300 grow sm:mx-auto rounded-xl flex-col" src={item.image_url} price={item.last_price} onClick={() => navigate(`/nft-details/${item.token_id}`)} tokenId={item.token_id} showCancel={user?.data.username === username} showSell={user ? user.data.username === username && item.is_for_sale === false : false} visible={item.is_visible} onClickShow={(e, x) => handleClickShow(e, x, item.token_id)} onClickHide={(e, x) => handleClickHide(e, x, item.token_id)}>
               {item.name}
             </ImageCard>
           ))}

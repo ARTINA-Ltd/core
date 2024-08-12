@@ -80,7 +80,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
       title: "",
       link: "",
       icon: (
-        <div className="dropdown">
+        <div className="dropdown z-[60]">
           <div tabIndex={0} role="button" className="flex m-0 font-normal  p-0 shadow-none">
             <MdOutlineCollections className="w-6 h-6 ml-1 text-primary" />
             {t("collections")}
@@ -208,7 +208,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                       key={index}
                       className="cursor-pointer flex items-center gap-1  hover:text-accent transition-all duration-200"
                       onClick={() => {
-                        item.link === null ? Notify.failure("ابتدا باید در صفحه ی پروفایل، هویت خود را احزار کنید") : navigate(item.link);
+                        item.link === null ? Notify.failure(t("identity")) : navigate(item.link);
                       }}
                     >
                       {item.icon}
