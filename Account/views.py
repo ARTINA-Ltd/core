@@ -120,7 +120,7 @@ class NotifyUserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-loggerReg = logging.getLogger('file_register')
+register_logger = logging.getLogger('file_register')
 
 class RegisterViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -132,14 +132,14 @@ class RegisterViewSet(viewsets.ModelViewSet):
         phone_number = request.data.get('phone_number')
         email = request.data.get('email')
         is_foreigner = request.data.get('is_foreigner')
-        loggerReg.info(f"Register attempt for username: {username}, email: {email}, phone_number: {phone_number}")  # Log the registration attempt
+        register_logger.info(f"Register attempt for username: {username}, email: {email}, phone_number: {phone_number}")  # Log the registration attempt
 
         if User.objects.filter(username=username).exists():
-            loggerReg.warning(f"Username {username} already exists")  # Log if the username already exists
+            register_logger.warning(f"Username {username} already exists")  # Log if the username already exists
             return Response({'error': 'This username is already taken.'}, status=status.HTTP_400_BAD_REQUEST)
 
         if User.objects.filter(email=email).exists():
-            loggerReg.warning(f"Email {email} is already registered")  # Log if the email already exists
+            register_logger.warning(f"Email {email} is already registered")  # Log if the email already exists
             return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Create the user if the username, phone_number, and email are all unique
@@ -148,7 +148,7 @@ class RegisterViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         
-        loggerReg.info(f"User registered successfully: {username}, email: {email}, phone_number: {phone_number}")  # Log successful registration
+        register_logger.info(f"User registered successfully: {username}, email: {email}, phone_number: {phone_number}")  # Log successful registration
         
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
    
@@ -156,17 +156,17 @@ class RegisterViewSet(viewsets.ModelViewSet):
     def check_username (request,username):
         username = request.data.get('username')
         if User.objects.filter(username=username).exists():
-            loggerReg.warning(f"Username {username} already exists")  # Log if the username already exists
+            register_logger.warning(f"Username {username} already exists")  # Log if the username already exists
             return Response({'error': 'This username is already taken.'}, status=status.HTTP_400_BAD_REQUEST)
     
     @action(detail=False, methods=['post'])
     def check_email (request,email):
         email = request.data.get('email')
         if User.objects.filter(email=email).exists():
-            loggerReg.warning(f"Email {email} is already registered")  # Log if the email already exists
+            register_logger.warning(f"Email {email} is already registered")  # Log if the email already exists
             return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
 
-loggerLog = logging.getLogger('file_login')
+login_logger = logging.getLogger('file_login')
 
 class LoginViewSet(viewsets.ViewSet):
 
@@ -177,15 +177,15 @@ class LoginViewSet(viewsets.ViewSet):
         username = request.data.get('username')
         password = request.data.get('password')
         
-        loggerLog.info(f"Login attempt for username: {username}")  # Log the login attempt
+        login_logger.info(f"Login attempt for username: {username}")  # Log the login attempt
         
         user = authenticate(username=username, password=password)
         
         if user is None:
-            loggerLog.warning(f"Invalid credentials for username: {username}")  # Log invalid credentials
+            login_logger.warning(f"Invalid credentials for username: {username}")  # Log invalid credentials
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
         profile = Profile.objects.get(user=user)
-        loggerLog.info(f"Successful login for username: {username}")  # Log successful login
+        login_logger.info(f"Successful login for username: {username}")  # Log successful login
         
         refresh = RefreshToken.for_user(user)
         response_data = {
