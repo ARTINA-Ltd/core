@@ -190,7 +190,6 @@ def get_winner(token_id):
 
         nft.is_for_sale = False
         nft.in_exhibition = False
-        nft.save()
 
         if highest_bid is None:
             return Response({"error": "No bids found for this NFT."}, status=status.HTTP_400_BAD_REQUEST)
@@ -227,7 +226,8 @@ def get_winner(token_id):
                               recipient_address=recipientWallet.address, 
                               token_id=token_id)
         logger.info(f"NFT transfer result: {tx_hash}")
-
+        nft.owner=recipient
+        nft.save()
         if not tx_hash:
             raise Exception("NFT transfer failed")
 
