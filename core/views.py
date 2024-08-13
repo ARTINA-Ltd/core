@@ -804,9 +804,139 @@ contract = sdk.get_nft_collection("0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a")
 
 
 from hexbytes import HexBytes
+import logging
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from .models import Category, CollectionNFT, UserBalance, Wallet, NFT, TransactionCurrency, Transaction  # Replace with your actual models
+from web3 import Web3
+import os
+from hexbytes import HexBytes
+
+# Get the logger for NFT-related activities
+nft_logger = logging.getLogger('core.nft')
+
+class NFTViewSet(viewsets.ViewSet):
+
+    def create(self, request, *args, **kwargs):
+        """
+        Creates a new NFT with the given metadata and mints it to the specified address.
+        """
+        try:
+            user = self.request.user
+            has_internal_wallet = request.data.get('has_internal_wallet')
+            author_address = request.data.get('author_address')
+            nft_name = request.data.get('nft_name')
+            description_nft = request.data.get('description_nft')
+            image_nft = request.data.get('image_nft')
+            creator = request.data.get('creator')
+            external_link = request.data.get('external_link')
+            last_price = request.data.get('last_price')
+            category_id = request.data.get('category')
+            has_physical = request.data.get('has_physical')
+            data = request.data.get('data', {})
+            collection_id = request.data.get('collection')
+
+            nft_logger.debug(f"Initiating NFT creation for user {user.username}. NFT name: {nft_name}, Creator: {creator}")
+
+        except KeyError as e:
+            nft_logger.error(f"Missing required field: {e}")
+            return Response(
+                {"error": f"Missing required field: {e}"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        category = Category.objects.filter(id=category_id).first()
+        collection = CollectionNFT.objects.filter(id=collection_id).first()
+        user_balance = UserBalance.objects.filter(user=user).first()
+        nft_logger.debug(f"User balance retrieved: {user_balance.rial_available_balance} for user {user.username}")
+        
+        if user_balance.rial_available_balance < 10000:
+            nft_logger.warning(f"Insufficient funds for user {user.username}. Available: {user_balance.rial_available_balance}")
+            return Response(
+                {"error": f"your money is not enough"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        else:
+            user_balance.rial_available_balance -= 10000
+            user_balance.save()
+            nft_logger.info(f"10,000 Rial deducted from user {user.username}. New balance: {user_balance.rial_available_balance}")
+
+        # Create the NFT metadata
+        prop = {
+            'owner': user.username,
+            'creator': creator,
+        }
+        nft_metadata = {
+            'name': nft_name,
+            'description': description_nft,
+            'image': image_nft,
+            'properties': prop,
+            'data': data,
+            'price': last_price,
+        }
+        nft_logger.debug(f"NFT metadata created: {nft_metadata}")
+
+        if has_internal_wallet == True:
+            if Wallet.objects.filter(user=user).exists():
+                userWallet = Wallet.objects.filter(user=user).first()
+                author_address = userWallet.address
+                nft_logger.info(f"Using internal wallet for user {user.username}. Address: {author_address}")
+            else:
+                private_key = Web3.toHex(os.urandom(32))  # Generate a random private key
+                account = w3.eth.account.privateKeyToAccount(private_key)
+                wallet = Wallet.objects.create(user=user, address=account.address, private_key=private_key)
+                author_address = account.address
+                nft_logger.info(f"Created new internal wallet for user {user.username}. Address: {author_address}")
+
+        nft_logger.debug(f"Final NFT metadata: {nft_metadata}")
+        try:
+            nft_logger.info(f"Minting NFT for user {user.username} to address {author_address}")
+            tx = contract.mint_to(author_address, NFTMetadataInput.from_json(nft_metadata))
+            nft_logger.info(f"NFT minted successfully. Transaction ID: {tx.id}")
+        except Exception as e:
+            nft_logger.error(f"Error minting NFT: {e}")
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+        nft = NFT.objects.create(
+            author_address=author_address,
+            name=nft_name,
+            blockNumber=tx.receipt.blockNumber,
+            transactionHash=HexBytes(tx.receipt.transactionHash).hex(),
+            blockHash=HexBytes(tx.receipt.blockHash).hex(),
+            transactionIndex=tx.receipt.transactionIndex,
+            description=description_nft,
+            image_url=image_nft,
+            creator=creator,
+            external_link=external_link,
+            last_price=last_price,
+            token_id=tx.id,
+            owner=user,
+            has_physical=has_physical,
+            category=category,
+            traits=data,
+            collection=collection
+        )
+        nft_logger.info(f"NFT created in database. Token ID: {nft.token_id}, Name: {nft.name}")
+
+        transactionCurrency = TransactionCurrency.objects.filter(name="rial").first()
+        Transaction.objects.create(
+            user=user, side='withdrawal',
+            transaction_currency=transactionCurrency,
+            amount=10000, status='completed'
+        )
+        nft_logger.info(f"Transaction recorded for user {user.username}. Amount: 10,000 Rial")
+
+        return Response(
+            nft.token_id,
+            status=status.HTTP_201_CREATED,
+        )
+        
 
 
-
+'''
 
 # 1
 class NFTViewSet(viewsets.ViewSet):
@@ -933,7 +1063,7 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg
                 status=status.HTTP_201_CREATED,
             )            
       
-
+'''
 
 
 
