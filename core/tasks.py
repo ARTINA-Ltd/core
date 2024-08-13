@@ -30,34 +30,22 @@
 
 #     for nft in nfts_to_process:
 #         get_winner.delay(nft.token_id)  # Use delay to enqueue the task asynchronously
-#         nft.is_for_sale = Fal
-# tasks.py
-from __future__ import absolute_import, unicode_literals
+#         nft.is_for_sale = False  # Assuming you have a field to track if the winner has been processed
+#         nft.save()
 
+# tasks.py
 from datetime import timedelta
 from celery import shared_task
-#from django.utils import timezone
+from django.utils import timezone
 from .models import NFT
 from .views import get_winner
-#import time
-from celery import shared_task
-from datetime import datetime
-import pytz
-
-# Define the Tehran timezone using pytz.
-tehran_tz = pytz.timezone('Asia/Tehran')
-
+import time
 @shared_task
-def check_nft_end_time():
-    # Get the current time in the Tehran timezone.
-    now_in_tehran = datetime.now(tehran_tz)
-    
-    # You can use now_in_tehran in your logic to check for NFT end time.
-    print(f"Current time in Tehran: {now_in_tehran}")
 
+def check_nft_end_time():
     print("Task started")
 
-    #now = timezone.now()
+    now = timezone.now()
     nfts_to_process = NFT.objects.filter(end_date__lte=now, is_for_sale=True)
 
     for nft in nfts_to_process:
