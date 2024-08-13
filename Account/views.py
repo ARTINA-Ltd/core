@@ -1095,12 +1095,170 @@ class PasswordResetByPhoneViewSet(viewsets.ViewSet):
 
 
 
+import logging
+import requests
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from django.shortcuts import redirect
+from .models import Payment, UserBalance, Transaction, TransactionCurrency, Profile  # Replace with your actual models
 
-
-
-
+# Get the logger for payment-related activities
+payment_logger = logging.getLogger('Account.payment')
 
 class PaymentGateViewSet(viewsets.ViewSet):
+
+    def create(self, request, *args, **kwargs):
+        user = self.request.user
+        amount_str = request.data.get("amount")
+        email = user.profile.email
+        payment_logger.debug(f"Payment creation initiated by user {user.username} with email {email} for amount {amount_str}.")
+        
+        try:
+            amount = int(amount_str)
+        except ValueError:
+            payment_logger.warning(f"Invalid amount provided by user {user.username}: {amount_str}")
+            return Response({"error": "Invalid amount. Please provide a valid integer."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if amount < 1000:
+            payment_logger.warning(f"Amount too low for user {user.username}: {amount}. Minimum required is 1000.")
+            return Response({"error": "Amount must be at least 1000."}, status=status.HTTP_400_BAD_REQUEST)
+
+        response = self.send_payment_request(amount)
+        if response.status_code == 200:
+            payment_info = response.json()
+            payment_logger.info(f"Payment request successful for user {user.username}. Payment info: {payment_info}")
+
+            if 'data' in payment_info:
+                authority = payment_info['data'].get('authority')
+                payment = Payment.objects.create(user=user, amount=amount, authority=authority)
+                redirect_url = self.get_redirect_url(payment)
+                payment_logger.debug(f"Payment created for user {user.username} with authority {authority}. Redirecting to {redirect_url}.")
+                return Response({'url': redirect_url}, status=status.HTTP_200_OK)
+            else:
+                payment_logger.error(f"Invalid payment response for user {user.username}. Payment info: {payment_info}")
+                return Response({"error": "Invalid payment response from server."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            payment_logger.error(f"Payment request failed for user {user.username}. Response: {response.json()}")
+            return Response(response.json(), status=response.status_code)
+
+    @action(detail=False, methods=['get'])
+    def verify(self, request):
+        authority = request.GET.get('Authority')
+        payment_logger.debug(f"Verification initiated with authority {authority}.")
+
+        try:
+            payment = Payment.objects.get(authority=authority)
+        except Payment.DoesNotExist:
+            payment_logger.warning(f"Payment with authority {authority} not found.")
+            failure_url = f'http://artina.org/payment_status/?status=failed&authority={authority}'
+            return redirect(failure_url)
+
+        failure_url = f'https://artina.org/payment_status/?status=failed&authority={authority}'
+        success_url = f'https://artina.org/payment_status/?status=success&authority={authority}'
+        user = payment.user
+        response = self.verify_payment(payment.amount, payment.authority)
+
+        if response.status_code == 200:
+            verification_info = response.json()
+            payment_logger.info(f"Verification successful for payment with authority {authority}. Verification info: {verification_info}")
+
+            if isinstance(verification_info, dict) and 'data' in verification_info:
+                if isinstance(verification_info['data'], list):
+                    if not verification_info['data']:
+                        payment_logger.warning(f"No data found in verification response for authority {authority}.")
+                        return redirect(failure_url)
+                    else:
+                        data = verification_info['data'][0]
+                else:
+                    data = verification_info['data']
+
+                verification_status = data.get('code')
+
+                if verification_status == 100:
+                    payment.is_paid = True
+                    payment.save()
+                    payment.amount = payment.amount // 10
+                    transaction_currency = TransactionCurrency.objects.get(name="rial")
+                    user_balance = UserBalance.objects.get(user=user)
+
+                    if user_balance:
+                        user_balance.rial_available_balance += payment.amount
+                        user_balance.save()
+                    else:
+                        user_balance = UserBalance.objects.create(rial_available_balance=payment.amount, user=user)
+
+                    Transaction.objects.create(user=user, side='deposit', transaction_currency=transaction_currency,
+                                               amount=payment.amount, status='completed')
+
+                    payment_logger.debug(f"Payment with authority {authority} marked as paid. User balance updated.")
+                    
+                    profile = Profile.objects.get(user=user)
+                    response = requests.post(
+                        f"https://api.kavenegar.com/v1/"
+                        f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
+                        f"/verify/lookup.json",
+                        data={
+                            "receptor": profile.phone_number,
+                            "token": user.username,
+                            "token2": payment.amount,
+                            "template": "AccountChargeVerification"
+                        }
+                    )
+                    return redirect(success_url)
+                else:
+                    payment_logger.warning(f"Verification failed for payment with authority {authority}. Status code: {verification_status}")
+                    return redirect(failure_url)
+            else:
+                payment_logger.error(f"Invalid verification response structure for authority {authority}.")
+                return redirect(failure_url)
+        else:
+            payment_logger.error(f"Verification request failed for authority {authority}. Response: {response.json()}")
+            return redirect(failure_url)
+
+    def send_payment_request(self, amount):
+        user = self.request.user
+        url = 'https://api.zarinpal.com/pg/v4/payment/request.json'
+        headers = {
+            'accept': 'application/json',
+            'content-type': 'application/json'
+        }
+        data = {
+            'merchant_id': '21ab62e9-e04b-4da5-b8d1-1bd7fca78e41',
+            'amount': amount,
+            'callback_url': 'http://api.artina.org/api/account/payment/verify/',
+            'description': 'Transaction description.',
+            'metadata': {'mobile': "09387731214", 'email': "zehi.sh@gmail.com"}
+        }
+        payment_logger.debug(f"Sending payment request for user {user.username} with amount {amount}.")
+        response = requests.post(url, headers=headers, json=data)
+        return response
+
+    def verify_payment(self, amount, authority):
+        url = 'https://api.zarinpal.com/pg/v4/payment/verify.json'
+        headers = {
+            'accept': 'application/json',
+            'content-type': 'application/json'
+        }
+        data = {
+            'merchant_id': '21ab62e9-e04b-4da5-b8d1-1bd7fca78e41',
+            'amount': amount,
+            'authority': authority
+        }
+        payment_logger.debug(f"Verifying payment with authority {authority} for amount {amount}.")
+        response = requests.post(url, headers=headers, json=data)
+        return response
+
+    def get_redirect_url(self, payment):
+        url = f'https://www.zarinpal.com/pg/StartPay/{payment.authority}'
+        payment_logger.debug(f"Generated redirect URL for payment: {url}")
+        return url
+
+
+
+
+
+'''class PaymentGateViewSet(viewsets.ViewSet):
 
     def create(self, request, *args, **kwargs):
         user = self.request.user
@@ -1234,7 +1392,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
         return f'https://www.zarinpal.com/pg/StartPay/{payment.authority}'
 
 
-
+'''
 
 
 # Connect to the Polygon network
