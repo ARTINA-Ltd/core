@@ -30,7 +30,7 @@ const NTSNavbar = ({ refetch }) => {
 
   return (
     userProfile && (
-      <div className="h-32 p-4 bg-base-300 sticky top-0 z-[100]">
+      <div className="h-32 p-4 bg-base-300 sticky top-0 z-[100] overflow-hidden">
         <div className="w-[80vw] mx-auto flex justify-between">
           <div className="flex gap-8 h-fit my-auto items-center">
             <div className="tooltip tooltip-bottom" data-tip="Enter Artina Website">

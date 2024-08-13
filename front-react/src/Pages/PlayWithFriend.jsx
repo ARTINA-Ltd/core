@@ -30,13 +30,11 @@ const PlayWithFriend = () => {
       <div className="grid grid-cols-2 gap-8 md:grid-cols-1 m-8">
         {sessions &&
           sessions.map((session) => {
-            if (session.is_active) {
-              return (
-                <div key={session.game_id}>
-                  <PaperRockScissorsFriend gameId={session.game_id} opChoice={session.opponent_choice} result={session.result} opUsername={session.opponent_username} opProfile={session.opponent_profile_picture} choice={session.choice} />
-                </div>
-              );
-            } else return null;
+            return (
+              <div key={session.game_id}>
+                <PaperRockScissorsFriend gameId={session.game_id} opChoice={session.opponent_choice} result={session.result} opUsername={session.opponent_username} opProfile={session.opponent_profile_picture} choice={session.choice} />
+              </div>
+            );
           })}
       </div>
     </div>

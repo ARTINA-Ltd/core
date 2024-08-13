@@ -694,7 +694,7 @@ function Profile() {
                   setValidate({ ...validate, email: e.target.value.indexOf("@") > -1 });
                 }}
                 defaultValue={user != null ? user.data.email : null}
-                disabled={user.data.email != null && user.data.email_verified}
+                disabled={true}
                 maxChars={30}
               />
               <div className={`${showEmailValidate && !isEmailVerified && (!user.data.email || !user.data.email_verified) ? "" : "hidden"}`}>

@@ -12,30 +12,30 @@ const PaperRockScissors = ({ onChoice, className, serverResponse, status }) => {
   };
 
   return (
-    <div className={`w-1/2 lg:w-full mx-auto bg-base-200 rounded-lg p-12 ${className}`}>
-      <div className="mx-auto flex text-center justify-between my-12 text-3xl">
+    <div className={`lg:w-full mx-auto w-1/3 rounded-lg neon-border p-12 lg:text-sm ${className}`}>
+      <div className="mx-auto grid gap-8 grid-cols-3 text-center justify-between my-12 text-3xl">
         <div>
-          <p className="py-8 neon-container">You </p>
-          <div className="neon-border text-center hover:text-black w-44 h-44 flex justify-center items-center hover:bg-secondary cursor-pointer z-50 ease-out duration-200 rounded-xl p-2">{userChoice === "" ? "waiting for you" : userChoice === "paper" ? <img src={paper} alt="Paper" className="sm:w-32 z-[10] object-cover" /> : userChoice === "rock" ? <img src={rock} alt="Rock" className="sm:w-24 sm:h-24 object-cover" /> : <img src={scissors} alt="Scissors" className="sm:w-32 object-cover" />}</div>
+          <p className="py-8 neon-container lg:text-sm">You </p>
+          <div className="neon-border hover:text-black aspect-square text-center flex justify-center items-center hover:bg-secondary cursor-pointer lg:text-sm z-50 ease-out duration-200 rounded-xl p-2">{userChoice === "" ? "waiting for you" : userChoice === "paper" ? <img src={paper} alt="Paper" className="sm:w-32 z-[10] object-cover" /> : userChoice === "rock" ? <img src={rock} alt="Rock" className="sm:w-32 object-cover" /> : <img src={scissors} alt="Scissors" className="sm:w-32 object-cover" />}</div>
         </div>
         <div>
-          <p className="w-fit mx-auto py-8">Status</p>
-          <div className="neon-border hover:text-black text-center w-44 h-20 flex justify-center items-center hover:bg-secondary cursor-pointer z-50 ease-out duration-200 rounded-xl p-2">{status}</div>
+          <p className="w-fit mx-auto py-8 lg:text-sm">Status</p>
+          <div className="neon-border hover:text-black text-center lg:text-sm aspect-video flex justify-center items-center hover:bg-secondary cursor-pointer z-50 ease-out duration-200 rounded-xl p-4">{status}</div>
         </div>
         <div>
-          <p className="py-8">Opponent</p>
-          <div className="neon-border hover:text-black text-center w-44 h-44 flex justify-center items-center hover:bg-secondary cursor-pointer z-50 ease-out duration-200 rounded-xl p-2">{serverResponse === "" ? "waiting for Server" : serverResponse === "paper" ? <img src={paper} alt="Paper" className="sm:w-32 z-[10] object-cover" /> : serverResponse === "rock" ? <img src={rock} alt="Rock" className="sm:w-24 sm:h-24 object-cover" /> : <img src={scissors} alt="Scissors" className="sm:w-32 object-cover" />}</div>
+          <p className="py-8 lg:text-sm">Opponent</p>
+          <div className="neon-border hover:text-black lg:text-sm text-center aspect-square flex justify-center items-center hover:bg-secondary cursor-pointer z-50 ease-out duration-200 rounded-xl p-2">{serverResponse === "" ? "waiting" : serverResponse === "paper" ? <img src={paper} alt="Paper" className="sm:w-32 z-[10] object-cover" /> : serverResponse === "rock" ? <img src={rock} alt="Rock" className="sm:w-32 object-cover" /> : <img src={scissors} alt="Scissors" className="sm:w-32 object-cover" />}</div>
         </div>
       </div>
-      <div className="flex w-full justify-between">
-        <div onClick={() => handleChoice("paper")} className="bg-secondary w-44 h-44 flex justify-center items-center hover:bg-secondary cursor-pointer z-50 ease-out duration-200 rounded-full p-2">
+      <div className="flex w-full gap-6 justify-between">
+        <div onClick={() => handleChoice("paper")} className="bg-secondary aspect-square flex justify-center items-center hover:bg-secondary cursor-pointer z-50 ease-out duration-200 rounded-full p-2">
           <img src={paper} alt="Paper" className="sm:w-32 z-[10] object-cover" />
         </div>
-        <div onClick={() => handleChoice("rock")} className="bg-secondary w-44 h-44 flex justify-center items-center hover:bg-secondary cursor-pointer z-50 ease-out duration-200 rounded-full p-2">
-          <img src={rock} alt="Rock" className="sm:w-24 sm:h-24 object-cover" />
+        <div onClick={() => handleChoice("rock")} className="bg-secondary aspect-square flex justify-center items-center hover:bg-secondary cursor-pointer z-50 ease-out duration-200 rounded-full p-2">
+          <img src={rock} alt="Rock" className="sm:w-32 z-[10] object-cover" />
         </div>
-        <div onClick={() => handleChoice("scissors")} className="bg-secondary w-44 h-44 flex justify-center items-center hover:bg-secondary cursor-pointer z-50 ease-out duration-200 rounded-full p-2">
-          <img src={scissors} alt="Scissors" className="sm:w-32 object-cover" />
+        <div onClick={() => handleChoice("scissors")} className="bg-secondary aspect-square flex justify-center items-center hover:bg-secondary cursor-pointer z-50 ease-out duration-200 rounded-full p-2">
+          <img src={scissors} alt="Scissors" className="sm:w-32 z-[10] object-cover" />
         </div>
       </div>
     </div>
