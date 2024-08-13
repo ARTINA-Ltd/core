@@ -208,9 +208,9 @@ def get_winner(token_id):
         commission = float(highest_bid.eth)
         value = (1.5 * commission) / 100
         logger.info(f"ARTINA commission value: {value}")
-        artina.artina_commision = value
-        artina.artina_commision_count += 1
-        artina.save()
+        # artina.artina_commision = value
+        # artina.artina_commision_count += 1
+        # artina.save()
 
         # Update owner balance
         balanceowner = UserBalance.objects.get(user=nft.owner)
