@@ -1,23 +1,16 @@
 from core import models
 from Account import models
-from core.models import NFT , Order , MyImage , NFTRating , Category , CollectionNFT
+from core.models import NFT , Order , MyImage , NFTRating , Category , CollectionNFT , PDF
 # from Account.views import transferNFT
 from core import serializers
 from eth_account import Account
 from thirdweb.types.nft import NFTMetadataInput 
 from Account.views import get_balance,CryptoViewSet
-
-from .models import PDF
-from .serializers import PDFSerializer
+from hexbytes import HexBytes
 import json
 import requests
-from rest_framework import viewsets
-from rest_framework.response import Response
 from django.http import JsonResponse
 from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework import status
-from .models import NFT
 from web3 import Web3
 from thirdweb import ThirdwebSDK
 from django.contrib.auth.models import User
@@ -31,17 +24,12 @@ from rest_framework.parsers import MultiPartParser, FormParser, BaseParser
 from rest_framework.exceptions import ParseError
 import base64
 from django.http import Http404
-from django.utils import timezone
-from rest_framework import viewsets
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework import status
 from django.conf import settings
 import os
 from Account.models import Msg, ARTINA_Ballance,Wallet , NotifyUser,UserBalance,TransactionCurrency,Profile,Transaction
 from http import HTTPStatus
 from django.db.models import Count, Q
-from .serializers import CategorySerializer, CollectionNFTSerializer, NFTRatingSerializer, OwnerWithLikesSerializer
+from .serializers import PDFSerializer , CategorySerializer, CollectionNFTSerializer, NFTRatingSerializer, OwnerWithLikesSerializer
 from django_filters import rest_framework as filters
 import time
 from decimal import Decimal 
@@ -803,14 +791,6 @@ print(f"sdk is :{sdk}")
 contract = sdk.get_nft_collection("0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a")
 
 
-from hexbytes import HexBytes
-import logging
-from rest_framework import viewsets, status
-from rest_framework.response import Response
-from .models import Category, CollectionNFT, UserBalance, Wallet, NFT, TransactionCurrency, Transaction  # Replace with your actual models
-from web3 import Web3
-import os
-from hexbytes import HexBytes
 
 # Get the logger for NFT-related activities
 nft_logger = logging.getLogger('core.nft')
