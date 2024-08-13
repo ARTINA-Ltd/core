@@ -158,6 +158,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ARTINA.wsgi.application'
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -181,31 +182,59 @@ LOGGING = {
         'file_register': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'file_register.log',  # File for registration API logs
+            'filename': 'register_api.log',  # File for registration API logs
             'formatter': 'verbose',
             'delay': True,
         },
-        },
-        'file': {
+        'file_transferInside': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'myapp.log',
+            'filename': 'transferInside.log',  # File for transferInside logs
             'formatter': 'verbose',
         },
+        'file_payment': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'payment.log',  # File for payment logs
+            'formatter': 'verbose',
+        },
+        'file_nft': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'nft.log',  # File for NFT logs
+            'formatter': 'verbose',
+        },
+    },
     'loggers': {
         'django': {
             'handlers': [],
             'level': 'DEBUG',
             'propagate': True,
         },
-        'django.request': {
-            'handlers': ['file_login','file_register'],
+        'Account.login': {
+            'handlers': ['file_login'],
             'level': 'DEBUG',
             'propagate': False,
         },
-        'Account': {
-            'handlers': ['file_login','file_register'],
+        'Account.register': {
+            'handlers': ['file_register'],
             'level': 'DEBUG',
+            'propagate': False,
+        },
+        'core.transferInside': {
+            'handlers': ['file_transferInside'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'core.payment': {
+            'handlers': ['file_payment'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'core.nft': {
+            'handlers': ['file_nft'],
+            'level': 'DEBUG',
+            'propagate': False,
         },
     },
 }
