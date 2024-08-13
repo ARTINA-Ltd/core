@@ -11,6 +11,7 @@ import "../components/Nts/Styles.css";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../App.js";
 import Dialog from "../components/Nts/Dialog.jsx";
+import FancyText from "@carefully-coded/react-text-gradient";
 import BorderButton from "../components/Buttons/BorderButton.jsx";
 
 const NTS = () => {
@@ -80,11 +81,13 @@ const NTS = () => {
 
       <div className="z-10 p-8 bg-base-100 w-[99vw] overflow-hidden">
         <NightSky />
-        <div className="flex items-center bgba justify-around overflow-hidden">
-          <div className="text-accent-content h-fit p-10 rounded-full z-10 bg-primary flex justify-center items-center">
-            <h1 className="text-7xl lg:text-5xl text-center leading-loose">claim your NFT</h1>
+        <div className="flex items-center p-8 flex-row-reverse justify-around md:block overflow-hidden">
+          <img src={rocket} alt="" className="w-1/3 md:mx-auto md:h-32 md:w-auto my-4 z-10" />
+          <div className="text-accent-content pointer-events-none h-fit text-center p-10 rounded-full z-10 neon-border flex justify-center items-center">
+            <FancyText className={"mx-auto text-5xl"} gradient={{ from: "#F305B8", to: "#00F0F7", type: "linear" }} animateTo={{ from: "#FFFFFF", to: "#F305B8" }} animateDuration={1000}>
+              Claim Your NFT
+            </FancyText>
           </div>
-          <img src={rocket} alt="" className="w-1/3 z-10" />
         </div>
         <div className="w-full justify-between mt-32 flex lg:block lg:pb-[30rem]">
           <div className="w-full text-center h-full p-8">
@@ -99,7 +102,7 @@ const NTS = () => {
               6. Digital Scarcity: Creators can limit the number of copies of a digital item, creating scarcity and potentially increasing its value. Popular examples of NFTs include digital art, music, videos, virtual real estate, and in-game items. The market for NFTs has grown rapidly, with some NFTs selling for millions of dollars.
             </p>
           </div>
-          <div className="w-1/2 mx-auto md:mx-0 md:mt-0 mt-32">
+          <div className="w-1/2 mx-auto md:mx-0 md:mt-0 mt-32 sm:-translate-x-14">
             <div className="relative ease-in-out duration-300">
               <img src={nft2} alt="" className="left-36 hover:-translate-y-8 hover:z-50 rounded-md ease-in-out duration-300 absolute w-52 h-52 object-cover" />
               <img src={nft3} alt="" className="top-28 hover:-translate-y-8 hover:z-50 rounded-md ease-in-out duration-300 rotate-12 left-72 absolute w-52 h-52 object-cover" />
@@ -108,16 +111,22 @@ const NTS = () => {
             </div>
           </div>
         </div>
-        <div className="mt-32 z-10">
-          <h1 className="text-center text-7xl w-fit mx-auto border-none neon-container">Play!</h1>
-          <div className="text-7xl border-b-2 border-b-base-content border-opacity-25 pb-12  text-center flex gap-2 justify-around my-16">
+        <div className="mt-32 z-10 lg:text-4xl md:text-2xl text-7xl">
+          <div className="mx-auto w-fit">
+            <FancyText gradient={{ from: "#F305B8", to: "#00F0F7", type: "linear" }} animateTo={{ from: "#FFFFFF", to: "#F305B8" }} animateDuration={1000} className="text-center bg-slate-100 w-fit mx-auto border-none neon-container">
+              Play!
+            </FancyText>
+          </div>
+          <div className=" border-b-2 border-b-base-content border-opacity-25 pb-12  text-center flex gap-8 justify-around my-16">
             <button onClick={startNewSessionSolo} className="flex cursor-pointer items-center justify-center neon-container neon-border rounded-[100%] w-[20rem] p-8 ">
-              <h1 className="">Solo</h1>
+              <FancyText className={"mx-auto"} gradient={{ from: "#F305B8", to: "#00F0F7", type: "linear" }} animateTo={{ from: "#FFFFFF", to: "#F305B8" }} animateDuration={1000}>
+                Solo
+              </FancyText>
             </button>
-            <button className="flex text-7xl cursor-pointer items-center justify-center neon-container neon-border  rounded-[100%] w-[20rem] p-8 ">
-              <h1 className="" onClick={() => document.getElementById("frirens-list").showModal()}>
+            <button className="flex  cursor-pointer items-center justify-center neon-container neon-border  rounded-[100%] w-[20rem] p-8 ">
+              <FancyText className={"mx-auto"} gradient={{ from: "#F305B8", to: "#00F0F7", type: "linear" }} animateTo={{ from: "#FFFFFF", to: "#F305B8" }} animateDuration={1000} onClick={() => document.getElementById("frirens-list").showModal()}>
                 With Friends
-              </h1>
+              </FancyText>
             </button>
           </div>
         </div>

@@ -45,15 +45,18 @@ const Dialog = ({ username }) => {
               <IoCloseSharp />
             </button>
           </form>
-          <div className="modal-action block w-[60rem]">
-            <h3 className="font-bold text-lg">Choose your opponent!</h3>
+          <h3 className="font-bold text-lg">Choose your opponent!</h3>
+          <div className="modal-action grid gap-4 grid-cols-6 lg:grid-cols-3 md:grid-cols-2">
             {users.map((user) => {
               return (
-                <div onClick={() => setSelected(user.username)} key={user.id} className={`p-4 cursor-pointer rounded-md w-fit my-3 ${selected === user.username ? "bg-primary text-primary-content " : "border border-primary"}`}>
-                  <h1>{user.username}</h1>
+                <div onClick={() => setSelected(user.username)} key={user.id} className={`text-center p-4 cursor-pointer rounded-md grow w-fit my-3 ${selected === user.username ? "bg-primary  text-primary-content " : "border border-primary"}`}>
+                  <img src={user.profile_picture} alt="" />
+                  <h1 className="mt-2">{user.username}</h1>
                 </div>
               );
             })}
+          </div>
+          <div className="mx-auto w-fit">
             <BorderButton
               onClick={() => {
                 createGame();

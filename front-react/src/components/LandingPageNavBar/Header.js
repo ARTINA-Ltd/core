@@ -199,7 +199,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
   return (
     <Fragment>
       <header>
-        <div className={`flex bg-base-300 justify-center h-[80px] sm:h-[60px] ${rev ? "" : "bg-base-300"}  font-b3`}>
+        <div className={`flex bg-base-300 justify-center h-[80px] sm:h-[60px] ${rev ? "" : "bg-base-300"} font-b3`}>
           <div className="flex items-center justify-between w-[90%] justify-self-center">
             <div className="flex items-center gap-4 text-sm lg:hidden">
               {user

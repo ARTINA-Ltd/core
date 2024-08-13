@@ -27,23 +27,24 @@ const NTSNavbar = ({ refetch }) => {
       })
       .catch((e) => {});
   }, [refetch]);
-  if (userProfile) console.log(userProfile);
 
   return (
     userProfile && (
-      <div className="h-32 p-4 bg-base-300 sticky top-0 z-[100]">
+      <div className="h-32 p-4 bg-base-300 sticky top-0 z-[100] overflow-hidden">
         <div className="w-[80vw] mx-auto flex justify-between">
           <div className="flex gap-8 h-fit my-auto items-center">
-            <img className="h-16 sm:h-12 rounded-lg cursor-pointer" src={artinaLogo} alt="logo" onClick={() => navigate("/")} />
-            <img alt="" src={userProfile.profile_picture} className="w-20 h-20 object-cover" />
-            <h1 className="text-5xl">My points:</h1>
-            <h2 className="text-5xl">{userProfile.points}</h2>
+            <div className="tooltip tooltip-bottom" data-tip="Enter Artina Website">
+              <img className="h-16 sm:h-12 rounded-lg cursor-pointer" src={artinaLogo} alt="logo" onClick={() => navigate("/")} />
+            </div>
+            <img alt="" src={userProfile.profile_picture} onClick={() => navigate("/nts")} className="h-20 aspect-square object-cover cursor-pointer rounded-full p-1 border" />
+            <h1 className="text-3xl">My points:</h1>
+            <h2 className="text-2xl">{userProfile.points}</h2>
           </div>
-          <div className="flex gap-4 cursor-pointer" onClick={() => navigate("./play-with-friend")}>
-            <div className="bg-base-100 flex items-center justify-center w-32 text-center h-20 rounded-md p-2">
+          <div className="flex gap-4 cursor-pointer" onClick={() => navigate("/nts/play-with-friend")}>
+            <div className="bg-base-100 border rounded-xl flex items-center justify-center w-32 text-center h-20 p-2">
               <p>My games</p>
             </div>
-            <div className="flex flex-col gap-2 w-32 bg-base-100 rounded-md justify-center items-center p-2">
+            <div className="flex flex-col gap-2 w-32 bg-base-100 border rounded-xl justify-center items-center p-2">
               <h1>buymore</h1>
               {userProfile.hearts === 3 ? (
                 <div className="flex gap-2">

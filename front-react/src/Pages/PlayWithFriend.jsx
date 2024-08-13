@@ -3,6 +3,7 @@ import NTSNavbar from "../components/NTSNavbar/NTSNavbar.jsx";
 import { UserContext } from "../App.js";
 import axios from "axios";
 import PaperRockScissors from "../components/Nts/PaperRockScissors.jsx";
+import PaperRockScissorsFriend from "../components/Nts/PaperRockScissorsFriends.jsx";
 const PlayWithFriend = () => {
   const user = useContext(UserContext);
   const [sessions, setSessions] = useState("");
@@ -21,19 +22,21 @@ const PlayWithFriend = () => {
         setSessions(e.data);
         console.log(e.data);
       });
-  }, []);
+  }, [user]);
 
   return (
     <div>
       <NTSNavbar />
-      {sessions &&
-        sessions.map((session) => {
-          return (
-            <div className="flex ">
-              <PaperRockScissors /> <h1>{session.game_id}</h1>
-            </div>
-          );
-        })}
+      <div className="grid grid-cols-2 gap-8 md:grid-cols-1 m-8">
+        {sessions &&
+          sessions.map((session) => {
+            return (
+              <div key={session.game_id}>
+                <PaperRockScissorsFriend gameId={session.game_id} opChoice={session.opponent_choice} result={session.result} opUsername={session.opponent_username} opProfile={session.opponent_profile_picture} choice={session.choice} />
+              </div>
+            );
+          })}
+      </div>
     </div>
   );
 };

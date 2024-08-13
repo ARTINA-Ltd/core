@@ -8,22 +8,24 @@ import axios from "axios";
 import AdminLayout from "../Layouts/AdminLayout.jsx";
 import { Fragment } from "react";
 import { UserContext } from "../App.js";
-import mand1 from "../assets/images/mand1.png"
+import mand1 from "../assets/images/mand1.png";
 
 const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
   const [docApproval, setDocApproval] = useState(null);
   const [metaTickets, setMetaTickets] = useState(null);
   const [tickets, setTickets] = useState(null);
+  const [listRequests, setListRequests] = useState(null);
   const { t } = useTranslation();
   const user = useContext(UserContext);
 
   const navigate = useNavigate();
-
-  if (user?.data?.role !== "supervisor") {
-    navigate("/");
+  if (user) {
+    if (user.data.role !== "supervisor") {
+      navigate("/");
+    }
   }
-  //sup
+
   useEffect(() => {
     axios
       .get("https://api.artina.org/api/supervisor/supervisor-tickets/metaverse_tickets/", {
@@ -33,6 +35,19 @@ const AdminPanel = () => {
       })
       .then((e) => {
         setMetaTickets(e.data.slice(0, 4));
+      })
+      .catch((err) => {
+        console.log(`there was an error${err}`);
+      });
+    axios
+      .get("https://api.artina.org/api/account/WithdrawalViewSet/list_requests/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+      })
+      .then((e) => {
+        setListRequests(e.data);
+        console.log(e.data);
       })
       .catch((err) => {
         console.log(`there was an error${err}`);
@@ -73,7 +88,6 @@ const AdminPanel = () => {
           <Fragment>
             <div className={` ${'bg-[#f9f9f9] bg-[length:300px] bg-[url("https://artina.org/12.png")] '} min-h-screen  overflow-hidden pb-8`}>
               <div className="bg-[#4e45d0] my-4 flex flex-col relative text-white gap-4 items-center overflow-hidden rounded-xl shadow-md">
-                <img alt="" src={mand1} className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
                 <h1 className="text-center font-bold text-3xl my-4  p-4 ">{t("auth")}</h1>
               </div>
               {docApproval && docApproval.length !== 0 ? (
@@ -93,7 +107,6 @@ const AdminPanel = () => {
                 <div className="bg-white p-8 rounded-xl shadow-md text-lg text-center">مورد جدیدی وجود ندارد</div>
               )}
               <div className=" mx-auto bg-[#4e45d0] flex flex-col relative text-white gap-4 items-center overflow-hidden rounded-xl shadow-md my-4">
-                <img alt="" src={mand1} className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
                 <h1 className="text-center font-bold text-3xl my-4 p-4 ">تیکت ها</h1>
               </div>
               {tickets && tickets.length !== 0 ? (
@@ -114,7 +127,6 @@ const AdminPanel = () => {
                 <div className="bg-white p-8 rounded-xl shadow-md text-lg text-center">مورد جدیدی وجود ندارد</div>
               )}
               <div className=" mx-auto bg-[#4e45d0] flex flex-col relative text-white gap-4 items-center overflow-hidden rounded-xl shadow-md my-4">
-                <img alt="" src={mand1} className=" opacity-[15%] absolute top-1/2 -translate-y-1/2 pointer-events-none overflow-hidden" />
                 <h1 className="text-center font-bold text-3xl my-4 p-4 ">متاورس</h1>
               </div>
               {metaTickets && metaTickets.length !== 0 ? (
@@ -128,6 +140,20 @@ const AdminPanel = () => {
                     <Link to={"/metaversetickets"} className="hover:pr-4 ease-in-out duration-200 font-bold">
                       مشاهده همه
                     </Link>
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-white p-8 rounded-xl shadow-md text-lg text-center">مورد جدیدی وجود ندارد</div>
+              )}
+              <div className=" mx-auto bg-[#4e45d0] flex flex-col relative text-white gap-4 items-center overflow-hidden rounded-xl shadow-md my-4">
+                <h1 className="text-center font-bold text-3xl my-4 p-4 ">لیست برداشت ها</h1>
+              </div>
+              {listRequests && listRequests.length !== 0 ? (
+                <div className="w-[90vw] my-4 mx-auto h-1/2 rounded-lg p-4">
+                  <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-1">
+                    {listRequests.map((ticket) => {
+                      // return <MetaVerseCard key={ticket.id} title={ticket.ticket.name} count={ticket.ticket.user} img={ticket.ticket.image_url} id={ticket.id} exhibition={ticket.ticket.text} />;
+                    })}
                   </div>
                 </div>
               ) : (
