@@ -199,12 +199,12 @@ def get_winner(token_id):
         highest_bid.status = 1
         highest_bid.save()
         recipient = highest_bid.bidder
-        balance = UserBalance.objects.get(user=highest_bid.bidder)
+        balance = UserBalance.objects.get(user=recipient)
         balance.eth_untradable_balance -= highest_bid.eth
         balance.save()
 
         # Calculate and update ARTINA commission
-        artina = ARTINA_Ballance.objects.first()
+        # artina = ARTINA_Ballance.objects.first()
         commission = float(highest_bid.eth)
         value = (1.5 * commission) / 100
         logger.info(f"ARTINA commission value: {value}")
@@ -213,17 +213,18 @@ def get_winner(token_id):
         # artina.save()
 
         # Update owner balance
-        balanceowner = UserBalance.objects.get(user=nft.owner)
+        balanceowner = UserBalance.objects.get(user=sender)
         total = highest_bid.eth - value
         balanceowner.eth_balance += total
         balanceowner.save()
-        NotifyUser.objects.create(user=highest_bid.bidder, text="You won the NFT and your balance has been updated")
+        NotifyUser.objects.create(user=recipient, text="You won the NFT and your balance has been updated")
         order_Report(token_id)
-
+        recipientWallet = Wallet.objects.get(user=recipient)
+        senderWallet = Wallet.objects.get(user=sender)
         # Transfer NFT
-        tx_hash = transfer_nft(sender_private_key=recipient.private_key, 
-                              sender_address=sender, 
-                              recipient_address=recipient.address, 
+        tx_hash = transfer_nft(sender_private_key=senderWallet.private_key, 
+                              sender_address=senderWallet.address, 
+                              recipient_address=recipientWallet.address, 
                               token_id=token_id)
         logger.info(f"NFT transfer result: {tx_hash}")
 
