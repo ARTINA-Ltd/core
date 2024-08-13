@@ -226,7 +226,7 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': False,
         },
-        'core.payment': {
+        'Account.payment': {
             'handlers': ['file_payment'],
             'level': 'DEBUG',
             'propagate': False,

@@ -1095,13 +1095,6 @@ class PasswordResetByPhoneViewSet(viewsets.ViewSet):
 
 
 
-import logging
-import requests
-from rest_framework import viewsets, status
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from django.shortcuts import redirect
-from .models import Payment, UserBalance, Transaction, TransactionCurrency, Profile  # Replace with your actual models
 
 # Get the logger for payment-related activities
 payment_logger = logging.getLogger('Account.payment')
