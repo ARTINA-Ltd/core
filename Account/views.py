@@ -120,7 +120,7 @@ class NotifyUserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-register_logger = logging.getLogger('file_register')
+register_logger = logging.getLogger('Account.register')
 
 class RegisterViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -166,7 +166,7 @@ class RegisterViewSet(viewsets.ModelViewSet):
             register_logger.warning(f"Email {email} is already registered")  # Log if the email already exists
             return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
 
-login_logger = logging.getLogger('file_login')
+login_logger = logging.getLogger('Account.login')
 
 class LoginViewSet(viewsets.ViewSet):
 

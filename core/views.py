@@ -52,14 +52,14 @@ from django.utils import timezone
 w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
 
 # Initialize Logger
-logger = logging.getLogger('insideTransfer')
+nft_mtc_logger = logging.getLogger('core.transferInside')
 logging.basicConfig(level=logging.INFO)
 
 def transfer_nft(sender_private_key, sender_address, recipient_address, token_id):
     try:
         # Fetch the current nonce for the sender's address
         nonce = w3.eth.getTransactionCount(sender_address, 'pending')
-        logger.info(f"Nonce fetched for sender address {sender_address}: {nonce}")
+        nft_mtc_logger.info(f"Nonce fetched for sender address {sender_address}: {nonce}")
 
         # Contract details
         nft_contract_address = "0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a"
@@ -74,13 +74,13 @@ def transfer_nft(sender_private_key, sender_address, recipient_address, token_id
 
         # Get dynamic gas price
         gas_price = w3.eth.gas_price
-        logger.info(f"Gas price fetched: {gas_price}")
+        nft_mtc_logger.info(f"Gas price fetched: {gas_price}")
 
         # Estimate gas limit for the transaction
         estimated_gas = nft_contract.functions.safeTransferFrom(sender_address, recipient_address, token_id).estimateGas({
             'from': sender_address
         }) + 10000  # Adding a buffer to the gas estimate
-        logger.info(f"Estimated gas with buffer: {estimated_gas}")
+        nft_mtc_logger.info(f"Estimated gas with buffer: {estimated_gas}")
 
         # Build the transaction
         tx = nft_contract.functions.safeTransferFrom(sender_address, recipient_address, token_id).buildTransaction({
@@ -91,22 +91,22 @@ def transfer_nft(sender_private_key, sender_address, recipient_address, token_id
             'from': sender_address,
         })
 
-        logger.info(f"Transaction built: {tx}")
+        nft_mtc_logger.info(f"Transaction built: {tx}")
 
         # Sign the transaction with the sender's private key
         signed_txn = w3.eth.account.signTransaction(tx, sender_private_key)
-        logger.info(f"Transaction signed. Raw transaction: {signed_txn.rawTransaction.hex()}")
+        nft_mtc_logger.info(f"Transaction signed. Raw transaction: {signed_txn.rawTransaction.hex()}")
 
         # Send the transaction
         tx_hash = w3.eth.sendRawTransaction(signed_txn.rawTransaction)
-        logger.info(f"Transaction sent. Hash: {tx_hash.hex()}")
+        nft_mtc_logger.info(f"Transaction sent. Hash: {tx_hash.hex()}")
 
         # Wait for the transaction receipt
         try:
             receipt = w3.eth.waitForTransactionReceipt(tx_hash, timeout=120)  # Timeout set to 2 minutes
-            logger.info(f"Transaction receipt received: {receipt}")
+            nft_mtc_logger.info(f"Transaction receipt received: {receipt}")
         except Exception as e:
-            logger.error(f"Error waiting for transaction receipt: {e}")
+            nft_mtc_logger.error(f"Error waiting for transaction receipt: {e}")
             raise
 
         if receipt.status != 1:
@@ -115,7 +115,7 @@ def transfer_nft(sender_private_key, sender_address, recipient_address, token_id
         return receipt.transactionHash.hex()
 
     except Exception as e:
-        logger.error(f"Error in transfer_nft: {e}")
+        nft_mtc_logger.error(f"Error in transfer_nft: {e}")
         return None
 
 # def transfer_matic(to_address, amount):
@@ -206,7 +206,7 @@ def get_winner(token_id):
         # artina = ARTINA_Ballance.objects.first()
         commission = float(highest_bid.eth)
         value = (1.5 * commission) / 100
-        logger.info(f"ARTINA commission value: {value}")
+        nft_mtc_logger.info(f"ARTINA commission value: {value}")
         # artina.artina_commision = value
         # artina.artina_commision_count += 1
         # artina.save()
@@ -225,7 +225,7 @@ def get_winner(token_id):
                               sender_address=senderWallet.address, 
                               recipient_address=recipientWallet.address, 
                               token_id=token_id)
-        logger.info(f"NFT transfer result: {tx_hash}")
+        nft_mtc_logger.info(f"NFT transfer result: {tx_hash}")
         nft.owner=recipient
         nft.save()
         if not tx_hash:
@@ -249,12 +249,12 @@ def get_winner(token_id):
                 "template": "AccountChargeVerification"
             }
         )
-        logger.info(f"Notification sent to {phone_number}. Response: {response.json()}")
+        nft_mtc_logger.info(f"Notification sent to {phone_number}. Response: {response.json()}")
 
         return Response({"winner": recipient_data, "price": highest_bid.eth}, status=status.HTTP_200_OK)
 
     except Exception as e:
-        logger.error(f"Error in get_winner: {e}")
+        nft_mtc_logger.error(f"Error in get_winner: {e}")
         return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -265,11 +265,11 @@ def transfer_matic(to_address, amount):
     try:
         # Get dynamic gas price
         gas_price = w3.eth.gas_price
-        logger.info(f"Gas price fetched: {gas_price}")
+        nft_mtc_logger.info(f"Gas price fetched: {gas_price}")
 
         # Get nonce
         nonce = w3.eth.getTransactionCount(COMPANY_WALLET_ADDRESS, 'pending')
-        logger.info(f"Nonce fetched for company wallet address {COMPANY_WALLET_ADDRESS}: {nonce}")
+        nft_mtc_logger.info(f"Nonce fetched for company wallet address {COMPANY_WALLET_ADDRESS}: {nonce}")
 
         # Estimate gas limit for the transaction
         estimated_gas = w3.eth.estimateGas({
@@ -277,7 +277,7 @@ def transfer_matic(to_address, amount):
             'to': to_address,
             'value': w3.toWei(amount, 'ether'),
         }) + 10000  # Adding a buffer to the gas estimate
-        logger.info(f"Estimated gas with buffer: {estimated_gas}")
+        nft_mtc_logger.info(f"Estimated gas with buffer: {estimated_gas}")
 
         tx = {
             'nonce': nonce,
@@ -288,19 +288,19 @@ def transfer_matic(to_address, amount):
             'chainId': 137  # Polygon Mainnet Chain ID
         }
 
-        logger.info(f"Transaction to transfer MATIC: {tx}")
+        nft_mtc_logger.info(f"Transaction to transfer MATIC: {tx}")
 
         # Sign the transaction
         signed_tx = w3.eth.account.signTransaction(tx, COMPANY_WALLET_PRIVATE_KEY)
-        logger.info(f"Transaction signed. Raw transaction: {signed_tx.rawTransaction.hex()}")
+        nft_mtc_logger.info(f"Transaction signed. Raw transaction: {signed_tx.rawTransaction.hex()}")
 
         # Send the transaction
         tx_hash = w3.eth.sendRawTransaction(signed_tx.rawTransaction)
-        logger.info(f"Transaction sent. Hash: {tx_hash.hex()}")
+        nft_mtc_logger.info(f"Transaction sent. Hash: {tx_hash.hex()}")
 
         # Wait for the transaction receipt
         receipt = w3.eth.waitForTransactionReceipt(tx_hash, timeout=120)  # Timeout set to 2 minutes
-        logger.info(f"Transaction receipt received: {receipt}")
+        nft_mtc_logger.info(f"Transaction receipt received: {receipt}")
 
         if receipt.status != 1:
             raise Exception("Transaction failed")
@@ -308,7 +308,7 @@ def transfer_matic(to_address, amount):
         return receipt.transactionHash.hex()
 
     except Exception as e:
-        logger.error(f"Error in transfer_matic: {e}")
+        nft_mtc_logger.error(f"Error in transfer_matic: {e}")
         return None
 
 # def get_winner(token_id):
@@ -391,7 +391,7 @@ def transfer_matic(to_address, amount):
 
 
 # Initialize logger
-logger = logging.getLogger('transferTest')
+test_logger = logging.getLogger('transferTest')
 
 class TransferViewSet(viewsets.ViewSet):
     
@@ -410,10 +410,10 @@ class TransferViewSet(viewsets.ViewSet):
             if tx_hash:
                 return Response({"transaction_hash": tx_hash}, status=status.HTTP_200_OK)
             else:
-                logger.error(f"Failed to transfer NFT with token_id {token_id} from {sender_address} to {recipient_address}.")
+                test_logger.error(f"Failed to transfer NFT with token_id {token_id} from {sender_address} to {recipient_address}.")
                 return Response({"error": "Failed to transfer NFT."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
-            logger.error(f"Exception during NFT transfer: {e}")
+            test_logger.error(f"Exception during NFT transfer: {e}")
             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @action(detail=False, methods=['post'])
@@ -434,10 +434,10 @@ class TransferViewSet(viewsets.ViewSet):
             if tx_hash:
                 return Response({"transaction_hash": tx_hash}, status=status.HTTP_200_OK)
             else:
-                logger.error(f"Failed to transfer {amount} MATIC to {to_address}.")
+                test_logger.error(f"Failed to transfer {amount} MATIC to {to_address}.")
                 return Response({"error": "Failed to transfer MATIC."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
-            logger.error(f"Exception during MATIC transfer: {e}")
+            test_logger.error(f"Exception during MATIC transfer: {e}")
             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
