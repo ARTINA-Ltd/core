@@ -1521,7 +1521,7 @@ class EmailMixin(viewsets.ViewSet):
         msg['Subject'] = subject
 
         # Attach the message to the email
-        msg.attach(MIMEText(message, 'plain'))
+        msg.attach(MIMEText(html_content, 'html'))
 
         # Connect to the SMTP server
         with smtplib.SMTP(smtp_server, smtp_port) as server:
@@ -1558,7 +1558,78 @@ class EmailMixin(viewsets.ViewSet):
             EmailVerification.objects.create(user=user, email=email, verification_code=verification_code)
             print(f"Verification code for {email}: {verification_code}")
         subject="verify email from ARTINA"
-        message = f"your verfication code is : {verification_code}"
+        message = f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2-Step Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .email-container {
+            background-color: #ffffff;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .app-icon {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 20px;
+        }
+        .verification-code {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #2C3E50;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: #2980b9;
+            color: #ffffff;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        .cta-button:hover {
+            background-color: #1e6a9c;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- App Icon -->
+        <img src="https://via.placeholder.com/50" alt="App Icon" class="app-icon">
+
+        <!-- Verification Code -->
+        <p>Your verification code is:</p>
+        <div class="verification-code">{verification_code}</div>
+
+        <!-- CTA Button -->
+        <a href="https://artina.org" class="cta-button">Go to Artina</a>
+
+        <!-- Footer -->
+        <p class="footer">If you did not request this code, please ignore this email.</p>
+    </div>
+</body>
+</html>
+'''
         recipient_email=email
         self.send_email(subject,recipient_email, message)
         return Response({'success': 'email sent.'}, status.HTTP_200_OK)

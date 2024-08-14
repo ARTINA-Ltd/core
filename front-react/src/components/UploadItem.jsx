@@ -91,115 +91,59 @@ const UploadItem = () => {
     setDisabled(true);
     setTimeout(() => setDisabled(false), 30000);
     e.preventDefault();
-    if (address) {
-      setIsLoading(true);
-      Notify.info(t("mintingNotif"));
+    setIsLoading(true);
+    Notify.info(t("mintingNotif"));
 
-      axios
-        .post(
-          "https://api.artina.org/api/transaction/NFTViewSet/",
-          {
-            nft_name: upladObj.item_name,
-            creator: upladObj.creator,
-            last_price: upladObj.last_price,
-            image_nft: imageUrl,
-            description_nft: upladObj.description,
-            external_link: upladObj.external_link,
-            author_address: address,
-            has_physical: hasPhysical,
-            category: selectedCategory,
-            has_internal_wallet: hasInternalWallet,
-            data: uploadObj.properties,
-            collection: selectedCollection,
+    axios
+      .post(
+        "https://api.artina.org/api/transaction/NFTViewSet/",
+        {
+          nft_name: upladObj.item_name,
+          creator: upladObj.creator,
+          last_price: upladObj.last_price,
+          image_nft: imageUrl,
+          description_nft: upladObj.description,
+          external_link: upladObj.external_link,
+          author_address: "",
+          has_physical: hasPhysical,
+          category: selectedCategory,
+          has_internal_wallet: true,
+          data: uploadObj.properties,
+          collection: selectedCollection,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-            },
-            mode: "cors",
-          }
-        )
-        .then((res) => {
-          setTokenId(res.data);
-          Notify.success(t("mintSuccessNotif"));
+          mode: "cors",
+        }
+      )
+      .then((res) => {
+        setTokenId(res.data);
+        Notify.success(t("mintSuccessNotif"));
+        setIsLoading(false);
+        setIsUploaded(true);
+      })
+      .catch((e) => {
+        if (e.response.status === 401) {
+          Notify.failure("Please log in to your account");
+          navigate("/");
+        } else {
           setIsLoading(false);
-          setIsUploaded(true);
-        })
-        .catch((e) => {
-          setIsLoading(false);
+          console.log(e);
           console.log("Category:", selectedCategory);
           console.log("Has Physical:", hasPhysical);
-
-          if (e.response.data.error === "your money is not enough") {
-            Notify.failure(t("mintLowBalanceNotif"));
-          } else if (e.response.status === 3) {
-            Notify.failure(t("tryAgain"));
-            navigate("/");
-          } else if (e.response.status === 401) {
-            Notify.failure("Please log in to your account");
-            navigate("/");
-          } else {
-            Notify.failure(t("error"));
-          }
-          setIsLoading(false);
-        });
-    } else if (hasInternalWallet) {
-      setIsLoading(true);
-      Notify.info(t("mintingNotif"));
-
-      axios
-        .post(
-          "https://api.artina.org/api/transaction/NFTViewSet/",
-          {
-            nft_name: upladObj.item_name,
-            creator: upladObj.creator,
-            last_price: upladObj.last_price,
-            image_nft: imageUrl,
-            description_nft: upladObj.description,
-            external_link: upladObj.external_link,
-            author_address: "",
-            has_physical: hasPhysical,
-            category: selectedCategory,
-            has_internal_wallet: hasInternalWallet,
-            data: uploadObj.properties,
-            collection: selectedCollection,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-            },
-            mode: "cors",
-          }
-        )
-        .then((res) => {
-          setTokenId(res.data);
-          Notify.success(t("mintSuccessNotif"));
-          setIsLoading(false);
-          setIsUploaded(true);
-        })
-        .catch((e) => {
-          if (e.response.status === 401) {
-            Notify.failure("Please log in to your account");
-            navigate("/");
-          } else {
-            setIsLoading(false);
-            console.log(e);
-            console.log("Category:", selectedCategory);
-            console.log("Has Physical:", hasPhysical);
-          }
-          if (e.response.status === 3) {
-            Notify.failure(t("tryAgain"));
-          }
-          if (e.response.data.error === "your money is not enough") {
-            Notify.failure(t("mintLowBalanceNotif"));
-          } else {
-            Notify.failure(t("error"));
-          }
-          setIsLoading(false);
-        });
-    } else {
-      Notify.failure(t("mintConnectWalletNotif"));
-    }
+        }
+        if (e.response.status === 3) {
+          Notify.failure(t("tryAgain"));
+        }
+        if (e.response.data.error === "your money is not enough") {
+          Notify.failure(t("mintLowBalanceNotif"));
+        } else {
+          Notify.failure(t("error"));
+        }
+        setIsLoading(false);
+      });
   };
   const handleCopy = () => {
     navigator.clipboard.writeText("0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a");
@@ -337,7 +281,7 @@ const UploadItem = () => {
             </div>
           </div>
           <div className="w-full flex gap-4 sm:flex-col">
-            {}
+            { }
             <div className="">
               <div className="flex gap-4 items-center text-2xl cursor-pointer" onClick={() => document.getElementById("AddNftPopup").showModal()}>
                 <p className={`text-[14px] pt-2 border-x-2 border-x-transparent p-2 ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"} font-b5`}>{t("chooseProperties")} </p>
@@ -400,7 +344,7 @@ const UploadItem = () => {
             />
           </div>
 
-          <div className="w-full flex gap-3 items-center">
+          {/* <div className="w-full flex gap-3 items-center">
             <div className="">{t("isAddWithWallet")}</div>
             <div className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${hasInternalWallet ? "bg-green-100 text-green-400" : "bg-neutral text-neutral-content"} transition-all`} onClick={() => setHasInternalWallet(true)}>
               {t("yes")}
@@ -408,7 +352,7 @@ const UploadItem = () => {
             <div className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${!hasInternalWallet ? "bg-red-100 text-red-400" : "bg-neutral text-neutral-content"} transition-all`} onClick={() => setHasInternalWallet(false)}>
               {t("no")}
             </div>
-          </div>
+          </div> */}
 
           <div className="flex justify-between">
             <div className="text-[14px] text-gray-400 pt-2">{t("basicCost")}</div>
