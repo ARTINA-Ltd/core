@@ -1558,34 +1558,35 @@ class EmailMixin(viewsets.ViewSet):
             EmailVerification.objects.create(user=user, email=email, verification_code=verification_code)
             print(f"Verification code for {email}: {verification_code}")
         subject="verify email from ARTINA"
-        message = f'''<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2-Step Verification</title>
-    <style>
         
-    </style>
-</head>
-<body>
-    <div class="email-container">
-        <!-- App Icon -->
-        <img src="https://via.placeholder.com/50" alt="App Icon" class="app-icon">
+        message = '''
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>2-Step Verification</title>
+        </head>
+        <body>
+            <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; max-width: 600px; margin: auto; background-color: #f4f4f4; border-radius: 8px;">
+                <!-- App Icon -->
+                <img src="https://via.placeholder.com/50" alt="App Icon" style="width: 50px; height: 50px; margin-bottom: 20px;">
 
-        <!-- Verification Code -->
-        <p>Your verification code is:</p>
-        <div class="verification-code">{verification_code}</div>
+                <!-- Verification Code -->
+                <p style="font-size: 20px; color: #333;">Your verification code is:</p>
+                <div style="font-size: 32px; font-weight: bold; color: #2C3E50;">{verification_code}</div>
 
-        <!-- CTA Button -->
-        <a href="https://artina.org" class="cta-button">Go to Artina</a>
+                <!-- CTA Button -->
+                <a href="https://artina.org" style="display: inline-block; background-color: #2980b9; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 5px; margin-top: 20px; font-size: 16px;">Go to Artina</a>
 
-        <!-- Footer -->
-        <p class="footer">If you did not request this code, please ignore this email.</p>
-    </div>
-</body>
-</html>
-'''
+                <!-- Footer -->
+                <p style="font-size: 12px; color: #777; margin-top: 30px;">If you did not request this code, please ignore this email.</p>
+            </div>
+        </body>
+        </html>
+        '''.format(verification_code=verification_code)
+
+
         recipient_email=email
         self.send_email(subject,recipient_email, message)
         return Response({'success': 'email sent.'}, status.HTTP_200_OK)
