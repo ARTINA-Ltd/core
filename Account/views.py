@@ -1521,7 +1521,7 @@ class EmailMixin(viewsets.ViewSet):
         msg['Subject'] = subject
 
         # Attach the message to the email
-        msg.attach(MIMEText(html_content, 'html'))
+        msg.attach(MIMEText(message, 'html'))
 
         # Connect to the SMTP server
         with smtplib.SMTP(smtp_server, smtp_port) as server:
