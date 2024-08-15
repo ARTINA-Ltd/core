@@ -1566,25 +1566,73 @@ class EmailMixin(viewsets.ViewSet):
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>2-Step Verification</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f4f4f4;
+                    color: #333;
+                    margin: 0;
+                    padding: 0;
+                    text-align: center;
+                }
+                .email-container {
+                    background-color: #ffffff;
+                    max-width: 600px;
+                    margin: 20px auto;
+                    padding: 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+                .app-icon {
+                    width: 50px;
+                    height: 50px;
+                    margin-bottom: 20px;
+                }
+                .verification-code {
+                    font-size: 24px;
+                    font-weight: bold;
+                    margin: 20px 0;
+                    color: #2C3E50;
+                }
+                .cta-button {
+                    display: inline-block;
+                    background-color: #2980b9;
+                    color: #ffffff;
+                    padding: 12px 24px;
+                    text-decoration: none;
+                    border-radius: 5px;
+                    margin-top: 20px;
+                    font-size: 16px;
+                }
+                .cta-button:hover {
+                    background-color: #1e6a9c;
+                }
+                .footer {
+                    margin-top: 30px;
+                    font-size: 12px;
+                    color: #777;
+                }
+            </style>
         </head>
         <body>
-            <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; max-width: 600px; margin: auto; background-color: #f4f4f4; border-radius: 8px;">
+            <div class="email-container">
                 <!-- App Icon -->
-                <img src="https://via.placeholder.com/50" alt="App Icon" style="width: 50px; height: 50px; margin-bottom: 20px;">
+                <img src="https://via.placeholder.com/50" alt="App Icon" class="app-icon">
 
                 <!-- Verification Code -->
-                <p style="font-size: 20px; color: #333;">Your verification code is:</p>
-                <div style="font-size: 32px; font-weight: bold; color: #2C3E50;">{verification_code}</div>
+                <p>Your verification code is:</p>
+                <div class="verification-code">{verification_code}</div>
 
                 <!-- CTA Button -->
-                <a href="https://artina.org" style="display: inline-block; background-color: #2980b9; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 5px; margin-top: 20px; font-size: 16px;">Go to Artina</a>
+                <a href="https://artina.org" class="cta-button">Go to Artina</a>
 
                 <!-- Footer -->
-                <p style="font-size: 12px; color: #777; margin-top: 30px;">If you did not request this code, please ignore this email.</p>
+                <p class="footer">If you did not request this code, please ignore this email.</p>
             </div>
         </body>
         </html>
         '''.format(verification_code=verification_code)
+
 
 
         recipient_email=email
