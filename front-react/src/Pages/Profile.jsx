@@ -116,21 +116,6 @@ function Profile() {
   };
 
   const handleSendEmailVerificationCode = () => {
-    axios
-      .post(
-        "https://api.artina.org/api/account/register/check_email/",
-        {
-          email: values.email,
-          verification_code: emailVerificationCode,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-          },
-        }
-      )
-      .then((e) => {
-        Notify.success("تایید شد");
         axios
           .post(
             "https://api.artina.org/api/account/email-verification-code/",
@@ -151,7 +136,6 @@ function Profile() {
           .catch(() => {
             Notify.failure("ایمیل تکراری است");
           });
-      });
   };
 
   function hanldeClickPhone() {
