@@ -1567,34 +1567,34 @@ class EmailMixin(viewsets.ViewSet):
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>2-Step Verification</title>
             <style>
-                body {
+                body {{
                     font-family: Arial, sans-serif;
                     background-color: #f4f4f4;
                     color: #333;
                     margin: 0;
                     padding: 0;
                     text-align: center;
-                }
-                .email-container {
+                }}
+                .email-container {{
                     background-color: #ffffff;
                     max-width: 600px;
                     margin: 20px auto;
                     padding: 20px;
                     border-radius: 8px;
                     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                }
-                .app-icon {
+                }}
+                .app-icon {{
                     width: 50px;
                     height: 50px;
                     margin-bottom: 20px;
-                }
-                .verification-code {
+                }}
+                .verification-code {{
                     font-size: 24px;
                     font-weight: bold;
                     margin: 20px 0;
                     color: #2C3E50;
-                }
-                .cta-button {
+                }}
+                .cta-button {{
                     display: inline-block;
                     background-color: #2980b9;
                     color: #ffffff;
@@ -1603,15 +1603,15 @@ class EmailMixin(viewsets.ViewSet):
                     border-radius: 5px;
                     margin-top: 20px;
                     font-size: 16px;
-                }
-                .cta-button:hover {
+                }}
+                .cta-button:hover {{
                     background-color: #1e6a9c;
-                }
-                .footer {
+                }}
+                .footer {{
                     margin-top: 30px;
                     font-size: 12px;
                     color: #777;
-                }
+                }}
             </style>
         </head>
         <body>
@@ -1632,6 +1632,7 @@ class EmailMixin(viewsets.ViewSet):
         </body>
         </html>
         '''.format(verification_code=verification_code)
+
 
 
 
