@@ -122,7 +122,7 @@ const BalanceDialogMatic = () => {
           } else Notify.failure("there was an error!");
           console.log(err);
         });
-    } catch {}
+    } catch { }
     getBalance();
   };
 
@@ -150,7 +150,7 @@ const BalanceDialogMatic = () => {
           Notify.failure("there was an error!");
           console.log(err);
         });
-    } catch {}
+    } catch { }
     getBalance();
   };
 
@@ -252,7 +252,7 @@ const BalanceDialogMatic = () => {
               }}
               className={`tab bg-base-300 ${currentTab === "Ethereum" && "tab-active"}`}
             >
-              Ethereum
+              {t("ethereum")}
             </div>
             <div
               role="tab"
@@ -261,7 +261,7 @@ const BalanceDialogMatic = () => {
               }}
               className={`tab bg-base-300 ${currentTab === "Matic" && "tab-active"}`}
             >
-              Matic
+              {t("matic")}
             </div>
           </div>
           <div className="w-full gap-4 font-b4 rounded-b-md">
@@ -269,14 +269,26 @@ const BalanceDialogMatic = () => {
               <div className="text-lg px-4 lg:text-md sm:px-2 sm:text-sm">{currentTab === "Ethereum" ? `${t("yourETH")} ${getData ? getData.eth_balance : "0"}` : `${t("yourMatic")} ${getData ? getData.matic_balance : "0"}`} </div>
             </div>
             <div className="px-4">
-              <p>Buy Price: {currentTab === "Ethereum" ? ethPrice.ETH_buy_price : maticPrice.MATIC_buy_price}</p>
-              <p>Sell Price: {currentTab === "Ethereum" ? ethPrice.ETH_sell_price : maticPrice.MATIC_sell_price}</p>
+              <p>
+                {t("buyprice")}:{" "}
+                {currentTab === "Ethereum"
+                  ? Number(ethPrice.ETH_buy_price || 0).toFixed(3)
+                  : Number(maticPrice.MATIC_buy_price || 0).toFixed(2)} {" "}
+                {t("tooman")}
+              </p>
+              <p>
+                {t("sellprice")}:{" "}
+                {currentTab === "Ethereum"
+                  ? Number(ethPrice.ETH_sell_price || 0).toFixed(3)
+                  : Number(maticPrice.MATIC_sell_price || 0).toFixed(2)} {" "}
+                {t("tooman")}
+              </p>
             </div>
             <div className="w-full flex flex-col gap-8  my-2  shadow-md  p-4 rounded-md">
               <div className="w-full flex gap-4 flex-col items-center font-b4 ">
                 <p className="self-start font-bold mb-4">{t("buy")}</p>
                 <div className="w-full flex">
-                  <SimpleInput type="number" title={`${t("amount")} ( ${currentTab === "Ethereum" ? "Ethereum" : "Matic"})`} placeholder={t("example")} isValid={buyAmount != false} validationError={t("required")} onChange={(e) => setBuyAmount(e.target.value)} />
+                  <SimpleInput type="number" title={`${t("amount")} (${currentTab === "Ethereum" ? t("ethereum") : t("matic")})`} placeholder={t("example")} isValid={buyAmount != false} validationError={t("required")} onChange={(e) => setBuyAmount(e.target.value)} />
                   <p>{buyAmount ? ` قیمت تمام شده ${currentTab === "Ethereum" ? ethPrice.ETH_buy_price * buyAmount : maticPrice.MATIC_buy_price * buyAmount}` : ""}</p>
                 </div>
                 <div
@@ -291,7 +303,7 @@ const BalanceDialogMatic = () => {
 
               <div className="w-full flex gap-4 flex-col items-center font-b4 border-t-2 border-t-primary border-opacity-60 pt-4">
                 <p className="self-start font-bold mb-4">{t("sell")}</p>
-                <SimpleInput type="number" title={`${t("amount")}  (${currentTab === "Ethereum" ? "Ethereum" : "Matic"})`} placeholder={t("example")} isValid={sellAmount != false} validationError={t("required")} onChange={(e) => setSellAmount(e.target.value)} />
+                <SimpleInput type="number" title={`${t("amount")}  (${currentTab === "Ethereum" ? t("ethereum") : t("matic")})`} placeholder={t("example")} isValid={sellAmount != false} validationError={t("required")} onChange={(e) => setSellAmount(e.target.value)} />
                 <p>{sellAmount ? ` قیمت تمام شده ${currentTab === "Ethereum" ? ethPrice.ETH_sell_price * sellAmount : maticPrice.MATIC_sell_price * sellAmount}` : ""}</p>
                 <div
                   className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all sm:text-xs sm:px-4 self-start"

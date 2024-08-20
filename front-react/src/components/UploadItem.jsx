@@ -206,7 +206,7 @@ const UploadItem = () => {
       <div className="flex gap-5 items-start lg:flex-col lg:items-center">
         <SimpleCard className="bg-primary w-[45%] flex flex-col relative gap-5 items-center overflow-hidden lg:w-[55%] md:w-[65%] sm:w-[80%]">
           <div className="relative group w-full rounded-2xl" id="nftImage">
-            <img alt="" className="w-full h-auto max-h-[800px] rounded-2xl" src={imageUrl ? imageUrl : "https://api.artina.org/static/images/No_Image_Available_SrUxrax.png"} />
+            <img alt="" className="w-full h-auto max-h-[800px] rounded-2xl" src={imageUrl ? imageUrl : "https://api.artina.org/static/images/No_Image_Available.png"} />
 
             <div className="group-hover:opacity-80 opacity-0 cursor-pointer duration-300 bg-black transition-all h-full w-full absolute inset-0 m-auto items-center justify-center flex rounded-2xl" onClick={() => inputFile.current.click()}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="0.5" stroke="currentColor" className="text-white " width="3em">
