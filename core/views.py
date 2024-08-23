@@ -234,7 +234,7 @@ def get_winner(token_id):
                 "receptor": phone_number,
                 "token1": recipient.profile.first_name,
                 "token2": token_id,
-                "template": "AccountChargeVerification"
+                "template": "BuyVerification"
             }
         )
         nft_mtc_logger.info(f"Notification sent to {phone_number}. Response: {response.json()}")
