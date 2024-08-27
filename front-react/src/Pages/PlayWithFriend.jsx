@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import NTSNavbar from "../components/NTSNavbar/NTSNavbar.jsx";
 import { UserContext } from "../App.js";
 import axios from "axios";
-import PaperRockScissors from "../components/Nts/PaperRockScissors.jsx";
 import PaperRockScissorsFriend from "../components/Nts/PaperRockScissorsFriends.jsx";
 const PlayWithFriend = () => {
   const user = useContext(UserContext);
@@ -31,7 +30,7 @@ const PlayWithFriend = () => {
         {sessions &&
           sessions.map((session) => {
             return (
-              <div key={session.game_id}>
+              <div key={session.game_id} className="h-full">
                 <PaperRockScissorsFriend gameId={session.game_id} opChoice={session.opponent_choice} result={session.result} opUsername={session.opponent_username} opProfile={session.opponent_profile_picture} choice={session.choice} />
               </div>
             );

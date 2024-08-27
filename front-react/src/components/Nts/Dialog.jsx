@@ -30,6 +30,7 @@ const Dialog = ({ username }) => {
         }
       )
       .then((e) => setUsers(removeRecord(e.data)));
+    navigate("./play-with-friend");
   };
 
   function removeRecord(array) {
@@ -60,7 +61,6 @@ const Dialog = ({ username }) => {
             <BorderButton
               onClick={() => {
                 createGame();
-                navigate("./play-with-friend");
               }}
               className={`mx-auto`}
             >

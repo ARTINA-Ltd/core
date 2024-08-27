@@ -30,13 +30,13 @@ const NTSNavbar = ({ refetch }) => {
 
   return (
     userProfile && (
-      <div className="h-32 p-4 bg-base-300 sticky top-0 z-[100] overflow-hidden">
+      <div className="h-26 p-4 bg-base-300 z-[100] overflow-hidden">
         <div className="w-[80vw] mx-auto flex justify-between">
           <div className="flex gap-8 h-fit my-auto items-center">
             <div className="tooltip tooltip-bottom" data-tip="Enter Artina Website">
               <img className="h-16 sm:h-12 rounded-lg cursor-pointer" src={artinaLogo} alt="logo" onClick={() => navigate("/")} />
             </div>
-            <img alt="" src={userProfile.profile_picture} onClick={() => navigate("/nts")} className="h-20 aspect-square object-cover cursor-pointer rounded-full p-1 border" />
+            <img alt="" src={userProfile.profile_picture} onClick={() => navigate("/nts")} className="h-16 aspect-square object-cover cursor-pointer rounded-full p-1 border" />
             <h1 className="text-3xl">My points:</h1>
             <h2 className="text-2xl">{userProfile.points}</h2>
           </div>

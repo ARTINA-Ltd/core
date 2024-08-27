@@ -19,6 +19,7 @@ const NTS = () => {
   const [sessionId, setSessionId] = useState(0);
   const [selectedMove, setSelectedMove] = useState("");
   const [refresh, setRefresh] = useState(false);
+  const [soloDisabled, setSoloDisabled] = useState(false);
   const handleUserChoice = (choice) => {
     setSelectedMove(choice);
   };
@@ -49,6 +50,7 @@ const NTS = () => {
         }
       )
       .then((e) => {
+        setSoloDisabled(false);
         console.log(e.data.id);
         setSessionId(e.data.id);
       })
@@ -72,6 +74,7 @@ const NTS = () => {
         setRefresh(!refresh);
         setStatus(e.data.result);
         setServerResponse(e.data.server_choice);
+        setSoloDisabled(!soloDisabled);
       });
   };
 
@@ -131,8 +134,10 @@ const NTS = () => {
           </div>
         </div>
         <PaperRockScissors serverResponse={serverResponse} status={status} onChoice={handleUserChoice} />
-        <div className="mx-auto w-fit">
-          <BorderButton onClick={playSolo}>Start the game</BorderButton>
+        <div className="mx-auto mt-4 w-fit">
+          <BorderButton disabled={soloDisabled} onClick={playSolo}>
+            Start the game
+          </BorderButton>
         </div>
       </div>
       {user && <Dialog username={user.data.username} />}
