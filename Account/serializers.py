@@ -48,6 +48,11 @@ class ArtistRatingSerializer(serializers.ModelSerializer):
         model = ArtistReviewRating
         fields = '__all__'        
 
+class AffiliateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Affiliate
+        fields = '__all__'        
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:

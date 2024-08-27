@@ -131,7 +131,7 @@ class RegisterViewSet(viewsets.ModelViewSet):
         username = request.data.get('username')
         phone_number = request.data.get('phone_number')
         email = request.data.get('email')
-        is_foreigner = request.data.get('is_foreigner')
+        referral_code = request.data.get('referral_code', None)
         register_logger.info(f"Register attempt for username: {username}, email: {email}, phone_number: {phone_number}")  # Log the registration attempt
 
         if User.objects.filter(username=username).exists():
@@ -141,6 +141,15 @@ class RegisterViewSet(viewsets.ModelViewSet):
         if User.objects.filter(email=email).exists():
             register_logger.warning(f"Email {email} is already registered")  # Log if the email already exists
             return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # If a referral code was provided, find the referring affiliate and credit them
+        if referral_code:
+            try:
+                referrer_affiliate = Affiliate.objects.get(referral_code=referral_code)
+                referrer_affiliate.credit_balance += 3  # Award 10 credits 
+                referrer_affiliate.save()
+            except Affiliate.DoesNotExist:
+                return Response({"error": "Invalid referral code"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Create the user if the username, phone_number, and email are all unique
         serializer = self.get_serializer(data=request.data)
@@ -231,6 +240,13 @@ class UserInfoViewSet(viewsets.ViewSet):
             'is_foreigner':profile.is_foreigner
         }
         return Response(data)
+
+class AffiliateDetailView(viewsets.ModelViewSet):
+    serializer_class = serializers.AffiliateSerializer
+
+    def get_object(self):
+        return self.request.user.affiliate
+    
 
 class ArtistRateViewSet(viewsets.ModelViewSet):
     queryset = ArtistReviewRating.objects.all()

@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 from .models import UserBalance,Profile, Role
 from supervisor.models import DocumentApproval
+from .models import Affiliate
+import uuid
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -26,4 +28,13 @@ def update_user_role(sender, instance, **kwargs):
             profile = instance.user_profile
             profile.role = user_one_role
             profile.save()
-            
+
+
+
+
+@receiver(post_save, sender=User)
+def create_affiliate(sender, instance, created, **kwargs):
+    if created:
+        affiliate = Affiliate.objects.create(user=instance)
+        affiliate.referral_code = str(uuid.uuid4())[:8]  # Shorten UUID to 8 characters
+        affiliate.save()

@@ -19,7 +19,18 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.decorators import action
 from django.shortcuts import redirect                  
-from Account.views import updating_balance
+from Account.views import updating_balance,check_balance
+from rest_framework import status as drf_status
+from django.utils import timezone
+from rest_framework import viewsets, permissions, status
+from rest_framework.response import Response
+from .models import Exhibition, Ticket
+from .serializers import ExhibitionSerializer
+import os
+import requests
+from django.conf import settings
+from django.utils import timezone
+from django.db.models import Q
 
 class UserExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.ExhibitionSerializer
@@ -263,7 +274,6 @@ class NFTsByExhibitionViewSet(viewsets.ModelViewSet):
     #         permission_classes = [IsAuthenticated]  # Add appropriate permissions here
     #     return [permission() for permission in permission_classes]
 
-from rest_framework import status as drf_status
 
 
 class TicketViewSet(viewsets.ViewSet):
@@ -312,9 +322,7 @@ class TicketViewSet(viewsets.ViewSet):
         exhibition_id = request.data.get("exhibition_id")  
         exhibition=None
         exhibition= Exhibition.objects.filter(id=exhibition_id).first()
-
         amount=exhibition.price
-        email= user.profile.email
         if amount is None or amount == 0 :
             return Response({"error": "this exhibition need no ticket."})
 
@@ -324,48 +332,16 @@ class TicketViewSet(viewsets.ViewSet):
             return Response({"error": "you have the ticket."})
 
         else :
-            response = self.send_payment_request(amount)
-            if response.status_code == 200:
-                payment_info = response.json()
-                print(f">>>>>{payment_info}")
-                authority = payment_info['data']['authority']
-                payment = Ex_Payment.objects.create(user=user, amount=amount, authority=authority,exhibition=exhibition)
-                
-                redirect_url = self.get_redirect_url(payment)
 
-                return Response({'url': redirect_url}, status=status.HTTP_200_OK)
-            else:
-                return Response(response.json(), status=response.status_code)
-
-    @action(detail=False, methods=['get'])
-
-    def verify(self, request):    
-        authority = request.GET.get('Authority')
-        print("<<<<<verify>>>>>>")
-        payment = Ex_Payment.objects.get(authority=authority)
-        failure_url = f'http://artina.org/payment_status/?status=failed&authority={authority}'
-        user = self.request.user
-        exhibition = None  # Define exhibition here
-        response = self.verify_payment(payment.amount, payment.authority)
-
-        # Redirect to your React front-end with payment status
-        success_url = f'http://artina.org/payment_status/?status=success&authority={authority}'
-        profile=Profile.objects.get(user=user)
-        if response.status_code == 200:
-            verification_info = response.json()
-            verification_status = verification_info['data']['code'] 
-            if verification_status == 100:
-                payment.is_paid = True
-                payment.save()
-
-                # Fetch the exhibition associated with the payment
-                exhibition = Exhibition.objects.get(id=payment.exhibition_id)
-
-                ticket=Ticket.objects.create(user=user, exhibition=exhibition)
-                # Send the SMS via Kavenegar API
-                # The URL IS like : https://api.kavenegar.com/v1/{API-KEY}/verify/lookup.json
-                updating_balance(user_id=user.id, currency='rial', amount=payment.amount, side="deposit")
-                response = requests.post(
+            profile=Profile.objects.get(user=user)
+            res=check_balance(amount=exhibition.price, user_id=user.id)
+            if res.status_code==400 :
+                    return Response({"error": "insufficient balance."},status=status.HTTP_400_BAD_REQUEST)
+         
+            updating_balance(user_id=user.id, currency='rial', amount=exhibition.price, side="withdrawal")
+            ticket=Ticket.objects.create(user=user, exhibition=exhibition)
+            # Send the SMS via Kavenegar API
+            response = requests.post(
                         f"https://api.kavenegar.com/v1/"
                         f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
                         f"/verify/lookup.json",
@@ -377,52 +353,8 @@ class TicketViewSet(viewsets.ViewSet):
                         "template": "TicketVerification"
                         }
                         )
-                return redirect(success_url)
-            else:
-                return redirect(failure_url)
-        else:
-            return redirect(failure_url)
-    
-
-    def send_payment_request(self, amount):
-        user=self.request.user
-        mobile=user.profile.phone_number
-        email=user.profile.email
-        print("send payment")
-        url = 'https://api.zarinpal.com/pg/v4/payment/request.json'
-        headers = {
-            'accept': 'application/json',
-            'content-type': 'application/json'
-        }
-        data = {
-            'merchant_id': '21ab62e9-e04b-4da5-b8d1-1bd7fca78e41',
-            'amount': amount,
-            'callback_url': 'http://api.artina.org/api/account/payment/verify/',
-            'description': 'Transaction description.', 
-            'metadata': {'mobile': "09387731214", 'email': "zehi.sh@gmail.com"}
-        }
-        response = requests.post(url, headers=headers, json=data)
-        return response
-
-    def verify_payment(self, amount, authority):
-        url = 'https://api.zarinpal.com/pg/v4/payment/verify.json'
-        headers = {
-            'accept': 'application/json',
-            'content-type': 'application/json'
-        }
-        data = {
-            'merchant_id': '21ab62e9-e04b-4da5-b8d1-1bd7fca78e41',
-            'amount': amount,
-            'authority': authority
-        }
-        print("verifyP>>>>>")
-
-        response = requests.post(url, headers=headers, json=data)
-        return response
-
-    def get_redirect_url(self, payment):
-        return f'https://www.zarinpal.com/pg/StartPay/{payment.authority}'
-
+            print(response)
+            return Response({'message': 'You bought the ticket.'}, status=status.HTTP_200_OK)
 
 
 
@@ -462,12 +394,6 @@ class TicketViewSet(viewsets.ViewSet):
 
 
 
-from django.utils import timezone
-from rest_framework import viewsets, permissions, status
-from rest_framework.response import Response
-
-from .models import Exhibition, Ticket
-from .serializers import ExhibitionSerializer
 
 
 class ExTicketViewSet(viewsets.ReadOnlyModelViewSet):
@@ -526,16 +452,6 @@ class AcceptedExhibitionsViewSet(viewsets.ViewSet):
 
 
 
-
-import os
-import requests
-from django.conf import settings
-from django.utils import timezone
-from rest_framework import viewsets, status
-from rest_framework.response import Response
-from django.db.models import Q
-from .models import Exhibition, Application, NFT
-# from .serializers import MyImageSerializer  # Import your image serializer
 
 class ProcessExhibitionDeadlineViewSet(viewsets.ViewSet):
     def create(self, request, *args, **kwargs):
