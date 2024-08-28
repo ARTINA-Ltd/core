@@ -1184,7 +1184,7 @@ class PaymentGateViewSet(viewsets.ViewSet):
 
                 verification_status = data.get('code')
 
-                if verification_status == 100:
+                if verification_status == 100 or verification_status == 101 :
                     payment.is_paid = True
                     payment.save()
                     payment.amount = payment.amount // 10
