@@ -10,7 +10,7 @@ from rest_framework import status
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from .models import Exhibition, Application , Category , Ticket , Ex_Payment
+from .models import Exhibition, Application , Category , Ticket 
 from .serializers import ExhibitionSerializer, ApplicationSerializer , CategorySerializer ,TicketSerializer
 from core.serializers import NFTSerializer
 from core.models import NFT 
