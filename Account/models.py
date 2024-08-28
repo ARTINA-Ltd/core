@@ -47,7 +47,7 @@ class Profile(models.Model):
     shaba_number = models.CharField(max_length=24, verbose_name="shaba_number", null=True, blank=True)
     card_number = models.CharField(max_length=16, verbose_name="card_number", null=True, blank=True)    
     address = models.TextField(max_length=200, verbose_name="آدرس", null=True, blank=False)
-    national_card_picture = models.TextField(verbose_name="عکس کارت ملی",null=True,blank=False,default="http://api.artina.org/static/images/Fig.png")
+    national_card_picture = models.TextField(verbose_name="عکس کارت ملی",null=True,blank=False,default="")
     profile_picture = models.TextField(verbose_name="عکس پروفایل",
                                         null=True, blank=False, default="http://api.artina.org/static/images/default_C7876ge.webp",)
     email = models.EmailField(max_length=50, verbose_name="ایمیل", null=True, blank=False)
@@ -103,7 +103,7 @@ class Msg(models.Model):
         return f"{self.name}"
 
 class NotifyUser(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     text = models.TextField(max_length=200,null=True,blank=False)
     message_seen = models.BooleanField(default=False)
@@ -122,17 +122,13 @@ class PhoneVerification(models.Model):
 
 class EmailVerification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    email = models.CharField(max_length=20)
+    email = models.CharField(max_length=50)
     verification_code = models.CharField(max_length=6)
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f"{self.user.username}"
 
-class TransactionType(models.Model):
-    name = models.CharField(max_length=10, null=True, blank=False, default="deposit")
-    def __str__(self):
-        return f"{self.name}"
- 
+
 class TransactionCurrency(models.Model):
     name = models.CharField(max_length=10, null=True, blank=False, default="rial")
     def __str__(self):
@@ -141,22 +137,14 @@ class TransactionCurrency(models.Model):
 
 class UserBalance(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    rial_available_balance = models.IntegerField(default=100000,verbose_name="mojudi")
+    rial_available_balance = models.IntegerField(default=0,verbose_name="mojudi")
     rial_untradable_balance = models.IntegerField(default=0,verbose_name="unavailable mojudi")
-    eth_balance = models.IntegerField(default=0,verbose_name="mojudi etherium")
-    eth_unavailable_balance = models.FloatField(default=0 , verbose_name="eth_unavailable_balance")    
+    matic_balance = models.FloatField(default=0)
+    matic_untradable_balance = models.FloatField(default=0)
+    eth_balance = models.FloatField(default=0)
+    eth_untradable_balance = models.FloatField(default=0)
     def __str__(self):
         return f"{self.user.username}"
-
-class UserTurnover(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    transaction_type = models.ForeignKey(TransactionType, default="deposit",on_delete=models.CASCADE)
-    transaction_currency=models.ForeignKey(TransactionCurrency, default="rial",on_delete=models.CASCADE)
-    transaction_value=models.IntegerField(default=0,verbose_name="volume")
-    date = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{self.user.username} - {self.date}"
 
 
 
@@ -183,20 +171,27 @@ class Wallet(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     address = models.CharField(max_length=42, unique=True)  # Ethereum/Matic address
     private_key= models.CharField(max_length=200, unique=True, default=0)
-    balance = models.DecimalField(max_digits=20, decimal_places=6, default=0)  # Matic balance
+    MATIC_balance = models.DecimalField(max_digits=20, decimal_places=6, default=0)  # Matic balance
+    ETH_balance= models.DecimalField(max_digits=20, decimal_places=6, default=0)    
     def __str__(self):
         return f"{self.user.username}"
 
 
 class Transaction(models.Model):
-    STATUS_CHOICES = (
-        ('pending', 'Pending'),
-        ('completed', 'Completed'),
-        ('failed', 'Failed'),
-    )
-
+    STATUS_CHOICES = ( 
+        ('pending', 'pending'),
+        ('completed', 'completed'),
+        ('failed', 'failed'),)
+    SIDE_CHOICES = (
+        ('SELL','SELL'),
+        ('BUY','BUY'),
+        ('withdrawal','withdrawal'),
+        ('deposit','deposit'),)
+    
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    matic_amount = models.DecimalField(max_digits=20, decimal_places=6)
+    transaction_currency=models.ForeignKey(TransactionCurrency,default=0,on_delete=models.CASCADE)
+    amount = models.FloatField(default=0)
+    side = models.CharField(max_length=10, choices=SIDE_CHOICES, default='BUY')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
 
