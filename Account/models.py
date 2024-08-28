@@ -62,7 +62,7 @@ class Profile(models.Model):
         return f"{self.user.username} - {self.first_name} {self.last_name}"
 
 
-class Affiliate():
+class Affiliate(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     referral_code = models.CharField(max_length=20, unique=True, blank=True, null=True)
     credit_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
