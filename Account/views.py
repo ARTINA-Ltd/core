@@ -242,6 +242,7 @@ class UserInfoViewSet(viewsets.ViewSet):
         return Response(data)
 
 class AffiliateDetailView(viewsets.ModelViewSet):
+    queryset = Affiliate.objects.all()
     serializer_class = serializers.AffiliateSerializer
 
     def get_object(self):
