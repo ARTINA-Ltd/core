@@ -18,6 +18,7 @@ admin.site.register(models.ARTINA_Ballance)
 
 admin.site.register(models.Transaction)
 admin.site.register(models.Payment)
+admin.site.register(models.Affiliate)
 
 
 
