@@ -403,6 +403,7 @@ const UploadItem = () => {
             <SimpleInput type="text" title={t("name")} placeholder={t("propertyNameExample")} onChange={(e) => handleInputChange("name", e.target.value)} value={newProperty.name} defaultValue={null} />
             <SimpleInput type="text" title={t("type")} placeholder={t("propertyTypeExample")} onChange={(e) => handleInputChange("type", e.target.value)} value={newProperty.type} defaultValue={null} />
           </div>
+          <p className="text-gray-500 text-xs">{t("NFTPropertiesExplanation")}</p>
           <div className="flex justify-between">
             <form method="dialog">
               <BorderButton className="text-lg" size="sm" onClick={handleAddProperty}>
