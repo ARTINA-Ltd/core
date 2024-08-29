@@ -6,6 +6,7 @@ import { MdOutlineClose } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 import BorderButton from "./../../Buttons/BorderButton";
+
 const BalanceDialogMatic = () => {
   const [getData, setData] = useState();
   const [isCharge, setIsCharge] = useState(false);
@@ -189,13 +190,18 @@ const BalanceDialogMatic = () => {
       return (
         <div className="w-full flex flex-col gap-4">
           <div className="flex gap-4 justify-center items-center">
-            <p>موجودی والت شخصی: {currentTab === "Ethereum" ? turnOver.eth_balance + " اتریوم" : turnOver.matic_balance + " متیک"} </p>
-            <BorderButton className="">انتقال به موجودی سایت</BorderButton>
+            <p> {t("yourCurrentBallance")}: {currentTab === "Ethereum" ? turnOver.eth_balance + " " + t("ethereum") : turnOver.matic_balance + " " + t("matic")} </p>
+            <BorderButton className="">{t("transferToArtina")}</BorderButton>
           </div>
           {address !== "" && (
-            <div className="text-sm sm:text-[8px] cursor-pointer border-2 border-primary border-opacity-50 rounded-md p-2" onClick={handleCopy}>
-              {t("walletAddress")} <span> </span>
-              {address}
+            <div>
+              <div className="text-sm sm:text-[8px] text-center cursor-pointer border-2 border-primary border-opacity-50 rounded-md p-2" onClick={handleCopy}>
+                {t("walletAddress")} <span> </span>
+                {address}
+              </div>
+              <div className="flex justify-center items-center">
+                <p className="text-gray-600 text-xs mt-2">{t("thisAddrIsForPolygon")}</p>
+              </div>
             </div>
           )}
           {!address && (
@@ -272,15 +278,15 @@ const BalanceDialogMatic = () => {
               <p>
                 {t("buyprice")}:{" "}
                 {currentTab === "Ethereum"
-                  ? Number(ethPrice.ETH_buy_price || 0).toFixed(3)
-                  : Number(maticPrice.MATIC_buy_price || 0).toFixed(2)} {" "}
+                  ? Number(ethPrice.ETH_buy_price || 0).toFixed(1)
+                  : Number(maticPrice.MATIC_buy_price || 0).toFixed(1)} {" "}
                 {t("tooman")}
               </p>
               <p>
                 {t("sellprice")}:{" "}
                 {currentTab === "Ethereum"
-                  ? Number(ethPrice.ETH_sell_price || 0).toFixed(3)
-                  : Number(maticPrice.MATIC_sell_price || 0).toFixed(2)} {" "}
+                  ? Number(ethPrice.ETH_sell_price || 0).toFixed(1)
+                  : Number(maticPrice.MATIC_sell_price || 0).toFixed(1)} {" "}
                 {t("tooman")}
               </p>
             </div>
@@ -304,7 +310,7 @@ const BalanceDialogMatic = () => {
               <div className="w-full flex gap-4 flex-col items-center font-b4 border-t-2 border-t-primary border-opacity-60 pt-4">
                 <p className="self-start font-bold mb-4">{t("sell")}</p>
                 <SimpleInput type="number" title={`${t("amount")}  (${currentTab === "Ethereum" ? t("ethereum") : t("matic")})`} placeholder={t("example")} isValid={sellAmount != false} validationError={t("required")} onChange={(e) => setSellAmount(e.target.value)} />
-                <p>{sellAmount ? ` قیمت تمام شده ${currentTab === "Ethereum" ? ethPrice.ETH_sell_price * sellAmount : maticPrice.MATIC_sell_price * sellAmount}` : ""}</p>
+                <p>{sellAmount ? ` قیمت تمام شده ${currentTab === "Ethereum" ? ethPrice.ETH_sell_price * sellAmount : Number(Math.floor(maticPrice.MATIC_sell_price) || 0).toFixed(1) * sellAmount}` : ""}</p>
                 <div
                   className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all sm:text-xs sm:px-4 self-start"
                   onClick={() => {

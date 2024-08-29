@@ -54,7 +54,7 @@ const ApplicationReqDialog = ({ user, nfts = [], description, exhibition, applic
       temp = 1;
       for (let i = 0; i < nfts.length; i++) {
         axios
-          .get(`https://api.artina.org/api/transaction/nfts/${nfts[i]}/`, {})
+          .get(`https://api.artina.org/api/transaction/nfts/${nfts[i]-71}/`, {})
           .then((res) => {
             if (!nftDetails.includes(res.data)) {
               setNftDetails((prev) => [...prev, res.data]);

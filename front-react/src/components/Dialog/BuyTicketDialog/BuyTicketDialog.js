@@ -3,6 +3,7 @@ import { Dialog } from "primereact/dialog";
 import axios from "axios";
 import BorderButton from "./../../Buttons/BorderButton";
 import { useNavigate } from "react-router";
+import { Notify } from "notiflix";
 
 export default function BuyTicketDialog({ onClick, exhibitionId, price, exhibitionName, hasLogin }) {
   const [visible, setVisible] = useState(false);
@@ -29,7 +30,11 @@ export default function BuyTicketDialog({ onClick, exhibitionId, price, exhibiti
         .then((res) => {
           window.open(res.data.url);
         })
-        .catch(console.log);
+        .catch((err) => {
+          if (err.response.status === 400 && err.response.data.error === "insufficient balance.") {
+            Notify.failure("موجودی حساب شما کافی نیست. لطفا حساب خود را شارژ کنید.");
+          }
+        });
     }
   };
 
