@@ -11,6 +11,8 @@ import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import { Block, Notify } from "notiflix";
 import BorderButton from "../components/Buttons/BorderButton";
 import { useNavigate } from "react-router";
+import CardNumberInput from "../components/BankCard/CardNumberInput";
+import ShabaNumberInput from "../components/BankCard/ShabaNumberInput";
 import imageFive from "../assets/images/5.png";
 
 function Profile() {
@@ -31,29 +33,29 @@ function Profile() {
   const [values, setValues] = useState(
     user
       ? {
-          first_name: user.data.first_name !== null ? user.data.first_name : "",
-          last_name: user.data.last_name !== null ? user.data.last_name : "",
-          national_code: user.data.national_code !== null ? user.data.national_code : "",
-          birthdate: user.data.birthdate !== null ? user.data.birthdate : "",
-          address: user.data.address !== null ? user.data.address : "",
-          bio: user.data.bio !== null ? user.data.bio : "",
-          postal_code: user.data.postal_code !== null ? user.data.postal_code : "",
-          cell_number: user.data.cell_number !== null ? user.data.cell_number : "",
-          phone_number: user.data.phone_number !== null ? user.data.phone_number : "",
-          email: user.data.email !== null ? user.data.email : "",
-        }
+        first_name: user.data.first_name !== null ? user.data.first_name : "",
+        last_name: user.data.last_name !== null ? user.data.last_name : "",
+        national_code: user.data.national_code !== null ? user.data.national_code : "",
+        birthdate: user.data.birthdate !== null ? user.data.birthdate : "",
+        address: user.data.address !== null ? user.data.address : "",
+        bio: user.data.bio !== null ? user.data.bio : "",
+        postal_code: user.data.postal_code !== null ? user.data.postal_code : "",
+        cell_number: user.data.cell_number !== null ? user.data.cell_number : "",
+        phone_number: user.data.phone_number !== null ? user.data.phone_number : "",
+        email: user.data.email !== null ? user.data.email : "",
+      }
       : {
-          first_name: "",
-          last_name: "",
-          national_code: "",
-          birthdate: "",
-          address: "",
-          bio: "",
-          postal_code: "",
-          cell_number: "",
-          phone_number: "",
-          email: "",
-        }
+        first_name: "",
+        last_name: "",
+        national_code: "",
+        birthdate: "",
+        address: "",
+        bio: "",
+        postal_code: "",
+        cell_number: "",
+        phone_number: "",
+        email: "",
+      }
   );
 
   const [validate, setValidate] = useState({
@@ -76,8 +78,6 @@ function Profile() {
   const [profileImageUrl, setProfileImageUrl] = useState("");
   const [nationalCardImage, setNationalCardImage] = useState("");
   const [nationalCardImageUrl, setNationalCardImageUrl] = useState("");
-  const [shabaNumber, setShabaNumber] = useState("");
-  const [cardNumber, setCardNumber] = useState("");
   const [showPhoneValidate, setShowPhoneValidate] = useState(false);
   const [showEmailValidate, setShowEmailValidate] = useState(false);
   const [phoneVerificationCode, setPhoneVerificationCode] = useState("");
@@ -86,6 +86,9 @@ function Profile() {
   const [isEmailDisabled, setIsEmailDisabled] = useState(false);
   const [isPhoneVerified, setIsPhoneVerified] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [cardNumber, setCardNumber] = useState(user && user.data ? user.data.card_number : "");
+  const [shabaNumber, setShabaNumber] = useState(user && user.data ? user.data.shaba_number : "");
+
 
   function hanldeClickEmail() {
     setIsEmailDisabled(true);
@@ -116,26 +119,26 @@ function Profile() {
   };
 
   const handleSendEmailVerificationCode = () => {
-        axios
-          .post(
-            "https://api.artina.org/api/account/email-verification-code/",
-            {
-              email: values.email,
-              verification_code: emailVerificationCode,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-              },
-            }
-          )
-          .then((e) => {
-            Notify.success("تایید شد");
-            setIsEmailVerified(true);
-          })
-          .catch(() => {
-            Notify.failure("ایمیل تکراری است");
-          });
+    axios
+      .post(
+        "https://api.artina.org/api/account/email-verification-code/",
+        {
+          email: values.email,
+          verification_code: emailVerificationCode,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+        }
+      )
+      .then((e) => {
+        Notify.success("تایید شد");
+        setIsEmailVerified(true);
+      })
+      .catch(() => {
+        Notify.failure("ایمیل تکراری است");
+      });
   };
 
   function hanldeClickPhone() {
@@ -167,10 +170,10 @@ function Profile() {
             birthdate:
               b_date != ""
                 ? Intl.DateTimeFormat("en-UK", {
-                    year: "numeric",
-                    month: "numeric",
-                    day: "numeric",
-                  }).format(b_date)
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                }).format(b_date)
                 : null,
             phone_number: values.phone_number,
             cell_number: values.cell_number,
@@ -242,10 +245,10 @@ function Profile() {
             birthdate:
               b_date != ""
                 ? Intl.DateTimeFormat("en-UK", {
-                    year: "numeric",
-                    month: "numeric",
-                    day: "numeric",
-                  }).format(b_date)
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                }).format(b_date)
                 : null,
             phone_number: values.phone_number,
             cell_number: values.cell_number,
@@ -328,10 +331,10 @@ function Profile() {
             birthdate:
               b_date != ""
                 ? Intl.DateTimeFormat("en-UK", {
-                    year: "numeric",
-                    month: "numeric",
-                    day: "numeric",
-                  }).format(b_date)
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                }).format(b_date)
                 : null,
             phone_number: values.phone_number,
             cell_number: values.cell_number,
@@ -732,27 +735,25 @@ function Profile() {
             <SimpleCard className="bg-primary flex flex-col relative text-white gap-4 items-center overflow-hidden w-full">
               <div className="text-white text-[27px] mb-2 z-10 font-b9">اطلاعات کارت بانکی</div>
               <div className="font-b3">شماره کارت</div>
-              <SimpleInput
-                defaultValue={user && user.data ? user.data.card_number : null}
+              <CardNumberInput
+                defaultValue={cardNumber}
                 disabled={disableInputs && user && user.data != null ? user.data.card_number != null : false}
-                title={""}
-                type="card"
                 validationError="لطفا از اعداد لاتین استفاده کنید"
-                onChange={(e) => {
-                  setCardNumber(e.target.value.split("-").join(""));
-                  console.log(cardNumber.length);
-                }}
-                isValid={cardNumber && cardNumber.length === 16}
-                className="border-black rounded-md border-2 text-white"
-                maxChars={19}
+                onChange={(value) => setCardNumber(value)}
+                className="rounded-md text-white"
+                dir="ltr"
               />
               <div className="font-b3">شماره شبا</div>
-              <div className="flex items-center gap-5 w-full py-2 px-2" dir="ltr">
-                <div className="pt-2">IR </div>
-
-                <SimpleInput defaultValue={user && user.data ? user.data.shaba_number : null} isValid={shabaNumber && shabaNumber.length === 24} disabled={disableInputs && user && user.data != null ? user.data.shaba_number != null : false} validationError="لطفا از اعداد لاتین استفاده کنید" title={""} type="card" onChange={(e) => setShabaNumber(e.target.value.split("-").join(""))} className="border-black rounded-md border-2 text-white" maxChars={29} />
-              </div>
+              <ShabaNumberInput
+                defaultValue={shabaNumber}
+                disabled={disableInputs && user && user.data != null ? user.data.shaba_number != null : false}
+                validationError="لطفا از اعداد لاتین استفاده کنید"
+                onChange={(value) => setShabaNumber(value)}
+                className="rounded-md text-white text-xs"
+                dir="ltr"
+              />
             </SimpleCard>
+
           </div>
         </div>
       )}

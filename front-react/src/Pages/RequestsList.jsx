@@ -41,7 +41,7 @@ const RequestsList = () => {
                 </>
               ))
             ) : (
-              <div className="bg-error text-error-content mx-auto px-4 py-2 rounded-md">{t("nothingYet")}</div>
+              <div className="bg-error text-error-content mx-auto px-4 py-2 rounded-md">{t("noRequest")}</div>
             )}
           </div>
         </SimpleCard>

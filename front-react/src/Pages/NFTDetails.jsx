@@ -30,7 +30,7 @@ const NFTDetails = () => {
   const [amount, setAmount] = useState(0);
   const [maticPrice, setMaticPrice] = useState(0);
   const [balance, setBalance] = useState(0);
-  const { t } = useTranslation();
+  const { t } = useTranslation("nftDetails");
 
   const icons = {
     heart: (
@@ -481,7 +481,7 @@ const NFTDetails = () => {
                         />
                       </div>
 
-                      <BorderButton className="w-36 text-center" onClick={ethereum > balance.eth_balance ? () => document.getElementById("insufficient-balance").showModal() : price !== 0 && addRequest}>
+                      <BorderButton className="w-36 text-center" onClick={ethereum > balance.eth_balance ? () => Notify.failure(t("insufficientBalance")) : price !== 0 && addRequest}>
                         ثبت
                       </BorderButton>
                     </div>
@@ -510,7 +510,7 @@ const NFTDetails = () => {
           )}
         </div>
       </div>
-      <dialog id="insufficient-balance" className="modal modal-bottom sm:modal-middle">
+      {/* <dialog id="insufficient-balance" className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <form method="dialog">
             <button className="rounded-full hover:bg-error w-8 h-8 hover:text-error-content flex items-center justify-center absolute left-3 top-3'">
@@ -527,7 +527,7 @@ const NFTDetails = () => {
             <BorderButton onClick={cryptoBuy}>{t("buy")}</BorderButton>
           </div>
         </div>
-      </dialog>
+      </dialog> */}
     </TestLayout>
   );
 };
