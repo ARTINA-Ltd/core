@@ -20,5 +20,8 @@
     "buyprice": "قیمت خرید",
     "sellprice": "قیمت فروش",
     "ethereum": "اتریوم",
-    "matic": "متیک"
+    "matic": "متیک",
+    "yourCurrentBallance": "موجودی کیف پول شما",
+    "transferToArtina": "انتقال به موجودی سایت",
+    "thisAddrIsForPolygon": "این آدرس بر روی شبکه Polygon قابل استفاده است"
 }
