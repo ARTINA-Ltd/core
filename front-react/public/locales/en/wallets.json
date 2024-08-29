@@ -20,5 +20,8 @@
     "buyprice": "Buy Price",
     "sellprice": "Sell Price",
     "ethereum": "Ethereum",
-    "matic": "Matic"
+    "matic": "Matic",
+    "yourCurrentBallance": "Your current ballance",
+    "transferToArtina": "Transfer your ballance to Artina",
+    "thisAddrIsForPolygon": "This address is based on Polygon network"
 }

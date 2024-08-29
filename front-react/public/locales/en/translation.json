@@ -86,7 +86,7 @@
   "isPhysicalVersion": "Does the work has physical version ?",
   "isAddWithWallet": "Mint with a wallet inside the site?",
   "basicCost": "The basic cost of adding art is 10,000 Tomans.",
-  "innovations": "Artina innovations",
+  "innovations": "Artina Innovations",
   "artinaAI": "Artina AI",
   "NFTnews": "NFT News",
   "connectWithCw": "Connect via CW",
@@ -140,5 +140,14 @@
   "collectionName": "Name of Collection",
   "addingLater": "This feature will be added in the future.",
   "exhibitions": "Exhibitions",
-  "identity": "First, you need to verify your identity on the profile page"
+  "identity": "First, you need to verify your identity on the profile page",
+  "explore" : "Explore",
+  "whatIsNFT" : "What's NFT",
+  "createNFT" : "Create NFT",
+  "artinaNFTMint" : "Artina'n NFT Mint",
+  "generateIncome" : "Generate Income",
+  "advertiseYourNFT" : "Advertise Your NFT",
+  "selNFT" : "Sell NFT",
+  "takeMoney" : "Take Money",
+  "NFTPropertiesExplanation": "NFT properties refer to unique features in NFTs that can include name, type, size, color, and ..."
 }
