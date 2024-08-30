@@ -385,8 +385,12 @@ class TransferViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['post'])
     def transfer_nft(self, request):
-        sender_private_key = request.data.get('sender_private_key')
-        sender_address = request.data.get('sender_address')
+
+        user = self.request.user 
+        senderWallet = Wallet.objects.get(user=user)
+        # Transfer NFt
+        sender_private_key = senderWallet.private_key
+        sender_address = senderWallet.address
         recipient_address = request.data.get('recipient_address')
         token_id = request.data.get('token_id')
 
