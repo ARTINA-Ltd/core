@@ -255,12 +255,13 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         serializer = UserGameProfileSerializer(profile) 
 
         return Response(serializer.data, status=status.HTTP_200_OK)   
-    @action(detail=True, methods=['post'])
+    @action(detail=False, methods=['post'])
     def buy_hearts(self, request, pk=None):
         """
         Endpoint to buy hearts for a user.
         """
-        user_profile = self.get_object()
+        user = self.request.user
+        user_profile = UserGameProfile.objects.get(user=user) 
         hearts_to_buy = request.data.get('hearts_to_buy')
         
         # Logic to handle buying hearts based on request data
