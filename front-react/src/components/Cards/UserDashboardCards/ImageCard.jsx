@@ -153,9 +153,9 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
               )}
             </div>
             {
-              //  <BorderButton className={"font-bold mx-6 mb-1 w-20"} onClick={() => document.getElementById("TransferDialog").showModal()}>
-              //     {t("transfer")}
-              //   </BorderButton>
+              <BorderButton className={"font-bold mx-6 mb-1 w-20"} onClick={() => document.getElementById("TransferDialog").showModal()}>
+                {t("transfer")}
+              </BorderButton>
             }
             {showSell && (
               <div class="collapse collapse-arrow -my-4 -mx-4 overflow-visible">
@@ -168,9 +168,7 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
                 </div>
               </div>
             )}
-            {
-              //dialog()
-            }
+            {dialog()}
           </Fragment>
         )}
       </div>
