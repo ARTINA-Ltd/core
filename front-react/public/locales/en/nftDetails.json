@@ -1,0 +1,16 @@
+{
+    "insufficientBalance": "Insufficient balance, please top up your account",
+    "offers": "Offers",
+    "artName": "Art Name",
+    "artist": "Artist",
+    "hashBlock": "Hash Block",
+    "transactionHash": "Transaction Hash",
+    "blockNo": "Block No",
+    "transactionNo": "Transaction No",
+    "collectionName": "Collection Name",
+    "category": "Category",
+    "properties": "Properties",
+    "description": "Description",
+    "externalLink": "External Link",
+    "latestPrice": "Latest Price"
+}

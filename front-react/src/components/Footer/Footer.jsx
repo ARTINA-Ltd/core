@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { FaInstagram, FaLinkedin, FaDiscord } from "react-icons/fa";
 import { SiTelegram } from "react-icons/si";
 import { FaXTwitter } from "react-icons/fa6";
+import { Notify } from "notiflix/build/notiflix-notify-aio";
+
 
 const Footer = () => {
   const { t } = useTranslation(["footer"]);
@@ -52,7 +54,7 @@ const Footer = () => {
             <a href="/ai" className="mr-2 font-b3">
               {t("AIimageGenerator")}{" "}
             </a>
-            <a href="https://artina-blog.ir/" className="mr-2 font-b3">
+            <a href="https://artina.org" onClick={() => Notify.warning(t("addingLater"))} className="mr-2 font-b3">
               {t("blog")}
             </a>
           </div>

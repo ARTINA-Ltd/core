@@ -54,5 +54,7 @@
   "requests": "Requests",
   "ehereum": "Ehereum",
   "chooseCategore": "Select a Category",
-  "commision": "Commision(%)"
+  "commision": "Commision(%)",
+
+  "noRequest": "You don't have any requests yet"
 }

@@ -44,7 +44,6 @@ class Profile(models.Model):
                                                                           code='invalid_phone_number')])
     phone_number_verified = models.BooleanField(default=False)
     cell_number = models.CharField(max_length=11, verbose_name="شماره تلفن ثابت", null=True, blank=False)
-    
     shaba_number = models.CharField(max_length=24, verbose_name="shaba_number", null=True, blank=True)
     card_number = models.CharField(max_length=16, verbose_name="card_number", null=True, blank=True)    
     address = models.TextField(max_length=200, verbose_name="آدرس", null=True, blank=False)
@@ -62,6 +61,14 @@ class Profile(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.first_name} {self.last_name}"
 
+
+class Affiliate(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    referral_code = models.CharField(max_length=20, unique=True, blank=True, null=True)
+    credit_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+
+    def __str__(self):
+        return f'{self.user.username} - Affiliate'
 
 
 class ArtistReviewRating(models.Model):
@@ -115,23 +122,22 @@ class PhoneVerification(models.Model):
 
 class EmailVerification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    email = models.CharField(max_length=20)
+    email = models.CharField(max_length=50)
     verification_code = models.CharField(max_length=6)
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f"{self.user.username}"
 
 
- 
 class TransactionCurrency(models.Model):
     name = models.CharField(max_length=10, null=True, blank=False, default="rial")
     def __str__(self):
         return f"{self.name}"
-
+    
 
 class UserBalance(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    rial_available_balance = models.IntegerField(default=100000,verbose_name="mojudi")
+    rial_available_balance = models.IntegerField(default=0,verbose_name="mojudi")
     rial_untradable_balance = models.IntegerField(default=0,verbose_name="unavailable mojudi")
     matic_balance = models.FloatField(default=0)
     matic_untradable_balance = models.FloatField(default=0)
@@ -139,6 +145,7 @@ class UserBalance(models.Model):
     eth_untradable_balance = models.FloatField(default=0)
     def __str__(self):
         return f"{self.user.username}"
+
 
 
 class Payment(models.Model):
@@ -151,7 +158,7 @@ class Payment(models.Model):
     def __str__(self):
         return f'{self.user} - {self.amount}'
 
-class withdrawal_list(models.Model):
+class Withdrawal_list(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     shaba_number = models.CharField(max_length=24, verbose_name="shaba_number", null=True, blank=True)
     amount = models.PositiveIntegerField()
@@ -165,23 +172,22 @@ class Wallet(models.Model):
     address = models.CharField(max_length=42, unique=True)  # Ethereum/Matic address
     private_key= models.CharField(max_length=200, unique=True, default=0)
     MATIC_balance = models.DecimalField(max_digits=20, decimal_places=6, default=0)  # Matic balance
-    ETH_balance= models.DecimalField(max_digits=20, decimal_places=6, default=0)
+    ETH_balance= models.DecimalField(max_digits=20, decimal_places=6, default=0)    
     def __str__(self):
         return f"{self.user.username}"
 
-   
+
 class Transaction(models.Model):
-    STATUS_CHOICES = (
+    STATUS_CHOICES = ( 
         ('pending', 'pending'),
         ('completed', 'completed'),
-        ('failed', 'failed'),
-    )
+        ('failed', 'failed'),)
     SIDE_CHOICES = (
         ('SELL','SELL'),
         ('BUY','BUY'),
         ('withdrawal','withdrawal'),
-        ('deposit','deposit')
-    )
+        ('deposit','deposit'),)
+    
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     transaction_currency=models.ForeignKey(TransactionCurrency,default=0,on_delete=models.CASCADE)
     amount = models.FloatField(default=0)

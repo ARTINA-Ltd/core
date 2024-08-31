@@ -1,0 +1,16 @@
+{
+    "insufficientBalance": "موجودی کافی نیست، لطفا حساب خود را شارژ کنید",
+    "offers": "پیشنهادات",
+    "artName": "نام هنر",
+    "artist": "هنرمند",
+    "hashBlock": "هش بلاک",
+    "transactionHash": "هش تراکنش",
+    "blockNo": "شماره بلوک",
+    "transactionNo": "شماره تراکنش",
+    "collectionName": "نام مجموعه",
+    "category": "دسته بندی",
+    "properties": "ویژگی ها",
+    "description": "توضیحات",
+    "externalLink": "لینک خارجی",
+    "latestPrice": "آخرین قیمت"
+}

@@ -15,7 +15,7 @@ const HeroBanner = lazy(() => import("../components/HeroBanner/HeroBanner.jsx"))
 const Home = () => {
   return (
     <TestLayout wfull={true}>
-      <Announcement />
+      {/* <Announcement /> */}
       <Suspense fallback={<span className="loading loading-spinner loading-lg"></span>}>
         <HeroBanner />
       </Suspense>

@@ -59,7 +59,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
     },
     {
       title: t("blog"),
-      link: "https://artina-blog.ir/",
+      link: "https://artina.org/",
       icon: <FaBlogger className="w-6 h-6 ml-1 text-primary" />,
     },
   ];

@@ -1,0 +1,14 @@
+{
+"page_title":"مجموعه داران",
+
+"nftCount":"تعداد NFT",
+"changing visibility":"نمایش / عدم نمایش",
+"sell": "فروش",
+"collapse": "بستن",
+"cancelSell": "لغو فروش",
+"dateDuration": "مدت زمان",
+"startHour": "ساعت شروع",
+"endHour": "ساعت پایان",
+"price": "قیمت (اتریوم)",
+"submit": "ثبت"
+}

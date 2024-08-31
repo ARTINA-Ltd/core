@@ -46,7 +46,7 @@ class NFT(models.Model):
     blockHash= models.TextField(max_length=200, null=True, blank=True)
     transactionIndex= models.TextField(max_length=200, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT,null=True)
-    collection = models.ForeignKey(CollectionNFT, on_delete=models.CASCADE,null=True)
+    collection = models.ForeignKey(CollectionNFT, on_delete=models.CASCADE,null=True,blank=True)
     traits = models.JSONField(null=True, blank=True)
     
     

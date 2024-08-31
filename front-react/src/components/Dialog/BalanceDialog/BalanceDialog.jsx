@@ -9,10 +9,9 @@ import { UserContext } from "../../../App.js";
 
 const BalanceDialog = () => {
   const [getData, setData] = useState();
-  const [isCharge, setIsCharge] = useState(false);
   const [depoAmount, setDepoAmount] = useState("");
-  const [refresh,setRefresh] = useState(false)
-  const [widthdrawAmount, setWidthdeawAmount] = useState("");
+  const [refresh, setRefresh] = useState(false);
+  const [withdrawAmount, setWithdrawAmount] = useState("");
   const { t } = useTranslation(["wallets"]);
   const user = useContext(UserContext);
 
@@ -51,18 +50,19 @@ const BalanceDialog = () => {
         }
       )
       .then((res) => {
+        console.log("on routing");
         window.open(res.data.url);
-        setRefresh(!refresh)
+        setRefresh(!refresh);
       })
       .catch(console.log);
-      setRefresh(!refresh)
   };
-  const updateBalancedthdraw = () => {
-    if (widthdrawAmount === "" || widthdrawAmount === undefined) {
+
+  const updateBalanceWithdraw = () => {
+    if (withdrawAmount === "" || withdrawAmount === undefined) {
       Notify.failure("مقدار عددی را وارد کنید");
       return;
     }
-    if (widthdrawAmount < 10000) {
+    if (withdrawAmount < 10000) {
       Notify.failure("مقدار وارد شده باید بیشتر از 10000 تومان باشد");
       return;
     }
@@ -71,7 +71,7 @@ const BalanceDialog = () => {
         "https://api.artina.org/api/account/WithdrawalViewSet/",
         {
           shaba_number: user.data.shaba_number,
-          amount: widthdrawAmount,
+          amount: withdrawAmount,
           user: user.data.id,
           reference_number: 0,
         },
@@ -84,23 +84,22 @@ const BalanceDialog = () => {
       )
       .then((res) => {
         Notify.success("درخواست شما با موفقیت ثبت شد");
-        setRefresh(!refresh)
+        setRefresh(!refresh);
         console.log(res);
       })
       .catch((res) => {
         console.log(res);
-        setRefresh(!refresh)
+        setRefresh(!refresh);
         Notify.failure("خطا");
       });
   };
+
   return (
     <div className="card flex justify-content-center">
       <div
         className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-[#0000aa07]"
         onClick={() => {
           document.getElementById("wallet").showModal();
-
-          setIsCharge(false);
         }}
       >
         {t("wallet")}
@@ -114,16 +113,6 @@ const BalanceDialog = () => {
             </button>
           </form>
           <div className="flex gap-4">
-            {isCharge ? (
-              <div className="cursor-pointer" onClick={() => setIsCharge(false)}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </div>
-            ) : (
-              ""
-            )}
-
             <p className="font-b9">{t("wallet")}</p>
           </div>
           <div className="w-full gap-12 font-b4 flex flex-col mt-8 mb-12">
@@ -155,13 +144,7 @@ const BalanceDialog = () => {
             </div>
             <div
               className="border-[1px] cursor-pointer border-green-500 bg-green-50 w-36 text-center text-green-500 rounded-xl py-2 hover:scale-105 transition-all sm:text-xs sm:px-4"
-              onClick={() => {
-                if (isCharge === true) {
-                  updateBalanceDepo();
-                } else {
-                  setIsCharge(true);
-                }
-              }}
+              onClick={updateBalanceDepo}
             >
               {t("recharge")}{" "}
             </div>
@@ -175,19 +158,13 @@ const BalanceDialog = () => {
               title={t("amount")}
               placeholder="ex: 100000"
               // eslint-disable-next-line eqeqeq
-              isValid={widthdrawAmount != ""}
+              isValid={withdrawAmount != ""}
               validationError={t("required")}
-              onChange={(e) => setWidthdeawAmount(e.target.value)}
+              onChange={(e) => setWithdrawAmount(e.target.value)}
             />
             <div
               className="border-[1px] cursor-pointer border-red-500 bg-red-50 w-36 text-center text-red-500 rounded-xl py-2  hover:scale-105 transition-all sm:text-xs sm:px-4 sm:w-[50%]"
-              onClick={() => {
-                if (isCharge === true) {
-                  updateBalancedthdraw();
-                } else {
-                  setIsCharge(true);
-                }
-              }}
+              onClick={updateBalanceWithdraw}
             >
               {t("withdraw")}
             </div>
