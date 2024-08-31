@@ -5,27 +5,17 @@ import nft2 from "../assets/images/NFT2.png";
 import nft3 from "../assets/images/NFT3.jpg";
 import nft4 from "../assets/images/NFT4.png";
 import NTSNavbar from "../components/NTSNavbar/NTSNavbar.jsx";
-import PaperRockScissors from "../components/Nts/PaperRockScissors.jsx";
 import axios from "axios";
 import "../components/Nts/Styles.css";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "../App.js";
 import Dialog from "../components/Nts/Dialog.jsx";
 import FancyText from "@carefully-coded/react-text-gradient";
-import BorderButton from "../components/Buttons/BorderButton.jsx";
+import { useNavigate } from "react-router";
 
 const NTS = () => {
   const user = useContext(UserContext);
-  const [sessionId, setSessionId] = useState(0);
-  const [selectedMove, setSelectedMove] = useState("");
-  const [refresh, setRefresh] = useState(false);
-  const [soloDisabled, setSoloDisabled] = useState(false);
-  const handleUserChoice = (choice) => {
-    setSelectedMove(choice);
-  };
-  const [serverResponse, setServerResponse] = useState("");
-  const [status, setStatus] = useState("Pending");
-
+  const navigate = useNavigate();
   useEffect(() => {
     axios
       .get("https://api.artina.org/api/game/leaderboard/")
@@ -37,50 +27,9 @@ const NTS = () => {
       });
   }, []);
 
-  const startNewSessionSolo = () => {
-    axios
-      .post(
-        "https://api.artina.org/api/game/games/create_play_solo/",
-        { id: user?.data.id },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-          },
-          mode: "cors",
-        }
-      )
-      .then((e) => {
-        setSoloDisabled(false);
-        console.log(e.data.id);
-        setSessionId(e.data.id);
-      })
-      .catch();
-  };
-
-  const playSolo = () => {
-    axios
-      .post(
-        `https://api.artina.org/api/game/games/${sessionId}/play_solo/`,
-        {
-          choice: selectedMove,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-          },
-        }
-      )
-      .then((e) => {
-        setRefresh(!refresh);
-        setStatus(e.data.result);
-        setServerResponse(e.data.server_choice);
-        setSoloDisabled(!soloDisabled);
-      });
-  };
-
   return (
     <>
-      <NTSNavbar refetch={refresh} />
+      <NTSNavbar />
 
       <div className="z-10 p-8 bg-base-100 w-[99vw] overflow-hidden">
         <NightSky />
@@ -121,7 +70,7 @@ const NTS = () => {
             </FancyText>
           </div>
           <div className=" border-b-2 border-b-base-content border-opacity-25 pb-12  text-center flex gap-8 justify-around my-16">
-            <button onClick={startNewSessionSolo} className="flex cursor-pointer items-center justify-center neon-container neon-border rounded-[100%] w-[20rem] p-8 ">
+            <button onClick={() => navigate("./play-with-friend")} className="flex cursor-pointer items-center justify-center neon-container neon-border rounded-[100%] w-[20rem] p-8 ">
               <FancyText className={"mx-auto"} gradient={{ from: "#F305B8", to: "#00F0F7", type: "linear" }} animateTo={{ from: "#FFFFFF", to: "#F305B8" }} animateDuration={1000}>
                 Solo
               </FancyText>
@@ -132,12 +81,6 @@ const NTS = () => {
               </FancyText>
             </button>
           </div>
-        </div>
-        <PaperRockScissors serverResponse={serverResponse} status={status} onChoice={handleUserChoice} />
-        <div className="mx-auto mt-4 w-fit">
-          <BorderButton disabled={soloDisabled} onClick={playSolo}>
-            Start the game
-          </BorderButton>
         </div>
       </div>
       {user && <Dialog username={user.data.username} />}

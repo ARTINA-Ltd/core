@@ -266,6 +266,11 @@ const ImageCard = ({
                 )
               )}
             </div>
+            {
+              <BorderButton className={"font-bold mx-6 mb-1 w-20"} onClick={() => document.getElementById("TransferDialog").showModal()}>
+                {t("transfer")}
+              </BorderButton>
+            }
             {showSell && (
               <div class="collapse collapse-arrow overflow-visible">
                 <input type="checkbox" clas onClick={handleExpand} />
@@ -279,6 +284,7 @@ const ImageCard = ({
                 </div>
               </div>
             )}
+            {dialog()}
           </Fragment>
         )}
       </div>

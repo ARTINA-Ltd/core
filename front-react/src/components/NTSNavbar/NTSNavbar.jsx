@@ -5,6 +5,7 @@ import axios from "axios";
 import { UserContext } from "../../App.js";
 import { useNavigate } from "react-router";
 import artinaLogo from "../../assets/images/Artina-Logo-1.jpeg";
+import BuyHeart from "../Nts/BuyHeart.jsx";
 
 const NTSNavbar = ({ refetch }) => {
   const navigate = useNavigate();
@@ -23,6 +24,8 @@ const NTSNavbar = ({ refetch }) => {
         }
       )
       .then((e) => {
+        console.log(e.data);
+
         setUserProfile(e.data);
       })
       .catch((e) => {});
@@ -40,13 +43,13 @@ const NTSNavbar = ({ refetch }) => {
             <h1 className="text-3xl">My points:</h1>
             <h2 className="text-2xl">{userProfile.points}</h2>
           </div>
-          <div className="flex gap-4 cursor-pointer" onClick={() => navigate("/nts/play-with-friend")}>
+          <div className="flex gap-4 cursor-pointer">
             <div className="bg-base-100 border rounded-xl flex items-center justify-center w-32 text-center h-20 p-2">
-              <p>My games</p>
+              <p onClick={() => navigate("/nts/play-with-friend")}>My games</p>
             </div>
-            <div className="flex flex-col gap-2 w-32 bg-base-100 border rounded-xl justify-center items-center p-2">
+            <div onClick={() => document.getElementById("buy-heart").showModal()} className="flex flex-col gap-2 w-32 bg-base-100 border rounded-xl justify-center items-center p-2">
               <h1>buymore</h1>
-              {userProfile.hearts === 3 ? (
+              {userProfile.hearts === 3 || userProfile.hearts > 3 ? (
                 <div className="flex gap-2">
                   <FaHeart />
                   <FaHeart />
@@ -74,6 +77,7 @@ const NTSNavbar = ({ refetch }) => {
             </div>
           </div>
         </div>
+        <BuyHeart />
       </div>
     )
   );

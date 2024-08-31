@@ -27,10 +27,10 @@ const NFTList = ({ className }) => {
   return (
     <div className={`${className} flex flex-col w-full justify-center items-center`}>
       <div className="flex gap-6 bg-base-300 rounded-t-xl px-3 pt-1">
-        <div className={`cursor-pointer rounded-t-xl py-2 px-6 mt-2 ${selected ? "bg-gradient-to-b from-base-100" : ""}`} onClick={() => setSelected(true)}>
+        <div className={`cursor-pointer rounded-t-xl py-2 px-6 mt-2 ${selected ? "bg-gradient-to-b from-neutral" : ""}`} onClick={() => setSelected(true)}>
           {t("sortByPrice")}
         </div>
-        <div className={`cursor-pointer rounded-t-xl py-2 px-6 mt-2 ${selected ? "" : "bg-gradient-to-b from-base-100"}`} onClick={() => setSelected(false)}>
+        <div className={`cursor-pointer rounded-t-xl py-2 px-6 mt-2 ${selected ? "" : "bg-gradient-to-b from-neutral"}`} onClick={() => setSelected(false)}>
           {t("sortByLike")}
         </div>
       </div>
