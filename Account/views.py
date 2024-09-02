@@ -175,6 +175,7 @@ class RegisterViewSet(viewsets.ModelViewSet):
             register_logger.warning(f"Email {email} is already registered")  # Log if the email already exists
             return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
 
+
 login_logger = logging.getLogger('Account.login')
 
 class LoginViewSet(viewsets.ViewSet):
@@ -182,7 +183,6 @@ class LoginViewSet(viewsets.ViewSet):
     serializer_class = serializers.LoginSerializer
 
     def create(self, request):
-        # logger.setLevel(logging.DEBUG)
         username = request.data.get('username')
         password = request.data.get('password')
         
@@ -193,9 +193,28 @@ class LoginViewSet(viewsets.ViewSet):
         if user is None:
             login_logger.warning(f"Invalid credentials for username: {username}")  # Log invalid credentials
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-        profile = Profile.objects.get(user=user)
-        login_logger.info(f"Successful login for username: {username}")  # Log successful login
         
+        # Get user's profile
+        profile = Profile.objects.get(user=user)
+
+        # Extract IP address
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip_address = x_forwarded_for.split(',')[0]
+        else:
+            ip_address = request.META.get('REMOTE_ADDR')
+        
+        # Log successful login with IP address
+        login_logger.info(f"Successful login for username: {username}, IP: {ip_address}")
+
+        # Get current date and time
+        current_time = timezone.now()
+
+        # Send SMS with login details (implement your SMS sending logic here)
+        sms_message = f"Login successful on {current_time.strftime('%Y-%m-%d %H:%M:%S')}, IP: {ip_address}"
+        # send_sms(user.phone_number, sms_message)  # Uncomment and implement this function
+
+        # Generate JWT tokens
         refresh = RefreshToken.for_user(user)
         response_data = {
             'refresh': str(refresh),
@@ -204,7 +223,6 @@ class LoginViewSet(viewsets.ViewSet):
             'nationaloty': str(profile.is_foreigner)
         }
         return Response(response_data, status=status.HTTP_200_OK)
-
 
 
 
