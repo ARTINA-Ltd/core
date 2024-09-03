@@ -392,7 +392,7 @@ class TicketViewSet(viewsets.ViewSet):
                 raise PermissionDenied("You have reached the maximum number of tickets.")
 
         unique_id = random.randint(100000, 999999)
-        TicketUser.objects.create(user=user, email=email, subject=subject, text=text, ticket_id=unique_id)
+        TicketUser.objects.create(user=user,name=name,last_name=last_name,phone_number=phone_number, email=email,image_url=image_url, subject=subject, text=text, ticket_id=unique_id)
 
         return Response({'success': 'Ticket created successfully.','token':unique_id}, status=status.HTTP_201_CREATED)
 

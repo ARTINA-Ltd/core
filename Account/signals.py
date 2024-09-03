@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
-from .models import UserBalance,Profile, Role
+from .models import UserBalance,Profile, NotifyUser,Role
 from supervisor.models import DocumentApproval
 from .models import Affiliate
 import uuid
@@ -28,6 +28,7 @@ def update_user_role(sender, instance, **kwargs):
             profile = instance.user_profile
             profile.role = user_one_role
             profile.save()
+            NotifyUser.objects.create(user=instance.user,text="احراز شما با موفقیت انجام شد.")
     else :
             profile = instance.user_profile
             profile.national_card_picture_upload=False

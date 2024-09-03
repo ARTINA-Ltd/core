@@ -3,9 +3,9 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import DocumentApproval, SupervisorTicket , RejectionMessage
 from .serializers import DocumentApprovalSerializer, SupervisorTicketSerializer , RejectionMessageSerializer
-from Account.views import EmailMixin  
 from django.contrib.auth.models import User
 from Account.models import NotifyUser
+from .utils import *
 
 class DocumentApprovalViewSet(viewsets.ModelViewSet):
     queryset = DocumentApproval.objects.all()
@@ -91,7 +91,7 @@ class SupervisorTicketViewSet(viewsets.ModelViewSet):
         subject = "Response to your ticket"
         recipient_email = ticketS.ticket.email
         message = response_message
-        EmailMixin.send_email(subject, recipient_email, message)
+        send_email(subject, recipient_email, message)
 
         # Update ticket response
         ticketS.response_message = response_message
