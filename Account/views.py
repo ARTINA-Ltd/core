@@ -937,7 +937,7 @@ class CryptoViewSet(viewsets.ViewSet):
     def CryptoPrice_ETH(self, request, pk=None):
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '10520|WvJdUfY0iDJDSrzBbDceIUgWr1LnnKtMJfsZrCsQ',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '10523|3exVL1s24ThkzpMxZu8eRpStYHYMHezyw1sJ9F67',  # Replace 'your_api_key' with your actual API key
         }
     
         # Get ETH price
@@ -985,7 +985,7 @@ class CryptoViewSet(viewsets.ViewSet):
     def CryptoPrice_MATIC(self, request, pk=None):
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '10520|WvJdUfY0iDJDSrzBbDceIUgWr1LnnKtMJfsZrCsQ',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '10523|3exVL1s24ThkzpMxZu8eRpStYHYMHezyw1sJ9F67',  # Replace 'your_api_key' with your actual API key
         }
     
         # Get ETH price

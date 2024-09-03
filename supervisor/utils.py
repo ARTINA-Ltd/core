@@ -82,6 +82,7 @@ message = '''
 </body>
 </html>
 '''
+subject="verify email from ARTINA"
 
 
 def send_email(subject,recipient_email,message):
