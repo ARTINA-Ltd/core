@@ -255,7 +255,8 @@ class UserInfoViewSet(viewsets.ViewSet):
             'postal_code':profile.postal_code,
             'bio':profile.bio,
             'user_verified':profile.user_verified,
-            'is_foreigner':profile.is_foreigner
+            'is_foreigner':profile.is_foreigner,
+            'auth_upload':profile.national_card_picture_upload
         }
         return Response(data)
 
@@ -266,6 +267,20 @@ class AffiliateDetailView(viewsets.ModelViewSet):
     def get_object(self):
         return self.request.user.affiliate
     
+
+    @action(detail=False, methods=['get'])
+    def get_code(self, request):
+        user = request.user
+        try:
+            affiliate = Affiliate.objects.get(user=user)
+            data = {
+                'referral_code': affiliate.referral_code,
+                'credit_balance': affiliate.credit_balance
+            }
+            return Response(data, status=status.HTTP_200_OK)
+        except Affiliate.DoesNotExist:
+            return Response({'error': 'Affiliate not found.'}, status=status.HTTP_404_NOT_FOUND)
+
 
 class ArtistRateViewSet(viewsets.ModelViewSet):
     queryset = ArtistReviewRating.objects.all()

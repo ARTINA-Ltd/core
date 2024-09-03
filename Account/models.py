@@ -48,6 +48,8 @@ class Profile(models.Model):
     card_number = models.CharField(max_length=16, verbose_name="card_number", null=True, blank=True)    
     address = models.TextField(max_length=200, verbose_name="آدرس", null=True, blank=False)
     national_card_picture = models.TextField(verbose_name="عکس کارت ملی",null=True,blank=False,default="")
+    national_card_picture_upload = models.BooleanField(default=False)
+    
     profile_picture = models.TextField(verbose_name="عکس پروفایل",
                                         null=True, blank=False, default="http://api.artina.org/static/images/default_C7876ge.webp",)
     email = models.EmailField(max_length=50, verbose_name="ایمیل", null=True, blank=False)
