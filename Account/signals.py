@@ -28,6 +28,10 @@ def update_user_role(sender, instance, **kwargs):
             profile = instance.user_profile
             profile.role = user_one_role
             profile.save()
+    else :
+            profile = instance.user_profile
+            profile.national_card_picture_upload=False
+            profile.save()
 
 
 
