@@ -213,7 +213,7 @@ class LoginViewSet(viewsets.ViewSet):
         # Send SMS with login details (implement your SMS sending logic here)
         sms_message = f"Login successful on {current_time.strftime('%Y-%m-%d %H:%M:%S')}, IP: {ip_address}"
         # send_sms(user.phone_number, sms_message)  # Uncomment and implement this function
-
+        NotifyUser.objects.create(user=user,text=sms_message)
         # Generate JWT tokens
         refresh = RefreshToken.for_user(user)
         response_data = {
