@@ -381,7 +381,7 @@ class TicketViewSet(viewsets.ViewSet):
                 return Response({'error': 'email is required.'}, status=status.HTTP_400_BAD_REQUEST)
             user = None
 
-            # Apply the regular ticket limit
+        # Apply the regular ticket limit
         # ticket_count = TicketUser.objects.filter(user=user).count()
         # if ticket_count >= 5:
         #     raise PermissionDenied("You have reached the maximum number of tickets.")
@@ -764,7 +764,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/otc/orders'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',
+            'X-API-Key': '10520|WvJdUfY0iDJDSrzBbDceIUgWr1LnnKtMJfsZrCsQ',
         }
         data = {
             'symbol': symbol,
@@ -821,7 +821,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/balances'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace with your actual API key
+            'X-API-Key': '10520|WvJdUfY0iDJDSrzBbDceIUgWr1LnnKtMJfsZrCsQ',  # Replace with your actual API key
         }
         response = requests.get(url, headers=headers)
 
@@ -882,7 +882,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/otc/orders'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  
+            'X-API-Key': '10520|WvJdUfY0iDJDSrzBbDceIUgWr1LnnKtMJfsZrCsQ',  
         }
         data = {
             'symbol': symbol, 
@@ -937,7 +937,7 @@ class CryptoViewSet(viewsets.ViewSet):
     def CryptoPrice_ETH(self, request, pk=None):
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '10520|WvJdUfY0iDJDSrzBbDceIUgWr1LnnKtMJfsZrCsQ',  # Replace 'your_api_key' with your actual API key
         }
     
         # Get ETH price
@@ -985,7 +985,7 @@ class CryptoViewSet(viewsets.ViewSet):
     def CryptoPrice_MATIC(self, request, pk=None):
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '10520|WvJdUfY0iDJDSrzBbDceIUgWr1LnnKtMJfsZrCsQ',  # Replace 'your_api_key' with your actual API key
         }
     
         # Get ETH price
@@ -1036,7 +1036,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/otc/price'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '10520|WvJdUfY0iDJDSrzBbDceIUgWr1LnnKtMJfsZrCsQ',  # Replace 'your_api_key' with your actual API key
         }
         params = {
             'symbol': 'ETHTMN',  # Assuming the symbol is passed as the primary key
@@ -1058,7 +1058,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/crypto-withdrawal'
         headers = {
         'Content-Type': 'application/json',
-        'X-API-Key': '8777|XedUHicmAa4ghJXbKnpgt8LoxPbxyg9ebxo10nkU',  # Replace 'your_api_key' with your actual API key
+        'X-API-Key': '10520|WvJdUfY0iDJDSrzBbDceIUgWr1LnnKtMJfsZrCsQ',  # Replace 'your_api_key' with your actual API key
         }
         data = {
             'coin': request.data.get('coin'),
@@ -1087,7 +1087,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/balances'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '10520|WvJdUfY0iDJDSrzBbDceIUgWr1LnnKtMJfsZrCsQ',  # Replace 'your_api_key' with your actual API key
         }
         response = requests.get(url, headers=headers)
         
