@@ -255,16 +255,29 @@ const AddExhibition = () => {
                 />
                 <SimpleInput
                   className={"shadow-md rounded-md"}
-                  type="number"
+                  type="text"
                   title={t("commision")}
                   onChange={(e) => {
-                    setValues((prev) => ({
-                      ...prev,
-                      commision: e.value,
-                    }));
+                    const value = e.target.value;
+
+                    // Use a regular expression to allow only numbers and restrict to a max of 2 digits
+                    if (/^\d{0,2}$/.test(value)) {
+                      setValues((prev) => ({
+                        ...prev,
+                        commision: value,
+                      }));
+
+                      // Validate if the number is within 0 and 99
+                      setValidate((prev) => ({
+                        ...prev,
+                        commision: value !== "" && Number(value) <= 99,
+                      }));
+                    }
                   }}
+                  value={values.commision || ""}
                   disabled={false}
                 />
+
               </div>
             </div>
             <div className="flex flex-col gap-4 p-4 rounded-md">
@@ -301,7 +314,7 @@ const AddExhibition = () => {
                   <div> {t("agreed")}</div>
                 </div>
                 <BorderButton onClick={() => handleSubmit()} className="font-b4 text-center" disabled={!isChecekd || values.marketName == false || values.start_date == false || values.end_date == false || values.description == false || values.application_deadline == false || profileImage == null}>
-                  {}
+                  { }
                   {t("submit")}
                 </BorderButton>
               </div>

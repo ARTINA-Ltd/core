@@ -37,6 +37,15 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const emailPattern = new RegExp(
+      "([-!#-'*+/-9=?A-Z^-~]+(\\.[-!#-'*+/-9=?A-Z^-~]+)*|\"([]!#-[^-~ \\t]|(\\\\[\\t -~]))+\")@([-!#-'*+/-9=?A-Z^-~]+(\\.[-!#-'*+/-9=?A-Z^-~]+)*|\\[[\\t -Z^-~]*])"
+    );
+    
+    if (!emailPattern.test(values.email)) {
+        Notiflix.Notify.failure(t("invalidEmail"));
+        return;
+    }
+
     if (isChecekd == true) {
       axios
         .post("https://api.artina.org/api/account/register/", {
@@ -60,7 +69,7 @@ const Register = () => {
     } else {
       Notiflix.Notify.failure(t("agreeRequried"));
     }
-  };
+};
 
   const onChange = (e) => {
     setValues({

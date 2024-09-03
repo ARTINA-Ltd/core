@@ -284,7 +284,7 @@ const ImageCard = ({
                 </div>
               </div>
             )}
-            {dialog()}
+            {/* {dialog()} */}
           </Fragment>
         )}
       </div>

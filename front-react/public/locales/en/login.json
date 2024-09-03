@@ -33,5 +33,6 @@
   "duplicate": "The username is duplicated.",
   "emailDuplicate": "The entered email is duplicate.",
   "agreeRequried": "To register the application, you must first accept the contract",
-  "nonPersian": "Not an Iranian User"
+  "nonPersian": "Not an Iranian User",
+  "invalidEmail": "Invalid Email"
 }
