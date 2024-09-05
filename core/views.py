@@ -208,7 +208,7 @@ def get_winner(token_id):
         total = highest_bid.eth - value
         balanceowner.eth_balance += total
         balanceowner.save()
-        NotifyUser.objects.create(user=recipient, text="You won the NFT and your balance has been updated")
+        NotifyUser.objects.create(user=recipient, text=f"شما برنده مناقصه ان اف تی به شماره {token_id}شدید.")
         order_Report(token_id)
         recipientWallet = Wallet.objects.get(user=recipient)
         senderWallet = Wallet.objects.get(user=sender)
@@ -673,7 +673,7 @@ class NftViewSet(viewsets.ModelViewSet):
             order.save()
             user_balance=None
             user_balance = UserBalance.objects.get(user=order.bidder)
-            NotifyUser.objects.create(user=order.bidder,text="sell was cancelled and your balance updated")
+            NotifyUser.objects.create(user=order.bidder,text="فروش ان اف تی شما با موفقیت لغو شد")
             user_balance.eth_balance += order.eth    
             user_balance.eth_untradable_balance-=order.eth
             user_balance.save()
@@ -1185,7 +1185,7 @@ def order_Report(token_id):
             n_bid.status=1
             n_bid.report=2
             n_bid.save()
-            NotifyUser.objects.create(user=n_bid.bidder,text=Msg(1).text)    
+            NotifyUser.objects.create(user=n_bid.bidder,text=f"پیشنهاد شما برای  {token_id} قبول نشد. ")    
     print("change report status done")
 
 class CategoryViewSet(viewsets.ModelViewSet):
