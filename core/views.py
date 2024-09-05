@@ -236,8 +236,8 @@ def get_winner(token_id):
             f"/verify/lookup.json",
             data={
                 "receptor": phone_number,
-                "token1": recipient.username,
-                "token2": token_id,
+                "token1": recipient.profile.name,
+                "token2": nft.name,
                 "template": "BuyVerification"
             }
         )
