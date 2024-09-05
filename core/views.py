@@ -169,15 +169,18 @@ def get_winner(token_id):
         sender = nft.owner
         if nft.end_date >= timezone.now():
             return Response({"error": "NFT has not expired."}, status=status.HTTP_400_BAD_REQUEST)
+        nft_mtc_logger.info(f"run get winner for nft {token_id}")
 
         highest_bid = None
         orders = Order.objects.filter(nft=nft, status=0)
         for bid in orders:
             if highest_bid is None or bid.eth > highest_bid.eth:
                 highest_bid = bid
+        nft_mtc_logger.info(f"highestbid for nft {token_id} is {highest_bid}")
 
         nft.is_for_sale = False
         nft.in_exhibition = False
+        nft_mtc_logger.info(f"nft {token_id} is now out of sale")
 
         if highest_bid is None:
             return Response({"error": "No bids found for this NFT."}, status=status.HTTP_400_BAD_REQUEST)
@@ -232,7 +235,7 @@ def get_winner(token_id):
             f"/verify/lookup.json",
             data={
                 "receptor": phone_number,
-                "token1": recipient.profile.first_name,
+                "token1": recipient.username,
                 "token2": token_id,
                 "template": "BuyVerification"
             }
