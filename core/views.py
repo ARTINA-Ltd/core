@@ -180,6 +180,7 @@ def get_winner(token_id):
 
         nft.is_for_sale = False
         nft.in_exhibition = False
+        nft.save()
         nft_mtc_logger.info(f"nft {token_id} is now out of sale")
 
         if highest_bid is None:
