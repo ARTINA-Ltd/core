@@ -259,7 +259,7 @@ class NFTsByExhibitionViewSet(viewsets.ModelViewSet):
     def get_nfts(self, request, pk=None):
         try:
             exhibition = self.get_object()
-            applications = Application.objects.filter(exhibition=exhibition)
+            applications = Application.objects.filter(exhibition=exhibition,status='accepted')
             nfts = NFT.objects.filter(applications__in=applications)
             serializer = NFTSerializer(nfts, many=True)
             return Response(serializer.data)
