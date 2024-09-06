@@ -306,6 +306,7 @@ class TicketViewSet(viewsets.ViewSet):
         for ticket in tickets:
             ticket_info = {
                 'ticket_id': ticket.ticket_id,
+                'exhibition_id': ticket.exhibition.id,
                 'exhibition_name': ticket.exhibition.marketName,
                 'exhibition_price': ticket.exhibition.price,
                 'expiration_date': ticket.exhibition.end_date,
