@@ -297,11 +297,22 @@ class TicketViewSet(viewsets.ViewSet):
         return Response(status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=['get'])
-    def get_user_tickets(self,request):
+    def get_user_tickets(self, request):
         user = self.request.user
         tickets = Ticket.objects.filter(user=user)
-        serializer = serializers.TicketSerializer(tickets, many=True)
-        return Response(serializer.data)
+       
+        # Prepare the data to include exhibition name, price, and ticket info
+        ticket_data = []
+        for ticket in tickets:
+            ticket_info = {
+                'ticket_id': ticket.ticket_id,
+                'exhibition_name': ticket.exhibition.marketName,
+                'exhibition_price': ticket.exhibition.price,
+                'expiration_date': ticket.exhibition.end_date,
+            }
+            ticket_data.append(ticket_info)
+       
+        return Response(ticket_data)
     #adding price of ticket to the data it pass
    
     @action(detail=False, methods=['post']) 
