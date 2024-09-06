@@ -764,7 +764,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/otc/orders'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '10520|WvJdUfY0iDJDSrzBbDceIUgWr1LnnKtMJfsZrCsQ',
+            'X-API-Key': '10553|4Y4jacZCBRcidJ1zmXtUQFfDARiGtXxko4IXc7xw',
         }
         data = {
             'symbol': symbol,
@@ -882,7 +882,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/otc/orders'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '10520|WvJdUfY0iDJDSrzBbDceIUgWr1LnnKtMJfsZrCsQ',  
+            'X-API-Key': '10553|4Y4jacZCBRcidJ1zmXtUQFfDARiGtXxko4IXc7xw',  
         }
         data = {
             'symbol': symbol, 
@@ -937,7 +937,7 @@ class CryptoViewSet(viewsets.ViewSet):
     def CryptoPrice_ETH(self, request, pk=None):
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '10523|3exVL1s24ThkzpMxZu8eRpStYHYMHezyw1sJ9F67',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '10553|4Y4jacZCBRcidJ1zmXtUQFfDARiGtXxko4IXc7xw',  # Replace 'your_api_key' with your actual API key
         }
     
         # Get ETH price
@@ -985,7 +985,7 @@ class CryptoViewSet(viewsets.ViewSet):
     def CryptoPrice_MATIC(self, request, pk=None):
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '10523|3exVL1s24ThkzpMxZu8eRpStYHYMHezyw1sJ9F67',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '10553|4Y4jacZCBRcidJ1zmXtUQFfDARiGtXxko4IXc7xw',  # Replace 'your_api_key' with your actual API key
         }
     
         # Get ETH price
@@ -1036,7 +1036,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/otc/price'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '10520|WvJdUfY0iDJDSrzBbDceIUgWr1LnnKtMJfsZrCsQ',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '10553|4Y4jacZCBRcidJ1zmXtUQFfDARiGtXxko4IXc7xw',  # Replace 'your_api_key' with your actual API key
         }
         params = {
             'symbol': 'ETHTMN',  # Assuming the symbol is passed as the primary key
@@ -1058,7 +1058,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/crypto-withdrawal'
         headers = {
         'Content-Type': 'application/json',
-        'X-API-Key': '10520|WvJdUfY0iDJDSrzBbDceIUgWr1LnnKtMJfsZrCsQ',  # Replace 'your_api_key' with your actual API key
+        'X-API-Key': '10553|4Y4jacZCBRcidJ1zmXtUQFfDARiGtXxko4IXc7xw',  # Replace 'your_api_key' with your actual API key
         }
         data = {
             'coin': request.data.get('coin'),
@@ -1087,7 +1087,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/balances'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '10520|WvJdUfY0iDJDSrzBbDceIUgWr1LnnKtMJfsZrCsQ',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '10553|4Y4jacZCBRcidJ1zmXtUQFfDARiGtXxko4IXc7xw',  # Replace 'your_api_key' with your actual API key
         }
         response = requests.get(url, headers=headers)
         
