@@ -324,12 +324,12 @@ class TicketViewSet(viewsets.ViewSet):
         exhibition= Exhibition.objects.filter(id=exhibition_id).first()
         amount=exhibition.price
         if amount is None or amount == 0 :
-            return Response({"error": "this exhibition need no ticket."})
+            return Response({"error": "this exhibition need no ticket."}, status=status.HTTP_400_BAD_REQUEST)
 
         user_ticket=None
         user_ticket = Ticket.objects.filter(user=user,exhibition=exhibition).first()
         if user_ticket :
-            return Response({"error": "you have the ticket."})
+            return Response({"error": "you have the ticket."}, status=status.HTTP_400_BAD_REQUEST)
 
         else :
 
