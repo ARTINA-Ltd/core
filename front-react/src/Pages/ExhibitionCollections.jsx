@@ -115,11 +115,6 @@ const ExhibitionCollections = () => {
             <h4>
               <CountdownTimer targetDate={deadline} />
             </h4>
-            {exhibition.has_ticket && (
-              <div>
-                <button className="btn glass bg-[#4e45d0] hover:shadow-md md:text-xl">خرید بلیت به قیمت {exhibition.price}</button>
-              </div>
-            )}
           </div>
           {nfts && <NftsSwiper items={nfts}></NftsSwiper>}
         </div>

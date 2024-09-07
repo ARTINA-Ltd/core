@@ -19,7 +19,7 @@ export default function TradeRate() {
           </tr>
           <tr>
             <td className="py-2 px-4 bg-secondary text-secondary-content">{t("table1.r2")}</td>
-            <td className="py-2 px-4">0.3%</td>
+            <td className="py-2 px-4">0.30%</td>
           </tr>
           <tr>
             <td className="py-2 px-4 bg-secondary text-secondary-content">{t("table1.r3")}</td>
@@ -27,7 +27,7 @@ export default function TradeRate() {
           </tr>
           <tr>
             <td className="py-2 px-4 bg-secondary text-secondary-content">{t("table1.r4")}</td>
-            <td className="py-2 px-4">0.2%</td>
+            <td className="py-2 px-4">0.20%</td>
           </tr>
         </tbody>
       </table>

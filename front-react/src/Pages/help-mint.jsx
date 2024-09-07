@@ -38,14 +38,14 @@ const HelpMint = () => {
           <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">
             <img src={i18n.language === "fa" ? helpMintFa2 : helpMintEn2} className=" object-cover m-auto" alt="" />
           </div>
-          <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">{t("step7")}</div>
-          <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">
+          {/* <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">{t("step7")}</div> */}
+          {/* <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">
             <img src={helpMint3} className=" object-cover m-auto" alt="" />
-          </div>
+          </div> */}
           <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">{t("step8")}</div>
-          <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">
+          {/* <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">
             <img src={helpMint4} className=" object-cover m-auto" alt="" />
-          </div>
+          </div> */}
         </SimpleCard>
       </div>
     </TestLayout>
