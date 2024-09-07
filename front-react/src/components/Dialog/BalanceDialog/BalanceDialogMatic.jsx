@@ -189,9 +189,9 @@ const BalanceDialogMatic = () => {
     if (isCharge === false) {
       return (
         <div className="w-full flex flex-col gap-4">
-          <div className="flex gap-4 justify-center items-center">
-            <p> {t("yourCurrentBallance")}: {currentTab === "Ethereum" ? turnOver.eth_balance + " " + t("ethereum") : turnOver.matic_balance + " " + t("matic")} </p>
-            <BorderButton className="">{t("transferToArtina")}</BorderButton>
+          <div className="flex gap-4 justify-center items-center sm:flex-col">
+            <p className="sm:text-sm"> {t("yourCurrentBallance")}: {currentTab === "Ethereum" ? turnOver.eth_balance + " " + t("ethereum") : turnOver.matic_balance + " " + t("matic")} </p>
+            <BorderButton className="sm:text-xs">{t("transferToArtina")}</BorderButton>
           </div>
           {address !== "" && (
             <div>
@@ -278,24 +278,34 @@ const BalanceDialogMatic = () => {
               <p>
                 {t("buyprice")}:{" "}
                 {currentTab === "Ethereum"
-                  ? Number(ethPrice.ETH_buy_price || 0).toFixed(1)
-                  : Number(maticPrice.MATIC_buy_price || 0).toFixed(1)} {" "}
+                  ? Number(ethPrice.ETH_buy_price || 0).toFixed(0).toLocaleString()
+                  : Number(maticPrice.MATIC_buy_price || 0).toFixed(0)} {" "}
                 {t("tooman")}
               </p>
               <p>
                 {t("sellprice")}:{" "}
                 {currentTab === "Ethereum"
-                  ? Number(ethPrice.ETH_sell_price || 0).toFixed(1)
-                  : Number(maticPrice.MATIC_sell_price || 0).toFixed(1)} {" "}
+                  ? Number(ethPrice.ETH_sell_price || 0).toFixed(0)
+                  : Number(maticPrice.MATIC_sell_price || 0).toFixed(0)} {" "}
                 {t("tooman")}
               </p>
+            </div>
+            <div>
+              <p className="text-gray-500 text-xs mx-4 my-2">{t("commissionReminder")}</p>
             </div>
             <div className="w-full flex flex-col gap-8  my-2  shadow-md  p-4 rounded-md">
               <div className="w-full flex gap-4 flex-col items-center font-b4 ">
                 <p className="self-start font-bold mb-4">{t("buy")}</p>
                 <div className="w-full flex">
                   <SimpleInput type="number" title={`${t("amount")} (${currentTab === "Ethereum" ? t("ethereum") : t("matic")})`} placeholder={t("example")} isValid={buyAmount != false} validationError={t("required")} onChange={(e) => setBuyAmount(e.target.value)} />
-                  <p>{buyAmount ? ` قیمت تمام شده ${currentTab === "Ethereum" ? ethPrice.ETH_buy_price * buyAmount : maticPrice.MATIC_buy_price * buyAmount}` : ""}</p>
+                  <p>
+                    {buyAmount
+                      ? ` قیمت تمام شده ${currentTab === "Ethereum"
+                        ? Math.floor(ethPrice.ETH_buy_price * buyAmount + (ethPrice.ETH_buy_price * buyAmount * 0.005))
+                        : Math.floor(maticPrice.MATIC_buy_price * buyAmount + (maticPrice.MATIC_buy_price * buyAmount * 0.005))
+                      }`
+                      : ""}
+                  </p>
                 </div>
                 <div
                   className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all sm:text-xs sm:px-4 self-start"
@@ -310,7 +320,14 @@ const BalanceDialogMatic = () => {
               <div className="w-full flex gap-4 flex-col items-center font-b4 border-t-2 border-t-primary border-opacity-60 pt-4">
                 <p className="self-start font-bold mb-4">{t("sell")}</p>
                 <SimpleInput type="number" title={`${t("amount")}  (${currentTab === "Ethereum" ? t("ethereum") : t("matic")})`} placeholder={t("example")} isValid={sellAmount != false} validationError={t("required")} onChange={(e) => setSellAmount(e.target.value)} />
-                <p>{sellAmount ? ` قیمت تمام شده ${currentTab === "Ethereum" ? ethPrice.ETH_sell_price * sellAmount : Number(Math.floor(maticPrice.MATIC_sell_price) || 0).toFixed(1) * sellAmount}` : ""}</p>
+                <p>
+                  {sellAmount
+                    ? ` قیمت تمام شده ${currentTab === "Ethereum"
+                      ? Math.floor(ethPrice.ETH_sell_price * sellAmount - (ethPrice.ETH_sell_price * sellAmount * 0.005))
+                      : Math.floor(maticPrice.MATIC_sell_price * sellAmount - (maticPrice.MATIC_sell_price * sellAmount * 0.005))
+                    }`
+                    : ""}
+                </p>
                 <div
                   className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all sm:text-xs sm:px-4 self-start"
                   onClick={() => {
