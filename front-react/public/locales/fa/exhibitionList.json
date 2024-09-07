@@ -1,0 +1,13 @@
+{
+    "freeExhibition": "نمایشگاه رایگان",
+    "buyTicket": "خرید بلیط",
+    "youHaveTicket": "شما بلیط دارید",
+    "youNotHaveTicket": "شما بلیط ندارید",
+    "youHaveAlreadyTicket": "شما قبلا بلیط خریده اید",
+    "areYouSureBuyTicket-1": "آیا از خرید بلیط",
+    "insufficientBalance": "موجودی کافی نیست",
+    "areYouSureBuyTicket-2": "مطمئن هستید؟",
+    "cancel": "لغو",
+    "confirm": "تایید",
+    "TicketPurchasedSuccessfully": "بلیط با موفقیت خریداری شد"
+}

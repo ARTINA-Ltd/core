@@ -1,0 +1,13 @@
+{
+    "freeExhibition": "Free Exhibition",
+    "buyTicket": "Buy Ticket",
+    "youHaveTicket": "You have the ticket",
+    "youNotHaveTicket": "You don't have a ticket",
+    "youHaveAlreadyTicket": "You have already bought a ticket",
+    "areYouSureBuyTicket-1": "Are you sure you want to buy",
+    "insufficientBalance": "Insufficient Balance",
+    "areYouSureBuyTicket-2": "ticket?",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "TicketPurchasedSuccessfully": "Ticket purchased successfully"
+}
