@@ -1,7 +1,7 @@
 {
 "page_title":"collectioners",
 
-"nftCount":"nfts",
+"nftCount":"NFTs",
 "changing visibility":"Changing Visibility",
 "sell": "Sell",
 "collapse": "Collapse",
@@ -10,5 +10,6 @@
 "startHour": "Start Hour",
 "endHour": "End Hour",
 "price": "Price (ETH)",
-"submit": "Submit"
+"submit": "Submit",
+"transfer": "Transfer"
 }

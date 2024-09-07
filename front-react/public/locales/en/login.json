@@ -34,5 +34,8 @@
   "emailDuplicate": "The entered email is duplicate.",
   "agreeRequried": "To register the application, you must first accept the contract",
   "nonPersian": "Not an Iranian User",
-  "invalidEmail": "Invalid Email"
+  "invalidEmail": "Invalid Email",
+  "invalidReferral": "Invalid Referral Code",
+  "referralCode": "Referral Code",
+  "optional8Characters": "Optional, 8 characters"
 }
