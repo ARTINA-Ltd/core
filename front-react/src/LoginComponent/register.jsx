@@ -53,6 +53,7 @@ const Register = () => {
           email: values.email,
           password: values.password,
           isforeigner: foreigner,
+          referral_code: values.referralCode,
         })
         .then((response) => {
           Notiflix.Notify.success(t("successSign"));
@@ -64,6 +65,9 @@ const Register = () => {
           }
           if (response.response.data.error == "This email is already registered.") {
             Notiflix.Notify.failure(t("emailDuplicate"));
+          }
+          if (response.response.data.error == "Invalid referral code") {
+            Notiflix.Notify.failure(t("invalidReferral"));
           }
         });
     } else {
@@ -139,6 +143,22 @@ const Register = () => {
             setValues((prev) => ({
               ...prev,
               confirmPassword: e.target.value,
+            }))
+          }
+          defaultValue={""}
+        />
+        {/* referral code */}
+        <SimpleInput
+          className={"mt-6"}
+          type="text"
+          title={t("referralCode")}
+          placeholder={t("optional8Characters")}
+          // isValid={values.referralCode != ""}
+          // validationError="This field is required"
+          onChange={(e) =>
+            setValues((prev) => ({
+              ...prev,
+              referralCode: e.target.value,
             }))
           }
           defaultValue={""}

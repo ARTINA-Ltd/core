@@ -25,7 +25,10 @@ const Footer = () => {
               {t("artina")}
             </div>
             <a href="/user-collections" className="mr-2 font-b3 collection-item">
-              {t("collections")}
+              {t("artists")}
+            </a>
+            <a href="/user-collections" className="mr-2 font-b3 collection-item">
+              {t("nfts")}
             </a>
             <a href="/commission" className="mr-2 font-b3 collection-item">
               {t("wage")}
@@ -33,11 +36,11 @@ const Footer = () => {
             <a href="/support" className="mr-2 font-b3 collection-item">
               {t("support")}
             </a>
-            <a href="/exhibition-list" className="mr-2 font-b3 collection-item">
-              {t("allExhibiotions")}{" "}
-            </a>
             <a href="/whitepaper" className="mr-2 font-b3 collection-item">
               {t("whitePaper")}
+            </a>
+            <a href="/about-us" className="mr-2 font-b3 collection-item">
+              {t("aboutUs")}
             </a>
           </div>
 

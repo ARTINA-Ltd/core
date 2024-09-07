@@ -6,7 +6,6 @@ import Login from "./LoginComponent/login";
 import NFTUploadPage from "./Pages/NftUploadPage";
 import { ThirdwebProvider } from "@thirdweb-dev/react";
 import Profile from "./Pages/Profile";
-import UserDashboard from "./Pages/UserDashboard";
 import { ScrollTop } from "primereact/scrolltop";
 import Commission from "./Pages/Commission/Commission";
 import Support from "./Pages/Support";
@@ -145,7 +144,6 @@ export default () => {
 
                   <Route exact path="upload-page" element={<NFTUploadPage />} />
                   <Route exact path="pre-mint" element={<PreMint />} />
-                  <Route exact path="UserDashboard" element={<UserDashboard />} />
                   <Route exact path="dashboard" element={<Dashboard />} />
                   <Route exact path="profile" element={<Profile />} />
                   <Route exact path="inter-profile" element={<InternationalProfile />} />
