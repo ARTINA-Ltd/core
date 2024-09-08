@@ -57,11 +57,11 @@ const Header = ({ connectWallet = false, rev = false }) => {
       link: "/support",
       icon: <MdSupportAgent className="w-6 h-6 ml-1 text-primary" />,
     },
-    {
-      title: t("blog"),
-      link: "https://artina.org/",
-      icon: <FaBlogger className="w-6 h-6 ml-1 text-primary" />,
-    },
+    // {
+    //   title: t("blog"),
+    //   link: "https://artina.org/",
+    //   icon: <FaBlogger className="w-6 h-6 ml-1 text-primary" />,
+    // },
   ];
 
   const ActiveItems = [

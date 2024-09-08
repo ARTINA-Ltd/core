@@ -57,9 +57,9 @@ const Footer = () => {
             <a href="/ai" className="mr-2 font-b3">
               {t("AIimageGenerator")}{" "}
             </a>
-            <a href="https://artina.org" onClick={() => Notify.warning(t("addingLater"))} className="mr-2 font-b3">
+            {/* <a href="https://artina.org" onClick={() => Notify.warning(t("addingLater"))} className="mr-2 font-b3">
               {t("blog")}
-            </a>
+            </a> */}
           </div>
           <div className="w-full flex flex-col gap-2 mb-4">
             <div className="font-b8">{t("guide")}</div>
