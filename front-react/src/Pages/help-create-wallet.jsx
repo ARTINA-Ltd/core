@@ -5,6 +5,10 @@ import { useTranslation } from "react-i18next";
 import i18n from "../i18n.js";
 import helpWallet1 from "../assets/images/help-wallet-1.png"
 import helpWallet2 from "../assets/images/help-wallet-2.png"
+import helpWalletFa3 from "../assets/images/help-wallet-3-fa.png"
+import helpWalletFa4 from "../assets/images/help-wallet-4-fa.png"
+import helpWalletEN3 from "../assets/images/help-wallet-3-en.png"
+import helpWalletEN4 from "../assets/images/help-wallet-4-en.png"
 
 const HelpCreateWallet = () => {
   const { t } = useTranslation("walletQuide");
@@ -12,9 +16,19 @@ const HelpCreateWallet = () => {
     <TestLayout>
       <div className="w-[55%] m-auto lg:w-4/5 md:w-11/12">
         <SimpleCard className={"text-center bg-base-100 leading-[40px]"}>
-          <div className={`text-[32px] ${i18n.dir() === "rtl" ? "text-right" : "text-left"}  mb-5 sm:text-[25px]`}>{t("header")}</div>
-          <div className="text-[18px] mb-7 text-center sm:px-3 sm:text-[14px]">{t("firstparagraph")}</div>
-          <div className={`text-[25px] mb-2 mr-5 ${i18n.dir() === "rtl" ? "text-right" : "text-left"}`}>{t("secondHeader")}</div>
+          <div className={`text-[32px] text-center mb-5 sm:text-[25px]`}>{t("header")}</div>
+          <div className={`text-[25px] mb-2 mr-5 ${i18n.dir() === "rtl" ? "text-right" : "text-left"}`}>{t("firstHeader")}</div>
+          <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">{t("ArtinaStep1")}</div>
+          <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">{t("ArtinaStep2")}</div>
+          <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">
+            <img src={i18n.language === "fa" ? helpWalletFa3 : helpWalletEN3} className=" object-cover m-auto max-w-xs" alt="" />
+          </div>
+          <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">{t("ArtinaStep3")}</div>
+          <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">
+            <img src={i18n.language === "fa" ? helpWalletFa4 : helpWalletEN4} className=" object-cover m-auto max-w-md" alt="" />
+          </div>
+          <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">{t("ArtinaStep4")}</div>
+          <div className={`text-[25px] mb-2 mt-4 mr-5 ${i18n.dir() === "rtl" ? "text-right" : "text-left"}`}>{t("secondHeader")}</div>
           <div className="text-[18px] mb-4 text-justify px-6 sm:px-3 sm:text-[14px]">
             {t("step1.before")}
             <a className="text-[18px] mb-4 text-justify text-purple-700" href="https://metamask.io/download/">
