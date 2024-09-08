@@ -3,11 +3,6 @@ from django.contrib.auth.models import User
 from core.models import NFT
 from django.utils import timezone
 from django.core import validators
-from datetime import datetime
-from datetime import timedelta
-import pytz
-from django.db.models import Avg
-from django.core.validators import FileExtensionValidator
 
 
 class Category (models.Model):
@@ -68,14 +63,4 @@ class Application(models.Model):
         return f'{self.nft.name} in {self.exhibition.marketName}'
 
 
-
-
-class Ex_Payment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    amount = models.PositiveIntegerField()
-    authority = models.CharField(max_length=100)
-    is_paid = models.BooleanField(default=False)
-    exhibition = models.ForeignKey(Exhibition, on_delete=models.CASCADE, related_name='payments')
-    def __str__(self):
-        return f'{self.user} - {self.amount}'
 

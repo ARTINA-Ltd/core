@@ -1,1 +1,16 @@
-{ "header": "Wallet making guide", "firstparagraph": "There are various wallets, first you need to choose a valid wallet:", "secondHeader": "Metamask wallet", "step1": { "before": "1- Enter the ", "link": " Metamask ", "after": "page." }, "step2": "2- Choose the Windows or mobile version or the browser extension.", "step3": "3- A list of 12 to 24 words will be produced and you must keep them carefully.", "step4": "4- Click on the button below in the top menu.", "step5": "5- In the select a network section, click the add network option.", "step6": "6- Enter the following values for the new network.", "step7": "7- Save the entered values." }
+{
+    "header": "Wallet making guide",
+    "firstparagraph": "There are various wallets, first you need to choose a valid wallet:",
+    "secondHeader": "Metamask wallet",
+    "step1": {
+        "before": "1- Enter the ",
+        "link": " Metamask ",
+        "after": "page."
+    },
+    "step2": "2- Choose the Windows or mobile version or the browser extension.",
+    "step3": "3- A list of 12 to 24 words will be produced and you must keep them carefully.",
+    "step4": "4- Click on the button below in the top menu.",
+    "step5": "5- In the select a network section, click the add network option.",
+    "step6": "6- Enter the following values for the new network.",
+    "step7": "7- Save the entered values."
+}

@@ -8,6 +8,7 @@ const SimpleInput = ({ onChange, title, placeholder, type, isValid, validationEr
   const [focus, setFocus] = useState(!!defaultValue);
   const [value, setValue] = useState(defaultValue);
   const [defaultVal, setDefaultVal] = useState();
+  const [touched, setTouched] = useState(false);
 
   const customStyles = {
     option: (defaultStyles, state) => ({
@@ -76,13 +77,13 @@ const SimpleInput = ({ onChange, title, placeholder, type, isValid, validationEr
       case "date":
         if (disabled) {
           return (
-            <div className={`simple-input w-full border-x-2 border-x-transparent ${ltr ? "border-l-primary" : i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={ltr ? "ltr" : i18n.dir()}>
+            <div className={`simple-input w-full border-x-2 border-x-transparent ${ltr ? "border-l-primary" : i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} onFocus={() => setFocus(true)} onBlur={(e) => { setFocus(e.target.value !== ""); setTouched(true); }} dir={ltr ? "ltr" : i18n.dir()}>
               {defaultVal?.getFullYear() > 1500 ? new Intl.DateTimeFormat("fa").format(defaultVal) : new Intl.DateTimeFormat("en").format(defaultVal)}
             </div>
           );
         }
         return (
-          <div type="text" className={`simple-input w-full border-x-2 border-x-transparent ${ltr ? "border-l-primary" : i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={ltr ? "ltr" : i18n.dir()}>
+          <div type="text" className={`simple-input w-full border-x-2 border-x-transparent ${ltr ? "border-l-primary" : i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} onFocus={() => setFocus(true)} onBlur={(e) => { setFocus(e.target.value !== ""); setTouched(true); }} dir={ltr ? "ltr" : i18n.dir()}>
             <DatePicker onChange={onChange} inputClass="w-full bg-transparent" defaultValue={defaultVal} dir={ltr ? "ltr" : i18n.dir()} />
           </div>
         );
@@ -91,15 +92,15 @@ const SimpleInput = ({ onChange, title, placeholder, type, isValid, validationEr
       case "dropdown":
         return <Select placeholder={placeholder} options={options} onChange={onChange} className={`simple-input2 w-full border-x-2 border-x-transparent ${ltr ? "border-l-primary" : i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} styles={customStyles} menuPlacement={menuPlacement} dir={ltr ? "ltr" : i18n.dir()} />;
       case "password":
-        return <input disabled={disabled} type="password" className={`simple-input w-full border-x-2 border-x-transparent ${ltr ? "border-l-primary" : i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} defaultValue={defaultValue} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={i18n.dir()} onKeyUp={onChange} />;
+        return <input disabled={disabled} type="password" className={`simple-input w-full border-x-2 border-x-transparent ${ltr ? "border-l-primary" : i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} defaultValue={defaultValue} onFocus={() => setFocus(true)} onBlur={(e) => { setFocus(e.target.value !== ""); setTouched(true); }} dir={i18n.dir()} onKeyUp={onChange} />;
       case "number":
-        return <input disabled={disabled} type="text" className={`simple-input w-full border-x-2 border-x-transparent ${ltr ? "border-l-primary" : i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} value={value} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={ltr ? "ltr" : i18n.dir()} onKeyUp={onChange} onChange={handleNumberChange} maxLength={maxChars} />;
+        return <input disabled={disabled} type="text" className={`simple-input w-full border-x-2 border-x-transparent ${ltr ? "border-l-primary" : i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} value={value} onFocus={() => setFocus(true)} onBlur={(e) => { setFocus(e.target.value !== ""); setTouched(true); }} dir={ltr ? "ltr" : i18n.dir()} onKeyUp={onChange} onChange={handleNumberChange} maxLength={maxChars} />;
       case "double":
-        return <input disabled={disabled} type="text" className={`simple-input w-full border-x-2 border-x-transparent ${ltr ? "border-l-primary" : i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} value={value} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={ltr ? "ltr" : i18n.dir()} onKeyUp={onChange} onChange={handleChange} />;
+        return <input disabled={disabled} type="text" className={`simple-input w-full border-x-2 border-x-transparent ${ltr ? "border-l-primary" : i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} value={value} onFocus={() => setFocus(true)} onBlur={(e) => { setFocus(e.target.value !== ""); setTouched(true); }} dir={ltr ? "ltr" : i18n.dir()} onKeyUp={onChange} onChange={handleChange} />;
       case "card":
-        return <input disabled={disabled} type="text" className={`simple-input w-full border-x-2 border-x-transparent ${ltr ? "border-l-primary" : i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} value={formatCardNumber(value)} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={ltr ? "ltr" : i18n.dir()} onKeyUp={onChange} onChange={handleChange} maxLength={maxChars} />;
+        return <input disabled={disabled} type="text" className={`simple-input w-full border-x-2 border-x-transparent ${ltr ? "border-l-primary" : i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} value={formatCardNumber(value)} onFocus={() => setFocus(true)} onBlur={(e) => { setFocus(e.target.value !== ""); setTouched(true); }} dir={ltr ? "ltr" : i18n.dir()} onKeyUp={onChange} onChange={handleChange} maxLength={maxChars} />;
       default:
-        return <input disabled={disabled} type="text" className={`simple-input w-full border-x-2 border-x-transparent ${ltr ? "border-l-primary" : i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} defaultValue={defaultValue} onFocus={() => setFocus(true)} onBlur={(e) => setFocus(e.target.value !== "")} dir={ltr ? "ltr" : i18n.dir()} onKeyUp={onChange} />;
+        return <input disabled={disabled} type="text" className={`simple-input w-full border-x-2 border-x-transparent ${ltr ? "border-l-primary" : i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`} placeholder={focus ? placeholder : ""} defaultValue={defaultValue} onFocus={() => setFocus(true)} onBlur={(e) => { setFocus(e.target.value !== ""); setTouched(true); }} dir={ltr ? "ltr" : i18n.dir()} onKeyUp={onChange} />;
     }
   };
 
@@ -109,8 +110,8 @@ const SimpleInput = ({ onChange, title, placeholder, type, isValid, validationEr
       <div dir={ltr ? "ltr" : i18n.dir()} className={`text-[14px] sm:bottom-[110%] sm:text-[14px] font-b5 px-2 pointer-events-none absolute translate-y-1/2 transition-all ${focus ? "bottom-[110%] text-[14px] text-accent" : "bottom-[50%]"}`}>
         {title}
       </div>
-      {validationError && (
-        <div dir={ltr ? "ltr" : i18n.dir()} className={`pointer-events-none absolute ${i18n.dir() === "rtl" ? "left-2 top-1/2 -translate-y-1/2" : "text-center right-0 translate-y-1/2"} text-sm bg-base-100 border-2 border-error text-error px-2 rounded-full font-b2 my-auto ${isValid ? "opacity-0" : "opacity-90"} transition-all`}>
+      {validationError && touched && !isValid && (
+        <div dir={ltr ? "ltr" : i18n.dir()} className={`pointer-events-none absolute ${i18n.dir() === "rtl" ? "left-2 top-1/2 -translate-y-1/2" : "text-center right-0 translate-y-1/2"} text-sm bg-base-100 border-2 border-error text-error px-2 rounded-full font-b2 my-auto opacity-90 transition-all`}>
           {validationError}
         </div>
       )}

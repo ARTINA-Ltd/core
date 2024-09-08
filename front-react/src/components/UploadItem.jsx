@@ -91,112 +91,59 @@ const UploadItem = () => {
     setDisabled(true);
     setTimeout(() => setDisabled(false), 30000);
     e.preventDefault();
-    if (address) {
-      setIsLoading(true);
-      Notify.info(t("mintingNotif"));
+    setIsLoading(true);
+    Notify.info(t("mintingNotif"));
 
-      axios
-        .post(
-          "https://api.artina.org/api/transaction/NFTViewSet/",
-          {
-            nft_name: upladObj.item_name,
-            creator: upladObj.creator,
-            last_price: upladObj.last_price,
-            image_nft: imageUrl,
-            description_nft: upladObj.description,
-            external_link: upladObj.external_link,
-            author_address: address,
-            has_physical: hasPhysical,
-            category: selectedCategory,
-            has_internal_wallet: hasInternalWallet,
-            data: uploadObj.properties,
-            collection: selectedCollection,
+    axios
+      .post(
+        "https://api.artina.org/api/transaction/NFTViewSet/",
+        {
+          nft_name: upladObj.item_name,
+          creator: upladObj.creator,
+          last_price: upladObj.last_price,
+          image_nft: imageUrl,
+          description_nft: upladObj.description,
+          external_link: upladObj.external_link,
+          author_address: "",
+          has_physical: hasPhysical,
+          category: selectedCategory,
+          has_internal_wallet: true,
+          data: uploadObj.properties,
+          collection: selectedCollection,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-            },
-            mode: "cors",
-          }
-        )
-        .then((res) => {
-          setTokenId(res.data);
-          Notify.success(t("mintSuccessNotif"));
+          mode: "cors",
+        }
+      )
+      .then((res) => {
+        setTokenId(res.data);
+        Notify.success(t("mintSuccessNotif"));
+        setIsLoading(false);
+        setIsUploaded(true);
+      })
+      .catch((e) => {
+        if (e.response.status === 401) {
+          Notify.failure("Please log in to your account");
+          navigate("/");
+        } else {
           setIsLoading(false);
-          setIsUploaded(true);
-        })
-        .catch((e) => {
-          setIsLoading(false);
+          console.log(e);
           console.log("Category:", selectedCategory);
           console.log("Has Physical:", hasPhysical);
-
-          if (e.response.data.error === "your money is not enough") {
-            Notify.failure(t("mintLowBalanceNotif"));
-          } else if (e.response.status === 3) {
-            Notify.failure(t("tryAgain"));
-            navigate("/");
-          } else if (e.response.status === 401) {
-            Notify.failure("Please log in to your account");
-            navigate("/");
-          } else {
-            Notify.failure(t("error"));
-          }
-          setIsLoading(false);
-        });
-    } else if (hasInternalWallet) {
-      setIsLoading(true);
-      Notify.info(t("mintingNotif"));
-
-      axios
-        .post(
-          "https://api.artina.org/api/transaction/NFTViewSet/",
-          {
-            nft_name: upladObj.item_name,
-            creator: upladObj.creator,
-            last_price: upladObj.last_price,
-            image_nft: imageUrl,
-            description_nft: upladObj.description,
-            external_link: upladObj.external_link,
-            author_address: "",
-            has_physical: hasPhysical,
-            category: selectedCategory,
-            has_internal_wallet: hasInternalWallet,
-            data: uploadObj.properties,
-            collection: selectedCollection,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-            },
-            mode: "cors",
-          }
-        )
-        .then((res) => {
-          setTokenId(res.data);
-          Notify.success(t("mintSuccessNotif"));
-          setIsLoading(false);
-          setIsUploaded(true);
-        })
-        .catch((e) => {
-          if (e.response.status === 401) {
-            Notify.failure("Please log in to your account");
-            navigate("/");
-          } else {
-            setIsLoading(false);
-            console.log(e);
-            console.log("Category:", selectedCategory);
-            console.log("Has Physical:", hasPhysical);
-          }
-          if (e.response.data.error === "your money is not enough") {
-            Notify.failure(t("mintLowBalanceNotif"));
-          } else {
-            Notify.failure(t("error"));
-          }
-          setIsLoading(false);
-        });
-    } else {
-      Notify.failure(t("mintConnectWalletNotif"));
-    }
+        }
+        if (e.response.status === 3) {
+          Notify.failure(t("tryAgain"));
+        }
+        if (e.response.data.error === "your money is not enough") {
+          Notify.failure(t("mintLowBalanceNotif"));
+        } else {
+          Notify.failure(t("error"));
+        }
+        setIsLoading(false);
+      });
   };
   const handleCopy = () => {
     navigator.clipboard.writeText("0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a");
@@ -259,7 +206,7 @@ const UploadItem = () => {
       <div className="flex gap-5 items-start lg:flex-col lg:items-center">
         <SimpleCard className="bg-primary w-[45%] flex flex-col relative gap-5 items-center overflow-hidden lg:w-[55%] md:w-[65%] sm:w-[80%]">
           <div className="relative group w-full rounded-2xl" id="nftImage">
-            <img alt="" className="w-full h-auto max-h-[800px] rounded-2xl" src={imageUrl ? imageUrl : "https://api.artina.org/static/images/No_Image_Available.jpg"} />
+            <img alt="" className="w-full h-auto max-h-[800px] rounded-2xl" src={imageUrl ? imageUrl : "https://api.artina.org/static/images/No_Image_Available.png"} />
 
             <div className="group-hover:opacity-80 opacity-0 cursor-pointer duration-300 bg-black transition-all h-full w-full absolute inset-0 m-auto items-center justify-center flex rounded-2xl" onClick={() => inputFile.current.click()}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="0.5" stroke="currentColor" className="text-white " width="3em">
@@ -334,7 +281,7 @@ const UploadItem = () => {
             </div>
           </div>
           <div className="w-full flex gap-4 sm:flex-col">
-            {}
+            { }
             <div className="">
               <div className="flex gap-4 items-center text-2xl cursor-pointer" onClick={() => document.getElementById("AddNftPopup").showModal()}>
                 <p className={`text-[14px] pt-2 border-x-2 border-x-transparent p-2 ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"} font-b5`}>{t("chooseProperties")} </p>
@@ -397,7 +344,7 @@ const UploadItem = () => {
             />
           </div>
 
-          <div className="w-full flex gap-3 items-center">
+          {/* <div className="w-full flex gap-3 items-center">
             <div className="">{t("isAddWithWallet")}</div>
             <div className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${hasInternalWallet ? "bg-green-100 text-green-400" : "bg-neutral text-neutral-content"} transition-all`} onClick={() => setHasInternalWallet(true)}>
               {t("yes")}
@@ -405,7 +352,7 @@ const UploadItem = () => {
             <div className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${!hasInternalWallet ? "bg-red-100 text-red-400" : "bg-neutral text-neutral-content"} transition-all`} onClick={() => setHasInternalWallet(false)}>
               {t("no")}
             </div>
-          </div>
+          </div> */}
 
           <div className="flex justify-between">
             <div className="text-[14px] text-gray-400 pt-2">{t("basicCost")}</div>
@@ -425,21 +372,21 @@ const UploadItem = () => {
         </SimpleCard>
       </div>
       {isUploaded ? (
-        <SimpleCard className={"bg-green-50 mt-12 flex flex-wrap gap-4 md:flex-col"}>
-          <div className="w-[calc(25%-2rem)] md:mx-auto">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.1" stroke="currentColor" className="w-40 h-40 text-green-600">
+        <SimpleCard className={"bg-green-50 mt-12 flex gap-4 md:flex-col"}>
+          <div className="w-auto md:mx-auto">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.1" stroke="currentColor" className="w-40 h-40 sm:w-20 sm:h-20 text-green-600">
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 019 9v.375M10.125 2.25A3.375 3.375 0 0113.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 013.375 3.375M9 15l2.25 2.25L15 12" />
             </svg>
           </div>
-          <div className="leading-[40px] w-3/4 md:w-full">
-            <div className=" text-green-600">{t("successfullyMinted")}</div>
-            <div className=" text-green-900">
+          <div className="md:w-full">
+            <div className=" text-green-600 sm:text-md mb-3 sm:text-center">{t("successfullyMinted")}</div>
+            <div className=" text-green-900 sm:text-sm mb-3 sm:text-center">
               {t("mintLastParagraph.beforeToken")} {tokenId}
               {t("mintLastParagraph.afterToken")}
             </div>
-            <div className="text-[16px] md:text-sm py-2 justify-between text-green-900 bg-green-100 rounded-full px-7 cursor-pointer flex flex-wrap gap-2 items-center" onClick={handleCopy}>
+            <div className="text-[16px] md:text-sm sm:text-[11px] sm:flex-col py-2 justify-between text-green-900 bg-green-100 rounded-full px-7 cursor-pointer flex flex-wrap gap-2 items-center" onClick={handleCopy}>
               <div>{t("code")}:</div>
-              0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a
+              <div>0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a</div>
             </div>
           </div>
         </SimpleCard>
@@ -456,6 +403,7 @@ const UploadItem = () => {
             <SimpleInput type="text" title={t("name")} placeholder={t("propertyNameExample")} onChange={(e) => handleInputChange("name", e.target.value)} value={newProperty.name} defaultValue={null} />
             <SimpleInput type="text" title={t("type")} placeholder={t("propertyTypeExample")} onChange={(e) => handleInputChange("type", e.target.value)} value={newProperty.type} defaultValue={null} />
           </div>
+          <p className="text-gray-500 text-xs">{t("NFTPropertiesExplanation")}</p>
           <div className="flex justify-between">
             <form method="dialog">
               <BorderButton className="text-lg" size="sm" onClick={handleAddProperty}>

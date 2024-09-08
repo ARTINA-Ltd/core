@@ -1,0 +1,14 @@
+{
+"page_title":"collectioners",
+
+"nftCount":"nfts",
+"changing visibility":"Changing Visibility",
+"sell": "Sell",
+"collapse": "Collapse",
+"cancelSell": "Cancel Sell",
+"dateDuration": "Date Duration",
+"startHour": "Start Hour",
+"endHour": "End Hour",
+"price": "Price (ETH)",
+"submit": "Submit"
+}

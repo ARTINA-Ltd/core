@@ -20,7 +20,6 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'your-scheduled-task': {
         'task': 'core.tasks.check_nft_end_time',
-        'schedule': crontab(minute='*'),
+        'schedule': crontab(minute='*/2'),
     },
 }
-

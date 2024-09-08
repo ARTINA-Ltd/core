@@ -1,1 +1,27 @@
-{ "buy": "Buy", "sell": "Sell", "negotiable": "Available Balance", "unNegotiable": "Unavailable Balance", "tooman": "Tooman", "wallet": "Toman Wallet", "maticInventory": "Matic Balance", "walletAddress": "Wallet Address:", "maticWallet": "Crypto Wallet", "amount": "Amount(Tooman)", "required": "Required", "example": "Like: 1", "createWallet": "Create new Wallet", "yourETH": "Your Ethereum:", "yourMatic": "Your Matic:", "recharge": "Recharge", "withdraw": "Withdrawal", "deposit": "Deposit" }
+{
+    "buy": "Buy",
+    "sell": "Sell",
+    "negotiable": "Available Balance",
+    "unNegotiable": "Unavailable Balance",
+    "tooman": "Toman",
+    "wallet": "Toman Wallet",
+    "maticInventory": "Matic Balance",
+    "walletAddress": "Wallet Address:",
+    "maticWallet": "Crypto Wallet",
+    "amount": "Amount",
+    "required": "Required",
+    "example": "Like: 1",
+    "createWallet": "Create new Wallet",
+    "yourETH": "Your Ethereum:",
+    "yourMatic": "Your Matic:",
+    "recharge": "Recharge",
+    "withdraw": "Withdrawal",
+    "deposit": "Deposit",
+    "buyprice": "Buy Price",
+    "sellprice": "Sell Price",
+    "ethereum": "Ethereum",
+    "matic": "Matic",
+    "yourCurrentBallance": "Your current ballance",
+    "transferToArtina": "Transfer your ballance to Artina",
+    "thisAddrIsForPolygon": "This address is based on Polygon network"
+}

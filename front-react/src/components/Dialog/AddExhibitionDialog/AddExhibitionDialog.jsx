@@ -150,7 +150,7 @@ const AddExhibitionDialog = ({ user, nfts = [], description, exhibition }) => {
         <div className="font-b4">
           <div className="w-full flex items-center justify-center">
             <div className="relative group items-center flex justify-center w-1/2" id="exhibitionImage">
-              <img alt="" src={profileImageUrl ? profileImageUrl : `${"https://api.artina.org/static/images/No_Image_Available.jpg"}`} className="pointer-events-none rounded-2xl overflow-hidden object-cover h-auto flex-shrink-0 w-full" />
+              <img alt="" src={profileImageUrl ? profileImageUrl : `${"https://api.artina.org/static/images/No_Image_Available_SrUxrax.png"}`} className="pointer-events-none rounded-2xl overflow-hidden object-cover h-auto flex-shrink-0 w-full" />
               <div className="group-hover:opacity-80 opacity-0 cursor-pointer duration-300 bg-black transition-all w-full h-full absolute inset-0 m-auto items-center justify-center flex rounded-2xl" onClick={() => inputFile.current.click()}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="0.5" stroke="currentColor" className="text-white " width="3em">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />

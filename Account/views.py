@@ -18,7 +18,7 @@ from django.contrib.auth.views import PasswordResetView
 from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from .serializers import UserBalanceSerializer , NotifyUserSerializer,UserInfoSerializer,withdrawal_listSerializer
+from .serializers import UserBalanceSerializer , NotifyUserSerializer,UserInfoSerializer,Withdrawal_listSerializer
 from django.utils import timezone
 import random
 from django.core.exceptions import PermissionDenied
@@ -38,12 +38,50 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.contrib.auth.models import User
-from .models import Wallet, Transaction
+from .models import Wallet, Transaction, Withdrawal_list
 from web3 import Web3, eth
 import os
 import time
 import json
 from django.conf import settings
+from django.utils import timezone
+
+polygon_w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
+
+# Address of the WETH (Wrapped ETH) token on the Polygon network
+WETH_CONTRACT_ADDRESS = '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619'
+
+def get_balance(user):
+    user_wallet = Wallet.objects.filter(user=user).first()
+    
+    if not user_wallet:
+        return Response({"error": "Wallet not found for the user."}, status=status.HTTP_404_NOT_FOUND)
+    
+    try:
+        # Get MATIC balance on Polygon
+        matic_balance_wei = polygon_w3.eth.get_balance(user_wallet.address)
+        matic_balance_matic = polygon_w3.fromWei(matic_balance_wei, 'ether')
+
+        # Get WETH (Wrapped ETH) balance on Polygon
+        weth_contract = polygon_w3.eth.contract(address=WETH_CONTRACT_ADDRESS, abi=[
+            {
+                'constant': True,
+                'inputs': [{'name': '_owner', 'type': 'address'}],
+                'name': 'balanceOf',
+                'outputs': [{'name': 'balance', 'type': 'uint256'}],
+                'type': 'function'
+            }
+        ])
+        weth_balance_wei = weth_contract.functions.balanceOf(user_wallet.address).call()
+        weth_balance_eth = polygon_w3.fromWei(weth_balance_wei, 'ether')
+
+        return Response({
+            "matic_balance": matic_balance_matic,
+            "eth_balance": weth_balance_eth
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
 class NotifyUserViewSet(viewsets.ModelViewSet):
@@ -82,7 +120,7 @@ class NotifyUserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-loggerReg = logging.getLogger('file_register')
+register_logger = logging.getLogger('Account.register')
 
 class RegisterViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -93,16 +131,25 @@ class RegisterViewSet(viewsets.ModelViewSet):
         username = request.data.get('username')
         phone_number = request.data.get('phone_number')
         email = request.data.get('email')
-        is_foreigner = request.data.get('is_foreigner')
-        loggerReg.info(f"Register attempt for username: {username}, email: {email}, phone_number: {phone_number}")  # Log the registration attempt
+        referral_code = request.data.get('referral_code', None)
+        register_logger.info(f"Register attempt for username: {username}, email: {email}, phone_number: {phone_number}")  # Log the registration attempt
 
         if User.objects.filter(username=username).exists():
-            loggerReg.warning(f"Username {username} already exists")  # Log if the username already exists
+            register_logger.warning(f"Username {username} already exists")  # Log if the username already exists
             return Response({'error': 'This username is already taken.'}, status=status.HTTP_400_BAD_REQUEST)
 
         if User.objects.filter(email=email).exists():
-            loggerReg.warning(f"Email {email} is already registered")  # Log if the email already exists
+            register_logger.warning(f"Email {email} is already registered")  # Log if the email already exists
             return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # If a referral code was provided, find the referring affiliate and credit them
+        if referral_code:
+            try:
+                referrer_affiliate = Affiliate.objects.get(referral_code=referral_code)
+                referrer_affiliate.credit_balance += 3  # Award 10 credits 
+                referrer_affiliate.save()
+            except Affiliate.DoesNotExist:
+                return Response({"error": "Invalid referral code"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Create the user if the username, phone_number, and email are all unique
         serializer = self.get_serializer(data=request.data)
@@ -110,7 +157,7 @@ class RegisterViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         
-        loggerReg.info(f"User registered successfully: {username}, email: {email}, phone_number: {phone_number}")  # Log successful registration
+        register_logger.info(f"User registered successfully: {username}, email: {email}, phone_number: {phone_number}")  # Log successful registration
         
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
    
@@ -118,17 +165,17 @@ class RegisterViewSet(viewsets.ModelViewSet):
     def check_username (request,username):
         username = request.data.get('username')
         if User.objects.filter(username=username).exists():
-            loggerReg.warning(f"Username {username} already exists")  # Log if the username already exists
+            register_logger.warning(f"Username {username} already exists")  # Log if the username already exists
             return Response({'error': 'This username is already taken.'}, status=status.HTTP_400_BAD_REQUEST)
     
     @action(detail=False, methods=['post'])
     def check_email (request,email):
         email = request.data.get('email')
         if User.objects.filter(email=email).exists():
-            loggerReg.warning(f"Email {email} is already registered")  # Log if the email already exists
+            register_logger.warning(f"Email {email} is already registered")  # Log if the email already exists
             return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
 
-loggerLog = logging.getLogger('file_login')
+login_logger = logging.getLogger('Account.login')
 
 class LoginViewSet(viewsets.ViewSet):
 
@@ -139,15 +186,15 @@ class LoginViewSet(viewsets.ViewSet):
         username = request.data.get('username')
         password = request.data.get('password')
         
-        loggerLog.info(f"Login attempt for username: {username}")  # Log the login attempt
+        login_logger.info(f"Login attempt for username: {username}")  # Log the login attempt
         
         user = authenticate(username=username, password=password)
         
         if user is None:
-            loggerLog.warning(f"Invalid credentials for username: {username}")  # Log invalid credentials
+            login_logger.warning(f"Invalid credentials for username: {username}")  # Log invalid credentials
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
         profile = Profile.objects.get(user=user)
-        loggerLog.info(f"Successful login for username: {username}")  # Log successful login
+        login_logger.info(f"Successful login for username: {username}")  # Log successful login
         
         refresh = RefreshToken.for_user(user)
         response_data = {
@@ -193,6 +240,14 @@ class UserInfoViewSet(viewsets.ViewSet):
             'is_foreigner':profile.is_foreigner
         }
         return Response(data)
+
+class AffiliateDetailView(viewsets.ModelViewSet):
+    queryset = Affiliate.objects.all()
+    serializer_class = serializers.AffiliateSerializer
+
+    def get_object(self):
+        return self.request.user.affiliate
+    
 
 class ArtistRateViewSet(viewsets.ModelViewSet):
     queryset = ArtistReviewRating.objects.all()
@@ -427,7 +482,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def get_balance(self, request):
         user = self.request.user
-        user_wallet = Wallet.objects.filter(user=user).first()
+        user_wallet = Wallet.objects.get(user=user)
         print(f"user_wallet is: {user_wallet}")
         if not user_wallet:
             balance = {
@@ -437,20 +492,36 @@ class TransactionViewSet(viewsets.ModelViewSet):
             # Add other balance fields as needed
             }
             return Response(balance, status=status.HTTP_200_OK)
+        else:
+            polygon_w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
 
-        balance = polygon_w3.eth.getBalance(user_wallet.address)
-        print(f"Balance: {balance}")
-        user_wallet.balance=balance
-        user_wallet.save
-        balance = {
-            'matic_balance': user_wallet.MATIC_balance,
-            'wallet_address' : user_wallet.address,
-            'eth_balance':user_wallet.ETH_balance
+            try:
+                # Get MATIC balance on Polygon
+                matic_balance_wei = polygon_w3.eth.get_balance(user_wallet.address)
+                matic_balance_matic = polygon_w3.fromWei(matic_balance_wei, 'ether')
 
-            # Add other balance fields as needed
-        }
+                # Get WETH (Wrapped ETH) balance on Polygon
+                weth_contract = polygon_w3.eth.contract(address=WETH_CONTRACT_ADDRESS, abi=[
+                {
+                'constant': True,
+                'inputs': [{'name': '_owner', 'type': 'address'}],
+                'name': 'balanceOf',
+                'outputs': [{'name': 'balance', 'type': 'uint256'}],
+                'type': 'function'
+                } ])
+                weth_balance_wei = weth_contract.functions.balanceOf(user_wallet.address).call()
+                weth_balance_eth = polygon_w3.fromWei(weth_balance_wei, 'ether')
+                balance = {
+                    'matic_balance': matic_balance_matic,
+                    'wallet_address' : user_wallet.address,
+                    'eth_balance':weth_balance_eth
+                    }
+                return Response(balance, status=status.HTTP_200_OK)
+            except Exception as e:
+                return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        return Response(balance, status=status.HTTP_200_OK)
+
+
 
 class UserBalanceViewSet(viewsets.ModelViewSet):
     queryset = UserBalance.objects.all()
@@ -527,157 +598,259 @@ def updating_balance(user_id, currency, amount, side):
 
 
 
+
 class WithdrawalViewSet(viewsets.ModelViewSet):
-    queryset = withdrawal_list.objects.all()
-    serializer_class = withdrawal_listSerializer
+    queryset = Withdrawal_list.objects.all()
+    serializer_class = Withdrawal_listSerializer
+
+    
+    @action(detail=False, methods=['post'])
+    def create_request(self, request):
+        user = self.request.user
+        amount = request.data.get('amount')
+
+        # Ensure the user has enough balance
+        user_balance = UserBalance.objects.get(user=user)
+        if int(amount) > user_balance.rial_available_balance:
+            return Response({"detail": "Insufficient balance."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Check if the user has already made two withdrawal requests today
+        today = timezone.now().date()
+        requests_today = Withdrawal_list.objects.filter(user=user, created_at__date=today).count()
+        if requests_today >= 2:
+            return Response({"detail": "You can only make two withdrawal requests per day."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Transfer the amount to untradable balance
+        user_balance.rial_available_balance -= int(amount)
+        user_balance.rial_untradable_balance += int(amount)
+        user_balance.save()
+
+        # Create the withdrawal request
+        withdrawal = Withdrawal_list.objects.create(
+            user=user,
+            shaba_number=user.profile.shaba_number,
+            amount=int(amount)
+        )
+
+        serializer = self.get_serializer(withdrawal)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    @action(detail=True, methods=['post'])
+    def update_request(self, request, pk=None):
+        withdrawal = self.get_object()
+        if withdrawal.is_paid:
+            return Response({"detail": "This withdrawal has already been processed."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Process the withdrawal
+        withdrawal.is_paid = True
+        withdrawal.reference_number = request.data.get('reference_number')
+        withdrawal.save()
+
+        # Decrease the user's untradable balance
+        user_balance = UserBalance.objects.get(user=withdrawal.user)
+        user_balance.rial_untradable_balance -= withdrawal.amount
+        user_balance.save()
+
+        serializer = self.get_serializer(withdrawal)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['get'])
+    def list_requests(self, request, *args, **kwargs):
+    
+        queryset = self.get_queryset()
+
+        # Optional filters (e.g., by user, date, or status)
+        user_id = request.query_params.get('user')
+        if user_id:
+            queryset = queryset.filter(user__id=user_id)
+
+        date_from = request.query_params.get('date_from')
+        if date_from:
+            queryset = queryset.filter(created_at__gte=date_from)
+
+        date_to = request.query_params.get('date_to')
+        if date_to:
+            queryset = queryset.filter(created_at__lte=date_to)
+
+        is_paid = request.query_params.get('is_paid')
+        if is_paid is not None:
+            queryset = queryset.filter(is_paid=is_paid.lower() in ['true', '1'])
+
+        # Paginate the result if needed
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        # Serialize and return the data
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
+import logging
+
+logger = logging.getLogger('cryptoTransaction')
 
 class CryptoViewSet(viewsets.ViewSet):
-    @action(detail=False, methods=['post'])
 
+    @action(detail=False, methods=['post'])
     def BuyCrypto(self, request):
+        logger.info("BuyCrypto called")
         user = self.request.user
-        symbol= request.data.get('symbol') 
+        symbol = request.data.get('symbol')
         amount = float(request.data.get('amount'))  # Ensure amount is a float
         price = float(request.data.get('price'))  # Ensure price is a float
-        transactionCurrency=TransactionCurrency.objects.filter(name=symbol).first()
-        transactionINS=Transaction.objects.create(user=user, transaction_currency=transactionCurrency,amount=amount,side="BUY",status='Pending')
-        total=amount*price
-        balance_check = check_balance(amount=total, user_id=user.id)
-        if balance_check.status_code != status.HTTP_200_OK:
+                # Map for balance fields
+        balance_fields = {
+            'MATICTMN': 'matic_balance',
+            'ETHTMN': 'eth_balance',
+            'rial': 'rial_available_balance'
+        }
+        user_balance = UserBalance.objects.get(user=user)
+        
+        balance_field = balance_fields['rial']
+        current_balance = getattr(user_balance, balance_field)
+
+        # Calculate the total cost of the purchase
+        total = amount * price
+        logger.debug(f"Total cost calculated: {total}")
+
+        # Check if the user has enough TMN balance to cover the purchase
+        user_balance_check = check_balance(amount=total, user_id=user.id)
+        if user_balance_check.status_code != status.HTTP_200_OK:
+            logger.warning("Purchase failed: Insufficient user balance")
             return Response({'error': 'Purchase failed'}, status=status.HTTP_400_BAD_REQUEST)
-            
+         
+        artina_balance_response = self.check_tmn_balance(total=total)
+        if artina_balance_response['status'] != status.HTTP_200_OK:
+            logger.warning("Purchase failed: Insufficient TMN balance")
+            return Response({'error': 'Insufficient TMN balance to complete the purchase'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Proceed with creating the transaction
+        transactionCurrency = TransactionCurrency.objects.filter(name=symbol).first()
+        transactionINS = Transaction.objects.create(user=user, transaction_currency=transactionCurrency, amount=amount, side="BUY", status='Pending')
+
+        # Make the API call to perform the purchase
         url = 'https://api.wallex.ir/v1/account/otc/orders'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  
+            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',
         }
         data = {
-            'symbol': symbol, 
+            'symbol': symbol,
             'side': "BUY",
             'amount': amount,
             'price': price,
         }
+        logger.debug(f"Sending POST request to {url} with data: {data}")
         response = requests.post(url, headers=headers, json=data)
         datam = response.json()
-        # Check if the request was successful
+
         if response.status_code == 201:
-            transactionINS.status='completed'
+            transactionINS.status = 'completed'
             transactionINS.save()
-            balance_update = updating_balance(user_id=user.id, currency=symbol, amount=amount, side="deposit")
-            if balance_update.status_code != status.HTTP_200_OK:
-                return Response({'error': 'Failed to update balance'}, status=status.HTTP_400_BAD_REQUEST)
+            logger.info("Purchase completed successfully")
 
-    def BackBuyCrypto(id, symbol,amount,price):
-        amount = float(amount)  # Ensure amount is a float
-        price = float(price)  # Ensure price is a float
-        user=User.objects.get(id)
-        id=int(user.id)
-        print(user)
-        transactionCurrency=TransactionCurrency.objects.filter(name=symbol).first()
-        transactionINS=Transaction.objects.create(user=user, transaction_currency=transactionCurrency,amount=amount,side="BUY",status='Pending')
-        total=amount*price
-        balance_check = check_balance(amount=total, user_id=user.id)
-        if balance_check.status_code != status.HTTP_200_OK:
-            return Response({'error': 'Purchase failed'}, status=status.HTTP_400_BAD_REQUEST)
-            
-        url = 'https://api.wallex.ir/v1/account/otc/orders'
-        headers = {
-            'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  
-        }
-        data = {
-            'symbol': symbol, 
-            'side': "BUY",
-            'amount': amount,
-            'price': price,
-        }
-        response = requests.post(url, headers=headers, json=data)
-        print(response)
-        datam = response.json()
-        # Check if the request was successful
-        if response.status_code == 201:
-            transactionINS.status='completed'
-            transactionINS.save()
-            balance_update = updating_balance(user_id=user.id, currency=symbol, amount=amount, side="deposit")
-            if balance_update.status_code != status.HTTP_200_OK:
-                return Response({'error': 'Failed to update balance'}, status=status.HTTP_400_BAD_REQUEST)
+            setattr(user_balance, balance_field, current_balance - total)
+            user_balance.save()
 
-  
-            transaction_currency = TransactionCurrency.objects.get(name="rial")
-            user_balance = UserBalance.objects.filter(user=user).first()
-            
-            if user_balance:
-                user_balance.rial_available_balance -= (amount*price + 10000)
-                user_balance.save()
-                try:
-                    phone_number=user.profile.phone_number
+            fee = 10000
 
-                    response = requests.post(
-                f"https://api.kavenegar.com/v1/"
-                f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
-                f"/verify/lookup.json",
+
+            try:
+                phone_number = user.profile.phone_number
+                response = requests.post(
+                    "https://api.kavenegar.com/v1/4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D/verify/lookup.json",
                     data={
-                "receptor": phone_number,
-                "token1": user.profile.first_name,
-                "token2": amount,
-                 "token3": symbol,
-                "template": "WalletChargeVerification"
-                 }
+                        "receptor": phone_number,
+                        "token1": user.profile.first_name,
+                        "token2": total,
+                        "template": "AccountChargeVerification"
+                    }
                 )
-                except Profile.DoesNotExist :
-                    pass
-                    
+            except Profile.DoesNotExist:
+                logger.warning("Profile not found for SMS notification")
 
-                artina=ARTINA_Ballance.objects.first()
-                artina.artina_rial += 10000
-                artina.save()
-                return Response({'message': 'Purchase successful'}, status=response.status_code)
-            else:
-                return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
+            artina = ARTINA_Ballance.objects.first()
+            artina.artina_rial += fee
+            artina.save()
 
-        
+            # Update the user's balance
+            balance_update = updating_balance(user_id=user.id, currency=symbol, amount=amount, side="deposit")
+            if balance_update.status_code != status.HTTP_200_OK:
+                logger.error("Failed to update balance after purchase")
+                return Response({'error': 'Failed to update balance'}, status=status.HTTP_400_BAD_REQUEST)
+
+            return Response({'message': 'Purchase successful'}, status=status.HTTP_201_CREATED)
         else:
-            transactionINS.status='failed'
-            transactionINS.save()
-            return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
+            logger.error(f"Purchase failed: {datam}")
+            return Response({'error': 'Purchase failed', 'details': datam}, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=False, methods=['post'])
-    def get_br(self,request):
-        user = self.request.user
-        id=user.id
-        print(id)
-        price=request.data.get("price")
-        if not user:
-            return JsonResponse({"error": "user is required"}, status=400)
-        
-        try:
-            # Call the get_winner function
-            result = self.BackBuyCrypto(id=id, symbol="ETHTMN",amount=0.001,price=price)
+    def check_tmn_balance(self, total):
+        logger.info("Checking TMN balance")
+        url = 'https://api.wallex.ir/v1/account/balances'
+        headers = {
+            'Content-Type': 'application/json',
+            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace with your actual API key
+        }
+        response = requests.get(url, headers=headers)
 
-            # Check if result is a Response object (in case of errors within get_winner)
-            if isinstance(result, Response):
-                return result
-            return JsonResponse(result, status=200)
-        except Exception as e:
-            # Catch and handle unexpected errors
-            error_message = f"An unexpected error occurred: {str(e)}"
-            print(error_message)  # Log error to console for debugging
-            return JsonResponse({"error": error_message}, status=500)
+        if response.status_code == 200:
+            data = response.json()
+            tmn_balance = float(data['result']['balances']['TMN']['value'])
+            logger.debug(f"TMN balance: {tmn_balance}")
+
+            if total <= tmn_balance:
+                logger.info("Sufficient TMN balance")
+                return {'status': status.HTTP_200_OK, 'message': 'Sufficient balance'}
+            else:
+                logger.warning("Insufficient TMN balance")
+                return {'status': status.HTTP_400_BAD_REQUEST, 'message': 'Insufficient balance'}
+        else:
+            logger.error(f"Failed to retrieve account balances, status code: {response.status_code}")
+            return {'status': response.status_code, 'message': 'Failed to retrieve account balances'}
             
+
+
 
     @action(detail=False, methods=['post'])
     def SellCrypto(self, request):
+        logger.info("SellCrypto called")
         user = self.request.user
-        symbol= request.data.get('symbol') 
+        symbol = request.data.get('symbol') 
         amount = float(request.data.get('amount'))  # Ensure amount is a float
         price = float(request.data.get('price'))  # Ensure price is a float
-        transactionCurrency=TransactionCurrency.objects.filter(name=symbol).first()
-        transactionINS=Transaction.objects.create(user=user, transaction_currency=transactionCurrency,amount=amount,side="SELL",status='Pending')
-        total=amount*price
-        balance_check = check_balance(amount=total, user_id=user.id)
-        if balance_check.status_code != status.HTTP_200_OK:
-            return Response({'error': 'Purchase failed'}, status=status.HTTP_400_BAD_REQUEST)
-         
+
+        # Calculate the total value of the sale
+        total = amount * price
+        logger.debug(f"Total sale value: {total}")
+        
+        # Map for balance fields
+        balance_fields = {
+            'MATICTMN': 'matic_balance',
+            'ETHTMN': 'eth_balance',
+            'rial': 'rial_available_balance'
+        }
+
+        # Check if the symbol is valid
+        if symbol not in balance_fields:
+            logger.warning("SellCrypto: Invalid symbol")
+            return Response({'error': 'Invalid symbol.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        balance_field = balance_fields[symbol]
+        user_balance = UserBalance.objects.get(user=user)
+        current_balance = getattr(user_balance, balance_field)
+        logger.debug(f"Current balance for {symbol}: {current_balance}")
+        
+        if current_balance < amount:
+            logger.warning("SellCrypto: Insufficient balance")
+            return Response({'error': 'Insufficient balance to complete the sale'}, status=status.HTTP_400_BAD_REQUEST)
+
+        transactionCurrency = TransactionCurrency.objects.filter(name=symbol).first()
+        transactionINS = Transaction.objects.create(user=user, transaction_currency=transactionCurrency, amount=amount, side="SELL", status='Pending')
+
         url = 'https://api.wallex.ir/v1/account/otc/orders'
         headers = {
             'Content-Type': 'application/json',
@@ -689,52 +862,47 @@ class CryptoViewSet(viewsets.ViewSet):
             'amount': amount,
             'price': price,
         }
+        logger.debug(f"Sending POST request to {url} with data: {data}")
         response = requests.post(url, headers=headers, json=data)
         datam = response.json()
-        # Check if the request was successful
+
         if response.status_code == 201:
-            transactionINS.status='completed'
+            transactionINS.status = 'completed'
             transactionINS.save()
-            balance_update = updating_balance(user_id=user.id, currency=symbol, amount=amount, side="withdrawal")
-            if balance_update.status_code != status.HTTP_200_OK:
-                return Response({'error': 'Failed to update balance'}, status=status.HTTP_400_BAD_REQUEST)
-            transaction_currency = TransactionCurrency.objects.get(name="rial")
-            user_balance = UserBalance.objects.filter(user=user).first()
-    
-            if user_balance:
-                user_balance.rial_available_balance += (amount*price - 10000)
-                total=(amount*price - 10000)
-                user_balance.save()
-                try:
-                    phone_number=user.profile.phone_number
+            logger.info("Sale completed successfully")
 
-                    response = requests.post(
-                        f"https://api.kavenegar.com/v1/"
-                        f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
-                        f"/verify/lookup.json",
-                        data={
-                            "receptor": phone_number,
-                            "token1": user.profile.first_name,
-                            "token2":  total,
-                            "template": "AccountChargeVerification"
-                                }
-                                )
-                except Profile.DoesNotExist :
-                    pass
-                    
-                artina=ARTINA_Ballance.objects.first()
-                artina.artina_rial += 10000
-                artina.save()
-                return Response({'message': 'Purchase successful'}, status=response.status_code)
-            else:
-                return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
+            setattr(user_balance, balance_field, current_balance - amount)
+            user_balance.save()
 
-        
+            fee = 10000
+            rial_amount = total - fee
+            user_balance.rial_available_balance += rial_amount
+            user_balance.save()
+
+            try:
+                phone_number = user.profile.phone_number
+                response = requests.post(
+                    "https://api.kavenegar.com/v1/4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D/verify/lookup.json",
+                    data={
+                        "receptor": phone_number,
+                        "token1": user.profile.first_name,
+                        "token2": rial_amount,
+                        "template": "AccountChargeVerification"
+                    }
+                )
+            except Profile.DoesNotExist:
+                logger.warning("Profile not found for SMS notification")
+
+            artina = ARTINA_Ballance.objects.first()
+            artina.artina_rial += fee
+            artina.save()
+
+            return Response({'message': 'Sale successful'}, status=status.HTTP_201_CREATED)
         else:
-            transactionINS.status='failed'
+            transactionINS.status = 'failed'
             transactionINS.save()
-            return Response({'error': 'Purchase failed','info':datam}, status=response.status_code)
-
+            logger.error(f"Sale failed: {datam}")
+            return Response({'error': 'Sale failed', 'info': datam}, status=status.HTTP_400_BAD_REQUEST)
 
     
     @action(detail=False, methods=['get'])
@@ -945,11 +1113,162 @@ class PasswordResetByPhoneViewSet(viewsets.ViewSet):
 
 
 
-
-
-
+# Get the logger for payment-related activities
+payment_logger = logging.getLogger('Account.payment')
 
 class PaymentGateViewSet(viewsets.ViewSet):
+
+    def create(self, request, *args, **kwargs):
+        user = self.request.user
+        amount_str = request.data.get("amount")
+        email = user.profile.email
+        payment_logger.debug(f"Payment creation initiated by user {user.username} with email {email} for amount {amount_str}.")
+        
+        try:
+            amount = int(amount_str)
+        except ValueError:
+            payment_logger.warning(f"Invalid amount provided by user {user.username}: {amount_str}")
+            return Response({"error": "Invalid amount. Please provide a valid integer."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if amount < 1000:
+            payment_logger.warning(f"Amount too low for user {user.username}: {amount}. Minimum required is 1000.")
+            return Response({"error": "Amount must be at least 1000."}, status=status.HTTP_400_BAD_REQUEST)
+
+        response = self.send_payment_request(amount)
+        if response.status_code == 200:
+            payment_info = response.json()
+            payment_logger.info(f"Payment request successful for user {user.username}. Payment info: {payment_info}")
+
+            if 'data' in payment_info:
+                authority = payment_info['data'].get('authority')
+                payment = Payment.objects.create(user=user, amount=amount, authority=authority)
+                redirect_url = self.get_redirect_url(payment)
+                payment_logger.debug(f"Payment created for user {user.username} with authority {authority}. Redirecting to {redirect_url}.")
+                return Response({'url': redirect_url}, status=status.HTTP_200_OK)
+            else:
+                payment_logger.error(f"Invalid payment response for user {user.username}. Payment info: {payment_info}")
+                return Response({"error": "Invalid payment response from server."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            payment_logger.error(f"Payment request failed for user {user.username}. Response: {response.json()}")
+            return Response(response.json(), status=response.status_code)
+
+    @action(detail=False, methods=['get'])
+    def verify(self, request):
+        authority = request.GET.get('Authority')
+        payment_logger.debug(f"Verification initiated with authority {authority}.")
+
+        try:
+            payment = Payment.objects.get(authority=authority)
+        except Payment.DoesNotExist:
+            payment_logger.warning(f"Payment with authority {authority} not found.")
+            failure_url = f'http://artina.org/payment_status/?status=failed&authority={authority}'
+            return redirect(failure_url)
+
+        failure_url = f'https://artina.org/payment_status/?status=failed&authority={authority}'
+        success_url = f'https://artina.org/payment_status/?status=success&authority={authority}'
+        user = payment.user
+        response = self.verify_payment(payment.amount, payment.authority)
+
+        if response.status_code == 200:
+            verification_info = response.json()
+            payment_logger.info(f"Verification successful for payment with authority {authority}. Verification info: {verification_info}")
+
+            if isinstance(verification_info, dict) and 'data' in verification_info:
+                if isinstance(verification_info['data'], list):
+                    if not verification_info['data']:
+                        payment_logger.warning(f"No data found in verification response for authority {authority}.")
+                        return redirect(failure_url)
+                    else:
+                        data = verification_info['data'][0]
+                else:
+                    data = verification_info['data']
+
+                verification_status = data.get('code')
+
+                if verification_status == 100 or verification_status == 101 :
+                    payment.is_paid = True
+                    payment.save()
+                    payment.amount = payment.amount // 10
+                    transaction_currency = TransactionCurrency.objects.get(name="rial")
+                    user_balance = UserBalance.objects.get(user=user)
+
+                    if user_balance:
+                        user_balance.rial_available_balance += payment.amount
+                        user_balance.save()
+                    else:
+                        user_balance = UserBalance.objects.create(rial_available_balance=payment.amount, user=user)
+
+                    Transaction.objects.create(user=user, side='deposit', transaction_currency=transaction_currency,
+                                               amount=payment.amount, status='completed')
+
+                    payment_logger.debug(f"Payment with authority {authority} marked as paid. User balance updated.")
+                    
+                    profile = Profile.objects.get(user=user)
+                    response = requests.post(
+                        f"https://api.kavenegar.com/v1/"
+                        f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
+                        f"/verify/lookup.json",
+                        data={
+                            "receptor": profile.phone_number,
+                            "token": user.username,
+                            "token2": payment.amount,
+                            "template": "AccountChargeVerification"
+                        }
+                    )
+                    return redirect(success_url)
+                else:
+                    payment_logger.warning(f"Verification failed for payment with authority {authority}. Status code: {verification_status}")
+                    return redirect(failure_url)
+            else:
+                payment_logger.error(f"Invalid verification response structure for authority {authority}.")
+                return redirect(failure_url)
+        else:
+            payment_logger.error(f"Verification request failed for authority {authority}. Response: {response.json()}")
+            return redirect(failure_url)
+
+    def send_payment_request(self, amount):
+        user = self.request.user
+        url = 'https://api.zarinpal.com/pg/v4/payment/request.json'
+        headers = {
+            'accept': 'application/json',
+            'content-type': 'application/json'
+        }
+        data = {
+            'merchant_id': '21ab62e9-e04b-4da5-b8d1-1bd7fca78e41',
+            'amount': amount,
+            'callback_url': 'http://api.artina.org/api/account/payment/verify/',
+            'description': 'Transaction description.',
+            'metadata': {'mobile': "09387731214", 'email': "zehi.sh@gmail.com"}
+        }
+        payment_logger.debug(f"Sending payment request for user {user.username} with amount {amount}.")
+        response = requests.post(url, headers=headers, json=data)
+        return response
+
+    def verify_payment(self, amount, authority):
+        url = 'https://api.zarinpal.com/pg/v4/payment/verify.json'
+        headers = {
+            'accept': 'application/json',
+            'content-type': 'application/json'
+        }
+        data = {
+            'merchant_id': '21ab62e9-e04b-4da5-b8d1-1bd7fca78e41',
+            'amount': amount,
+            'authority': authority
+        }
+        payment_logger.debug(f"Verifying payment with authority {authority} for amount {amount}.")
+        response = requests.post(url, headers=headers, json=data)
+        return response
+
+    def get_redirect_url(self, payment):
+        url = f'https://www.zarinpal.com/pg/StartPay/{payment.authority}'
+        payment_logger.debug(f"Generated redirect URL for payment: {url}")
+        return url
+
+
+
+
+
+'''class PaymentGateViewSet(viewsets.ViewSet):
 
     def create(self, request, *args, **kwargs):
         user = self.request.user
@@ -987,9 +1306,9 @@ class PaymentGateViewSet(viewsets.ViewSet):
             failure_url = f'http://artina.org/payment_status/?status=failed&authority={authority}'
             return redirect(failure_url)
     
-        failure_url = f'http://artina.org/payment_status/?status=failed&authority={authority}'
-        success_url = f'http://artina.org/payment_status/?status=success&authority={authority}'
-        user = self.request.user
+        failure_url = f'https://artina.org/payment_status/?status=failed&authority={authority}'
+        success_url = f'https://artina.org/payment_status/?status=success&authority={authority}'
+        user = payment.user
         response = self.verify_payment(payment.amount, payment.authority)
 
         if response.status_code == 200:
@@ -1012,18 +1331,19 @@ class PaymentGateViewSet(viewsets.ViewSet):
                 if verification_status == 100:
                     payment.is_paid = True
                     payment.save()
-    
+                    payment.amount= payment.amount//10
                     transaction_currency = TransactionCurrency.objects.get(name="rial")
-                    user_balance = UserBalance.objects.filter(user=user).first()
+                    user_balance = UserBalance.objects.get(user=user)
     
                     if user_balance:
                         user_balance.rial_available_balance += payment.amount
                         user_balance.save()
                     else:
                         user_balance = UserBalance.objects.create(rial_available_balance=payment.amount, user=user)
+                        
     
                     Transaction.objects.create(user=user, side='deposit', transaction_currency=transaction_currency,
-                                               transaction_value=payment.amount, status='completed')
+                                               amount=payment.amount, status='completed')
     
                     profile = Profile.objects.get(user=user)
                     # Send SMS via Kavenegar API
@@ -1082,45 +1402,10 @@ class PaymentGateViewSet(viewsets.ViewSet):
         return f'https://www.zarinpal.com/pg/StartPay/{payment.authority}'
 
 
-
+'''
 
 
 # Connect to the Polygon network
-polygon_w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
-
-# Address of the WETH (Wrapped ETH) token on the Polygon network
-WETH_CONTRACT_ADDRESS = '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619'
-
-def get_balance(user):
-    user_wallet = Wallet.objects.filter(user=user).first()
-    
-    if not user_wallet:
-        return Response({"error": "Wallet not found for the user."}, status=status.HTTP_404_NOT_FOUND)
-    
-    try:
-        # Get MATIC balance on Polygon
-        matic_balance_wei = polygon_w3.eth.get_balance(user_wallet.address)
-        matic_balance_matic = polygon_w3.fromWei(matic_balance_wei, 'ether')
-
-        # Get WETH (Wrapped ETH) balance on Polygon
-        weth_contract = polygon_w3.eth.contract(address=WETH_CONTRACT_ADDRESS, abi=[
-            {
-                'constant': True,
-                'inputs': [{'name': '_owner', 'type': 'address'}],
-                'name': 'balanceOf',
-                'outputs': [{'name': 'balance', 'type': 'uint256'}],
-                'type': 'function'
-            }
-        ])
-        weth_balance_wei = weth_contract.functions.balanceOf(user_wallet.address).call()
-        weth_balance_eth = polygon_w3.fromWei(weth_balance_wei, 'ether')
-
-        return Response({
-            "matic_balance": matic_balance_matic,
-            "eth_balance": weth_balance_eth
-        }, status=status.HTTP_200_OK)
-    except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 
@@ -1239,7 +1524,7 @@ def connect_with_retry():
 class EmailMixin(viewsets.ViewSet):
     queryset = PhoneVerification.objects.all()
     @action(detail=False, methods=['post'])
-    def send_email(subject,recipient_email,message):
+    def send_email(self,subject,recipient_email,message):
         # Email configuration
         smtp_server = 'mailservice9.irandns.com'
         smtp_port = 587 
@@ -1253,7 +1538,7 @@ class EmailMixin(viewsets.ViewSet):
         msg['Subject'] = subject
 
         # Attach the message to the email
-        msg.attach(MIMEText(message, 'plain'))
+        msg.attach(MIMEText(message, 'html'))
 
         # Connect to the SMTP server
         with smtplib.SMTP(smtp_server, smtp_port) as server:
@@ -1271,9 +1556,8 @@ class EmailMixin(viewsets.ViewSet):
 
     @action(detail=False, methods=['post'])
     def email_verification(self, request):
-        recipient_email = request.data.get('email')
         user = self.request.user
-        email = User.objects.get(profile__email=email)
+        email = user.email
         if not email:
             return Response({'error': 'email is required.'}, status.HTTP_400_BAD_REQUEST)
 
@@ -1291,7 +1575,85 @@ class EmailMixin(viewsets.ViewSet):
             EmailVerification.objects.create(user=user, email=email, verification_code=verification_code)
             print(f"Verification code for {email}: {verification_code}")
         subject="verify email from ARTINA"
-        message = f"your verfication code is : {verification_code}"
+        
+        message = '''
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>2-Step Verification</title>
+            <style>
+                body {{
+                    font-family: Arial, sans-serif;
+                    background-color: #f4f4f4;
+                    color: #333;
+                    margin: 0;
+                    padding: 0;
+                    text-align: center;
+                }}
+                .email-container {{
+                    background-color: #ffffff;
+                    max-width: 600px;
+                    margin: 20px auto;
+                    padding: 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }}
+                .app-icon {{
+                    width: 50px;
+                    height: 50px;
+                    margin-bottom: 20px;
+                }}
+                .verification-code {{
+                    font-size: 24px;
+                    font-weight: bold;
+                    margin: 20px 0;
+                    color: #2C3E50;
+                }}
+                .cta-button {{
+                    display: inline-block;
+                    background-color: #2980b9;
+                    color: #ffffff;
+                    padding: 12px 24px;
+                    text-decoration: none;
+                    border-radius: 5px;
+                    margin-top: 20px;
+                    font-size: 16px;
+                }}
+                .cta-button:hover {{
+                    background-color: #1e6a9c;
+                }}
+                .footer {{
+                    margin-top: 30px;
+                    font-size: 12px;
+                    color: #777;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class="email-container">
+                <!-- App Icon -->
+                <img src="https://via.placeholder.com/50" alt="App Icon" class="app-icon">
+
+                <!-- Verification Code -->
+                <p>Your verification code is:</p>
+                <div class="verification-code">{verification_code}</div>
+
+                <!-- CTA Button -->
+                <a href="https://artina.org" class="cta-button">Go to Artina</a>
+
+                <!-- Footer -->
+                <p class="footer">If you did not request this code, please ignore this email.</p>
+            </div>
+        </body>
+        </html>
+        '''.format(verification_code=verification_code)
+
+
+
+
+        recipient_email=email
         self.send_email(subject,recipient_email, message)
         return Response({'success': 'email sent.'}, status.HTTP_200_OK)
 
