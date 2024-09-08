@@ -190,7 +190,9 @@ const BalanceDialogMatic = () => {
       return (
         <div className="w-full flex flex-col gap-4">
           <div className="flex gap-4 justify-center items-center sm:flex-col">
-            <p className="sm:text-sm"> {t("yourCurrentBallance")}: {currentTab === "Ethereum" ? turnOver.eth_balance + " " + t("ethereum") : turnOver.matic_balance + " " + t("matic")} </p>
+            <p className="sm:text-sm">
+              {t("yourCurrentBallance")}: {currentTab === "Ethereum" ? (turnOver.eth_balance || 0) + " " + t("ethereum") : (turnOver.matic_balance || 0) + " " + t("matic")}
+            </p>
             <BorderButton className="sm:text-xs">{t("transferToArtina")}</BorderButton>
           </div>
           {address !== "" && (
