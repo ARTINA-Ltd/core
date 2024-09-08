@@ -52,7 +52,7 @@ const PaperRockScissorsFriend = ({ gameId, className, opChoice: initialOpChoice,
       case "scissors":
         return <img src={scissors} alt="Scissors" className="sm:w-32 z-[10] object-cover" />;
       default:
-        return "Waiting For Your Choice";
+        return "Waiting...";
     }
   };
 
@@ -61,11 +61,11 @@ const PaperRockScissorsFriend = ({ gameId, className, opChoice: initialOpChoice,
       <div className="flex flex-wrap justify-between items-center gap-8">
         <div className="flex items-center gap-8">
           <img src={opProfile} className="w-16 aspect-square rounded-full neon-border p-2" alt="Opponent Profile" />
-          <h1 className="text-3xl sm:text-lg">{opUsername}</h1>
+          <h1 className="text-xl sm:text-lg">{opUsername}</h1>
         </div>
         <p>{!isActive && "Closed"}</p>
       </div>
-      <div className="mx-auto grid gap-8 grid-cols-3 text-center justify-between my-12 text-3xl">
+      <div className="mx-auto grid gap-8 grid-cols-3 text-center justify-between my-12 text-xl">
         <div>
           <p className="py-8 neon-container lg:text-sm">You</p>
           <div className="neon-border hover:text-black aspect-square text-center flex justify-center items-center hover:bg-secondary cursor-pointer lg:text-sm z-50 ease-out duration-200 rounded-xl p-2">{choice ? renderChoiceImage(choice) : renderChoiceImage(userChoice)}</div>
@@ -76,7 +76,7 @@ const PaperRockScissorsFriend = ({ gameId, className, opChoice: initialOpChoice,
         </div>
         <div>
           <p className="py-8 lg:text-sm">Opponent</p>
-          <div className="neon-border hover:text-black lg:text-sm text-center aspect-square flex justify-center items-center hover:bg-secondary cursor-pointer z-50 ease-out duration-200 rounded-xl p-2">{opChoice === null || result === null ? "Waiting for Opponent" : renderChoiceImage(opChoice)}</div>
+          <div className="neon-border hover:text-black lg:text-sm text-center aspect-square flex justify-center items-center hover:bg-secondary cursor-pointer z-50 ease-out duration-200 rounded-xl p-2">{opChoice === null || result === null ? "Waiting..." : renderChoiceImage(opChoice)}</div>
         </div>
       </div>
       {!result && (

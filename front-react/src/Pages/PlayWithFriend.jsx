@@ -97,10 +97,10 @@ const PlayWithFriend = () => {
       <div className="w-[90%] border-t my-8 mx-auto" />
       <div className="w-fit mx-auto mt-4 mb-20">
         <FancyText className={"mx-auto text-5xl"} gradient={{ from: "#F305B8", to: "#00F0F7", type: "linear" }} animateTo={{ from: "#FFFFFF", to: "#F305B8" }} animateDuration={1000}>
-          Paly Solo!{" "}
+          Paly With Others!{" "}
         </FancyText>
       </div>
-      <div className="grid grid-cols-2 gap-8 md:grid-cols-1 m-8">
+      <div className="grid grid-cols-2 w-[80vw] mx-auto xl:grid-cols-3 gap-8 md:grid-cols-1 m-8">
         {sessions &&
           sessions.map((session) => {
             return (
