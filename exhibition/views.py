@@ -259,7 +259,7 @@ class NFTsByExhibitionViewSet(viewsets.ModelViewSet):
     def get_nfts(self, request, pk=None):
         try:
             exhibition = self.get_object()
-            applications = Application.objects.filter(exhibition=exhibition)
+            applications = Application.objects.filter(exhibition=exhibition,status='accepted')
             nfts = NFT.objects.filter(applications__in=applications)
             serializer = NFTSerializer(nfts, many=True)
             return Response(serializer.data)
@@ -297,11 +297,23 @@ class TicketViewSet(viewsets.ViewSet):
         return Response(status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=['get'])
-    def get_user_tickets(self,request):
+    def get_user_tickets(self, request):
         user = self.request.user
         tickets = Ticket.objects.filter(user=user)
-        serializer = serializers.TicketSerializer(tickets, many=True)
-        return Response(serializer.data)
+       
+        # Prepare the data to include exhibition name, price, and ticket info
+        ticket_data = []
+        for ticket in tickets:
+            ticket_info = {
+                'ticket_id': ticket.ticket_id,
+                'exhibition_id': ticket.exhibition.id,
+                'exhibition_name': ticket.exhibition.marketName,
+                'exhibition_price': ticket.exhibition.price,
+                'expiration_date': ticket.exhibition.end_date,
+            }
+            ticket_data.append(ticket_info)
+       
+        return Response(ticket_data)
     #adding price of ticket to the data it pass
    
     @action(detail=False, methods=['post']) 
@@ -324,12 +336,12 @@ class TicketViewSet(viewsets.ViewSet):
         exhibition= Exhibition.objects.filter(id=exhibition_id).first()
         amount=exhibition.price
         if amount is None or amount == 0 :
-            return Response({"error": "this exhibition need no ticket."})
+            return Response({"error": "this exhibition need no ticket."}, status=status.HTTP_400_BAD_REQUEST)
 
         user_ticket=None
         user_ticket = Ticket.objects.filter(user=user,exhibition=exhibition).first()
         if user_ticket :
-            return Response({"error": "you have the ticket."})
+            return Response({"error": "you have the ticket."}, status=status.HTTP_400_BAD_REQUEST)
 
         else :
 

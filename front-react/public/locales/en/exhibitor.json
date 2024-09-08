@@ -17,9 +17,9 @@
   "requestList": "List of Requests",
   "addEx": "Add exhibition",
   "name": "Exhibition Name",
-  "nameExample": "Example: Test Exhibition",
+  "nameExample": "Example: New Digital Exhibition",
   "description": "Description",
-  "descriptionExample": "Example: Test Exhibition",
+  "descriptionExample": "Example: Best Digital Exhibition",
   "startDate": "Start Date",
   "endDate": "End Date",
   "noTicket": "No Tickets",
@@ -56,5 +56,9 @@
   "chooseCategore": "Select a Category",
   "commision": "Commision(%)",
 
-  "noRequest": "You don't have any requests yet"
+  "noRequest": "You don't have any requests yet",
+
+  "select": "Select",
+
+  "minPrice": "Minimum ticket price: 5 thousand Tomans"
 }

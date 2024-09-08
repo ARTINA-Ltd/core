@@ -175,6 +175,7 @@ class RegisterViewSet(viewsets.ModelViewSet):
             register_logger.warning(f"Email {email} is already registered")  # Log if the email already exists
             return Response({'error': 'This email is already registered.'}, status=status.HTTP_400_BAD_REQUEST)
 
+
 login_logger = logging.getLogger('Account.login')
 
 class LoginViewSet(viewsets.ViewSet):
@@ -182,7 +183,6 @@ class LoginViewSet(viewsets.ViewSet):
     serializer_class = serializers.LoginSerializer
 
     def create(self, request):
-        # logger.setLevel(logging.DEBUG)
         username = request.data.get('username')
         password = request.data.get('password')
         
@@ -193,9 +193,28 @@ class LoginViewSet(viewsets.ViewSet):
         if user is None:
             login_logger.warning(f"Invalid credentials for username: {username}")  # Log invalid credentials
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-        profile = Profile.objects.get(user=user)
-        login_logger.info(f"Successful login for username: {username}")  # Log successful login
         
+        # Get user's profile
+        profile = Profile.objects.get(user=user)
+
+        # Extract IP address
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip_address = x_forwarded_for.split(',')[0]
+        else:
+            ip_address = request.META.get('REMOTE_ADDR')
+        
+        # Log successful login with IP address
+        login_logger.info(f"Successful login for username: {username}, IP: {ip_address}")
+
+        # Get current date and time
+        current_time = timezone.now()
+
+        # Send SMS with login details (implement your SMS sending logic here)
+        sms_message = f"ورود موفق شما در {current_time.strftime('%Y-%m-%d %H:%M:%S')}, IP: {ip_address}"
+        # send_sms(user.phone_number, sms_message)  # Uncomment and implement this function
+        NotifyUser.objects.create(user=user,text=sms_message)
+        # Generate JWT tokens
         refresh = RefreshToken.for_user(user)
         response_data = {
             'refresh': str(refresh),
@@ -204,7 +223,6 @@ class LoginViewSet(viewsets.ViewSet):
             'nationaloty': str(profile.is_foreigner)
         }
         return Response(response_data, status=status.HTTP_200_OK)
-
 
 
 
@@ -237,7 +255,8 @@ class UserInfoViewSet(viewsets.ViewSet):
             'postal_code':profile.postal_code,
             'bio':profile.bio,
             'user_verified':profile.user_verified,
-            'is_foreigner':profile.is_foreigner
+            'is_foreigner':profile.is_foreigner,
+            'auth_upload':profile.national_card_picture_upload
         }
         return Response(data)
 
@@ -248,6 +267,20 @@ class AffiliateDetailView(viewsets.ModelViewSet):
     def get_object(self):
         return self.request.user.affiliate
     
+
+    @action(detail=False, methods=['get'])
+    def get_code(self, request):
+        user = request.user
+        try:
+            affiliate = Affiliate.objects.get(user=user)
+            data = {
+                'referral_code': affiliate.referral_code,
+                'credit_balance': affiliate.credit_balance
+            }
+            return Response(data, status=status.HTTP_200_OK)
+        except Affiliate.DoesNotExist:
+            return Response({'error': 'Affiliate not found.'}, status=status.HTTP_404_NOT_FOUND)
+
 
 class ArtistRateViewSet(viewsets.ModelViewSet):
     queryset = ArtistReviewRating.objects.all()
@@ -348,18 +381,13 @@ class TicketViewSet(viewsets.ViewSet):
                 return Response({'error': 'email is required.'}, status=status.HTTP_400_BAD_REQUEST)
             user = None
 
-        # Check if the user is exempt from the ticket limit
-        exempt_users = [44]  # Example: List of user IDs exempt from the ticket limit
-        if user.id in exempt_users:
-            ticket_count = TicketUser.objects.filter(user=user).count()
-        else:
-            # Apply the regular ticket limit
-            ticket_count = TicketUser.objects.filter(user=user).count()
-            if ticket_count >= 5:
-                raise PermissionDenied("You have reached the maximum number of tickets.")
+        # Apply the regular ticket limit
+        # ticket_count = TicketUser.objects.filter(user=user).count()
+        # if ticket_count >= 5:
+        #     raise PermissionDenied("You have reached the maximum number of tickets.")
 
         unique_id = random.randint(100000, 999999)
-        TicketUser.objects.create(user=user, email=email, subject=subject, text=text, ticket_id=unique_id)
+        TicketUser.objects.create(user=user,name=name,last_name=last_name,phone_number=phone_number, email=email,image_url=image_url, subject=subject, text=text, ticket_id=unique_id)
 
         return Response({'success': 'Ticket created successfully.','token':unique_id}, status=status.HTTP_201_CREATED)
 
@@ -736,7 +764,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/otc/orders'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',
+            'X-API-Key': '10553|4Y4jacZCBRcidJ1zmXtUQFfDARiGtXxko4IXc7xw',
         }
         data = {
             'symbol': symbol,
@@ -793,7 +821,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/balances'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace with your actual API key
+            'X-API-Key': '10520|WvJdUfY0iDJDSrzBbDceIUgWr1LnnKtMJfsZrCsQ',  # Replace with your actual API key
         }
         response = requests.get(url, headers=headers)
 
@@ -854,7 +882,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/otc/orders'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  
+            'X-API-Key': '10553|4Y4jacZCBRcidJ1zmXtUQFfDARiGtXxko4IXc7xw',  
         }
         data = {
             'symbol': symbol, 
@@ -909,7 +937,7 @@ class CryptoViewSet(viewsets.ViewSet):
     def CryptoPrice_ETH(self, request, pk=None):
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '10553|4Y4jacZCBRcidJ1zmXtUQFfDARiGtXxko4IXc7xw',  # Replace 'your_api_key' with your actual API key
         }
     
         # Get ETH price
@@ -957,7 +985,7 @@ class CryptoViewSet(viewsets.ViewSet):
     def CryptoPrice_MATIC(self, request, pk=None):
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '10553|4Y4jacZCBRcidJ1zmXtUQFfDARiGtXxko4IXc7xw',  # Replace 'your_api_key' with your actual API key
         }
     
         # Get ETH price
@@ -1008,7 +1036,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/otc/price'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '10553|4Y4jacZCBRcidJ1zmXtUQFfDARiGtXxko4IXc7xw',  # Replace 'your_api_key' with your actual API key
         }
         params = {
             'symbol': 'ETHTMN',  # Assuming the symbol is passed as the primary key
@@ -1030,7 +1058,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/crypto-withdrawal'
         headers = {
         'Content-Type': 'application/json',
-        'X-API-Key': '8777|XedUHicmAa4ghJXbKnpgt8LoxPbxyg9ebxo10nkU',  # Replace 'your_api_key' with your actual API key
+        'X-API-Key': '10553|4Y4jacZCBRcidJ1zmXtUQFfDARiGtXxko4IXc7xw',  # Replace 'your_api_key' with your actual API key
         }
         data = {
             'coin': request.data.get('coin'),
@@ -1059,7 +1087,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/balances'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '9275|kkgikDJHhg66lr8aU8tX62bXexkJ5619Tn7RtZFf',  # Replace 'your_api_key' with your actual API key
+            'X-API-Key': '10553|4Y4jacZCBRcidJ1zmXtUQFfDARiGtXxko4IXc7xw',  # Replace 'your_api_key' with your actual API key
         }
         response = requests.get(url, headers=headers)
         

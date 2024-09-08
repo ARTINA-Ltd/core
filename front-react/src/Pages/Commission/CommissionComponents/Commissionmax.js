@@ -28,7 +28,7 @@ export default function Commissionmax() {
             <td className="py-2 px-4 sm:px-2">0.5 USDT</td>
             <td className="py-2 px-4 sm:px-2">0 USDT</td>
             <td className="py-2 px-4 sm:px-2">10 USDT</td>
-            <td className="py-2 px-4 sm:px-2">؟</td>
+            <td className="py-2 px-4 sm:px-2">-</td>
           </tr>
         </tbody>
       </table>

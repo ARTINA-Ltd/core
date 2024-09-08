@@ -193,9 +193,7 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
                 </div>
               </div>
             )}
-            {
-              //dialog()
-            }
+            {/* {dialog()} */}
           </Fragment>
         )}
       </div>

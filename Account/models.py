@@ -48,6 +48,8 @@ class Profile(models.Model):
     card_number = models.CharField(max_length=16, verbose_name="card_number", null=True, blank=True)    
     address = models.TextField(max_length=200, verbose_name="آدرس", null=True, blank=False)
     national_card_picture = models.TextField(verbose_name="عکس کارت ملی",null=True,blank=False,default="")
+    national_card_picture_upload = models.BooleanField(default=False)
+    
     profile_picture = models.TextField(verbose_name="عکس پروفایل",
                                         null=True, blank=False, default="http://api.artina.org/static/images/default_C7876ge.webp",)
     email = models.EmailField(max_length=50, verbose_name="ایمیل", null=True, blank=False)
@@ -93,8 +95,9 @@ class TicketUser(models.Model):
     text = models.TextField(max_length=200,null=True,blank=False)
     ticket_id = models.CharField(max_length=6, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    # def __str__(self):
-    #     return f"{self.user.username} - {self.subject}"
+    answered=models.BooleanField(default=False)
+    def __str__(self):
+        return f"{self.subject}"
 
 class Msg(models.Model):
     name = models.CharField(max_length=25,null=True,blank=False)

@@ -6,7 +6,7 @@ const AboutUs = ({ className }) => {
   return (
     <div className={`${className}  w-[80vw] mx-auto rounded-xl flex justify-center bg-primary text-primary-content py-16 relative overflow-hidden`}>
       <div className={`w-2/3 flex flex-col items-center sm:w-4/5`}>
-        <div className="font-b9 text-[40px] mb-4 sm:text-[30px]">{t("aboutUs")}</div>
+        <div className="font-b9 text-[40px] mb-4 sm:text-[30px]">{t("whatIsArtina")}</div>
         <div
           className="font-b2 text-2xl
         font-bold text-center sm:text-[17px]"

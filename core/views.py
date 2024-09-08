@@ -169,15 +169,19 @@ def get_winner(token_id):
         sender = nft.owner
         if nft.end_date >= timezone.now():
             return Response({"error": "NFT has not expired."}, status=status.HTTP_400_BAD_REQUEST)
+        nft_mtc_logger.info(f"run get winner for nft {token_id}")
 
         highest_bid = None
         orders = Order.objects.filter(nft=nft, status=0)
         for bid in orders:
             if highest_bid is None or bid.eth > highest_bid.eth:
                 highest_bid = bid
+        nft_mtc_logger.info(f"highestbid for nft {token_id} is {highest_bid}")
 
         nft.is_for_sale = False
         nft.in_exhibition = False
+        nft.save()
+        nft_mtc_logger.info(f"nft {token_id} is now out of sale")
 
         if highest_bid is None:
             return Response({"error": "No bids found for this NFT."}, status=status.HTTP_400_BAD_REQUEST)
@@ -204,7 +208,7 @@ def get_winner(token_id):
         total = highest_bid.eth - value
         balanceowner.eth_balance += total
         balanceowner.save()
-        NotifyUser.objects.create(user=recipient, text="You won the NFT and your balance has been updated")
+        NotifyUser.objects.create(user=recipient, text=f"شما برنده مناقصه ان اف تی به شماره {token_id}شدید.")
         order_Report(token_id)
         recipientWallet = Wallet.objects.get(user=recipient)
         senderWallet = Wallet.objects.get(user=sender)
@@ -232,8 +236,8 @@ def get_winner(token_id):
             f"/verify/lookup.json",
             data={
                 "receptor": phone_number,
-                "token1": recipient.profile.first_name,
-                "token2": token_id,
+                "token1": recipient.profile.name,
+                "token2": nft.name,
                 "template": "BuyVerification"
             }
         )
@@ -669,7 +673,7 @@ class NftViewSet(viewsets.ModelViewSet):
             order.save()
             user_balance=None
             user_balance = UserBalance.objects.get(user=order.bidder)
-            NotifyUser.objects.create(user=order.bidder,text="sell was cancelled and your balance updated")
+            NotifyUser.objects.create(user=order.bidder,text="فروش ان اف تی شما با موفقیت لغو شد")
             user_balance.eth_balance += order.eth    
             user_balance.eth_untradable_balance-=order.eth
             user_balance.save()
@@ -1181,7 +1185,7 @@ def order_Report(token_id):
             n_bid.status=1
             n_bid.report=2
             n_bid.save()
-            NotifyUser.objects.create(user=n_bid.bidder,text=Msg(1).text)    
+            NotifyUser.objects.create(user=n_bid.bidder,text=f"پیشنهاد شما برای  {token_id} قبول نشد. ")    
     print("change report status done")
 
 class CategoryViewSet(viewsets.ModelViewSet):

@@ -46,7 +46,7 @@ function CountdownTimer({ targetDate }) {
           <span>{formatTime(seconds)} ثانیه</span>
         </div>
       ) : (
-        <p className="text-red-700 lg:text-base">فرصت خرید بلیت به پایان رسیده است!</p>
+        <p className="text-red-700 lg:text-base">فرصت خرید بلیط به پایان رسیده است!</p>
       )}
     </div>
   );

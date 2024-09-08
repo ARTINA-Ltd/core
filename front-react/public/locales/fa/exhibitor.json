@@ -17,16 +17,16 @@
   "requestList": "لیست درخواست ها",
   "addEx": "افزودن نمایشگاه",
   "name": "نام نمایشگاه",
-  "nameExample": "مثلا: نمایشگاه تست",
+  "nameExample": "مثلا: نمایشگاه دیجیتال",
   "description": "توضیحات",
-  "descriptionExample": "مثلا: نمایشگاه تست",
+  "descriptionExample": "مثلا: نمایشگاه دیجیتال آثار برتر",
   "startDate": "تاریخ شروع",
   "endDate": "تاریخ پایان",
-  "noTicket": "تیکت ندارد",
-  "hasTicket": "تیکت دارد",
-  "ticketPrice": "قیمت تیکت",
+  "noTicket": "بلیط ندارد",
+  "hasTicket": "بلیط دارد",
+  "ticketPrice": "قیمت بلیط",
   "agreed": "با قوانین موافقم",
-  "policy": "مشاهده قوانین",
+  "policy": "مشاهده قوانین و مقررات",
   "required": "نمی‌تواند خالی باشد",
   "submit": "ثبت",
   "deadLine": "آخرین مهلت ثبت نام",
@@ -56,5 +56,8 @@
   "chooseCategore": "دسته بندی را انتخاب کنید",
   "commision": "کمیسیون (%)",
 
-  "noRequest": "شما هنوز هیچ درخواستی ندارید"
+  "noRequest": "شما هنوز هیچ درخواستی ندارید",
+
+  "select": "انتخاب",
+  "minPrice": "حداقل قیمت بلیط : ۵ هزار تومان"
 }

@@ -171,7 +171,7 @@ const Support = () => {
             type="text"
             validationError={t("atleast11")}
             title={t("phoneNumber")}
-            isValid={values.phone_number && values.phone_number.length !== 11}
+            isValid={/^\d{11}$/.test(values.phone_number)} // Updated validation: only 11 digits allowed
             onChange={(e) =>
               setValues((prev) => ({
                 ...prev,
@@ -180,6 +180,7 @@ const Support = () => {
             }
             defaultValue={null}
           />
+
         </div>
         <div className="mt-5 mb-2">{t("upload")}</div>
         <div className="w-full flex justify-center" id="uploadImage">
@@ -209,10 +210,10 @@ const Support = () => {
           defaultValue={null}
         />
         <div className="mx-auto w-fit my-4">
-        <ReCAPTCHA sitekey={"6LecwBMnAAAAAItOWnJM8T17TlvnA1ewPIUGDuj_"} ref={captchaRef} onChange={handleCaptchaChange} />
+          <ReCAPTCHA sitekey={"6LecwBMnAAAAAItOWnJM8T17TlvnA1ewPIUGDuj_"} ref={captchaRef} onChange={handleCaptchaChange} />
         </div>
         <div className="flex justify-center mt-5">
-          <BorderButton disabled={!captchaRes} onClick={!captchaRes ? () => {} : handleSubmit}>
+          <BorderButton disabled={!captchaRes} onClick={!captchaRes ? () => { } : handleSubmit}>
             {t("send")}
           </BorderButton>
         </div>

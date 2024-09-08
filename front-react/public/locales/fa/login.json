@@ -33,5 +33,9 @@
   "duplicate": "نام کاربری تکراری میباشد.",
   "emailDuplicate": "ایمیل وارد شده تکراری میباشد.",
   "agreeRequried": "برای ثبت درخواست ابتدا میبایست قراردار را بپذیرید",
-  "nonPersian": "فرد غیر ایرانی"
+  "nonPersian": "فرد غیر ایرانی",
+  "invalidEmail": "ایمیل نامعتبر است",
+  "invalidReferral": "کد معرف نامعتبر است",
+  "referralCode": "کد معرف",
+  "optional8Characters": "اختیاری، 8 کاراکتر"
 }
