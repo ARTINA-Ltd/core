@@ -86,6 +86,12 @@ class Order(models.Model):
         return f'{self.bidder.username} bid {self.fee} on {self.nft.name}'
 
 
+class NFTActivity(models.Model):
+    nft = models.ForeignKey(NFT, null=False, blank=False, on_delete=models.CASCADE)
+    from_address = models.CharField(max_length=42, null=True, blank=True,default=000000000000000000000000)  # Ethereum/Matic address
+    to_address = models.CharField(max_length=42, null=True, blank=True,default=000000000000000000000000)  # Ethereum/Matic address
+    fee = models.FloatField(verbose_name="قیمت", null=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class MyImage(models.Model):
     image = models.ImageField(upload_to='static/images/')

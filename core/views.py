@@ -1,6 +1,6 @@
 from core import models
 from Account import models
-from core.models import NFT , Order , MyImage , NFTRating , Category , CollectionNFT , PDF
+from core.models import NFT , Order , MyImage , NFTRating , Category , CollectionNFT , PDF,NFTActivity
 # from Account.views import transferNFT
 from core import serializers
 from eth_account import Account
@@ -106,62 +106,6 @@ def transfer_nft(sender_private_key, sender_address, recipient_address, token_id
         nft_mtc_logger.error(f"Error in transfer_nft: {e}")
         return None
 
-# def transfer_matic(to_address, amount):
-#     COMPANY_WALLET_ADDRESS = '0x2293221D7c357FB04De9c7D0dEeBcA427407429D'
-#     COMPANY_WALLET_PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"  # Securely get from env variable
-
-#     try:
-#         # Get dynamic gas price
-#         gas_price = w3.eth.gas_price
-#         logger.info(f"Gas price fetched: {gas_price}")
-
-#         # Get nonce
-#         nonce = w3.eth.getTransactionCount(COMPANY_WALLET_ADDRESS, 'pending')
-#         logger.info(f"Nonce fetched for company wallet address {COMPANY_WALLET_ADDRESS}: {nonce}")
-
-#         # Estimate gas limit for the transaction
-#         estimated_gas = w3.eth.estimateGas({
-#             'from': COMPANY_WALLET_ADDRESS,
-#             'to': to_address,
-#             'value': w3.toWei(amount, 'ether'),
-#         }) + 10000  # Adding a buffer to the gas estimate
-#         logger.info(f"Estimated gas with buffer: {estimated_gas}")
-
-#         tx = {
-#             'nonce': nonce,
-#             'to': to_address,
-#             'value': w3.toWei(amount, 'ether'),
-#             'gas': estimated_gas,
-#             'gasPrice': gas_price,
-#             'chainId': 137  # Polygon Mainnet Chain ID
-#         }
-
-#         logger.info(f"Transaction to transfer MATIC: {tx}")
-
-#         # Sign the transaction
-#         signed_tx = w3.eth.account.signTransaction(tx, COMPANY_WALLET_PRIVATE_KEY)
-#         logger.info(f"Transaction signed. Raw transaction: {signed_tx.rawTransaction.hex()}")
-
-#         # Send the transaction
-#         tx_hash = w3.eth.sendRawTransaction(signed_tx.rawTransaction)
-#         logger.info(f"Transaction sent. Hash: {tx_hash.hex()}")
-
-#         # Wait for the transaction receipt
-#         try:
-#             receipt = w3.eth.waitForTransactionReceipt(tx_hash, timeout=120)  # Timeout set to 2 minutes
-#             logger.info(f"Transaction receipt received: {receipt}")
-#         except Exception as e:
-#             logger.error(f"Error waiting for transaction receipt: {e}")
-#             raise
-
-#         if receipt.status != 1:
-#             raise Exception("Transaction failed")
-
-#         return receipt.transactionHash.hex()
-
-#     except Exception as e:
-#         logger.error(f"Error in transfer_matic: {e}")
-#         return None
 
 def get_winner(token_id):
     try:
@@ -222,7 +166,9 @@ def get_winner(token_id):
         nft.save()
         if not tx_hash:
             raise Exception("NFT transfer failed")
-
+        NFTActivity.objects.create(nft=nft,from_address=senderWallet.address,
+                                   to_address=recipientWallet.address,
+                                   fee=highest_bid.eth)
         recipient_data = {
             "id": recipient.id,
             "username": recipient.username,
@@ -303,83 +249,6 @@ def transfer_matic(to_address, amount):
         nft_mtc_logger.error(f"Error in transfer_matic: {e}")
         return None
 
-# def get_winner(token_id):
-#     try:
-#         nft = get_object_or_404(NFT, token_id=token_id)
-#         sender = nft.owner
-#         if nft.end_date >= timezone.now():
-#             return Response({"error": "NFT has not expired."}, status=status.HTTP_400_BAD_REQUEST)
-
-#         highest_bid = None
-#         orders = Order.objects.filter(nft=nft, status=0)
-#         for bid in orders:
-#             if highest_bid is None or bid.eth > highest_bid.eth:
-#                 highest_bid = bid
-
-#         nft.is_for_sale = False
-#         nft.in_exhibition = False
-#         nft.save()
-
-#         if highest_bid is None:
-#             return Response({"error": "No bids found for this NFT."}, status=status.HTTP_400_BAD_REQUEST)
-
-#         highest_bid.report = 1
-#         highest_bid.status = 1
-#         highest_bid.save()
-#         recipient = highest_bid.bidder
-#         balance = UserBalance.objects.get(user=highest_bid.bidder)
-#         balance.eth_untradable_balance -= highest_bid.eth
-#         balance.save()
-
-#         # Calculate and update ARTINA commission
-#         artina = ARTINA_Ballance.objects.first()
-#         commission = float(highest_bid.eth)
-#         value = (1.5 * commission) / 100
-#         logger.info(f"ARTINA commission value: {value}")
-#         artina.artina_commision = value
-#         artina.artina_commision_count += 1
-#         artina.save()
-
-#         # Update owner balance
-#         balanceowner = UserBalance.objects.get(user=nft.owner)
-#         total = highest_bid.eth - value
-#         balanceowner.eth_balance += total
-#         balanceowner.save()
-#         NotifyUser.objects.create(user=highest_bid.bidder, text="You won the NFT and your balance has been updated")
-#         order_Report(token_id)
-
-#         # Transfer NFT
-#         result = transfer_nft(sender_private_key=recipient.private_key, 
-#                               sender_address=sender, 
-#                               recipient_address=recipient.address, 
-#                               token_id=token_id)
-#         logger.info(f"NFT transfer result: {result}")
-
-#         recipient_data = {
-#             "id": recipient.id,
-#             "username": recipient.username,
-#             "email": recipient.email,
-#         }
-#         phone_number = recipient.profile.phone_number
-
-#         response = requests.post(
-#             f"https://api.kavenegar.com/v1/"
-#             f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
-#             f"/verify/lookup.json",
-#             data={
-#                 "receptor": phone_number,
-#                 "token1": recipient.profile.first_name,
-#                 "token2": token_id,
-#                 "template": "AccountChargeVerification"
-#             }
-#         )
-#         logger.info(f"Notification sent to {phone_number}. Response: {response.json()}")
-
-#         return Response({"winner": recipient_data, "price": highest_bid.eth}, status=status.HTTP_200_OK)
-
-#     except Exception as e:
-#         logger.error(f"Error in get_winner: {e}")
-#         return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 # Initialize logger
@@ -916,142 +785,13 @@ class NFTViewSet(viewsets.ViewSet):
             amount=10000, status='completed'
         )
         nft_logger.info(f"Transaction recorded for user {user.username}. Amount: 10,000 Rial")
-
+        NFTActivity.objects.create(nft=nft,to_address=author_address,fee=last_price)
         return Response(
             nft.token_id,
             status=status.HTTP_201_CREATED,
         )
         
 
-
-'''
-
-# 1
-class NFTViewSet(viewsets.ViewSet):
-    # serializer_class = serializers.NFTSerializer
-    # queryset = NFT.objects.all()
-    
-    def create(self, request, *args, **kwargs):
-        """
-        Creates a new NFT with the given metadata and mints it to the specified address.
-eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg0NTI4MjQ4LCJpYXQiOjE2ODQ1Mjc5NDgsImp0aSI6IjRjNWUyYTMxNzY4ODRmYjhiYjI5MTM2OTFiNTc5NTI1IiwidXNlcl9pZCI6M30.4-BlFYxmwCWU2rwa6BKZRYl7OiW3qdc9E0E261Dvo3I
-        Required request data:
-        - author_address: The address to mint the NFT to
-        - nft_name: The name of the NFT
-        - description_nft: The description of the NFT
-        - image_nft: The URL of the image for the NFT
-        - creator: The name of the creator of the NFT
-        - external_link: The external link for the NFT
-        - last_price: The last price of the NFT
-
-        Returns:
-        - A Response containing the created NFT and a status code.
-        """
-
-        try:
-            user=self.request.user
-            has_internal_wallet = request.data.get('has_internal_wallet')
-            author_address = request.data.get('author_address')
-            nft_name = request.data.get('nft_name')
-            description_nft = request.data.get('description_nft')
-            image_nft = request.data.get('image_nft')
-            creator = request.data.get('creator')
-            external_link = request.data.get('external_link')
-            last_price = request.data.get('last_price')
-            category_id= request.data.get('category')
-            has_physical= request.data.get('has_physical')
-            data = request.data.get('data', {})
-            collection_id=request.data.get('collection')
-
-
-        except KeyError as e:
-            return Response(
-                {"error": f"Missing required field: {e}"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        
-        category=Category.objects.filter(id=category_id).first()
-        collection=CollectionNFT.objects.filter(id=collection_id).first()
-        user_balance=None
-        user_balance = UserBalance.objects.filter(user=user).first()
-        print(user_balance)
-        n=user_balance.rial_available_balance
-        print(n)
-        if n < 10000 :
-            return Response(
-                {"error": f"your money is not enough"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        else:
-            n=n-10000
-            user_balance.rial_available_balance=n
-            user_balance.save()
-        # Create the NFT metadata
-        # 'collection':collection.name
-            prop={
-                'owner':user.username,
-                'creator': creator ,
-            }
-            nft_metadata = {
-            'name': nft_name,
-            'description': description_nft,
-            'image': image_nft,
-            'properties': prop,
-            'data': data,
-            'price':last_price,
-
-
-        }
-            if has_internal_wallet == True :
-                if Wallet.objects.filter(user=user).exists():
-                    userWallet=Wallet.objects.filter(user=user).first()
-                    author_address= userWallet.address
-                else :
-                    private_key = Web3.toHex(os.urandom(32))  # Generate a random private key
-                    account = w3.eth.account.privateKeyToAccount(private_key)
-                    wallet = Wallet.objects.create(user=user, address=account.address, private_key=private_key)
-                    author_address=account.address
-
-
-            print(nft_metadata)
-            tx=None
-        # Mint the NFT to the specified address
-            try:
-                print("start")
-                tx = contract.mint_to(author_address, NFTMetadataInput.from_json(nft_metadata))
-                print(f"tx is :{tx}")
-                print("done")
-                with open('output.txt', 'w') as file:
-                    file.write(f"Transaction ID: {tx.id}\n")
-                #has_internal_wallet= has_internal_wallet
-                #checking if he has any inside wallet so we can use other wise it should be implemented 
-                token_id = tx.id
-                block_number = tx.receipt.blockNumber
-                binary_transaction_hash = tx.receipt.transactionHash
-                transaction_index = tx.receipt.transactionIndex
-                transaction_hash = HexBytes(binary_transaction_hash).hex()
-                binary_block_hash = tx.receipt.blockHash
-                block_hash=HexBytes(binary_block_hash).hex()
-                print(token_id)
-            except Exception as e:
-                return Response(
-                    {"error": str(e)},
-                    status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                )
-            nft=NFT.objects.create(author_address=author_address,name=nft_name,blockNumber=block_number,
-                transactionHash=transaction_hash, blockHash=block_hash,transactionIndex=transaction_index,
-                description=description_nft,image_url=image_nft,creator=creator,external_link=external_link,
-                last_price=last_price,token_id=token_id,owner=user,has_physical=has_physical,category=category,traits=data,collection=collection)
-            transactionCurrency=TransactionCurrency.objects.filter(name="rial").first()
-            Transaction.objects.create(user=user, side='withdrawal', 
-                                    transaction_currency=transactionCurrency, amount=10000,status='completed')
-
-            return Response(
-              nft.token_id,
-                status=status.HTTP_201_CREATED,
-            )            
-      
-'''
 
 
 
@@ -1119,6 +859,8 @@ class UserCollectionViewSet(viewsets.ViewSet):
                 {"error": "your money is not enough"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+        
+
 class UserNFTViewSet(viewsets.ViewSet):
     serializer_class = serializers.NFTSerializer
     # permission_classes = [permissions.IsAuthenticated]
