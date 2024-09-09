@@ -3,7 +3,7 @@ from core import models
 from .models import Category, CollectionNFT
 from django.contrib.auth.models import User
 
-from .models import PDF, NFT
+from .models import PDF, NFT , NFTActivity
 
 
 
@@ -18,7 +18,10 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ('name',)
 
-
+class NFTActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model= NFTActivity
+        fields = '__all__'
 
 class NFTRatingSerializer(serializers.ModelSerializer):
     class Meta:

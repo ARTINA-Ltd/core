@@ -29,7 +29,7 @@ import os
 from Account.models import Msg, ARTINA_Ballance,Wallet , NotifyUser,UserBalance,TransactionCurrency,Profile,Transaction
 from http import HTTPStatus
 from django.db.models import Count, Q
-from .serializers import PDFSerializer , CategorySerializer, CollectionNFTSerializer, NFTRatingSerializer, OwnerWithLikesSerializer
+from .serializers import PDFSerializer ,NFTActivitySerializer, CategorySerializer, CollectionNFTSerializer, NFTRatingSerializer, OwnerWithLikesSerializer
 from django_filters import rest_framework as filters
 import time
 from decimal import Decimal 
@@ -929,6 +929,11 @@ def order_Report(token_id):
             n_bid.save()
             NotifyUser.objects.create(user=n_bid.bidder,text=f"پیشنهاد شما برای  {token_id} قبول نشد. ")    
     print("change report status done")
+
+
+class NftActivityViewSet(viewsets.ModelViewset):
+    queryset = NFTActivity.objects.all()
+    serializers = NFTActivitySerializer
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
