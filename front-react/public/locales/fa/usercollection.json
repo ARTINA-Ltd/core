@@ -7,6 +7,7 @@
 "collapse": "بستن",
 "cancelSell": "لغو فروش",
 "dateDuration": "مدت زمان",
+"dateDurationHint": "تاریخ شروع - تاریخ پایان",
 "startHour": "ساعت شروع",
 "endHour": "ساعت پایان",
 "price": "قیمت (اتریوم)",
