@@ -3,6 +3,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import { UserContext } from "../../App.js";
 import axios from "axios";
 import BorderButton from "../Buttons/BorderButton.jsx";
+import { Notify } from "notiflix";
 
 const BuyHeart = () => {
   const user = useContext(UserContext);
@@ -30,6 +31,7 @@ const BuyHeart = () => {
         }
       );
       console.log(response.data);
+      Notify.success(response.data.message);
     } catch (error) {
       console.error("Error buying hearts:", error);
     }

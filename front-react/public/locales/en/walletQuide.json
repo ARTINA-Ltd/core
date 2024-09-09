@@ -1,6 +1,10 @@
 {
     "header": "Wallet making guide",
-    "firstparagraph": "There are various wallets, first you need to choose a valid wallet:",
+    "firstHeader": "Artina wallet",
+    "ArtinaStep1": "1- After creating an account and completing the verification process, click on your profile picture at the top of the page to create an Artina wallet.",
+    "ArtinaStep2": "2- Click on the Crypto Wallet section.",
+    "ArtinaStep3": "3- At the end of the page, click on the Create Wallet button.",
+    "ArtinaStep4": "4- Finally, with the wallet address, you can mint, deposit, and withdraw NFT.",
     "secondHeader": "Metamask wallet",
     "step1": {
         "before": "1- Enter the ",

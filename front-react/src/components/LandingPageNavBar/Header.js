@@ -1,25 +1,23 @@
-import React, { useState, useContext, useEffect, Fragment } from "react";
-import "./Header.css";
+import React, { useState, useContext, useEffect, Fragment, useRef } from "react";
 import { useNavigate } from "react-router";
-import { UserContext } from "../../App";
-import { UserChangeContext } from "../../App";
+import { UserContext, UserChangeContext } from "../../App";
 import artinaLogo from "../../assets/images/Artina-Logo-1.jpeg";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 import BorderButton from "../Buttons/BorderButton";
 import BalanceDialog from "../Dialog/BalanceDialog/BalanceDialog";
-import { useRef } from "react";
 import axios from "axios";
 import { MdOutlineCollections, MdOutlineCollectionsBookmark, MdSupportAgent } from "react-icons/md";
 import { GoBell } from "react-icons/go";
 import { RiNftFill } from "react-icons/ri";
 import { TbActivity } from "react-icons/tb";
-
 import { FaHome, FaPhoneAlt, FaQuestionCircle, FaBlogger } from "react-icons/fa";
 import BalanceDialogMatic from "../Dialog/BalanceDialog/BalanceDialogMatic";
 import i18n from "../../i18n";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "./../LanguageSelector/LanguageSelector";
 import ThemeSwitcher from "./../ThemeSwitcher/ThemeSwitcher";
+import "./Header.css";
+
 const Header = ({ connectWallet = false, rev = false }) => {
   const user = useContext(UserContext);
   const userChange = useContext(UserChangeContext);
@@ -33,6 +31,8 @@ const Header = ({ connectWallet = false, rev = false }) => {
   const [notifsToShow, setNotifsToShow] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [menuIsVisible, setMenuVisible] = useState(false);
+  const unseenCount = notifs.filter((notif) => !notif.message_seen).length;
+  const [loading, setLoading] = useState(true); // New loading state
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -57,11 +57,11 @@ const Header = ({ connectWallet = false, rev = false }) => {
       link: "/support",
       icon: <MdSupportAgent className="w-6 h-6 ml-1 text-primary" />,
     },
-    {
-      title: t("blog"),
-      link: "https://artina.org/",
-      icon: <FaBlogger className="w-6 h-6 ml-1 text-primary" />,
-    },
+    // {
+    //   title: t("blog"),
+    //   link: "https://artina.org/",
+    //   icon: <FaBlogger className="w-6 h-6 ml-1 text-primary" />,
+    // },
   ];
 
   const ActiveItems = [
@@ -125,6 +125,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
 
   useEffect(() => {
     if (user) {
+      setLoading(true); // Start loading
       axios
         .get("https://api.artina.org/api/account/NotifyUserViewSet/notifList/", {
           headers: {
@@ -135,9 +136,12 @@ const Header = ({ connectWallet = false, rev = false }) => {
           setNotifs(d.data);
           setFirstFiveNotifs(d.data.slice(0, 5));
           setNotifsToShow(d.data.slice(5));
-        });
+          setLoading(false); // End loading when data is fetched
+        })
+        .catch(() => setLoading(false)); // End loading on error as well
     }
-  }, []);
+  }, [user]);
+
   const handleClickSeen = (notifId) => {
     axios
       .post(
@@ -196,6 +200,42 @@ const Header = ({ connectWallet = false, rev = false }) => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [ref2]);
+
+  useEffect(() => {
+    const checkForOverflow = () => {
+      const body = document.body;
+      const html = document.documentElement;
+  
+      const bodyWidth = Math.max(
+        body.scrollWidth,
+        body.offsetWidth,
+        html.clientWidth,
+        html.scrollWidth,
+        html.offsetWidth
+      );
+  
+      const windowWidth = window.innerWidth;
+  
+      if (bodyWidth > windowWidth) {
+        document.body.style.overflowX = 'hidden';
+      }
+    };
+  
+    // Check after a short delay to ensure all elements have rendered
+    const timeoutId = setTimeout(() => {
+      checkForOverflow();
+    }, 500);  // Adjust delay based on complexity (e.g., 500ms)
+  
+    // Add a resize event listener for responsive designs
+    window.addEventListener('resize', checkForOverflow);
+  
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', checkForOverflow);
+    };
+  }, []);
+  
+
   return (
     <Fragment>
       <header>
@@ -204,23 +244,23 @@ const Header = ({ connectWallet = false, rev = false }) => {
             <div className="flex items-center gap-4 text-sm lg:hidden">
               {user
                 ? ActiveItems.map((item, index) => (
-                    <div
-                      key={index}
-                      className="cursor-pointer flex items-center gap-1  hover:text-accent transition-all duration-200"
-                      onClick={() => {
-                        item.link === null ? Notify.failure(t("identity")) : navigate(item.link);
-                      }}
-                    >
-                      {item.icon}
-                      {item.title}
-                    </div>
-                  ))
+                  <div
+                    key={index}
+                    className="cursor-pointer flex items-center gap-1  hover:text-accent transition-all duration-200"
+                    onClick={() => {
+                      item.link === null ? Notify.failure(t("identity")) : navigate(item.link);
+                    }}
+                  >
+                    {item.icon}
+                    {item.title}
+                  </div>
+                ))
                 : NotActiveItems.map((item, index) => (
-                    <a href={item.link} className="cursor-pointer flex items-center gap-1 hover:text-accent transition-all duration-200" key={index}>
-                      {item.icon}
-                      {item.title}
-                    </a>
-                  ))}
+                  <a href={item.link} className="cursor-pointer flex items-center gap-1 hover:text-accent transition-all duration-200" key={index}>
+                    {item.icon}
+                    {item.title}
+                  </a>
+                ))}
               <div className="bg-base-100 cursor-pointer text-primary px-3 py-[4px] rounded-full hover:scale-105 transition-all duration-200 border-primary border-[1px]" onClick={() => navigate("/metaverse")}>
                 {t("metaverse")}{" "}
               </div>
@@ -238,88 +278,106 @@ const Header = ({ connectWallet = false, rev = false }) => {
               {user ? (
                 <Fragment>
                   <div ref={ref2}>
-                    <div className="cursor-pointer p-1 w-8 hover:bg-base-100  rounded-lg transition-all" onClick={() => setIsHidden2((prev) => !prev)}>
-                      {notifs.length > 1 && <span className="absolute translate-x-1 -translate-y-[40%] bg-red-400 w-4 h-4 text-sm text-center rounded-full font-bold">{notifs.length}</span>}
+                    <div className="cursor-pointer p-1 w-8 hover:bg-base-100 rounded-lg transition-all" onClick={() => setIsHidden2((prev) => !prev)}>
+                      {unseenCount > 0 && (
+                        <span className="absolute translate-x-1 -translate-y-[40%] bg-red-400 w-4 h-4 text-sm text-center rounded-full font-bold">
+                          {unseenCount}
+                        </span>
+                      )}
                       <GoBell className="text-2xl font-bold" />
                     </div>
-                    <div className={`mt-2 z-50 font-b3 rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-base-300 min-w-[250px] ${isHidden2 ? "opacity-0 pointer-events-none" : ""} absolute  ${i18n.dir() === "rtl" ? "translate-x-1/3" : "-translate-x-1/3"}`}>
-                      {notifs &&
-                        firstFiveNotifs.map((item, index) => (
-                          <span key={index}>
-                            <div className="w-full py-2 px-3 hover:bg-base-100 rounded-xl flex gap-6 items-center justify-between cursor-pointer">
-                              <div className="flex flex-col">
-                                <div>{item.text}</div>
-                                <div className="text-sm opacity-50">
-                                  <span className="px-1">{t("inDate")}</span>
-                                  {i18n.language === "en"
-                                    ? Intl.DateTimeFormat({
-                                        day: "numeric",
-                                        month: "numeric",
-                                        year: "numeric",
-                                      }).format(new Date(item.created_at))
-                                    : Intl.DateTimeFormat("fa", {
+                    <div className={`mt-2 z-50 text-sm rounded-xl border-1 transition-all duration-300 border-[gray-300] bg-base-300 min-w-[250px] ${isHidden2 ? "opacity-0 pointer-events-none" : ""} absolute  ${i18n.dir() === "rtl" ? "translate-x-1/3" : "-translate-x-1/3"}`}>
+                      {loading ? ( // Conditional rendering based on loading state
+                        <div className="p-4 text-center">{t("loading")}...</div>
+                      ) : notifs.length === 0 ? (
+                        <div className="p-4 text-center">{t("noNotifications")}</div>
+                      ) : (
+                        <Fragment>
+                          {notifs &&
+                            firstFiveNotifs.map((item, index) => (
+                              <span key={index}>
+                                <div className="w-full py-2 px-3 hover:bg-base-100 rounded-xl flex gap-2 items-center justify-between cursor-pointer">
+                                  <div className="flex flex-col">
+                                    <div>{item.text}</div>
+                                    <div className="text-xs opacity-50">
+                                      <span className="px-1">{t("inDate")}</span>
+                                      {i18n.language === "en"
+                                        ? Intl.DateTimeFormat({
+                                          day: "numeric",
+                                          month: "numeric",
+                                          year: "numeric",
+                                        }).format(new Date(item.created_at))
+                                        : Intl.DateTimeFormat("fa", {
+                                          year: "numeric",
+                                          month: "numeric",
+                                          day: "numeric",
+                                        }).format(new Date(item.created_at))}
+                                    </div>
+                                  </div>
+                                  {item.message_seen ? (
+                                    <div></div>
+                                  ) : (
+                                    <img
+                                      src="/icons/square.png"
+                                      alt="Seen"
+                                      className="w-6 h-6 cursor-pointer"
+                                      onClick={() => handleClickSeen(item.id)}
+                                    />
+                                  )}
+                                </div>
+                                {index == notifs.length - 1 ? <div></div> : <hr />}
+                              </span>
+                            ))}
+                          {notifs.length > 5 && (
+                            <button
+                              className={`${isExpanded ? "hidden" : "visible"} p-4 w-full text-center block ease-in-out duration-200 hover:bg-base-100`}
+                              onClick={() => {
+                                setIsExpanded(true);
+                              }}
+                            >
+                              {t("showAll")}{" "}
+                            </button>
+                          )}
+                          <div className={`${isExpanded ? "visible" : "hidden"}`}>
+                            {notifsToShow.map((item, index) => (
+                              <span key={index}>
+                                <div className="w-full py-2 px-3 hover:bg-base-100 flex gap-6 items-center justify-between cursor-pointer">
+                                  <div className="flex flex-col">
+                                    <div>{item.text}</div>
+                                    <div className="text-sm opacity-50">
+                                      <span className="px-1">{t("inDate")}</span>
+                                      {Intl.DateTimeFormat("fa", {
                                         year: "numeric",
                                         month: "numeric",
                                         day: "numeric",
                                       }).format(new Date(item.created_at))}
+                                    </div>
+                                  </div>
+                                  {item.message_seen ? (
+                                    <div></div>
+                                  ) : (
+                                    <img
+                                      src="/icons/square.png"
+                                      alt="Seen"
+                                      className="w-6 h-6 cursor-pointer"
+                                      onClick={() => handleClickSeen(item.id)}
+                                    />
+                                  )}
                                 </div>
-                              </div>
-                              {item.message_seen ? (
-                                <div></div>
-                              ) : (
-                                <div className="px-2 bg-green-200 hover:bg-green-300 text-black text-center rounded-lg py-1 text-sm" onClick={() => handleClickSeen(item.id)}>
-                                  {t("seen")}{" "}
-                                </div>
-                              )}
-                            </div>
-                            {index == notifs.length - 1 ? <div></div> : <hr />}
-                          </span>
-                        ))}
-                      {notifs.length > 5 && (
-                        <button
-                          className={`${isExpanded ? "hidden" : "visible"} p-4 w-full text-center block ease-in-out duration-200 hover:bg-base-100`}
-                          onClick={() => {
-                            setIsExpanded(true);
-                          }}
-                        >
-                          {t("showAll")}{" "}
-                        </button>
+                                {index == notifs.length - 1 ? <div></div> : <hr />}
+                              </span>
+                            ))}
+                            <button
+                              className={`${isExpanded ? "visible" : "hidden"} p-4 w-full text-center block ease-in-out duration-200 hover:bg-base-100`}
+                              onClick={() => {
+                                setIsExpanded(false);
+                              }}
+                            >
+                              مشاهده کمتر
+                            </button>
+                          </div>
+                        </Fragment>
                       )}
-                      <div className={`${isExpanded ? "visible" : "hidden"}`}>
-                        {notifsToShow.map((item, index) => (
-                          <span key={index}>
-                            <div className="w-full py-2 px-3 hover:bg-base-100 flex gap-6 items-center justify-between cursor-pointer">
-                              <div className="flex flex-col">
-                                <div>{item.text}</div>
-                                <div className="text-sm opacity-50">
-                                  <span className="px-1">{t("inDate")}</span>
-                                  {Intl.DateTimeFormat("fa", {
-                                    year: "numeric",
-                                    month: "numeric",
-                                    day: "numeric",
-                                  }).format(new Date(item.created_at))}
-                                </div>
-                              </div>
-                              {item.message_seen ? (
-                                <div></div>
-                              ) : (
-                                <div className="px-2 bg-green-100 hover:bg-green-200 rounded-lg py-1 text-sm" onClick={() => handleClickSeen(item.id)}>
-                                  {t("seen")}{" "}
-                                </div>
-                              )}
-                            </div>
-                            {index == notifs.length - 1 ? <div></div> : <hr />}
-                          </span>
-                        ))}
-                        <button
-                          className={`${isExpanded ? "visible" : "hidden"} p-4 w-full text-center block ease-in-out duration-200 hover:bg-base-100`}
-                          onClick={() => {
-                            setIsExpanded(false);
-                          }}
-                        >
-                          مشاهده کمتر
-                        </button>
-                      </div>
                     </div>
                   </div>
 
@@ -385,23 +443,23 @@ const Header = ({ connectWallet = false, rev = false }) => {
         <div className="w-full flex flex-col gap-2 justify-center items-center">
           {user
             ? ActiveItems.map((item, index) => (
-                <div
-                  key={index}
-                  className="cursor-pointer flex items-center gap-1 hover:text-accent transition-all duration-200 px-5 py-2 bg-base-100 rounded-lg w-[90%]"
-                  onClick={() => {
-                    navigate(item.link);
-                  }}
-                >
-                  {item.icon}
-                  {item.title}
-                </div>
-              ))
+              <div
+                key={index}
+                className="cursor-pointer flex items-center gap-1 hover:text-accent transition-all duration-200 px-5 py-2 bg-base-100 rounded-lg w-[90%]"
+                onClick={() => {
+                  navigate(item.link);
+                }}
+              >
+                {item.icon}
+                {item.title}
+              </div>
+            ))
             : NotActiveItems.map((item, index) => (
-                <a href={item.link} className="cursor-pointer flex items-center gap-1 hover:text-accent transition-all duration-200 px-5 py-2 bg-base-100 rounded-lg w-[90%]" key={index}>
-                  {item.icon}
-                  {item.title}
-                </a>
-              ))}
+              <a href={item.link} className="cursor-pointer flex items-center gap-1 hover:text-accent transition-all duration-200 px-5 py-2 bg-base-100 rounded-lg w-[90%]" key={index}>
+                {item.icon}
+                {item.title}
+              </a>
+            ))}
 
           <div className="cursor-pointer flex items-center gap-1 text-white transition-all duration-200 px-5 py-2 bg-[#4e45d0] rounded-lg w-[90%]" onClick={() => navigate("/metaverse")}>
             {t("metaverse")}

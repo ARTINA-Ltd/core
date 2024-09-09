@@ -10,5 +10,6 @@
 "startHour": "ساعت شروع",
 "endHour": "ساعت پایان",
 "price": "قیمت (اتریوم)",
-"submit": "ثبت"
+"submit": "ثبت",
+"transfer": "انتقال"
 }

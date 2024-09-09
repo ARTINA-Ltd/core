@@ -465,7 +465,7 @@ function Profile() {
   return (
     <TestLayout connectWallet={false}>
       {user && (
-        <div style={{ direction: "rtl" }} className="flex gap-5 items-start sm:flex-col">
+        <div style={{ direction: "rtl" }} className="flex gap-5 items-start md:flex-col">
           <SimpleCard className={"flex flex-col gap-4 bg-base-100 w-full"}>
             {user && user.data.role == "user_zero" ? <div className=" bg-red-50 text-red-500 py-2 text-center rounded-lg w-full">مشخصات شما هنوز احراز نشده است!</div> : <div className=" bg-success w-full text-success-content py-2 text-center rounded-lg">حساب کاربری شما احراز شده است .</div>}
             <div className="text-[24px] font-b9">اطلاعات شخصی</div>
@@ -708,11 +708,18 @@ function Profile() {
                 </div>
               )}
             </div>
+            <div className="flex gap-4 text-gray-500 text-sm">
+              جهت دریافت تیک آبی بر روی پروفایل، یک تیکت برای پشتیبانی با همین عنوان ارسال کنید.
+            </div>
             <div className="flex justify-end">
               <BorderButton onClick={() => UpdateInfo()}>ثبت</BorderButton>
             </div>
           </SimpleCard>
-          <div className="flex flex-col gap-4 items-center justify-center w-[35%] relative sm:w-full">
+
+
+
+
+          <div className="flex flex-col gap-4 items-center justify-center w-[35%] relative sm:w-full md:flex-row md:w-full md:items-start sm:flex-col">
             <SimpleCard className="bg-primary flex flex-col relative gap-4 items-center overflow-hidden w-full">
               <div className="text-white text-[27px] mb-2 z-10 font-b9 sm:text-[20px]">آپلود فرم احراز هویت</div>
               <BorderButton className={"text-white border-white"} onClick={() => window.open("http://api.artina.org/static/pdfs/Form-new-version.pdf")}>

@@ -1,6 +1,5 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
-
   theme: {
     patterns: {
       opacities: {
@@ -36,6 +35,12 @@ module.exports = {
       b9: ["KalamehBlack", "system-ui"],
     },
     screens: {
+      "2xl": { min: "1536px" },
+      // => @media (min-width: 1536px) { ... }
+
+      xl: { min: "1280px" },
+      // => @media (min-width: 1280px) { ... }
+
       lg: { max: "1023px" },
       // => @media (max-width: 1023px) { ... }
 
@@ -45,7 +50,7 @@ module.exports = {
       // => @media (max-width: 767px) { ... }
 
       sm: { max: "500px" },
-      // => @media (max-width: 639px) { ... }
+      // => @media (max-width: 500px) { ... }
     },
   },
 
@@ -69,7 +74,7 @@ module.exports = {
           "base-300": "#ffffff",
           "base-content": "#161616",
           info: "#00B5FF",
-          "	info-content": "#000000",
+          "info-content": "#000000",
           success: "#00A96E",
           "success-content": "#000000",
           warning: "#FFBE00",

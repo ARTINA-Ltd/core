@@ -23,5 +23,6 @@
     "matic": "متیک",
     "yourCurrentBallance": "موجودی کیف پول شما",
     "transferToArtina": "انتقال به موجودی سایت",
-    "thisAddrIsForPolygon": "این آدرس بر روی شبکه Polygon قابل استفاده است"
+    "thisAddrIsForPolygon": "این آدرس بر روی شبکه Polygon قابل استفاده است",
+    "commissionReminder": "*کارمزد معاملات نیم درصد می‌باشد."
 }

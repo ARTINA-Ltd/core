@@ -12,26 +12,17 @@ import { UserContext } from "../App.js";
 import Dialog from "../components/Nts/Dialog.jsx";
 import FancyText from "@carefully-coded/react-text-gradient";
 import { useNavigate } from "react-router";
+import LeaderBoard from "../components/Nts/LeaderBoard.jsx";
 
 const NTS = () => {
   const user = useContext(UserContext);
   const navigate = useNavigate();
-  useEffect(() => {
-    axios
-      .get("https://api.artina.org/api/game/leaderboard/")
-      .then((e) => {
-        console.log(e.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, []);
 
   return (
     <>
       <NTSNavbar />
 
-      <div className="z-10 p-8 bg-base-100 w-[99vw] overflow-hidden">
+      <div className=" p-8 bg-base-100 w-[99vw] overflow-hidden">
         <NightSky />
         <div className="flex items-center p-8 flex-row-reverse justify-around md:block overflow-hidden">
           <img src={rocket} alt="" className="w-1/3 md:mx-auto md:h-32 md:w-auto my-4 z-10" />
@@ -83,6 +74,12 @@ const NTS = () => {
           </div>
         </div>
       </div>
+      <div className="mx-auto w-fit">
+        <FancyText gradient={{ from: "#F305B8", to: "#00F0F7", type: "linear" }} animateTo={{ from: "#FFFFFF", to: "#F305B8" }} animateDuration={1000} className="text-center text-5xl mb-8 bg-slate-100 w-fit mx-auto border-none neon-container">
+          Leader Board
+        </FancyText>
+      </div>
+      <LeaderBoard />
       {user && <Dialog username={user.data.username} />}
     </>
   );

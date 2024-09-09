@@ -23,5 +23,6 @@
     "matic": "Matic",
     "yourCurrentBallance": "Your current ballance",
     "transferToArtina": "Transfer your ballance to Artina",
-    "thisAddrIsForPolygon": "This address is based on Polygon network"
+    "thisAddrIsForPolygon": "This address is based on Polygon network",
+    "commissionReminder": "*All transaction prices have a 0.5% commission"
 }
