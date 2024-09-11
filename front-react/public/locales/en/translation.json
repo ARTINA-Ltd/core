@@ -149,8 +149,8 @@
   "createNFT" : "Create NFT",
   "artinaNFTMint" : "Artina'n NFT Mint",
   "generateIncome" : "Generate Income",
-  "advertiseYourNFT" : "Advertise Your NFT",
+  "advertiseYourNFT" : "Promote Your NFT",
   "selNFT" : "Sell NFT",
-  "takeMoney" : "Take Money",
+  "takeMoney" : "Income Withdrawal",
   "NFTPropertiesExplanation": "NFT properties refer to unique features in NFTs that can include name, type, size, color, and ..."
 }

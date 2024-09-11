@@ -81,9 +81,12 @@ const SellArea = ({ tokenId }) => {
       <div className="bg-base-100 card flex justify-center rounded-none w-full">
         <div className="w-full">
           <div className="gap-12 pt-5 items-center font-b4 lg:flex-col mb-4">
-            <div className={`flex justify-between items-center whitespace-nowrap sm:whitespace-normal gap-2 border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`}>
-              <span className="mx-1">{t("dateDuration")}</span>
-              <DatePicker digits={digits} inputClass="bg-base-300 w-48 p-2 text-sm rounded-lg text-center" calendar={i18n.language === "fa" ? persian : null} locale={i18n.language === "fa" ? persian_fa : null} range dateSeparator=" - " onChange={setDate} />
+            <div className={`flex-col items-center whitespace-nowrap sm:whitespace-normal border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`}>
+              <div className="flex justify-between">
+                <span className="mx-1">{t("dateDuration")}</span>
+                <DatePicker digits={digits} inputClass="bg-base-300 w-48 p-2 text-sm rounded-lg text-center" calendar={i18n.language === "fa" ? persian : null} locale={i18n.language === "fa" ? persian_fa : null} range dateSeparator=" - " onChange={setDate} />
+              </div>
+              <div className="text-[10px] text-gray-600 p-1 rounded-lg">{t("dateDurationHint")}</div>
             </div>
             <div className={`flex mt-4 gap-2 justify-between items-center font-b4 border-x-2 border-x-transparent ${i18n.dir() === "rtl" ? "border-r-primary" : "border-l-primary"}`}>
               <div className="mx-1">{t("startHour")}</div>

@@ -946,7 +946,7 @@ def order_Report(token_id):
     print("change report status done")
 
 
-class NftActivityViewSet(viewsets.ModelViewset):
+class NftActivityViewSet(viewsets.ModelViewSet):
     queryset = NFTActivity.objects.all()
     serializers = NFTActivitySerializer
 
