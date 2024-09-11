@@ -306,6 +306,21 @@ class TransferViewSet(viewsets.ViewSet):
             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+
+class WalletValidationViewSet(viewsets.ViewSet):
+    
+    @action(detail=False, methods=['post'])
+    
+    def validate_wallet(self, request):
+        wallet_address = request.data.get('wallet_address')
+        
+        
+        # Check if it's a valid address
+        if w3.isAddress(wallet_address):
+            return Response({"message": "Valid Polygon wallet address"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "Invalid Polygon wallet address"}, status=status.HTTP_400_BAD_REQUEST)
+
 class OrderViewSet(viewsets.ViewSet):
     queryset = Order.objects.all()
     serializer_class = serializers.OrderSerializer
