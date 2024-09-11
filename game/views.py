@@ -136,7 +136,7 @@ class GameViewSet(viewsets.ModelViewSet):
     @staticmethod
     def determine_winner(game):
 
-        sessions = GameSession.objects.filter(game=game)
+        sessions = GameSession.objects.filter(game=game,)
         gamer1 = sessions.first()
         gamer2 = sessions.last()
         user_profile1 = UserGameProfile.objects.get(user=gamer1.user)
@@ -214,7 +214,7 @@ class GameViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'])
     def user_game_sessions(self, request):
         user = self.request.user
-        sessions = GameSession.objects.filter(user=user)
+        sessions = GameSession.objects.filter(user=user,is_active=True)
         result = []
 
         for session in sessions:
