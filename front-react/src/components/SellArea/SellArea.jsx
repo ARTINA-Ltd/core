@@ -69,8 +69,7 @@ const SellArea = ({ tokenId }) => {
       .catch((error) => {
         if (error.response.status === 400) {
           Notify.failure("موجودی حساب شما برای پرداخت هزینه شبکه کافی نیست");
-        }
-        else {
+        } else {
           Notify.failure("خطا در ثبت اطلاعات");
         }
       });
@@ -115,7 +114,9 @@ const SellArea = ({ tokenId }) => {
           </div>
           <SimpleInput className="mt-8 font-b4" type="number" title={t("price")} placeholder="مثلا" validationError={price === "" && "نمی‌تواند خالی باشد"} defaultValue={null} onChange={(e) => setPrice(e.target.value)} />
           <div className="mt-4 flex gap-4">
-            <BorderButton onClick={submit}>{t("submit")}</BorderButton>
+            <BorderButton className="w-full" onClick={submit}>
+              {t("submit")}
+            </BorderButton>
           </div>
         </div>
       </div>
