@@ -1,21 +1,26 @@
 import React, { Fragment, useState, useCallback } from "react";
-import CollectionDialog from "../../Dialog/CollectionDialog/CollectionDialog";
 import BorderButton from "./../../Buttons/BorderButton";
 import { useTranslation } from "react-i18next";
 import SellArea from "./../../SellArea/SellArea";
 import { FaEthereum } from "react-icons/fa";
 import axios from "axios";
-import i18n from "./../../../i18n";
-import SimpleInput from "./../../Inputs/SimpleInput";
 import { Notify } from "notiflix";
+import SimpleInput from "../../Inputs/SimpleInput.jsx";
+import { MdOutlineVerified } from "react-icons/md";
+import { FaCircleQuestion } from "react-icons/fa6";
+import { BiErrorAlt } from "react-icons/bi";
 
 const ImageCard = ({ className, children, src, price, onClick, tokenId, showCancel, showSell = false, onClickShow, onClickHide, has_creator, visible, isForSale }) => {
   const [isVisible, setIsVisible] = useState(visible);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [walletAddress, setWalletAddress] = useState("");
 
+  const [expandedSection, setExpandedSection] = useState(null);
+
+  const handleExpand = (section) => {
+    setExpandedSection(expandedSection === section ? null : section);
+  };
   const { t } = useTranslation("usercollection");
-
+  const [address, setAddress] = useState();
+  const [isAddressValid, setIsAddressValid] = useState("");
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
@@ -33,9 +38,26 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
     [onClickHide]
   );
 
-  const handleExpand = useCallback(() => {
-    setIsExpanded((prev) => !prev);
-  }, []);
+  const handleTransfer = () => {
+    console.log(tokenId);
+    axios
+      .post(
+        `https://api.artina.org/api/transaction/nfts/transferToUserWallet/`,
+        {
+          token_id: tokenId,
+          address: address,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          },
+          mode: "cors",
+        }
+      )
+      .then((res) => {
+        Notify.success("انتقال موفقیت آمیز بود");
+      });
+  };
 
   const handleCancel = () => {
     axios
@@ -59,6 +81,22 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
       });
   };
 
+  const checkWalletExists = async () => {
+    await axios
+      .post("https://api.artina.org/api/transaction/wallet-validation/validate_wallet/", { wallet_address: address })
+      .then((e) => {
+        if (e.data.message === "Valid Polygon wallet address") {
+          setIsAddressValid(true);
+        } else {
+          setIsAddressValid(false);
+        }
+      })
+      .catch((e) => {
+        setIsAddressValid(false);
+        console.log(e);
+      });
+  };
+
   const handleMouseOver = (e) => {
     setShowTooltip(true);
     setTooltipPosition({ x: e.clientX, y: e.clientY });
@@ -70,26 +108,6 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
 
   const handleMouseOut = () => {
     setShowTooltip(false);
-  };
-
-  const handleTransfer = () => {
-    axios
-      .post(
-        `https://api.artina.org/api/transaction/nfts/transferToUserWallet/`,
-        {
-          token_id: tokenId,
-          address: walletAddress,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-          },
-          mode: "cors",
-        }
-      )
-      .then((res) => {
-        Notify.success("انتقال موفقیت آمیز بود");
-      });
   };
 
   return (
@@ -177,23 +195,60 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
                 showCancel && <BorderButton onClick={handleCancel}>{t("cancelSell")}</BorderButton>
               )}
             </div>
-            {
-              <BorderButton className={"font-bold mx-6 mb-1 w-20"} onClick={() => document.getElementById("TransferDialog").showModal()}>
-                {t("transfer")}
-              </BorderButton>
-            }
             {showSell && (
-              <div class="collapse collapse-arrow overflow-visible">
-                <input type="checkbox" clas onClick={handleExpand} />
-                <div class="collapse-title text-xl sm:w-[75%]  font-medium m-0 ">
-                  <BorderButton className={"font-bold w-20 mx-auto"}>{isExpanded ? t("collapse") : t("sell")}</BorderButton>
+              <>
+                <div className="flex justify-center gap-4 mb-4">
+                  <div>
+                    <BorderButton className={"font-bold w-32"} onClick={() => handleExpand("sell")}>
+                      {expandedSection === "sell" ? t("collapse") : t("sell")}
+                    </BorderButton>
+                  </div>
+
+                  <div>
+                    <BorderButton className="w-32" onClick={() => handleExpand("transfer")}>
+                      {t("transfer")}
+                    </BorderButton>
+                  </div>
                 </div>
-                <div class="collapse-content w-full  overflow-visible ">
-                  <SellArea tokenId={tokenId} cancel={handleExpand} />
+
+                <div className={`overflow-hidden transition-all duration-500 ${expandedSection === "sell" ? "max-h-[500px]" : "max-h-0"}`}>
+                  <SellArea tokenId={tokenId} cancel={() => handleExpand(null)} />
                 </div>
-              </div>
+
+                <div className={`overflow-hidden transition-all duration-500 ${expandedSection === "transfer" ? "max-h-[500px]" : "max-h-0"}`}>
+                  <div className="grid gap-3">
+                    <SimpleInput
+                      className={"mt-6"}
+                      type="text"
+                      name="Address"
+                      title="Address"
+                      placeholder="Address"
+                      isValid={address?.length !== 0}
+                      onChange={(e) => {
+                        setAddress(e.target.value);
+                      }}
+                    />
+                    <div onClick={checkWalletExists} className="flex gap-1 hover:text-warning cursor-pointer transition-colors items-center text-lg">
+                      <p>{t("checkAddress")}</p>
+                      <FaCircleQuestion size={20} className="h-8 text-info" />
+                    </div>
+                    {isAddressValid && (
+                      <div className="flex gap-1 cursor-default transition-colors items-center text-lg">
+                        <p>{t("addressIsValid")}</p>
+                        <MdOutlineVerified size={20} className="h-8 text-success" />
+                      </div>
+                    )}{" "}
+                    {isAddressValid === false && (
+                      <div className="flex gap-1 cursor-default transition-colors items-center text-lg">
+                        <p>{t("addressNotValid")}</p>
+                        <BiErrorAlt size={20} className="h-8 text-error" />
+                      </div>
+                    )}
+                    <BorderButton onClick={handleTransfer}>{t("transfer")}</BorderButton>
+                  </div>
+                </div>
+              </>
             )}
-            {/* {dialog()} */}
           </Fragment>
         )}
       </div>
