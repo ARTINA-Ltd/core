@@ -54,6 +54,8 @@ import { GoftinoSnippet } from "@mohsen007/react-goftino";
 import AddExhibition from "./Pages/AddExhibition.jsx";
 import InternationalProfile from "./Pages/InternationalProfile.jsx";
 
+import Explore from "./Pages/Explore.jsx";
+
 const GOFTINO_KEY = "cD7Gse";
 
 export const UserContext = createContext();
@@ -169,6 +171,8 @@ export default () => {
                   <Route path="admin-panel" element={<AdminPanel />} />
                   {/* <Route exact path="request-lists" element={<RequestLists />} /> */}
                   <Route exact path="all-collections" element={<AllCollections />} />
+
+                  <Route exact path="explore" element={<Explore />} />
                 </Routes>
               </React.Suspense>
             </div>
