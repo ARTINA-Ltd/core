@@ -671,7 +671,7 @@ from thirdweb.types import SDKOptions
 
 # # Optionally, instantiate a new signer to pass into the SDK
 signer = Account.from_key(settings.PRIVATE_KEY)
-sdk = ThirdwebSDK.from_private_key(settings.PRIVATE_KEY, "polygon", SDKOptions(settings.secret_key))
+sdk = ThirdwebSDK.from_private_key(settings.PRIVATE_KEY, "polygon", SDKOptions(settings.SECRET_T_KEY))
 print(f"sdk is :{sdk}")
 # # Finally, you can create a new instance of the SDK to use
 # sdk = ThirdwebSDK("mumbai",signer)

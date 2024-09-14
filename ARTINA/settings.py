@@ -26,7 +26,7 @@ SECRET_KEY = 'jwb9-)x##t=b#g9(cu)qz9#$-v9!r)olg0pl2p9-t4s!6syp#*'
 COMPANY_WALLET_ADDRESS = os.getenv('COMPANY_WALLET_ADDRESS')
 COMPANY_WALLET_PRIVATE_KEY = os.getenv('COMPANY_WALLET_PRIVATE_KEY')
 PRIVATE_KEY = os.getenv('PRIVATE_KEY')
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_t_KEY = os.getenv('SECRET_T_KEY')
 X_API_KEY = os.getenv('X_API_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
