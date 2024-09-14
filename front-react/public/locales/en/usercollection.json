@@ -1,16 +1,17 @@
 {
-"page_title":"collectioners",
+  "page_title": "collectioners",
 
-"nftCount":"NFTs",
-"changing visibility":"Changing Visibility",
-"sell": "Sell",
-"collapse": "Collapse",
-"cancelSell": "Cancel Sell",
-"dateDuration": "Date Duration",
-"dateDurationHint": "Start Date - End Date",
-"startHour": "Start Hour",
-"endHour": "End Hour",
-"price": "Price (ETH)",
-"submit": "Submit",
-"transfer": "Transfer"
+  "nftCount": "NFTs",
+  "changing visibility": "Changing Visibility",
+  "sell": "Sell",
+  "collapse": "Collapse",
+  "cancelSell": "Cancel Sell",
+  "dateDuration": "Date Duration",
+  "dateDurationHint": "Start Date - End Date",
+  "startHour": "Start Hour",
+  "endHour": "End Hour",
+  "price": "Price (ETH)",
+  "submit": "Submit",
+  "transfer": "Transfer",
+  "checkAddress": "check the correctness of the entered address"
 }

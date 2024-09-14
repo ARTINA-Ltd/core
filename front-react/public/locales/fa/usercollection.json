@@ -1,16 +1,19 @@
 {
-"page_title":"مجموعه داران",
+  "page_title": "مجموعه داران",
 
-"nftCount":"تعداد NFT",
-"changing visibility":"نمایش / عدم نمایش",
-"sell": "فروش",
-"collapse": "بستن",
-"cancelSell": "لغو فروش",
-"dateDuration": "مدت زمان",
-"dateDurationHint": "تاریخ شروع - تاریخ پایان",
-"startHour": "ساعت شروع",
-"endHour": "ساعت پایان",
-"price": "قیمت (اتریوم)",
-"submit": "ثبت",
-"transfer": "انتقال"
+  "nftCount": "تعداد NFT",
+  "changing visibility": "نمایش / عدم نمایش",
+  "sell": "فروش",
+  "collapse": "بستن",
+  "cancelSell": "لغو فروش",
+  "dateDuration": "مدت زمان",
+  "dateDurationHint": "تاریخ شروع - تاریخ پایان",
+  "startHour": "ساعت شروع",
+  "endHour": "ساعت پایان",
+  "price": "قیمت (اتریوم)",
+  "submit": "ثبت",
+  "transfer": "انتقال",
+  "checkAddress": "بررسی درستی آدرس وارد شده",
+  "addressIsValid": "آدرس وارد شده در Polygon وجود دارد",
+  "addressNotValid": "آدرس وارد شده در Polygon وجود ندارد"
 }

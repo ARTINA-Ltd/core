@@ -79,7 +79,7 @@ const NTS = () => {
           Leader Board
         </FancyText>
       </div>
-      <LeaderBoard />
+
       {user && <Dialog username={user.data.username} />}
     </>
   );
