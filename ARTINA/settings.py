@@ -29,7 +29,7 @@ PRIVATE_KEY = os.getenv('PRIVATE_KEY')
 SECRET_t_KEY = os.getenv('SECRET_T_KEY')
 X_API_KEY = os.getenv('X_API_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
