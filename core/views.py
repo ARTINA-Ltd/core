@@ -197,8 +197,6 @@ def get_winner(token_id):
 
 
 def transfer_matic(to_address, amount):
-    COMPANY_WALLET_ADDRESS = '0x2293221D7c357FB04De9c7D0dEeBcA427407429D'
-    COMPANY_WALLET_PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"  # Securely get from env variable
 
     try:
         # Get dynamic gas price
@@ -206,12 +204,12 @@ def transfer_matic(to_address, amount):
         nft_mtc_logger.info(f"Gas price fetched: {gas_price}")
 
         # Get nonce
-        nonce = w3.eth.getTransactionCount(COMPANY_WALLET_ADDRESS, 'pending')
-        nft_mtc_logger.info(f"Nonce fetched for company wallet address {COMPANY_WALLET_ADDRESS}: {nonce}")
+        nonce = w3.eth.getTransactionCount(settings.COMPANY_WALLET_ADDRESS, 'pending')
+        nft_mtc_logger.info(f"Nonce fetched for company wallet address {settings.COMPANY_WALLET_ADDRESS}: {nonce}")
 
         # Estimate gas limit for the transaction
         estimated_gas = w3.eth.estimateGas({
-            'from': COMPANY_WALLET_ADDRESS,
+            'from': settings.COMPANY_WALLET_ADDRESS,
             'to': to_address,
             'value': w3.toWei(amount, 'ether'),
         }) + 10000  # Adding a buffer to the gas estimate
@@ -229,7 +227,7 @@ def transfer_matic(to_address, amount):
         nft_mtc_logger.info(f"Transaction to transfer MATIC: {tx}")
 
         # Sign the transaction
-        signed_tx = w3.eth.account.signTransaction(tx, COMPANY_WALLET_PRIVATE_KEY)
+        signed_tx = w3.eth.account.signTransaction(tx, settings.COMPANY_WALLET_PRIVATE_KEY)
         nft_mtc_logger.info(f"Transaction signed. Raw transaction: {signed_tx.rawTransaction.hex()}")
 
         # Send the transaction
@@ -671,11 +669,9 @@ class NFTRatingViewSet(viewsets.ModelViewSet):
 
 from thirdweb.types import SDKOptions
 
-PRIVATE_KEY = "045be0b52044ba0f842dea76a18ef921009a629e7c8ad114a51023c6acf50520"
-secret_key="dd0cZsTqYO9v8PJdRO8uuikrKvi6SpZKYbNdIqvn-d2-Df1QXTb9PUXUOJfO4OcJg9EUP3zQbx3jLJR1raQY9w"
 # # Optionally, instantiate a new signer to pass into the SDK
-signer = Account.from_key(PRIVATE_KEY)
-sdk = ThirdwebSDK.from_private_key(PRIVATE_KEY, "polygon", SDKOptions(secret_key))
+signer = Account.from_key(settings.PRIVATE_KEY)
+sdk = ThirdwebSDK.from_private_key(settings.PRIVATE_KEY, "polygon", SDKOptions(settings.secret_key))
 print(f"sdk is :{sdk}")
 # # Finally, you can create a new instance of the SDK to use
 # sdk = ThirdwebSDK("mumbai",signer)

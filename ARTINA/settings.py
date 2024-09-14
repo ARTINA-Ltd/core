@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
-
+from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -22,7 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'jwb9-)x##t=b#g9(cu)qz9#$-v9!r)olg0pl2p9-t4s!6syp#*'
-
+# Retrieve variables
+COMPANY_WALLET_ADDRESS = os.getenv('COMPANY_WALLET_ADDRESS')
+COMPANY_WALLET_PRIVATE_KEY = os.getenv('COMPANY_WALLET_PRIVATE_KEY')
+PRIVATE_KEY = os.getenv('PRIVATE_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
+X_API_KEY = os.getenv('X_API_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 

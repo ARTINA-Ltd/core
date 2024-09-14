@@ -32,7 +32,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from django.http import JsonResponse
 from rest_framework import status
-
+from django.conf import settings
 #web3 exchange
 from rest_framework import viewsets, status
 from rest_framework.response import Response
@@ -882,7 +882,7 @@ class CryptoViewSet(viewsets.ViewSet):
         url = 'https://api.wallex.ir/v1/account/otc/orders'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': '10553|4Y4jacZCBRcidJ1zmXtUQFfDARiGtXxko4IXc7xw',  
+            'X-API-Key': settings.X_API_Key,  
         }
         data = {
             'symbol': symbol, 
@@ -991,14 +991,14 @@ class CryptoViewSet(viewsets.ViewSet):
         # Get ETH price
         url = 'https://api.wallex.ir/v1/account/otc/price'
         params = {
-            'symbol': 'MATICTMN',
+            'symbol': 'POLTMN',
             'side': 'BUY',
         }
         response_BUY = requests.get(url, headers=headers, params=params)
     
         # Get MATIC price
         params = {
-            'symbol': 'MATICTMN',
+            'symbol': 'POLTMN',
             'side': 'SELL',
         }
         response_SELL = requests.get(url, headers=headers, params=params)
@@ -1745,7 +1745,7 @@ class TransactionyViewSet(viewsets.ViewSet):
             nonce = w3.eth.getTransactionCount(w3.eth.account.privateKeyToAccount(private_key).address)
             transaction_data = {
                 'to': "0x2293221D7c357FB04De9c7D0dEeBcA427407429D",
-                'value': w3.toWei(value, 'matic'),
+                'value': w3.toWei(value, 'pol'),
                 'gas': gas_limit,
                 'gasPrice': gas_price,
                 'nonce': nonce,
