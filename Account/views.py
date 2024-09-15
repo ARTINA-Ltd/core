@@ -58,9 +58,9 @@ def get_balance(user):
         return Response({"error": "Wallet not found for the user."}, status=status.HTTP_404_NOT_FOUND)
     
     try:
-        # Get MATIC balance on Polygon
-        matic_balance_wei = polygon_w3.eth.get_balance(user_wallet.address)
-        matic_balance_matic = polygon_w3.fromWei(matic_balance_wei, 'ether')
+        # Get POL balance on Polygon
+        pol_balance_wei = polygon_w3.eth.get_balance(user_wallet.address)
+        pol_balance_pol = polygon_w3.fromWei(pol_balance_wei, 'ether')
 
         # Get WETH (Wrapped ETH) balance on Polygon
         weth_contract = polygon_w3.eth.contract(address=WETH_CONTRACT_ADDRESS, abi=[
@@ -76,7 +76,7 @@ def get_balance(user):
         weth_balance_eth = polygon_w3.fromWei(weth_balance_wei, 'ether')
 
         return Response({
-            "matic_balance": matic_balance_matic,
+            "pol_balance": pol_balance_pol,
             "eth_balance": weth_balance_eth
         }, status=status.HTTP_200_OK)
     except Exception as e:
@@ -514,7 +514,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
         print(f"user_wallet is: {user_wallet}")
         if not user_wallet:
             balance = {
-            'matic_balance': 0,
+            'pol_balance': 0,
             'eth_balance':0,
             'wallet_address' : ""
             # Add other balance fields as needed
@@ -524,9 +524,9 @@ class TransactionViewSet(viewsets.ModelViewSet):
             polygon_w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
 
             try:
-                # Get MATIC balance on Polygon
-                matic_balance_wei = polygon_w3.eth.get_balance(user_wallet.address)
-                matic_balance_matic = polygon_w3.fromWei(matic_balance_wei, 'ether')
+                # Get POL balance on Polygon
+                pol_balance_wei = polygon_w3.eth.get_balance(user_wallet.address)
+                pol_balance_pol = polygon_w3.fromWei(pol_balance_wei, 'ether')
 
                 # Get WETH (Wrapped ETH) balance on Polygon
                 weth_contract = polygon_w3.eth.contract(address=WETH_CONTRACT_ADDRESS, abi=[
@@ -540,7 +540,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
                 weth_balance_wei = weth_contract.functions.balanceOf(user_wallet.address).call()
                 weth_balance_eth = polygon_w3.fromWei(weth_balance_wei, 'ether')
                 balance = {
-                    'matic_balance': matic_balance_matic,
+                    'pol_balance': pol_balance_pol,
                     'wallet_address' : user_wallet.address,
                     'eth_balance':weth_balance_eth
                     }
@@ -568,8 +568,8 @@ class UserBalanceViewSet(viewsets.ModelViewSet):
             'rial_unavailable_balance': user_balance.rial_untradable_balance,
             'eth_balance': user_balance.eth_balance,
             'eth_unavailable_balance' : user_balance.eth_untradable_balance,
-            'matic_balance': user_balance.  matic_balance,
-            'matic_unavailable_balance' : user_balance. matic_untradable_balance,
+            'pol_balance': user_balance.  pol_balance,
+            'pol_unavailable_balance' : user_balance. pol_untradable_balance,
         }
 
         return Response(balance, status=status.HTTP_200_OK)
@@ -596,7 +596,7 @@ def updating_balance(user_id, currency, amount, side):
     # Mapping currency to the respective balance fields
     balance_fields = {
         'rial': 'rial_available_balance',
-        'MATICTMN': 'matic_balance',
+        'POLTMN': 'pol_balance',
         'ETHTMN': 'eth_balance'
     }
 
@@ -732,7 +732,7 @@ class CryptoViewSet(viewsets.ViewSet):
         price = float(request.data.get('price'))  # Ensure price is a float
                 # Map for balance fields
         balance_fields = {
-            'MATICTMN': 'matic_balance',
+            'POLTMN': 'pol_balance',
             'ETHTMN': 'eth_balance',
             'rial': 'rial_available_balance'
         }
@@ -857,7 +857,7 @@ class CryptoViewSet(viewsets.ViewSet):
         
         # Map for balance fields
         balance_fields = {
-            'MATICTMN': 'matic_balance',
+            'POLTMN': 'pol_balance',
             'ETHTMN': 'eth_balance',
             'rial': 'rial_available_balance'
         }
@@ -948,7 +948,7 @@ class CryptoViewSet(viewsets.ViewSet):
         }
         response_BUY = requests.get(url, headers=headers, params=params)
     
-        # Get MATIC price
+        # Get POL price
         params = {
             'symbol': 'ETHTMN',
             'side': 'SELL',
@@ -982,7 +982,7 @@ class CryptoViewSet(viewsets.ViewSet):
             status_code = response_BUY.status_code if response_BUY.status_code != 200 else response_SELL.status_code
             return Response(error_message, status=status_code)
     @action(detail=False, methods=['get'])
-    def CryptoPrice_MATIC(self, request, pk=None):
+    def CryptoPrice_POL(self, request, pk=None):
         headers = {
             'Content-Type': 'application/json',
             'X-API-Key': '10553|4Y4jacZCBRcidJ1zmXtUQFfDARiGtXxko4IXc7xw',  # Replace 'your_api_key' with your actual API key
@@ -996,7 +996,7 @@ class CryptoViewSet(viewsets.ViewSet):
         }
         response_BUY = requests.get(url, headers=headers, params=params)
     
-        # Get MATIC price
+        # Get POL price
         params = {
             'symbol': 'POLTMN',
             'side': 'SELL',
@@ -1015,8 +1015,8 @@ class CryptoViewSet(viewsets.ViewSet):
         
             # Create response data
             data = {
-                "MATIC_buy_price": buy_price,
-                "MATIC_sell_price": sell_price
+                "POL_buy_price": buy_price,
+                "POL_sell_price": sell_price
             }
         
             return Response(data, status=200)
@@ -1024,8 +1024,8 @@ class CryptoViewSet(viewsets.ViewSet):
             # Handle errors
             error_message = {
                 'error': 'Failed to retrieve price',
-                'MATIC_buy_response': response_BUY.text,
-                'MATIC_sell_response': response_SELL.text
+                'POL_buy_response': response_BUY.text,
+                'POL_sell_response': response_SELL.text
             }
             status_code = response_BUY.status_code if response_BUY.status_code != 200 else response_SELL.status_code
             return Response(error_message, status=status_code)
@@ -1433,39 +1433,6 @@ class PaymentGateViewSet(viewsets.ViewSet):
 '''
 
 
-# Connect to the Polygon network
-
-
-
-
-
-#w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
-#test net w3 = Web3(Web3.HTTPProvider("https://mumbai.rpc.thirdweb.com"))
-#def get_balance(user):
-#    user_wallet = Wallet.objects.filter(user=user).first()
-#    print(f"user_wallet is: {user_wallet}")
-#    if not user_wallet:
-#            balance = {
-#            'matic_balance': 0,
-#            'eth_balance':0,
-#            'wallet_address' : "" }
-#            return Response(balance, status=status.HTTP_200_OK)
-#    else :
- #       balance = w3.eth.getBalance(user_wallet.address)
- #       print(f"Balance: {balance}")
-        # user_wallet.balance=balance
-        # user_wallet.save
-        # balance = {
-        #         'matic_balance': user_wallet.MATIC_balance,
-        #         'wallet_address' : user_wallet.address,
-        #         'eth_balance':user_wallet.ETH_balance
-
-            # Add other balance fields as needed
-            # }
-
-#        return Response(balance, status=status.HTTP_200_OK)
-
-
 
 class WalletViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
@@ -1550,7 +1517,7 @@ def connect_with_retry():
         retries += 1
         time.sleep(retry_delay)
     
-    raise Exception("Failed to connect to the Matic network.")
+    raise Exception("Failed to connect to the POL network.")
 
 class EmailMixin(viewsets.ViewSet):
     queryset = PhoneVerification.objects.all()
@@ -1721,16 +1688,16 @@ class EmailMixin(viewsets.ViewSet):
 
 class TransactionyViewSet(viewsets.ViewSet):
 
-    def transfer_matic(self, request):
+    def transfer_pol(self, request):
         w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
 
         user = request.user
         wallet= Wallet.objects.get(user=user)
         res=get_balance(user)
-        ballanceM= res.matic_balance
+        ballanceM= res.pol_balance
         ballanceE= res.eth_balance                    
         userbalance = UserBalance.objects.get(user=user)
-        userbalance.matic_balance+=ballanceM
+        userbalance.pol_balance+=ballanceM
         userbalance.eth_balance+=ballanceE
         userbalance.save()
 
@@ -1766,7 +1733,7 @@ class TransactionyViewSet(viewsets.ViewSet):
                 print(f"transaction:{transaction}")
                 return Response({'message': 'transfered successfully.'}, status=status.HTTP_200_OK)
             else:
-                transaction = Transaction.objects.create(user=user, matic_amount=value, status='failed')
+                transaction = Transaction.objects.create(user=user, pol_amount=value, status='failed')
                 return Response({'message': 'Transaction failed.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 

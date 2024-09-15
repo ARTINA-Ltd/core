@@ -143,8 +143,8 @@ class UserBalance(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rial_available_balance = models.IntegerField(default=0,verbose_name="mojudi")
     rial_untradable_balance = models.IntegerField(default=0,verbose_name="unavailable mojudi")
-    matic_balance = models.FloatField(default=0)
-    matic_untradable_balance = models.FloatField(default=0)
+    pol_balance = models.FloatField(default=0)
+    pol_untradable_balance = models.FloatField(default=0)
     eth_balance = models.FloatField(default=0)
     eth_untradable_balance = models.FloatField(default=0)
     def __str__(self):
@@ -174,9 +174,9 @@ class Withdrawal_list(models.Model):
 
 class Wallet(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    address = models.CharField(max_length=42, unique=True)  # Ethereum/Matic address
+    address = models.CharField(max_length=42, unique=True)  # Ethereum/POL address
     private_key = models.CharField(max_length=500, unique=True)  # Increase length to accommodate encrypted key
-    MATIC_balance = models.DecimalField(max_digits=20, decimal_places=6, default=0)
+    POL_balance = models.DecimalField(max_digits=20, decimal_places=6, default=0)
     ETH_balance = models.DecimalField(max_digits=20, decimal_places=6, default=0)
 
     def set_private_key(self, raw_private_key):
@@ -208,13 +208,13 @@ class Transaction(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.matic_amount} Matic ({self.status})"
+        return f"{self.user.username} - ({self.status})"
 
 
 class ARTINA_Ballance(models.Model):
     artina_eth=  models.FloatField(default=0)
     artina_rial=  models.FloatField(default=0)
-    artina_matic= models.FloatField(default=0)
+    artina_pol= models.FloatField(default=0)
     artina_unavailable_rial= models.FloatField(default=0)
     artina_sell_ticket=models.FloatField(default=0)
     artina_sell_ticket_count=models.IntegerField(default=0)
@@ -225,7 +225,7 @@ class ARTINA_Ballance(models.Model):
     artina_mint=models.FloatField(default=0)
     artina_mint_count=models.IntegerField(default=0)
     def __str__(self):
-        return f"eth : {self.artina_eth} - matic: {self.artina_matic} - rial: ({self.artina_rial})"
+        return f"eth : {self.artina_eth} - pol: {self.artina_pol} - rial: ({self.artina_rial})"
     
 
 

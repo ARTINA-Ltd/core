@@ -88,8 +88,8 @@ class Order(models.Model):
 
 class NFTActivity(models.Model):
     nft = models.ForeignKey(NFT, null=False, blank=False, on_delete=models.CASCADE)
-    from_address = models.CharField(max_length=42, null=True, blank=True,default=000000000000000000000000)  # Ethereum/Matic address
-    to_address = models.CharField(max_length=42, null=True, blank=True,default=000000000000000000000000)  # Ethereum/Matic address
+    from_address = models.CharField(max_length=42, null=True, blank=True,default=000000000000000000000000)  # Ethereum/POL address
+    to_address = models.CharField(max_length=42, null=True, blank=True,default=000000000000000000000000)  # Ethereum/POL address
     fee = models.FloatField(verbose_name="قیمت", null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
 

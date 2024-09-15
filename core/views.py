@@ -196,7 +196,7 @@ def get_winner(token_id):
         return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-def transfer_matic(to_address, amount):
+def transfer_pol(to_address, amount):
 
     try:
         # Get dynamic gas price
@@ -224,7 +224,7 @@ def transfer_matic(to_address, amount):
             'chainId': 137  # Polygon Mainnet Chain ID
         }
 
-        nft_mtc_logger.info(f"Transaction to transfer MATIC: {tx}")
+        nft_mtc_logger.info(f"Transaction to transfer POL: {tx}")
 
         # Sign the transaction
         signed_tx = w3.eth.account.signTransaction(tx, settings.COMPANY_WALLET_PRIVATE_KEY)
@@ -244,7 +244,7 @@ def transfer_matic(to_address, amount):
         return receipt.transactionHash.hex()
 
     except Exception as e:
-        nft_mtc_logger.error(f"Error in transfer_matic: {e}")
+        nft_mtc_logger.error(f"Error in transfer_pol: {e}")
         return None
 
 
@@ -280,7 +280,7 @@ class TransferViewSet(viewsets.ViewSet):
             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @action(detail=False, methods=['post'])
-    def transfer_matic(self, request):
+    def transfer_pol(self, request):
         to_address = request.data.get('to_address')
         amount = request.data.get('amount')
 
@@ -293,14 +293,14 @@ class TransferViewSet(viewsets.ViewSet):
             return Response({"error": "Invalid amount."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            tx_hash = transfer_matic(to_address, amount)
+            tx_hash = transfer_pol(to_address, amount)
             if tx_hash:
                 return Response({"transaction_hash": tx_hash}, status=status.HTTP_200_OK)
             else:
-                test_logger.error(f"Failed to transfer {amount} MATIC to {to_address}.")
-                return Response({"error": "Failed to transfer MATIC."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                test_logger.error(f"Failed to transfer {amount} POL to {to_address}.")
+                return Response({"error": "Failed to transfer POL."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
-            test_logger.error(f"Exception during MATIC transfer: {e}")
+            test_logger.error(f"Exception during POL transfer: {e}")
             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -479,7 +479,7 @@ class NftViewSet(viewsets.ModelViewSet):
         except NFT.DoesNotExist:
             return Response({"error": "NFT not found."}, status=status.HTTP_404_NOT_FOUND)
 
-        # Check user's MATIC balance
+        # Check user's POL balance
         user_wallet = Wallet.objects.filter(user=user).first()
         if not user_wallet:
             return Response({"error": "User wallet not found."}, status=status.HTTP_404_NOT_FOUND)
@@ -488,19 +488,19 @@ class NftViewSet(viewsets.ModelViewSet):
             balance_response = get_balance(user)
             if balance_response.status_code != 200:
                 return balance_response
-            user_balance = Decimal(balance_response.data["matic_balance"])
+            user_balance = Decimal(balance_response.data["pol_balance"])
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # Check if the user has sold any NFTs before
         has_sold_before = NFT.objects.filter(owner=user, is_for_sale=True).exists()
 
-        # Ensure the user has at least 0.03 MATIC or it's their first sale and they will receive 0.1 MATIC
+        # Ensure the user has at least 0.03 POL or it's their first sale and they will receive 0.1 POL
         if user_balance < Decimal('0.03'):
             if not has_sold_before:
-                # Transfer 0.1 MATIC from company wallet to user wallet
+                # Transfer 0.1 POL from company wallet to user wallet
                 try:
-                    transfer_matic(user_wallet.address, 0.1)
+                    transfer_pol(user_wallet.address, 0.1)
                     time.sleep(5)
                     print("wait for 30 second")
                 except Exception as e:
@@ -512,7 +512,7 @@ class NftViewSet(viewsets.ModelViewSet):
                 nft.end_date = end_date
                 nft.last_price = floor_price
                 nft.save()
-                return Response({"message": "You have received 0.1 MATIC as a reward for selling your first NFT."}, status=status.HTTP_200_OK)
+                return Response({"message": "You have received 0.1 POL as a reward for selling your first NFT."}, status=status.HTTP_200_OK)
             else:
                 return Response({"error": "You do not have enough balance to cover the gas fee to sell this NFT."}, status=status.HTTP_400_BAD_REQUEST)
 
