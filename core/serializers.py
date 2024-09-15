@@ -39,7 +39,7 @@ class OwnerWithLikesSerializer(serializers.ModelSerializer):
 class MyImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.MyImage
-        fields = ('id', 'image')
+        fields = '__all__'
 
 class NFTSerializer(serializers.ModelSerializer):
     category = CategorySerializer()

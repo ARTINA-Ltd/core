@@ -810,21 +810,58 @@ class NFTViewSet(viewsets.ViewSet):
 
 
 
+# class MyImageViewSet(viewsets.ModelViewSet):
+#     queryset = MyImage.objects.all()
+#     serializer_class = serializers.MyImageSerializer
+#     parser_classes = [MultiPartParser, FormParser]
+
+#     def create(self, request, *args, **kwargs):
+#         serializer = self.get_serializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         self.perform_create(serializer)
+#         headers = self.get_success_headers(serializer.data)
+#         image_url = ''
+#         if 'image' in request.data:
+#             image_url = request.build_absolute_uri(serializer.data['image'])
+#         return Response({'id': serializer.data['id'], 'image': image_url}, status=status.HTTP_201_CREATED, headers=headers)
+
+from django.utils import timezone
+from rest_framework.exceptions import ValidationError
+from datetime import timedelta
+
 class MyImageViewSet(viewsets.ModelViewSet):
     queryset = MyImage.objects.all()
     serializer_class = serializers.MyImageSerializer
     parser_classes = [MultiPartParser, FormParser]
 
     def create(self, request, *args, **kwargs):
+        user = self.request.user
+        # Check if the user has uploaded an image in the last minute
+        one_minute_ago = timezone.now() - timedelta(minutes=1)
+        recent_upload = MyImage.objects.filter(user=user, created_at__gte=one_minute_ago).exists()
+
+        if recent_upload:
+            raise ValidationError("You can only upload one image per minute.")
+
+        # Check the size of the uploaded image
+        image = request.FILES.get('image')
+        if image and image.size > 50 * 1024 * 1024:  # 50MB in bytes
+            raise ValidationError("The image size cannot exceed 50MB.")
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
+
+        # Save the user with the image
+        instance = serializer.instance
+        instance.user = user
+        instance.save()
+
         headers = self.get_success_headers(serializer.data)
         image_url = ''
         if 'image' in request.data:
             image_url = request.build_absolute_uri(serializer.data['image'])
         return Response({'id': serializer.data['id'], 'image': image_url}, status=status.HTTP_201_CREATED, headers=headers)
-
 
 
 class PDFViewSet(viewsets.ModelViewSet):

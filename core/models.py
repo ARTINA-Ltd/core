@@ -94,8 +94,12 @@ class NFTActivity(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 class MyImage(models.Model):
-    image = models.ImageField(upload_to='static/images/')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='images/')
+    created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f'Image uploaded by {self.user.username} on {self.created_at}'
 
 
 class PDF(models.Model):
