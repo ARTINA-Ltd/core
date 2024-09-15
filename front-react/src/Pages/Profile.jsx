@@ -3,8 +3,6 @@ import React, { useEffect, useState, useContext, useRef } from "react";
 import axios from "axios";
 import { FaRegEdit } from "react-icons/fa";
 import SimpleInput from "../components/Inputs/SimpleInput";
-import { UserContext } from "../App";
-import { UserChangeContext } from "../App";
 
 import TestLayout from "../Layouts/TestLayout";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
@@ -14,6 +12,8 @@ import { useNavigate } from "react-router";
 import CardNumberInput from "../components/BankCard/CardNumberInput";
 import ShabaNumberInput from "../components/BankCard/ShabaNumberInput";
 import imageFive from "../assets/images/5.png";
+import { UserChangeContext } from "../contexts/UserContext.js";
+import { UserContext } from "../contexts/UserContext.js";
 
 function Profile() {
   const user = useContext(UserContext);
@@ -33,29 +33,29 @@ function Profile() {
   const [values, setValues] = useState(
     user
       ? {
-        first_name: user.data.first_name !== null ? user.data.first_name : "",
-        last_name: user.data.last_name !== null ? user.data.last_name : "",
-        national_code: user.data.national_code !== null ? user.data.national_code : "",
-        birthdate: user.data.birthdate !== null ? user.data.birthdate : "",
-        address: user.data.address !== null ? user.data.address : "",
-        bio: user.data.bio !== null ? user.data.bio : "",
-        postal_code: user.data.postal_code !== null ? user.data.postal_code : "",
-        cell_number: user.data.cell_number !== null ? user.data.cell_number : "",
-        phone_number: user.data.phone_number !== null ? user.data.phone_number : "",
-        email: user.data.email !== null ? user.data.email : "",
-      }
+          first_name: user.data.first_name !== null ? user.data.first_name : "",
+          last_name: user.data.last_name !== null ? user.data.last_name : "",
+          national_code: user.data.national_code !== null ? user.data.national_code : "",
+          birthdate: user.data.birthdate !== null ? user.data.birthdate : "",
+          address: user.data.address !== null ? user.data.address : "",
+          bio: user.data.bio !== null ? user.data.bio : "",
+          postal_code: user.data.postal_code !== null ? user.data.postal_code : "",
+          cell_number: user.data.cell_number !== null ? user.data.cell_number : "",
+          phone_number: user.data.phone_number !== null ? user.data.phone_number : "",
+          email: user.data.email !== null ? user.data.email : "",
+        }
       : {
-        first_name: "",
-        last_name: "",
-        national_code: "",
-        birthdate: "",
-        address: "",
-        bio: "",
-        postal_code: "",
-        cell_number: "",
-        phone_number: "",
-        email: "",
-      }
+          first_name: "",
+          last_name: "",
+          national_code: "",
+          birthdate: "",
+          address: "",
+          bio: "",
+          postal_code: "",
+          cell_number: "",
+          phone_number: "",
+          email: "",
+        }
   );
 
   const [validate, setValidate] = useState({
@@ -88,7 +88,6 @@ function Profile() {
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [cardNumber, setCardNumber] = useState(user && user.data ? user.data.card_number : "");
   const [shabaNumber, setShabaNumber] = useState(user && user.data ? user.data.shaba_number : "");
-
 
   function hanldeClickEmail() {
     setIsEmailDisabled(true);
@@ -170,10 +169,10 @@ function Profile() {
             birthdate:
               b_date != ""
                 ? Intl.DateTimeFormat("en-UK", {
-                  year: "numeric",
-                  month: "numeric",
-                  day: "numeric",
-                }).format(b_date)
+                    year: "numeric",
+                    month: "numeric",
+                    day: "numeric",
+                  }).format(b_date)
                 : null,
             phone_number: values.phone_number,
             cell_number: values.cell_number,
@@ -245,10 +244,10 @@ function Profile() {
             birthdate:
               b_date != ""
                 ? Intl.DateTimeFormat("en-UK", {
-                  year: "numeric",
-                  month: "numeric",
-                  day: "numeric",
-                }).format(b_date)
+                    year: "numeric",
+                    month: "numeric",
+                    day: "numeric",
+                  }).format(b_date)
                 : null,
             phone_number: values.phone_number,
             cell_number: values.cell_number,
@@ -331,10 +330,10 @@ function Profile() {
             birthdate:
               b_date != ""
                 ? Intl.DateTimeFormat("en-UK", {
-                  year: "numeric",
-                  month: "numeric",
-                  day: "numeric",
-                }).format(b_date)
+                    year: "numeric",
+                    month: "numeric",
+                    day: "numeric",
+                  }).format(b_date)
                 : null,
             phone_number: values.phone_number,
             cell_number: values.cell_number,
@@ -708,16 +707,11 @@ function Profile() {
                 </div>
               )}
             </div>
-            <div className="flex gap-4 text-gray-500 text-sm">
-              جهت دریافت تیک آبی بر روی پروفایل، یک تیکت برای پشتیبانی با همین عنوان ارسال کنید.
-            </div>
+            <div className="flex gap-4 text-gray-500 text-sm">جهت دریافت تیک آبی بر روی پروفایل، یک تیکت برای پشتیبانی با همین عنوان ارسال کنید.</div>
             <div className="flex justify-end">
               <BorderButton onClick={() => UpdateInfo()}>ثبت</BorderButton>
             </div>
           </SimpleCard>
-
-
-
 
           <div className="flex flex-col gap-4 items-center justify-center w-[35%] relative sm:w-full md:flex-row md:w-full md:items-start sm:flex-col">
             <SimpleCard className="bg-primary flex flex-col relative gap-4 items-center overflow-hidden w-full">
@@ -742,25 +736,10 @@ function Profile() {
             <SimpleCard className="bg-primary flex flex-col relative text-white gap-4 items-center overflow-hidden w-full">
               <div className="text-white text-[27px] mb-2 z-10 font-b9">اطلاعات کارت بانکی</div>
               <div className="font-b3">شماره کارت</div>
-              <CardNumberInput
-                defaultValue={cardNumber}
-                disabled={disableInputs && user && user.data != null ? user.data.card_number != null : false}
-                validationError="لطفا از اعداد لاتین استفاده کنید"
-                onChange={(value) => setCardNumber(value)}
-                className="rounded-md text-white"
-                dir="ltr"
-              />
+              <CardNumberInput defaultValue={cardNumber} disabled={disableInputs && user && user.data != null ? user.data.card_number != null : false} validationError="لطفا از اعداد لاتین استفاده کنید" onChange={(value) => setCardNumber(value)} className="rounded-md text-white" dir="ltr" />
               <div className="font-b3">شماره شبا</div>
-              <ShabaNumberInput
-                defaultValue={shabaNumber}
-                disabled={disableInputs && user && user.data != null ? user.data.shaba_number != null : false}
-                validationError="لطفا از اعداد لاتین استفاده کنید"
-                onChange={(value) => setShabaNumber(value)}
-                className="rounded-md text-white text-xs"
-                dir="ltr"
-              />
+              <ShabaNumberInput defaultValue={shabaNumber} disabled={disableInputs && user && user.data != null ? user.data.shaba_number != null : false} validationError="لطفا از اعداد لاتین استفاده کنید" onChange={(value) => setShabaNumber(value)} className="rounded-md text-white text-xs" dir="ltr" />
             </SimpleCard>
-
           </div>
         </div>
       )}

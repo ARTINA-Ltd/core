@@ -5,7 +5,7 @@ import { MdOutlineClose } from "react-icons/md";
 import SimpleInput from "../../Inputs/SimpleInput";
 import { Notify } from "notiflix";
 import { useTranslation } from "react-i18next";
-import { UserContext } from "../../../App.js";
+import { UserContext } from "../../../contexts/UserContext.js";
 
 const BalanceDialog = () => {
   const [getData, setData] = useState();
@@ -142,10 +142,7 @@ const BalanceDialog = () => {
                 onChange={(e) => setDepoAmount(e.target.value)}
               />
             </div>
-            <div
-              className="border-[1px] cursor-pointer border-green-500 bg-green-50 w-36 text-center text-green-500 rounded-xl py-2 hover:scale-105 transition-all sm:text-xs sm:px-4"
-              onClick={updateBalanceDepo}
-            >
+            <div className="border-[1px] cursor-pointer border-green-500 bg-green-50 w-36 text-center text-green-500 rounded-xl py-2 hover:scale-105 transition-all sm:text-xs sm:px-4" onClick={updateBalanceDepo}>
               {t("recharge")}{" "}
             </div>
           </div>
@@ -162,10 +159,7 @@ const BalanceDialog = () => {
               validationError={t("required")}
               onChange={(e) => setWithdrawAmount(e.target.value)}
             />
-            <div
-              className="border-[1px] cursor-pointer border-red-500 bg-red-50 w-36 text-center text-red-500 rounded-xl py-2  hover:scale-105 transition-all sm:text-xs sm:px-4 sm:w-[50%]"
-              onClick={updateBalanceWithdraw}
-            >
+            <div className="border-[1px] cursor-pointer border-red-500 bg-red-50 w-36 text-center text-red-500 rounded-xl py-2  hover:scale-105 transition-all sm:text-xs sm:px-4 sm:w-[50%]" onClick={updateBalanceWithdraw}>
               {t("withdraw")}
             </div>
           </div>

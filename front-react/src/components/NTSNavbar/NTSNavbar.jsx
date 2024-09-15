@@ -2,10 +2,10 @@ import { FaRegHeart } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { UserContext } from "../../App.js";
 import { useNavigate } from "react-router";
 import artinaLogo from "../../assets/images/Artina-Logo-1.jpeg";
 import BuyHeart from "../Nts/BuyHeart.jsx";
+import { UserContext } from "../../contexts/UserContext.js";
 
 const NTSNavbar = ({ refetch }) => {
   const navigate = useNavigate();
@@ -24,12 +24,10 @@ const NTSNavbar = ({ refetch }) => {
         }
       )
       .then((e) => {
-        console.log(e.data);
-
         setUserProfile(e.data);
       })
       .catch((e) => {});
-  }, [refetch]);
+  }, [refetch, user]);
 
   return (
     userProfile && (

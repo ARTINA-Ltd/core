@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
-import { UserContext } from "../../App.js";
 import axios from "axios";
 import BorderButton from "../Buttons/BorderButton.jsx";
 import { Notify } from "notiflix";
+import { UserContext } from "../../contexts/UserContext.js";
 
 const BuyHeart = () => {
   const user = useContext(UserContext);

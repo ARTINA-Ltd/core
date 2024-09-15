@@ -1,15 +1,15 @@
 import axios from "axios";
-import React, { Fragment } from "react";
+import React from "react";
 import { useState, useEffect } from "react";
 import ImageCard from "../components/Cards/UserDashboardCards/ImageCard";
 import TestLayout from "../Layouts/TestLayout";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router";
 import { useContext } from "react";
-import { UserContext } from "../App";
 import { Notify } from "notiflix";
 import { useTranslation } from "react-i18next";
 import i18n from "./../i18n";
+import { UserContext } from "../contexts/UserContext.js";
 
 const Collections = () => {
   const [getData, setData] = useState();

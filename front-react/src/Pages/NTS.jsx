@@ -5,14 +5,13 @@ import nft2 from "../assets/images/NFT2.png";
 import nft3 from "../assets/images/NFT3.jpg";
 import nft4 from "../assets/images/NFT4.png";
 import NTSNavbar from "../components/NTSNavbar/NTSNavbar.jsx";
-import axios from "axios";
 import "../components/Nts/Styles.css";
-import { useContext, useEffect } from "react";
-import { UserContext } from "../App.js";
+import { useContext } from "react";
 import Dialog from "../components/Nts/Dialog.jsx";
 import FancyText from "@carefully-coded/react-text-gradient";
 import { useNavigate } from "react-router";
 import LeaderBoard from "../components/Nts/LeaderBoard.jsx";
+import { UserContext } from "../contexts/UserContext.js";
 
 const NTS = () => {
   const user = useContext(UserContext);

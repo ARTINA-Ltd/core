@@ -3,13 +3,13 @@ import "./login-styles.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
-import { UserChangeContext } from "../App";
 import SimpleInput from "../components/Inputs/SimpleInput";
 import TestLayout from "../Layouts/TestLayout";
 import SimpleCard from "./../components/Cards/UserDashboardCards/SimpleCard";
 import BorderButton from "../components/Buttons/BorderButton";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useTranslation } from "react-i18next";
+import { UserChangeContext } from "../contexts/UserContext.js";
 const Login = () => {
   const [values, setValues] = useState({
     username: "",

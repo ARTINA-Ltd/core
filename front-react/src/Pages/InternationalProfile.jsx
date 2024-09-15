@@ -4,18 +4,18 @@ import axios from "axios";
 import Select from "react-select";
 import countryList from "react-select-country-list";
 import SimpleInput from "../components/Inputs/SimpleInput";
-import { UserContext } from "../App";
-import { UserChangeContext } from "../App";
 import TestLayout from "../Layouts/TestLayout";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import { Block, Notify } from "notiflix";
 import BorderButton from "../components/Buttons/BorderButton";
 import { useTranslation } from "react-i18next";
-import imageFive from "../assets/images/5.png"
-import mand1 from "../assets/images/mand1.png"
-import mastercard from "../assets/images/mastercard.png"
-import paypal from "../assets/images/paypal.png"
-import visa from "../assets/images/visa.png"
+import imageFive from "../assets/images/5.png";
+import mand1 from "../assets/images/mand1.png";
+import mastercard from "../assets/images/mastercard.png";
+import paypal from "../assets/images/paypal.png";
+import visa from "../assets/images/visa.png";
+import { UserChangeContext } from "../contexts/UserContext.js";
+import { UserContext } from "../contexts/UserContext.js";
 
 const InternationalProfile = () => {
   const user = useContext(UserContext);

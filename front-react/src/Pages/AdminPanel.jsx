@@ -7,8 +7,8 @@ import { useTranslation } from "react-i18next";
 import axios from "axios";
 import AdminLayout from "../Layouts/AdminLayout.jsx";
 import { Fragment } from "react";
-import { UserContext } from "../App.js";
 import mand1 from "../assets/images/mand1.png";
+import { UserContext } from "../contexts/UserContext.js";
 
 const AdminPanel = () => {
   const [loading, setLoading] = useState(true);

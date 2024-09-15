@@ -7,12 +7,11 @@ import TestLayout from "../Layouts/TestLayout";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import { useParams } from "react-router";
 import SimpleInput from "../components/Inputs/SimpleInput";
-import { UserContext } from "../App";
 import { Notify } from "notiflix";
 import BorderButton from "../components/Buttons/BorderButton";
 import CountdownTimer from "../components/CountDown/CountDown";
 import { useTranslation } from "react-i18next";
-import { IoMdClose } from "react-icons/io";
+import { UserContext } from "../contexts/UserContext.js";
 
 const NFTDetails = () => {
   const [data, setData] = useState();
@@ -407,7 +406,9 @@ const NFTDetails = () => {
                   data.traits.map((item, index) => (
                     <div key={index} className="flex justify-between gap-10">
                       {/* <div className="text-[16px] opacity-40">{index + 1}-</div> */}
-                      <div className="text-[16px] opacity-40 text-cyan-900">{index + 1}- {item.name}:</div>
+                      <div className="text-[16px] opacity-40 text-cyan-900">
+                        {index + 1}- {item.name}:
+                      </div>
                       <div className="text-[16px]">{item.type}</div>
                     </div>
                   ))

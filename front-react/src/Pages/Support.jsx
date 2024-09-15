@@ -4,13 +4,13 @@ import "../LoginComponent/formInput-style.css";
 import SimpleInput from "../components/Inputs/SimpleInput";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import axios from "axios";
-import { UserContext } from "../App";
 import { Block, Notify } from "notiflix";
 import ReCAPTCHA from "react-google-recaptcha";
 import BorderButton from "../components/Buttons/BorderButton";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { UserContext } from "../contexts/UserContext.js";
 
 const Support = () => {
   const [values, setValues] = useState({
@@ -180,7 +180,6 @@ const Support = () => {
             }
             defaultValue={null}
           />
-
         </div>
         <div className="mt-5 mb-2">{t("upload")}</div>
         <div className="w-full flex justify-center" id="uploadImage">
@@ -213,7 +212,7 @@ const Support = () => {
           <ReCAPTCHA sitekey={"6LecwBMnAAAAAItOWnJM8T17TlvnA1ewPIUGDuj_"} ref={captchaRef} onChange={handleCaptchaChange} />
         </div>
         <div className="flex justify-center mt-5">
-          <BorderButton disabled={!captchaRes} onClick={!captchaRes ? () => { } : handleSubmit}>
+          <BorderButton disabled={!captchaRes} onClick={!captchaRes ? () => {} : handleSubmit}>
             {t("send")}
           </BorderButton>
         </div>

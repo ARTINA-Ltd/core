@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { UserContext } from "../App";
 import axios from "axios";
 import { Notify } from "notiflix";
 import BorderButton from "../components/Buttons/BorderButton";
+import { UserContext } from "../contexts/UserContext.js";
 
 function Recomendition({ requests, nft }) {
   const user = useContext(UserContext);

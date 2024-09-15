@@ -6,11 +6,11 @@ import SimpleInput from "../components/Inputs/SimpleInput";
 import TestLayout from "../Layouts/TestLayout";
 import SimpleCard from "./../components/Cards/UserDashboardCards/SimpleCard";
 import { useContext } from "react";
-import { UserContext } from "../App";
 import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useTranslation } from "react-i18next";
+import { UserContext } from "../contexts/UserContext.js";
 
 const ArtistApplicationForm = () => {
   const [getNfts, setNfts] = useState();

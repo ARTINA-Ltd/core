@@ -1,8 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import "./Header.css";
 import { useNavigate } from "react-router";
-import { UserContext } from "../../App";
-import { UserChangeContext } from "../../App";
 import BalanceDialog from "../Dialog/BalanceDialog/BalanceDialog";
 import BalanceDialogMatic from "../Dialog/BalanceDialog/BalanceDialogMatic";
 import { useRef } from "react";
@@ -15,6 +13,7 @@ import artinaLogo from "../../assets/images/Artina-Logo-1.jpeg";
 import authenticationImage from "../../assets/images/authentication.png";
 import chatBubbleImage from "../../assets/images/chat-bubble.png";
 import virtualSpace from "../../assets/images/virtual-space.png";
+import { UserChangeContext, UserContext } from "../../contexts/UserContext.js";
 
 const Header = ({ rev = false }) => {
   const [menuIsVisible, setMenuVisible] = useState(false);

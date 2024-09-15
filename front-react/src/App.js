@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router";
-import React, { createContext, useEffect, useState } from "react";
+import React from "react";
 import NFTDetails from "./Pages/NFTDetails";
 import Register from "./LoginComponent/register";
 import Login from "./LoginComponent/login";
@@ -9,7 +9,6 @@ import Profile from "./Pages/Profile";
 import { ScrollTop } from "primereact/scrolltop";
 import Commission from "./Pages/Commission/Commission";
 import Support from "./Pages/Support";
-import axios from "axios";
 import Contact from "./Pages/Contact";
 import Collections from "./Pages/Collections";
 import ForgetPassword from "./Pages/ForgetPassword";
@@ -56,49 +55,13 @@ import InternationalProfile from "./Pages/InternationalProfile.jsx";
 
 import Explore from "./Pages/Explore.jsx";
 
-const GOFTINO_KEY = "cD7Gse";
+import { UserProvider } from "./contexts/UserContext"; // Import UserProvider
+import { GameProfileProvider } from "./contexts/GapeProfileContext.js"; // Import GameProfileProvider
 
-export const UserContext = createContext();
-export const UserChangeContext = createContext();
+const GOFTINO_KEY = "cD7Gse";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
-  const [user, setUser] = useState();
-
-  useEffect(() => {
-    axios({
-      method: "get",
-      url: "https://api.artina.org/api/account/user-info/",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-      },
-      mode: "cors",
-    })
-      .then((data) => {
-        setUser(data);
-      })
-      .catch(() => setUser(undefined));
-  }, []);
-
-  const userChange = async () => {
-    console.log("called");
-    await axios
-      .get("https://api.artina.org/api/account/user-info/", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-        },
-        mode: "cors",
-      })
-      .then((data) => {
-        setUser(data);
-        console.log(data);
-      })
-      .catch((res) => {
-        setUser(undefined);
-        console.log(res);
-      });
-  };
-
   return (
     <div className="text-base-content">
       <GoftinoSnippet
@@ -108,8 +71,12 @@ export default () => {
         }}
       />
       <ThirdwebProvider activeChain="ethereum" autoConnect={false}>
-        <UserContext.Provider value={user}>
-          <UserChangeContext.Provider value={userChange}>
+        <UserProvider>
+          {" "}
+          {/* Wrap with UserProvider */}
+          <GameProfileProvider>
+            {" "}
+            {/* Wrap with GameProfileProvider */}
             <div className="App">
               <React.Suspense
                 fallback={
@@ -169,15 +136,13 @@ export default () => {
                   <Route path="exhibitionapproval/:id" element={<ExhibitionApproval />} />
                   <Route path="ticket-response/:id" element={<TicketResponse />} />
                   <Route path="admin-panel" element={<AdminPanel />} />
-                  {/* <Route exact path="request-lists" element={<RequestLists />} /> */}
                   <Route exact path="all-collections" element={<AllCollections />} />
-
                   <Route exact path="explore" element={<Explore />} />
                 </Routes>
               </React.Suspense>
             </div>
-          </UserChangeContext.Provider>
-        </UserContext.Provider>
+          </GameProfileProvider>
+        </UserProvider>
       </ThirdwebProvider>
     </div>
   );

@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import NTSNavbar from "../components/NTSNavbar/NTSNavbar.jsx";
-import { UserContext } from "../App.js";
 import axios from "axios";
 import PaperRockScissorsFriend from "../components/Nts/PaperRockScissorsFriends.jsx";
 import PaperRockScissors from "../components/Nts/PaperRockScissors.jsx";
 import BorderButton from "../components/Buttons/BorderButton.jsx";
 import FancyText from "@carefully-coded/react-text-gradient";
+import { UserContext } from "../contexts/UserContext.js";
 
 const PlayWithFriend = () => {
   const user = useContext(UserContext);
