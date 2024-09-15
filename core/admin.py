@@ -6,4 +6,5 @@ admin.site.register(models.Order)
 admin.site.register(models.NFTRating)
 admin.site.register(models.Category)
 admin.site.register(models.CollectionNFT)
+admin.site.register(models.MyImage)
 
