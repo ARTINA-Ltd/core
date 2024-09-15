@@ -8,6 +8,7 @@ from kavenegar import KavenegarAPI
 import random
 import requests
 import time
+from .utils import encrypt_private_key, decrypt_private_key
 
 
 class Permission(models.Model):
@@ -170,12 +171,20 @@ class Withdrawal_list(models.Model):
     is_paid = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+
 class Wallet(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     address = models.CharField(max_length=42, unique=True)  # Ethereum/Matic address
-    private_key= models.CharField(max_length=200, unique=True, default=0)
-    MATIC_balance = models.DecimalField(max_digits=20, decimal_places=6, default=0)  # Matic balance
-    ETH_balance= models.DecimalField(max_digits=20, decimal_places=6, default=0)    
+    private_key = models.CharField(max_length=500, unique=True)  # Increase length to accommodate encrypted key
+    MATIC_balance = models.DecimalField(max_digits=20, decimal_places=6, default=0)
+    ETH_balance = models.DecimalField(max_digits=20, decimal_places=6, default=0)
+
+    def set_private_key(self, raw_private_key):
+        self.private_key = encrypt_private_key(raw_private_key)
+
+    def get_private_key(self):
+        return decrypt_private_key(self.private_key)
+
     def __str__(self):
         return f"{self.user.username}"
 

@@ -214,7 +214,7 @@ LOGGING = {
         'django': {
             'handlers': [],
             'level': 'DEBUG',
-            'propagate': True,
+            'propagate': False,
         },
         'Account.login': {
             'handlers': ['file_login'],

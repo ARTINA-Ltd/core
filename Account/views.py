@@ -1479,8 +1479,9 @@ class WalletViewSet(viewsets.ViewSet):
         private_key = Web3.toHex(os.urandom(32))  # Generate a random private key
         account = polygon_w3.eth.account.privateKeyToAccount(private_key)
 
-        wallet = Wallet.objects.create(user=user, address=account.address, private_key=private_key)
-        
+        wallet = Wallet(user=user, address=account.address)
+        wallet.set_private_key(private_key)  # Encrypt and store the private key
+        wallet.save()        
         return Response({'message': 'Wallet created successfully.', 'address': wallet.address}, status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=['get'])
@@ -1506,7 +1507,9 @@ class WalletViewSet(viewsets.ViewSet):
         else :
             private_key = Web3.toHex(os.urandom(32))  # Generate a random private key
             account = polygon_w3.eth.account.privateKeyToAccount(private_key)
-            wallet = Wallet.objects.create(user=user, address=account.address, private_key=private_key)
+            wallet = Wallet(user=user, address=account.address)
+            wallet.set_private_key(private_key)  # Encrypt and store the private key
+            wallet.save()
             author_address=account.address
             return Response({'message': 'user wallet has created.', 'address': author_address}, status=status.HTTP_201_CREATED)
 
