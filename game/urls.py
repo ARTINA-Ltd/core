@@ -4,10 +4,11 @@ from .views import GameViewSet, UserProfileViewSet, LeaderboardViewSet
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
-router.register(r'games', GameViewSet, basename='game')
-#router.register(r'game-sessions', GameSessionViewSet, basename='game-session')
-router.register(r'user-profiles', UserProfileViewSet, basename='user-profile')
-router.register(r'leaderboard', LeaderboardViewSet, basename='leaderboard')
+router.register(r'games', GameViewSet)
+# router.register(r'games', GameViewSet, basename='game')
+# #router.register(r'game-sessions', GameSessionViewSet, basename='game-session')
+# router.register(r'user-profiles', UserProfileViewSet, basename='user-profile')
+# router.register(r'leaderboard', LeaderboardViewSet, basename='leaderboard')
 
 urlpatterns = [
     path('', include(router.urls)),
