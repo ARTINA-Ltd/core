@@ -12,7 +12,6 @@ import { BiErrorAlt } from "react-icons/bi";
 
 const ImageCard = ({ className, children, src, price, onClick, tokenId, showCancel, showSell = false, onClickShow, onClickHide, has_creator, visible, isForSale }) => {
   const [isVisible, setIsVisible] = useState(visible);
-
   const [expandedSection, setExpandedSection] = useState(null);
 
   const handleExpand = (section) => {
@@ -112,8 +111,8 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
 
   return (
     <div className={className}>
-      <div className="relative transition-all cursor-pointer h-3/4 mb-10" onClick={onClick}>
-        <img src={src} className="w-full rounded-lg object-cover p-2 h-full" alt="" />
+      <div className="relative transition-all cursor-pointer mb-10" onClick={onClick} style={{ width: "100%", height: "0", paddingBottom: "100%", position: "relative" }}>
+        <img src={src} className="w-full h-full absolute top-0 left-0 rounded-lg object-cover" alt="" />
       </div>
       <div>
         {has_creator ? (
