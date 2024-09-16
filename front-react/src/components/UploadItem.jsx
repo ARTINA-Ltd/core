@@ -152,12 +152,22 @@ const UploadItem = () => {
   useEffect(() => {
     if (image) {
       Block.circle("#nftImage");
-
+  
       Notify.info(t("uploadingPhoto"));
       const formData = new FormData();
       formData.append("image", image, image.name);
       axios
-        .post("https://api.artina.org/api/transaction/images/", formData)
+        .post(
+          "https://api.artina.org/api/transaction/images/", 
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+              "Content-Type": "multipart/form-data" // This ensures the correct content type
+            },
+            mode: "cors",
+          }
+        )
         .then((res) => {
           Notify.success(t("uploadSuccess"));
           setImageUrl(res.data.image);
@@ -169,6 +179,7 @@ const UploadItem = () => {
         });
     }
   }, [image]);
+  
 
   const [uploadObj, setUploadObj] = useState({
     properties: [], // {name: '', type: ''}
@@ -303,15 +314,33 @@ const UploadItem = () => {
               ))}
             </div>
           </div>
-          <div className="w-full flex gap-3 items-center">
-            <div className="">{t("isPhysicalVersion")}</div>
-            <div className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${hasPhysical ? "bg-green-100 text-green-400" : "bg-neutral text-neutral-content"} transition-all`} onClick={() => setHasPhysical(true)}>
-              {t("yes")}
+          <div className="w-full flex-col gap-3 items-center">
+            <div className="flex gap-3">
+              <div className="">{t("isPhysicalVersion")}</div>
+              <div
+                className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${hasPhysical ? "bg-green-100 text-green-400" : "bg-neutral text-neutral-content"} transition-all`}
+                onClick={() => setHasPhysical(true)}
+              >
+                {t("yes")}
+              </div>
+              <div
+                className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${!hasPhysical ? "bg-red-100 text-red-400" : "bg-neutral text-neutral-content"} transition-all`}
+                onClick={() => setHasPhysical(false)}
+              >
+                {t("no")}
+              </div>
             </div>
-            <div className={`px-5 text-xs py-1 rounded-2xl cursor-pointer ${!hasPhysical ? "bg-red-100 text-red-400" : "bg-neutral text-neutral-content"} transition-all`} onClick={() => setHasPhysical(false)}>
-              {t("no")}
-            </div>
+
+            {hasPhysical && (
+              <div className="bg-yellow-100 text-yellow-700 p-1 text-sm rounded-lg sm:text-justify mt-2">
+                {t("physicalVersionExplanation")}
+              </div>
+            )}
+
           </div>
+
+
+
           <div className="w-full">
             <SimpleInput
               type="text"
