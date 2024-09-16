@@ -2,8 +2,8 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.contrib.auth.models import User
-from .models import Game, GameSession, UserGameProfile
-from .serializers import GameSerializer, GameSessionSerializer, UserGameProfileSerializer
+from .models import *
+from .serializers import *
 
 class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
