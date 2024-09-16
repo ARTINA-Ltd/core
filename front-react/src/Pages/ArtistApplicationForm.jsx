@@ -171,6 +171,7 @@ const ArtistApplicationForm = () => {
                               )
                             : ""}
                         </div>
+                        <div className="flex justify-start text-gray-500 my-8">{t("nftAnnouncement")}</div>
                         <div className="w-full flex justify-end items-center gap-4 sm:flex-col sm:gap-2">
                           <a href="/privacy-policy" className="text-gray-400 hover:text-gray-500 hover:bg-gray-50 px-2 py-1 transition-all duration-100 font-b2 rounded-md">
                             {t("policy")}{" "}
