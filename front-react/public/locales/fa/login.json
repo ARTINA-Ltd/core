@@ -37,5 +37,7 @@
   "invalidEmail": "ایمیل نامعتبر است",
   "invalidReferral": "کد معرف نامعتبر است",
   "referralCode": "کد معرف",
-  "optional8Characters": "اختیاری، 8 کاراکتر"
+  "optional8Characters": "اختیاری، 8 کاراکتر",
+  "invalidUsername": "نام کاربری معتبر وارد کنید. این مقدار ممکن است فقط شامل حروف، اعداد و کاراکترهای @/./+/-/_ باشد.",
+  "noSpacesInUsername": "در نام کاربری فاصله مجاز نیست"
 }

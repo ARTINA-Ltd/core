@@ -37,5 +37,7 @@
   "invalidEmail": "Invalid Email",
   "invalidReferral": "Invalid Referral Code",
   "referralCode": "Referral Code",
-  "optional8Characters": "Optional, 8 characters"
+  "optional8Characters": "Optional, 8 characters",
+  "invalidUsername": "Enter a valid username. This value may contain only letters, numbers, and @/./+/-/_ characters.",
+  "noSpacesInUsername": "No spaces allowed in username"
 }
