@@ -854,6 +854,9 @@ from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 from datetime import timedelta
 
+from rest_framework.parsers import MultiPartParser, FormParser
+
+
 class MyImageViewSet(viewsets.ModelViewSet):
     queryset = MyImage.objects.all()
     serializer_class = serializers.MyImageSerializer
@@ -861,6 +864,7 @@ class MyImageViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         user = self.request.user
+        
         # Check if the user has uploaded an image in the last minute
         one_minute_ago = timezone.now() - timedelta(minutes=1)
         recent_upload = MyImage.objects.filter(user=user, created_at__gte=one_minute_ago).exists()
@@ -877,7 +881,6 @@ class MyImageViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
 
-        # Save the user with the image
         instance = serializer.instance
         instance.user = user
         instance.save()
@@ -887,6 +890,10 @@ class MyImageViewSet(viewsets.ModelViewSet):
         if 'image' in request.data:
             image_url = request.build_absolute_uri(serializer.data['image'])
         return Response({'id': serializer.data['id'], 'image': image_url}, status=status.HTTP_201_CREATED, headers=headers)
+
+    def perform_create(self, serializer):
+        # Add the user to the serializer's save method
+        serializer.save(user=self.request.user)
 
 
 class PDFViewSet(viewsets.ModelViewSet):
