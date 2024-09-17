@@ -15,7 +15,10 @@ const FlowComponent = () => {
 
   const navigate = useNavigate();
   return (
-    <div className=" w-[80vw] mx-auto sm:w-full text-center my-12 bg-base-100 rounded-md p-4" style={{ direction: "ltr" }}>
+    <div className=" w-[80vw] mx-auto sm:w-full text-center my-12 bg-base-100 rounded-md p-4 cursor-pointer"
+      style={{ direction: "ltr" }}
+      onClick={() => navigate("/explore")}
+      >
       <h1 className="text-[40px] font-b9 my-4 sm:text-[30px]">{t("explore")}</h1>
       <div className=" justify-center items-center ml-[10.75rem]">
         <div className="flex justify-center sm:-ml-[4rem] items-center">
@@ -32,12 +35,7 @@ const FlowComponent = () => {
             </div>
           </div>
 
-          <div
-            onClick={() => {
-              navigate("/nft-details/66");
-            }}
-            className="my-4 z-[6] -translate-x-7 cursor-pointer"
-          >
+          <div className="my-4 z-[6] -translate-x-7">
             <div className="w-fit text-5xl  rounded-full text-black bg-secondary p-2 mx-auto">
               <FaRegLightbulb />
             </div>

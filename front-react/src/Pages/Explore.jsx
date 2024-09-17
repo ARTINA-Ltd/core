@@ -14,7 +14,6 @@ const Explore = () => {
 
   const { t } = useTranslation("explore");
 
-
   useEffect(() => {
     const language = i18next.language;
     const markdownFile = language === "fa" ? "/docs/explore_fa.md" : "/docs/explore_en.md";
@@ -53,13 +52,13 @@ const Explore = () => {
             i18next.dir() === "rtl" ? "order-last text-right" : "text-left"
           }`}
         >
-          <h3 className="font-semibold mb-2">{t("tableOfContent")}</h3>
-          <ul className="list-none">
+          <h3 className="font-semibold text-xl mb-4">{t("tableOfContent")}</h3>
+          <ul className="list-none space-y-2">
             {headings.map((heading, index) => (
-              <li key={index} className={`mb-2 ml-${heading.level === 2 ? 4 : 0}`}>
+              <li key={index} className={`pl-${heading.level === 2 ? 4 : 0}`}>
                 <a
                   href={`#${heading.slug}`}
-                  className="text-blue-500 hover:text-blue-700"
+                  className="text-purple-600 hover:text-purple-800 hover:bg-purple-100 transition-all duration-200 rounded-md px-2 py-1 block"
                 >
                   {heading.text}
                 </a>
@@ -75,11 +74,21 @@ const Explore = () => {
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeSlug, rehypeAutoLinkHeadings]} // Automatically adds IDs to headings
             components={{
-              h1: ({ node, ...props }) => <h1 className="text-3xl font-bold mb-4" {...props} />,
-              h2: ({ node, ...props }) => <h2 className="text-2xl font-semibold mb-3 mt-4" {...props} />,
-              p: ({ node, ...props }) => <p className="text-lg leading-relaxed mb-2" {...props} />,
-              ul: ({ node, ...props }) => <ul className="list-disc list-inside mb-4" {...props} />,
-              ol: ({ node, ...props }) => <ol className="list-decimal list-inside mb-4" {...props} />,
+              h1: ({ node, ...props }) => (
+                <h1 className="text-3xl font-bold mt-8 mb-2" {...props} />
+              ),
+              h2: ({ node, ...props }) => (
+                <h2 className="text-2xl font-semibold mt-8 mb-3" {...props} />
+              ),
+              p: ({ node, ...props }) => (
+                <p className="text-lg leading-relaxed mb-2 text-justify" {...props} />
+              ),
+              ul: ({ node, ...props }) => (
+                <ul className="list-disc list-inside mb-2" {...props} />
+              ),
+              ol: ({ node, ...props }) => (
+                <ol className="list-decimal list-inside mb-2" {...props} />
+              ),
               blockquote: ({ node, ...props }) => (
                 <blockquote className="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4" {...props} />
               ),
@@ -87,6 +96,11 @@ const Explore = () => {
                 <code className={`bg-gray-100 text-red-500 rounded-md p-1 ${className}`} {...props}>
                   {children}
                 </code>
+              ),
+              img: ({ node, ...props }) => (
+                <div className="flex justify-center my-4">
+                  <img className="w-1/2 h-auto rounded-lg" {...props} />
+                </div>
               ),
             }}
           />

@@ -66,7 +66,7 @@ const BalanceDialogMatic = () => {
           console.error("Error fetching data: ", error);
         }
         try {
-          const response = await axios.get("https://api.artina.org/api/account/CryptoViewSet/CryptoPrice_MATIC/", {
+          const response = await axios.get("https://api.artina.org/api/account/CryptoViewSet/CryptoPrice_POL/", {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
             },
@@ -191,7 +191,7 @@ const BalanceDialogMatic = () => {
         <div className="w-full flex flex-col gap-4">
           <div className="flex gap-4 justify-center items-center sm:flex-col">
             <p className="sm:text-sm">
-              {t("yourCurrentBallance")}: {currentTab === "Ethereum" ? (turnOver.eth_balance || 0) + " " + t("ethereum") : (turnOver.matic_balance || 0) + " " + t("matic")}
+              {t("yourCurrentBallance")}: {currentTab === "Ethereum" ? (turnOver.eth_balance || 0) + " " + t("ethereum") : (turnOver.pol_balance || 0) + " " + t("matic")}
             </p>
             <BorderButton className="sm:text-xs">{t("transferToArtina")}</BorderButton>
           </div>
@@ -274,21 +274,21 @@ const BalanceDialogMatic = () => {
           </div>
           <div className="w-full gap-4 font-b4 rounded-b-md">
             <div className=" rounded-xl w-full py-8 flex items-start justify-between  gap-4 relative group overflow-hidden sm:py-5">
-              <div className="text-lg px-4 lg:text-md sm:px-2 sm:text-sm">{currentTab === "Ethereum" ? `${t("yourETH")} ${getData ? getData.eth_balance : "0"}` : `${t("yourMatic")} ${getData ? getData.matic_balance : "0"}`} </div>
+              <div className="text-lg px-4 lg:text-md sm:px-2 sm:text-sm">{currentTab === "Ethereum" ? `${t("yourETH")} ${getData ? getData.eth_balance : "0"}` : `${t("yourMatic")} ${getData ? getData.pol_balance : "0"}`} </div>
             </div>
             <div className="px-4">
               <p>
                 {t("buyprice")}:{" "}
                 {currentTab === "Ethereum"
                   ? Number(ethPrice.ETH_buy_price || 0).toFixed(0).toLocaleString()
-                  : Number(maticPrice.MATIC_buy_price || 0).toFixed(0)} {" "}
+                  : Number(maticPrice.POL_buy_price || 0).toFixed(0)} {" "}
                 {t("tooman")}
               </p>
               <p>
                 {t("sellprice")}:{" "}
                 {currentTab === "Ethereum"
                   ? Number(ethPrice.ETH_sell_price || 0).toFixed(0)
-                  : Number(maticPrice.MATIC_sell_price || 0).toFixed(0)} {" "}
+                  : Number(maticPrice.POL_sell_price || 0).toFixed(0)} {" "}
                 {t("tooman")}
               </p>
             </div>
@@ -304,7 +304,7 @@ const BalanceDialogMatic = () => {
                     {buyAmount
                       ? ` قیمت تمام شده ${currentTab === "Ethereum"
                         ? Math.floor(ethPrice.ETH_buy_price * buyAmount + (ethPrice.ETH_buy_price * buyAmount * 0.005))
-                        : Math.floor(maticPrice.MATIC_buy_price * buyAmount + (maticPrice.MATIC_buy_price * buyAmount * 0.005))
+                        : Math.floor(maticPrice.POL_buy_price * buyAmount + (maticPrice.POL_buy_price * buyAmount * 0.005))
                       }`
                       : ""}
                   </p>
@@ -312,7 +312,7 @@ const BalanceDialogMatic = () => {
                 <div
                   className="border-[1px] cursor-pointer border-green-500 bg-green-50 text-green-500 rounded-xl py-2 px-6 hover:scale-105 transition-all sm:text-xs sm:px-4 self-start"
                   onClick={() => {
-                    cryptoBuy(currentTab === "Ethereum" ? "ETHTMN" : "MATICTMN", buyAmount, currentTab === "Ethereum" ? ethPrice.ETH_buy_price : maticPrice.MATIC_buy_price);
+                    cryptoBuy(currentTab === "Ethereum" ? "ETHTMN" : "MATICTMN", buyAmount, currentTab === "Ethereum" ? ethPrice.ETH_buy_price : maticPrice.POL_buy_price);
                   }}
                 >
                   {t("buy")}
@@ -326,14 +326,14 @@ const BalanceDialogMatic = () => {
                   {sellAmount
                     ? ` قیمت تمام شده ${currentTab === "Ethereum"
                       ? Math.floor(ethPrice.ETH_sell_price * sellAmount - (ethPrice.ETH_sell_price * sellAmount * 0.005))
-                      : Math.floor(maticPrice.MATIC_sell_price * sellAmount - (maticPrice.MATIC_sell_price * sellAmount * 0.005))
+                      : Math.floor(maticPrice.POL_sell_price * sellAmount - (maticPrice.POL_sell_price * sellAmount * 0.005))
                     }`
                     : ""}
                 </p>
                 <div
                   className="border-[1px] cursor-pointer border-red-500 bg-red-50 text-red-500 rounded-xl py-2 px-10 hover:scale-105 transition-all sm:text-xs sm:px-4 self-start"
                   onClick={() => {
-                    cryptoSell(currentTab === "Ethereum" ? "ETHTMN" : "MATICTMN", sellAmount, currentTab === "Ethereum" ? ethPrice.ETH_sell_price : maticPrice.MATIC_sell_price);
+                    cryptoSell(currentTab === "Ethereum" ? "ETHTMN" : "MATICTMN", sellAmount, currentTab === "Ethereum" ? ethPrice.ETH_sell_price : maticPrice.POL_sell_price);
                   }}
                 >
                   {t("sell")}

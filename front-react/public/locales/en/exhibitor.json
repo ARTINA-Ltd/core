@@ -60,5 +60,7 @@
 
   "select": "Select",
 
-  "minPrice": "Minimum ticket price: 5 thousand Tomans"
+  "minPrice": "Minimum ticket price: 5 thousand Tomans",
+
+  "nftAnnouncement": "By registering your NFTs in this exhibition, you will no longer be able to sell NFTs individually and there is no possibility of canceling the request."
 }
