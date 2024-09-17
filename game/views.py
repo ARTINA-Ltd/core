@@ -103,3 +103,62 @@ class GameViewSet(viewsets.ModelViewSet):
             return 'user1'
         else:
             return 'user2'
+
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    queryset = UserGameProfile.objects.all()
+    serializer_class = UserGameProfileSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+    @action(detail=False, methods=['get'])
+    def all_user_game_profiles(self, request):
+        profiles = UserGameProfile.objects.all()
+        serializer = UserGameProfileSerializer(profiles, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['post'])
+    def user_profile(self, request):
+        user = self.request.user 
+        profile = UserGameProfile.objects.get(user=user)  
+        serializer = UserGameProfileSerializer(profile) 
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    @action(detail=False, methods=['post'])
+    def buy_hearts(self, request, pk=None):
+        """
+        Endpoint to buy hearts for a user.
+        """
+        user = self.request.user
+        user_profile = UserGameProfile.objects.get(user=user) 
+        hearts_to_buy = request.data.get('hearts_to_buy')
+
+        # Logic to handle buying hearts based on request data
+        if hearts_to_buy == 20:
+            cost = 100000
+        elif hearts_to_buy == 1:
+            cost = 5000
+        elif hearts_to_buy == 10:
+            cost = 60000
+        else:
+            return Response({'error': 'Invalid number of hearts to buy'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Deduct coins from user's profile - Assuming user has coins to spend
+        # user_profile.coins -= cost
+        user_profile.hearts += hearts_to_buy
+        user_profile.save()
+
+        return Response({'message': f'{hearts_to_buy} hearts purchased successfully'}, status=status.HTTP_200_OK)
+
+
+
+class LeaderboardViewSet(viewsets.ViewSet):
+    # permission_classes = [permissions.IsAuthenticated]
+
+    def list(self, request):
+        """
+        Endpoint to fetch leaderboard.
+        """
+        # Fetch top users based on points
+        top_users = UserGameProfile.objects.order_by('-points')[:10]
+        serializer = UserGameProfileSerializer(top_users, many=True)
+        return Response(serializer.data)            
