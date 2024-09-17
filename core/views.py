@@ -39,6 +39,31 @@ from django.utils import timezone
 # Initialize Web3
 w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
 
+
+
+def send_sms(nft_name,name,phone_number):
+        # Send the SMS via Kavenegar API
+        # The URL IS like : https://api.kavenegar.com/v1/{API-KEY}/verify/lookup.json
+        response = requests.post(
+            f"https://api.kavenegar.com/v1/"
+            f"4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D"
+            f"/verify/lookup.json",
+            data={
+                "receptor": phone_number,
+                "token1": name,
+                "token2": nft_name,
+                "template": "NotifySeller"
+            }
+        )
+
+        if response.status_code == 200:
+
+            return Response({'status': 'success'})
+        else:
+            # Handle error response
+            return Response({'status': 'failed'})
+
+
 # Initialize Logger
 nft_mtc_logger = logging.getLogger('core.transferInside')
 logging.basicConfig(level=logging.INFO)

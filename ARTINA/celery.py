@@ -18,8 +18,12 @@ app.autodiscover_tasks()
 
 # Add periodic task to run every minute
 app.conf.beat_schedule = {
-    'your-scheduled-task': {
+    'nft_end_time': {
         'task': 'core.tasks.check_nft_end_time',
         'schedule': crontab(minute='*/2'),
+    },
+        'send-sms': {
+        'task': 'core.tasks.check_nfts_and_send_sms',  # Task running every 10 minutes
+        'schedule': crontab(minute='*/10'),
     },
 }

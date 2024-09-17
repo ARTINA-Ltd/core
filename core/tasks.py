@@ -40,6 +40,8 @@ from django.utils import timezone
 from .models import NFT
 from .views import get_winner
 import time
+from .views import send_sms
+
 @shared_task
 
 def check_nft_end_time():
@@ -59,3 +61,24 @@ def check_nft_end_time():
         print(f"Finished processing NFT {nft.token_id}") 
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.>>>>>>>>>>line")
     print("Task completed")
+
+
+
+@shared_task
+def check_nfts_and_send_sms():
+    now = timezone.now()
+    half_hour_later = now + timedelta(minutes=30)
+
+    # Find NFTs that have less than half an hour left to end date
+    nfts_ending_soon = NFT.objects.filter(end_date__lte=half_hour_later, end_date__gt=now, in_exhibition=False, is_for_sale=True)
+
+    for nft in nfts_ending_soon:
+        # Get the owner's phone number
+        phone_number = nft.owner.profile.phone_number
+        # Construct the message
+        name=nft.owner.username
+        nft_name=nft.name
+        # Send the SMS using your send_sms function
+        send_sms(nft_name=nft_name, name=name,phone_number=phone_number)
+
+    
