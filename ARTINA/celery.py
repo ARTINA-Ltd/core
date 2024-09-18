@@ -26,4 +26,8 @@ app.conf.beat_schedule = {
         'task': 'core.tasks.check_nfts_and_send_sms',  # Task running every 10 minutes
         'schedule': crontab(minute='*/10'),
     },
+        'check-pending-applications-every-day': {
+        'task': 'your_app_name.tasks.check_pending_applications',
+        'schedule': crontab(minute=0, hour=0),  # Run every day at midnight
+    },
 }

@@ -137,11 +137,11 @@ class ApplicationViewSet(viewsets.ModelViewSet):
             )
 
         # Check if the user has selected exactly 5 NFTs for their application
-        if len(nft_objs) > 5:
-            return Response(
-                {'error': 'You must select exactly 5 NFTs for your application.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        # if len(nft_objs) > 5:
+        #     return Response(
+        #         {'error': 'You must select exactly 5 NFTs for your application.'},
+        #         status=status.HTTP_400_BAD_REQUEST
+        #     )
 
         try:
             # Create a new application object and associate the selected NFTs with it
