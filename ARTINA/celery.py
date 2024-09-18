@@ -27,7 +27,7 @@ app.conf.beat_schedule = {
         'schedule': crontab(minute='*/10'),
     },
         'check-pending-applications-every-day': {
-        'task': 'your_app_name.tasks.check_pending_applications',
+        'task': 'exhibition.tasks.check_pending_applications',
         'schedule': crontab(minute=0, hour=0),  # Run every day at midnight
     },
 }
