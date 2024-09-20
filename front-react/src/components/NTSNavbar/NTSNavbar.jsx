@@ -1,34 +1,15 @@
 import { FaRegHeart } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa";
-import { useContext, useEffect, useState } from "react";
-import axios from "axios";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
 import artinaLogo from "../../assets/images/Artina-Logo-1.jpeg";
 import BuyHeart from "../Nts/BuyHeart.jsx";
-import { UserContext } from "../../contexts/UserContext.js";
+import { GameProfileContext } from "../../contexts/GameProfileContext.js";
 
-const NTSNavbar = ({ refetch }) => {
+const NTSNavbar = () => {
   const navigate = useNavigate();
-  const user = useContext(UserContext);
-  const [userProfile, setUserProfile] = useState("");
-  useEffect(() => {
-    axios
-      .post(
-        "https://api.artina.org/api/game/user-profiles/user_profile/",
-        { id: user?.data.id },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-          },
-          mode: "cors",
-        }
-      )
-      .then((e) => {
-        setUserProfile(e.data);
-      })
-      .catch((e) => {});
-  }, [refetch, user]);
-
+  const userProfile = useContext(GameProfileContext);
+  useEffect(() => console.log(userProfile), [userProfile]);
   return (
     userProfile && (
       <div className="h-26 p-4 bg-base-300 z-[100] overflow-hidden">

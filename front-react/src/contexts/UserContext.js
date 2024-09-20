@@ -1,4 +1,3 @@
-// src/contexts/UserContext.js
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
@@ -22,7 +21,6 @@ export const UserProvider = ({ children }) => {
       })
       .catch(() => setUser(undefined));
   }, []);
-
   const userChange = async () => {
     await axios
       .get("https://api.artina.org/api/account/user-info/", {

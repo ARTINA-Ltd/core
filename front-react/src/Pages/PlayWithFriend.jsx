@@ -6,7 +6,6 @@ import PaperRockScissors from "../components/Nts/PaperRockScissors.jsx";
 import BorderButton from "../components/Buttons/BorderButton.jsx";
 import FancyText from "@carefully-coded/react-text-gradient";
 import { UserContext } from "../contexts/UserContext.js";
-
 const PlayWithFriend = () => {
   const user = useContext(UserContext);
   const [sessions, setSessions] = useState("");
@@ -21,15 +20,11 @@ const PlayWithFriend = () => {
 
   useEffect(() => {
     axios
-      .post(
-        "https://api.artina.org/api/game/games/user_game_sessions/",
-        { id: user?.data.id },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-          },
-        }
-      )
+      .get("https://api.artina.org/api/game/games/user_game_sessions/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        },
+      })
       .then((e) => {
         setSessions(e.data);
         console.log(e.data);
@@ -38,7 +33,7 @@ const PlayWithFriend = () => {
 
   const playSolo = () => {
     axios
-      .post(
+      .put(
         "https://api.artina.org/api/game/games/create_play_solo/",
         { id: user?.data.id },
         {
@@ -52,7 +47,7 @@ const PlayWithFriend = () => {
         setSoloDisabled(false);
         console.log(e.data.id);
         axios
-          .post(
+          .put(
             `https://api.artina.org/api/game/games/${e.data.id}/play_solo/`,
             {
               choice: selectedMove,
@@ -80,7 +75,7 @@ const PlayWithFriend = () => {
 
   return (
     <div>
-      <NTSNavbar refetch={refresh} />
+      <NTSNavbar />
       <div className="w-[80%] mx-auto">
         <div className="w-fit mx-auto mt-4 mb-8">
           <FancyText className={"mx-auto text-5xl"} gradient={{ from: "#F305B8", to: "#00F0F7", type: "linear" }} animateTo={{ from: "#FFFFFF", to: "#F305B8" }} animateDuration={1000}>

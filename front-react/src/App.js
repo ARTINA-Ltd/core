@@ -55,8 +55,8 @@ import InternationalProfile from "./Pages/InternationalProfile.jsx";
 
 import Explore from "./Pages/Explore.jsx";
 
-import { UserProvider } from "./contexts/UserContext"; // Import UserProvider
-import { GameProfileProvider } from "./contexts/GapeProfileContext.js"; // Import GameProfileProvider
+import { UserProvider } from "./contexts/UserContext";
+import { GameProfileProvider } from "./contexts/GameProfileContext.js";
 
 const GOFTINO_KEY = "cD7Gse";
 
@@ -72,11 +72,7 @@ export default () => {
       />
       <ThirdwebProvider activeChain="ethereum" autoConnect={false}>
         <UserProvider>
-          {" "}
-          {/* Wrap with UserProvider */}
           <GameProfileProvider>
-            {" "}
-            {/* Wrap with GameProfileProvider */}
             <div className="App">
               <React.Suspense
                 fallback={
