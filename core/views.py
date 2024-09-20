@@ -627,9 +627,10 @@ class NftViewSet(viewsets.ModelViewSet):
         if nft.owner != self.request.user:
             return Response({'error': 'You do not have permission to perform this action.'}, status=403)
         tx_hash = transfer_nft(sender_private_key, sender_address, recipient_address, token_id)
-        nft.delete()
+        nft.in_exhibition=True
+        nft.save()
         response_data = {
-        "message": f"Transaction initiated. Transaction hash: {tx_hash.hex()}"
+        "message": f"Transaction initiated. Transaction hash: {HexBytes(tx_hash.receipt.transactionHash).hex()}"
     }
         
         return Response(response_data, status=status.HTTP_200_OK)
