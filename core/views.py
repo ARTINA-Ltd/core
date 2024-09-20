@@ -630,7 +630,7 @@ class NftViewSet(viewsets.ModelViewSet):
         nft.in_exhibition=True
         nft.save()
         response_data = {
-        "message": f"Transaction initiated. Transaction hash: {HexBytes(tx_hash.receipt.transactionHash).hex()}"
+        "message": f"Transaction initiated. Transaction hash: {tx_hash}"
     }
         
         return Response(response_data, status=status.HTTP_200_OK)
