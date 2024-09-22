@@ -1,0 +1,12 @@
+{
+    "header": "Transfer NFT",
+    "step1": "1- First, after transferring the NFT to the destination wallet, enter your destination wallet and change the network to Polygon MainNet.",
+    "step2": "2- Then go to the Import NFT section.",
+    "step3": "3- In this section, enter the Artina contract in the contract address section.",
+    "contractAddress": "Contract Address",
+    "copy": "Copy",
+    "copied": "Copied",
+    "step4": "4- Then in the Token ID section, enter the desired token number.",
+    "step5": "5- Finally, click on the Import option to transfer your NFT to the destination wallet.",
+    "addressCopied": "Address Copied"
+}

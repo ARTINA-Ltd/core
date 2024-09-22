@@ -13,5 +13,19 @@
   "price": "Price (ETH)",
   "submit": "Submit",
   "transfer": "Transfer",
-  "checkAddress": "check the correctness of the entered address"
+  "checkAddress": "check the correctness of the entered address",
+  "transferSuccess": "🎉 Transfer was successful.",
+  "yourNftIsNowTrackableAt": "Your NFT is now trackable at the following address:",
+  "viewOnPolygonScan": "View on PolygonScan",
+  "invalidDate": "Invalid date",
+  "pleaseFillAllFields": "Please fill all fields",
+  "saleSuccess": "Sale was successful.",
+  "errorOccurred": "An error occurred.",
+  "insufficientFunds": "Insufficient funds.",
+  "examplePrice": "Example: 0.1",
+  "transferSuccessful": "Transfer was successful.",
+  "visitDocumentation": "For more information on transferring NFTs and adding them to a wallet outside of Artina, visit the",
+  "visitDocumentationLink": "Transfer Guide",
+  "visitDocumentationEnd": ".",
+  "tokenNumber": "Token Number"
 }

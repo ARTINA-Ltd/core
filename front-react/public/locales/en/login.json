@@ -38,6 +38,12 @@
   "invalidReferral": "Invalid Referral Code",
   "referralCode": "Referral Code",
   "optional8Characters": "Optional, 8 characters",
-  "invalidUsername": "Enter a valid username. This value may contain only letters, numbers, and @/./+/-/_ characters.",
-  "noSpacesInUsername": "No spaces allowed in username"
+  "invalidUsername": "Enter a valid username with latin letters. This value may contain only letters, numbers, and _ characters.",
+  "noSpacesInUsername": "No spaces allowed in username",
+  "usernameTaken": "Username already taken",
+  "usernameAvailable": "Username available",
+  "emailTaken": "Email already registered",
+  "emailAvailable": "Email available",
+  "invalidPassword": "Password must be at least 8 characters long and contain at least one uppercase letter.",
+  "passwordMismatch": "Password and repeat must be the same."
 }

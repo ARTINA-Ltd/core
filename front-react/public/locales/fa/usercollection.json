@@ -15,5 +15,19 @@
   "transfer": "انتقال",
   "checkAddress": "بررسی درستی آدرس وارد شده",
   "addressIsValid": "آدرس وارد شده در Polygon وجود دارد",
-  "addressNotValid": "آدرس وارد شده در Polygon وجود ندارد"
+  "addressNotValid": "آدرس وارد شده در Polygon وجود ندارد",
+  "transferSuccess": "🎉 انتقال با موفقیت انجام شد.",
+  "yourNftIsNowTrackableAt": "ان اف تی شما اکنون قابل پیگیری در ادرس زیر است:",
+  "viewOnPolygonScan": "مشاهده در PolygonScan",
+  "invalidDate": "تاریخ نامعتبر",
+  "pleaseFillAllFields": "لطفا تمامی فیلدها را پر کنید",
+  "saleSuccess": "فروش با موفقیت انجام شد.",
+  "errorOccurred": "خطایی رخ داده است.",
+  "insufficientFunds": "موجودی شما برای پرداخت فی شبکه کافی نیست.",
+  "examplePrice": "مثلا 0.1",
+  "transferSuccessful": "انتقال با موفقیت انجام شد.",
+  "visitDocumentation": "برای اطلاعاعات بیشتر در خصوص انتقال ان اف تی و افزودن آن به کیف پول خارج از آرتینا، به",
+  "visitDocumentationLink": "راهنمای انتقال",
+  "visitDocumentationEnd": "مراجعه کنید.",
+  "tokenNumber": "شماره توکن"
 }
