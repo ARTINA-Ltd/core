@@ -109,7 +109,8 @@ class GameViewSet(viewsets.ModelViewSet):
         combined_sessions = active_sessions | inactive_sessions
         serializer = GameSessionSerializer(combined_sessions, many=True)
         return Response(serializer.data)
-
+    
+    
     def determine_winner(self, choice1, choice2):
         if choice1 == choice2:
             return 'draw'

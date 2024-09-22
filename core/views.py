@@ -75,7 +75,7 @@ def transfer_nft(sender_private_key, sender_address, recipient_address, token_id
         nft_mtc_logger.info(f"Nonce fetched for sender address {sender_address}: {nonce}")
 
         # Contract details
-        nft_contract_address = "0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a"
+        nft_contract_address = "0xDcF093a4B403903B5c3B20ed92ec688061c118e9"
         abi_filename = os.path.join(settings.BASE_DIR, "Account", "ABI.json")
 
         # Read ABI from JSON file
@@ -702,7 +702,7 @@ print(f"sdk is :{sdk}")
 # # Finally, you can create a new instance of the SDK to use
 # sdk = ThirdwebSDK("mumbai",signer)
 # sdk = ThirdwebSDK("mumbai", options=SDKOptions(secret_key="rEql_yRermO9c4z64ThyVUbo41NE4V2kJXyFuNNYRMX7vST7GHWC2G_tasal5a9MXH90AZ-ymHBN9vJFltO5mw"))
-contract = sdk.get_nft_collection("0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a")
+contract = sdk.get_nft_collection("0xDcF093a4B403903B5c3B20ed92ec688061c118e9")
 
 
 
