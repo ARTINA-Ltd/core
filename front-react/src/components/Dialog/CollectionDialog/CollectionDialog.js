@@ -25,6 +25,7 @@ export default function CollectionDialog(tokenId) {
     var end = endDate;
     start.setHours(startTime.h, startTime.m);
     end.setHours(endTime.h, endTime.m);
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .put(
         "https://api.artina.org/api/transaction/nfts/sell/",
@@ -36,7 +37,7 @@ export default function CollectionDialog(tokenId) {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
           mode: "cors",
         }

@@ -16,10 +16,11 @@ const BalanceDialog = () => {
   const user = useContext(UserContext);
 
   useEffect(() => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .get("https://api.artina.org/api/account/user-balance/get_balance/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
         mode: "cors",
       })
@@ -38,13 +39,14 @@ const BalanceDialog = () => {
       Notify.failure("مقدار وارد شده باید بیشتر از 10000 تومان باشد");
       return;
     }
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .post(
         "https://api.artina.org/api/account/payment/",
         { amount: depoAmount * 10 },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
           mode: "cors",
         }
@@ -66,6 +68,7 @@ const BalanceDialog = () => {
       Notify.failure("مقدار وارد شده باید بیشتر از 10000 تومان باشد");
       return;
     }
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .post(
         "https://api.artina.org/api/account/WithdrawalViewSet/",
@@ -77,7 +80,7 @@ const BalanceDialog = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
           mode: "cors",
         }

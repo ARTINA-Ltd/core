@@ -20,6 +20,7 @@ const ApplicationReqDialog = ({ user, nfts = [], description, exhibition, applic
   const navigate = useNavigate();
   var q = 0;
   const btnClick = (action) => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .put(
         `https://api.artina.org/api/exhibition/applications/${application}/`,
@@ -28,12 +29,11 @@ const ApplicationReqDialog = ({ user, nfts = [], description, exhibition, applic
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )
       .then((res) => {
-        console.log(res);
         setData(res.data);
         setVisible(false);
         Notify.success(t("successfulOperation"));
@@ -66,10 +66,11 @@ const ApplicationReqDialog = ({ user, nfts = [], description, exhibition, applic
   }, []);
 
   useEffect(() => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .get("https://api.artina.org/api/exhibition/exhibitions/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
         mode: "cors",
       })

@@ -22,10 +22,11 @@ const BalanceDialogMatic = () => {
   const [currentTab, setCurrentTab] = useState("Ethereum");
 
   const getBalance = async () => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .get("https://api.artina.org/api/account/user-balance/get_balance/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
         mode: "cors",
       })
@@ -35,7 +36,7 @@ const BalanceDialogMatic = () => {
     axios
       .get("https://api.artina.org/api/account/user-turnover/get_balance/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
         mode: "cors",
       })
@@ -53,11 +54,12 @@ const BalanceDialogMatic = () => {
 
   useEffect(() => {
     if (isOpen) {
+      const authTokens = JSON.parse(localStorage.getItem("authTokens"));
       const fetchData = async () => {
         try {
           const response = await axios.get("https://api.artina.org/api/account/CryptoViewSet/CryptoPrice_ETH/", {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+              Authorization: `Bearer ${authTokens.access}`,
             },
             mode: "cors",
           });
@@ -68,7 +70,7 @@ const BalanceDialogMatic = () => {
         try {
           const response = await axios.get("https://api.artina.org/api/account/CryptoViewSet/CryptoPrice_POL/", {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+              Authorization: `Bearer ${authTokens.access}`,
             },
             mode: "cors",
           });
@@ -98,6 +100,7 @@ const BalanceDialogMatic = () => {
   }, [setIsOpen]);
 
   const cryptoBuy = async (symbol, amount, price) => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     if (amount * price < 100000) {
       Notify.failure("مقدار باید از 100000 تومان بیشتر باشد");
       return;
@@ -109,7 +112,7 @@ const BalanceDialogMatic = () => {
           { symbol: symbol, amount: amount, price: price },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+              Authorization: `Bearer ${authTokens.access}`,
             },
           }
         )
@@ -133,13 +136,14 @@ const BalanceDialogMatic = () => {
       return;
     }
     try {
+      const authTokens = JSON.parse(localStorage.getItem("authTokens"));
       axios
         .post(
           "https://api.artina.org/api/account/CryptoViewSet/SellCrypto/",
           { symbol: symbol, amount: amount, price: price },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+              Authorization: `Bearer ${authTokens.access}`,
             },
           }
         )
@@ -156,13 +160,14 @@ const BalanceDialogMatic = () => {
   };
 
   const createWallet = () => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .post(
         "https://api.artina.org/api/account/wallet/create_wallet/",
         {},
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
           mode: "cors",
         }
