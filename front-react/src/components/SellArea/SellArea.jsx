@@ -6,15 +6,14 @@ import BorderButton from "./../Buttons/BorderButton";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import "react-multi-date-picker/styles/backgrounds/bg-dark.css";
-import "react-multi-date-picker/styles/colors/purple.css"
-
+import "react-multi-date-picker/styles/colors/purple.css";
 import DateObject from "react-date-object";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import i18n from "../../i18n.js";
 import { useTranslation } from "react-i18next";
 
-const SellArea = ({ tokenId }) => {
+const SellArea = ({ tokenId, onSuccess }) => {
   const digits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
   const [date, setDate] = useState([null, null]);
   const [startTime, setStartTime] = useState(null);
@@ -34,7 +33,7 @@ const SellArea = ({ tokenId }) => {
 
   const submit = () => {
     if (!date[0] || !date[1] || !startTime || !endTime || !price) {
-      Notify.failure("لطفاً تمام فیلدها را پر کنید");
+      Notify.failure(t("pleaseFillAllFields"));
       return;
     }
 
@@ -42,12 +41,14 @@ const SellArea = ({ tokenId }) => {
     const endDate = convertToGregorian(date[1]);
 
     if (!startDate || !endDate) {
-      Notify.failure("تاریخ نامعتبر");
+      Notify.failure(t("invalidDate"));
       return;
     }
 
     startDate.setHours(startTime.hour, startTime.minute);
     endDate.setHours(endTime.hour, endTime.minute);
+
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
 
     axios
       .put(
@@ -60,20 +61,20 @@ const SellArea = ({ tokenId }) => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
           mode: "cors",
         }
       )
       .then((response) => {
-        console.log(response);
-        Notify.success("با موفقیت ثبت شد");
+        Notify.success(t("saleSuccess"));
+        if (onSuccess) onSuccess(); // Call the callback function on success
       })
       .catch((error) => {
         if (error.response.status === 400) {
-          Notify.failure("موجودی حساب شما برای پرداخت هزینه شبکه کافی نیست");
+          Notify.failure(t("insufficientFunds"));
         } else {
-          Notify.failure("خطا در ثبت اطلاعات");
+          Notify.failure(t("errorOccurred"));
         }
       });
   };
@@ -124,7 +125,7 @@ const SellArea = ({ tokenId }) => {
               />
             </div>
           </div>
-          <SimpleInput className="mt-8 font-b4" type="number" title={t("price")} placeholder="مثلا" validationError={price === "" && "نمی‌تواند خالی باشد"} defaultValue={null} onChange={(e) => setPrice(e.target.value)} />
+          <SimpleInput className="mt-8 font-b4" type="number" title={t("price")} placeholder={t("examplePrice")} validationError={price === "" && t("cannotBeEmpty")} defaultValue={null} onChange={(e) => setPrice(e.target.value)} />
           <div className="mt-4 flex gap-4">
             <BorderButton className="w-full" onClick={submit}>
               {t("submit")}

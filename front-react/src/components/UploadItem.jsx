@@ -53,10 +53,11 @@ const UploadItem = () => {
   }, [collections]);
 
   useEffect(() => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens")); // Parse the tokens properly
     axios
       .get(`https://api.artina.org/api/transaction/categories/`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`, // Use the access token
         },
       })
       .then((res) => {
@@ -65,10 +66,11 @@ const UploadItem = () => {
   }, []);
 
   useEffect(() => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens")); // Parse the tokens properly
     axios
       .get(`https://api.artina.org/api/transaction/collections/`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`, // Use the access token
         },
       })
       .then((res) => {
@@ -93,6 +95,7 @@ const UploadItem = () => {
     e.preventDefault();
     setIsLoading(true);
     Notify.info(t("mintingNotif"));
+    const authTokens = JSON.parse(localStorage.getItem("authTokens")); // Parse the tokens properly
 
     axios
       .post(
@@ -113,7 +116,7 @@ const UploadItem = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`, // Use the access token
           },
           mode: "cors",
         }
@@ -130,9 +133,8 @@ const UploadItem = () => {
           navigate("/");
         } else {
           setIsLoading(false);
-          console.log(e);
-          console.log("Category:", selectedCategory);
-          console.log("Has Physical:", hasPhysical);
+          // console.log("Category:", selectedCategory);
+          // console.log("Has Physical:", hasPhysical);
         }
         if (e.response.status === 3) {
           Notify.failure(t("tryAgain"));
@@ -152,17 +154,17 @@ const UploadItem = () => {
   useEffect(() => {
     if (image) {
       Block.circle("#nftImage");
-  
+      const authTokens = JSON.parse(localStorage.getItem("authTokens")); // Parse the tokens properly
       Notify.info(t("uploadingPhoto"));
       const formData = new FormData();
       formData.append("image", image, image.name);
       axios
         .post(
-          "https://api.artina.org/api/transaction/images/", 
+          "https://api.artina.org/api/transaction/images/",
           formData,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+              Authorization: `Bearer ${authTokens.access}`, // Use the access token
               "Content-Type": "multipart/form-data" // This ensures the correct content type
             },
             mode: "cors",
@@ -179,7 +181,7 @@ const UploadItem = () => {
         });
     }
   }, [image]);
-  
+
 
   const [uploadObj, setUploadObj] = useState({
     properties: [], // {name: '', type: ''}

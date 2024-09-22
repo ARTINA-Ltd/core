@@ -8,7 +8,7 @@ function Recomendition({ requests, nft }) {
   const user = useContext(UserContext);
 
   function removeRequest() {
-    console.log("->>>>>>>>>>>>>", nft);
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .post(
         "https://api.artina.org/api/transaction/orders/disable_order/",
@@ -17,7 +17,7 @@ function Recomendition({ requests, nft }) {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
           mode: "cors",
         }

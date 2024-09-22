@@ -12,13 +12,14 @@ const NTSNavbar = ({ refetch }) => {
   const user = useContext(UserContext);
   const [userProfile, setUserProfile] = useState("");
   useEffect(() => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .post(
         "https://api.artina.org/api/game/user-profiles/user_profile/",
         { id: user?.data.id },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
           mode: "cors",
         }
