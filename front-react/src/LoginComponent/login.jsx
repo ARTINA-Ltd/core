@@ -46,10 +46,17 @@ const Login = () => {
       )
       .then((res) => {
         if (res.status === 200) {
-          localStorage.setItem("authTokens", res.data.access);
+          // Store both access and refresh tokens
+          const tokenData = {
+            access: res.data.access,
+            refresh: res.data.refresh,
+          };
+  
+          localStorage.setItem("authTokens", JSON.stringify(tokenData));
           userChange(res);
           Notify.success(t("success"));
-          console.log(res.data.role);
+  
+          // Redirect user based on role
           if (res.data.role == "supervisor") {
             navigate("/admin-panel");
           } else if (res.data.role == "user_one") {
@@ -67,6 +74,7 @@ const Login = () => {
         }
       });
   };
+  
 
   return (
     <TestLayout className="flex items-center justify-center form-input w-full">
