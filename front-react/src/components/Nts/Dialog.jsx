@@ -9,23 +9,25 @@ const Dialog = ({ username }) => {
   const [users, setUsers] = useState([]);
   const [selected, setSelected] = useState([]);
   useEffect(() => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .get("https://api.artina.org/api/game/user-profiles/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
       })
       .then((e) => setUsers(removeRecord(e.data)));
   }, []);
 
   const createGame = () => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .post(
         "https://api.artina.org/api/game/games/create_play_friend/",
         { friend_username: selected },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )

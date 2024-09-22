@@ -18,14 +18,14 @@ const BuyHeart = () => {
       console.error("User ID not available");
       return;
     }
-
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     try {
       const response = await axios.post(
         "https://api.artina.org/api/game/user-profiles/buy_hearts/",
         { id: user.data.id, hearts_to_buy: amount },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
           mode: "cors",
         }

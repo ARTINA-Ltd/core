@@ -5,10 +5,11 @@ const LeaderBoard = () => {
   const [leaderBoard, setLeaderBoard] = useState([]);
 
   useEffect(() => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .get("https://api.artina.org/api/game/leaderboard/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
         mode: "cors",
       })

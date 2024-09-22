@@ -20,14 +20,14 @@ const PaperRockScissorsFriend = ({ gameId, className, opChoice: initialOpChoice,
     }
 
     setIsSubmitted(true); // Hide the button once clicked
-
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .post(
         `https://api.artina.org/api/game/games/${gameId}/play_friend/`,
         { choice: userChoice },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )

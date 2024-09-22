@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 const Countdown = ({ end_date }) => {
   const endDate = new Date(end_date);
   const [timeRemaining, setTimeRemaining] = useState(calculateTimeRemaining());
-  // console.log("END DATE -------> ", endDate);
 
   useEffect(() => {
     if (end_date) {

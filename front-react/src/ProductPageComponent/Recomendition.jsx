@@ -7,8 +7,9 @@ import BorderButton from "../components/Buttons/BorderButton";
 function Recomendition({ requests, nft }) {
   const user = useContext(UserContext);
 
+  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+
   function removeRequest() {
-    console.log("->>>>>>>>>>>>>", nft);
     axios
       .post(
         "https://api.artina.org/api/transaction/orders/disable_order/",
@@ -17,7 +18,7 @@ function Recomendition({ requests, nft }) {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
           mode: "cors",
         }
