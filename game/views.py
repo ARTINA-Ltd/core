@@ -4,15 +4,31 @@ from rest_framework.decorators import action
 from django.contrib.auth.models import User
 from .models import *
 from .serializers import *
-
+from django.core.exceptions import ObjectDoesNotExist
 class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
 
+
     def create(self, request, *args, **kwargs):
         user1 = request.user
-        game = Game.objects.create(user1=user1)
+        user2_id = request.data.get("user2")
+
+        if not user2_id:
+            return Response({"error": "user2 is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user2 = User.objects.get(id=user2_id)
+        except ObjectDoesNotExist:
+            return Response({"error": "User2 not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Create a new game
+        game = Game.objects.create(user1=user1, user2=user2)
+
+        # Create GameSession for both users
         GameSession.objects.create(user=user1, game=game, user_turn=True)
+        GameSession.objects.create(user=user2, game=game, user_turn=False)  # Only user1 has the first turn
+
         return Response(GameSerializer(game).data, status=status.HTTP_201_CREATED)
 
     @action(detail=True, methods=['post'])
