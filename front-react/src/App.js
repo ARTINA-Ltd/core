@@ -55,6 +55,7 @@ import AddExhibition from "./Pages/AddExhibition.jsx";
 import InternationalProfile from "./Pages/InternationalProfile.jsx";
 
 import Explore from "./Pages/Explore.jsx";
+import HelpTransferNft from "./Pages/helpTransferNft.jsx";
 
 const GOFTINO_KEY = "cD7Gse";
 
@@ -66,38 +67,48 @@ export default () => {
   const [user, setUser] = useState();
 
   useEffect(() => {
-    axios({
-      method: "get",
-      url: "https://api.artina.org/api/account/user-info/",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-      },
-      mode: "cors",
-    })
-      .then((data) => {
-        setUser(data);
-      })
-      .catch(() => setUser(undefined));
-  }, []);
-
-  const userChange = async () => {
-    console.log("called");
-    await axios
-      .get("https://api.artina.org/api/account/user-info/", {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens")); // Ensure proper parsing of authTokens
+    if (authTokens?.access) {
+      axios({
+        method: "get",
+        url: "https://api.artina.org/api/account/user-info/",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`, // Use the access token
         },
         mode: "cors",
       })
-      .then((data) => {
-        setUser(data);
-        console.log(data);
-      })
-      .catch((res) => {
-        setUser(undefined);
-        console.log(res);
-      });
+        .then((data) => {
+          setUser(data); // Set the user data
+        })
+        .catch(() => setUser(undefined)); // If error, clear user data
+    } else {
+      setUser(undefined); // No tokens, set user to undefined
+    }
+  }, []);
+  
+
+  const userChange = async () => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens")); // Parse the tokens properly
+  
+    if (authTokens?.access) {
+      await axios
+        .get("https://api.artina.org/api/account/user-info/", {
+          headers: {
+            Authorization: `Bearer ${authTokens.access}`, // Use the access token
+          },
+          mode: "cors",
+        })
+        .then((data) => {
+          setUser(data); // Set the user data
+        })
+        .catch((res) => {
+          setUser(undefined); // Clear user data on error
+        });
+    } else {
+      setUser(undefined); // No valid token, clear user data
+    }
   };
+  
 
   return (
     <div className="text-base-content">
@@ -134,6 +145,7 @@ export default () => {
                   <Route exact path="about-us" element={<AboutUs />} />
                   <Route exact path="privacy-policy" element={<PrivacyPolicy />} />
                   <Route exact path="help-mint" element={<HelpMint />} />
+                  <Route exact path="help-transfer-nft" element={<HelpTransferNft />} />
                   <Route exact path="help-create-exhibition" element={<HelpCreateExhibition />} />
                   <Route exact path="help-create-wallet" element={<HelpCreateWallet />} />
                   <Route exact path="NTS" element={<NTS />} />
