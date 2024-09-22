@@ -10,6 +10,7 @@ import { UserContext } from "../App";
 import { Notify } from "notiflix";
 import { useTranslation } from "react-i18next";
 import i18n from "./../i18n";
+import useAuthCheck from "../hooks/useAuthCheck";
 
 const Collections = () => {
   const [getData, setData] = useState();
@@ -19,6 +20,10 @@ const Collections = () => {
 
   const navigate = useNavigate();
   const { username } = useParams();
+
+  useAuthCheck();
+
+  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
 
   useEffect(() => {
     axios.get(`https://api.artina.org/api/transaction/collection/${username}/nfts/`, {}).then((res) => {
@@ -46,7 +51,7 @@ const Collections = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
           mode: "cors",
         }
@@ -66,7 +71,7 @@ const Collections = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
           mode: "cors",
         }

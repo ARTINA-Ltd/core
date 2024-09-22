@@ -9,11 +9,14 @@ import imageTwo from "../assets/images/2.jpg";
 const RequestsList = () => {
   const [getData, setData] = useState(null);
   const { t } = useTranslation(["exhibitor"]);
+
+  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+
   useEffect(() => {
     axios
       .get(`https://api.artina.org/api/exhibition/applications/exhibitor_applications/`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
       })
       .then((res) => {

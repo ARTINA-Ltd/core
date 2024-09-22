@@ -18,11 +18,13 @@ const TicketResponse = () => {
     setOption(e.target.value);
   };
 
+  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+
   useEffect(() => {
     axios
       .get("https://api.artina.org/api/supervisor/supervisor-tickets/unresponded_tickets/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
       })
       .then((e) => {
@@ -38,7 +40,7 @@ const TicketResponse = () => {
     axios
       .get("https://api.artina.org/api/supervisor/rejection-messages/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
       })
       .then((e) => {
@@ -62,7 +64,7 @@ const TicketResponse = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )

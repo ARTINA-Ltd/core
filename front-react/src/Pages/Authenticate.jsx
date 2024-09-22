@@ -17,7 +17,10 @@ const Authenticate = () => {
   const [messages, setMessages] = useState(null);
   const [option, setOption] = useState(null);
 
+  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+
   const hanleApprove = (e) => {
+    
     setIsApproved(true);
     axios
       .put(
@@ -25,7 +28,7 @@ const Authenticate = () => {
         { national_code_approved: isApproved },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )
@@ -46,7 +49,7 @@ const Authenticate = () => {
         { rejection_message: option },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )
@@ -63,7 +66,7 @@ const Authenticate = () => {
     axios
       .get("https://api.artina.org/api/supervisor/document-approvals/unseen_approvals/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
       })
       .then((e) => {
@@ -80,7 +83,7 @@ const Authenticate = () => {
     axios
       .get("https://api.artina.org/api/supervisor/rejection-messages/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
       })
       .then((e) => {

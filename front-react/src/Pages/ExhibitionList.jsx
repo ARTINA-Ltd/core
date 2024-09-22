@@ -16,6 +16,8 @@ const ExhibitionList = () => {
 
   const { t } = useTranslation("exhibitionList");
 
+  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+  
   useEffect(() => {
     if (!localStorage.getItem("authTokens")) {
       navigate("/");
@@ -26,7 +28,7 @@ const ExhibitionList = () => {
     axios
       .get("https://api.artina.org/api/exhibition/ExTicketViewSet/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
         mode: "cors",
       })
@@ -49,7 +51,7 @@ const ExhibitionList = () => {
       exhibition_id: selectedExhibition.id
     }, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+        Authorization: `Bearer ${authTokens.access}`,
       },
       mode: "cors",
     }).then((res) => {

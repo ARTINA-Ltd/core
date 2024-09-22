@@ -68,6 +68,8 @@ const AddExhibition = () => {
     const end_date = convertToGregorian(endDate);
     const application_deadline = convertToGregorian(applicationDeadline);
 
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+
     axios
       .post(
         `https://api.artina.org/api/exhibition/exhibitions/`,
@@ -85,7 +87,7 @@ const AddExhibition = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )
@@ -94,21 +96,22 @@ const AddExhibition = () => {
         navigate("/exhibitor");
       })
       .catch((e) => {
-        if (e.response.status === 400 && e.response.data.price[0]  === "Ensure this value is greater than or equal to 5000.") {
+        if (e.response.status === 400 && e.response.data.price[0] === "Ensure this value is greater than or equal to 5000.") {
           Notify.failure(t("minPrice"));
           console.log("400 and error");
         } else {
-        Notify.failure(t("error"));
-        console.log(e);
+          Notify.failure(t("error"));
+          console.log(e);
         }
       });
   };
 
   useEffect(() => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .get(`https://api.artina.org/api/exhibition/categories/`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
       })
       .then((res) => {
@@ -117,6 +120,7 @@ const AddExhibition = () => {
   }, []);
 
   useEffect(() => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     if (profileImage) {
       Block.circle("#exhibitionImage");
 
@@ -124,7 +128,15 @@ const AddExhibition = () => {
       const formData = new FormData();
       formData.append("image", profileImage, profileImage.name);
       axios
-        .post("https://api.artina.org/api/transaction/images/", formData)
+        .post("https://api.artina.org/api/transaction/images/", formData,
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens.access}`, // Use the access token
+              "Content-Type": "multipart/form-data" // This ensures the correct content type
+            },
+            mode: "cors",
+          }
+        )
         .then((res) => {
           Notify.success(t("uploadSuccess"));
           setProfileImageUrl(res.data.image);

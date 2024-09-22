@@ -20,7 +20,7 @@ const AI = () => {
 
     Block.circle("#ai-image");
     // Block.remove("#images", 3000);
-
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     await axios
       .post(
         "https://api.artina.org/api/AI/generated_images/",
@@ -31,7 +31,7 @@ const AI = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
           mode: "cors",
         }

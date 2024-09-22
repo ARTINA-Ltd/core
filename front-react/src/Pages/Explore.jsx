@@ -7,7 +7,6 @@ import i18next from "i18next";
 import remarkGfm from "remark-gfm";
 import { useTranslation } from "react-i18next";
 
-
 const Explore = () => {
   const [markdownContent, setMarkdownContent] = useState("");
   const [headings, setHeadings] = useState([]);

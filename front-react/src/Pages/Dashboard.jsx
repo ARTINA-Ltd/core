@@ -9,6 +9,7 @@ import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import { FaEthereum } from "react-icons/fa";
 import { Notify } from "notiflix";
+import useAuthCheck from "../hooks/useAuthCheck";
 
 const Dashboard = () => {
   const [getLikedNfts, setLikedNfts] = useState();
@@ -32,170 +33,179 @@ const Dashboard = () => {
   const MATIC_TO_TOMAN_RATE = 25000; // 1 MATIC = 25,000 Tomans
 
   const navigate = useNavigate();
-  useEffect(() => {
-    localStorage.getItem("authTokens") === null && navigate("/login");
-  });
-  useEffect(() => {
-    axios
-      .get("https://api.artina.org/api/exhibition/Ticket/get_user_tickets/", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-        },
-        mode: "cors",
-      })
-      .then((res) => {
-        console.log("->->", res.data);
-        setTickets(res.data);
-      })
-      .catch((res) => { });
-  }, []);
+
+  useAuthCheck();
+
+  const getAccessToken = () => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+    return authTokens?.access;
+  };
+
+  const handleUnauthorizedError = (error) => {
+    if (error.response && error.response.status === 401) {
+      Notify.failure("Session expired. Please log in again.");
+      navigate("/login");
+    } else {
+      console.error("API call error:", error);
+    }
+  };
 
   useEffect(() => {
-    // axios
-    //   .get("https://api.artina.org/api/exhibition/Ticket/calculate_user_revenue/", {
-    //     headers: {
-    //       Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-    //     },
-    //     mode: "cors",
-    //   })
-    //   .then((res) => {
-    //     setProfit(res.data);
-    //   })
-    //   .catch((res) => { });
+    const accessToken = getAccessToken();
 
-    axios
-      .get("https://api.artina.org/api/transaction/nft_ratings/user_likes/", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-        },
-        mode: "cors",
-      })
-      .then((res) => {
-        setLikedNfts(res.data);
-        setFirtsFiveLinkedNfts(res.data.slice(0, 5));
-      })
-      .catch((res) => { });
-  }, []);
-
-  useEffect(() => {
-    // Fetch live Ethereum and Matic sell prices
-    const fetchCryptoPrices = async () => {
-      try {
-        const ethResponse = await axios.get("https://api.artina.org/api/account/CryptoViewSet/CryptoPrice_ETH/", {
+    if (accessToken) {
+      axios
+        .get("https://api.artina.org/api/exhibition/Ticket/get_user_tickets/", {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${accessToken}`,
           },
-          mode: "cors",
-        });
-        setEthPrice(ethResponse.data.ETH_sell_price); // Save ETH sell price
-
-      //   const maticResponse = await axios.get("https://api.artina.org/api/account/CryptoViewSet/CryptoPrice_MATIC/", {
-      //     headers: {
-      //       Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-      //     },
-      //     mode: "cors",
-      //   });
-        // setMaticPrice(maticResponse.data.MATIC_sell_price); // Save MATIC sell price
-        setMaticPrice(MATIC_TO_TOMAN_RATE);
-      } catch (error) {
-        console.error("Error fetching crypto prices: ", error);
-      }
-    };
-
-    fetchCryptoPrices();
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(`https://api.artina.org/api/account/user-turnover/turnover_in_month/`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-        },
-      })
-      .then((res) => {
-        // console.log("--------->>>", res.data);
-        setLastMonthTurnover(res.data.last_month_turnover);
-
-        setAllTurnovers(res.data.all_turnovers);
-        setFirstFiveTurnovers(res.data.all_turnovers.slice(0, 5));
-      })
-      .catch((res) => { });
+        })
+        .then((res) => {
+          setTickets(res.data);
+        })
+        .catch(handleUnauthorizedError);
+    }
   }, []);
 
 
   useEffect(() => {
-    axios
-      .get("https://api.artina.org/api/account/user-balance/get_balance/", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-        },
-        mode: "cors",
-      })
-      .then((res) => {
-        console.log("balance", res.data);
-        setBalance(res.data);
-      })
-      .catch((e) => { });
+    const accessToken = getAccessToken();
+
+    if (accessToken) {
+      axios
+        .get("https://api.artina.org/api/transaction/nft_ratings/user_likes/", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((res) => {
+          setLikedNfts(res.data);
+          setFirtsFiveLinkedNfts(res.data.slice(0, 5));
+        })
+        .catch(handleUnauthorizedError);
+    }
   }, []);
 
   useEffect(() => {
-    axios
-      .get(`https://api.artina.org/api/exhibition/user-exhibitions/`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-        },
-      })
-      .then((res) => {
-        setArtistOpenExhibitions(res.data);
-      });
+    const accessToken = getAccessToken();
+
+    if (accessToken) {
+      axios
+        .get("https://api.artina.org/api/account/CryptoViewSet/CryptoPrice_ETH/", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((res) => {
+          setEthPrice(res.data.ETH_sell_price);
+          setMaticPrice(MATIC_TO_TOMAN_RATE);
+        })
+        .catch(handleUnauthorizedError);
+    }
   }, []);
 
   useEffect(() => {
-    axios
-      .get("https://api.artina.org/api/transaction/orders/get_user_order/", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-        },
-        mode: "cors",
-      })
-      .then((res) => {
-        setOrders(res.data);
-      })
-      .catch((res) => { });
+    const accessToken = getAccessToken();
+
+    if (accessToken) {
+      axios
+        .get("https://api.artina.org/api/account/user-turnover/turnover_in_month/", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((res) => {
+          setLastMonthTurnover(res.data.last_month_turnover);
+          setAllTurnovers(res.data.all_turnovers);
+          setFirstFiveTurnovers(res.data.all_turnovers.slice(0, 5));
+        })
+        .catch(handleUnauthorizedError);
+    }
+  }, []);
+
+  useEffect(() => {
+    const accessToken = getAccessToken();
+
+    if (accessToken) {
+      axios
+        .get("https://api.artina.org/api/account/user-balance/get_balance/", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((res) => {
+          setBalance(res.data);
+        })
+        .catch(handleUnauthorizedError);
+    }
+  }, []);
+
+  useEffect(() => {
+    const accessToken = getAccessToken();
+
+    if (accessToken) {
+      axios
+        .get("https://api.artina.org/api/exhibition/user-exhibitions/", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((res) => {
+          setArtistOpenExhibitions(res.data);
+        })
+        .catch(handleUnauthorizedError);
+    }
+  }, []);
+
+  useEffect(() => {
+    const accessToken = getAccessToken();
+
+    if (accessToken) {
+      axios
+        .get("https://api.artina.org/api/transaction/orders/get_user_order/", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((res) => {
+          setOrders(res.data);
+        })
+        .catch(handleUnauthorizedError);
+    }
   }, []);
 
   // get user referral code 
   useEffect(() => {
-    axios
-      .get("https://api.artina.org/api/account/affiliate/get_code/", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
-        },
-        mode: "cors",
-      })
-      .then((res) => {
-        setCredit(res.data.credit_balance);
-        setReferralCode(res.data.referral_code);
-        console.log("ref code", res.data);
-      })
-      .catch((res) => { });
+    const accessToken = getAccessToken();
+
+    if (accessToken) {
+      axios
+        .get("https://api.artina.org/api/account/affiliate/get_code/", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((res) => {
+          setCredit(res.data.credit_balance);
+          setReferralCode(res.data.referral_code);
+        })
+        .catch(handleUnauthorizedError);
+    }
   }, []);
 
   const calculateTotalTomanBalance = () => {
     if (!getBalance || !ethPrice || !maticPrice) return 0;
 
-    // Convert ETH and MATIC to Tomans using live prices
     const ethInTomans = (getBalance.eth_balance || 0) * ethPrice;
     const maticInTomans = (getBalance.matic_balance || 0) * maticPrice;
     const rialAvailable = getBalance.rial_available_balance || 0;
 
-    // Total amount in Tomans
     return ethInTomans + maticInTomans + rialAvailable;
   };
 
   const renderDonutChart = () => {
     if (!getBalance || !ethPrice || !maticPrice) {
-      return <p>Loading...</p>; // Add a loading state while data is being fetched
+      return <p>Loading...</p>;
     }
 
     const ethInTomans = (getBalance.eth_balance || 0) * ethPrice;
@@ -594,7 +604,7 @@ const Dashboard = () => {
 
             <SimpleCard className="bg-base-100  w-full h-auto sm:p-3">
               <div className="text-xl font-b6 px-4 mx-auto py-1  transition-all rounded-2xl mb-2 text-center">{t("likedNFTs")} </div>
-              <table className="dashboard-table w-full text-cente sm:text-xs">
+              <table className="dashboard-table w-full text-center sm:text-xs">
                 <thead>
                   <tr>
                     <th>{t("nftPhoto")}</th>
@@ -603,10 +613,14 @@ const Dashboard = () => {
                     <th />
                   </tr>
                 </thead>
-                <tbody className="w-full">
+                <tbody>
                   {firtsFiveLinkedNfts &&
                     firtsFiveLinkedNfts.map((item, index) => (
-                      <tr className="group cursor-pointer hover:bg-base-100 rounded-xl transition-all" onClick={() => navigate(`/nft-details/${item.token_id}`)} key={index}>
+                      <tr
+                        className="group cursor-pointer hover:bg-base-100 rounded-xl transition-all"
+                        onClick={() => navigate(`/nft-details/${item.token_id}`)}
+                        key={index}
+                      >
                         <td>
                           <div className="flex justify-center w-full">
                             <img src={item.image_url} alt="" className="w-[42px] h-[42px] rounded-xl" />
@@ -623,6 +637,7 @@ const Dashboard = () => {
                     ))}
                 </tbody>
               </table>
+
 
               <AllNftDialog likedNfts={getLikedNfts} />
             </SimpleCard>

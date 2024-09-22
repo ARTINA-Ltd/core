@@ -13,6 +13,9 @@ const ExhibitionCollections = () => {
   const [banner, setBanner] = useState(null);
   const [deadline, setDeadline] = useState(null);
   const { id } = useParams();
+
+  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+
   useEffect(() => {
     axios.get(`https://api.artina.org/api/exhibition/nfts-by-exhibition/${id}/`).then((res) => {
       setExhibition(res.data);
@@ -22,7 +25,7 @@ const ExhibitionCollections = () => {
     axios
       .get(`https://api.artina.org/api/exhibition/nfts-by-exhibition/${id}/get_nfts/`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
       })
       .then((e) => {
@@ -40,7 +43,7 @@ const ExhibitionCollections = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
           mode: "cors",
         }

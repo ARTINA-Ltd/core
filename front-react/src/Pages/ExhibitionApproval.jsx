@@ -37,11 +37,13 @@ const ExhibitionApproval = () => {
     };
   }
 
+  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+
   useEffect(() => {
     axios
       .get("https://api.artina.org/api/supervisor/supervisor-tickets/metaverse_tickets/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
       })
       .then((e) => {
@@ -59,7 +61,7 @@ const ExhibitionApproval = () => {
     axios
       .get("https://api.artina.org/api/supervisor/rejection-messages/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
       })
       .then((e) => {
@@ -71,7 +73,7 @@ const ExhibitionApproval = () => {
     axios
       .get(`https://api.artina.org/api/exhibition/nfts-by-exhibition/${id}/get_nfts/`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
       })
       .then((e) => {
@@ -83,7 +85,7 @@ const ExhibitionApproval = () => {
     axios
       .get(`https://api.artina.org/api/exhibition/nfts-by-exhibition/${id}/`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
       })
       .then((e) => {
@@ -107,7 +109,7 @@ const ExhibitionApproval = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )
@@ -127,7 +129,7 @@ const ExhibitionApproval = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )
@@ -151,7 +153,7 @@ const ExhibitionApproval = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )
@@ -170,7 +172,7 @@ const ExhibitionApproval = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )

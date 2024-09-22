@@ -24,6 +24,8 @@ const InternationalProfile = () => {
   const inputFile = useRef(null);
   const inputFileNC = useRef(null);
 
+  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+
   function CountrySelector() {
     const [value, setValue] = useState("");
     const options = useMemo(() => countryList().getData(), []);
@@ -115,7 +117,7 @@ const InternationalProfile = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )
@@ -135,7 +137,7 @@ const InternationalProfile = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )
@@ -193,7 +195,7 @@ const InternationalProfile = () => {
           },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+              Authorization: `Bearer ${authTokens.access}`,
             },
           }
         )
@@ -271,7 +273,7 @@ const InternationalProfile = () => {
           },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+              Authorization: `Bearer ${authTokens.access}`,
             },
           }
         )
@@ -285,7 +287,7 @@ const InternationalProfile = () => {
               },
               {
                 headers: {
-                  Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+                  Authorization: `Bearer ${authTokens.access}`,
                 },
               }
             )
@@ -360,7 +362,7 @@ const InternationalProfile = () => {
           },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+              Authorization: `Bearer ${authTokens.access}`,
             },
           }
         )
@@ -406,6 +408,8 @@ const InternationalProfile = () => {
   }, [user]);
 
   useEffect(() => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+
     if (nationalCardImage) {
       Block.circle("#nationalCardImage");
 
@@ -413,7 +417,15 @@ const InternationalProfile = () => {
       const formData = new FormData();
       formData.append("image", nationalCardImage, nationalCardImage.name);
       axios
-        .post("https://api.artina.org/api/transaction/images/", formData)
+        .post("https://api.artina.org/api/transaction/images/", formData,
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens.access}`, // Use the access token
+              "Content-Type": "multipart/form-data" // This ensures the correct content type
+            },
+            mode: "cors",
+          }
+        )
         .then((res) => {
           Block.remove("#nationalCardImage", 3000);
 
@@ -435,7 +447,15 @@ const InternationalProfile = () => {
       const formData = new FormData();
       formData.append("image", profileImage, profileImage.name);
       axios
-        .post("https://api.artina.org/api/transaction/images/", formData)
+        .post("https://api.artina.org/api/transaction/images/", formData,
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens.access}`, // Use the access token
+              "Content-Type": "multipart/form-data" // This ensures the correct content type
+            },
+            mode: "cors",
+          }
+        )
         .then((res) => {
           Notify.success("با موفقیت آپلود شد");
           setProfileImageUrl(res.data.image);

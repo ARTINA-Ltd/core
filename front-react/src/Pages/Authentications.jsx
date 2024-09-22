@@ -7,13 +7,14 @@ import AdminLayout from "../Layouts/AdminLayout.jsx";
 
 const Authentications = () => {
   const [docApproval, setDocApproval] = useState(null);
+  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
   useEffect(() => {
     axios
       .get(
         "https://api.artina.org/api/supervisor/document-approvals/unseen_approvals/",
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )

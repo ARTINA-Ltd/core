@@ -35,6 +35,9 @@ const Support = () => {
   const [imageUrl, setImageUrl] = useState();
   const inputFile = useRef(null);
   const { t } = useTranslation(["support"]);
+
+  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+
   const handleSubmit = () => {
     if (user) {
       axios
@@ -51,7 +54,7 @@ const Support = () => {
           },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+              Authorization: `Bearer ${authTokens.access}`,
             },
             mode: "cors",
           }
@@ -86,7 +89,15 @@ const Support = () => {
       const formData = new FormData();
       formData.append("image", image, image.name);
       axios
-        .post("https://api.artina.org/api/transaction/images/", formData)
+        .post("https://api.artina.org/api/transaction/images/", formData,
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens.access}`, // Use the access token
+              "Content-Type": "multipart/form-data" // This ensures the correct content type
+            },
+            mode: "cors",
+          }
+        )
         .then((res) => {
           Notify.success("با موفقیت آپلود شد");
           setImageUrl(res.data.image);

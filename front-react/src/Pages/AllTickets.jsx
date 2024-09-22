@@ -7,10 +7,11 @@ const AllTickets = () => {
   const [tickets, setTickets] = useState(null);
 
   useEffect(() => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .get("https://api.artina.org/api/supervisor/supervisor-tickets/unresponded_tickets/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
       })
       .then((e) => {

@@ -9,11 +9,13 @@ const OpenExhibitions = () => {
   const [getData, setData] = useState();
   const navigate = useNavigate();
 
+  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+
   useEffect(() => {
     axios
       .get("https://api.artina.org/api/exhibition/open-for-artist-registration-exhibitions/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
         mode: "cors",
       })

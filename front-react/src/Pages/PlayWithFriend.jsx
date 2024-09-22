@@ -19,6 +19,8 @@ const PlayWithFriend = () => {
   const [serverResponse, setServerResponse] = useState("");
   const [status, setStatus] = useState("Pending");
 
+  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+
   useEffect(() => {
     axios
       .post(
@@ -26,7 +28,7 @@ const PlayWithFriend = () => {
         { id: user?.data.id },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )
@@ -43,7 +45,7 @@ const PlayWithFriend = () => {
         { id: user?.data.id },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
           mode: "cors",
         }
@@ -59,7 +61,7 @@ const PlayWithFriend = () => {
             },
             {
               headers: {
-                Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+                Authorization: `Bearer ${authTokens.access}`,
               },
             }
           )

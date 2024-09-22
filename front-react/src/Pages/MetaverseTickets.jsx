@@ -5,6 +5,9 @@ import MetaVerseCard from "../components/Cards/MetaVerseCard.jsx";
 import AdminLayout from "../Layouts/AdminLayout.jsx";
 import mand1 from "../assets/images/mand1.png"
 const MetaverseTickets = () => {
+
+  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+
   const [metaTickets, setMetaTickets] = useState(null);
   useEffect(() => {
     axios
@@ -12,7 +15,7 @@ const MetaverseTickets = () => {
         "https://api.artina.org/api/supervisor/supervisor-tickets/metaverse_tickets/",
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )

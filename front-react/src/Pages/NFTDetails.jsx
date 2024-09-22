@@ -13,6 +13,7 @@ import BorderButton from "../components/Buttons/BorderButton";
 import CountdownTimer from "../components/CountDown/CountDown";
 import { useTranslation } from "react-i18next";
 import { IoMdClose } from "react-icons/io";
+import useAuthCheck from "../hooks/useAuthCheck";
 
 const NFTDetails = () => {
   const [data, setData] = useState();
@@ -62,11 +63,12 @@ const NFTDetails = () => {
   };
 
   useEffect(() => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     const fetchData = async () => {
       try {
         const response = await axios.get("https://api.artina.org/api/account/CryptoViewSet/CryptoPrice_ETH/", {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
           mode: "cors",
         });
@@ -77,7 +79,7 @@ const NFTDetails = () => {
       try {
         const response = await axios.get("https://api.artina.org/api/account/CryptoViewSet/CryptoPrice_MATIC/", {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
           mode: "cors",
         });
@@ -88,7 +90,7 @@ const NFTDetails = () => {
       axios
         .get("https://api.artina.org/api/account/user-balance/get_balance/", {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
           mode: "cors",
         })
@@ -106,6 +108,7 @@ const NFTDetails = () => {
   }, []);
 
   const handleClickShare = () => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     navigator.clipboard.writeText(window.location.href);
     Notify.success("لینک کپی شد");
     axios
@@ -116,7 +119,7 @@ const NFTDetails = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )
@@ -126,6 +129,7 @@ const NFTDetails = () => {
   };
 
   const handleClickLike = () => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .post(
         "https://api.artina.org/api/transaction/nft_ratings/like/",
@@ -134,7 +138,7 @@ const NFTDetails = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )
@@ -152,6 +156,7 @@ const NFTDetails = () => {
   };
 
   useEffect(() => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .post("https://api.artina.org/api/transaction/nft-detail/", {
         token_id: id,
@@ -180,7 +185,7 @@ const NFTDetails = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )
@@ -197,7 +202,7 @@ const NFTDetails = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )
@@ -211,6 +216,7 @@ const NFTDetails = () => {
   }, []);
 
   function userHasLiked() {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .post(
         "https://api.artina.org/api/transaction/nft_ratings/user_has_liked/",
@@ -219,7 +225,7 @@ const NFTDetails = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )
@@ -236,6 +242,7 @@ const NFTDetails = () => {
   }
 
   const cryptoBuy = async () => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     if (amount * ethPrice.ETH_buy_price < 100000) {
       Notify.failure("مقدار باید از 100000 تومان بیشتر باشد");
       return;
@@ -247,7 +254,7 @@ const NFTDetails = () => {
           { symbol: "ETHTMN", amount: amount, price: ethPrice.ETH_buy_price },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+              Authorization: `Bearer ${authTokens.access}`,
             },
           }
         )
@@ -265,6 +272,7 @@ const NFTDetails = () => {
   };
 
   function addRequest() {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .post(
         "https://api.artina.org/api/transaction/orders/",
@@ -275,7 +283,7 @@ const NFTDetails = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
           mode: "cors",
         }

@@ -27,10 +27,11 @@ const AdminPanel = () => {
   }
 
   useEffect(() => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .get("https://api.artina.org/api/supervisor/supervisor-tickets/metaverse_tickets/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
       })
       .then((e) => {
@@ -42,7 +43,7 @@ const AdminPanel = () => {
     axios
       .get("https://api.artina.org/api/account/WithdrawalViewSet/list_requests/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
       })
       .then((e) => {
@@ -56,7 +57,7 @@ const AdminPanel = () => {
     axios
       .get("https://api.artina.org/api/supervisor/document-approvals/unseen_approvals/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
       })
       .then((e) => {
@@ -69,7 +70,7 @@ const AdminPanel = () => {
     axios
       .get("https://api.artina.org/api/supervisor/supervisor-tickets/unresponded_tickets/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`,
         },
       })
       .then((e) => {

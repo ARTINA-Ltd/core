@@ -25,6 +25,8 @@ function Profile() {
 
   console.log(user);
 
+  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+
   const navigate = useNavigate();
   if (localStorage.getItem("authTokens") === null) {
     navigate("/");
@@ -108,7 +110,7 @@ function Profile() {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )
@@ -128,7 +130,7 @@ function Profile() {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
         }
       )
@@ -187,7 +189,7 @@ function Profile() {
           },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+              Authorization: `Bearer ${authTokens.access}`,
             },
           }
         )
@@ -263,7 +265,7 @@ function Profile() {
           },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+              Authorization: `Bearer ${authTokens.access}`,
             },
           }
         )
@@ -277,7 +279,7 @@ function Profile() {
               },
               {
                 headers: {
-                  Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+                  Authorization: `Bearer ${authTokens.access}`,
                 },
               }
             )
@@ -350,7 +352,7 @@ function Profile() {
           },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+              Authorization: `Bearer ${authTokens.access}`,
             },
           }
         )
@@ -420,7 +422,15 @@ function Profile() {
       const formData = new FormData();
       formData.append("image", nationalCardImage, nationalCardImage.name);
       axios
-        .post("https://api.artina.org/api/transaction/images/", formData)
+        .post("https://api.artina.org/api/transaction/images/", formData,
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens.access}`, // Use the access token
+              "Content-Type": "multipart/form-data" // This ensures the correct content type
+            },
+            mode: "cors",
+          }
+        )
         .then((res) => {
           Block.remove("#nationalCardImage", 3000);
 
@@ -442,7 +452,15 @@ function Profile() {
       const formData = new FormData();
       formData.append("image", profileImage, profileImage.name);
       axios
-        .post("https://api.artina.org/api/transaction/images/", formData)
+        .post("https://api.artina.org/api/transaction/images/", formData,
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens.access}`, // Use the access token
+              "Content-Type": "multipart/form-data" // This ensures the correct content type
+            },
+            mode: "cors",
+          }
+        )
         .then((res) => {
           Notify.success("با موفقیت آپلود شد");
           setProfileImageUrl(res.data.image);
