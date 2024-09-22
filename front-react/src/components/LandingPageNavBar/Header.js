@@ -126,10 +126,11 @@ const Header = ({ connectWallet = false, rev = false }) => {
   useEffect(() => {
     if (user) {
       setLoading(true); // Start loading
+      const authTokens = JSON.parse(localStorage.getItem("authTokens")); // Ensure tokens are retrieved properly
       axios
         .get("https://api.artina.org/api/account/NotifyUserViewSet/notifList/", {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens?.access}`, // Use access token
           },
         })
         .then((d) => {
@@ -142,7 +143,10 @@ const Header = ({ connectWallet = false, rev = false }) => {
     }
   }, [user]);
 
+
   const handleClickSeen = (notifId) => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens")); // Parse auth tokens
+
     axios
       .post(
         "https://api.artina.org/api/account/NotifyUserViewSet/seenMsg/",
@@ -151,7 +155,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens?.access}`, // Use access token
           },
         }
       )
@@ -159,7 +163,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
         axios
           .get("https://api.artina.org/api/account/NotifyUserViewSet/notifList/", {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+              Authorization: `Bearer ${authTokens?.access}`, // Use access token
             },
           })
           .then((d) => {
@@ -167,6 +171,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
           });
       });
   };
+
 
   useEffect(() => {
     setUsername((e) => (user ? user.data.username : e));
@@ -205,7 +210,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
     const checkForOverflow = () => {
       const body = document.body;
       const html = document.documentElement;
-  
+
       const bodyWidth = Math.max(
         body.scrollWidth,
         body.offsetWidth,
@@ -213,28 +218,28 @@ const Header = ({ connectWallet = false, rev = false }) => {
         html.scrollWidth,
         html.offsetWidth
       );
-  
+
       const windowWidth = window.innerWidth;
-  
+
       if (bodyWidth > windowWidth) {
         document.body.style.overflowX = 'hidden';
       }
     };
-  
+
     // Check after a short delay to ensure all elements have rendered
     const timeoutId = setTimeout(() => {
       checkForOverflow();
     }, 500);  // Adjust delay based on complexity (e.g., 500ms)
-  
+
     // Add a resize event listener for responsive designs
     window.addEventListener('resize', checkForOverflow);
-  
+
     return () => {
       clearTimeout(timeoutId);
       window.removeEventListener('resize', checkForOverflow);
     };
   }, []);
-  
+
 
   return (
     <Fragment>
@@ -408,7 +413,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
                         onClick={(e) => {
                           navigate("/login");
                           setUsername();
-                          localStorage.removeItem("authTokens");
+                          localStorage.removeItem("authTokens"); // Clear auth tokens on logout
                           userChange(e);
                         }}
                       >

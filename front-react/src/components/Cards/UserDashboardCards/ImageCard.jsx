@@ -13,6 +13,8 @@ import { BiErrorAlt } from "react-icons/bi";
 const ImageCard = ({ className, children, src, price, onClick, tokenId, showCancel, showSell = false, onClickShow, onClickHide, has_creator, visible, isForSale }) => {
   const [isVisible, setIsVisible] = useState(visible);
   const [expandedSection, setExpandedSection] = useState(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false); // Dialog state
+  const [nftId, setNftId] = useState(null); // Store NFT ID from API response
 
   const handleExpand = (section) => {
     setExpandedSection(expandedSection === section ? null : section);
@@ -38,6 +40,7 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
   );
 
   const handleTransfer = () => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     console.log(tokenId);
     axios
       .post(
@@ -48,17 +51,25 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
           mode: "cors",
         }
       )
       .then((res) => {
-        Notify.success("انتقال موفقیت آمیز بود");
+        const nftId = res.data.nftId; // Assuming the API returns the NFT ID here
+        setNftId(nftId); // Set the retrieved NFT ID
+        setIsDialogOpen(true); // Open the dialog
+        Notify.success(t("transferSuccessful"));
+      })
+      .catch((e) => {
+        console.log(e);
+        Notify.failure(t("transferFailed"));
       });
   };
 
   const handleCancel = () => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .put(
         "https://api.artina.org/api/transaction/nfts/cancel_sell/",
@@ -67,13 +78,13 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`,
           },
           mode: "cors",
         }
       )
       .then((r) => {
-        Notify.success("فروش برای این اثر لغو شد");
+        Notify.success(t("saleCanceled"));
       })
       .catch((e) => {
         console.log(e);
@@ -107,6 +118,11 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
 
   const handleMouseOut = () => {
     setShowTooltip(false);
+  };
+
+  // Callback function for handling successful sale
+  const handleSellSuccess = () => {
+    setExpandedSection(null); // Collapse the sell section
   };
 
   return (
@@ -146,7 +162,7 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
                           top: `${tooltipPosition.y + 10}px`,
                         }}
                       >
-                        {t("changing visibility")}
+                        {t("changingVisibility")}
                       </div>
                     )}
                   </div>
@@ -185,7 +201,7 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
                           top: `${tooltipPosition.y + 10}px`,
                         }}
                       >
-                        {t("changing visibility")}
+                        {t("changingVisibility")}
                       </div>
                     )}
                   </div>
@@ -211,7 +227,7 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
                 </div>
 
                 <div className={`overflow-hidden transition-all duration-500 ${expandedSection === "sell" ? "max-h-[500px]" : "max-h-0"}`}>
-                  <SellArea tokenId={tokenId} cancel={() => handleExpand(null)} />
+                  <SellArea tokenId={tokenId} onSuccess={handleSellSuccess} />
                 </div>
 
                 <div className={`overflow-hidden transition-all duration-500 ${expandedSection === "transfer" ? "max-h-[500px]" : "max-h-0"}`}>
@@ -251,6 +267,55 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
           </Fragment>
         )}
       </div>
+
+      {/* Div for Transfer Success */}
+      {isDialogOpen && (
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+          onClick={() => setIsDialogOpen(false)} // Click outside to close
+        >
+          <div className="bg-white p-5 rounded-lg shadow-lg max-w-lg w-full">
+            <button
+              className="btn btn-sm btn-circle btn-ghost hover:bg-red-500 right-2 top-2"
+              onClick={() => setIsDialogOpen(false)}
+            >
+              ✕
+            </button>
+            <p className="text-lg font-semibold mb-2">
+              {t("transferSuccess")}
+            </p>
+            <div className="flex items-center justify-center gap-2">
+              <p className="flex justify-center text-lg bg-green-400 p-1 rounded-lg mt-2 font-semibold mb-2">
+                {t("tokenNumber")}: {tokenId}
+              </p>
+            </div>
+            <p className="text-lg font-semibold mb-2">
+              {t("yourNftIsNowTrackableAt")}
+            </p>
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <a
+                href={`https://polygonscan.com/token/0xb0df35d093752d7faf6bc3d4304cefccabe7a86a?a=${tokenId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-green-400 p-1 rounded-lg mt-2"
+              >
+                {t("viewOnPolygonScan")}
+              </a>
+            </div>
+            <p className="text-lg font-semibold mb-2">
+              {t("visitDocumentation")}
+              <a href="/help-transfer-nft"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-indigo-400"
+              >
+                {" "}{t("visitDocumentationLink")}{" "}
+              </a>
+              {t("visitDocumentationEnd")}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

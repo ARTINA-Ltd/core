@@ -29,10 +29,11 @@ const Header = ({ rev = false }) => {
   const { t } = useTranslation();
 
   useEffect(() => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .get("https://api.artina.org/api/account/NotifyUserViewSet/notifList/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+          Authorization: `Bearer ${authTokens.access}`, // Use the access token
         },
       })
       .then((d) => {
@@ -69,6 +70,7 @@ const Header = ({ rev = false }) => {
   }, [ref2]);
 
   const handleClickSeen = (notifId) => {
+    const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
       .post(
         "https://api.artina.org/api/account/NotifyUserViewSet/seenMsg/",
@@ -77,7 +79,7 @@ const Header = ({ rev = false }) => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+            Authorization: `Bearer ${authTokens.access}`, // Use the access token
           },
         }
       )
@@ -85,7 +87,7 @@ const Header = ({ rev = false }) => {
         axios
           .get("https://api.artina.org/api/account/NotifyUserViewSet/notifList/", {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authTokens")}`,
+              Authorization: `Bearer ${authTokens.access}`, // Use the access token
             },
           })
           .then((d) => {

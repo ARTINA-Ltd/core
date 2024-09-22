@@ -60,6 +60,9 @@ const Footer = () => {
             {/* <a href="https://artina.org" onClick={() => Notify.warning(t("addingLater"))} className="mr-2 font-b3">
               {t("blog")}
             </a> */}
+            <a href="/explore" className="mr-2 font-b3">
+              {t("explore")}
+            </a>
           </div>
           <div className="w-full flex flex-col gap-2 mb-4">
             <div className="font-b8">{t("guide")}</div>
@@ -68,6 +71,9 @@ const Footer = () => {
             </a>
             <a href="/help-mint" className="mr-2 font-b3">
               {t("NFTAddGuide")}{" "}
+            </a>
+            <a href="/help-transfer-nft" className="mr-2 font-b3">
+              {t("helpTransferNFT")}
             </a>
             <a href="/help-create-exhibition" className="mr-2 font-b3">
               {t("createExhibition")}
