@@ -21,6 +21,8 @@ class GameViewSet(viewsets.ModelViewSet):
             user2 = User.objects.get(id=user2_id)
         except ObjectDoesNotExist:
             return Response({"error": "User2 not found."}, status=status.HTTP_404_NOT_FOUND)
+        if user1==user2:
+            return Response({"error": "you can not play with yourself."}, status=status.HTTP_404_NOT_FOUND)
 
         # Create a new game
         game = Game.objects.create(user1=user1, user2=user2)
