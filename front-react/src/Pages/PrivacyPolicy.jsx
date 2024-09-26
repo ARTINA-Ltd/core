@@ -43,9 +43,19 @@ const PrivacyPolicy = () => {
             <p>{t("p8-7")}</p>
             <p>{t("p8-8")}</p>
           </div>
-          
+
           <div className="text-[25px] mb-2 mr-6">{t("h9")}</div>
-          <div className="text-[18px] mb-7 text-justify px-6">{t("p9")}</div>
+          <div className="text-[18px] mb-7 text-justify px-6">
+            <p>{t("p9-1")}</p>
+            <p>{t("p9-2")}</p>
+            <p>{t("p9-3")}</p>
+            <p>{t("p9-4")}</p>
+            <p>{t("p9-5")}</p>
+            <p>{t("p9-6")}</p>
+          </div>
+          
+          <div className="text-[25px] mb-2 mr-6">{t("h10")}</div>
+          <div className="text-[18px] mb-7 text-justify px-6">{t("p10")}</div>
         </SimpleCard>
       </div>
     </TestLayout>
