@@ -10,7 +10,7 @@ const TestLayout = ({ children, connectWallet, className, wfull = false, rev = f
       <meta httpEquiv="Content-Language" content="fa" />
       <div>
         {/* <div className={``}> */}
-        <div className={` m-auto my-0 pt-1 pb-5 min-h-[92vh] ${className} ${wfull ? "w-full" : "w-[90%]"}`}>{children}</div>
+        <div className={`m-auto my-0 pt-24 sm:pt-16 pb-5 min-h-[92vh] ${className} ${wfull ? "w-full" : "w-[90%]"}`}>{children}</div>
       </div>
 
       <Footer />
