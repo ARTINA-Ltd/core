@@ -243,7 +243,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
 
   return (
     <Fragment>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-opacity-95 bg-white shadow-lg">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-opacity-95 bg-white dark:bg-base-100 shadow-lg">
         <div className={`flex justify-center h-[85px] sm:h-[60px] font-b3`}>
           <div className="flex items-center justify-between w-[90%] justify-self-center">
             <div className="flex items-center gap-4 text-sm lg:hidden">
