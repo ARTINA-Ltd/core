@@ -32,10 +32,10 @@ const NftsSwiper = (props) => {
             <div className="w-full h-full bg-base-100 absolute   -z-10 blur-md "></div>
             <img className="background absolute  w-full -z-10 rounded-[10%] h-full blur-md opacity-80 " src={item.image_url} alt="item.name" />
             <img src={item.image_url} alt="item.name" className="translate-y-20 shadow-md rounded-md shadow-black lg:-translate-y-0" />
-            <div className="bg-base-100 bg-opacity-90 z-10 cursor-default gap-2 p-4 self-start rounded-md shadow-md sm:self-center">
+            <div className="bg-base-100 bg-opacity-90 z-10 cursor-default gap-2 py-4 px-8 self-start rounded-md shadow-md sm:self-center">
               {item.name && <p className="text-2xl">نام اثر: {item.name}</p>}
               {item.creator && <p className="text-2xl">خالق اثر: {item.creator}</p>}
-              {item.description && <p className="text-2xl">توضیحات: {item.description}</p>}
+              {item.description && <p className="text-lg text-justify">توضیحات: {item.description}</p>}
               <button
                 onClick={() => {
                   navigate(`/nft-details/${item.token_id}`);
