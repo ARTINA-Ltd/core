@@ -16,10 +16,23 @@ const NTSNavbar = () => {
         <div className="w-[80vw] md:w-[95vw] mx-auto flex md:justify-around justify-between">
           <div className="flex md:flex-col gap-8 h-fit my-auto items-center">
             <div className="flex gap-8 h-fit my-auto items-center">
-              <div className="tooltip tooltip-right md:tooltip-bottom" data-tip="Enter Artina Website">
-                <img className="h-16 sm:h-12 rounded-lg cursor-pointer" src={artinaLogo} alt="logo" onClick={() => navigate("/")} />
+              <div
+                className="tooltip tooltip-right md:tooltip-bottom"
+                data-tip="Enter Artina Website"
+              >
+                <img
+                  className="h-16 sm:h-12 rounded-lg cursor-pointer"
+                  src={artinaLogo}
+                  alt="logo"
+                  onClick={() => navigate("/")}
+                />
               </div>
-              <img alt="" src={userProfile.profile_picture} onClick={() => navigate("/nts")} className="h-16 aspect-square object-cover cursor-pointer rounded-full p-1 border" />
+              <img
+                alt=""
+                src={userProfile.profile_picture}
+                onClick={() => navigate("/nts")}
+                className="h-16 aspect-square object-cover cursor-pointer rounded-full p-1 border"
+              />
             </div>
             <div className="flex gap-8 h-fit my-auto items-center">
               <h1 className="text-3xl lg:text-base">My points:</h1>
@@ -27,38 +40,43 @@ const NTSNavbar = () => {
             </div>
           </div>
           <div className="flex md:flex-col gap-4 cursor-pointer">
-            <div className="bg-base-100 border rounded-xl flex items-center justify-center w-32 text-center h-16 p-2">
+            <div className="bg-base-100 border rounded-xl flex items-center justify-center w-36 text-center h-16 p-2">
               <p onClick={() => navigate("/nts/play-with-friend")}>My games</p>
             </div>
-            <div className="tooltip tooltip-left " data-tip={`All Hearts: ${userProfile.hearts}`}>
-              <div onClick={() => document.getElementById("buy-heart").showModal()} className="flex md:p-1  flex-col gap-2 w-32 h-16 bg-base-100 border rounded-xl justify-center items-center p-2">
-                <h1>buymore</h1>
-                {userProfile.hearts === 3 || userProfile.hearts > 3 ? (
-                  <div className="flex gap-2">
-                    <FaHeart />
-                    <FaHeart />
-                    <FaHeart />
-                  </div>
-                ) : userProfile.hearts === 2 ? (
-                  <div className="flex gap-2">
-                    <FaHeart />
-                    <FaHeart />
-                    <FaRegHeart />
-                  </div>
-                ) : userProfile.hearts === 1 ? (
-                  <div className="flex gap-2">
-                    <FaHeart />
-                    <FaRegHeart />
-                    <FaRegHeart />
-                  </div>
-                ) : (
-                  <div className="flex gap-2">
-                    <FaRegHeart />
-                    <FaRegHeart />
-                    <FaRegHeart />
-                  </div>
-                )}
-              </div>
+
+            <div
+              onClick={() => document.getElementById("buy-heart").showModal()}
+              className="flex md:p-1  flex-col w-36 h-16 bg-base-100 border rounded-xl justify-center items-center p-2"
+            >
+              <h1 className="whitespace-nowrap text-xs">
+                Remaining Hearts:{userProfile.hearts}
+              </h1>
+              <h1 className="text-sm text-primary">buymore</h1>
+              {userProfile.hearts === 3 || userProfile.hearts > 3 ? (
+                <div className="flex gap-2">
+                  <FaHeart />
+                  <FaHeart />
+                  <FaHeart />
+                </div>
+              ) : userProfile.hearts === 2 ? (
+                <div className="flex gap-2">
+                  <FaHeart />
+                  <FaHeart />
+                  <FaRegHeart />
+                </div>
+              ) : userProfile.hearts === 1 ? (
+                <div className="flex gap-2">
+                  <FaHeart />
+                  <FaRegHeart />
+                  <FaRegHeart />
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <FaRegHeart />
+                  <FaRegHeart />
+                  <FaRegHeart />
+                </div>
+              )}
             </div>
           </div>
         </div>
