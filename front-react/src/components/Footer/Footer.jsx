@@ -114,7 +114,7 @@ const Footer = () => {
           {icons.discord}
         </div>
       </div>
-      <div className="bg-primary-content mt-3 bg-clip-text text-transparent mx-auto text-center">Copyright ©2023 by Artina - All rights reserved</div>
+      <div className="bg-primary-content mt-3 bg-clip-text text-transparent mx-auto text-center">Copyright ©2024 by Artina - All rights reserved</div>
     </div>
   );
 };
