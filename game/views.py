@@ -22,7 +22,7 @@ class GameViewSet(viewsets.ModelViewSet):
         except ObjectDoesNotExist:
             return Response({"error": "User2 not found."}, status=status.HTTP_404_NOT_FOUND)
         if user1==user2:
-            return Response({"error": "you can not play with yourself."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "you can not play with."}, status=status.HTTP_404_NOT_FOUND)
 
         # Create a new game
         game = Game.objects.create(user1=user1, user2=user2)
@@ -33,17 +33,6 @@ class GameViewSet(viewsets.ModelViewSet):
 
         return Response(GameSerializer(game).data, status=status.HTTP_201_CREATED)
 
-    @action(detail=True, methods=['post'])
-    def join_game(self, request, pk=None):
-        game = self.get_object()
-        user2 = request.user
-        if game.user2:
-            return Response({"detail": "Game already has two players."}, status=status.HTTP_400_BAD_REQUEST)
-        
-        game.user2 = user2
-        game.save()
-        GameSession.objects.create(user=user2, game=game, user_turn=False)
-        return Response(GameSerializer(game).data)
 
     @action(detail=True, methods=['post'])
     def play_turn(self, request, pk=None):
@@ -122,6 +111,19 @@ class GameViewSet(viewsets.ModelViewSet):
             return 'user1'
         else:
             return 'user2'
+
+
+    @action(detail=True, methods=['post'])
+    def join_game(self, request, pk=None):
+        game = self.get_object()
+        user2 = request.user
+        if game.user2:
+            return Response({"detail": "Game already has two players."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        game.user2 = user2
+        game.save()
+        GameSession.objects.create(user=user2, game=game, user_turn=False)
+        return Response(GameSerializer(game).data)
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):

@@ -6,99 +6,208 @@ from .serializers import DocumentApprovalSerializer, SupervisorTicketSerializer 
 from django.contrib.auth.models import User
 from Account.models import NotifyUser
 from .utils import *
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
+from django.core.exceptions import PermissionDenied
+from rest_framework.throttling import UserRateThrottle
+import logging
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
+from rest_framework.throttling import UserRateThrottle
+import logging
+# Logger configuration for document approval actions
+approval_logger = logging.getLogger('document_approval')
 
 class DocumentApprovalViewSet(viewsets.ModelViewSet):
     queryset = DocumentApproval.objects.all()
     serializer_class = DocumentApprovalSerializer
+    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
+    throttle_classes = [UserRateThrottle]  # Rate limiting to prevent abuse
+
+    def get_queryset(self):
+        """Ensure only the supervisor can access their unseen approvals."""
+        user = self.request.user
+
+        # Check if the user has the supervisor role
+        if not hasattr(user, 'profile') or user.profile.role.name != 'supervisor':
+            approval_logger.warning(f"Unauthorized access attempt by user {user.username}.")
+            raise PermissionDenied("You do not have permission to view approvals.")
+
+        return DocumentApproval.objects.filter(supervisor=user)
 
     @action(detail=False, methods=['get'])
     def unseen_approvals(self, request):
+        """Return unseen approvals for the supervisor."""
         supervisor = request.user
+
+        # Ensure the user has the correct role
+        if not hasattr(supervisor, 'profile') or supervisor.profile.role.name != 'supervisor':
+            approval_logger.warning(f"Unseen approvals access denied for user {supervisor.username}")
+            raise PermissionDenied("Only supervisors can access unseen approvals.")
+
         unseen_approvals = DocumentApproval.objects.filter(supervisor=supervisor, seen=False)
         serializer = self.get_serializer(unseen_approvals, many=True)
+        approval_logger.info(f"Unseen approvals retrieved for supervisor {supervisor.username}")
         return Response(serializer.data)
 
     @action(detail=True, methods=['put'])
     def approve(self, request, pk=None):
+        """Approve a document."""
         approval = self.get_object()
-        # Check if national_code_approved or other fields need to be approved
+        supervisor = request.user
+
+        # Ensure the user has the supervisor role
+        if not hasattr(supervisor, 'profile') or supervisor.profile.role.name != 'supervisor':
+            approval_logger.warning(f"Approval attempt by non-supervisor user {supervisor.username}")
+            raise PermissionDenied("Only supervisors can approve documents.")
+
+        # Validate and approve fields
         approval.national_code_approved = request.data.get('national_code_approved', False)
-        # Check other fields for approval
         approval.seen = True
         approval.save()
+        approval_logger.info(f"Document approved by supervisor {supervisor.username} (ID: {approval.id})")
         return Response({'status': 'Approved'}, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['put'])
     def reject(self, request, pk=None):
+        """Reject a document with a rejection message."""
         approval = self.get_object()
-        rejection_message = request.data.get('rejection_message', None)
-        if rejection_message:
-            approval.response_message = rejection_message
-            approval.save()
+        supervisor = request.user
 
-            print(rejection_message)
-            approval.seen = True
-            approval.save()
-            return Response({'status': 'Rejected'}, status=status.HTTP_200_OK)
-        else:
+        # Ensure the user has the supervisor role
+        if not hasattr(supervisor, 'profile') or supervisor.profile.role.name != 'supervisor':
+            approval_logger.warning(f"Rejection attempt by non-supervisor user {supervisor.username}")
+            raise PermissionDenied("Only supervisors can reject documents.")
+
+        # Validate input
+        rejection_message = request.data.get('rejection_message', None)
+        if not rejection_message:
             return Response({'error': 'Rejection message is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Save the rejection message and mark the document as seen
+        approval.response_message = rejection_message
+        approval.seen = True
+        approval.save()
+
+        approval_logger.info(f"Document rejected by supervisor {supervisor.username} (ID: {approval.id}) with message: {rejection_message}")
+        return Response({'status': 'Rejected'}, status=status.HTTP_200_OK)
+
+
+# Logger for supervisor ticket actions
+ticket_logger = logging.getLogger('supervisor_ticket')
 
 class SupervisorTicketViewSet(viewsets.ModelViewSet):
     queryset = SupervisorTicket.objects.all()
     serializer_class = SupervisorTicketSerializer
+    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
+    throttle_classes = [UserRateThrottle]  # Rate limiting to prevent abuse
+
+    def get_queryset(self):
+        """Ensure supervisors can only access their own tickets."""
+        user = self.request.user
+
+        # Check if the user has the supervisor role
+        if not hasattr(user, 'profile') or user.profile.role.name != 'supervisor':
+            ticket_logger.warning(f"Unauthorized access attempt by user {user.username}.")
+            raise PermissionDenied("You do not have permission to view supervisor tickets.")
+
+        return SupervisorTicket.objects.filter(supervisor=user)
 
     @action(detail=False, methods=['post'])
     def notify_response(self, request):
-        exhibition_owner = request.data.get("username") 
-        text = request.data.get('text', '') 
-        user= User.objects.get(username=exhibition_owner)
-        NotifyUser.objects.create(user=user,text=text)
-        return Response({'message': 'Notification created successfully'}, status=201)
+        """Notify an exhibition owner about a ticket response."""
+        supervisor = request.user
 
+        # Ensure the user has the supervisor role
+        if not hasattr(supervisor, 'profile') or supervisor.profile.role.name != 'supervisor':
+            ticket_logger.warning(f"Notification creation attempt by non-supervisor user {supervisor.username}")
+            raise PermissionDenied("Only supervisors can notify users.")
+
+        # Validate input
+        exhibition_owner = request.data.get("username")
+        text = request.data.get('text', '').strip()
+
+        if not exhibition_owner or not text:
+            return Response({'error': 'Both username and text are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(username=exhibition_owner)
+            NotifyUser.objects.create(user=user, text=text)
+            ticket_logger.info(f"Notification sent to {user.username} by supervisor {supervisor.username}.")
+            return Response({'message': 'Notification created successfully'}, status=status.HTTP_201_CREATED)
+        except ObjectDoesNotExist:
+            ticket_logger.error(f"User with username {exhibition_owner} does not exist.")
+            return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
 
     @action(detail=False, methods=['get'])
     def unresponded_tickets(self, request):
-        unresponded_tickets = SupervisorTicket.objects.filter(response_message="")
+        """Return unresponded tickets for the supervisor."""
+        supervisor = request.user
+
+        # Ensure the user has the supervisor role
+        if not hasattr(supervisor, 'profile') or supervisor.profile.role.name != 'supervisor':
+            ticket_logger.warning(f"Unresponded tickets access denied for user {supervisor.username}")
+            raise PermissionDenied("Only supervisors can view unresponded tickets.")
+
+        unresponded_tickets = SupervisorTicket.objects.filter(response_message="", supervisor=supervisor)
         serializer = self.get_serializer(unresponded_tickets, many=True)
         return Response(serializer.data)
 
     @action(detail=False, methods=['get'])
     def metaverse_tickets(self, request):
-        metaverse_tickets = SupervisorTicket.objects.filter(response_message="", ticket__subject="metaverse")
+        """Return metaverse-related tickets for the supervisor."""
+        supervisor = request.user
+
+        # Ensure the user has the supervisor role
+        if not hasattr(supervisor, 'profile') or supervisor.profile.role.name != 'supervisor':
+            ticket_logger.warning(f"Metaverse tickets access denied for user {supervisor.username}")
+            raise PermissionDenied("Only supervisors can view metaverse tickets.")
+
+        metaverse_tickets = SupervisorTicket.objects.filter(response_message="", ticket__subject="metaverse", supervisor=supervisor)
         serializer = self.get_serializer(metaverse_tickets, many=True)
         return Response(serializer.data)
 
     @action(detail=True, methods=['post'])
     def respond(self, request, pk=None):
-        # Get supervisor ID from request user (assuming it's authenticated)
-        supervisor_id = self.request.user.id
+        """Respond to a ticket assigned to the supervisor."""
+        supervisor = self.request.user
 
-        # Get the ticket
-        ticketS = SupervisorTicket.objects.get(pk=pk)
+        # Ensure the user has the supervisor role
+        if not hasattr(supervisor, 'profile') or supervisor.profile.role.name != 'supervisor':
+            ticket_logger.warning(f"Respond attempt by non-supervisor user {supervisor.username}")
+            raise PermissionDenied("Only supervisors can respond to tickets.")
 
-        # Check if the ticket is assigned to the requesting supervisor
-        if ticketS.supervisor.id != supervisor_id:
-            return Response({'error': 'You are not authorized to respond to this ticket.'}, status=status.HTTP_403_FORBIDDEN)
+        try:
+            # Get the ticket
+            ticketS = SupervisorTicket.objects.get(pk=pk)
 
-        # Extract response_message from request data
-        response_message = request.data.get('response_message', None)
+            # Check if the ticket is assigned to the requesting supervisor
+            if ticketS.supervisor != supervisor:
+                ticket_logger.warning(f"Unauthorized respond attempt by {supervisor.username} for ticket {pk}")
+                return Response({'error': 'You are not authorized to respond to this ticket.'}, status=status.HTTP_403_FORBIDDEN)
 
-        # Check if response_message exists
-        if not response_message:
-            return Response({'error': 'Response message is required'}, status=status.HTTP_400_BAD_REQUEST)
+            # Validate response message
+            response_message = request.data.get('response_message', '').strip()
+            if not response_message:
+                return Response({'error': 'Response message is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Mail response to the user
-        subject = "Response to your ticket"
-        recipient_email = ticketS.ticket.email
-        message = response_message
-        send_email(subject, recipient_email, message)
+            # Send email to the user
+            subject = "Response to your ticket"
+            recipient_email = ticketS.ticket.email
+            send_email(subject, recipient_email, response_message)
 
-        # Update ticket response
-        ticketS.response_message = response_message
-        ticketS.save()
+            # Update ticket response
+            ticketS.response_message = response_message
+            ticketS.save()
 
-        return Response({'status': 'Response sent'}, status=status.HTTP_200_OK)
+            ticket_logger.info(f"Ticket {pk} responded by supervisor {supervisor.username}.")
+            return Response({'status': 'Response sent'}, status=status.HTTP_200_OK)
+        except SupervisorTicket.DoesNotExist:
+            ticket_logger.error(f"Ticket {pk} not found for supervisor {supervisor.username}.")
+            return Response({'error': 'Ticket not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-class RejectionMessageViewSet(viewsets.ModelViewSet):
-    queryset = RejectionMessage.objects.all()
-    serializer_class = RejectionMessageSerializer

@@ -31,6 +31,8 @@ import requests
 from django.conf import settings
 from django.utils import timezone
 from django.db.models import Q
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
+from rest_framework.throttling import UserRateThrottle
 
 class UserExhibitionsViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.ExhibitionSerializer
@@ -102,6 +104,7 @@ class IsExhibitorOrReadOnly(permissions.BasePermission):
 class ExhibitionViewSet(viewsets.ModelViewSet):
     queryset = Exhibition.objects.all()
     serializer_class = serializers.ExhibitionSerializer
+    throttle_classes = [UserRateThrottle]  # Rate limiting to prevent abuse
     # permission_classes = [IsExhibitorOrReadOnly]
 
     def perform_create(self, serializer):
@@ -111,6 +114,8 @@ class ExhibitionViewSet(viewsets.ModelViewSet):
 class ApplicationViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ApplicationSerializer
     # permission_classes = [permissions.IsAuthenticated, IsExhibitorOrReadOnly]
+    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can send emails
+    throttle_classes = [UserRateThrottle]  # Apply rate limiting to prevent abuse
 
     def get_queryset(self):
         user = self.request.user
@@ -136,12 +141,7 @@ class ApplicationViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # Check if the user has selected exactly 5 NFTs for their application
-        # if len(nft_objs) > 5:
-        #     return Response(
-        #         {'error': 'You must select exactly 5 NFTs for your application.'},
-        #         status=status.HTTP_400_BAD_REQUEST
-        #     )
+
 
         try:
             # Create a new application object and associate the selected NFTs with it
@@ -186,6 +186,13 @@ class ApplicationViewSet(viewsets.ModelViewSet):
         try:
             application = Application.objects.get(id=pk, exhibition__user=request.user)
             exhibition= application.exhibition
+            user=self.request.user
+            if user != exhibition.user:
+                raise PermissionDenied("Only authenticated users able to do this action.")
+
+            if not hasattr(user, 'profile') or user.profile.role.name != 'user_one':
+                raise PermissionDenied("Only authenticated users able to do this action.")
+
         except Application.DoesNotExist:
             return Response({'error': 'Application not found.'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -331,6 +338,9 @@ class TicketViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
     def buy_ticket(self, request, *args, **kwargs):
         user = self.request.user
+        if not hasattr(user, 'profile') or user.profile.role.name != 'user_one':
+            raise PermissionDenied("Only supervisors can access unseen approvals.")
+        
         exhibition_id = request.data.get("exhibition_id")  
         exhibition=None
         exhibition= Exhibition.objects.filter(id=exhibition_id).first()

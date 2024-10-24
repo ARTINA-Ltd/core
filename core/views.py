@@ -35,10 +35,39 @@ import time
 from decimal import Decimal 
 import logging
 from django.utils import timezone
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.throttling import UserRateThrottle
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
+from django.db import transaction  # For atomic operations
+from http import HTTPStatus
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 
 # Initialize Web3
 w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
 
+def verify_recaptcha(recaptcha_response):
+    secret_key = "6LfAJGoqAAAAAMtjBTUIz2DrZJ7uvhaWjI6bE0hA"
+    verify_url = 'https://www.google.com/recaptcha/api/siteverify'
+
+    payload = {
+        'secret': secret_key,
+        'response': recaptcha_response
+    }
+
+    response = requests.post(verify_url, data=payload)  # This is from the requests module
+    result = response.json()
+
+    if result['success']:
+        # For v3, you need to check the score
+        score = result.get('score', 0)
+        # You can adjust this threshold as needed
+        if score > 0.5:
+            return True
+
+    return False
 
 
 def send_sms(nft_name,name,phone_number):
@@ -344,82 +373,126 @@ class WalletValidationViewSet(viewsets.ViewSet):
         else:
             return Response({"message": "Invalid Polygon wallet address"}, status=status.HTTP_400_BAD_REQUEST)
 
+
+
 class OrderViewSet(viewsets.ViewSet):
     queryset = Order.objects.all()
     serializer_class = serializers.OrderSerializer
-    
+    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can place orders
+    throttle_classes = [UserRateThrottle]  # Rate limiting to prevent abuse
+
     def create(self, request, *args, **kwargs):
+        """Create a new bid on an NFT."""
+        user = self.request.user
+        recaptcha_response = request.data.get('recaptcha_token')
+        if not verify_recaptcha(recaptcha_response):
+            return Response({'error': 'Invalid reCAPTCHA. Please try again.'}, status=status.HTTP_400_BAD_REQUEST)
+        
         fee = request.data.get('fee')
         token_id = request.data.get('token_id')
-        eth = request.data.get('eth_fee')
-        status = 0
-        bidder=self.request.user
-        user_balance=None
-        user_balance = UserBalance.objects.filter(user=bidder).first()
-        user_eth=user_balance.eth_balance
-        fee=float(fee)
-        nft = NFT.objects.get(token_id=token_id)
-        eth=float(eth) 
-        user_eth=float(user_eth)    
-        if (nft.owner==bidder):
-            return Response({'error': 'you are the owner, you can not bid'},status=HTTPStatus.BAD_REQUEST)
-           
+        eth_fee = request.data.get('eth_fee')
+        if not hasattr(user, 'profile') or user.profile.role.name != 'user_one':
+            nft_logger.warning(f"access denied for user {user.username}")
+            raise PermissionDenied("Only authenticated users able to do this action.")
 
-        if Order.objects.filter(nft=nft,bidder=bidder, status=0).first() :
-            return Response({'error': 'you had already order on this NFT'},status=HTTPStatus.BAD_REQUEST)
+        # Input validation
+        try:
+            fee = float(fee)
+            eth_fee = float(eth_fee)
+        except (TypeError, ValueError):
+            return Response({'error': 'Invalid fee or eth_fee provided.'}, status=HTTPStatus.BAD_REQUEST)
 
-        if Order.objects.filter(nft=nft,eth=eth, status=0).first() :
-            return Response({'error': 'you have to bid more. this already exists.'},status=HTTPStatus.BAD_REQUEST)
-            
-        if user_eth< eth  :
-                return Response({'error': 'insufficient ballance','usereth':user_eth},status=HTTPStatus.BAD_REQUEST)
-            
-        user_balance.eth_balance -= eth
-        user_balance.eth_untradable_balance += eth  
-        user_balance.save()  
-        Order.objects.create(nft=nft,bidder=bidder,fee=fee,status=status,eth=eth)
-           
-        return Response(status=HTTPStatus.OK)
-          
-    
+        if not token_id:
+            return Response({'error': 'Token ID is required.'}, status=HTTPStatus.BAD_REQUEST)
+
+        # Fetch user balance and NFT
+        try:
+            user_balance = UserBalance.objects.get(user=user)
+            nft = NFT.objects.get(token_id=token_id)
+        except (UserBalance.DoesNotExist, NFT.DoesNotExist):
+            return Response({'error': 'User balance or NFT not found.'}, status=HTTPStatus.NOT_FOUND)
+
+        if nft.owner == user:
+            return Response({'error': 'You cannot bid on your own NFT.'}, status=HTTPStatus.BAD_REQUEST)
+
+        # Check if the user already has an active order on this NFT
+        if Order.objects.filter(nft=nft, bidder=user, status=0).exists():
+            return Response({'error': 'You already have an active order on this NFT.'}, status=HTTPStatus.BAD_REQUEST)
+
+        # Check if there's a higher or equal bid already
+        if Order.objects.filter(nft=nft, eth=eth_fee, status=0).exists():
+            return Response({'error': 'You must bid higher than the existing bid.'}, status=HTTPStatus.BAD_REQUEST)
+
+        # Validate user balance
+        if user_balance.eth_balance < eth_fee:
+            return Response({'error': 'Insufficient balance.'}, status=HTTPStatus.BAD_REQUEST)
+
+        # Atomic operation to prevent race conditions
+        with transaction.atomic():
+            user_balance.eth_balance -= eth_fee
+            user_balance.eth_untradable_balance += eth_fee
+            user_balance.save()
+
+            # Create the order
+            Order.objects.create(nft=nft, bidder=user, fee=fee, status=0, eth=eth_fee)
+
+        return Response({'message': 'Bid placed successfully.'}, status=HTTPStatus.OK)
+
     @action(detail=False, methods=['post'])
-    def disable_order(self,request):
-        bidder=self.request.user
+    def disable_order(self, request):
+        """Disable an active order and release the user's locked balance."""
+        user = self.request.user
         token_id = request.data.get('token_id')
-        status = 1
-        nft = NFT.objects.get(token_id=token_id)
-        order=Order.objects.filter(nft=nft,bidder=bidder, status=0).first()
-        order.status=1
-        user_balance=None
-        user_balance = UserBalance.objects.get(user=bidder)
-        eth=order.eth
-        user_balance.eth_balance += eth
-        user_balance.eth_untradable_balance -= eth  
-        user_balance.save()
-        order.save()
-        return Response({'error': 'your order has been deleted'},status=HTTPStatus.OK)
+        if not hasattr(user, 'profile') or user.profile.role.name != 'user_one':
+            nft_logger.warning(f"access denied for user {user.username}")
+            raise PermissionDenied("Only authenticated users able to do this action.")
+
+        if not token_id:
+            return Response({'error': 'Token ID is required.'}, status=HTTPStatus.BAD_REQUEST)
+
+        try:
+            nft = NFT.objects.get(token_id=token_id)
+            order = Order.objects.get(nft=nft, bidder=user, status=0)
+        except (NFT.DoesNotExist, Order.DoesNotExist):
+            return Response({'error': 'NFT or active order not found.'}, status=HTTPStatus.NOT_FOUND)
+
+        # Atomic operation to update balance and disable the order
+        with transaction.atomic():
+            user_balance = UserBalance.objects.get(user=user)
+            eth_fee = order.eth
+
+            user_balance.eth_balance += eth_fee
+            user_balance.eth_untradable_balance -= eth_fee
+            user_balance.save()
+
+            order.status = 1  # Mark order as disabled
+            order.save()
+
+        return Response({'message': 'Order disabled successfully.'}, status=HTTPStatus.OK)
 
     @action(detail=False, methods=['post'])
     def gettingorders(self, request):
+        """Retrieve active orders for a specific NFT."""
         token_id = request.data.get('token_id')
+
         if not token_id:
-            return Response({'error': 'Token ID not provided in header'}, status=HTTPStatus.BAD_REQUEST)
-        
+            return Response({'error': 'Token ID is required.'}, status=HTTPStatus.BAD_REQUEST)
+
         nft = NFT.objects.filter(token_id=token_id).first()
         if not nft:
-            return Response({'error': 'NFT with given token ID does not exist'}, status=HTTPStatus.NOT_FOUND)
-        
-        orders = Order.objects.filter(nft=nft,status=0)
-        serializer = serializers.OrderSerializer(orders, many=True)
+            return Response({'error': 'NFT not found.'}, status=HTTPStatus.NOT_FOUND)
+
+        orders = Order.objects.filter(nft=nft, status=0)  # Fetch only active orders
+        serializer = self.serializer_class(orders, many=True)
         return Response(serializer.data, status=HTTPStatus.OK)
 
     @action(detail=False, methods=['get'])
-    def get_user_order(self,request):
+    def get_user_order(self, request):
+        """Retrieve active orders placed by the authenticated user."""
         user = self.request.user
-        orders=Order.objects.filter(bidder=user, status=0)
-        serializer = serializers.OrderSerializer(orders, many=True)
+        orders = Order.objects.filter(bidder=user, status=0)  # Fetch only active orders
+        serializer = self.serializer_class(orders, many=True)
         return Response(serializer.data, status=HTTPStatus.OK)
-
 
 class NFTFilter(filters.FilterSet):
     search = filters.CharFilter(method='perform_search', label='Search')
@@ -569,8 +642,12 @@ class NftViewSet(viewsets.ModelViewSet):
     def cancel_sell(self, request, pk=None):
         nft_id = request.data.get('token_id')
         nft=NFT.objects.filter(token_id=nft_id).first()
+        user=self.request.user
         if nft.owner != self.request.user:
             return Response({'error': 'You do not have permission to perform this action.'}, status=403)
+        if not hasattr(user, 'profile') or user.profile.role.name != 'user_one':
+            nft_logger.warning(f"Metaverse tickets access denied for user {user.username}")
+            raise PermissionDenied("Only supervisors can view metaverse tickets.")
 
         nft.is_for_sale = False
         nft.save()
@@ -710,6 +787,8 @@ contract = sdk.get_nft_collection("0xDcF093a4B403903B5c3B20ed92ec688061c118e9")
 nft_logger = logging.getLogger('core.nft')
 
 class NFTViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
+    throttle_classes = [UserRateThrottle]  # Rate limiting to prevent abuse
 
     def create(self, request, *args, **kwargs):
         """
@@ -731,6 +810,13 @@ class NFTViewSet(viewsets.ViewSet):
             collection_id = request.data.get('collection')
 
             nft_logger.debug(f"Initiating NFT creation for user {user.username}. NFT name: {nft_name}, Creator: {creator}")
+
+            if not hasattr(user, 'profile') or user.profile.role.name != 'user_one':
+                nft_logger.warning(f"Metaverse tickets access denied for user {user.username}")
+                raise PermissionDenied("Only supervisors can view metaverse tickets.")
+            recaptcha_response = request.data.get('recaptcha_token')
+            if not verify_recaptcha(recaptcha_response):
+                return Response({'error': 'Invalid reCAPTCHA. Please try again.'}, status=status.HTTP_400_BAD_REQUEST)
 
         except KeyError as e:
             nft_logger.error(f"Missing required field: {e}")
