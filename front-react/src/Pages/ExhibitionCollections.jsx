@@ -6,6 +6,8 @@ import { useParams } from "react-router";
 import NftsSwiper from "../components/NftsSwiper/NftsSwiper.jsx";
 import CountdownTimer from "./../components/CountdownTimer";
 import i18n from "../i18n.js";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
 
 const ExhibitionCollections = () => {
   const [nfts, setNfts] = useState([]);
@@ -13,6 +15,8 @@ const ExhibitionCollections = () => {
   const [banner, setBanner] = useState(null);
   const [deadline, setDeadline] = useState(null);
   const { id } = useParams();
+  const { t } = useTranslation("exhibitionList");
+  const navigate = useNavigate();
 
   const authTokens = JSON.parse(localStorage.getItem("authTokens"));
 
@@ -48,7 +52,7 @@ const ExhibitionCollections = () => {
           mode: "cors",
         }
       )
-      .then((res) => {});
+      .then((res) => { });
   }, []);
 
   return (
@@ -62,62 +66,70 @@ const ExhibitionCollections = () => {
           </div>
           <div className="bg-base-100 rounded-xl w-[calc(50%-0.5rem)] mt-4 mx-auto shadow-md md:max-w-full flex flex-col gap-8 p-8 md:gap-4 container lg:w-full lg:mb-12">
             <h4 className="text-5xl md:text-3xl  font-bold ">{exhibition.marketName}</h4>
-            <p className=" text-2xl md:text-xl my-4 ">{exhibition.description}</p>
+            <p className=" text-l md:text-xl my-4 text-justify">{exhibition.description}</p>
             <h4 className=" text-2xl md:text-xl">
               تاریخ شروع:{" "}
               {i18n.language === "en"
                 ? Intl.DateTimeFormat({
-                    day: "numeric",
-                    month: "numeric",
-                    year: "numeric",
-                  }).format(new Date(exhibition.start_date))
+                  day: "numeric",
+                  month: "numeric",
+                  year: "numeric",
+                }).format(new Date(exhibition.start_date))
                 : Intl.DateTimeFormat("fa", {
-                    year: "numeric",
-                    month: "numeric",
-                    day: "numeric",
-                  }).format(new Date(exhibition.start_date))}
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                }).format(new Date(exhibition.start_date))}
             </h4>
             <h4 className=" text-2xl md:text-xl">
               تاریخ پایان:
               {i18n.language === "en"
-                ? Intl.DateTimeFormat("en",{
-                    year: "numeric",
-                    month: "numeric",
-                    day: "numeric",
-                  }).format(new Date(exhibition.end_date))
+                ? Intl.DateTimeFormat("en", {
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                }).format(new Date(exhibition.end_date))
                 : Intl.DateTimeFormat("fa", {
-                    year: "numeric",
-                    month: "numeric",
-                    day: "numeric",
-                  }).format(new Date(exhibition.end_date))}
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                }).format(new Date(exhibition.end_date))}
             </h4>
             <h4 className=" text-2xl md:text-xl">
               پایان ثبت نام:{" "}
               {i18n.language === "en"
-                ? Intl.DateTimeFormat("en",{
-                    year: "numeric",
-                    month: "numeric",
-                    day: "numeric",
-                  }).format(new Date(exhibition.application_deadline))
+                ? Intl.DateTimeFormat("en", {
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                }).format(new Date(exhibition.application_deadline))
                 : Intl.DateTimeFormat("fa", {
-                    year: "numeric",
-                    month: "numeric",
-                    day: "numeric",
-                  }).format(new Date(exhibition.application_deadline))}
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                }).format(new Date(exhibition.application_deadline))}
               <br />
               {i18n.language === "en"
                 ? Intl.DateTimeFormat("en", {
-                    minute: "numeric",
-                    hour: "numeric",
-                  }).format(new Date(exhibition.application_deadline))
+                  minute: "numeric",
+                  hour: "numeric",
+                }).format(new Date(exhibition.application_deadline))
                 : Intl.DateTimeFormat("fa", {
-                    minute: "numeric",
-                    hour: "numeric",
-                  }).format(new Date(exhibition.application_deadline))}
+                  minute: "numeric",
+                  hour: "numeric",
+                }).format(new Date(exhibition.application_deadline))}
             </h4>
             <h4>
               <CountdownTimer targetDate={deadline} />
             </h4>
+            <div className="flex justify-center">
+              <button
+                onClick={() => navigate("/metaverse")}
+                className="bg-purple-500 text-white rounded-lg px-8 py-1 mx-4"
+              >
+                {t("goToMetaverse")}
+              </button>
+            </div>
           </div>
           {nfts && <NftsSwiper items={nfts}></NftsSwiper>}
         </div>

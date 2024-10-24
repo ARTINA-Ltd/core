@@ -7,8 +7,6 @@ import { Notify } from "notiflix";
 import i18n from "./../i18n";
 import { useTranslation } from "react-i18next";
 
-
-
 const ExhibitionList = () => {
   const navigate = useNavigate();
   const [getData, setData] = useState([]);
@@ -17,7 +15,7 @@ const ExhibitionList = () => {
   const { t } = useTranslation("exhibitionList");
 
   const authTokens = JSON.parse(localStorage.getItem("authTokens"));
-  
+
   useEffect(() => {
     if (!localStorage.getItem("authTokens")) {
       navigate("/");
@@ -41,35 +39,45 @@ const ExhibitionList = () => {
       });
   }, [navigate]);
 
+  const truncateDescription = (description, maxLength = 40) => {
+    return description.length > maxLength
+      ? description.slice(0, maxLength) + "..."
+      : description;
+  };
+
   const handleBuyTicketClick = (exhibition) => {
     setSelectedExhibition(exhibition);
     document.getElementById("confirmTicketDialog").showModal(); // Show the dialog
   };
 
   const handleConfirmBuyTicket = () => {
-    axios.post("https://api.artina.org/api/exhibition/Ticket/buy_ticket/", {
-      exhibition_id: selectedExhibition.id
-    }, {
-      headers: {
-        Authorization: `Bearer ${authTokens.access}`,
-      },
-      mode: "cors",
-    }).then((res) => {
-      console.log("Buying ticket for:", selectedExhibition);
-      document.getElementById("confirmTicketDialog").close();
-      Notify.success(t("TicketPurchasedSuccessfully"));
-      console.log(res);
-    }).catch((err) => {
-      if (err.response.status === 400 && err.response.data.error === "you have the ticket.") {
-        Notify.warning(t("youHaveAlreadyTicket"));
-      }
-      if (err.response.status === 400 && err.response.data.error === "insufficient balance.") {
-        Notify.failure(t("insufficientBalance"));
-      }
-    });
-
-
-
+    axios
+      .post(
+        "https://api.artina.org/api/exhibition/Ticket/buy_ticket/",
+        {
+          exhibition_id: selectedExhibition.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authTokens.access}`,
+          },
+          mode: "cors",
+        }
+      )
+      .then((res) => {
+        console.log("Buying ticket for:", selectedExhibition);
+        document.getElementById("confirmTicketDialog").close();
+        Notify.success(t("TicketPurchasedSuccessfully"));
+        console.log(res);
+      })
+      .catch((err) => {
+        if (err.response.status === 400 && err.response.data.error === "you have the ticket.") {
+          Notify.warning(t("youHaveAlreadyTicket"));
+        }
+        if (err.response.status === 400 && err.response.data.error === "insufficient balance.") {
+          Notify.failure(t("insufficientBalance"));
+        }
+      });
   };
 
   const handleTicket = (item) => {
@@ -105,25 +113,25 @@ const ExhibitionList = () => {
       <Fragment>
         <div className={`flex gap-8 flex-wrap p-4 w-full h-full overflow-auto items-stretch`}>
           {getData.length > 0
-            ? getData.map((item) => (
-              item.image && (
-                <ExhibitionCard
-                  key={item.id}
-                  name={item.marketName}
-                  user={item.user}
-                  image={item.image}
-                  id={item.id}
-                  startDate={item.start_date}
-                  endDate={item.end_date}
-                  description={item.description}
-                  deadLine={item.application_deadline}
-                  hasTicket={item.has_ticket}
-                  userHasTicket={item.user_has_ticket}
-                  price={item.price}
-                  handleTicket={handleTicket(item)}
-                />
+            ? getData.map((item) =>
+                item.image ? (
+                  <ExhibitionCard
+                    key={item.id}
+                    name={item.marketName}
+                    user={item.user}
+                    image={item.image}
+                    id={item.id}
+                    startDate={item.start_date}
+                    endDate={item.end_date}
+                    description={truncateDescription(item.description)}
+                    deadLine={item.application_deadline}
+                    hasTicket={item.has_ticket}
+                    userHasTicket={item.user_has_ticket}
+                    price={item.price}
+                    handleTicket={handleTicket(item)}
+                  />
+                ) : null
               )
-            ))
             : "Loading exhibitions..."}
         </div>
       </Fragment>
@@ -143,7 +151,8 @@ const ExhibitionList = () => {
             </button>
           </form>
           <p className="py-4 z-10 mx-8">
-            {t("areYouSureBuyTicket-1")} {selectedExhibition?.marketName} {t("areYouSureBuyTicket-2")}
+            {t("areYouSureBuyTicket-1")} {selectedExhibition?.marketName}{" "}
+            {t("areYouSureBuyTicket-2")}
           </p>
           <div className="mx-4 items-start flex">
             <button
