@@ -41,7 +41,7 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
 
   const handleTransfer = () => {
     const authTokens = JSON.parse(localStorage.getItem("authTokens"));
-    console.log(tokenId);
+    // console.log(tokenId);
     axios
       .post(
         `https://api.artina.org/api/transaction/nfts/transferToUserWallet/`,
@@ -63,7 +63,7 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
         Notify.success(t("transferSuccessful"));
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
         Notify.failure(t("transferFailed"));
       });
   };
@@ -87,7 +87,7 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
         Notify.success(t("saleCanceled"));
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
   };
 
@@ -103,7 +103,7 @@ const ImageCard = ({ className, children, src, price, onClick, tokenId, showCanc
       })
       .catch((e) => {
         setIsAddressValid(false);
-        console.log(e);
+        // console.log(e);
       });
   };
 

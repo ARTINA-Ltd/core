@@ -56,7 +56,7 @@ const BalanceDialog = () => {
         window.open(res.data.url);
         setRefresh(!refresh);
       })
-      .catch(console.log);
+      // .catch(console.log);
   };
 
   const updateBalanceWithdraw = () => {
@@ -88,10 +88,10 @@ const BalanceDialog = () => {
       .then((res) => {
         Notify.success("درخواست شما با موفقیت ثبت شد");
         setRefresh(!refresh);
-        console.log(res);
+        // console.log(res);
       })
       .catch((res) => {
-        console.log(res);
+        // console.log(res);
         setRefresh(!refresh);
         Notify.failure("خطا");
       });

@@ -37,7 +37,7 @@ const AI = () => {
         }
       )
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setImages(res.data.image_url)
       })
       .catch((res) => {
@@ -49,7 +49,7 @@ const AI = () => {
         }
       })
       .finally(() => {
-        console.log("sth");
+        // console.log("sth");
         Block.remove("#ai-image", 3000);
       });
   };

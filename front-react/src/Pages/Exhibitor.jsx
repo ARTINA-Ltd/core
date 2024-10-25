@@ -44,8 +44,8 @@ const Exhibitor = () => {
       })
       .then((res) => {
         console.log("_____________________");
-        console.log("user exhibitions");
-        console.log(res.data);
+        // console.log("user exhibitions");
+        // console.log(res.data);
         console.log("_____________________");
         setArtistOpenExhibitions(res.data);
       });
@@ -74,7 +74,7 @@ const Exhibitor = () => {
         }
       )
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         Notify.success(t("requestSuccess"));
       })
       .catch((e) => console.log(e));

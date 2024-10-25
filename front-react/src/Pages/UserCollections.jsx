@@ -19,7 +19,6 @@ const UserCollections = () => {
         setData(res.data);
       })
       .catch((res) => {
-        console.log(res);
       });
   }, []);
   return (

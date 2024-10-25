@@ -34,7 +34,7 @@ const PlayWithFriend = () => {
       )
       .then((e) => {
         setSessions(e.data);
-        console.log(e.data);
+        // console.log(e.data);
       });
   }, [user]);
 
@@ -52,7 +52,7 @@ const PlayWithFriend = () => {
       )
       .then((e) => {
         setSoloDisabled(false);
-        console.log(e.data.id);
+        // console.log(e.data.id);
         axios
           .post(
             `https://api.artina.org/api/game/games/${e.data.id}/play_solo/`,
@@ -72,11 +72,11 @@ const PlayWithFriend = () => {
             setSoloDisabled(!soloDisabled);
           })
           .catch((e) => {
-            console.log(e);
+            // console.log(e);
           });
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
   };
 

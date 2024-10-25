@@ -326,9 +326,9 @@ const InternationalProfile = () => {
       var b_date;
       if (typeof values.birthdate !== "string") {
         b_date = values.birthdate;
-        console.log("IF", values.birthdate);
+        // console.log("IF", values.birthdate);
       } else {
-        console.log("ELSE", values.birthdate);
+        // console.log("ELSE", values.birthdate);
 
         b_date = values.birthdate != "" && values.birthdate != null ? new Date(values.birthdate.split("/")[2], values.birthdate.split("/")[1] - 1, values.birthdate.split("/")[0]) : "";
       }
@@ -384,7 +384,7 @@ const InternationalProfile = () => {
   }
 
   useEffect(() => {
-    console.log(user);
+    // console.log(user);
     if (user && user.data) {
       setValues((prev) => ({
         ...prev,
@@ -474,7 +474,7 @@ const InternationalProfile = () => {
       setTimeout(() => setCounter(counter - 1), 1000);
     }
   }, [counter]);
-  console.log(countryList().getData());
+  // console.log(countryList().getData());
 
   return (
     <TestLayout connectWallet={false}>

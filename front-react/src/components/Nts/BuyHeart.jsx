@@ -10,7 +10,7 @@ const BuyHeart = () => {
   const [amount, setAmount] = useState(0);
 
   useEffect(() => {
-    console.log(user);
+    // console.log(user);
   }, [user]);
 
   const buyHearts = async () => {
@@ -30,7 +30,7 @@ const BuyHeart = () => {
           mode: "cors",
         }
       );
-      console.log(response.data);
+      // console.log(response.data);
       Notify.success(response.data.message);
     } catch (error) {
       console.error("Error buying hearts:", error);
