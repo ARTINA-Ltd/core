@@ -96,7 +96,7 @@ const NFTDetails = () => {
         })
         .then((res) => {
           setBalance(res.data);
-          console.log(res.data);
+          // console.log(res.data);
         });
     };
 
@@ -151,7 +151,7 @@ const NFTDetails = () => {
         if (res.response.data.detail === "Given token not valid for any token type") {
           Notify.warning("برای لایک کردن لطفا وارد حساب کاربری خود شوید");
         } else Notify.warning("قبلا پسندیده اید");
-        console.log(res);
+        // console.log(res);
       });
   };
 
@@ -174,7 +174,7 @@ const NFTDetails = () => {
       })
       .then((d) => {
         // setLike(d.data.nft);
-        console.log(d.data);
+        // console.log(d.data);
       });
 
     axios
@@ -190,8 +190,8 @@ const NFTDetails = () => {
         }
       )
       .then((d) => {
-        console.log("view");
-        console.log(d);
+        // console.log("view");
+        // console.log(d);
       });
 
     axios
@@ -208,9 +208,11 @@ const NFTDetails = () => {
       )
       .then((d) => {
         setReqData(d);
-        console.log("_______Orders_______", d);
+        // console.log("_______Orders_______", d);
       })
-      .catch((res) => console.log(res));
+      .catch((res) => 
+        console.log(res)
+    );
 
     userHasLiked();
   }, []);
@@ -230,14 +232,14 @@ const NFTDetails = () => {
         }
       )
       .then((d) => {
-        console.log("_Has User Like_");
-        console.log(d.data);
+        // console.log("_Has User Like_");
+        // console.log(d.data);
         setLike(d.data);
         setLikeColor(d.data.user_has_liked ? true : false);
       })
       .catch((res) => {
-        console.log(res);
-        console.log("_Has User Like_");
+        // console.log(res);
+        // console.log("_Has User Like_");
       });
   }
 
@@ -260,13 +262,13 @@ const NFTDetails = () => {
         )
         .then(() => {
           Notify.success("your request has been successfull.");
-          console.log();
+          // console.log();
         })
         .catch((err) => {
           if (err.response.status === 403) {
             Notify.failure("درحال حاضر امکان معامله وجود ندارد");
           } else Notify.failure("there was an error!");
-          console.log(err);
+          // console.log(err);
         });
     } catch {}
   };

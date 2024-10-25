@@ -33,15 +33,15 @@ const Authenticate = () => {
         }
       )
       .then((e) => {
-        console.log("message delivered" + e);
+        // console.log("message delivered" + e);
         Navigate("/admin-panel");
       })
       .catch((e) => {
-        console.log(`there was an error : ${e}`);
+        // console.log(`there was an error : ${e}`);
       });
   };
   const handleReject = (e) => {
-    console.log(option);
+    // console.log(option);
     setIsApproved(true);
     axios
       .put(
@@ -54,11 +54,11 @@ const Authenticate = () => {
         }
       )
       .then((e) => {
-        console.log("message delivered" + e);
+        // console.log("message delivered" + e);
         Navigate("/admin-panel");
       })
       .catch((e) => {
-        console.log(`there was an error : ${e}`);
+        // console.log(`there was an error : ${e}`);
       });
   };
 
@@ -78,7 +78,7 @@ const Authenticate = () => {
         );
       })
       .catch((err) => {
-        console.log(`there was an error ${err}`);
+        // console.log(`there was an error ${err}`);
       });
     axios
       .get("https://api.artina.org/api/supervisor/rejection-messages/", {
@@ -90,7 +90,7 @@ const Authenticate = () => {
         setMessages(e.data);
       })
       .catch((err) => {
-        console.log(`there was an error ${err}`);
+        // console.log(`there was an error ${err}`);
       });
   }, []);
 

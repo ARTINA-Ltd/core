@@ -31,7 +31,7 @@ const GetMail = () => {
         email: description,
       });
 
-      console.log(response);
+      // console.log(response);
       Notify.success("ایمیل شما با موفقیت ثبت شد");
     } catch (error) {
       if (error.response && error.response.status === 409) {
@@ -41,7 +41,7 @@ const GetMail = () => {
         Notify.failure("خطا در ثبت ایمیل");
       }
     } finally {
-      console.log("Done");
+      // console.log("Done");
     }
   };
 

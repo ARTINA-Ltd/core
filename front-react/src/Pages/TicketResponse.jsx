@@ -35,7 +35,7 @@ const TicketResponse = () => {
         );
       })
       .catch((err) => {
-        console.log(`there was an error ${err}`);
+        // console.log(`there was an error ${err}`);
       });
     axios
       .get("https://api.artina.org/api/supervisor/rejection-messages/", {
@@ -47,13 +47,13 @@ const TicketResponse = () => {
         setMessages(e.data);
       })
       .catch((err) => {
-        console.log(`there was an error ${err}`);
+        // console.log(`there was an error ${err}`);
       });
   }, []);
 
   const responsePost = (e) => {
     const response = option + "\n" + message;
-    console.log(response);
+    // console.log(response);
     e.preventDefault();
 
     axios
@@ -69,11 +69,11 @@ const TicketResponse = () => {
         }
       )
       .then((e) => {
-        console.log("message delivered" + e);
+        // console.log("message delivered" + e);
         navigate("/admin-panel");
       })
       .catch((e) => {
-        console.log(`there was an error : ${e}`);
+        // console.log(`there was an error : ${e}`);
       });
   };
 

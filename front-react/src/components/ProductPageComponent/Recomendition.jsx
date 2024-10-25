@@ -28,7 +28,7 @@ function Recomendition({ requests, nft }) {
       })
       .catch(exception => {
         Notify.failure("خطا");
-        console.log(exception);
+        // console.log(exception);
       });
   }
 

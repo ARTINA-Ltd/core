@@ -22,7 +22,7 @@ const Authentications = () => {
         setDocApproval(e.data);
       })
       .catch((err) => {
-        console.log(`there was an error ${err}`);
+        // console.log(`there was an error ${err}`);
       });
   }, []);
   return (

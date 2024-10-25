@@ -98,10 +98,10 @@ const AddExhibition = () => {
       .catch((e) => {
         if (e.response.status === 400 && e.response.data.price[0] === "Ensure this value is greater than or equal to 5000.") {
           Notify.failure(t("minPrice"));
-          console.log("400 and error");
+          // console.log("400 and error");
         } else {
           Notify.failure(t("error"));
-          console.log(e);
+          // console.log(e);
         }
       });
   };

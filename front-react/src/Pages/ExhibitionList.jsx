@@ -32,10 +32,10 @@ const ExhibitionList = () => {
       })
       .then((res) => {
         setData(res.data);
-        console.log("in:", res.data);
+        // console.log("in:", res.data);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   }, [navigate]);
 
@@ -65,10 +65,10 @@ const ExhibitionList = () => {
         }
       )
       .then((res) => {
-        console.log("Buying ticket for:", selectedExhibition);
+        // console.log("Buying ticket for:", selectedExhibition);
         document.getElementById("confirmTicketDialog").close();
         Notify.success(t("TicketPurchasedSuccessfully"));
-        console.log(res);
+        // console.log(res);
       })
       .catch((err) => {
         if (err.response.status === 400 && err.response.data.error === "you have the ticket.") {

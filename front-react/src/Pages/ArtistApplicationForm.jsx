@@ -71,7 +71,7 @@ const ArtistApplicationForm = () => {
         })
         .catch((res) => {
           Notify.failure(t("error"));
-          console.log(res);
+          // console.log(res);
         })
       : Notify.failure(t("failNotif"));
   };
@@ -79,7 +79,7 @@ const ArtistApplicationForm = () => {
   useEffect(() => {
     const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios.get(`https://api.artina.org/api/transaction/collection/${user ? user.data.username : 0}/nfts/`).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       setNfts(res.data);
     });
     axios

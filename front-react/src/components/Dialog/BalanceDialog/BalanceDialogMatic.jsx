@@ -42,13 +42,13 @@ const BalanceDialogMatic = () => {
       })
       .then((res) => {
         if (res.data && res.data.wallet_address) {
-          console.log(res.data);
+          // console.log(res.data);
           setAddress(res.data.wallet_address);
           setTurnOver(res.data);
         }
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
   };
 
@@ -118,13 +118,13 @@ const BalanceDialogMatic = () => {
         )
         .then(() => {
           Notify.success("your request has been successfull.");
-          console.log();
+          // console.log();
         })
         .catch((err) => {
           if (err.response.status === 403) {
             Notify.failure("درحال حاضر امکان معامله وجود ندارد");
           } else Notify.failure("there was an error!");
-          console.log(err);
+          // console.log(err);
         });
     } catch { }
     getBalance();
@@ -149,11 +149,11 @@ const BalanceDialogMatic = () => {
         )
         .then(() => {
           Notify.success("your request has been successfull.");
-          console.log();
+          // console.log();
         })
         .catch((err) => {
           Notify.failure("there was an error!");
-          console.log(err);
+          // console.log(err);
         });
     } catch { }
     getBalance();
@@ -173,7 +173,7 @@ const BalanceDialogMatic = () => {
         }
       )
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.status === 201) {
           const createdAddress = res.data.address;
           setAddress(createdAddress);
@@ -181,7 +181,7 @@ const BalanceDialogMatic = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         Notify.failure("خطا در ساخت کیف پول");
       });
   };
