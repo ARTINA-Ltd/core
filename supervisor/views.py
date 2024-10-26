@@ -1,8 +1,8 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import DocumentApproval, SupervisorTicket , RejectionMessage
-from .serializers import DocumentApprovalSerializer, SupervisorTicketSerializer , RejectionMessageSerializer
+from .models import DocumentApproval, SupervisorTicket 
+from .serializers import DocumentApprovalSerializer, SupervisorTicketSerializer 
 from django.contrib.auth.models import User
 from Account.models import NotifyUser
 from .utils import *
