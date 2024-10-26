@@ -9,6 +9,8 @@ import AdminLayout from "../Layouts/AdminLayout.jsx";
 import { Fragment } from "react";
 import { UserContext } from "../App.js";
 import mand1 from "../assets/images/mand1.png";
+import useAuthCheck from "../hooks/useAuthCheck";
+
 
 const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
@@ -26,6 +28,8 @@ const AdminPanel = () => {
     }
   }
 
+  useAuthCheck();
+
   useEffect(() => {
     const authTokens = JSON.parse(localStorage.getItem("authTokens"));
     axios
@@ -38,7 +42,7 @@ const AdminPanel = () => {
         setMetaTickets(e.data.slice(0, 4));
       })
       .catch((err) => {
-        console.log(`there was an error${err}`);
+        // console.log(`there was an error${err}`);
       });
     axios
       .get("https://api.artina.org/api/account/WithdrawalViewSet/list_requests/", {
@@ -48,10 +52,10 @@ const AdminPanel = () => {
       })
       .then((e) => {
         setListRequests(e.data);
-        console.log(e.data);
+        // console.log(e.data);
       })
       .catch((err) => {
-        console.log(`there was an error${err}`);
+        // console.log(`there was an error${err}`);
       });
 
     axios
@@ -64,7 +68,7 @@ const AdminPanel = () => {
         setDocApproval(e.data.slice(0, 4));
       })
       .catch((err) => {
-        console.log(`there was an error ${err}`);
+        // console.log(`there was an error ${err}`);
       });
 
     axios
@@ -78,7 +82,7 @@ const AdminPanel = () => {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(`there was an error:/ ${err}`);
+        // console.log(`there was an error:/ ${err}`);
       });
   }, []);
 

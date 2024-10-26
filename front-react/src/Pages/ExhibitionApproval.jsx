@@ -55,7 +55,7 @@ const ExhibitionApproval = () => {
         );
       })
       .catch((err) => {
-        console.log(`there was an error${err}`);
+        // console.log(`there was an error${err}`);
       });
 
     axios
@@ -68,7 +68,7 @@ const ExhibitionApproval = () => {
         setMessages(e.data);
       })
       .catch((err) => {
-        console.log(`there was an error ${err}`);
+        // console.log(`there was an error ${err}`);
       });
     axios
       .get(`https://api.artina.org/api/exhibition/nfts-by-exhibition/${id}/get_nfts/`, {
@@ -80,7 +80,7 @@ const ExhibitionApproval = () => {
         setNfts(e.data);
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
     axios
       .get(`https://api.artina.org/api/exhibition/nfts-by-exhibition/${id}/`, {
@@ -95,12 +95,12 @@ const ExhibitionApproval = () => {
         setEndDate(e.data.end_date);
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
   }, []);
 
   const handleMetaverse = () => {
-    console.log(ticket.id);
+    // console.log(ticket.id);
     axios
       .post(
         `https://api.artina.org/api/supervisor/supervisor-tickets/${ticket.id}/respond/`,
@@ -114,11 +114,11 @@ const ExhibitionApproval = () => {
         }
       )
       .then((e) => {
-        console.log("message delivered" + e);
+        // console.log("message delivered" + e);
         navigate("/admin-panel");
       })
       .catch((e) => {
-        console.log(`there was an error : ${e}`);
+        // console.log(`there was an error : ${e}`);
       });
     axios
       .post(
@@ -134,7 +134,7 @@ const ExhibitionApproval = () => {
         }
       )
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         Notify.success("درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد.");
         navigate("/admin-panel");
       })
@@ -143,7 +143,7 @@ const ExhibitionApproval = () => {
 
   const handleReject = (e) => {
     const response = option + "\n" + message;
-    console.log(response);
+    // console.log(response);
     e.preventDefault();
     axios
       .post(
@@ -158,10 +158,10 @@ const ExhibitionApproval = () => {
         }
       )
       .then((e) => {
-        console.log("message delivered" + e);
+        // console.log("message delivered" + e);
       })
       .catch((e) => {
-        console.log(`there was an error : ${e}`);
+        // console.log(`there was an error : ${e}`);
       });
     axios
       .post(
@@ -177,7 +177,7 @@ const ExhibitionApproval = () => {
         }
       )
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         Notify.success("درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد.");
         navigate("/admin-panel");
       })

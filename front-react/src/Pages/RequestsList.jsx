@@ -20,7 +20,7 @@ const RequestsList = () => {
         },
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setData(res.data);
       })
       .catch(() => {});

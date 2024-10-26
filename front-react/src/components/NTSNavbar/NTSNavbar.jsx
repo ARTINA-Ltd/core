@@ -25,7 +25,7 @@ const NTSNavbar = ({ refetch }) => {
         }
       )
       .then((e) => {
-        console.log(e.data);
+        // console.log(e.data);
 
         setUserProfile(e.data);
       })

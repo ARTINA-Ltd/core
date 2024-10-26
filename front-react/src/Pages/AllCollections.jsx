@@ -16,7 +16,7 @@ const AllCollections = () => {
   useEffect(() => {
     axios.get(`https://api.artina.org/api/transaction/nfts/get_all/`).then((res) => {
       setData(res.data);
-      console.log(res.data);
+      // console.log(res.data);
     });
   }, []);
 

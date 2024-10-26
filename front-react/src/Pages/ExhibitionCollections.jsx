@@ -34,10 +34,10 @@ const ExhibitionCollections = () => {
       })
       .then((e) => {
         setNfts(e.data);
-        console.log(e.data);
+        // console.log(e.data);
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
     axios
       .post(
