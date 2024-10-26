@@ -6,7 +6,7 @@ router = DefaultRouter()
 
 router.register(r'register', views.RegisterViewSet)
 # router.register(r'artists', views.ArtistViewSet)
-router.register(r'rate', views.ArtistRateViewSet)
+# router.register(r'rate', views.ArtistRateViewSet)
 router.register(r'profile', views.ProfileViewSet)
 router.register(r'affiliate', views.AffiliateDetailView, basename='affiliate')
 router.register(r'user-info', views.UserInfoViewSet, basename='user_info')
