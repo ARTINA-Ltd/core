@@ -19,7 +19,7 @@ const Login = () => {
   useEffect(() => {
     // Load reCAPTCHA v3 script
     const script = document.createElement('script');
-    script.src = `https://www.google.com/recaptcha/api.js?render=6Lea3F0qAAAAANYONoP3SokfRw6_uttL5OGhYGqI`;
+    script.src = `https://www.google.com/recaptcha/api.js?render=6LfAJGoqAAAAAGKheBOwBD1Z1mLFzUfNBfxIKwtc`;
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);
@@ -32,7 +32,7 @@ const Login = () => {
   const executeRecaptcha = () => {
     return new Promise((resolve, reject) => {
       window.grecaptcha.ready(() => {
-        window.grecaptcha.execute('6Lea3F0qAAAAANYONoP3SokfRw6_uttL5OGhYGqI', { action: 'login' })
+        window.grecaptcha.execute('6LfAJGoqAAAAAGKheBOwBD1Z1mLFzUfNBfxIKwtc', { action: 'login' })
           .then(token => resolve(token))
           .catch(error => reject(error));
       });
@@ -59,7 +59,11 @@ const Login = () => {
           access: res.data.access,
           refresh: res.data.refresh,
         };
-        localStorage.setItem("authTokens", JSON.stringify(tokenData));
+        // localStorage.setItem("authTokens", JSON.stringify(tokenData));
+
+        localStorage.setItem("accessToken", res.data.access);
+        localStorage.setItem("refreshToken", res.data.refresh);
+        
         userChange(res);
         Notify.success(t("success"));
 
