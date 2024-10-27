@@ -123,6 +123,48 @@ const Header = ({ connectWallet = false, rev = false }) => {
     },
   ];
 
+
+  const handleLogout = async () => {
+    try {
+      const refreshToken = localStorage.getItem("refreshToken");
+      const accessToken = localStorage.getItem("accessToken");
+
+      if (!refreshToken) {
+        Notify.failure(t("Refresh token not found. Please log in."));
+        return;
+      }
+
+      const response = await axios.post(
+        "https://api.artina.org/account/logout/",
+        { refresh: refreshToken },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        // Clear auth data from local storage
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        localStorage.setItem("isLoggedIn", "false");
+
+        // Update context and navigate to login
+        userChange(null);
+        Notify.success(t("You have been logged out."));
+        navigate("/login");
+      } else {
+        Notify.failure(t("Failed to log out. Please try again later."));
+      }
+    } catch (error) {
+      Notify.failure(t("Failed to log out. Please try again later."));
+      console.error("Logout error:", error);
+    }
+  };
+
+
   useEffect(() => {
     if (user) {
       setLoading(true); // Start loading
@@ -410,12 +452,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
 
                       <div
                         className="w-full cursor-pointer py-2 px-3 text-sm hover:bg-base-100 rounded-xl"
-                        onClick={(e) => {
-                          navigate("/login");
-                          setUsername();
-                          localStorage.removeItem("authTokens"); // Clear auth tokens on logout
-                          userChange(e);
-                        }}
+                        onClick={handleLogout}
                       >
                         {t("logout")}
                       </div>
