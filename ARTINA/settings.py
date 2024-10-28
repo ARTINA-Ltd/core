@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+# Middleware for setting CSP headers
+from django.middleware.security import SecurityMiddleware
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 env_loaded = load_dotenv()
@@ -123,6 +126,25 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+# Ensure cookies are only sent over HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Prevent JavaScript from accessing the session cookie
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
+
+# This prevents the site from being framed by any other site
+X_FRAME_OPTIONS = 'DENY'
+
+# Alternatively, use 'SAMEORIGIN' if you need to allow framing from the same origin
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+
+CSP_FRAME_ANCESTORS = ("'none'",)  # To disallow all framing
+# Or restrict to the same origin:
+# CSP_FRAME_ANCESTORS = ("'self'",)
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
