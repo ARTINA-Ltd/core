@@ -129,8 +129,8 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '5/minute',  # Throttle anonymous users to 5 requests per minute (fine for security)
-        'user': '20/minute',  # Increase for authenticated users for better user experience (20 requests per minute)
+        'anon': '3/minute',  # Throttle anonymous users to 5 requests per minute (fine for security)
+        'user': '22/minute',  # Increase for authenticated users for better user experience (20 requests per minute)
     }
 }
 

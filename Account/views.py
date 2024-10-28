@@ -82,6 +82,11 @@ from rest_framework.decorators import action
 from django.utils.timezone import now, timedelta
 from django.shortcuts import get_object_or_404
 from web3 import Web3
+from rest_framework.response import Response
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 
 polygon_w3 = Web3(Web3.HTTPProvider("https://polygon.rpc.thirdweb.com"))
 
@@ -308,6 +313,25 @@ class LoginViewSet(viewsets.ViewSet):
         }
         return Response(response_data, status=status.HTTP_200_OK)
 
+
+
+
+class LogoutViewSet(viewsets.ViewSet):
+    @action(detail=False, methods=['post'])
+    def logout(self, request):
+        try:
+            refresh_token = request.data.get('refresh')
+
+            if not refresh_token:
+                return Response({"error": "Refresh token is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+            token = RefreshToken(refresh_token)
+            token.blacklist()  # This will now work if blacklisting is enabled
+
+            return Response({"message": "Successfully logged out."}, status=status.HTTP_205_RESET_CONTENT)
+
+        except (TokenError, InvalidToken) as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 
