@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'game',   
     'supervisor',    
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     'allauth',
     'allauth.account',
@@ -165,7 +166,7 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(minutes=179),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
-}
+    }
 
 ROOT_URLCONF = 'ARTINA.urls'
 
