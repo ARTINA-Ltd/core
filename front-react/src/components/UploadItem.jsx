@@ -32,6 +32,31 @@ const UploadItem = () => {
   const [collectionsOptions, setCollectionOptions] = useState([]);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Load reCAPTCHA v3 script
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js?render=6LfAJGoqAAAAAGKheBOwBD1Z1mLFzUfNBfxIKwtc`;
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+    
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+
+  const executeRecaptcha = () => {
+    return new Promise((resolve, reject) => {
+      window.grecaptcha.ready(() => {
+        window.grecaptcha.execute('6LfAJGoqAAAAAGKheBOwBD1Z1mLFzUfNBfxIKwtc', { action: 'upload' })
+          .then(token => resolve(token))
+          .catch(error => reject(error));
+      });
+    });
+  };
+
   useEffect(() => {
     if (categories != undefined) {
       setCategoryOptions([]);
@@ -89,16 +114,18 @@ const UploadItem = () => {
     last_price: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setDisabled(true);
     setTimeout(() => setDisabled(false), 30000);
-    e.preventDefault();
     setIsLoading(true);
     Notify.info(t("mintingNotif"));
-    const authTokens = JSON.parse(localStorage.getItem("authTokens")); // Parse the tokens properly
 
-    axios
-      .post(
+    try {
+      const recaptchaToken = await executeRecaptcha(); // Get reCAPTCHA token
+      const authTokens = JSON.parse(localStorage.getItem("authTokens")); // Parse the tokens properly
+
+      const res = await axios.post(
         "https://api.artina.org/api/transaction/NFTViewSet/",
         {
           nft_name: upladObj.item_name,
@@ -113,40 +140,34 @@ const UploadItem = () => {
           has_internal_wallet: true,
           data: uploadObj.properties,
           collection: selectedCollection,
+          recaptcha_token: recaptchaToken, // Include reCAPTCHA token
         },
         {
           headers: {
             Authorization: `Bearer ${authTokens.access}`, // Use the access token
+            "Content-Type": "application/json",
           },
-          mode: "cors",
         }
-      )
-      .then((res) => {
+      );
+
+      if (res.status === 200) {
         setTokenId(res.data);
         Notify.success(t("mintSuccessNotif"));
         setIsLoading(false);
         setIsUploaded(true);
-      })
-      .catch((e) => {
-        if (e.response.status === 401) {
-          Notify.failure("Please log in to your account");
-          navigate("/");
-        } else {
-          setIsLoading(false);
-          // console.log("Category:", selectedCategory);
-          // console.log("Has Physical:", hasPhysical);
-        }
-        if (e.response.status === 3) {
-          Notify.failure(t("tryAgain"));
-        }
-        if (e.response.data.error === "your money is not enough") {
-          Notify.failure(t("mintLowBalanceNotif"));
-        } else {
-          Notify.failure(t("error"));
-        }
-        setIsLoading(false);
-      });
+      }
+    } catch (e) {
+      if (e.response && e.response.status === 401) {
+        Notify.failure("Please log in to your account");
+        navigate("/");
+      } else {
+        Notify.failure(t("error"));
+      }
+      setIsLoading(false);
+    }
   };
+
+
   const handleCopy = () => {
     navigator.clipboard.writeText("0xB0Df35D093752d7fAf6bc3D4304CEFcCABe7a86a");
     Notify.success(t("copied"));

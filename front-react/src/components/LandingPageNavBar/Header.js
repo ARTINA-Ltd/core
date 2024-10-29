@@ -126,8 +126,11 @@ const Header = ({ connectWallet = false, rev = false }) => {
 
   const handleLogout = async () => {
     try {
-      const refreshToken = localStorage.getItem("refreshToken");
-      const accessToken = localStorage.getItem("accessToken");
+      // const refreshToken = localStorage.getItem("refreshToken");
+      // const accessToken = localStorage.getItem("accessToken");
+
+      const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+      const refreshToken = authTokens?.refresh;
 
       if (!refreshToken) {
         Notify.failure(t("Refresh token not found. Please log in."));
@@ -135,20 +138,19 @@ const Header = ({ connectWallet = false, rev = false }) => {
       }
 
       const response = await axios.post(
-        "https://api.artina.org/account/logout/",
+        "https://api.artina.org/api/account/logout/logout/",
         { refresh: refreshToken },
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${authTokens?.access}`,
           },
         }
       );
 
-      if (response.status === 200) {
+      if (response.status === 205) {
         // Clear auth data from local storage
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("authTokens");
         localStorage.setItem("isLoggedIn", "false");
 
         // Update context and navigate to login
@@ -157,6 +159,7 @@ const Header = ({ connectWallet = false, rev = false }) => {
         navigate("/login");
       } else {
         Notify.failure(t("Failed to log out. Please try again later."));
+        console.error("Logout error this section:", response);
       }
     } catch (error) {
       Notify.failure(t("Failed to log out. Please try again later."));

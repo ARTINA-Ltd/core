@@ -6,8 +6,8 @@ import TestLayout from "../Layouts/TestLayout";
 import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import BorderButton from "../components/Buttons/BorderButton";
 import SimpleInput from "../components/Inputs/SimpleInput";
-import ReCAPTCHA from "react-google-recaptcha";
 import { useTranslation } from "react-i18next";
+import { Notify } from "notiflix/build/notiflix-notify-aio";
 
 const Register = () => {
   const [values, setValues] = useState({
@@ -18,118 +18,54 @@ const Register = () => {
     foreigner: false,
   });
   const [isChecked, setIsChecked] = useState(false);
-  const [captchaRes, setCaptchaRes] = useState(false);
   const [foreigner, setForeigner] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Validation states
-  const [usernameValid, setUsernameValid] = useState(true);
-  const [usernameUnique, setUsernameUnique] = useState(null);
-  const [emailValid, setEmailValid] = useState(true);
-  const [emailUnique, setEmailUnique] = useState(null);
-  const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [isValidPassword, setIsValidPassword] = useState(true);
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [isRegisterEnabled, setIsRegisterEnabled] = useState(false);
 
   const { t } = useTranslation(["login"]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if the register button should be enabled
+    // Load reCAPTCHA v3 script
+    const script = document.createElement("script");
+    script.src = `https://www.google.com/recaptcha/api.js?render=6LfAJGoqAAAAAGKheBOwBD1Z1mLFzUfNBfxIKwtc`;
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const executeRecaptcha = () => {
+    return new Promise((resolve, reject) => {
+      window.grecaptcha.ready(() => {
+        window.grecaptcha.execute("6LfAJGoqAAAAAGKheBOwBD1Z1mLFzUfNBfxIKwtc", { action: "register" })
+          .then(token => resolve(token))
+          .catch(error => reject(error));
+      });
+    });
+  };
+
+  useEffect(() => {
+    // Enable the register button only if all conditions are met
     setIsRegisterEnabled(
       isChecked &&
-      captchaRes &&
       values.username &&
       values.email &&
       isValidPassword &&
-      passwordsMatch &&
-      usernameValid &&
-      usernameUnique === true &&
-      emailValid &&
-      emailUnique === true
+      passwordsMatch
     );
-  }, [isChecked, captchaRes, values, isValidPassword, passwordsMatch, usernameValid, usernameUnique, emailValid, emailUnique]);
-
-  // ReCAPTCHA handler
-  const handleCaptchaChange = (e) => {
-    setCaptchaRes(e.length !== 0);
-  };
-
-  // Username validation
-  const handleUsernameChange = (e) => {
-    const username = e.target.value;
-    const usernamePattern = /^[a-zA-Z0-9_]+$/; // Allow letters, numbers, and underscores
-
-    setValues((prev) => ({
-      ...prev,
-      username: username,
-    }));
-
-    // Check if username matches the required pattern
-    if (!usernamePattern.test(username)) {
-      setUsernameValid(false);
-      setUsernameUnique(null); // reset the uniqueness check
-      return;
-    }
-
-    setUsernameValid(true);
-
-    // Check username uniqueness
-    axios
-      .post("https://api.artina.org/api/account/register/check_username/", { username })
-      .then((response) => {
-        if (response.data.message === "Username is available.") {
-          setUsernameUnique(true);
-        }
-      })
-      .catch((err) => {
-        if (err.response && err.response.status === 400) {
-          setUsernameUnique(false); // Username is not unique
-        } else {
-          console.error(err); // Handle other potential errors
-        }
-      });
-  };
-
-  // Email validation
-  const handleEmailChange = (e) => {
-    const email = e.target.value;
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email validation pattern
-
-    setValues((prev) => ({
-      ...prev,
-      email: email,
-    }));
-
-    // Check if email matches the required pattern
-    if (!emailPattern.test(email)) {
-      setEmailValid(false);
-      setEmailUnique(null); // reset the uniqueness check
-      return;
-    }
-
-    setEmailValid(true);
-
-    // Check email uniqueness
-    axios
-      .post("https://api.artina.org/api/account/register/check_email/", { email })
-      .then((response) => {
-        if (response.data.message === "Email is available.") {
-          setEmailUnique(true);
-        }
-      })
-      .catch((err) => {
-        if (err.response && err.response.status === 400) {
-          setEmailUnique(false); // Email is not unique
-        } else {
-          console.error(err); // Handle other potential errors
-        }
-      });
-  };
+  }, [isChecked, values, isValidPassword, passwordsMatch]);
 
   // Password validation
   const handlePasswordChange = (e) => {
     const password = e.target.value;
-    const passwordPattern = /^(?=.*[A-Z]).{8,}$/; // At least one capital letter and at least 8 characters
+    const passwordPattern = /^(?=.*[A-Z]).{8,}$/;
 
     setValues((prev) => ({
       ...prev,
@@ -152,29 +88,28 @@ const Register = () => {
   };
 
   // Form submission handler
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (isRegisterEnabled) {
-      axios
-        .post("https://api.artina.org/api/account/register/", {
+      try {
+        const recaptchaToken = await executeRecaptcha(); // Execute reCAPTCHA and get token
+
+        await axios.post("https://api.artina.org/api/account/register/", {
           username: values.username,
           email: values.email,
           password: values.password,
           isforeigner: foreigner,
           referral_code: values.referralCode,
-        })
-        .then(() => {
-          navigate("/login");
-        })
-        .catch((response) => {
-          if (response.response.data.error === "This username is already taken.") {
-            setUsernameUnique(false);
-          }
-          if (response.response.data.error === "This email is already registered.") {
-            setEmailUnique(false);
-          }
+          recaptcha_token: recaptchaToken, // Include reCAPTCHA token
         });
+
+        Notify.success(t("success"));
+        
+        navigate("/login");
+      } catch (error) {
+        setErrorMessage(t("Invalid credentials"));
+      }
     }
   };
 
@@ -183,23 +118,20 @@ const Register = () => {
       <SimpleCard className={"bg-base-100 w-[550px] sm:m-4"}>
         <div className="text-[24px] text-center">{t("signForm")}</div>
 
-        {/* Username field */}
+        {/* Error message */}
+        {errorMessage && <div className="text-red-500 text-center mt-2">{errorMessage}</div>}
+
         <SimpleInput
           className={"mt-6"}
           type="text"
           name="username"
           title={t("username")}
           placeholder={t("example")}
-          isValid={usernameValid && usernameUnique !== false && values.username !== ""}
+          isValid={values.username !== ""}
           validationError={t("required")}
-          onChange={handleUsernameChange}
+          onChange={(e) => setValues((prev) => ({ ...prev, username: e.target.value }))}
           defaultValue={""}
         />
-        <div className="text-sm mt-1">
-          {!usernameValid && <span className="text-red-500">{t("invalidUsername")}</span>}
-          {usernameValid && usernameUnique === false && <span className="text-red-500">{t("usernameTaken")}</span>}
-          {usernameValid && usernameUnique === true && <span className="text-green-500">{t("usernameAvailable")}</span>}
-        </div>
 
         {/* Email field */}
         <SimpleInput
@@ -207,16 +139,11 @@ const Register = () => {
           type="text"
           title={t("email")}
           placeholder={t("emailExample")}
-          isValid={emailValid && emailUnique !== false && values.email !== ""}
+          isValid={values.email !== ""}
           validationError={t("required")}
-          onChange={handleEmailChange}
+          onChange={(e) => setValues((prev) => ({ ...prev, email: e.target.value }))}
           defaultValue={""}
         />
-        <div className="text-sm mt-1">
-          {!emailValid && <span className="text-red-500">{t("invalidEmail")}</span>}
-          {emailValid && emailUnique === false && <span className="text-red-500">{t("emailTaken")}</span>}
-          {emailValid && emailUnique === true && <span className="text-green-500">{t("emailAvailable")}</span>}
-        </div>
 
         {/* Password field */}
         <SimpleInput
@@ -229,9 +156,6 @@ const Register = () => {
           onChange={handlePasswordChange}
           defaultValue={""}
         />
-        <div className="text-sm mt-1">
-          {!isValidPassword && <span className="text-red-500">{t("invalidPassword")}</span>}
-        </div>
 
         {/* Confirm Password field */}
         <SimpleInput
@@ -286,13 +210,7 @@ const Register = () => {
           </div>
         </div>
 
-
-        {/* ReCAPTCHA */}
-        <div className="w-full flex justify-center items-center mt-5">
-          <ReCAPTCHA sitekey={"6LecwBMnAAAAAItOWnJM8T17TlvnA1ewPIUGDuj_"} onChange={handleCaptchaChange} />
-        </div>
-
-        {/* Register Button */}
+        {/* Terms and Register Button */}
         <div className="w-full mt-5 flex md:flex-col justify-between items-center gap-4">
           <a href="/privacy-policy" className="hover:text-neutral-content hover:bg-neutral px-2 py-1 transition-all duration-100 font-b2 rounded-full">
             {t("policy")}{" "}

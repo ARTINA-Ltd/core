@@ -45,5 +45,6 @@
   "emailTaken": "Email already registered",
   "emailAvailable": "Email available",
   "invalidPassword": "Password must be at least 8 characters long and contain at least one uppercase letter.",
-  "passwordMismatch": "Password and repeat must be the same."
+  "passwordMismatch": "Password and repeat must be the same.",
+  "Invalid credentials": "Invalid credentials"
 }

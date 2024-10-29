@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import TestLayout from "../Layouts/TestLayout";
 import "../LoginComponent/formInput-style.css";
 import SimpleInput from "../components/Inputs/SimpleInput";
@@ -6,10 +6,7 @@ import SimpleCard from "../components/Cards/UserDashboardCards/SimpleCard";
 import axios from "axios";
 import { UserContext } from "../App";
 import { Block, Notify } from "notiflix";
-import ReCAPTCHA from "react-google-recaptcha";
 import BorderButton from "../components/Buttons/BorderButton";
-import { useRef } from "react";
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 const Support = () => {
@@ -21,15 +18,7 @@ const Support = () => {
     last_name: "",
     phone_number: "",
   });
-  const captchaRef = useRef(null);
-  const [captchaRes, setCaptchaRes] = useState(false);
-  const handleCaptchaChange = (e) => {
-    if (e.length != 0) {
-      setCaptchaRes(true);
-    } else {
-      setCaptchaRes(false);
-    }
-  };
+  const [captchaToken, setCaptchaToken] = useState(null);
   const user = useContext(UserContext);
   const [image, setImage] = useState();
   const [imageUrl, setImageUrl] = useState();
@@ -38,46 +27,48 @@ const Support = () => {
 
   const authTokens = JSON.parse(localStorage.getItem("authTokens"));
 
-  const handleSubmit = () => {
-    if (user) {
-      axios
-        .post(
-          "https://api.artina.org/api/account/ticket/",
-          {
-            subject: values.subject,
-            text: values.text,
-            email: values.email,
-            name: values.name,
-            last_name: values.last_name,
-            phone_number: values.phone_number,
-            image_url: imageUrl,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${authTokens.access}`,
-            },
-            mode: "cors",
-          }
-        )
-        .then((res) => {
-          Notify.success("درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد.");
-        })
-        .catch(() => Notify.failure("خطا"));
-    } else {
-      axios
-        .post("https://api.artina.org/api/account/ticket/", {
-          subject: values.subject,
-          text: values.text,
-          email: values.email,
-          name: values.name,
-          last_name: values.last_name,
-          phone_number: values.phone_number,
-          image_url: imageUrl,
-        })
-        .then((res) => {
-          Notify.success("درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد.");
-        })
-        .catch(() => Notify.failure("خطا"));
+  useEffect(() => {
+    // Load reCAPTCHA v3 script
+    const script = document.createElement("script");
+    script.src = `https://www.google.com/recaptcha/api.js?render=6LfAJGoqAAAAAGKheBOwBD1Z1mLFzUfNBfxIKwtc`;
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const executeRecaptcha = () => {
+    return new Promise((resolve, reject) => {
+      window.grecaptcha.ready(() => {
+        window.grecaptcha.execute("6LfAJGoqAAAAAGKheBOwBD1Z1mLFzUfNBfxIKwtc", { action: "support" })
+          .then((token) => resolve(token))
+          .catch((error) => reject(error));
+      });
+    });
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const recaptchaToken = await executeRecaptcha(); // Execute reCAPTCHA and get token
+      const requestData = {
+        subject: values.subject,
+        text: values.text,
+        email: values.email,
+        name: values.name,
+        last_name: values.last_name,
+        phone_number: values.phone_number,
+        image_url: imageUrl,
+        recaptcha_token: recaptchaToken, // Include reCAPTCHA token
+      };
+
+      const headers = user ? { Authorization: `Bearer ${authTokens.access}` } : {};
+
+      await axios.post("https://api.artina.org/api/account/ticket/", requestData, { headers, mode: "cors" });
+      Notify.success("درخواست شما با موفقیت ثبت شد. پشتیبانی ما در اسرع وقت به تیکت شما پاسخ خواهند داد.");
+    } catch {
+      Notify.failure("خطا در ثبت تیکت.");
     }
   };
 
@@ -89,15 +80,13 @@ const Support = () => {
       const formData = new FormData();
       formData.append("image", image, image.name);
       axios
-        .post("https://api.artina.org/api/transaction/images/", formData,
-          {
-            headers: {
-              Authorization: `Bearer ${authTokens.access}`, // Use the access token
-              "Content-Type": "multipart/form-data" // This ensures the correct content type
-            },
-            mode: "cors",
-          }
-        )
+        .post("https://api.artina.org/api/transaction/images/", formData, {
+          headers: {
+            Authorization: `Bearer ${authTokens.access}`,
+            "Content-Type": "multipart/form-data",
+          },
+          mode: "cors",
+        })
         .then((res) => {
           Notify.success("با موفقیت آپلود شد");
           setImageUrl(res.data.image);
@@ -109,6 +98,7 @@ const Support = () => {
         });
     }
   }, [image]);
+
   return (
     <TestLayout className="flex items-center justify-center gap-5">
       <SimpleCard className={"bg-base-100 w-1/2 lg:w-4/5 sm:w-[90%]"}>
@@ -182,7 +172,7 @@ const Support = () => {
             type="text"
             validationError={t("atleast11")}
             title={t("phoneNumber")}
-            isValid={/^\d{11}$/.test(values.phone_number)} // Updated validation: only 11 digits allowed
+            isValid={/^\d{11}$/.test(values.phone_number)}
             onChange={(e) =>
               setValues((prev) => ({
                 ...prev,
@@ -191,8 +181,8 @@ const Support = () => {
             }
             defaultValue={null}
           />
-
         </div>
+
         <div className="mt-5 mb-2">{t("upload")}</div>
         <div className="w-full flex justify-center" id="uploadImage">
           <div className="relative group w-full">
@@ -206,6 +196,7 @@ const Support = () => {
             />
           </div>
         </div>
+        
         <div className="mt-3">{t("context")}</div>
         <textarea
           className={"w-full border-[1px] border-primary bg-base-100 outline-none mt-1 min-h-[190px] p-5 rounded-xl text-lg font-b2 leading-loose"}
@@ -220,11 +211,9 @@ const Support = () => {
           }
           defaultValue={null}
         />
-        <div className="mx-auto w-fit my-4">
-          <ReCAPTCHA sitekey={"6LecwBMnAAAAAItOWnJM8T17TlvnA1ewPIUGDuj_"} ref={captchaRef} onChange={handleCaptchaChange} />
-        </div>
+
         <div className="flex justify-center mt-5">
-          <BorderButton disabled={!captchaRes} onClick={!captchaRes ? () => { } : handleSubmit}>
+          <BorderButton onClick={handleSubmit}>
             {t("send")}
           </BorderButton>
         </div>

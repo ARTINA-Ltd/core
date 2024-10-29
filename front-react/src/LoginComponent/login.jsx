@@ -59,10 +59,8 @@ const Login = () => {
           access: res.data.access,
           refresh: res.data.refresh,
         };
-        // localStorage.setItem("authTokens", JSON.stringify(tokenData));
-
-        localStorage.setItem("accessToken", res.data.access);
-        localStorage.setItem("refreshToken", res.data.refresh);
+        
+        localStorage.setItem("authTokens", JSON.stringify(tokenData));
         
         userChange(res);
         Notify.success(t("success"));
