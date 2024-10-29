@@ -1404,6 +1404,9 @@ class PasswordResetByPhoneViewSet(viewsets.ViewSet):
         phone_number = request.data.get('phone_number')
         token = request.data.get('token')
         password = request.data.get('password')
+        recaptcha_response = request.data.get('recaptcha_token')
+        if not verify_recaptcha(recaptcha_response):
+            return Response({'error': 'Invalid reCAPTCHA. Please try again.'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Input validation
         if not phone_number or not token or not password:
