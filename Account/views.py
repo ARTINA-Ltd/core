@@ -609,7 +609,7 @@ class SendVerificationCodeViewSet(viewsets.ViewSet):
        
 
         try:
-            user = User.objects.get(profile__phone_number=phone_number)
+            user = User.objects.filter(profile__phone_number=phone_number).first()
         except ObjectDoesNotExist:
             sms_logger.error(f"User not found for phone number {phone_number}.")
             return Response({'error': 'User does not exist.'}, status=404)
