@@ -621,8 +621,12 @@ class SendVerificationCodeViewSet(viewsets.ViewSet):
         recent_upload = PhoneVerification.objects.filter(user=user, created_at__gte=one_minute_ago).exists()
 
         if recent_upload:
-            raise ValidationError("You can only upload one image per minute.")
-
+            raise ValidationError("You can only get sms each 2 minute.")
+        recent_sms_count = PhoneVerification.objects.filter(user=user).count()
+        
+        if recent_sms_count > 3:
+            raise ValueError("User has exceeded the limit of 3 SMS verifications.")        
+        
         # Generate a new verification code
         verification_code = random.randint(100000, 999999)
 
