@@ -384,10 +384,6 @@ class OrderViewSet(viewsets.ViewSet):
     def create(self, request, *args, **kwargs):
         """Create a new bid on an NFT."""
         user = self.request.user
-        recaptcha_response = request.data.get('recaptcha_token')
-        if not verify_recaptcha(recaptcha_response):
-            return Response({'error': 'Invalid reCAPTCHA. Please try again.'}, status=status.HTTP_400_BAD_REQUEST)
-        
         fee = request.data.get('fee')
         token_id = request.data.get('token_id')
         eth_fee = request.data.get('eth_fee')
