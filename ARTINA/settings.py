@@ -32,7 +32,7 @@ PRIVATE_KEY = os.getenv('PRIVATE_KEY')
 SECRET_T_KEY = os.getenv('SECRET_T_KEY')
 X_API_KEY = os.getenv('X_API_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -152,8 +152,8 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '3/minute',  # Throttle anonymous users to 5 requests per minute (fine for security)
-        'user': '22/minute',  # Increase for authenticated users for better user experience (20 requests per minute)
+        'anon': '5/minute',  # Throttle anonymous users to 5 requests per minute (fine for security)
+        'user': '100/minute',  # Increase for authenticated users for better user experience (20 requests per minute)
     }
 }
 
