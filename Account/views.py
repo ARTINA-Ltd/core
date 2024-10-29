@@ -1415,7 +1415,7 @@ class PasswordResetByPhoneViewSet(viewsets.ViewSet):
 
         try:
             # Find user by phone number
-            user = User.objects.get(profile__phone_number=phone_number)
+            user = User.objects.filter(profile__phone_number=phone_number).first()
         except ObjectDoesNotExist:
             password_reset_logger.error(f"User with phone number {phone_number} does not exist.")
             return Response({'error': 'User with this phone number does not exist.'}, status=status.HTTP_404_NOT_FOUND)
