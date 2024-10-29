@@ -617,6 +617,11 @@ class SendVerificationCodeViewSet(viewsets.ViewSet):
         except ObjectDoesNotExist:
             sms_logger.error(f"User not found for phone number {phone_number}.")
             return Response({'error': 'User does not exist.'}, status=404)
+        one_minute_ago = timezone.now() - timedelta(minutes=2)
+        recent_upload = PhoneVerification.objects.filter(user=user, created_at__gte=one_minute_ago).exists()
+
+        if recent_upload:
+            raise ValidationError("You can only upload one image per minute.")
 
         # Generate a new verification code
         verification_code = random.randint(100000, 999999)
