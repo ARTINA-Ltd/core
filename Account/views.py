@@ -642,7 +642,7 @@ class SendVerificationCodeViewSet(viewsets.ViewSet):
 
         # Send the SMS using Kavenegar API
         response = requests.post(
-            f"https://api.kavenegar.com/v1/YOUR_API_KEY/verify/lookup.json",
+            f"https://api.kavenegar.com/v1/4B2B714533707372774D45784D46535A43413648743058714E52345243614E53674947356C6B326B7737673D/verify/lookup.json",
             data={
                 "receptor": phone_number,
                 "token": verification_code,
