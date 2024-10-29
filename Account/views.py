@@ -606,11 +606,7 @@ class SendVerificationCodeViewSet(viewsets.ViewSet):
         if not phone_number:
             return Response({'error': 'Phone number is required.'}, status=400)
 
-        # Apply CAPTCHA for unauthenticated users
-        if not request.user.is_authenticated:
-            captcha_token = request.data.get('captcha_token')
-            if not verify_recaptcha(captcha_token):
-                return Response({'error': 'Invalid CAPTCHA.'}, status=400)
+       
 
         try:
             user = User.objects.get(profile__phone_number=phone_number)
