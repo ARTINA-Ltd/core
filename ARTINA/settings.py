@@ -127,6 +127,10 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+CSRF_TRUSTED_ORIGINS = [
+    'https://api.artina.org'
+]
+
 # Ensure cookies are only sent over HTTPS
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
