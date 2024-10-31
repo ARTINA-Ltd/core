@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'exhibition',
     'core',
     'AI', 
-    'game',   
+    # 'game',   
     'supervisor',    
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
