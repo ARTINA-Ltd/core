@@ -34,8 +34,9 @@ class DocumentApprovalViewSet(viewsets.ModelViewSet):
         user = self.request.user
 
         # Check if the user has the supervisor role
-        if not hasattr(user, 'profile') or user.profile.role.name != 'supervisor':
-            approval_logger.warning(f"Unauthorized access attempt by user {user.username}.")
+        role = getattr(getattr(user, 'profile', None), 'role', None)
+        if not role or getattr(role, 'name', None) != 'supervisor':
+            approval_logger.warning(f"Unauthorized access attempt by user {getattr(user, 'username', 'Unknown user')}.")
             raise PermissionDenied("You do not have permission to view approvals.")
 
         return DocumentApproval.objects.filter(supervisor=user)
@@ -46,14 +47,16 @@ class DocumentApprovalViewSet(viewsets.ModelViewSet):
         supervisor = request.user
 
         # Ensure the user has the correct role
-        if not hasattr(supervisor, 'profile') or supervisor.profile.role.name != 'supervisor':
-            approval_logger.warning(f"Unseen approvals access denied for user {supervisor.username}")
+        role = getattr(getattr(supervisor, 'profile', None), 'role', None)
+        if not role or getattr(role, 'name', None) != 'supervisor':
+            approval_logger.warning(f"Unseen approvals access denied for user {getattr(supervisor, 'username', 'Unknown user')}")
             raise PermissionDenied("Only supervisors can access unseen approvals.")
 
         unseen_approvals = DocumentApproval.objects.filter(supervisor=supervisor, seen=False)
         serializer = self.get_serializer(unseen_approvals, many=True)
-        approval_logger.info(f"Unseen approvals retrieved for supervisor {supervisor.username}")
+        approval_logger.info(f"Unseen approvals retrieved for supervisor {getattr(supervisor, 'username', 'Unknown user')}")
         return Response(serializer.data)
+
 
     @action(detail=True, methods=['put'])
     def approve(self, request, pk=None):
@@ -61,10 +64,11 @@ class DocumentApprovalViewSet(viewsets.ModelViewSet):
         approval = self.get_object()
         supervisor = request.user
 
-        # Ensure the user has the supervisor role
-        if not hasattr(supervisor, 'profile') or supervisor.profile.role.name != 'supervisor':
-            approval_logger.warning(f"Approval attempt by non-supervisor user {supervisor.username}")
-            raise PermissionDenied("Only supervisors can approve documents.")
+        # Ensure the user has the correct role
+        role = getattr(getattr(supervisor, 'profile', None), 'role', None)
+        if not role or getattr(role, 'name', None) != 'supervisor':
+            approval_logger.warning(f"Unseen approvals access denied for user {getattr(supervisor, 'username', 'Unknown user')}")
+            raise PermissionDenied("Only supervisors can access unseen approvals.")
 
         # Validate and approve fields
         approval.national_code_approved = request.data.get('national_code_approved', False)
@@ -79,10 +83,11 @@ class DocumentApprovalViewSet(viewsets.ModelViewSet):
         approval = self.get_object()
         supervisor = request.user
 
-        # Ensure the user has the supervisor role
-        if not hasattr(supervisor, 'profile') or supervisor.profile.role.name != 'supervisor':
-            approval_logger.warning(f"Rejection attempt by non-supervisor user {supervisor.username}")
-            raise PermissionDenied("Only supervisors can reject documents.")
+        # Ensure the user has the correct role
+        role = getattr(getattr(supervisor, 'profile', None), 'role', None)
+        if not role or getattr(role, 'name', None) != 'supervisor':
+            approval_logger.warning(f"Unseen approvals access denied for user {getattr(supervisor, 'username', 'Unknown user')}")
+            raise PermissionDenied("Only supervisors can access unseen approvals.")
 
         # Validate input
         rejection_message = request.data.get('rejection_message', None)
@@ -112,19 +117,22 @@ class SupervisorTicketViewSet(viewsets.ModelViewSet):
         user = self.request.user
 
         # Check if the user has the supervisor role
-        if not hasattr(user, 'profile') or user.profile.role.name != 'supervisor':
-            ticket_logger.warning(f"Unauthorized access attempt by user {user.username}.")
-            raise PermissionDenied("You do not have permission to view supervisor tickets.")
+        # Check if the user has the supervisor role
+        role = getattr(getattr(user, 'profile', None), 'role', None)
+        if not role or getattr(role, 'name', None) != 'supervisor':
+            approval_logger.warning(f"Unauthorized access attempt by user {getattr(user, 'username', 'Unknown user')}.")
+            raise PermissionDenied("You do not have permission to view approvals.")
 
         return SupervisorTicket.objects.filter(supervisor=user)
 
     @action(detail=False, methods=['post'])
     def notify_response(self, request):
         """Notify an exhibition owner about a ticket response."""
-        supervisor = request.user
+        supervisor = self.request.user
 
-        # Ensure the user has the supervisor role
-        if not hasattr(supervisor, 'profile') or supervisor.profile.role.name != 'supervisor':
+        if not (hasattr(supervisor, 'profile') and
+            hasattr(supervisor.profile, 'role') and
+            getattr(supervisor.profile.role, 'name', None) == 'supervisor'):
             ticket_logger.warning(f"Notification creation attempt by non-supervisor user {supervisor.username}")
             raise PermissionDenied("Only supervisors can notify users.")
 
@@ -147,12 +155,15 @@ class SupervisorTicketViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def unresponded_tickets(self, request):
         """Return unresponded tickets for the supervisor."""
-        supervisor = request.user
+    def get_queryset(self):
+        """Ensure supervisors can only access their own tickets."""
+        user = self.request.user
 
-        # Ensure the user has the supervisor role
-        if not hasattr(supervisor, 'profile') or supervisor.profile.role.name != 'supervisor':
-            ticket_logger.warning(f"Unresponded tickets access denied for user {supervisor.username}")
-            raise PermissionDenied("Only supervisors can view unresponded tickets.")
+        # Check if the user has the supervisor role
+        role = getattr(getattr(user, 'profile', None), 'role', None)
+        if not role or getattr(role, 'name', None) != 'supervisor':
+            approval_logger.warning(f"Unauthorized access attempt by user {getattr(user, 'username', 'Unknown user')}.")
+            raise PermissionDenied("You do not have permission to view approvals.")
 
         unresponded_tickets = SupervisorTicket.objects.filter(response_message="", supervisor=supervisor)
         serializer = self.get_serializer(unresponded_tickets, many=True)
@@ -163,10 +174,11 @@ class SupervisorTicketViewSet(viewsets.ModelViewSet):
         """Return metaverse-related tickets for the supervisor."""
         supervisor = request.user
 
-        # Ensure the user has the supervisor role
-        if not hasattr(supervisor, 'profile') or supervisor.profile.role.name != 'supervisor':
-            ticket_logger.warning(f"Metaverse tickets access denied for user {supervisor.username}")
-            raise PermissionDenied("Only supervisors can view metaverse tickets.")
+        if not (hasattr(supervisor, 'profile') and
+            hasattr(supervisor.profile, 'role') and
+            getattr(supervisor.profile.role, 'name', None) == 'supervisor'):
+            ticket_logger.warning(f"Notification creation attempt by non-supervisor user {supervisor.username}")
+            raise PermissionDenied("Only supervisors can notify users.")
 
         metaverse_tickets = SupervisorTicket.objects.filter(response_message="", ticket__subject="metaverse", supervisor=supervisor)
         serializer = self.get_serializer(metaverse_tickets, many=True)
@@ -178,9 +190,11 @@ class SupervisorTicketViewSet(viewsets.ModelViewSet):
         supervisor = self.request.user
 
         # Ensure the user has the supervisor role
-        if not hasattr(supervisor, 'profile') or supervisor.profile.role.name != 'supervisor':
-            ticket_logger.warning(f"Respond attempt by non-supervisor user {supervisor.username}")
-            raise PermissionDenied("Only supervisors can respond to tickets.")
+        if not (hasattr(supervisor, 'profile') and
+            hasattr(supervisor.profile, 'role') and
+            getattr(supervisor.profile.role, 'name', None) == 'supervisor'):
+            ticket_logger.warning(f"Notification creation attempt by non-supervisor user {supervisor.username}")
+            raise PermissionDenied("Only supervisors can notify users.")
 
         try:
             # Get the ticket
