@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'Account',
     'exhibition',
     'core',
-    'AI', 
+    # 'AI', 
     # 'game',   
     'supervisor',    
     'rest_framework',
@@ -157,7 +157,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_THROTTLE_RATES': {
         'anon': '5/minute',  # Throttle anonymous users to 5 requests per minute (fine for security)
-        'user': '100/minute',  # Increase for authenticated users for better user experience (20 requests per minute)
+        'user': '45/minute',  # Increase for authenticated users for better user experience (20 requests per minute)
     }
 }
 
