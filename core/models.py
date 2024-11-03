@@ -95,7 +95,7 @@ class NFTActivity(models.Model):
 
 class MyImage(models.Model):
     user = models.ForeignKey(User, null=True,blank=True,on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to='staticfiles/images/')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
