@@ -1,4 +1,4 @@
-from pyexpat import model
+hifrom pyexpat import model
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -95,7 +95,7 @@ class NFTActivity(models.Model):
 
 class MyImage(models.Model):
     user = models.ForeignKey(User, null=True,blank=True,on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='staticfiles/images/')
+    image = models.ImageField(upload_to='images/')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
