@@ -73,6 +73,7 @@ JAZZMIN_UI_TWEAKS = {
 
 CORS_ALLOWED_ORIGINS = [
     'https://api.artina.org',
+    'https://www.artina.org',
     'https://artina.org',
 ]
 
