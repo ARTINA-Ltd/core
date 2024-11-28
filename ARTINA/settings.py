@@ -35,6 +35,12 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
 ]
+INSTALLED_APPS += ['csp']
+
+CSP_FRAME_ANCESTORS = ("'self'",)  # Block iframes from external origins
+CSP_DEFAULT_SRC = ("'self'",)  # Restrict scripts to same origin
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'")  # Adjust based on your needs
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -47,6 +53,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'Account.middleware.FailedLoginMiddleware',
+
 ]
 
 JAZZMIN_SETTINGS = {
@@ -100,8 +107,11 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True
 X_FRAME_OPTIONS = 'DENY'
-
+SESSION_COOKIE_SAMESITE = 'Strict'  # Restrict cookies to same-site requests to prevent CSRF attacks
+CSRF_COOKIE_SAMESITE = 'Strict'
 CSP_FRAME_ANCESTORS = ("'none'",)
+SESSION_COOKIE_AGE = 3600  # Sessions expire after 1 hour
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Expire session when the browser is closed
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
