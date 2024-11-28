@@ -15,19 +15,34 @@ const Login = () => {
   const userChange = useContext(UserChangeContext);
   const { t } = useTranslation(["login"]);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
-    // Load reCAPTCHA v3 script
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.src = `https://www.google.com/recaptcha/api.js?render=6LfAJGoqAAAAAGKheBOwBD1Z1mLFzUfNBfxIKwtc`;
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);
-    
     return () => {
       document.body.removeChild(script);
     };
   }, []);
+
+  const validateInputs = () => {
+    const usernameRegex = /^[a-zA-Z0-9._-]{3,20}$/;
+    const passwordRegex = /^.{8,}$/;
+
+    if (!usernameRegex.test(values.username)) {
+      Notify.failure(t("invalidUsername"));
+      return false;
+    }
+
+    if (!passwordRegex.test(values.password)) {
+      Notify.failure(t("invalidPassword"));
+      return false;
+    }
+
+    return true;
+  };
 
   const executeRecaptcha = () => {
     return new Promise((resolve, reject) => {
@@ -41,15 +56,16 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const token = await executeRecaptcha(); // Execute reCAPTCHA and get token
+    if (!validateInputs()) return;
 
+    try {
+      const token = await executeRecaptcha();
       const res = await axios.post(
         "https://api.artina.org/api/account/login/",
         {
-          username: values.username,
+          username: values.username.trim(),
           password: values.password,
-          recaptcha_token: token, // Include reCAPTCHA token
+          recaptcha_token: token,
         },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -59,13 +75,11 @@ const Login = () => {
           access: res.data.access,
           refresh: res.data.refresh,
         };
-        
+
         localStorage.setItem("authTokens", JSON.stringify(tokenData));
-        
         userChange(res);
         Notify.success(t("success"));
 
-        // Redirect user based on role
         if (res.data.role === "supervisor") {
           navigate("/admin-panel");
         } else if (res.data.role === "user_one") {
@@ -92,8 +106,8 @@ const Login = () => {
           type="text"
           title={t("username")}
           placeholder={t("example")}
-          isValid={values.username !== ""}
-          validationError={t("required")}
+          isValid={values.username !== "" && /^[a-zA-Z0-9._-]{3,20}$/.test(values.username)}
+          validationError={t("invalidUsername")}
           onChange={(e) =>
             setValues((prev) => ({
               ...prev,
@@ -106,8 +120,8 @@ const Login = () => {
           className={"mt-6"}
           type="password"
           title={t("password")}
-          isValid={values.password !== ""}
-          validationError={t("required")}
+          isValid={values.password !== "" && /^.{8,}$/.test(values.password)}
+          validationError={t("invalidPassword")}
           onChange={(e) =>
             setValues((prev) => ({
               ...prev,
@@ -116,7 +130,6 @@ const Login = () => {
           }
           defaultValue={""}
         />
-
         <div className="flex justify-center mt-5">
           <BorderButton className={"w-[10rem] h-8"} onClick={handleSubmit}>
             {t("enter")}

@@ -111,7 +111,7 @@ const SimpleInput = ({ onChange, title, placeholder, type, isValid, validationEr
         {title}
       </div>
       {validationError && touched && !isValid && (
-        <div dir={ltr ? "ltr" : i18n.dir()} className={`pointer-events-none absolute ${i18n.dir() === "rtl" ? "left-2 top-1/2 -translate-y-1/2" : "text-center right-0 translate-y-1/2"} text-sm bg-base-100 border-2 border-error text-error px-2 rounded-full font-b2 my-auto opacity-90 transition-all`}>
+        <div dir={ltr ? "ltr" : i18n.dir()} className={`pointer-events-none absolute ${i18n.dir() === "rtl" ? "left-2 top-1/2 -translate-y-1/2" : "text-center right-0 translate-y-1/2"} text-xs bg-base-100 border-2 border-error text-error px-2 rounded-full font-b2 my-auto opacity-90 transition-all`}>
           {validationError}
         </div>
       )}
