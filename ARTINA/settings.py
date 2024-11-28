@@ -117,9 +117,15 @@ from datetime import timedelta
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=59),
-    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=179),
-    'ROTATE_REFRESH_TOKENS': False,
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=179),
+    'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_COOKIE': 'access_token',  # Cookie name for the access token
+    'AUTH_COOKIE_REFRESH': 'refresh_token',  # Cookie name for the refresh token
+    'AUTH_COOKIE_HTTP_ONLY': True,  # HttpOnly flag
+    'AUTH_COOKIE_SECURE': True,  # Set to True in production
+    'AUTH_COOKIE_SAMESITE': 'Strict',  # Mitigate CSRF
 }
 
 ROOT_URLCONF = 'ARTINA.urls'
