@@ -328,19 +328,19 @@ class LogoutViewSet(viewsets.ViewSet):
         """
         Handle user logout, blacklist the refresh token, and clear cookies.
         """
-    refresh_token = request.COOKIES.get('refresh_token')
-    if refresh_token:
-        try:
-            token = RefreshToken(refresh_token)
-            token.blacklist()
-        except Exception as e:
-            return Response({"error": "Invalid token"}, status=400)
+        refresh_token = request.COOKIES.get('refresh_token')
+        if refresh_token:
+            try:
+                token = RefreshToken(refresh_token)
+                token.blacklist()
+            except Exception as e:
+                return Response({"error": "Invalid token"}, status=400)
         
         # Clear the cookies
-    response = Response({"message": "Logged out"})
-    response.delete_cookie('access_token')
-    response.delete_cookie('refresh_token')
-    return response
+        response = Response({"message": "Logged out"})
+        response.delete_cookie('access_token')
+        response.delete_cookie('refresh_token')
+        return response
 
 class UserInfoViewSet(viewsets.ViewSet):
     authentication_classes = [JWTAuthentication]
