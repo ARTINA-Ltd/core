@@ -318,8 +318,8 @@ class LoginViewSet(viewsets.ViewSet):
         # Set tokens in HttpOnly cookies
         response.set_cookie('access_token', str(refresh.access_token), httponly=True)
         response.set_cookie('refresh_token', str(refresh), httponly=True)
-            return response
-        return Response({"error": "Invalid credentials"}, status=400)
+        return response
+        #return Response({"error": "Invalid credentials"}, status=400)
 
 
 class LogoutViewSet(viewsets.ViewSet):
