@@ -305,15 +305,21 @@ class LoginViewSet(viewsets.ViewSet):
         NotifyUser.objects.create(user=user,text=sms_message)
         # Generate JWT tokens
         refresh = RefreshToken.for_user(user)
-        response_data = {
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-            'role': str(profile.role.name),
-            'nationaloty': str(profile.is_foreigner)
-        }
-        return Response(response_data, status=status.HTTP_200_OK)
+       # response_data = {
+       #     'refresh': str(refresh),
+        #    'access': str(refresh.access_token),
+         #   'role': str(profile.role.name),
+           # 'nationaloty': str(profile.is_foreigner)
+      #  }
 
+        
+      #  return Response(response_data, status=status.HTTP_200_OK)
 
+        # Set tokens in HttpOnly cookies
+        response.set_cookie('access_token', str(refresh.access_token), httponly=True)
+        response.set_cookie('refresh_token', str(refresh), httponly=True)
+            return response
+        return Response({"error": "Invalid credentials"}, status=400)
 
 
 class LogoutViewSet(viewsets.ViewSet):
