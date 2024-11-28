@@ -228,5 +228,10 @@ class ARTINA_Ballance(models.Model):
         return f"eth : {self.artina_eth} - pol: {self.artina_pol} - rial: ({self.artina_rial})"
     
 
+from django.contrib.sessions.models import Session
 
+def list_active_sessions():
+    sessions = Session.objects.all()
+    for session in sessions:
+        print(session.session_key, session.expire_date)
 
