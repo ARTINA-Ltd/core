@@ -690,7 +690,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
         one_month_ago = today - timedelta(days=30)
 
         # Filter user's transactions from the last month
-        turnovers = Transaction.objects.filter(user=user, date__gte=one_month_ago)
+        turnovers = Transaction.objects.filter(user=user)
         serializer = self.get_serializer(turnovers, many=True)
 
         transaction_logger.info(f"Turnover calculated for {user.username}.")
